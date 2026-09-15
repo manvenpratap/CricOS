@@ -22,7 +22,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "pnpm -r build && node scripts/package-distribution.mjs",
     "test": "pnpm -r test && node --experimental-strip-types --test tests/**/*.test.ts",
     "test:migrations": "node --experimental-strip-types --test tests/migrations-and-seed.test.ts",
     "lint": "pnpm -r lint",
@@ -32,6 +32,8 @@
     "deploy:validate": "node scripts/validate-deployment.mjs",
     "tournament:emulate": "node scripts/emulate-tournament.mjs",
     "benchmark:profile": "node scripts/benchmark-performance.mjs",
+    "package:dist": "node scripts/package-distribution.mjs",
+    "verify:dist": "node scripts/verify-distribution.mjs",
     "dev": "pnpm --filter @cricket-platform/api dev",
     "start": "pnpm --filter @cricket-platform/api start"
   },

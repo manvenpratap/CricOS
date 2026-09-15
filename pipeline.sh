@@ -93,7 +93,10 @@ EOF
         fi
         ;;
     package)
-        if compgen -G "*.html" >/dev/null 2>&1; then
+        [ -f package.json ] && npm run build --if-present
+        if [ -f scripts/package-distribution.mjs ]; then
+            node scripts/package-distribution.mjs
+        elif compgen -G "*.html" >/dev/null 2>&1; then
             mkdir -p dist
             for f in index.html *.html; do
                 if [ -f "$f" ] && [ "$f" != "dist/index.html" ]; then
@@ -103,7 +106,6 @@ EOF
                 fi
             done
         fi
-        [ -f package.json ] && npm run build --if-present
         [ -f pom.xml ] && mvn package -DskipTests -q
         ;;
     doc)
@@ -118,7 +120,7 @@ EOF
             exit 1
         fi
         "$0" package
-        git add -u
+        git add -A
         git commit -m "$MSG"
         git push origin "$(git rev-parse --abbrev-ref HEAD)"
         ;;

@@ -15,6 +15,8 @@ COPY packages/domain/package.json ./packages/domain/
 COPY packages/scoring/package.json ./packages/scoring/
 COPY apps/api/package.json ./apps/api/
 COPY apps/worker/package.json ./apps/worker/
+COPY apps/web/package.json ./apps/web/
+COPY apps/mobile/package.json ./apps/mobile/
 
 # Install all dependencies including devDependencies for build
 RUN pnpm install --frozen-lockfile
@@ -23,6 +25,8 @@ RUN pnpm install --frozen-lockfile
 COPY packages/ ./packages/
 COPY apps/api/ ./apps/api/
 COPY apps/worker/ ./apps/worker/
+COPY apps/web/ ./apps/web/
+COPY apps/mobile/ ./apps/mobile/
 
 # Build all TypeScript packages and applications
 RUN pnpm -r build

@@ -1,5 +1,4 @@
-export function getDashboardHtml(): string {
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1227,7 +1226,7 @@ export function getDashboardHtml(): string {
       const item = document.createElement('div');
       item.className = 'feed-item';
       let desc = event.is_wicket ? '🛑 WICKET!' : (event.bat_runs === 4 ? '🏏 FOUR!' : (event.bat_runs === 6 ? '🚀 SIX!' : (event.extra_type !== 'NONE' ? event.extra_type + ' (+' + event.extra_runs + ')' : event.bat_runs + ' run(s)')));
-      item.innerHTML = '<span>Ball ' + state.overs_display + ' — ' + desc + '</span><span style=\"color: var(--text-muted); font-weight: 600;\">' + state.runs + '/' + state.wickets + '</span>';
+      item.innerHTML = '<span>Ball ' + state.overs_display + ' — ' + desc + '</span><span style="color: var(--text-muted); font-weight: 600;">' + state.runs + '/' + state.wickets + '</span>';
       feed.prepend(item);
     }
 
@@ -1273,18 +1272,18 @@ export function getDashboardHtml(): string {
       try {
         const res = await fetch('/api/v1/marketplace/listings');
         const listings = await res.json();
-        container.innerHTML = listings.map(l => \`
+        container.innerHTML = listings.map(l => `
           <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <div style="font-weight: 600;">\${l.title}</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Category: \${l.category} • \${l.pricing_model || 'FIXED'}</div>
+              <div style="font-weight: 600;">${l.title}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Category: ${l.category} • ${l.pricing_model || 'FIXED'}</div>
             </div>
             <div style="text-align: right;">
-              <div style="font-weight: 700; color: var(--primary);">₹\${(l.base_price_minor / 100).toLocaleString('en-IN', {minimumFractionDigits: 2})}</div>
-              <button class="btn btn-secondary" style="width: auto; padding: 0.25rem 0.65rem; font-size: 0.75rem; margin-top: 0.35rem;" onclick="selectListing('\${l.title}', \${l.base_price_minor})" data-tooltip="Select this service listing for checkout calculation">Select</button>
+              <div style="font-weight: 700; color: var(--primary);">₹${(l.base_price_minor / 100).toLocaleString('en-IN', {minimumFractionDigits: 2})}</div>
+              <button class="btn btn-secondary" style="width: auto; padding: 0.25rem 0.65rem; font-size: 0.75rem; margin-top: 0.35rem;" onclick="selectListing('${l.title}', ${l.base_price_minor})" data-tooltip="Select this service listing for checkout calculation">Select</button>
             </div>
           </div>
-        \`).join('');
+        `).join('');
       } catch (e) {
         container.textContent = 'Error loading listings';
       }
@@ -1359,8 +1358,8 @@ export function getDashboardHtml(): string {
       const fix = await fixRes.json();
 
       const container = document.getElementById('fixturesList');
-      container.innerHTML = '<div style=\"font-weight: 600; margin-bottom: 0.5rem; color: var(--primary);\">Generated ' + fix.count + ' Round-Robin Fixtures:</div>' +
-        fix.fixtures.map(f => '<div style=\"padding: 0.35rem 0; border-bottom: 1px solid var(--border-subtle); font-size: 0.85rem;\">Round ' + f.round + ': <strong>' + f.home + '</strong> vs <strong>' + f.away + '</strong></div>').join('');
+      container.innerHTML = '<div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--primary);">Generated ' + fix.count + ' Round-Robin Fixtures:</div>' +
+        fix.fixtures.map(f => '<div style="padding: 0.35rem 0; border-bottom: 1px solid var(--border-subtle); font-size: 0.85rem;">Round ' + f.round + ': <strong>' + f.home + '</strong> vs <strong>' + f.away + '</strong></div>').join('');
       showToast('Generated ' + fix.count + ' fixtures');
     }
 
@@ -1386,13 +1385,13 @@ export function getDashboardHtml(): string {
       });
       const prop = await propRes.json();
 
-      document.getElementById('replacementResult').innerHTML = \`
+      document.getElementById('replacementResult').innerHTML = `
         <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--border-accent); border-radius: 8px; padding: 0.85rem;">
           <div style="font-weight: 600; color: var(--primary);">✓ Emergency Replacement Found!</div>
           <div style="font-size: 0.8rem; margin: 0.35rem 0;">Qualified Provider: <strong>Premier Match Officials Ltd</strong></div>
-          <button class="btn" style="padding: 0.4rem; font-size: 0.8rem; margin-top: 0.35rem;" onclick="acceptReplacement('\${prop.id}')" data-tooltip="Accept and bind emergency replacement provider">Accept Replacement</button>
+          <button class="btn" style="padding: 0.4rem; font-size: 0.8rem; margin-top: 0.35rem;" onclick="acceptReplacement('${prop.id}')" data-tooltip="Accept and bind emergency replacement provider">Accept Replacement</button>
         </div>
-      \`;
+      `;
       showToast('Emergency replacement proposed');
     }
 
@@ -1402,7 +1401,7 @@ export function getDashboardHtml(): string {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reason: 'Replacement accepted by organizer' })
       });
-      document.getElementById('replacementResult').innerHTML = '<div style=\"color: var(--primary); font-weight: 600;\">✓ Replacement Accepted & Confirmed!</div>';
+      document.getElementById('replacementResult').innerHTML = '<div style="color: var(--primary); font-weight: 600;">✓ Replacement Accepted & Confirmed!</div>';
       showToast('Replacement accepted');
     }
 
@@ -1679,5 +1678,4 @@ export function getDashboardHtml(): string {
     }
   </script>
 </body>
-</html>`;
-}
+</html>
