@@ -287,6 +287,114 @@ export function getDashboardHtml(): string {
       color: var(--text-muted);
     }
 
+    .sse-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      color: var(--cyan);
+      font-weight: 500;
+    }
+
+    .over-strip-container {
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      width: 100%;
+    }
+
+    .over-strip-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ball-strip {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .ball-bubble {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      animation: popBall 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popBall {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .ball-bubble.dot { color: var(--text-muted); }
+    .ball-bubble.single { color: var(--text-main); }
+    .ball-bubble.four { background: rgba(16, 185, 129, 0.25); color: #10B981; border-color: #10B981; }
+    .ball-bubble.six { background: rgba(139, 92, 246, 0.25); color: #A78BFA; border-color: #8B5CF6; }
+    .ball-bubble.wicket { background: rgba(244, 63, 94, 0.3); color: #FB7185; border-color: #F43F5E; }
+    .ball-bubble.extra { background: rgba(245, 158, 11, 0.25); color: #FBBF24; border-color: #F59E0B; }
+
+    .live-match-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .stat-mini-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.85rem;
+    }
+
+    .stat-mini-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stat-player-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #FFF;
+    }
+
+    .stat-player-figures {
+      font-size: 1.15rem;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      margin-top: 0.25rem;
+    }
+
     /* Scoring Controls Pad */
     .pad-grid {
       display: grid;
@@ -537,14 +645,50 @@ export function getDashboardHtml(): string {
     <!-- TAB 1: LIVE MATCH SCORING -->
     <div id="tab-scoring" class="tab-pane active">
       <div class="scoreboard">
-        <div class="match-info">
-          <h2>Delhi Daredevils vs Mumbai Super Strikers</h2>
-          <div class="match-meta">T20 Championship • Innings 1 • Match ID: <span id="currentMatchId" style="font-family: monospace;">match-pilot-1</span></div>
+        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div class="match-info">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
+              <h2>Delhi Daredevils vs Mumbai Super Strikers</h2>
+              <div class="sse-badge" id="sseStatusBadge">
+                <div class="pulse-dot" style="background: var(--cyan); width: 8px; height: 8px;"></div>
+                <span id="sseStatusText">SSE Stream: Connecting...</span>
+              </div>
+            </div>
+            <div class="match-meta">T20 Championship • Innings 1 • Match ID: <span id="currentMatchId" style="font-family: monospace; color: var(--cyan);">match-pilot-1</span></div>
+          </div>
+          <div class="score-display">
+            <div class="main-score" id="scoreRunsWickets">0/0</div>
+            <div class="overs-score" id="scoreOvers">(0.0 ov)</div>
+            <div class="rate-badge" id="scoreRunRate">CRR: 0.00</div>
+          </div>
         </div>
-        <div class="score-display">
-          <div class="main-score" id="scoreRunsWickets">0/0</div>
-          <div class="overs-score" id="scoreOvers">(0.0 ov)</div>
-          <div class="rate-badge" id="scoreRunRate">CRR: 0.00</div>
+
+        <!-- Real-time Over Ball Strip -->
+        <div class="over-strip-container">
+          <div class="over-strip-label">Current Over Deliveries:</div>
+          <div class="ball-strip" id="overBallStrip">
+            <div class="ball-bubble dot">•</div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);" id="overSummaryText">Waiting for over to commence...</div>
+        </div>
+
+        <!-- Live Player Stats -->
+        <div class="live-match-stats">
+          <div class="stat-mini-card">
+            <div class="stat-mini-title"><span>Striker</span><span style="color: var(--primary);">★ On Strike</span></div>
+            <div class="stat-player-name" id="strikerName">Virat K. *</div>
+            <div class="stat-player-figures" id="strikerFigures">0 <span style="font-size: 0.85rem; color: var(--text-muted);">(0b) • SR: 0.0</span></div>
+          </div>
+          <div class="stat-mini-card">
+            <div class="stat-mini-title"><span>Non-Striker</span><span>Runner</span></div>
+            <div class="stat-player-name" id="nonStrikerName">Rohit S.</div>
+            <div class="stat-player-figures" id="nonStrikerFigures">0 <span style="font-size: 0.85rem; color: var(--text-muted);">(0b) • SR: 0.0</span></div>
+          </div>
+          <div class="stat-mini-card">
+            <div class="stat-mini-title"><span>Bowler</span><span style="color: var(--amber);">Current Spell</span></div>
+            <div class="stat-player-name" id="bowlerName">Jasprit B.</div>
+            <div class="stat-player-figures" id="bowlerFigures" style="color: var(--amber);">0-0-0-0 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(Econ: 0.00)</span></div>
+          </div>
         </div>
       </div>
 
@@ -828,15 +972,184 @@ export function getDashboardHtml(): string {
     checkHealth();
     setInterval(checkHealth, 5000);
 
-    // Scoring State
+    // Scoring State & Live Broadcast Engine
     let runs = 0;
     let wickets = 0;
     let legalBalls = 0;
     let sequence = 0;
+    let currentOverBalls = [];
+    const matchId = 'match-pilot-1';
+
+    function renderScoreState(state, event, eventType) {
+      if (!state) return;
+      runs = state.runs ?? 0;
+      wickets = state.wickets ?? 0;
+      legalBalls = state.legal_balls ?? 0;
+
+      document.getElementById('scoreRunsWickets').textContent = runs + '/' + wickets;
+      document.getElementById('scoreOvers').textContent = '(' + (state.overs_display || '0.0') + ' ov)';
+      const crr = legalBalls > 0 ? ((runs / legalBalls) * 6).toFixed(2) : '0.00';
+      document.getElementById('scoreRunRate').textContent = 'CRR: ' + crr;
+
+      // Update Over Ball Strip
+      if (event) {
+        if (state.legal_balls > 0 && state.legal_balls % 6 === 0 && event.legal_ball && eventType === 'OVER_COMPLETED') {
+          // Add final ball of completed over, then clear after delay
+          addBallBubble(event);
+        } else {
+          addBallBubble(event);
+        }
+      }
+
+      // Update Active Batters & Bowler
+      if (state.batters) {
+        const batterKeys = Object.keys(state.batters);
+        if (batterKeys.length >= 2) {
+          const striker = state.batters[state.striker_id || batterKeys[0]];
+          const nonStriker = state.batters[state.non_striker_id || batterKeys[1]];
+          if (striker) {
+            document.getElementById('strikerName').textContent = (striker.name || 'Virat K.') + ' *';
+            document.getElementById('strikerFigures').innerHTML = striker.runs + ' <span style="font-size: 0.85rem; color: var(--text-muted);">(' + striker.ballsFaced + 'b) • ' + striker.fours + 'x4 ' + striker.sixes + 'x6 • SR: ' + striker.strikeRate.toFixed(1) + '</span>';
+          }
+          if (nonStriker) {
+            document.getElementById('nonStrikerName').textContent = (nonStriker.name || 'Rohit S.');
+            document.getElementById('nonStrikerFigures').innerHTML = nonStriker.runs + ' <span style="font-size: 0.85rem; color: var(--text-muted);">(' + nonStriker.ballsFaced + 'b) • SR: ' + nonStriker.strikeRate.toFixed(1) + '</span>';
+          }
+        }
+      }
+
+      if (state.bowlers) {
+        const bowlerKeys = Object.keys(state.bowlers);
+        if (bowlerKeys.length > 0) {
+          const bowler = state.bowlers[state.current_bowler_id || bowlerKeys[0]];
+          if (bowler) {
+            document.getElementById('bowlerName').textContent = bowler.name || 'Jasprit B.';
+            document.getElementById('bowlerFigures').innerHTML = bowler.oversDisplay + '-' + bowler.maidens + '-' + bowler.runsConceded + '-' + bowler.wickets + ' <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(Econ: ' + bowler.economyRate.toFixed(2) + ')</span>';
+          }
+        }
+      }
+    }
+
+    function addBallBubble(event) {
+      const strip = document.getElementById('overBallStrip');
+      const bubble = document.createElement('div');
+
+      let label = '•';
+      let cls = 'dot';
+
+      if (event.is_wicket) {
+        label = 'W';
+        cls = 'wicket';
+      } else if (event.extra_type === 'WIDE') {
+        label = (event.extra_runs || 1) + 'wd';
+        cls = 'extra';
+      } else if (event.extra_type === 'NO_BALL') {
+        label = (event.extra_runs || 1) + 'nb';
+        cls = 'extra';
+      } else if (event.extra_type === 'BYE') {
+        label = (event.extra_runs || 1) + 'b';
+        cls = 'extra';
+      } else if (event.extra_type === 'LEG_BYE') {
+        label = (event.extra_runs || 1) + 'lb';
+        cls = 'extra';
+      } else if (event.bat_runs === 4) {
+        label = '4';
+        cls = 'four';
+      } else if (event.bat_runs === 6) {
+        label = '6';
+        cls = 'six';
+      } else if (event.bat_runs > 0) {
+        label = '' + event.bat_runs;
+        cls = 'single';
+      }
+
+      bubble.className = 'ball-bubble ' + cls;
+      bubble.textContent = label;
+
+      if (strip.children.length === 1 && strip.children[0].textContent === '•' && !event.legal_ball && event.bat_runs === 0 && event.extra_runs === 0) {
+        strip.innerHTML = '';
+      }
+      strip.appendChild(bubble);
+
+      // Keep up to 8 recent delivery chips in strip
+      while (strip.children.length > 8) {
+        strip.removeChild(strip.firstChild);
+      }
+
+      document.getElementById('overSummaryText').textContent = 'This Over: ' + strip.children.length + ' deliveries bowled';
+    }
+
+    // Connect to Server-Sent Events (SSE) Live Broadcast Stream
+    function initSseStream() {
+      try {
+        const sseUrl = '/api/v1/scoring/matches/' + matchId + '/live';
+        const source = new EventSource(sseUrl);
+
+        source.addEventListener('initial_state', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state);
+        });
+
+        source.addEventListener('ball_bowled', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state, data.event, 'BALL_BOWLED');
+          logFeedItem(data.state, data.event);
+        });
+
+        source.addEventListener('wicket_fallen', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state, data.event, 'WICKET_FALLEN');
+          logFeedItem(data.state, data.event);
+          showToast('🛑 WICKET! ' + (data.state.wickets) + ' down for ' + data.state.runs);
+        });
+
+        source.addEventListener('over_completed', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state, data.event, 'OVER_COMPLETED');
+          logFeedItem(data.state, data.event);
+          showToast('✓ Over complete! End of over ' + data.state.overs_display);
+        });
+
+        source.addEventListener('innings_closed', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state, data.event, 'INNINGS_CLOSED');
+          showToast('🏆 Innings Closed! Total: ' + data.state.runs + '/' + data.state.wickets);
+        });
+
+        source.onopen = () => {
+          const badge = document.getElementById('sseStatusBadge');
+          if (badge) {
+            badge.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+            document.getElementById('sseStatusText').textContent = 'SSE Stream: Connected (Live)';
+          }
+        };
+
+        source.onerror = () => {
+          const badge = document.getElementById('sseStatusBadge');
+          if (badge) {
+            badge.style.borderColor = 'rgba(245, 158, 11, 0.5)';
+            document.getElementById('sseStatusText').textContent = 'SSE Stream: Reconnecting...';
+          }
+        };
+      } catch (err) {
+        console.warn('SSE not supported or failed to connect:', err);
+      }
+    }
+    initSseStream();
+
+    function logFeedItem(state, event) {
+      const feed = document.getElementById('scoringFeed');
+      if (!feed) return;
+      const item = document.createElement('div');
+      item.className = 'feed-item';
+      let desc = event.is_wicket ? '🛑 WICKET!' : (event.bat_runs === 4 ? '🏏 FOUR!' : (event.bat_runs === 6 ? '🚀 SIX!' : (event.extra_type !== 'NONE' ? event.extra_type + ' (+' + event.extra_runs + ')' : event.bat_runs + ' run(s)')));
+      item.innerHTML = '<span>Ball ' + state.overs_display + ' — ' + desc + '</span><span style=\"color: var(--text-muted); font-weight: 600;\">' + state.runs + '/' + state.wickets + '</span>';
+      feed.prepend(item);
+    }
 
     async function scoreDelivery(batRuns, extraRuns, extraType, legalBall, isWicket = false) {
       sequence++;
-      const res = await fetch('/api/v1/matches/match-pilot-1/score-events', {
+      const res = await fetch('/api/v1/scoring/matches/' + matchId + '/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -852,24 +1165,10 @@ export function getDashboardHtml(): string {
 
       if (res.ok) {
         const data = await res.json();
-        const state = data.state;
-        runs = state.runs;
-        wickets = state.wickets;
-        legalBalls = state.legal_balls;
-
-        document.getElementById('scoreRunsWickets').textContent = runs + '/' + wickets;
-        document.getElementById('scoreOvers').textContent = '(' + state.overs_display + ' ov)';
-        const crr = legalBalls > 0 ? ((runs / legalBalls) * 6).toFixed(2) : '0.00';
-        document.getElementById('scoreRunRate').textContent = 'CRR: ' + crr;
-
-        // Feed
-        const feed = document.getElementById('scoringFeed');
-        const item = document.createElement('div');
-        item.className = 'feed-item';
+        // The SSE stream will broadcast this, but we update locally for instant responsiveness
+        renderScoreState(data.state, { bat_runs: batRuns, extra_runs: extraRuns, extra_type: extraType, legal_ball: legalBall, is_wicket: isWicket }, data.broadcast_type);
         let desc = isWicket ? '🛑 WICKET!' : (batRuns === 4 ? '🏏 FOUR!' : (batRuns === 6 ? '🚀 SIX!' : (extraType !== 'NONE' ? extraType + ' (+1)' : batRuns + ' run(s)')));
-        item.innerHTML = '<span>Ball ' + state.overs_display + ' — ' + desc + '</span><span style=\"color: var(--text-muted);\">' + runs + '/' + wickets + '</span>';
-        feed.prepend(item);
-        showToast('Delivery scored: ' + desc);
+        showToast('Delivered: ' + desc);
       }
     }
 
@@ -878,7 +1177,9 @@ export function getDashboardHtml(): string {
       document.getElementById('scoreRunsWickets').textContent = '0/0';
       document.getElementById('scoreOvers').textContent = '(0.0 ov)';
       document.getElementById('scoreRunRate').textContent = 'CRR: 0.00';
-      document.getElementById('scoringFeed').innerHTML = '<div class=\"feed-item\" style=\"color: var(--text-muted);\">New innings initialized.</div>';
+      document.getElementById('overBallStrip').innerHTML = '<div class="ball-bubble dot">•</div>';
+      document.getElementById('overSummaryText').textContent = 'Waiting for over to commence...';
+      document.getElementById('scoringFeed').innerHTML = '<div class="feed-item" style="color: var(--text-muted);">New innings initialized.</div>';
       showToast('Match scoreboard reset');
     }
 
