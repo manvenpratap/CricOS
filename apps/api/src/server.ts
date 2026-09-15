@@ -2,6 +2,7 @@ import Fastify, { FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import crypto from 'node:crypto';
 import { isDbConnected } from './platform/db.js';
+import { getDashboardHtml } from './ui/dashboard.js';
 
 import { identityRoutes } from './modules/identity/routes.js';
 import { teamsRoutes } from './modules/teams/routes.js';
@@ -64,6 +65,14 @@ export function buildServer(): FastifyInstance {
       database_connected: dbHealthy,
       version: '1.0.0-phase1n'
     });
+  });
+
+  // 5. Interactive Test & Operations Console UI
+  server.get('/', async (_req, reply) => {
+    return reply.type('text/html').send(getDashboardHtml());
+  });
+  server.get('/app', async (_req, reply) => {
+    return reply.type('text/html').send(getDashboardHtml());
   });
 
   // 5. Register All Modules under /api/v1
