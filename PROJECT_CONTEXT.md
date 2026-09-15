@@ -1,6 +1,6 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 03:29:09
+**Last Updated:** 2026-09-16 03:37:28
 **Version:** 1.0.0-phase1x  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
@@ -47,6 +47,7 @@
 - [x] **Interactive Console & Navigation Polish (Phase 1V)**: Enhanced CricOS branding (`CricOS — Unified Cricket Operating System`), responsive header navigation pills with direct links to `/docs` (OpenAPI Showcase), `/metrics` (Prometheus), and `/health/ready` (Health Probes) with 100% accessible `data-tooltip` coverage.
 - [x] **World-Class Frontend Design Overhaul (Phase 1W)**: Implemented "Floodlit Stadium Broadcast & Athletic Precision Glassmorphism" design system (DFII 17/15). Replaced generic fonts with Google Fonts typography suite (`Space Grotesk`, `Plus Jakarta Sans`, `Chakra Petch`, `JetBrains Mono`), crafted 3.5rem LED scoreboard HUD with turf-emerald (`#00E599`) and cyan (`#00D2FF`) glow effects, kinetic over strip with pop-animated ball bubbles, athletic tactile scoring pad buttons, and 100% WCAG 2.2 AA accessible `data-tooltip` coverage.
 - [x] **Stitch Application Screen Architecture Implementation (Phase 1X)**: Structured 5-screen wireframe & state machine design in `STITCH_APPLICATION_SCREEN_ARCHITECTURE.md`. Implemented persistent Global Stadium Telemetry Strip (`1 LIVE`, `₹500k Escrow`, `Circuit 100%`, `<10ms SSE Latency`), Screen 1 dynamic Target Equation Bar & Fall of Wickets Timeline, Screen 2 interactive Hourly Slot Matrix (`08:00 Avail`, `13:00 Avail`, `18:00 Booked`), Screen 3 Tournament Stage Stepper with official ICC Net Run Rate precision tags (`+0.850`, `-0.420`), and Screen 5 real-time Prometheus Metric Cards.
+- [x] **Scoring Delivery Deduplication & SSE Synchronization (Phase 1X.1)**: Eliminated duplicate ball bubble and feed entry generation on scoring pad clicks. Implemented client-side event deduplication via unique delivery keys (`event_id` / `client_event_id` / `sequence`), coordinated fallback execution against `isSseConnected`, bounded historical cache (`renderedDeliveryKeys`, `feedDeliveryKeys`), fixed inverted placeholder dot condition, and prevented ReferenceError in FoW timeline.
 
 ---
 
@@ -59,6 +60,7 @@
 6. **Production Secrets Invariant**: In `NODE_ENV=production`, weak or default JWT secrets are fatally rejected on startup.
 7. **Single-File Distribution Invariant**: Under Rule 6, root `index.html` and `dist/index.html` must remain byte-for-byte identical.
 8. **Stadium Broadcast Design Invariant**: Consistent athletic typography tokens (`--font-display`, `--font-score`, `--font-body`), pitch emerald, cyan glow, and accessible contextual tooltips on all interactive elements.
+9. **Scoring Delivery Deduplication Invariant**: Every delivery event is idempotently processed across concurrent SSE broadcasts and HTTP responses using deterministic `event_id` / `client_event_id` keys.
 
 ---
 

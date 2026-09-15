@@ -105,10 +105,13 @@ export async function scoringRoutes(app: FastifyInstance) {
     return reply.status(201).send({
       event_id: eventId,
       eventId,
+      client_event_id,
+      sequence,
       match_id: id,
       matchId: id,
       broadcast_type: broadcastType,
-      state: updatedState
+      state: updatedState,
+      event: eventPayload
     });
   };
 

@@ -1425,8 +1425,18 @@
     let wickets = 0;
     let legalBalls = 0;
     let sequence = 0;
-    let currentOverBalls = [];
+    let isSseConnected = false;
+    const renderedDeliveryKeys = new Set();
+    const feedDeliveryKeys = new Set();
     const matchId = 'match-pilot-1';
+
+    function getDeliveryKey(event) {
+      if (!event) return null;
+      if (event.event_id) return 'eid-' + event.event_id;
+      if (event.client_event_id) return 'cid-' + event.client_event_id;
+      if (event.sequence) return 'seq-' + event.sequence;
+      return null;
+    }
 
     function renderScoreState(state, event, eventType) {
       if (!state) return;
@@ -1434,8 +1444,9 @@
       wickets = state.wickets ?? 0;
       legalBalls = state.legal_balls ?? 0;
 
+      const oversDisplay = state.overs_display || '0.0';
       document.getElementById('scoreRunsWickets').textContent = runs + '/' + wickets;
-      document.getElementById('scoreOvers').textContent = '(' + (state.overs_display || '0.0') + ' ov)';
+      document.getElementById('scoreOvers').textContent = '(' + oversDisplay + ' ov)';
       const crr = legalBalls > 0 ? ((runs / legalBalls) * 6).toFixed(2) : '0.00';
       document.getElementById('scoreRunRate').textContent = 'CRR: ' + crr;
 
@@ -1459,26 +1470,33 @@
       if (targetRRREl) targetRRREl.textContent = rrr;
       if (targetProgressFill) targetProgressFill.style.width = progressPercent + '%';
 
-      // Update Fall of Wickets Timeline
-      if (event && event.is_wicket) {
-        const fowStrip = document.getElementById('fowStrip');
-        if (fowStrip) {
-          const pill = document.createElement('span');
-          pill.className = 'fow-pill';
-          pill.setAttribute('data-tooltip', 'Wicket ' + wickets + ': ' + runs + '/' + wickets + ' at ' + oversDisplay + ' ov');
-          pill.innerHTML = runs + '/' + wickets + ' <small>(' + oversDisplay + ' ov)</small>';
-          fowStrip.appendChild(pill);
-        }
-      }
+      // Deduplication check for delivery progression
+      const eventKey = getDeliveryKey(event);
+      const isAlreadyRendered = eventKey ? renderedDeliveryKeys.has(eventKey) : false;
 
-      // Update Over Ball Strip
-      if (event) {
-        if (state.legal_balls > 0 && state.legal_balls % 6 === 0 && event.legal_ball && eventType === 'OVER_COMPLETED') {
-          // Add final ball of completed over, then clear after delay
-          addBallBubble(event);
-        } else {
-          addBallBubble(event);
+      if (event && !isAlreadyRendered) {
+        if (eventKey) {
+          renderedDeliveryKeys.add(eventKey);
+          if (renderedDeliveryKeys.size > 200) {
+            const oldest = renderedDeliveryKeys.values().next().value;
+            renderedDeliveryKeys.delete(oldest);
+          }
         }
+
+        // Update Fall of Wickets Timeline
+        if (event.is_wicket) {
+          const fowStrip = document.getElementById('fowStrip');
+          if (fowStrip) {
+            const pill = document.createElement('span');
+            pill.className = 'fow-pill';
+            pill.setAttribute('data-tooltip', 'Wicket ' + wickets + ': ' + runs + '/' + wickets + ' at ' + oversDisplay + ' ov');
+            pill.innerHTML = runs + '/' + wickets + ' <small>(' + oversDisplay + ' ov)</small>';
+            fowStrip.appendChild(pill);
+          }
+        }
+
+        // Update Over Ball Strip
+        addBallBubble(event, eventKey);
       }
 
       // Update Active Batters & Bowler
@@ -1510,9 +1528,25 @@
       }
     }
 
-    function addBallBubble(event) {
+    function addBallBubble(event, eventKey) {
       const strip = document.getElementById('overBallStrip');
+      if (!strip) return;
+
+      // Prevent duplicate DOM nodes for the same delivery
+      if (eventKey && strip.querySelector('[data-event-key="' + eventKey + '"]')) {
+        return;
+      }
+
+      // Remove initial placeholder dot if present
+      const firstChild = strip.firstElementChild;
+      if (strip.children.length === 1 && firstChild && firstChild.textContent.trim() === '•' && !firstChild.dataset.eventKey) {
+        strip.innerHTML = '';
+      }
+
       const bubble = document.createElement('div');
+      if (eventKey) {
+        bubble.dataset.eventKey = eventKey;
+      }
 
       let label = '•';
       let cls = 'dot';
@@ -1546,9 +1580,6 @@
       bubble.className = 'ball-bubble ' + cls;
       bubble.textContent = label;
 
-      if (strip.children.length === 1 && strip.children[0].textContent === '•' && !event.legal_ball && event.bat_runs === 0 && event.extra_runs === 0) {
-        strip.innerHTML = '';
-      }
       strip.appendChild(bubble);
 
       // Keep up to 8 recent delivery chips in strip
@@ -1597,6 +1628,7 @@
         });
 
         source.onopen = () => {
+          isSseConnected = true;
           const badge = document.getElementById('sseStatusBadge');
           if (badge) {
             badge.style.borderColor = 'rgba(16, 185, 129, 0.5)';
@@ -1605,6 +1637,7 @@
         };
 
         source.onerror = () => {
+          isSseConnected = false;
           const badge = document.getElementById('sseStatusBadge');
           if (badge) {
             badge.style.borderColor = 'rgba(245, 158, 11, 0.5)';
@@ -1612,28 +1645,41 @@
           }
         };
       } catch (err) {
+        isSseConnected = false;
         console.warn('SSE not supported or failed to connect:', err);
       }
     }
     initSseStream();
 
     function logFeedItem(state, event) {
+      if (!event) return;
+      const key = getDeliveryKey(event);
+      if (key && feedDeliveryKeys.has(key)) return;
+      if (key) {
+        feedDeliveryKeys.add(key);
+        if (feedDeliveryKeys.size > 200) {
+          const oldest = feedDeliveryKeys.values().next().value;
+          feedDeliveryKeys.delete(oldest);
+        }
+      }
+
       const feed = document.getElementById('scoringFeed');
       if (!feed) return;
       const item = document.createElement('div');
       item.className = 'feed-item';
-      let desc = event.is_wicket ? '🛑 WICKET!' : (event.bat_runs === 4 ? '🏏 FOUR!' : (event.bat_runs === 6 ? '🚀 SIX!' : (event.extra_type !== 'NONE' ? event.extra_type + ' (+' + event.extra_runs + ')' : event.bat_runs + ' run(s)')));
-      item.innerHTML = '<span>Ball ' + state.overs_display + ' — ' + desc + '</span><span style="color: var(--text-muted); font-weight: 600;">' + state.runs + '/' + state.wickets + '</span>';
+      let desc = event.is_wicket ? '🛑 WICKET!' : (event.bat_runs === 4 ? '🏏 FOUR!' : (event.bat_runs === 6 ? '🚀 SIX!' : (event.extra_type && event.extra_type !== 'NONE' ? event.extra_type + ' (+' + (event.extra_runs || 1) + ')' : (event.bat_runs || 0) + ' run(s)')));
+      item.innerHTML = '<span>Ball ' + (state.overs_display || '0.0') + ' — ' + desc + '</span><span style="color: var(--text-muted); font-weight: 600;">' + (state.runs || 0) + '/' + (state.wickets || 0) + '</span>';
       feed.prepend(item);
     }
 
     async function scoreDelivery(batRuns, extraRuns, extraType, legalBall, isWicket = false) {
       sequence++;
+      const clientEventId = 'evt-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
       const res = await fetch('/api/v1/scoring/matches/' + matchId + '/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          client_event_id: 'evt-' + Date.now(),
+          client_event_id: clientEventId,
           sequence,
           bat_runs: batRuns,
           extra_runs: extraRuns,
@@ -1645,8 +1691,20 @@
 
       if (res.ok) {
         const data = await res.json();
-        // The SSE stream will broadcast this, but we update locally for instant responsiveness
-        renderScoreState(data.state, { bat_runs: batRuns, extra_runs: extraRuns, extra_type: extraType, legal_ball: legalBall, is_wicket: isWicket }, data.broadcast_type);
+        // If SSE stream is disconnected or inactive, apply local update as fallback
+        if (!isSseConnected) {
+          const fallbackEvent = data.event || {
+            client_event_id: clientEventId,
+            sequence,
+            bat_runs: batRuns,
+            extra_runs: extraRuns,
+            extra_type: extraType,
+            legal_ball: legalBall,
+            is_wicket: isWicket
+          };
+          renderScoreState(data.state, fallbackEvent, data.broadcast_type);
+          logFeedItem(data.state, fallbackEvent);
+        }
         let desc = isWicket ? '🛑 WICKET!' : (batRuns === 4 ? '🏏 FOUR!' : (batRuns === 6 ? '🚀 SIX!' : (extraType !== 'NONE' ? extraType + ' (+1)' : batRuns + ' run(s)')));
         showToast('Delivered: ' + desc);
       }
@@ -1654,12 +1712,16 @@
 
     function resetMatchScore() {
       runs = 0; wickets = 0; legalBalls = 0; sequence = 0;
+      renderedDeliveryKeys.clear();
+      feedDeliveryKeys.clear();
       document.getElementById('scoreRunsWickets').textContent = '0/0';
       document.getElementById('scoreOvers').textContent = '(0.0 ov)';
       document.getElementById('scoreRunRate').textContent = 'CRR: 0.00';
       document.getElementById('overBallStrip').innerHTML = '<div class="ball-bubble dot">•</div>';
       document.getElementById('overSummaryText').textContent = 'Waiting for over to commence...';
       document.getElementById('scoringFeed').innerHTML = '<div class="feed-item" style="color: var(--text-muted);">New innings initialized.</div>';
+      const fowStrip = document.getElementById('fowStrip');
+      if (fowStrip) fowStrip.innerHTML = '';
       showToast('Match scoreboard reset');
     }
 
