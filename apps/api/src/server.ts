@@ -4,6 +4,8 @@ import crypto from 'node:crypto';
 import { isDbConnected, getPoolStats } from './platform/db.js';
 import { broadcastHub } from './modules/scoring/broadcast.js';
 import { getDashboardHtml } from './ui/dashboard.js';
+import { metricsRegistry } from './platform/metrics.js';
+import { generateOpenApiSpec, getApiDocsHtml } from './platform/openapi.js';
 
 import { identityRoutes } from './modules/identity/routes.js';
 import { teamsRoutes } from './modules/teams/routes.js';
@@ -47,6 +49,22 @@ export function buildServer(): FastifyInstance {
   // 2. Correlation ID & Request timing hook
   server.addHook('onRequest', async (req) => {
     (req.raw as any).correlationId = req.headers['x-correlation-id'] || crypto.randomUUID();
+    (req.raw as any).startTime = process.hrtime.bigint();
+  });
+
+  server.addHook('onResponse', async (req, reply) => {
+    const startTime = (req.raw as any).startTime;
+    if (startTime) {
+      const elapsedNs = Number(process.hrtime.bigint() - startTime);
+      const durationMs = Math.round((elapsedNs / 1e6) * 100) / 100;
+      const routeUrl = req.routeOptions.url || req.url.split('?')[0] || 'unknown';
+      metricsRegistry.recordRequest({
+        method: req.method,
+        route: routeUrl,
+        statusCode: reply.statusCode,
+        durationMs
+      });
+    }
   });
 
   // 3. Global Error Handler
@@ -64,7 +82,7 @@ export function buildServer(): FastifyInstance {
       status: 'ok',
       timestamp: new Date().toISOString(),
       database_connected: dbHealthy,
-      version: '1.0.0-phase1r'
+      version: '1.0.0-phase1u'
     });
   });
 
@@ -92,26 +110,39 @@ export function buildServer(): FastifyInstance {
   });
 
   server.get('/health/metrics', async (_req, reply) => {
-    const mem = process.memoryUsage();
     const dbHealthy = await isDbConnected();
+    const poolStats = getPoolStats();
     return reply.status(200).send({
-      uptime_seconds: Math.floor(process.uptime()),
-      timestamp: new Date().toISOString(),
-      memory: {
-        rss_bytes: mem.rss,
-        heap_used_bytes: mem.heapUsed,
-        heap_total_bytes: mem.heapTotal,
-        external_bytes: mem.external
-      },
-      realtime: {
-        active_broadcast_channels: broadcastHub.getActiveChannelCount(),
-        total_sse_subscribers: broadcastHub.getTotalSubscribers()
-      },
+      ...metricsRegistry.toJsonSummary({
+        activeChannels: broadcastHub.getActiveChannelCount(),
+        activeSubscribers: broadcastHub.getTotalSubscribers(),
+        dbPoolStats: poolStats
+      }),
       database: {
         connected: dbHealthy,
-        pool: getPoolStats()
-      }
+        pool: poolStats
+      },
+      database_connected: dbHealthy
     });
+  });
+
+  server.get('/metrics', async (_req, reply) => {
+    const poolStats = getPoolStats();
+    const text = metricsRegistry.toPrometheusText({
+      activeChannels: broadcastHub.getActiveChannelCount(),
+      activeSubscribers: broadcastHub.getTotalSubscribers(),
+      dbPoolActive: poolStats.totalCount - poolStats.idleCount,
+      dbPoolTotal: poolStats.totalCount
+    });
+    return reply.type('text/plain; version=0.0.4; charset=utf-8').send(text);
+  });
+
+  server.get('/api/v1/openapi.json', async (_req, reply) => {
+    return reply.status(200).send(generateOpenApiSpec());
+  });
+
+  server.get('/docs', async (_req, reply) => {
+    return reply.type('text/html').send(getApiDocsHtml());
   });
 
   // 5. Interactive Test & Operations Console UI
