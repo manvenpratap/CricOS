@@ -1,0 +1,21 @@
+{
+  "name": "@cricket-platform/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "NODE_ENV=test node --experimental-strip-types --test test/**/*.test.ts"
+  },
+  "dependencies": {
+    "@cricket-platform/contracts": "workspace:*",
+    "@cricket-platform/domain": "workspace:*",
+    "@cricket-platform/scoring": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.3"
+  }
+}
