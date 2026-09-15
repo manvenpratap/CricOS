@@ -148,3 +148,27 @@ test('Distribution Packaging: Dashboard console contains polished branding, titl
   assert.ok(rootIndex.includes('href="/health/ready"'));
   assert.ok(rootIndex.includes('data-tooltip="Kubernetes Readiness Probe & Database Pool Status"'));
 });
+
+test('Distribution Packaging: Floodlit Stadium Broadcast & Athletic Precision Design System invariants', () => {
+  const rootIndex = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+
+  // Athletic & LED Google Fonts imports
+  assert.ok(rootIndex.includes('family=Chakra+Petch:wght@500;600;700;800'));
+  assert.ok(rootIndex.includes('family=Plus+Jakarta+Sans:wght@400;500;600;700;800'));
+  assert.ok(rootIndex.includes('family=Space+Grotesk:wght@500;600;700;800'));
+
+  // Color tokens & CSS variables
+  assert.ok(rootIndex.includes('--turf-emerald: #00E599;'));
+  assert.ok(rootIndex.includes('--cyan: #00D2FF;'));
+  assert.ok(rootIndex.includes('--rose: #FF3366;'));
+  assert.ok(rootIndex.includes('--font-display: \'Space Grotesk\''));
+  assert.ok(rootIndex.includes('--font-score: \'Chakra Petch\''));
+
+  // Stadium scoreboard HUD & kinetic ball bubble classes
+  assert.ok(rootIndex.includes('.scoreboard'));
+  assert.ok(rootIndex.includes('.main-score'));
+  assert.ok(rootIndex.includes('font-family: var(--font-score);'));
+  assert.ok(rootIndex.includes('.ball-bubble'));
+  assert.ok(rootIndex.includes('popBall'));
+});
+

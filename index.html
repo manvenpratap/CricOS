@@ -6,22 +6,29 @@
   <title>CricOS — Unified Cricket Operating System & Interactive Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #090D16;
-      --bg-card: rgba(18, 24, 38, 0.75);
-      --bg-card-solid: #111726;
+      --bg-dark: #04070D;
+      --bg-card: rgba(10, 16, 28, 0.82);
+      --bg-card-solid: #0A101C;
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-accent: rgba(16, 185, 129, 0.3);
-      --text-main: #F1F5F9;
+      --border-accent: rgba(0, 229, 153, 0.35);
+      --text-main: #F8FAFC;
       --text-muted: #94A3B8;
-      --primary: #10B981;
-      --primary-glow: rgba(16, 185, 129, 0.25);
-      --amber: #F59E0B;
-      --cyan: #06B6D4;
-      --rose: #F43F5E;
-      --purple: #8B5CF6;
+      --turf-emerald: #00E599;
+      --turf-glow: rgba(0, 229, 153, 0.35);
+      --primary: #00E599;
+      --primary-glow: rgba(0, 229, 153, 0.30);
+      --amber: #FFB800;
+      --cyan: #00D2FF;
+      --cyan-glow: rgba(0, 210, 255, 0.25);
+      --rose: #FF3366;
+      --purple: #A855F7;
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-score: 'Chakra Petch', monospace;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     * {
@@ -33,10 +40,11 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+        radial-gradient(1100px circle at 50% -12%, rgba(0, 229, 153, 0.15) 0%, transparent 60%),
+        radial-gradient(850px circle at 90% 25%, rgba(0, 210, 255, 0.09) 0%, transparent 50%),
+        radial-gradient(750px circle at 10% 75%, rgba(168, 85, 247, 0.07) 0%, transparent 50%);
       color: var(--text-main);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-body);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -64,28 +72,32 @@
 
     .brand-logo {
       font-size: 1.6rem;
-      background: linear-gradient(135deg, #10B981, #06B6D4);
+      background: linear-gradient(135deg, var(--turf-emerald), var(--cyan));
       width: 42px;
       height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 20px var(--turf-glow);
     }
 
     .brand-title {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 700;
-      font-size: 1.25rem;
-      letter-spacing: -0.02em;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #FFFFFF 40%, var(--turf-emerald) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .brand-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      font-family: var(--font-body);
     }
 
     .header-status {
@@ -163,9 +175,9 @@
       background: none;
       border: none;
       padding: 1rem 1.35rem;
-      font-family: 'Outfit', sans-serif;
+      font-family: var(--font-display);
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
       border-bottom: 2px solid transparent;
@@ -224,13 +236,13 @@
     /* Glass Cards */
     .card {
       background: var(--bg-card);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       padding: 1.5rem;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
 
     .card::before {
@@ -240,13 +252,14 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      background: linear-gradient(90deg, transparent, rgba(0, 229, 153, 0.4), transparent);
     }
 
     .card-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.15rem;
+      font-family: var(--font-display);
+      font-size: 1.18rem;
       font-weight: 700;
+      letter-spacing: -0.01em;
       margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
@@ -261,8 +274,8 @@
 
     /* Scoreboard Banner */
     .scoreboard {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(6, 182, 212, 0.08));
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      background: linear-gradient(135deg, rgba(0, 229, 153, 0.12), rgba(0, 210, 255, 0.07));
+      border: 1px solid rgba(0, 229, 153, 0.35);
       border-radius: 16px;
       padding: 1.75rem;
       margin-bottom: 1.5rem;
@@ -271,12 +284,14 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 1.5rem;
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .match-info h2 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
 
     .match-meta {
@@ -292,26 +307,30 @@
     }
 
     .main-score {
-      font-family: 'Outfit', sans-serif;
-      font-size: 3rem;
+      font-family: var(--font-score);
+      font-size: 3.5rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      color: #FFF;
-      text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+      color: var(--turf-emerald);
+      text-shadow: 0 0 25px rgba(0, 229, 153, 0.55), 0 0 50px rgba(0, 229, 153, 0.25);
     }
 
     .overs-score {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.35rem;
-      color: var(--amber);
-      font-weight: 600;
+      font-family: var(--font-score);
+      font-size: 1.5rem;
+      color: var(--cyan);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
     }
 
     .rate-badge {
       background: rgba(255, 255, 255, 0.08);
       padding: 0.35rem 0.75rem;
       border-radius: 6px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
+      font-family: var(--font-score);
+      font-weight: 600;
       color: var(--text-muted);
     }
 
@@ -357,20 +376,25 @@
     }
 
     .ball-bubble {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Outfit', sans-serif;
+      font-family: var(--font-score);
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       background: rgba(255, 255, 255, 0.06);
       color: var(--text-main);
       border: 1px solid var(--border-subtle);
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       animation: popBall 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ball-bubble:hover {
+      transform: scale(1.15);
     }
 
     @keyframes popBall {
@@ -379,11 +403,11 @@
     }
 
     .ball-bubble.dot { color: var(--text-muted); }
-    .ball-bubble.single { color: var(--text-main); }
-    .ball-bubble.four { background: rgba(16, 185, 129, 0.25); color: #10B981; border-color: #10B981; }
-    .ball-bubble.six { background: rgba(139, 92, 246, 0.25); color: #A78BFA; border-color: #8B5CF6; }
-    .ball-bubble.wicket { background: rgba(244, 63, 94, 0.3); color: #FB7185; border-color: #F43F5E; }
-    .ball-bubble.extra { background: rgba(245, 158, 11, 0.25); color: #FBBF24; border-color: #F59E0B; }
+    .ball-bubble.single { color: var(--text-main); background: rgba(255, 255, 255, 0.1); }
+    .ball-bubble.four { background: rgba(0, 229, 153, 0.25); color: var(--turf-emerald); border-color: var(--turf-emerald); box-shadow: 0 0 12px rgba(0, 229, 153, 0.4); }
+    .ball-bubble.six { background: rgba(168, 85, 247, 0.25); color: #C084FC; border-color: #A855F7; box-shadow: 0 0 12px rgba(168, 85, 247, 0.4); }
+    .ball-bubble.wicket { background: rgba(255, 51, 102, 0.3); color: #FF3366; border-color: #FF3366; box-shadow: 0 0 14px rgba(255, 51, 102, 0.5); }
+    .ball-bubble.extra { background: rgba(255, 184, 0, 0.25); color: #FFB800; border-color: #FFB800; box-shadow: 0 0 12px rgba(255, 184, 0, 0.4); }
 
     .live-match-stats {
       display: grid;
@@ -417,9 +441,9 @@
     }
 
     .stat-player-figures {
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      font-family: 'Outfit', sans-serif;
+      font-family: var(--font-score);
       margin-top: 0.25rem;
     }
 
@@ -436,8 +460,8 @@
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
       color: var(--text-main);
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
+      font-family: var(--font-score);
+      font-size: 1.35rem;
       font-weight: 700;
       padding: 0.9rem 0;
       cursor: pointer;
@@ -446,6 +470,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .pad-btn span {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+      text-transform: uppercase;
     }
 
     .pad-btn:hover {
@@ -458,15 +492,17 @@
     }
 
     .pad-btn.boundary-4 {
-      background: rgba(6, 182, 212, 0.15);
-      border-color: rgba(6, 182, 212, 0.4);
-      color: var(--cyan);
+      background: rgba(0, 229, 153, 0.18);
+      border-color: rgba(0, 229, 153, 0.45);
+      color: var(--turf-emerald);
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.2);
     }
 
     .pad-btn.boundary-6 {
-      background: rgba(16, 185, 129, 0.2);
-      border-color: rgba(16, 185, 129, 0.5);
-      color: var(--primary);
+      background: rgba(168, 85, 247, 0.2);
+      border-color: rgba(168, 85, 247, 0.45);
+      color: #C084FC;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
     }
 
     .pad-btn.wicket {
@@ -537,36 +573,41 @@
 
     /* Action Buttons */
     .btn {
-      background: var(--primary);
-      color: #052E16;
+      background: linear-gradient(135deg, #00E599, #00D2FF);
+      color: #04070D;
       border: none;
-      border-radius: 8px;
-      padding: 0.75rem 1.25rem;
-      font-family: 'Outfit', sans-serif;
+      border-radius: 9px;
+      padding: 0.8rem 1.35rem;
+      font-family: var(--font-display);
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
+      letter-spacing: -0.01em;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
       width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 229, 153, 0.3);
     }
 
     .btn:hover {
-      background: #34D399;
-      box-shadow: 0 0 15px var(--primary-glow);
+      filter: brightness(1.1);
+      box-shadow: 0 6px 20px rgba(0, 229, 153, 0.45);
+      transform: translateY(-1px);
     }
 
     .btn-secondary {
       background: rgba(255, 255, 255, 0.08);
       color: var(--text-main);
+      box-shadow: none;
     }
 
     .btn-secondary:hover {
       background: rgba(255, 255, 255, 0.14);
       box-shadow: none;
+      filter: none;
     }
 
     /* Commercial Breakdown Drawer */
