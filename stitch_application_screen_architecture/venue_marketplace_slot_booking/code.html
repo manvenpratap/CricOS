@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-tertiary-fixed-variant":"#62259b","outline":"#849589","surface-midnight":"#0A101C","on-primary":"#003822","error-container":"#93000a","secondary-fixed":"#b6ebff","secondary":"#a5e7ff","surface-container-low":"#181c23","on-primary-fixed-variant":"#005234","secondary-fixed-dim":"#47d6ff","surface-variant":"#31353c","broadcast-amber":"#FFB800","surface-bright":"#353941","inverse-on-surface":"#2c3138","on-error":"#690005","primary-container":"#00e599","on-secondary":"#003543","error":"#ffb4ab","outline-variant":"#3b4a41","tertiary-fixed":"#f0dbff","surface-container":"#1c2027","on-background":"#dfe2ec","on-primary-container":"#00613e","text-muted":"#94A3B8","text-primary":"#F8FAFC","inverse-surface":"#dfe2ec","primary-fixed":"#4dffb2","surface-container-lowest":"#0a0e15","surface-dim":"#0f141a","on-primary-fixed":"#002112","tertiary-fixed-dim":"#ddb8ff","on-tertiary":"#490081","tertiary-container":"#dfbbff","border-emerald-glow":"rgba(0, 229, 153, 0.35)","on-secondary-fixed-variant":"#004e60","background":"#0f141a","drs-crimson":"#FF3366","on-surface":"#dfe2ec","on-surface-variant":"#bacbbe","surface-glass":"rgba(10, 16, 28, 0.82)","surface-container-highest":"#31353c","surface":"#0f141a","on-tertiary-fixed":"#2c0051","primary-fixed-dim":"#00e297","on-tertiary-container":"#7035a9","surface-tint":"#00e297","inverse-primary":"#006c46","secondary-container":"#00d2ff","border-refraction":"rgba(255, 255, 255, 0.08)","on-secondary-container":"#00566a","on-error-container":"#ffdad6","tertiary":"#f2deff","surface-container-high":"#262a31","on-secondary-fixed":"#001f28"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter":"1.25rem","space-xs":"0.25rem","space-xl":"2.5rem","space-md":"1rem","margin":"2rem","margin-mobile":"1rem","gutter-mobile":"0.75rem","space-lg":"1.5rem","space-sm":"0.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-led-mobile":["Chakra Petch"],"body-md":["Plus Jakarta Sans"],"headline-xl":["Space Grotesk"],"label-btn":["Plus Jakarta Sans"],"headline-xl-mobile":["Space Grotesk"],"body-sm":["Plus Jakarta Sans"],"display-led":["Chakra Petch"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Space Grotesk"],"metric-mono":["JetBrains Mono"]},fontSize:{"headline-sm":["1.125rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"display-led-mobile":["2.25rem",{"lineHeight":"1.0","letterSpacing":"-0.01em","fontWeight":"700"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"400"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"800"}],"label-btn":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.06em","fontWeight":"700"}],"headline-xl-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","fontWeight":"400"}],"display-led":["3.5rem",{"lineHeight":"1.0","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"500"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"metric-mono":["0.8125rem",{"lineHeight":"1.125rem","letterSpacing":"0.02em","fontWeight":"500"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface-glass backdrop-blur-xl border-b border-border-refraction"><div class="h-16 w-full px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-sm"><img alt="CricOS Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vl6gdx3x1XBw3JzN1VvK81aB0c8D0eZ_9AFZhtAaYrhhBddzAk_-Ibix6P4fjjsohn4exMnJkZloGDrZq9aJ0sO9CnJjRvQeUaF6oxAxyZAx6DaytwvlMwnylKY4gd4ikOkk8VquMATflfElCwX1tPtU9Z3lFqfUWKYZxg5iX2AjyGOulWDGvWJq0zU0Da-zuHrNXmLLTogKW_3VI7HvDXF2VFXtB6uuPjnpKHNJ8c_hvidQf4KG2NEWc"/><span class="font-headline-sm text-headline-sm text-text-primary tracking-wider uppercase">CricOS</span></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container border border-border-refraction"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-container shadow-[0_0_12px_rgba(0,210,255,0.8)]"></span></span><span class="font-metric-mono text-metric-mono text-secondary-fixed uppercase tracking-wider">LIVE SSE STREAM: CONNECTED (12ms)</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="live-match-center" href="#">Live Match Center</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="scoring-console" href="#">Scoring Console</a><a aria-current="page" class="px-space-sm py-space-xs uppercase tracking-wider transition-all bg-surface-container-high text-primary font-bold rounded-lg" data-path="venue-marketplace" href="#">Venue Marketplace</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="tournament-standings" href="#">Tournament Standings</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="api-docs-metrics" href="#">API Docs / Metrics</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-midnight border border-border-refraction"><span class="material-symbols-outlined text-primary text-sm">wifi_tethering</span><span class="font-metric-mono text-metric-mono text-primary font-bold">100% HEALTHY</span></div><button aria-label="Quick DRS Alert" class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low border border-drs-crimson/40 text-drs-crimson hover:bg-drs-crimson hover:text-text-primary transition-all shadow-[0_0_16px_rgba(255,51,102,0.2)]" type="button"><span class="material-symbols-outlined text-sm animate-pulse">crisis_alert</span><span class="font-label-btn text-label-btn tracking-wider uppercase">DRS</span></button><div class="flex items-center gap-space-sm pl-space-xs border-l border-border-refraction"><div class="relative"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-primary-container/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM"/><span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-surface-midnight"></span></div><div class="hidden md:flex flex-col text-left"><span class="font-body-sm text-body-sm text-text-primary font-semibold leading-tight">Rajesh M.</span><span class="font-metric-mono text-[10px] text-primary tracking-tight leading-none">ICC SCORER LVL 3</span></div></div></div></div></header><main class="w-full pt-16 bg-background min-h-[calc(100vh-2.5rem)]"><div class="flex flex-col w-full">
+<section class="w-full px-margin py-space-lg flex flex-col gap-space-lg">
+<!-- HUD Sub-Header & Live Availability Ticker -->
+<div class="w-full flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-glass backdrop-blur-xl shadow-xl">
+<div class="flex items-center gap-space-md flex-wrap">
+<div class="flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-midnight text-primary">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+</span>
+<span class="font-metric-mono text-metric-mono uppercase tracking-wider">LIVE PITCH TELEMETRY</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-text-primary tracking-tight">Venue Marketplace &amp; Smart Escrow Allocation</span>
+<div class="hidden sm:flex items-center gap-space-xs px-space-sm py-0.5 rounded bg-surface-container-high text-on-surface-variant font-metric-mono text-xs">
+<span>REGION: ASIA-SOUTH-MUMBAI-01</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md flex-wrap">
+<div class="flex items-center gap-space-xs text-text-muted font-metric-mono text-metric-mono">
+<span class="material-symbols-outlined text-secondary text-sm">bolt</span>
+<span>SYNC: <strong class="text-text-primary">1,412 SLOTS</strong> TODAY</span>
+</div>
+<div class="h-4 w-px bg-surface-container-highest"></div>
+<div class="flex items-center gap-space-xs text-text-muted font-metric-mono text-metric-mono">
+<span class="material-symbols-outlined text-primary text-sm">verified_user</span>
+<span>ESCROW SOLVENCY: <strong class="text-primary">100.00%</strong></span>
+</div>
+</div>
+</div>
+<!-- Marketplace Filter Console -->
+<div class="w-full p-space-lg rounded-xl bg-surface-midnight shadow-xl flex flex-col gap-space-md">
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- Date Selector & Time Filter -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-surface-container-low text-text-primary cursor-pointer hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+<span class="font-body-md text-body-md font-semibold">Today, 24 Oct 2026</span>
+<span class="material-symbols-outlined text-text-muted text-xs">expand_more</span>
+</div>
+<div class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-surface-container-low text-text-primary">
+<span class="material-symbols-outlined text-secondary-container text-sm">routine</span>
+<span class="font-body-md text-body-md">Slot Window:</span>
+<span class="font-metric-mono text-metric-mono text-secondary font-bold">16:00 — 23:00 (Floodlit)</span>
+</div>
+<div class="hidden md:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container text-broadcast-amber font-metric-mono text-xs">
+<span class="material-symbols-outlined text-xs">wb_twilight</span>
+<span>NIGHT RATE ACTIVE (+0%)</span>
+</div>
+</div>
+<!-- Right Side: Reset & Active Filter Count -->
+<div class="flex items-center gap-space-sm self-end lg:self-center">
+<span class="font-metric-mono text-metric-mono text-text-muted">FILTERS APPLIED: <strong class="text-primary">4 ACTIVE</strong></span>
+<button class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container text-text-muted hover:text-text-primary hover:bg-surface-container-high transition-all font-label-btn text-label-btn uppercase" type="button">
+<span class="material-symbols-outlined text-xs">close</span> Clear
+          </button>
+</div>
+</div>
+<!-- Tag Filters and Role Selectors -->
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md pt-space-xs">
+<div class="flex items-center gap-space-xs flex-wrap">
+<button class="px-space-md py-1.5 rounded-full bg-primary text-on-primary font-label-btn text-label-btn tracking-wider uppercase transition-all shadow-[0_0_16px_rgba(109,255,186,0.3)]" type="button">
+            Natural Turf
+          </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-text-primary hover:bg-surface-container-high font-label-btn text-label-btn tracking-wider uppercase transition-all" type="button">
+            AstroTurf
+          </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-text-primary hover:bg-surface-container-high font-label-btn text-label-btn tracking-wider uppercase transition-all" type="button">
+            Indoor Box Arena
+          </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container text-secondary-fixed hover:text-text-primary hover:bg-surface-container-high font-label-btn text-label-btn tracking-wider uppercase transition-all flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">videocam</span> DRS Equipped
+          </button>
+</div>
+<!-- Officials Inclusion Switches -->
+<div class="flex items-center gap-space-xs bg-surface-container-low p-1 rounded-lg flex-wrap">
+<span class="font-metric-mono text-xs px-2 text-text-muted uppercase">Bundle Officials:</span>
+<button class="px-space-sm py-1 rounded bg-surface-container-high text-primary font-label-btn text-label-btn tracking-wider uppercase flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">check_circle</span> Umpires
+          </button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface-variant hover:text-text-primary font-label-btn text-label-btn tracking-wider uppercase flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">add_circle</span> ICC Scorer
+          </button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface-variant hover:text-text-primary font-label-btn text-label-btn tracking-wider uppercase flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">add_circle</span> 4K Streamer
+          </button>
+</div>
+</div>
+</div>
+<!-- Main Asymmetric Workspace: 3-Col Marketplace Grid + Bottom Escrow Drawer -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg w-full">
+<!-- VENUE CARD 1: Harbour Cricket Grounds -->
+<div class="flex flex-col rounded-xl bg-surface-midnight overflow-hidden shadow-2xl transition-all duration-300 hover:translate-y-[-2px]">
+<div class="relative w-full h-48 bg-surface-container-low overflow-hidden">
+<div class="bg-cover bg-center w-full h-full transform hover:scale-105 transition-transform duration-500" data-alt="Expansive natural cricket ground at twilight under illuminated stadium floodlights with pristine manicured green grass and white perimeter boundary ropes" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBeSW53rujNNGtLlKxnXWTI2DYx3qVO8JPCK5BymR5-rMomM1zycPdgk5tI-XygVQ5Z_TuB5LFaE6szJAj10HSEZHbnw0XH33zMITv7qZI8HSoIbFjXUXmc1JACFCYb-w9s5x4EjWQ6-T7GOxcHSOLLYCLpQHFb5-KyHIgReTYL2_7A2Z2you20CEiOdjLOHAhwLH-d9F2JuhMDd47YVdB2HaTJj5EflhRBTd7wuStGA4UwMlK7vm6L')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-midnight via-surface-midnight/30 to-transparent"></div>
+<div class="absolute top-3 left-3 flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded bg-surface-midnight/90 backdrop-blur-md text-primary font-metric-mono text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> VERIFIED VENUE
+            </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-space-sm py-0.5 rounded bg-surface-midnight/90 backdrop-blur-md text-secondary-fixed font-metric-mono text-xs">
+              4.72 ★ (148 Matches)
+            </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold drop-shadow-md leading-tight">Harbour Cricket Grounds</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col flex-1 justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-primary font-semibold">Pitch 1 • Floodlit Night Turf</span>
+<span class="font-metric-mono text-metric-mono text-text-muted">RELIABILITY 98.5%</span>
+</div>
+<!-- Pitch Specs Grid -->
+<div class="grid grid-cols-2 gap-space-xs py-space-xs">
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-primary">straighten</span>
+<span class="font-body-sm text-xs text-on-surface">65m True Boundary</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-secondary">lightbulb</span>
+<span class="font-body-sm text-xs text-on-surface">8 Floodlight Masts</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-drs-crimson">videocam</span>
+<span class="font-body-sm text-xs text-on-surface">DRS 4-Cam Sync</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-broadcast-amber">meeting_room</span>
+<span class="font-body-sm text-xs text-on-surface">Pavilion &amp; Dugouts</span>
+</div>
+</div>
+<!-- Interactive Slot Timeline -->
+<div class="flex flex-col gap-1.5 pt-space-xs">
+<div class="flex items-center justify-between text-xs">
+<span class="font-metric-mono text-text-muted uppercase">Interactive Slot Timeline</span>
+<span class="font-metric-mono text-primary font-bold">19:00 - 22:00 Selected</span>
+</div>
+<!-- Hourly Segment Pills -->
+<div class="grid grid-cols-6 gap-1">
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" title="17:00 Booked" type="button">
+<span>17:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" title="18:00 Booked" type="button">
+<span>18:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-primary text-on-primary font-metric-mono text-xs flex flex-col items-center justify-center font-bold shadow-[0_0_12px_rgba(109,255,186,0.5)]" title="19:00 Selected" type="button">
+<span>19:00</span>
+<span class="text-[9px] uppercase tracking-tight font-black">ACTIVE</span>
+</button>
+<button class="h-9 rounded bg-primary text-on-primary font-metric-mono text-xs flex flex-col items-center justify-center font-bold shadow-[0_0_12px_rgba(109,255,186,0.5)]" title="20:00 Selected" type="button">
+<span>20:00</span>
+<span class="text-[9px] uppercase tracking-tight font-black">ACTIVE</span>
+</button>
+<button class="h-9 rounded bg-primary text-on-primary font-metric-mono text-xs flex flex-col items-center justify-center font-bold shadow-[0_0_12px_rgba(109,255,186,0.5)]" title="21:00 Selected" type="button">
+<span>21:00</span>
+<span class="text-[9px] uppercase tracking-tight font-black">ACTIVE</span>
+</button>
+<button class="h-9 rounded bg-surface-container-high text-primary font-metric-mono text-xs flex flex-col items-center justify-center hover:bg-surface-bright transition-all" title="22:00 Open" type="button">
+<span>22:00</span>
+<span class="text-[9px] uppercase tracking-tight text-text-muted">OPEN</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pricing & Instant Escrow CTA -->
+<div class="pt-space-sm flex flex-col gap-space-sm bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-metric-mono text-display-led-mobile text-text-primary leading-none">₹2,500</span>
+<span class="font-metric-mono text-xs text-text-muted">/ hr (excl. tax)</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary text-xs font-metric-mono">LEDGER VERIFIED</span>
+</div>
+<button class="w-full py-2.5 px-space-md rounded-lg bg-primary text-on-primary font-label-btn text-label-btn tracking-wider uppercase font-bold flex items-center justify-center gap-2 hover:opacity-95 shadow-[0_0_20px_rgba(0,229,153,0.35)] transition-all" type="button">
+<span class="material-symbols-outlined text-sm">lock_open</span>
+              Book &amp; Escrow Slot (3 Hrs)
+            </button>
+</div>
+</div>
+</div>
+<!-- VENUE CARD 2: Lord's Arena -->
+<div class="flex flex-col rounded-xl bg-surface-midnight overflow-hidden shadow-2xl transition-all duration-300 hover:translate-y-[-2px]">
+<div class="relative w-full h-48 bg-surface-container-low overflow-hidden">
+<div class="bg-cover bg-center w-full h-full transform hover:scale-105 transition-transform duration-500" data-alt="High-tech indoor cricket facility featuring cutting-edge bowling machines, dark ambient stadium walls, bright green artificial turf, and automated tracking cameras overhead" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBy836zl4Gel1K02Hc579tolotS-Ht1wVB031GEdozuyJOk5RVj-Veatk6s5xtW2LPvTVXrMPaYU0XZyN5MZcPEVHhAXX6l7HKlppsNO_d_6j84ZkwEDux5Nr5g3j8FsKCS7hY8bT9DZjeOlwFk_fVuwfn7ofr8H2CjgEH4FuM2IcxB9D9-Q1VAQDhRylDJGo6_TQ6CypZ5dusfPA6MSWRbOZ0D_E86-UC-opmHVcBoRSdIJa4bdNoE')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-midnight via-surface-midnight/30 to-transparent"></div>
+<div class="absolute top-3 left-3 flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded bg-surface-midnight/90 backdrop-blur-md text-primary font-metric-mono text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> VERIFIED ARENA
+            </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-space-sm py-0.5 rounded bg-surface-midnight/90 backdrop-blur-md text-secondary-fixed font-metric-mono text-xs">
+              4.85 ★ (210 Matches)
+            </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold drop-shadow-md leading-tight">Lord's Arena</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col flex-1 justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-secondary font-semibold">Box Turf &amp; High-Speed Nets</span>
+<span class="font-metric-mono text-metric-mono text-text-muted">RELIABILITY 99.1%</span>
+</div>
+<!-- Pitch Specs Grid -->
+<div class="grid grid-cols-2 gap-space-xs py-space-xs">
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-primary">roofing</span>
+<span class="font-body-sm text-xs text-on-surface">Indoor All-Weather</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-broadcast-amber">sports</span>
+<span class="font-body-sm text-xs text-on-surface">Merlyn Spin Bot</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-secondary">videocam</span>
+<span class="font-body-sm text-xs text-on-surface">Smart Auto-Cam</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-primary">ac_unit</span>
+<span class="font-body-sm text-xs text-on-surface">Climate Controlled</span>
+</div>
+</div>
+<!-- Interactive Slot Timeline -->
+<div class="flex flex-col gap-1.5 pt-space-xs">
+<div class="flex items-center justify-between text-xs">
+<span class="font-metric-mono text-text-muted uppercase">Interactive Slot Timeline</span>
+<span class="font-metric-mono text-secondary font-bold">Available Now</span>
+</div>
+<!-- Hourly Segment Pills -->
+<div class="grid grid-cols-6 gap-1">
+<button class="h-9 rounded bg-surface-container-high text-primary font-metric-mono text-xs flex flex-col items-center justify-center hover:bg-surface-bright transition-all" type="button">
+<span>17:00</span>
+<span class="text-[9px] uppercase tracking-tight text-primary">OPEN</span>
+</button>
+<button class="h-9 rounded bg-surface-container-high text-primary font-metric-mono text-xs flex flex-col items-center justify-center hover:bg-surface-bright transition-all" type="button">
+<span>18:00</span>
+<span class="text-[9px] uppercase tracking-tight text-primary">OPEN</span>
+</button>
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" type="button">
+<span>19:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" type="button">
+<span>20:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-surface-container-high text-primary font-metric-mono text-xs flex flex-col items-center justify-center hover:bg-surface-bright transition-all" type="button">
+<span>21:00</span>
+<span class="text-[9px] uppercase tracking-tight text-primary">OPEN</span>
+</button>
+<button class="h-9 rounded bg-surface-container-high text-primary font-metric-mono text-xs flex flex-col items-center justify-center hover:bg-surface-bright transition-all" type="button">
+<span>22:00</span>
+<span class="text-[9px] uppercase tracking-tight text-primary">OPEN</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pricing & Instant Escrow CTA -->
+<div class="pt-space-sm flex flex-col gap-space-sm bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-metric-mono text-display-led-mobile text-text-primary leading-none">₹1,800</span>
+<span class="font-metric-mono text-xs text-text-muted">/ hr (excl. tax)</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary text-xs font-metric-mono">INSTANT ESCROW</span>
+</div>
+<button class="w-full py-2.5 px-space-md rounded-lg bg-surface-container-high text-text-primary hover:bg-surface-bright font-label-btn text-label-btn tracking-wider uppercase font-bold flex items-center justify-center gap-2 transition-all" type="button">
+<span class="material-symbols-outlined text-sm">calendar_add_on</span>
+              Select Slots &amp; Escrow
+            </button>
+</div>
+</div>
+</div>
+<!-- VENUE CARD 3: Apex International Ground -->
+<div class="flex flex-col rounded-xl bg-surface-midnight overflow-hidden shadow-2xl transition-all duration-300 hover:translate-y-[-2px]">
+<div class="relative w-full h-48 bg-surface-container-low overflow-hidden">
+<div class="bg-cover bg-center w-full h-full transform hover:scale-105 transition-transform duration-500" data-alt="International grade cricket stadium with deep red clay pitch, illuminated broadcast media gantry towers, digital LED scoreboards, and night sky" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB0HtCd_uD-cSIBzAoSwapCJ_IFrFOr90FvTTz3mWp6iBmAmCBbSJX9AWzb7IgKJLRBPA_e5-vlla67O6icmvySMD4ZONuQIMVLfCFEDRSeUeUpCNM7ijTkzqjvhhRseIjnLg9erEmJPLhW9mZvjeO4KytMsvadl44E-_LXk7-6qLo8_8r4gKJEFozB7tqqHG7iLCKOwKU4e8sVptS9vFpGH3Vx21aaTCEvVLRpSy3rNERxBp0Hh6od')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-midnight via-surface-midnight/30 to-transparent"></div>
+<div class="absolute top-3 left-3 flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded bg-drs-crimson/90 backdrop-blur-md text-text-primary font-metric-mono text-xs font-bold flex items-center gap-1 shadow-[0_0_12px_rgba(255,51,102,0.4)]">
+<span class="material-symbols-outlined text-xs">shield</span> ICC CERTIFIED
+            </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-space-sm py-0.5 rounded bg-surface-midnight/90 backdrop-blur-md text-secondary-fixed font-metric-mono text-xs">
+              4.96 ★ (324 Matches)
+            </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold drop-shadow-md leading-tight">Apex International Ground</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col flex-1 justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-broadcast-amber font-semibold">Oval 2 • Red Clay Class-A</span>
+<span class="font-metric-mono text-metric-mono text-text-muted">RELIABILITY 99.8%</span>
+</div>
+<!-- Pitch Specs Grid -->
+<div class="grid grid-cols-2 gap-space-xs py-space-xs">
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-broadcast-amber">grass</span>
+<span class="font-body-sm text-xs text-on-surface">Red Clay Test Grade</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-primary">tv</span>
+<span class="font-body-sm text-xs text-on-surface">Broadcast Gantry</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-secondary">speed</span>
+<span class="font-body-sm text-xs text-on-surface">LED Scoreboard Sync</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center gap-1.5 text-text-muted text-xs">
+<span class="material-symbols-outlined text-sm text-primary">groups</span>
+<span class="font-body-sm text-xs text-on-surface">Dressing Suites</span>
+</div>
+</div>
+<!-- Interactive Slot Timeline -->
+<div class="flex flex-col gap-1.5 pt-space-xs">
+<div class="flex items-center justify-between text-xs">
+<span class="font-metric-mono text-text-muted uppercase">Interactive Slot Timeline</span>
+<span class="font-metric-mono text-broadcast-amber font-bold">1 Prime Slot Remaining</span>
+</div>
+<!-- Hourly Segment Pills -->
+<div class="grid grid-cols-6 gap-1">
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" type="button">
+<span>17:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" type="button">
+<span>18:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" type="button">
+<span>19:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-surface-container text-text-muted font-metric-mono text-xs flex flex-col items-center justify-center cursor-not-allowed opacity-50" type="button">
+<span>20:00</span>
+<span class="text-[9px] uppercase tracking-tight text-on-error">Booked</span>
+</button>
+<button class="h-9 rounded bg-surface-container-high text-broadcast-amber font-metric-mono text-xs flex flex-col items-center justify-center hover:bg-surface-bright transition-all" type="button">
+<span>21:00</span>
+<span class="text-[9px] uppercase tracking-tight text-broadcast-amber">PRIME</span>
+</button>
+<button class="h-9 rounded bg-surface-container-high text-broadcast-amber font-metric-mono text-xs flex flex-col items-center justify-center hover:bg-surface-bright transition-all" type="button">
+<span>22:00</span>
+<span class="text-[9px] uppercase tracking-tight text-broadcast-amber">PRIME</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pricing & Instant Escrow CTA -->
+<div class="pt-space-sm flex flex-col gap-space-sm bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-metric-mono text-display-led-mobile text-text-primary leading-none">₹4,200</span>
+<span class="font-metric-mono text-xs text-text-muted">/ hr (excl. tax)</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary text-xs font-metric-mono">CLASS-A ACCREDITED</span>
+</div>
+<button class="w-full py-2.5 px-space-md rounded-lg bg-surface-container-high text-text-primary hover:bg-surface-bright font-label-btn text-label-btn tracking-wider uppercase font-bold flex items-center justify-center gap-2 transition-all" type="button">
+<span class="material-symbols-outlined text-sm">calendar_add_on</span>
+              Select Slots &amp; Escrow
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Commercial Transparency & Smart Contract Escrow Breakdown Drawer -->
+<div class="w-full rounded-xl bg-surface-glass backdrop-blur-xl p-space-lg shadow-2xl flex flex-col gap-space-md">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="p-2 rounded-lg bg-surface-container-high text-primary">
+<span class="material-symbols-outlined text-2xl">receipt_long</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-text-primary">Commercial Transparency &amp; Escrow Ledger</span>
+<span class="px-space-xs py-0.5 rounded bg-primary/20 text-primary font-metric-mono text-xs">INSTANT SETTLE</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">Direct multi-party cryptographic lock with automated weather and umpire sign-off release condition.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs px-space-md py-1.5 rounded-lg bg-surface-midnight text-primary">
+<span class="material-symbols-outlined text-sm">shield_with_heart</span>
+<span class="font-label-btn text-label-btn tracking-wider uppercase">Zero-Sum Escrow Protected • Auto-Refund on Weather Abandonment</span>
+</div>
+</div>
+<!-- Ledger Calculation Columns -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md p-space-md rounded-lg bg-surface-midnight">
+<div class="flex flex-col gap-1">
+<span class="font-metric-mono text-xs text-text-muted uppercase tracking-wider">Allocated Venue &amp; Window</span>
+<span class="font-body-md text-body-md font-bold text-text-primary">Harbour Pitch 1</span>
+<span class="font-metric-mono text-metric-mono text-secondary">Today, 19:00 — 22:00 (3.0 Hrs)</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-metric-mono text-xs text-text-muted uppercase tracking-wider">Base Ground Fee</span>
+<div class="flex items-baseline gap-1">
+<span class="font-metric-mono text-headline-sm text-text-primary">₹7,500.00</span>
+<span class="font-metric-mono text-xs text-text-muted">(₹2,500 × 3)</span>
+</div>
+<span class="font-body-sm text-xs text-text-muted">Includes pitch curation, 8-tower floodlights</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-metric-mono text-xs text-text-muted uppercase tracking-wider">Platform &amp; Statutory</span>
+<div class="flex flex-col text-xs font-metric-mono text-text-muted gap-0.5">
+<div class="flex justify-between">
+<span>CricOS Escrow (10%):</span>
+<span class="text-text-primary">₹750.00</span>
+</div>
+<div class="flex justify-between">
+<span>GST Statutory (18%):</span>
+<span class="text-text-primary">₹1,485.00</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col justify-between gap-space-xs p-space-sm rounded bg-surface-container-low">
+<div>
+<span class="font-metric-mono text-xs text-text-muted uppercase tracking-wider">Total Lock Amount</span>
+<div class="font-metric-mono text-headline-xl text-primary font-bold leading-tight">₹9,735.00</div>
+</div>
+<button class="w-full py-2.5 px-space-md rounded bg-primary text-on-primary font-label-btn text-label-btn tracking-wider uppercase font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-[0_0_24px_rgba(0,229,153,0.35)]" type="button">
+<span class="material-symbols-outlined text-sm">lock</span>
+            Authorize &amp; Lock Escrow
+          </button>
+</div>
+</div>
+<!-- Trust Metrics & Micro-Telemetry Row -->
+<div class="flex flex-wrap items-center justify-between text-xs font-metric-mono text-text-muted pt-space-xs">
+<div class="flex items-center gap-space-md flex-wrap">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary">offline_pin</span>
+<span>GROUND CHECK-IN: QR BROADCAST SCAN</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-secondary">sensors</span>
+<span>RADAR WEATHER VERIFICATION: NO RAIN PROBABILITY (&lt;2%)</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-broadcast-amber">gavel</span>
+<span>OFFICIAL ICC BYLAW 12.4 COMPLIANT</span>
+</span>
+</div>
+<div>
+<span>CONTRACT ID: <strong class="text-text-primary">0x4b78...69c1</strong></span>
+</div>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface-container-lowest border-t border-border-refraction py-space-xs"><div class="w-full px-margin flex flex-wrap items-center justify-between gap-space-sm"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="h-1.5 w-1.5 rounded-full bg-primary"></span><span class="font-metric-mono text-metric-mono text-text-muted">PROMETHEUS: <span class="text-primary">0.04ms IOPS</span></span></div><div class="hidden md:flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-sm">sync</span><span class="font-metric-mono text-metric-mono text-text-muted">SSE BEAT: <span class="text-secondary">SYNCED #88412</span></span></div><div class="hidden xl:flex items-center gap-space-xs"><span class="material-symbols-outlined text-outline text-sm">lock</span><span class="font-metric-mono text-metric-mono text-text-muted">LEDGER HASH: <span class="text-text-primary">0x8f2a...e91c</span></span></div></div><div class="flex items-center gap-space-md"><span class="font-metric-mono text-metric-mono text-text-muted">© 2025 CricOS v2.4.8 Broadcast Engine • ICC Class-A Official Certified</span></div></div></footer></body></html>

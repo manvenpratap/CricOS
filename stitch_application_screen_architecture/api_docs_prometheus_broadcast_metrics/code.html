@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-tertiary-fixed-variant":"#62259b","outline":"#849589","surface-midnight":"#0A101C","on-primary":"#003822","error-container":"#93000a","secondary-fixed":"#b6ebff","secondary":"#a5e7ff","surface-container-low":"#181c23","on-primary-fixed-variant":"#005234","secondary-fixed-dim":"#47d6ff","surface-variant":"#31353c","broadcast-amber":"#FFB800","surface-bright":"#353941","inverse-on-surface":"#2c3138","on-error":"#690005","primary-container":"#00e599","on-secondary":"#003543","error":"#ffb4ab","outline-variant":"#3b4a41","tertiary-fixed":"#f0dbff","surface-container":"#1c2027","on-background":"#dfe2ec","on-primary-container":"#00613e","text-muted":"#94A3B8","text-primary":"#F8FAFC","inverse-surface":"#dfe2ec","primary-fixed":"#4dffb2","surface-container-lowest":"#0a0e15","surface-dim":"#0f141a","on-primary-fixed":"#002112","tertiary-fixed-dim":"#ddb8ff","on-tertiary":"#490081","tertiary-container":"#dfbbff","border-emerald-glow":"rgba(0, 229, 153, 0.35)","on-secondary-fixed-variant":"#004e60","background":"#0f141a","drs-crimson":"#FF3366","on-surface":"#dfe2ec","on-surface-variant":"#bacbbe","surface-glass":"rgba(10, 16, 28, 0.82)","surface-container-highest":"#31353c","surface":"#0f141a","on-tertiary-fixed":"#2c0051","primary-fixed-dim":"#00e297","on-tertiary-container":"#7035a9","surface-tint":"#00e297","inverse-primary":"#006c46","secondary-container":"#00d2ff","border-refraction":"rgba(255, 255, 255, 0.08)","on-secondary-container":"#00566a","on-error-container":"#ffdad6","tertiary":"#f2deff","surface-container-high":"#262a31","on-secondary-fixed":"#001f28"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter":"1.25rem","space-xs":"0.25rem","space-xl":"2.5rem","space-md":"1rem","margin":"2rem","margin-mobile":"1rem","gutter-mobile":"0.75rem","space-lg":"1.5rem","space-sm":"0.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-led-mobile":["Chakra Petch"],"body-md":["Plus Jakarta Sans"],"headline-xl":["Space Grotesk"],"label-btn":["Plus Jakarta Sans"],"headline-xl-mobile":["Space Grotesk"],"body-sm":["Plus Jakarta Sans"],"display-led":["Chakra Petch"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Space Grotesk"],"metric-mono":["JetBrains Mono"]},fontSize:{"headline-sm":["1.125rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"display-led-mobile":["2.25rem",{"lineHeight":"1.0","letterSpacing":"-0.01em","fontWeight":"700"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"400"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"800"}],"label-btn":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.06em","fontWeight":"700"}],"headline-xl-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","fontWeight":"400"}],"display-led":["3.5rem",{"lineHeight":"1.0","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"500"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"metric-mono":["0.8125rem",{"lineHeight":"1.125rem","letterSpacing":"0.02em","fontWeight":"500"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface-glass backdrop-blur-xl border-b border-border-refraction"><div class="h-16 w-full px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-sm"><img alt="CricOS Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vl6gdx3x1XBw3JzN1VvK81aB0c8D0eZ_9AFZhtAaYrhhBddzAk_-Ibix6P4fjjsohn4exMnJkZloGDrZq9aJ0sO9CnJjRvQeUaF6oxAxyZAx6DaytwvlMwnylKY4gd4ikOkk8VquMATflfElCwX1tPtU9Z3lFqfUWKYZxg5iX2AjyGOulWDGvWJq0zU0Da-zuHrNXmLLTogKW_3VI7HvDXF2VFXtB6uuPjnpKHNJ8c_hvidQf4KG2NEWc"/><span class="font-headline-sm text-headline-sm text-text-primary tracking-wider uppercase">CricOS</span></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container border border-border-refraction"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-container shadow-[0_0_12px_rgba(0,210,255,0.8)]"></span></span><span class="font-metric-mono text-metric-mono text-secondary-fixed uppercase tracking-wider">LIVE SSE STREAM: CONNECTED (12ms)</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="live-match-center" href="#">Live Match Center</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="scoring-console" href="#">Scoring Console</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="venue-marketplace" href="#">Venue Marketplace</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="tournament-standings" href="#">Tournament Standings</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="drs-review-hawk-eye" href="#">DRS &amp; Hawk-Eye Hub</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="api-docs-metrics" href="#">API Docs &amp; Metrics</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-midnight border border-border-refraction"><span class="material-symbols-outlined text-primary text-sm">wifi_tethering</span><span class="font-metric-mono text-metric-mono text-primary font-bold">100% HEALTHY</span></div><button aria-label="Quick DRS Alert" class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low border border-drs-crimson/40 text-drs-crimson hover:bg-drs-crimson hover:text-text-primary transition-all shadow-[0_0_16px_rgba(255,51,102,0.2)]" type="button"><span class="material-symbols-outlined text-sm animate-pulse">crisis_alert</span><span class="font-label-btn text-label-btn tracking-wider uppercase">DRS</span></button><div class="flex items-center gap-space-sm pl-space-xs border-l border-border-refraction"><div class="relative"><img alt="Official Scorer Profile" class="w-8 h-8 rounded-full object-cover border border-primary-container/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM"/><span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-surface-midnight"></span></div><div class="hidden md:flex flex-col text-left"><span class="font-body-sm text-body-sm text-text-primary font-semibold leading-tight">Rajesh M.</span><span class="font-metric-mono text-[10px] text-primary tracking-tight leading-none">ICC SCORER LVL 3</span></div></div></div></div></header><main class="w-full pt-16 bg-background min-h-[calc(100vh-2.5rem)]"><div class="flex flex-col w-full">
+<!-- SYSTEM HEALTH & BROADCAST TELEMETRY BAR -->
+<section class="w-full px-margin py-space-sm bg-surface-midnight border-b border-border-refraction">
+<div class="w-full flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-space-md">
+<!-- Cluster Operational Pulse -->
+<div class="flex flex-wrap items-center gap-space-md">
+<div class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container border border-primary/20 shadow-[0_0_16px_rgba(0,229,153,0.18)]">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary shadow-[0_0_10px_#00E599]"></span>
+</span>
+<span class="font-headline-sm text-[0.8125rem] text-primary tracking-wider uppercase">CORE BROADCAST CLUSTER</span>
+<span class="text-outline text-xs">|</span>
+<span class="font-metric-mono text-metric-mono text-text-primary">12/12 NODES ONLINE</span>
+<span class="px-1.5 py-0.5 rounded bg-primary/10 font-metric-mono text-[10px] text-primary">99.999% SLA</span>
+</div>
+<div class="hidden sm:flex items-center gap-space-xs text-text-muted font-metric-mono text-metric-mono">
+<span class="material-symbols-outlined text-secondary text-sm">satellite_alt</span>
+<span>GANTRY GAN-B4: <span class="text-secondary font-semibold">SYNCHRONIZED (LOCK #09)</span></span>
+</div>
+</div>
+<!-- Real-Time Metrics Strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm shrink-0">
+<!-- Subscriptions -->
+<div class="px-space-sm py-1.5 rounded bg-surface-container-low border border-border-refraction flex flex-col">
+<span class="font-body-sm text-[10px] uppercase tracking-wider text-text-muted">SSE Active Feeds</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-led text-headline-sm text-secondary-fixed-dim leading-none" id="sub-counter">148,290</span>
+<span class="font-metric-mono text-[10px] text-primary">▲ +420/s</span>
+</div>
+</div>
+<!-- Latency -->
+<div class="px-space-sm py-1.5 rounded bg-surface-container-low border border-border-refraction flex flex-col">
+<span class="font-body-sm text-[10px] uppercase tracking-wider text-text-muted">Ball Latency (p99)</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-led text-headline-sm text-primary leading-none">11.4</span>
+<span class="font-metric-mono text-[10px] text-text-muted">ms</span>
+<span class="font-metric-mono text-[9px] px-1 bg-primary/10 text-primary rounded ml-auto">SUB-FRAME</span>
+</div>
+</div>
+<!-- IOPS -->
+<div class="px-space-sm py-1.5 rounded bg-surface-container-low border border-border-refraction flex flex-col">
+<span class="font-body-sm text-[10px] uppercase tracking-wider text-text-muted">Global IOPS</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-led text-headline-sm text-tertiary-fixed-dim leading-none">184.2K</span>
+<span class="font-metric-mono text-[10px] text-text-muted">req/s</span>
+</div>
+</div>
+<!-- Escrow -->
+<div class="px-space-sm py-1.5 rounded bg-surface-container-low border border-border-refraction flex flex-col">
+<span class="font-body-sm text-[10px] uppercase tracking-wider text-text-muted">Zero-Sum Escrow</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-led text-headline-sm text-broadcast-amber leading-none">100.0%</span>
+<span class="font-metric-mono text-[10px] text-text-muted">₹48.2M</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- MAIN DUAL-COCKPIT WORKSPACE (60% / 40% ASYMMETRIC GRID) -->
+<div class="w-full px-margin py-space-md grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN (60% - 7 COLS ON 12-GRID): OPENAPI 3.1 LIVE TESTING COCKPIT -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- Module Header Card -->
+<div class="p-space-md rounded-xl bg-surface-glass backdrop-blur-xl border border-border-refraction shadow-xl relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-52 h-52 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-2.5 h-2.5 rounded bg-primary shadow-[0_0_8px_#00E599]"></div>
+<span class="font-headline-sm text-headline-sm text-text-primary">OpenAPI 3.1 Interactive Broadcast Console</span>
+<span class="px-2 py-0.5 rounded font-metric-mono text-[10px] bg-secondary/10 text-secondary border border-secondary/20">v2.4.8-RELEASE</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-metric-mono text-metric-mono text-text-muted">CRYPTO-ENGINE:</span>
+<span class="font-metric-mono text-metric-mono text-primary font-semibold">ED25519-ENFORCED</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-text-muted max-w-2xl">
+          Execute cryptographically signed ball-by-ball inputs directly into the edge ledger. All scoring mutations trigger sub-12ms fan-out broadcasts across live stadium displays and OTT streams.
+        </p>
+<!-- Route Explorer Tabs -->
+<div class="mt-space-md flex flex-wrap gap-1.5 border-b border-border-refraction pb-space-xs">
+<button class="tab-btn px-3 py-1.5 rounded-lg bg-surface-container-high border border-primary/40 text-primary font-metric-mono text-metric-mono font-semibold flex items-center gap-2 shadow-[0_0_12px_rgba(0,229,153,0.15)]" type="button">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary text-on-primary">POST</span>
+<span>/deliveries</span>
+</button>
+<button class="tab-btn px-3 py-1.5 rounded-lg bg-surface-midnight hover:bg-surface-container border border-border-refraction text-text-muted hover:text-text-primary font-metric-mono text-metric-mono transition-all flex items-center gap-2" type="button">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-secondary text-on-secondary">GET</span>
+<span>/telemetry/live</span>
+</button>
+<button class="tab-btn px-3 py-1.5 rounded-lg bg-surface-midnight hover:bg-surface-container border border-border-refraction text-text-muted hover:text-text-primary font-metric-mono text-metric-mono transition-all flex items-center gap-2" type="button">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-broadcast-amber text-on-secondary">POST</span>
+<span>/escrow/lock</span>
+</button>
+<button class="tab-btn px-3 py-1.5 rounded-lg bg-surface-midnight hover:bg-surface-container border border-border-refraction text-text-muted hover:text-text-primary font-metric-mono text-metric-mono transition-all flex items-center gap-2" type="button">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-secondary text-on-secondary">GET</span>
+<span>/standings/nrr</span>
+</button>
+</div>
+</div>
+<!-- Live Inspector & Payload Studio -->
+<div class="rounded-xl bg-surface-midnight border border-border-refraction shadow-2xl overflow-hidden">
+<!-- Endpoint Bar -->
+<div class="p-space-md bg-surface-container-low border-b border-border-refraction flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2 flex-grow min-w-[280px]">
+<span class="px-2.5 py-1 rounded bg-primary text-on-primary font-label-btn text-label-btn font-extrabold tracking-wider">POST</span>
+<span class="font-metric-mono text-metric-mono text-text-primary font-semibold truncate">
+              https://api.cricos.network<span class="text-primary">/v2/matches/DD-vs-MSS-01/deliveries</span>
+</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary-container to-primary text-on-primary font-label-btn text-label-btn tracking-wider uppercase hover:opacity-95 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,229,153,0.35)]" id="send-request-btn" type="button">
+<span class="material-symbols-outlined text-sm font-bold">bolt</span>
+<span>Execute Delivery API</span>
+</button>
+</div>
+</div>
+<!-- Headers Inspector (Collapsible Row) -->
+<div class="px-space-md py-space-sm bg-surface-container/60 border-b border-border-refraction flex flex-wrap items-center gap-space-md font-metric-mono text-metric-mono text-xs">
+<div class="flex items-center gap-1.5">
+<span class="text-text-muted">AUTH:</span>
+<span class="text-secondary bg-surface-container-high px-2 py-0.5 rounded border border-border-refraction">Bearer cricos_live_8841a_sec</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-text-muted">X-Umpire-Biometric:</span>
+<span class="text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">fingerprint</span> VERIFIED (ICC-UM-49)
+            </span>
+</div>
+<div class="flex items-center gap-1.5 ml-auto">
+<span class="text-text-muted">IDEMPOTENCY-KEY:</span>
+<span class="text-on-surface-variant font-mono">b50e3960-4fe7</span>
+</div>
+</div>
+<!-- Request Body Code Editor -->
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-xs text-text-muted font-label-btn uppercase tracking-wider mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">code_blocks</span>
+<span class="text-text-primary">Request Payload (JSON Schema: DeliveryEvent.v2)</span>
+</div>
+<span class="font-metric-mono text-text-muted text-[11px]">8 properties validated</span>
+</div>
+<!-- Code Box -->
+<div class="relative font-metric-mono text-metric-mono text-[13px] bg-surface-container-lowest p-space-md rounded-lg border border-border-refraction text-text-primary leading-relaxed overflow-x-auto">
+<div class="text-text-muted/60 absolute right-4 top-3 text-[11px]">JSON • UTF-8</div>
+<pre class="m-0"><span class="text-text-muted">{</span>
+  <span class="text-secondary">"over"</span><span class="text-text-muted">:</span> <span class="text-broadcast-amber font-bold">16</span>,
+  <span class="text-secondary">"ball"</span><span class="text-text-muted">:</span> <span class="text-broadcast-amber font-bold">4</span>,
+  <span class="text-secondary">"bowler_id"</span><span class="text-text-muted">:</span> <span class="text-primary">"bumrah_93"</span>,
+  <span class="text-secondary">"batsman_id"</span><span class="text-text-muted">:</span> <span class="text-primary">"sharma_45"</span>,
+  <span class="text-secondary">"outcome"</span><span class="text-text-muted">:</span> <span class="text-drs-crimson font-bold">"WICKET"</span>,
+  <span class="text-secondary">"dismissal_type"</span><span class="text-text-muted">:</span> <span class="text-drs-crimson">"BOWLED"</span>,
+  <span class="text-secondary">"speed_kmh"</span><span class="text-text-muted">:</span> <span class="text-broadcast-amber font-bold">145.2</span>,
+  <span class="text-secondary">"dr_review_eligible"</span><span class="text-text-muted">:</span> <span class="text-secondary-fixed-dim">false</span>,
+  <span class="text-secondary">"crypto_sig"</span><span class="text-text-muted">:</span> <span class="text-outline">"0x9e11fc...8ab"</span>
+<span class="text-text-muted">}</span></pre>
+</div>
+</div>
+<!-- Response Output Simulation Container -->
+<div class="p-space-md pt-0 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-xs text-text-muted font-label-btn uppercase tracking-wider mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary">terminal</span>
+<span class="text-text-primary">Response Console &amp; SSE Fanout Stream</span>
+</div>
+<div class="flex items-center gap-3 font-metric-mono">
+<span class="text-primary flex items-center gap-1">
+<span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>STATUS: 201 CREATED</span>
+</span>
+<span class="text-secondary">8.4ms RTT</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-lg border border-border-refraction flex flex-col gap-space-sm font-metric-mono text-metric-mono text-[12px]">
+<!-- Response Meta Bar -->
+<div class="flex flex-wrap items-center justify-between pb-space-xs border-b border-border-refraction text-text-muted gap-2">
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">LEDGER HASH:</span>
+<span class="text-text-primary bg-surface-midnight px-2 py-0.5 rounded border border-border-refraction">0x8f2a419c882e3b1c900d72f1aa029</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-text-muted">BLOCK:</span>
+<span class="text-secondary font-bold">#1,894,022</span>
+</div>
+</div>
+<!-- Server response object -->
+<pre class="text-on-surface m-0 leading-snug"><span class="text-text-muted">{</span>
+  <span class="text-secondary">"status"</span>: <span class="text-primary">"COMMITTED_TO_DAG"</span>,
+  <span class="text-secondary">"event_id"</span>: <span class="text-primary">"evt_dd_16_4_wkt"</span>,
+  <span class="text-secondary">"match_state"</span>: {
+    <span class="text-secondary">"current_score"</span>: <span class="text-broadcast-amber font-bold">"178/4"</span>,
+    <span class="text-secondary">"current_over"</span>: <span class="text-broadcast-amber font-bold">"16.4"</span>,
+    <span class="text-secondary">"target"</span>: <span class="text-text-muted">212</span>,
+    <span class="text-secondary">"required_rr"</span>: <span class="text-drs-crimson font-bold">10.20</span>
+  },
+  <span class="text-secondary">"broadcast_fanout"</span>: {
+    <span class="text-secondary">"subscribers_notified"</span>: <span class="text-primary">148290</span>,
+    <span class="text-secondary">"sse_frame_id"</span>: <span class="text-secondary-fixed">88412</span>,
+    <span class="text-secondary">"propagation_latency_ms"</span>: <span class="text-primary font-bold">1.2</span>
+  }
+<span class="text-text-muted">}</span></pre>
+</div>
+</div>
+<!-- Quick Code Snippet Generator -->
+<div class="px-space-md py-space-sm bg-surface-container flex flex-wrap items-center justify-between gap-space-sm border-t border-border-refraction">
+<div class="flex items-center gap-2">
+<span class="font-label-btn text-label-btn text-text-muted uppercase">Language SDK:</span>
+<span class="px-2 py-0.5 rounded bg-surface-midnight text-primary font-metric-mono text-xs border border-border-refraction">Node.js / TypeScript</span>
+<span class="px-2 py-0.5 rounded bg-surface-midnight text-text-muted font-metric-mono text-xs hover:text-text-primary cursor-pointer">Python AsyncIO</span>
+<span class="px-2 py-0.5 rounded bg-surface-midnight text-text-muted font-metric-mono text-xs hover:text-text-primary cursor-pointer">Go Broadcast Client</span>
+</div>
+<button class="font-label-btn text-label-btn text-secondary hover:text-secondary-fixed flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+<span>COPY SDK SNIPPET</span>
+</button>
+</div>
+</div>
+<!-- Automated DRS Hawk-Eye Telemetry Hook Sub-Card -->
+<div class="p-space-md rounded-xl bg-surface-container border border-border-refraction flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-drs-crimson/10 border border-drs-crimson/30 flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,51,102,0.2)]">
+<span class="material-symbols-outlined text-drs-crimson text-2xl">track_changes</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-text-primary">Optical Hawk-Eye Telemetry Ingest</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-metric-mono text-[10px]">340 FPS SYNC</span>
+</div>
+<span class="font-body-sm text-body-sm text-text-muted">Multi-angle ball trajectory tracking pipeline streaming at 0.04s differential.</span>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="font-metric-mono text-metric-mono text-secondary">PIPELINE #7 ONLINE</span>
+<button class="px-3 py-1.5 rounded bg-surface-midnight border border-border-refraction hover:border-secondary text-text-primary font-label-btn text-label-btn uppercase transition-all" type="button">
+            Inspect Calibration
+          </button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (40% - 5 COLS ON 12-GRID): PROMETHEUS METRICS & AUDIT ENGINE -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Prometheus Telemetry Cockpit Header -->
+<div class="p-space-md rounded-xl bg-surface-glass backdrop-blur-xl border border-border-refraction flex flex-col gap-space-sm shadow-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-broadcast-amber text-lg">monitoring</span>
+<span class="font-headline-sm text-headline-sm text-text-primary">Prometheus Cluster Gauges</span>
+</div>
+<span class="font-metric-mono text-xs px-2 py-0.5 rounded bg-surface-container text-text-muted">SCRAPE: 500ms</span>
+</div>
+<!-- Live Chart 1: Latency Curve (Custom Clean High-Performance SVG) -->
+<div class="p-space-md rounded-lg bg-surface-midnight border border-border-refraction flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-semibold text-text-primary">Sub-Second Event Delivery Latency (ms)</span>
+<div class="flex items-center gap-2 font-metric-mono text-xs">
+<span class="text-text-muted">Current:</span>
+<span class="text-primary font-bold">11.4 ms</span>
+<span class="text-text-muted">| p99.9: 13.8 ms</span>
+</div>
+</div>
+<div class="w-full h-28 relative mt-2">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 380 90">
+<defs>
+<lineargradient id="latencyGlow" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00E599" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#00E599" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid lines -->
+<line stroke="#31353c" stroke-dasharray="3 3" stroke-width="0.75" x1="0" x2="380" y1="20" y2="20"></line>
+<line stroke="#31353c" stroke-dasharray="3 3" stroke-width="0.75" x1="0" x2="380" y1="50" y2="50"></line>
+<line stroke="#31353c" stroke-dasharray="3 3" stroke-width="0.75" x1="0" x2="380" y1="80" y2="80"></line>
+<!-- Shaded Area -->
+<polygon fill="url(#latencyGlow)" points="0,60 30,55 60,62 90,48 120,52 150,42 180,45 210,38 240,44 270,36 300,40 330,32 360,35 380,31 380,90 0,90"></polygon>
+<!-- Vector Line -->
+<polyline fill="none" points="0,60 30,55 60,62 90,48 120,52 150,42 180,45 210,38 240,44 270,36 300,40 330,32 360,35 380,31" stroke="#00E599" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></polyline>
+<!-- Pulse Dot at Tip -->
+<circle class="animate-ping" cx="380" cy="31" fill="#00E599" opacity="0.8" r="4.5"></circle>
+<circle cx="380" cy="31" fill="#00E599" r="3.5"></circle>
+</svg>
+</div>
+<div class="flex items-center justify-between font-metric-mono text-[10px] text-text-muted mt-1">
+<span>-60s</span>
+<span>-45s</span>
+<span>-30s</span>
+<span>-15s</span>
+<span class="text-primary font-bold">T-0 (NOW)</span>
+</div>
+</div>
+<!-- Live Chart 2: SSE Broadcast Subscribers (Area Chart) -->
+<div class="p-space-md rounded-lg bg-surface-midnight border border-border-refraction flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-semibold text-text-primary">Concurrent SSE Fanout Subscriptions</span>
+<div class="flex items-center gap-1.5 font-metric-mono text-xs">
+<span class="text-secondary font-bold">148,290 PEAK</span>
+<span class="px-1 bg-secondary/15 text-secondary text-[10px] rounded font-bold">TCP OK</span>
+</div>
+</div>
+<div class="w-full h-24 relative mt-2">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 380 80">
+<defs>
+<lineargradient id="subGlow" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00D2FF" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#00D2FF" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<polygon fill="url(#subGlow)" points="0,75 40,70 80,68 120,55 160,50 200,42 240,35 280,28 320,22 360,18 380,15 380,80 0,80"></polygon>
+<polyline fill="none" points="0,75 40,70 80,68 120,55 160,50 200,42 240,35 280,28 320,22 360,18 380,15" stroke="#00D2FF" stroke-linecap="round" stroke-width="2.2"></polyline>
+</svg>
+</div>
+<div class="flex items-center justify-between font-metric-mono text-[10px] text-text-muted">
+<span>STADIUM APs: 42,100</span>
+<span>OTT BROADCAST: 88,400</span>
+<span class="text-secondary">SCORER MESH: 17,790</span>
+</div>
+</div>
+</div>
+<!-- Micro-Service Health Status Grid -->
+<div class="p-space-md rounded-xl bg-surface-midnight border border-border-refraction flex flex-col gap-space-sm shadow-xl">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-[0.875rem] text-text-primary uppercase tracking-wider">Sub-System Health Topology</span>
+<span class="font-metric-mono text-[11px] text-primary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            ALL 4 SERVICES HEALED
+          </span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs font-metric-mono">
+<!-- Service 1 -->
+<div class="p-space-sm rounded bg-surface-container border border-border-refraction flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="text-xs text-text-primary font-semibold truncate">ingest-mum-01</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary text-[10px] font-bold">UP</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-text-muted">
+<span>LATENCY</span>
+<span class="text-primary font-bold">0.04ms</span>
+</div>
+</div>
+<!-- Service 2 -->
+<div class="p-space-sm rounded bg-surface-container border border-border-refraction flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="text-xs text-text-primary font-semibold truncate">hawkeye-optical-sync</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary text-[10px] font-bold">UP</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-text-muted">
+<span>SYNC DELTA</span>
+<span class="text-secondary font-bold">12ms</span>
+</div>
+</div>
+<!-- Service 3 -->
+<div class="p-space-sm rounded bg-surface-container border border-border-refraction flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="text-xs text-text-primary font-semibold truncate">escrow-ledger-worker</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary text-[10px] font-bold">UP</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-text-muted">
+<span>SOLVENCY</span>
+<span class="text-broadcast-amber font-bold">100.0%</span>
+</div>
+</div>
+<!-- Service 4 -->
+<div class="p-space-sm rounded bg-surface-container border border-border-refraction flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="text-xs text-text-primary font-semibold truncate">sse-broadcast-fanout</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary text-[10px] font-bold">UP</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-text-muted">
+<span>DROPPED PKTS</span>
+<span class="text-primary font-bold">0 / 100M</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Real-Time Cryptographic Ledger Audit Log -->
+<div class="p-space-md rounded-xl bg-surface-midnight border border-border-refraction flex flex-col gap-space-xs shadow-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">verified_user</span>
+<span class="font-headline-sm text-[0.875rem] text-text-primary uppercase tracking-wider">Immutable Delivery Ledger</span>
+</div>
+<span class="font-metric-mono text-[10px] text-text-muted">SHA-256 DAG PROOF</span>
+</div>
+<!-- Real-time scroll feed -->
+<div class="flex flex-col gap-1.5 font-metric-mono text-metric-mono text-[11px] max-h-48 overflow-y-auto pr-1">
+<div class="p-2 rounded bg-surface-container-low border-l-2 border-primary flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">#1894022</span>
+<span class="text-text-primary">OVER 16.4</span>
+<span class="px-1 bg-drs-crimson/20 text-drs-crimson text-[9px] rounded font-bold">WKT</span>
+</div>
+<span class="text-outline truncate max-w-[130px]">0x8f2a419c882e</span>
+<span class="text-primary text-[10px]">VERIFIED</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low border-l-2 border-border-refraction flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-text-muted">#1894021</span>
+<span class="text-text-primary">OVER 16.3</span>
+<span class="px-1 bg-surface-variant text-text-muted text-[9px] rounded">0</span>
+</div>
+<span class="text-outline truncate max-w-[130px]">0x391ce42f9b00</span>
+<span class="text-primary text-[10px]">VERIFIED</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low border-l-2 border-primary-container flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-text-muted">#1894020</span>
+<span class="text-text-primary">OVER 16.2</span>
+<span class="px-1 bg-primary text-on-primary text-[9px] rounded font-bold">4</span>
+</div>
+<span class="text-outline truncate max-w-[130px]">0x18db94f09cca</span>
+<span class="text-primary text-[10px]">VERIFIED</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low border-l-2 border-border-refraction flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-text-muted">#1894019</span>
+<span class="text-text-primary">OVER 16.1</span>
+<span class="px-1 bg-secondary text-on-secondary text-[9px] rounded font-bold">1</span>
+</div>
+<span class="text-outline truncate max-w-[130px]">0xca49e102f928</span>
+<span class="text-primary text-[10px]">VERIFIED</span>
+</div>
+</div>
+<div class="mt-1 flex items-center justify-between text-[11px] font-metric-mono text-text-muted">
+<span>ROOT MERKLE: <span class="text-secondary font-mono">0x44fa...0088</span></span>
+<span class="text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span> 0 CONFLICTS
+          </span>
+</div>
+</div>
+</div>
+</div>
+<!-- INTERACTIVE PLAYGROUND SCRIPT -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sendBtn = document.getElementById('send-request-btn');
+      const counterEl = document.getElementById('sub-counter');
+      
+      // Simulate live random incoming SSE counters
+      let currentSubs = 148290;
+      setInterval(() => {
+        const delta = Math.floor(Math.random() * 14) - 5;
+        currentSubs += delta;
+        if (counterEl) {
+          counterEl.textContent = currentSubs.toLocaleString();
+        }
+      }, 1500);
+
+      // Button interaction to simulate instant telemetry ping
+      if (sendBtn) {
+        sendBtn.addEventListener('click', () => {
+          const originalText = sendBtn.innerHTML;
+          sendBtn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span><span>Transmitting...</span>';
+          sendBtn.disabled = true;
+
+          setTimeout(() => {
+            sendBtn.innerHTML = '<span class="material-symbols-outlined text-sm text-primary">check_circle</span><span>Payload Emitted (8.1ms)</span>';
+            setTimeout(() => {
+              sendBtn.innerHTML = originalText;
+              sendBtn.disabled = false;
+            }, 1800);
+          }, 350);
+        });
+      }
+    });
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest border-t border-border-refraction py-space-xs"><div class="w-full px-margin flex flex-wrap items-center justify-between gap-space-sm"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="h-1.5 w-1.5 rounded-full bg-primary"></span><span class="font-metric-mono text-metric-mono text-text-muted">PROMETHEUS: <span class="text-primary">0.04ms IOPS</span></span></div><div class="hidden md:flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-sm">sync</span><span class="font-metric-mono text-metric-mono text-text-muted">SSE BEAT: <span class="text-secondary">SYNCED #88412</span></span></div><div class="hidden xl:flex items-center gap-space-xs"><span class="material-symbols-outlined text-outline text-sm">lock</span><span class="font-metric-mono text-metric-mono text-text-muted">LEDGER HASH: <span class="text-text-primary">0x8f2a...e91c</span></span></div></div><div class="flex items-center gap-space-md"><span class="font-metric-mono text-metric-mono text-text-muted">© 2025 CricOS v2.4.8 Broadcast Engine • ICC Class-A Official Certified</span></div></div></footer></body></html>

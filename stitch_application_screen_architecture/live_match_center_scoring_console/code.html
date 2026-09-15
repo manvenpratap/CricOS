@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-tertiary-fixed-variant":"#62259b","outline":"#849589","surface-midnight":"#0A101C","on-primary":"#003822","error-container":"#93000a","secondary-fixed":"#b6ebff","secondary":"#a5e7ff","surface-container-low":"#181c23","on-primary-fixed-variant":"#005234","secondary-fixed-dim":"#47d6ff","surface-variant":"#31353c","broadcast-amber":"#FFB800","surface-bright":"#353941","inverse-on-surface":"#2c3138","on-error":"#690005","primary-container":"#00e599","on-secondary":"#003543","error":"#ffb4ab","outline-variant":"#3b4a41","tertiary-fixed":"#f0dbff","surface-container":"#1c2027","on-background":"#dfe2ec","on-primary-container":"#00613e","text-muted":"#94A3B8","text-primary":"#F8FAFC","inverse-surface":"#dfe2ec","primary-fixed":"#4dffb2","surface-container-lowest":"#0a0e15","surface-dim":"#0f141a","on-primary-fixed":"#002112","tertiary-fixed-dim":"#ddb8ff","on-tertiary":"#490081","tertiary-container":"#dfbbff","border-emerald-glow":"rgba(0, 229, 153, 0.35)","on-secondary-fixed-variant":"#004e60","background":"#0f141a","drs-crimson":"#FF3366","on-surface":"#dfe2ec","on-surface-variant":"#bacbbe","surface-glass":"rgba(10, 16, 28, 0.82)","surface-container-highest":"#31353c","surface":"#0f141a","on-tertiary-fixed":"#2c0051","primary-fixed-dim":"#00e297","on-tertiary-container":"#7035a9","surface-tint":"#00e297","inverse-primary":"#006c46","secondary-container":"#00d2ff","border-refraction":"rgba(255, 255, 255, 0.08)","on-secondary-container":"#00566a","on-error-container":"#ffdad6","tertiary":"#f2deff","surface-container-high":"#262a31","on-secondary-fixed":"#001f28"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter":"1.25rem","space-xs":"0.25rem","space-xl":"2.5rem","space-md":"1rem","margin":"2rem","margin-mobile":"1rem","gutter-mobile":"0.75rem","space-lg":"1.5rem","space-sm":"0.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-led-mobile":["Chakra Petch"],"body-md":["Plus Jakarta Sans"],"headline-xl":["Space Grotesk"],"label-btn":["Plus Jakarta Sans"],"headline-xl-mobile":["Space Grotesk"],"body-sm":["Plus Jakarta Sans"],"display-led":["Chakra Petch"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Space Grotesk"],"metric-mono":["JetBrains Mono"]},fontSize:{"headline-sm":["1.125rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"display-led-mobile":["2.25rem",{"lineHeight":"1.0","letterSpacing":"-0.01em","fontWeight":"700"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"400"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"800"}],"label-btn":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.06em","fontWeight":"700"}],"headline-xl-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","fontWeight":"400"}],"display-led":["3.5rem",{"lineHeight":"1.0","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"500"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"metric-mono":["0.8125rem",{"lineHeight":"1.125rem","letterSpacing":"0.02em","fontWeight":"500"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface-glass backdrop-blur-xl border-b border-border-refraction"><div class="h-16 w-full px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-sm"><img alt="CricOS Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vl6gdx3x1XBw3JzN1VvK81aB0c8D0eZ_9AFZhtAaYrhhBddzAk_-Ibix6P4fjjsohn4exMnJkZloGDrZq9aJ0sO9CnJjRvQeUaF6oxAxyZAx6DaytwvlMwnylKY4gd4ikOkk8VquMATflfElCwX1tPtU9Z3lFqfUWKYZxg5iX2AjyGOulWDGvWJq0zU0Da-zuHrNXmLLTogKW_3VI7HvDXF2VFXtB6uuPjnpKHNJ8c_hvidQf4KG2NEWc"/><span class="font-headline-sm text-headline-sm text-text-primary tracking-wider uppercase">CricOS</span></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container border border-border-refraction"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-container shadow-[0_0_12px_rgba(0,210,255,0.8)]"></span></span><span class="font-metric-mono text-metric-mono text-secondary-fixed uppercase tracking-wider">LIVE SSE STREAM: CONNECTED (12ms)</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a aria-current="page" class="px-space-sm py-space-xs uppercase tracking-wider transition-all bg-surface-container-high text-primary font-bold rounded-lg" data-path="live-match-center" href="#">Live Match Center</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="scoring-console" href="#">Scoring Console</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="venue-marketplace" href="#">Venue Marketplace</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="tournament-standings" href="#">Tournament Standings</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="api-docs-metrics" href="#">API Docs / Metrics</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-midnight border border-border-refraction"><span class="material-symbols-outlined text-primary text-sm">wifi_tethering</span><span class="font-metric-mono text-metric-mono text-primary font-bold">100% HEALTHY</span></div><button aria-label="Quick DRS Alert" class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low border border-drs-crimson/40 text-drs-crimson hover:bg-drs-crimson hover:text-text-primary transition-all shadow-[0_0_16px_rgba(255,51,102,0.2)]" type="button"><span class="material-symbols-outlined text-sm animate-pulse">crisis_alert</span><span class="font-label-btn text-label-btn tracking-wider uppercase">DRS</span></button><div class="flex items-center gap-space-sm pl-space-xs border-l border-border-refraction"><div class="relative"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-primary-container/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM"/><span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-surface-midnight"></span></div><div class="hidden md:flex flex-col text-left"><span class="font-body-sm text-body-sm text-text-primary font-semibold leading-tight">Rajesh M.</span><span class="font-metric-mono text-[10px] text-primary tracking-tight leading-none">ICC SCORER LVL 3</span></div></div></div></div></header><main class="w-full pt-16 bg-background min-h-[calc(100vh-2.5rem)]"><div class="flex flex-col w-full px-margin pb-space-xl space-y-space-lg">
+<!-- Top Broadcast Match Banner & HUD -->
+<section class="relative w-full rounded-xl bg-surface-glass backdrop-blur-xl p-space-lg shadow-2xl overflow-hidden">
+<!-- Ambient Stadium Floodlight Sheen -->
+<div class="absolute -top-24 -left-20 w-96 h-96 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -top-28 right-10 w-96 h-96 rounded-full bg-secondary-container/10 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col space-y-space-md">
+<!-- Fixture Meta Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-drs-crimson/20 text-drs-crimson font-label-btn text-label-btn tracking-wider uppercase animate-pulse">
+<span class="w-1.5 h-1.5 rounded-full bg-drs-crimson"></span>
+            LIVE BROADCAST FEED
+          </span>
+<span class="font-headline-sm text-headline-sm text-text-primary tracking-tight">Delhi Daredevils vs Mumbai Super Strikers</span>
+<span class="hidden md:inline-block text-outline text-xs">•</span>
+<span class="hidden md:inline-block font-body-sm text-body-sm text-text-muted">T20 Championship • Match 01 • Wankhede Stadium, Mumbai</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-midnight text-text-muted font-metric-mono text-metric-mono">
+<span class="material-symbols-outlined text-secondary text-sm">radar</span>
+<span>RADAR: <strong class="text-text-primary">145.2 KM/H</strong></span>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-midnight text-primary font-metric-mono text-metric-mono">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span>DLS PAR: 138</span>
+</div>
+</div>
+</div>
+<!-- Main Scoreboard Metrics Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-md items-stretch">
+<!-- LED Score Cluster (5 Cols) -->
+<div class="xl:col-span-5 flex flex-col justify-between bg-surface-midnight/90 p-space-md rounded-xl shadow-inner">
+<div class="flex items-baseline justify-between gap-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-led text-display-led text-primary tracking-tighter drop-shadow-[0_0_24px_rgba(0,229,153,0.35)]">142/3</span>
+<span class="font-headline-lg text-headline-lg text-secondary-fixed-dim pl-space-xs">16.4 <span class="font-body-sm text-body-sm text-text-muted uppercase">Overs</span></span>
+</div>
+<div class="text-right">
+<span class="block font-label-btn text-label-btn text-text-muted uppercase">Target</span>
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold">178 <span class="text-text-muted text-xs font-normal">(20.0 ov)</span></span>
+</div>
+</div>
+<div class="mt-space-sm flex items-center justify-between p-space-xs rounded bg-surface-container-low px-space-sm">
+<span class="font-metric-mono text-metric-mono text-broadcast-amber font-semibold tracking-wide">
+              NEED 36 RUNS • 20 BALLS REMAINING
+            </span>
+<span class="font-metric-mono text-metric-mono text-text-muted text-xs">REQ RATE: 10.80</span>
+</div>
+<!-- Rate Badges & Win Probability Bar -->
+<div class="mt-space-md space-y-space-xs">
+<div class="flex items-center justify-between text-xs font-metric-mono">
+<div class="flex gap-space-sm">
+<span class="text-text-muted">CRR: <strong class="text-primary-container">8.52</strong></span>
+<span class="text-text-muted">RRR: <strong class="text-secondary-container">9.15</strong></span>
+</div>
+<div class="text-text-muted">
+                WIN PROB: <span class="text-primary font-bold">DD 62%</span> • <span class="text-secondary font-bold">MSS 38%</span>
+</div>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden flex">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container transition-all duration-500" style="width: 62%;"></div>
+<div class="h-full bg-secondary-container transition-all duration-500" style="width: 38%;"></div>
+</div>
+</div>
+</div>
+<!-- Striker Cards & Bowler Telemetry (7 Cols) -->
+<div class="xl:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+<!-- Active Striker -->
+<div class="p-space-md rounded-xl bg-surface-container/90 relative overflow-hidden flex flex-col justify-between">
+<div class="absolute -right-6 -bottom-6 w-20 h-20 bg-primary/10 rounded-full blur-xl pointer-events-none"></div>
+<div>
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-primary/20 text-primary font-label-btn text-[10px] tracking-wider uppercase font-bold">★ ON STRIKE</span>
+<span class="font-metric-mono text-xs text-text-muted">RHB #18</span>
+</div>
+<h3 class="mt-1 font-headline-sm text-headline-sm text-text-primary">Virat K.</h3>
+</div>
+<div class="mt-space-sm">
+<div class="flex items-baseline gap-1">
+<span class="font-display-led-mobile text-display-led-mobile text-text-primary">48</span>
+<span class="font-body-sm text-body-sm text-text-muted">/ 32b</span>
+</div>
+<div class="mt-1 flex items-center justify-between font-metric-mono text-xs text-text-muted">
+<span>4s: <strong class="text-text-primary">5</strong></span>
+<span>6s: <strong class="text-text-primary">2</strong></span>
+<span>SR: <strong class="text-primary">150.0</strong></span>
+</div>
+</div>
+</div>
+<!-- Non-Striker -->
+<div class="p-space-md rounded-xl bg-surface-midnight/80 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-container text-text-muted font-label-btn text-[10px] tracking-wider uppercase">NON-STRIKER</span>
+<span class="font-metric-mono text-xs text-text-muted">RHB #45</span>
+</div>
+<h3 class="mt-1 font-headline-sm text-headline-sm text-text-primary">Rohit S.</h3>
+</div>
+<div class="mt-space-sm">
+<div class="flex items-baseline gap-1">
+<span class="font-display-led-mobile text-display-led-mobile text-text-primary">34</span>
+<span class="font-body-sm text-body-sm text-text-muted">/ 24b</span>
+</div>
+<div class="mt-1 flex items-center justify-between font-metric-mono text-xs text-text-muted">
+<span>4s: <strong class="text-text-primary">3</strong></span>
+<span>6s: <strong class="text-text-primary">1</strong></span>
+<span>SR: <strong class="text-secondary">141.6</strong></span>
+</div>
+</div>
+</div>
+<!-- Current Bowler -->
+<div class="p-space-md rounded-xl bg-surface-midnight/80 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-secondary-container/20 text-secondary-container font-label-btn text-[10px] tracking-wider uppercase">CURRENT BOWLER</span>
+<span class="font-metric-mono text-xs text-secondary">R-FAST</span>
+</div>
+<h3 class="mt-1 font-headline-sm text-headline-sm text-text-primary">Jasprit B.</h3>
+</div>
+<div class="mt-space-sm">
+<div class="flex items-baseline gap-1">
+<span class="font-display-led-mobile text-display-led-mobile text-drs-crimson">2</span>
+<span class="font-body-sm text-body-sm text-text-muted">/ 24 (3.4)</span>
+</div>
+<div class="mt-1 flex items-center justify-between font-metric-mono text-xs text-text-muted">
+<span>ECON: <strong class="text-text-primary">6.54</strong></span>
+<span class="text-primary font-bold">4 DOTS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Kinetic Over Strip (Over 17 in progress) -->
+<div class="pt-space-xs flex flex-wrap items-center justify-between gap-space-md bg-surface-midnight/95 p-space-sm rounded-xl">
+<div class="flex items-center gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-btn text-label-btn uppercase text-text-muted">CURRENT OVER</span>
+<span class="font-headline-sm text-headline-sm text-text-primary leading-tight">Over 17</span>
+</div>
+<div class="h-8 w-px bg-surface-container-highest mx-1"></div>
+<!-- Ball Bubbles Row -->
+<div class="flex items-center gap-2" id="over-bubble-container">
+<!-- Ball 1: Dot -->
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center font-metric-mono text-text-muted text-sm font-semibold shadow-inner" title="16.1 - Dot Ball">
+              •
+            </div>
+<!-- Ball 2: 1 Single -->
+<div class="w-9 h-9 rounded-full bg-surface-bright flex items-center justify-center font-metric-mono text-text-primary text-sm font-bold shadow" title="16.2 - 1 Run">
+              1
+            </div>
+<!-- Ball 3: 4 Boundary -->
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-metric-mono text-sm font-black flex items-center justify-center shadow-[0_0_16px_rgba(0,229,153,0.45)]" title="16.3 - Four Runs">
+              4
+            </div>
+<!-- Ball 4: W Wicket -->
+<div class="w-9 h-9 rounded-full bg-drs-crimson text-text-primary font-metric-mono text-sm font-black flex items-center justify-center shadow-[0_0_18px_rgba(255,51,102,0.55)] animate-pulse" title="16.4 - Wicket!">
+              W
+            </div>
+<!-- Ball 5: 1wd Extra -->
+<div class="w-9 h-9 rounded-full bg-broadcast-amber text-surface-midnight font-metric-mono text-xs font-black flex items-center justify-center shadow-[0_0_14px_rgba(255,184,0,0.4)]" title="16.4 - Wide + 1 Run">
+              1wd
+            </div>
+<!-- Ball 6: 6 Maximum -->
+<div class="w-9 h-9 rounded-full bg-tertiary-container text-on-tertiary font-metric-mono text-sm font-black flex items-center justify-center shadow-[0_0_18px_rgba(223,187,255,0.45)]" title="16.5 - Six Runs Maximum">
+              6
+            </div>
+<!-- Pending Slot -->
+<div class="w-9 h-9 rounded-full bg-surface-container-high/60 flex items-center justify-center font-metric-mono text-secondary-fixed text-xs animate-bounce" title="Next Delivery">
+              +
+            </div>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<span class="block font-body-sm text-body-sm text-text-muted">Over Summary</span>
+<span class="font-metric-mono text-metric-mono text-text-primary font-bold">12 runs • 1 wicket • Bowler: J. Bumrah</span>
+</div>
+<button class="px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors text-text-primary font-label-btn text-label-btn flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-sm">history</span>
+            OVER LOG
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Cockpit Split Layout: 60% Left Scoring & Control | 40% Right Telemetry & Commentary -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Tactile Scoring Console & Field Map (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col space-y-space-md">
+<!-- Scoring Pad Module -->
+<div class="rounded-xl bg-surface-glass backdrop-blur-md p-space-md space-y-space-md shadow-xl">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-xl">sports_cricket</span>
+<h2 class="font-headline-sm text-headline-sm text-text-primary">Ball-by-Ball Scoring Engine</h2>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-midnight text-primary font-metric-mono text-xs">STRIKER: VIRAT K.</span>
+<span class="font-metric-mono text-xs text-text-muted">AUTO-SYNC: ON</span>
+</div>
+</div>
+<!-- 4x2 Athletic Tactile Scoring Pad -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm" id="scoring-pad-grid">
+<!-- 0 Dot -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-midnight hover:bg-surface-container active:scale-95 transition-all shadow-md" data-run="0" type="button">
+<span class="font-display-led text-2xl text-text-muted group-hover:text-text-primary transition-colors">•</span>
+<span class="font-label-btn text-label-btn text-text-muted mt-1 uppercase tracking-wider">0 DOT</span>
+</button>
+<!-- 1 Single -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-midnight hover:bg-surface-container active:scale-95 transition-all shadow-md" data-run="1" type="button">
+<span class="font-display-led text-2xl text-secondary-fixed group-hover:text-secondary transition-colors">1</span>
+<span class="font-label-btn text-label-btn text-text-primary mt-1 uppercase tracking-wider">SINGLE</span>
+</button>
+<!-- 2 Double -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-midnight hover:bg-surface-container active:scale-95 transition-all shadow-md" data-run="2" type="button">
+<span class="font-display-led text-2xl text-secondary-fixed group-hover:text-secondary transition-colors">2</span>
+<span class="font-label-btn text-label-btn text-text-primary mt-1 uppercase tracking-wider">DOUBLE</span>
+</button>
+<!-- 3 Triple -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-midnight hover:bg-surface-container active:scale-95 transition-all shadow-md" data-run="3" type="button">
+<span class="font-display-led text-2xl text-secondary group-hover:text-secondary-container transition-colors">3</span>
+<span class="font-label-btn text-label-btn text-text-primary mt-1 uppercase tracking-wider">TRIPLE</span>
+</button>
+<!-- 4 Boundary -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-midnight hover:bg-primary/20 active:scale-95 transition-all shadow-[0_0_16px_rgba(0,229,153,0.18)]" data-run="4" type="button">
+<span class="font-display-led text-2xl text-primary font-bold group-hover:scale-110 transition-transform">4</span>
+<span class="font-label-btn text-label-btn text-primary mt-1 uppercase tracking-wider font-extrabold">BOUNDARY</span>
+<span class="absolute top-1.5 right-2 font-metric-mono text-[9px] text-primary bg-primary/20 px-1 rounded">+4</span>
+</button>
+<!-- 6 Maximum -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-midnight hover:bg-tertiary-container/30 active:scale-95 transition-all shadow-[0_0_16px_rgba(223,187,255,0.2)]" data-run="6" type="button">
+<span class="font-display-led text-2xl text-tertiary-fixed font-bold group-hover:scale-110 transition-transform">6</span>
+<span class="font-label-btn text-label-btn text-tertiary mt-1 uppercase tracking-wider font-extrabold">MAXIMUM</span>
+<span class="absolute top-1.5 right-2 font-metric-mono text-[9px] text-tertiary bg-tertiary-container/30 px-1 rounded">+6</span>
+</button>
+<!-- W Wicket -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-drs-crimson/90 hover:bg-drs-crimson active:scale-95 transition-all text-text-primary shadow-[0_0_20px_rgba(255,51,102,0.4)]" data-run="W" type="button">
+<span class="font-display-led text-2xl font-black">W</span>
+<span class="font-label-btn text-label-btn text-white mt-1 uppercase tracking-wider font-extrabold">WICKET</span>
+<span class="absolute top-1.5 right-2 font-metric-mono text-[9px] text-white bg-black/30 px-1 rounded">OUT</span>
+</button>
+<!-- Extras Modifier -->
+<button class="scoring-btn group relative flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-midnight hover:bg-broadcast-amber/20 active:scale-95 transition-all shadow-md" data-run="EXTRA" type="button">
+<span class="font-display-led text-2xl text-broadcast-amber font-bold">+</span>
+<span class="font-label-btn text-label-btn text-broadcast-amber mt-1 uppercase tracking-wider font-bold">EXTRAS</span>
+<span class="absolute top-1.5 right-2 font-metric-mono text-[9px] text-broadcast-amber bg-broadcast-amber/20 px-1 rounded">WD/NB</span>
+</button>
+</div>
+<!-- Tactical Operational Control Bar -->
+<div class="pt-space-xs grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+<button class="flex items-center justify-center gap-2 py-space-sm px-space-md rounded-lg bg-surface-midnight hover:bg-drs-crimson hover:text-white transition-all text-drs-crimson font-label-btn text-label-btn uppercase tracking-wider shadow" id="btn-drs-review" type="button">
+<span class="material-symbols-outlined text-base">emergency</span>
+            DRS REVIEW CALL
+          </button>
+<button class="flex items-center justify-center gap-2 py-space-sm px-space-md rounded-lg bg-surface-midnight hover:bg-surface-container transition-all text-text-primary font-label-btn text-label-btn uppercase tracking-wider shadow" type="button">
+<span class="material-symbols-outlined text-base text-secondary">swap_horiz</span>
+            CHANGE BOWLER
+          </button>
+<button class="flex items-center justify-center gap-2 py-space-sm px-space-md rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-btn text-label-btn uppercase tracking-wider shadow-[0_0_16px_rgba(0,229,153,0.35)] transition-all" type="button">
+<span class="material-symbols-outlined text-base">done_all</span>
+            SYNC END OF OVER
+          </button>
+</div>
+</div>
+<!-- Hawkeye Pitch Map & Ball Trajectory Visualizer -->
+<div class="rounded-xl bg-surface-glass backdrop-blur-md p-space-md shadow-xl flex flex-col md:flex-row gap-space-md items-center justify-between">
+<div class="w-full md:w-1/2 space-y-space-xs">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-text-primary">Pitch Line &amp; Length Map</h3>
+<span class="font-metric-mono text-xs text-primary">SPELL: 22 BALLS</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">
+            Jasprit Bumrah pitching 68% deliveries in good-length fourth-stump channel with an average 1.8° seam movement off the deck.
+          </p>
+<div class="grid grid-cols-3 gap-2 pt-space-xs font-metric-mono text-xs">
+<div class="p-2 rounded bg-surface-midnight text-center">
+<span class="block text-text-muted text-[10px]">SHORT</span>
+<span class="text-text-primary font-bold">14%</span>
+</div>
+<div class="p-2 rounded bg-surface-midnight text-center">
+<span class="block text-primary text-[10px]">GOOD</span>
+<span class="text-primary font-bold">68%</span>
+</div>
+<div class="p-2 rounded bg-surface-midnight text-center">
+<span class="block text-secondary text-[10px]">FULL/YORK</span>
+<span class="text-secondary font-bold">18%</span>
+</div>
+</div>
+</div>
+<!-- Interactive Pitch Graphic SVG -->
+<div class="w-full md:w-1/2 flex justify-center">
+<div class="relative w-64 h-48 bg-surface-midnight rounded-lg p-2 flex flex-col justify-between overflow-hidden shadow-inner">
+<!-- Cricket Pitch Surface Markings -->
+<div class="absolute inset-x-8 inset-y-2 bg-surface-container-low/50 rounded-sm"></div>
+<!-- Stumps top -->
+<div class="relative z-10 flex justify-center gap-1 pt-1">
+<div class="w-1 h-3 bg-broadcast-amber rounded-t-sm"></div>
+<div class="w-1 h-3 bg-broadcast-amber rounded-t-sm"></div>
+<div class="w-1 h-3 bg-broadcast-amber rounded-t-sm"></div>
+</div>
+<!-- Crease markings -->
+<div class="relative z-10 w-full h-px bg-white/20"></div>
+<!-- Plotted Delivery Impacts -->
+<div class="relative z-10 h-28 w-full">
+<!-- Ball 1 dot -->
+<span class="absolute top-14 left-24 w-2.5 h-2.5 rounded-full bg-outline" title="16.1 - Good Length"></span>
+<!-- Ball 2 single -->
+<span class="absolute top-10 left-28 w-2.5 h-2.5 rounded-full bg-secondary-container" title="16.2 - Back of length"></span>
+<!-- Ball 3 four -->
+<span class="absolute top-20 left-16 w-3 h-3 rounded-full bg-primary ring-2 ring-primary/40 animate-pulse" title="16.3 - Full pitch wide"></span>
+<!-- Ball 4 Wicket -->
+<span class="absolute top-6 left-32 w-3.5 h-3.5 rounded-full bg-drs-crimson ring-4 ring-drs-crimson/50" title="16.4 - Yorker Stumps"></span>
+<!-- Ball 5 wide -->
+<span class="absolute top-16 left-8 w-2.5 h-2.5 rounded-full bg-broadcast-amber" title="16.4 - Wide outside off"></span>
+<!-- Ball 6 six -->
+<span class="absolute top-22 left-30 w-3 h-3 rounded-full bg-tertiary ring-2 ring-tertiary/40" title="16.5 - Slot ball"></span>
+</div>
+<!-- Stumps bottom / Popping Crease -->
+<div class="relative z-10 w-full h-px bg-white/40"></div>
+<div class="relative z-10 flex justify-center gap-1 pb-1">
+<div class="w-1 h-3 bg-broadcast-amber rounded-b-sm"></div>
+<div class="w-1 h-3 bg-broadcast-amber rounded-b-sm"></div>
+<div class="w-1 h-3 bg-broadcast-amber rounded-b-sm"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Telemetry Stream & Live Commentary (5 Cols) -->
+<div class="lg:col-span-5 flex flex-col space-y-space-md">
+<!-- Real-time Commentary Log -->
+<div class="rounded-xl bg-surface-glass backdrop-blur-md p-space-md space-y-space-md shadow-xl flex flex-col">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-xl">stream</span>
+<h2 class="font-headline-sm text-headline-sm text-text-primary">Live Telemetry &amp; Commentary</h2>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-midnight font-metric-mono text-[11px] text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+            SSE FEED ACTIVE
+          </div>
+</div>
+<!-- Timestamped Events Feed -->
+<div class="space-y-space-sm max-h-[460px] overflow-y-auto pr-1" id="commentary-feed">
+<!-- Event 16.5: SIX -->
+<div class="p-space-sm rounded-lg bg-surface-midnight/90 space-y-1 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-1.5 py-0.5 rounded bg-tertiary-container text-on-tertiary font-metric-mono text-xs font-black">16.5 • 6</span>
+<span class="font-headline-sm text-xs text-text-primary font-semibold">Jasprit B. to Virat K.</span>
+</div>
+<span class="font-metric-mono text-[10px] text-tertiary uppercase font-bold tracking-wider">MAXIMUM (94m)</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+<strong class="text-tertiary-fixed font-bold">SIX!</strong> Picked right out of the screws! Slotted on off-stump, Virat clears front leg and deposits it flat over wide long-on into the second tier. What an authoritative counter-punch!
+            </p>
+<div class="flex items-center gap-3 pt-1 text-[11px] font-metric-mono text-text-muted">
+<span>Exit Velo: <strong class="text-text-primary">152.4 km/h</strong></span>
+<span>Launch: <strong class="text-text-primary">28°</strong></span>
+</div>
+</div>
+<!-- Event 16.4: WIDE -->
+<div class="p-space-sm rounded-lg bg-surface-midnight/70 space-y-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-1.5 py-0.5 rounded bg-broadcast-amber text-surface-midnight font-metric-mono text-xs font-black">16.4 • WD</span>
+<span class="font-headline-sm text-xs text-text-primary">Jasprit B. to Virat K.</span>
+</div>
+<span class="font-metric-mono text-[10px] text-broadcast-amber uppercase">EXTRAS +1</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">
+              Bowled flat and well outside off tramline. Virat leaves it alone with hands high, signal given immediately by umpire Rod Tucker.
+            </p>
+</div>
+<!-- Event 16.4: WICKET -->
+<div class="p-space-sm rounded-lg bg-drs-crimson/15 space-y-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-1.5 py-0.5 rounded bg-drs-crimson text-text-primary font-metric-mono text-xs font-black">16.4 • W</span>
+<span class="font-headline-sm text-xs text-text-primary font-bold">Jasprit B. to Rohit S.</span>
+</div>
+<span class="font-metric-mono text-[10px] text-drs-crimson uppercase font-black tracking-wider animate-pulse">CLEAN BOWLED!</span>
+</div>
+<p class="font-body-md text-body-md text-text-primary">
+<strong class="text-drs-crimson font-bold">WICKET!</strong> Absolute peach of a reverse-swinging sandshoe-crusher! 145.2 km/h yorker dips late, goes straight through the gate before Rohit can clamp down. Off stump cartwheels into the night sky!
+            </p>
+<div class="flex items-center gap-3 pt-1 text-[11px] font-metric-mono text-text-muted">
+<span>Rohit S. b Bumrah <strong class="text-text-primary">34 (24b 3x4 1x6)</strong></span>
+</div>
+</div>
+<!-- Event 16.3: FOUR -->
+<div class="p-space-sm rounded-lg bg-surface-midnight/90 space-y-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-1.5 py-0.5 rounded bg-primary-container text-on-primary font-metric-mono text-xs font-black">16.3 • 4</span>
+<span class="font-headline-sm text-xs text-text-primary">Jasprit B. to Rohit S.</span>
+</div>
+<span class="font-metric-mono text-[10px] text-primary uppercase font-bold">BOUNDARY FOUR</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+<strong class="text-primary font-bold">FOUR!</strong> Slashed away through backward point! Width offered, Rohit stays tall and punches on the up through the gap with surgical precision. Rapid outfield does the rest.
+            </p>
+</div>
+</div>
+<!-- Quick Scorer Note Input -->
+<div class="pt-space-xs flex items-center gap-space-xs">
+<input class="flex-1 px-space-sm py-2 rounded-lg bg-surface-midnight text-text-primary placeholder:text-text-muted font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary shadow-inner" id="scorer-note-input" placeholder="Inject official scorer memo into broadcast ledger..." type="text"/>
+<button class="px-space-sm py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-btn text-label-btn flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">send</span>
+            POST
+          </button>
+</div>
+</div>
+<!-- Wagon Wheel & Shot Dispersal Summary Card -->
+<div class="rounded-xl bg-surface-glass backdrop-blur-md p-space-md shadow-xl flex items-center justify-between">
+<div class="space-y-1">
+<span class="font-label-btn text-label-btn text-text-muted uppercase">Wagon Wheel Telemetry</span>
+<h4 class="font-headline-sm text-headline-sm text-text-primary">Delhi Daredevils Inning Zones</h4>
+<p class="font-body-sm text-body-sm text-text-muted">Strongest boundary sector: <span class="text-primary font-bold">Deep Mid-Wicket (42%)</span></p>
+</div>
+<!-- Miniature Wagon Wheel Radial Vector -->
+<div class="relative w-20 h-20 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-highest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="42, 100" stroke-width="3.5"></path>
+<path class="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="28, 100" stroke-dashoffset="-42" stroke-width="3.5"></path>
+<path class="text-tertiary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="30, 100" stroke-dashoffset="-70" stroke-width="3.5"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-metric-mono text-xs text-text-primary font-bold">
+            142
+          </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Client-side Script for Live Scoring Pad Simulation -->
+<script>
+    (function() {
+      const scoringButtons = document.querySelectorAll('.scoring-btn');
+      const overBubbleContainer = document.getElementById('over-bubble-container');
+      const commentaryFeed = document.getElementById('commentary-feed');
+      const drsBtn = document.getElementById('btn-drs-review');
+
+      scoringButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const runType = this.getAttribute('data-run');
+          
+          // Flash effect on button press
+          this.classList.add('ring-2', 'ring-primary');
+          setTimeout(() => this.classList.remove('ring-2', 'ring-primary'), 200);
+
+          // Append simulated ball chip to kinetic strip
+          if (runType && runType !== 'EXTRA') {
+            const ballDiv = document.createElement('div');
+            ballDiv.className = 'w-9 h-9 rounded-full font-metric-mono text-sm font-bold flex items-center justify-center transition-all transform scale-110 shadow-lg';
+            
+            if (runType === '0') {
+              ballDiv.className += ' bg-surface-container text-text-muted';
+              ballDiv.innerHTML = '&bull;';
+            } else if (runType === '4') {
+              ballDiv.className += ' bg-primary-container text-on-primary font-black shadow-[0_0_16px_rgba(0,229,153,0.45)]';
+              ballDiv.textContent = '4';
+            } else if (runType === '6') {
+              ballDiv.className += ' bg-tertiary-container text-on-tertiary font-black shadow-[0_0_18px_rgba(223,187,255,0.45)]';
+              ballDiv.textContent = '6';
+            } else if (runType === 'W') {
+              ballDiv.className += ' bg-drs-crimson text-text-primary font-black shadow-[0_0_18px_rgba(255,51,102,0.55)]';
+              ballDiv.textContent = 'W';
+            } else {
+              ballDiv.className += ' bg-surface-bright text-text-primary';
+              ballDiv.textContent = runType;
+            }
+
+            // Insert before pending plus indicator
+            const pendingSlot = overBubbleContainer.lastElementChild;
+            overBubbleContainer.insertBefore(ballDiv, pendingSlot);
+            setTimeout(() => ballDiv.classList.remove('scale-110'), 250);
+
+            // Prepend a quick line to commentary
+            const commentCard = document.createElement('div');
+            commentCard.className = 'p-space-sm rounded-lg bg-surface-midnight/90 space-y-1 animate-pulse';
+            commentCard.innerHTML = `
+              <div class="flex items-center justify-between">
+                <span class="px-1.5 py-0.5 rounded bg-surface-container font-metric-mono text-xs font-bold text-primary">NEW DELIVERY &bull; ${runType}</span>
+                <span class="font-metric-mono text-[10px] text-text-muted font-bold">JUST NOW</span>
+              </div>
+              <p class="font-body-md text-body-md text-text-primary">Official score recorded as <strong>${runType}</strong> by Match Scorer console. Transmitted via SSE beat.</p>
+            `;
+            commentaryFeed.insertBefore(commentCard, commentaryFeed.firstChild);
+            setTimeout(() => commentCard.classList.remove('animate-pulse'), 800);
+          }
+        });
+      });
+
+      if (drsBtn) {
+        drsBtn.addEventListener('click', () => {
+          alert('DRS PROTOCOL INITIALIZED: Third Umpire Hawk-Eye and UltraEdge telemetry feeds locked for review.');
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest border-t border-border-refraction py-space-xs"><div class="w-full px-margin flex flex-wrap items-center justify-between gap-space-sm"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="h-1.5 w-1.5 rounded-full bg-primary"></span><span class="font-metric-mono text-metric-mono text-text-muted">PROMETHEUS: <span class="text-primary">0.04ms IOPS</span></span></div><div class="hidden md:flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-sm">sync</span><span class="font-metric-mono text-metric-mono text-text-muted">SSE BEAT: <span class="text-secondary">SYNCED #88412</span></span></div><div class="hidden xl:flex items-center gap-space-xs"><span class="material-symbols-outlined text-outline text-sm">lock</span><span class="font-metric-mono text-metric-mono text-text-muted">LEDGER HASH: <span class="text-text-primary">0x8f2a...e91c</span></span></div></div><div class="flex items-center gap-space-md"><span class="font-metric-mono text-metric-mono text-text-muted">© 2025 CricOS v2.4.8 Broadcast Engine • ICC Class-A Official Certified</span></div></div></footer></body></html>

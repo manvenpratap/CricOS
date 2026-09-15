@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-tertiary-fixed-variant":"#62259b","outline":"#849589","surface-midnight":"#0A101C","on-primary":"#003822","error-container":"#93000a","secondary-fixed":"#b6ebff","secondary":"#a5e7ff","surface-container-low":"#181c23","on-primary-fixed-variant":"#005234","secondary-fixed-dim":"#47d6ff","surface-variant":"#31353c","broadcast-amber":"#FFB800","surface-bright":"#353941","inverse-on-surface":"#2c3138","on-error":"#690005","primary-container":"#00e599","on-secondary":"#003543","error":"#ffb4ab","outline-variant":"#3b4a41","tertiary-fixed":"#f0dbff","surface-container":"#1c2027","on-background":"#dfe2ec","on-primary-container":"#00613e","text-muted":"#94A3B8","text-primary":"#F8FAFC","inverse-surface":"#dfe2ec","primary-fixed":"#4dffb2","surface-container-lowest":"#0a0e15","surface-dim":"#0f141a","on-primary-fixed":"#002112","tertiary-fixed-dim":"#ddb8ff","on-tertiary":"#490081","tertiary-container":"#dfbbff","border-emerald-glow":"rgba(0, 229, 153, 0.35)","on-secondary-fixed-variant":"#004e60","background":"#0f141a","drs-crimson":"#FF3366","on-surface":"#dfe2ec","on-surface-variant":"#bacbbe","surface-glass":"rgba(10, 16, 28, 0.82)","surface-container-highest":"#31353c","surface":"#0f141a","on-tertiary-fixed":"#2c0051","primary-fixed-dim":"#00e297","on-tertiary-container":"#7035a9","surface-tint":"#00e297","inverse-primary":"#006c46","secondary-container":"#00d2ff","border-refraction":"rgba(255, 255, 255, 0.08)","on-secondary-container":"#00566a","on-error-container":"#ffdad6","tertiary":"#f2deff","surface-container-high":"#262a31","on-secondary-fixed":"#001f28"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter":"1.25rem","space-xs":"0.25rem","space-xl":"2.5rem","space-md":"1rem","margin":"2rem","margin-mobile":"1rem","gutter-mobile":"0.75rem","space-lg":"1.5rem","space-sm":"0.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-led-mobile":["Chakra Petch"],"body-md":["Plus Jakarta Sans"],"headline-xl":["Space Grotesk"],"label-btn":["Plus Jakarta Sans"],"headline-xl-mobile":["Space Grotesk"],"body-sm":["Plus Jakarta Sans"],"display-led":["Chakra Petch"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Space Grotesk"],"metric-mono":["JetBrains Mono"]},fontSize:{"headline-sm":["1.125rem",{"lineHeight":"1.5rem","letterSpacing":"-0.01em","fontWeight":"600"}],"display-led-mobile":["2.25rem",{"lineHeight":"1.0","letterSpacing":"-0.01em","fontWeight":"700"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"400"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"800"}],"label-btn":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.06em","fontWeight":"700"}],"headline-xl-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","fontWeight":"400"}],"display-led":["3.5rem",{"lineHeight":"1.0","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"500"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"metric-mono":["0.8125rem",{"lineHeight":"1.125rem","letterSpacing":"0.02em","fontWeight":"500"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface-glass backdrop-blur-xl border-b border-border-refraction"><div class="h-16 w-full px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-sm"><img alt="CricOS Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vl6gdx3x1XBw3JzN1VvK81aB0c8D0eZ_9AFZhtAaYrhhBddzAk_-Ibix6P4fjjsohn4exMnJkZloGDrZq9aJ0sO9CnJjRvQeUaF6oxAxyZAx6DaytwvlMwnylKY4gd4ikOkk8VquMATflfElCwX1tPtU9Z3lFqfUWKYZxg5iX2AjyGOulWDGvWJq0zU0Da-zuHrNXmLLTogKW_3VI7HvDXF2VFXtB6uuPjnpKHNJ8c_hvidQf4KG2NEWc"/><span class="font-headline-sm text-headline-sm text-text-primary tracking-wider uppercase">CricOS</span></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container border border-border-refraction"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-container shadow-[0_0_12px_rgba(0,210,255,0.8)]"></span></span><span class="font-metric-mono text-metric-mono text-secondary-fixed uppercase tracking-wider">LIVE SSE STREAM: CONNECTED (12ms)</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="live-match-center" href="#">Live Match Center</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="scoring-console" href="#">Scoring Console</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="venue-marketplace" href="#">Venue Marketplace</a><a aria-current="page" class="px-space-sm py-space-xs uppercase tracking-wider transition-all bg-surface-container-high text-primary font-bold rounded-lg" data-path="tournament-standings" href="#">Tournament Standings</a><a class="px-space-sm py-space-xs font-label-btn text-label-btn uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="api-docs-metrics" href="#">API Docs / Metrics</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-midnight border border-border-refraction"><span class="material-symbols-outlined text-primary text-sm">wifi_tethering</span><span class="font-metric-mono text-metric-mono text-primary font-bold">100% HEALTHY</span></div><button aria-label="Quick DRS Alert" class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low border border-drs-crimson/40 text-drs-crimson hover:bg-drs-crimson hover:text-text-primary transition-all shadow-[0_0_16px_rgba(255,51,102,0.2)]" type="button"><span class="material-symbols-outlined text-sm animate-pulse">crisis_alert</span><span class="font-label-btn text-label-btn tracking-wider uppercase">DRS</span></button><div class="flex items-center gap-space-sm pl-space-xs border-l border-border-refraction"><div class="relative"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-primary-container/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM"/><span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-surface-midnight"></span></div><div class="hidden md:flex flex-col text-left"><span class="font-body-sm text-body-sm text-text-primary font-semibold leading-tight">Rajesh M.</span><span class="font-metric-mono text-[10px] text-primary tracking-tight leading-none">ICC SCORER LVL 3</span></div></div></div></div></header><main class="w-full pt-16 bg-background min-h-[calc(100vh-2.5rem)]"><div class="flex flex-col w-full">
+<!-- Dynamic Tournament Ambient Underglow -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-32 left-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -top-20 right-1/4 w-80 h-80 bg-broadcast-amber/10 rounded-full blur-3xl pointer-events-none"></div>
+<!-- 1. Tournament Header Banner Module -->
+<section class="w-full px-margin pt-space-md pb-space-lg flex flex-col gap-space-md relative z-10">
+<!-- Overline & Status Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-surface-container-high text-primary font-metric-mono text-metric-mono font-bold tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            ROUND 4 OF 6 IN PROGRESS
+          </span>
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded bg-surface-midnight text-broadcast-amber font-metric-mono text-metric-mono font-bold tracking-wider">
+<span class="material-symbols-outlined text-sm text-broadcast-amber">lock</span>
+            ₹500,000 ESCROW LOCKED
+          </span>
+<span class="font-metric-mono text-metric-mono text-text-muted">
+            ICC SANCTION CODE: <span class="text-text-primary">#PSL-26-881</span>
+</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-sm py-1 bg-surface-container hover:bg-surface-container-high text-text-primary rounded font-label-btn text-label-btn uppercase tracking-wider flex items-center gap-1 transition-all">
+<span class="material-symbols-outlined text-xs">download</span> Export Matrix (CSV)
+          </button>
+<button class="px-space-sm py-1 bg-primary text-on-primary rounded font-label-btn text-label-btn uppercase tracking-wider font-bold shadow-md hover:opacity-90 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">sim_card_download</span> Official ICC Sheet
+          </button>
+</div>
+</div>
+<!-- Main Title Showcase & Fast Key Stats -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md bg-surface-glass backdrop-blur-xl p-space-lg rounded-xl shadow-xl">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-space-xs text-broadcast-amber font-headline-sm text-headline-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-base">military_tech</span> Premier Super League 2026
+          </div>
+<h1 class="font-headline-xl text-headline-xl text-text-primary tracking-tight">
+            Group Stage Telemetry &amp; Knockout Path
+          </h1>
+<p class="font-body-md text-body-md text-text-muted">
+            8 Franchise Teams • Single Round-Robin into Page-Style Semi-Finals • Pitch Wear Index 68%
+          </p>
+</div>
+<!-- Metric Cluster Snapshot -->
+<div class="flex items-center gap-space-lg shrink-0 overflow-x-auto pb-1 lg:pb-0">
+<div class="flex flex-col">
+<span class="font-metric-mono text-metric-mono text-text-muted uppercase">Tournament NRR Avg</span>
+<span class="font-display-led text-display-led-mobile text-primary leading-none">8.74</span>
+</div>
+<div class="w-px h-10 bg-surface-container-high"></div>
+<div class="flex flex-col">
+<span class="font-metric-mono text-metric-mono text-text-muted uppercase">Matches Completed</span>
+<span class="font-display-led text-display-led-mobile text-text-primary leading-none">12<span class="text-text-muted text-lg">/28</span></span>
+</div>
+<div class="w-px h-10 bg-surface-container-high"></div>
+<div class="flex flex-col">
+<span class="font-metric-mono text-metric-mono text-text-muted uppercase">Qualification Cut</span>
+<span class="font-display-led text-display-led-mobile text-secondary leading-none">6 <span class="text-xs font-metric-mono uppercase tracking-normal">PTS</span></span>
+</div>
+</div>
+</div>
+<!-- Tab Switcher Navigation -->
+<div class="flex items-center gap-space-xs border-b-0 overflow-x-auto no-scrollbar">
+<button class="px-space-md py-space-sm font-label-btn text-label-btn uppercase tracking-wider rounded-lg bg-surface-container-high text-primary font-bold shadow-sm transition-all flex items-center gap-1.5 shrink-0" id="tab-standings" onclick="switchTab('standings')">
+<span class="material-symbols-outlined text-sm">format_list_numbered</span> Points Table &amp; Standings
+        </button>
+<button class="px-space-md py-space-sm font-label-btn text-label-btn uppercase tracking-wider rounded-lg bg-surface-container-low text-text-muted hover:text-text-primary hover:bg-surface-container transition-all flex items-center gap-1.5 shrink-0" id="tab-fixtures" onclick="switchTab('fixtures')">
+<span class="material-symbols-outlined text-sm">event</span> Fixtures &amp; Results
+        </button>
+<button class="px-space-md py-space-sm font-label-btn text-label-btn uppercase tracking-wider rounded-lg bg-surface-container-low text-text-muted hover:text-text-primary hover:bg-surface-container transition-all flex items-center gap-1.5 shrink-0" id="tab-bracket" onclick="switchTab('bracket')">
+<span class="material-symbols-outlined text-sm">account_tree</span> Playoff Tree Bracket
+        </button>
+<button class="px-space-md py-space-sm font-label-btn text-label-btn uppercase tracking-wider rounded-lg bg-surface-container-low text-text-muted hover:text-text-primary hover:bg-surface-container transition-all flex items-center gap-1.5 shrink-0" id="tab-leaders" onclick="switchTab('leaders')">
+<span class="material-symbols-outlined text-sm">trophy</span> Player Leaderboard (Caps)
+        </button>
+</div>
+</section>
+<!-- Main Workspace Content Container (Standings + Playoff Grid Split) -->
+<section class="w-full px-margin pb-space-xl flex flex-col xl:flex-row gap-space-lg items-start">
+<!-- LEFT MODULE: Primary Official Standings Table (approx 68% desktop width) -->
+<div class="w-full xl:w-[68%] flex flex-col gap-space-md">
+<!-- Table Control & Filter Legend -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-midnight px-space-md py-space-xs rounded-lg shadow-sm">
+<div class="flex items-center gap-space-md text-xs font-metric-mono text-text-muted">
+<span class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-primary"></span> Top 2: Qualifier 1 Guarantee
+            </span>
+<span class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-secondary"></span> 3 &amp; 4: Eliminator Round
+            </span>
+<span class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-surface-variant"></span> 5 - 8: Knockout Elimination
+            </span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-metric-mono text-metric-mono text-text-muted">SORT:</span>
+<span class="font-metric-mono text-metric-mono text-primary font-bold">PTS → NRR (DESC)</span>
+</div>
+</div>
+<!-- Standings Table -->
+<div class="w-full bg-surface-midnight rounded-xl overflow-hidden shadow-xl">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="bg-surface-container text-text-muted font-metric-mono text-metric-mono uppercase tracking-wider">
+<th class="py-space-sm pl-space-md pr-space-xs w-14">Rank</th>
+<th class="py-space-sm px-space-sm">Franchise Team</th>
+<th class="py-space-sm px-space-xs text-center w-12">P</th>
+<th class="py-space-sm px-space-xs text-center w-12 text-primary">W</th>
+<th class="py-space-sm px-space-xs text-center w-12 text-drs-crimson">L</th>
+<th class="py-space-sm px-space-xs text-center w-12">T/NR</th>
+<th class="py-space-sm px-space-sm text-center w-20 text-text-primary font-bold">PTS</th>
+<th class="py-space-sm px-space-sm text-right w-24">NRR</th>
+<th class="py-space-sm pl-space-sm pr-space-md text-center w-36">Recent Form</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-transparent">
+<!-- ROW 1: Delhi Daredevils (Qualifier 1) -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors group relative">
+<td class="py-space-md pl-space-md pr-space-xs relative">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary shadow-[0_0_12px_rgba(0,229,153,0.8)]"></div>
+<div class="flex items-center justify-center w-7 h-7 rounded bg-primary/10 text-primary font-display-led text-xl font-bold">
+                      1
+                    </div>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center font-headline-sm font-bold text-primary shrink-0 shadow-sm">
+                        DD
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold truncate group-hover:text-primary transition-colors">Delhi Daredevils</span>
+<span class="font-metric-mono text-xs text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> PLAYOFF QUALIFIED (Q1)
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary font-bold">4</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-primary font-bold bg-primary/5">3</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">1</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">0</td>
+<td class="py-space-md px-space-sm text-center">
+<span class="font-display-led text-2xl text-text-primary font-bold">6</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<span class="font-metric-mono text-metric-mono font-bold text-secondary-container drop-shadow-[0_0_8px_rgba(0,210,255,0.4)]">
+                      +1.425
+                    </span>
+</td>
+<td class="py-space-md pl-space-sm pr-space-md">
+<div class="flex items-center justify-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+</div>
+</td>
+</tr>
+<!-- ROW 2: Mumbai Super Strikers (Qualifier 1) -->
+<tr class="bg-surface-midnight hover:bg-surface-container transition-colors group relative">
+<td class="py-space-md pl-space-md pr-space-xs relative">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary shadow-[0_0_12px_rgba(0,229,153,0.8)]"></div>
+<div class="flex items-center justify-center w-7 h-7 rounded bg-primary/10 text-primary font-display-led text-xl font-bold">
+                      2
+                    </div>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center font-headline-sm font-bold text-secondary shrink-0 shadow-sm">
+                        MS
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold truncate group-hover:text-secondary transition-colors">Mumbai Super Strikers</span>
+<span class="font-metric-mono text-xs text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> PLAYOFF QUALIFIED (Q1)
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary font-bold">4</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-primary font-bold bg-primary/5">3</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">1</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">0</td>
+<td class="py-space-md px-space-sm text-center">
+<span class="font-display-led text-2xl text-text-primary font-bold">6</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<span class="font-metric-mono text-metric-mono font-bold text-secondary-container drop-shadow-[0_0_8px_rgba(0,210,255,0.4)]">
+                      +0.982
+                    </span>
+</td>
+<td class="py-space-md pl-space-sm pr-space-md">
+<div class="flex items-center justify-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+</div>
+</td>
+</tr>
+<!-- ROW 3: Bangalore Blasters (Eliminator Zone) -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors group relative">
+<td class="py-space-md pl-space-md pr-space-xs relative">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="flex items-center justify-center w-7 h-7 rounded bg-surface-container text-text-primary font-display-led text-xl font-bold">
+                      3
+                    </div>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center font-headline-sm font-bold text-broadcast-amber shrink-0 shadow-sm">
+                        BB
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold truncate group-hover:text-broadcast-amber transition-colors">Bangalore Blasters</span>
+<span class="font-metric-mono text-xs text-text-muted">CONTENDER (ELIMINATOR SLOT)</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary font-bold">4</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary">2</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">2</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">0</td>
+<td class="py-space-md px-space-sm text-center">
+<span class="font-display-led text-2xl text-text-primary font-bold">4</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<span class="font-metric-mono text-metric-mono font-bold text-text-primary">
+                      +0.120
+                    </span>
+</td>
+<td class="py-space-md pl-space-sm pr-space-md">
+<div class="flex items-center justify-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+</div>
+</td>
+</tr>
+<!-- ROW 4: Chennai Champions (Eliminator Cut-off) -->
+<tr class="bg-surface-midnight hover:bg-surface-container transition-colors group relative">
+<td class="py-space-md pl-space-md pr-space-xs relative">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="flex items-center justify-center w-7 h-7 rounded bg-surface-container text-text-primary font-display-led text-xl font-bold">
+                      4
+                    </div>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center font-headline-sm font-bold text-broadcast-amber shrink-0 shadow-sm">
+                        CC
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold truncate group-hover:text-broadcast-amber transition-colors">Chennai Champions</span>
+<span class="font-metric-mono text-xs text-text-muted">HOLDING ELIMINATOR BOUNDARY</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary font-bold">4</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary">2</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">2</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">0</td>
+<td class="py-space-md px-space-sm text-center">
+<span class="font-display-led text-2xl text-text-primary font-bold">4</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<span class="font-metric-mono text-metric-mono font-bold text-drs-crimson drop-shadow-[0_0_8px_rgba(255,51,102,0.3)]">
+                      -0.245
+                    </span>
+</td>
+<td class="py-space-md pl-space-sm pr-space-md">
+<div class="flex items-center justify-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+</div>
+</td>
+</tr>
+<!-- ROW 5: Kolkata Knights (Elimination Danger) -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors group">
+<td class="py-space-md pl-space-md pr-space-xs">
+<div class="flex items-center justify-center w-7 h-7 rounded bg-surface-container-high text-text-muted font-display-led text-xl font-bold">
+                      5
+                    </div>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center font-headline-sm font-bold text-tertiary shrink-0 shadow-sm">
+                        KK
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold truncate group-hover:text-tertiary transition-colors">Kolkata Knights</span>
+<span class="font-metric-mono text-xs text-drs-crimson">MUST WIN REMAINING 2 MATCHES</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary font-bold">4</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary">1</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-drs-crimson">3</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">0</td>
+<td class="py-space-md px-space-sm text-center">
+<span class="font-display-led text-2xl text-text-muted font-bold">2</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<span class="font-metric-mono text-metric-mono font-bold text-drs-crimson drop-shadow-[0_0_8px_rgba(255,51,102,0.3)]">
+                      -0.890
+                    </span>
+</td>
+<td class="py-space-md pl-space-sm pr-space-md">
+<div class="flex items-center justify-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+</div>
+</td>
+</tr>
+<!-- ROW 6: Punjab Pioneers (Elimination Danger) -->
+<tr class="bg-surface-midnight hover:bg-surface-container transition-colors group">
+<td class="py-space-md pl-space-md pr-space-xs">
+<div class="flex items-center justify-center w-7 h-7 rounded bg-surface-container-high text-text-muted font-display-led text-xl font-bold">
+                      6
+                    </div>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center font-headline-sm font-bold text-error shrink-0 shadow-sm">
+                        PP
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold truncate group-hover:text-error transition-colors">Punjab Pioneers</span>
+<span class="font-metric-mono text-xs text-drs-crimson">RELIANT ON OUTSIDE RESULTS</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary font-bold">4</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-primary">1</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-drs-crimson">3</td>
+<td class="py-space-md px-space-xs text-center font-metric-mono text-text-muted">0</td>
+<td class="py-space-md px-space-sm text-center">
+<span class="font-display-led text-2xl text-text-muted font-bold">2</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<span class="font-metric-mono text-metric-mono font-bold text-drs-crimson drop-shadow-[0_0_8px_rgba(255,51,102,0.3)]">
+                      -1.392
+                    </span>
+</td>
+<td class="py-space-md pl-space-sm pr-space-md">
+<div class="flex items-center justify-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-drs-crimson/20 text-drs-crimson font-metric-mono text-xs font-bold flex items-center justify-center">L</span>
+<span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">W</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Standings Footer Qualification Bar -->
+<div class="p-space-sm bg-surface-container-high flex flex-wrap items-center justify-between gap-space-sm text-xs font-metric-mono text-text-muted">
+<span>TIE-BREAKER PROTOCOL: Total Points → Net Run Rate (NRR) → Head-to-Head → Super Over</span>
+<span class="text-primary font-bold">DATA STREAM: CRIC-STATS FEED VERIFIED 12s AGO</span>
+</div>
+</div>
+<!-- Inline Visual Sparkline Analysis: Team Trajectory -->
+<div class="bg-surface-glass p-space-md rounded-xl shadow-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-text-primary">Net Run Rate Trajectory &amp; Pressure Velocity</span>
+<span class="font-metric-mono text-metric-mono text-text-muted uppercase">Round 1 to 4 Vector</span>
+</div>
+<div class="h-28 w-full relative flex items-end">
+<!-- Zero NRR reference line -->
+<div class="absolute w-full top-1/2 -translate-y-1/2 border-b border-dashed border-text-muted/20 z-0"></div>
+<span class="absolute right-2 top-1/2 -translate-y-5 font-metric-mono text-[10px] text-text-muted">NRR ±0.000 BASE</span>
+<svg class="w-full h-full overflow-visible z-10" preserveaspectratio="none" viewbox="0 0 700 100">
+<!-- Delhi Path (Cyan/Emerald) -->
+<path class="drop-shadow-[0_0_8px_rgba(0,229,153,0.5)]" d="M 0,60 Q 200,20 450,15 T 700,8" fill="none" stroke="#00e599" stroke-width="2.5"></path>
+<!-- Mumbai Path (Cyan) -->
+<path d="M 0,55 Q 220,40 460,30 T 700,22" fill="none" stroke="#00d2ff" stroke-dasharray="3,3" stroke-width="2"></path>
+<!-- Chennai & Punjab Descent (Crimson) -->
+<path class="drop-shadow-[0_0_8px_rgba(255,51,102,0.4)]" d="M 0,50 Q 240,65 480,75 T 700,92" fill="none" stroke="#FF3366" stroke-width="2"></path>
+</svg>
+</div>
+<div class="flex items-center justify-between font-metric-mono text-xs text-text-muted pt-1">
+<span class="text-primary font-bold">• Delhi DD (+1.425 Ascent)</span>
+<span class="text-secondary font-bold">• Mumbai SS (+0.982 Ascent)</span>
+<span class="text-drs-crimson font-bold">• Punjab PP (-1.392 Decline)</span>
+</div>
+</div>
+</div>
+<!-- RIGHT MODULE: Playoff Knockout Tree & Caps Widget (approx 32% desktop width) -->
+<div class="w-full xl:w-[32%] flex flex-col gap-space-md">
+<!-- Tournament Leaders Widget: Orange Cap & Purple Cap -->
+<div class="bg-surface-glass backdrop-blur-xl p-space-md rounded-xl shadow-xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-broadcast-amber flex items-center gap-1.5">
+<span class="material-symbols-outlined text-lg text-broadcast-amber">workspace_premium</span> Tournament Stat Leaders
+            </span>
+<span class="font-metric-mono text-xs px-2 py-0.5 rounded bg-surface-container text-text-primary">ACTIVE CAPS</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-space-sm">
+<!-- Orange Cap Winner Card -->
+<div class="p-space-sm bg-surface-container rounded-lg flex items-center justify-between gap-space-sm relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-broadcast-amber/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-12 h-12 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close up dramatic sports broadcast portrait of top run scorer Virat batsman in gold and navy cricket jersey under intense stadium floodlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrJaJxF3rlXJ_dnm0pfAVF1bBo-3exXEljeBUwCXDMq_r5GbaWR0wHukYfLC3J_g0ILzCrCDaWFSvP4ZEv_-t_SUFN4NjzxmszS1QFy4zDBIFMMjD_SkZXNGWxNkL0BVzK_150soD_uO4i-2Mm8KtUIGeEcvHu3NZciyals6esK0tZQa8mntE9pGt-A57Zpgb5YE6_kdacjykSi4pgGwJ69LPAaYmG62GJzD4-voZZaqmCk87XR0BF"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded bg-broadcast-amber flex items-center justify-center text-[10px] text-on-primary-fixed font-bold">★</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-btn text-[10px] text-broadcast-amber uppercase tracking-wider font-bold">Orange Cap • Leading Runs</span>
+<span class="font-headline-sm text-text-primary truncate">Virat K.</span>
+<span class="font-metric-mono text-xs text-text-muted">Bangalore Blasters • Avg 71.0</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-1">
+<span class="font-display-led text-2xl text-broadcast-amber font-bold leading-none">284</span>
+<span class="font-metric-mono text-[10px] text-text-muted uppercase">RUNS (4 INN)</span>
+</div>
+</div>
+<!-- Purple Cap Winner Card -->
+<div class="p-space-sm bg-surface-container rounded-lg flex items-center justify-between gap-space-sm relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-tertiary-container/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-12 h-12 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Broadcast athletic profile portrait of premier fast bowler Jasprit in crisp blue cricket kit staring down the camera under dark stadium night lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABuQJfSuM7Cd1HvvbrF26VWysoEQzfJMv1bNIxbh7U-1fSq_UPhK7FrcdX-0Q4wJ_HL7KA2LCuCwYof1ez1rIukVEwPeaKR-xSblV4S4TNAmM4LOuJAZk-_Tn8uqGpyFdNhDUfBa5bxwZnfgRgsLMpQ5cw7CwlRF2m9IK6eXhu6MzyQXOmRSuAekkKGMcHBBAQhe7i5CXzrdVccm-xwHYgFRtVtPWrcX6ZmVXuX-DiLtQKnqLl-g-z"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded bg-tertiary-container flex items-center justify-center text-[10px] text-on-tertiary-container font-bold">⚡</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-btn text-[10px] text-tertiary uppercase tracking-wider font-bold">Purple Cap • Most Wickets</span>
+<span class="font-headline-sm text-text-primary truncate">Jasprit B.</span>
+<span class="font-metric-mono text-xs text-text-muted">Mumbai Super S. • Econ 5.25</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-1">
+<span class="font-display-led text-2xl text-tertiary font-bold leading-none">11</span>
+<span class="font-metric-mono text-[10px] text-text-muted uppercase">WKTS (16.0 OVR)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Knockout Playoff Tree Bracket Preview -->
+<div class="bg-surface-glass backdrop-blur-xl p-space-md rounded-xl shadow-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary">Playoff Tree Bracket</h2>
+<span class="font-metric-mono text-xs text-text-muted">PAGE PLAYOFF STRUCTURE</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-metric-mono text-xs font-bold uppercase">
+              ₹300k WINNER PURSE
+            </span>
+</div>
+<!-- Playoff Fixtures Visual Ladder -->
+<div class="flex flex-col gap-space-md relative">
+<!-- Semi-Final 1 -->
+<div class="p-space-sm bg-surface-midnight rounded-lg flex flex-col gap-2 shadow-sm border-l-2 border-primary">
+<div class="flex items-center justify-between">
+<span class="font-metric-mono text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">sports_cricket</span> QUALIFIER 1 • 28 OCT
+                </span>
+<span class="font-metric-mono text-[11px] text-text-muted">Wankhede Stadium, Mumbai</span>
+</div>
+<div class="flex flex-col gap-1.5 bg-surface-container-low p-2 rounded">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-primary/20 text-primary font-metric-mono text-xs font-bold flex items-center justify-center">1</span>
+<span class="font-body-md text-text-primary font-bold">Delhi Daredevils</span>
+</div>
+<span class="font-metric-mono text-xs px-1.5 py-0.5 bg-surface-container rounded text-primary font-bold">RANK 1</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-secondary/20 text-secondary font-metric-mono text-xs font-bold flex items-center justify-center">4</span>
+<span class="font-body-md text-text-primary">Chennai Champions</span>
+</div>
+<span class="font-metric-mono text-xs px-1.5 py-0.5 bg-surface-container rounded text-text-muted">RANK 4</span>
+</div>
+</div>
+<span class="font-metric-mono text-[10px] text-text-muted text-right">Winner Advances to Grand Final Directly</span>
+</div>
+<!-- Semi-Final 2 -->
+<div class="p-space-sm bg-surface-midnight rounded-lg flex flex-col gap-2 shadow-sm border-l-2 border-secondary">
+<div class="flex items-center justify-between">
+<span class="font-metric-mono text-xs font-bold text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">sports_cricket</span> ELIMINATOR • 29 OCT
+                </span>
+<span class="font-metric-mono text-[11px] text-text-muted">Eden Gardens, Kolkata</span>
+</div>
+<div class="flex flex-col gap-1.5 bg-surface-container-low p-2 rounded">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-secondary/20 text-secondary font-metric-mono text-xs font-bold flex items-center justify-center">2</span>
+<span class="font-body-md text-text-primary font-bold">Mumbai Super Strikers</span>
+</div>
+<span class="font-metric-mono text-xs px-1.5 py-0.5 bg-surface-container rounded text-secondary font-bold">RANK 2</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-surface-variant text-text-muted font-metric-mono text-xs font-bold flex items-center justify-center">3</span>
+<span class="font-body-md text-text-primary">Bangalore Blasters</span>
+</div>
+<span class="font-metric-mono text-xs px-1.5 py-0.5 bg-surface-container rounded text-text-muted">RANK 3</span>
+</div>
+</div>
+<span class="font-metric-mono text-[10px] text-drs-crimson text-right">Loser is Eliminated Instantly</span>
+</div>
+<!-- Grand Final Highlight Tile -->
+<div class="p-space-sm bg-gradient-to-br from-surface-midnight to-surface-container rounded-lg flex flex-col gap-2 shadow-md relative overflow-hidden">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-broadcast-amber/20 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-broadcast-amber flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trophy</span> GRAND FINAL • 02 NOV
+                </span>
+<span class="font-metric-mono text-[10px] px-1.5 py-0.5 bg-broadcast-amber text-on-primary-fixed font-bold rounded">
+                  MAIN EVENT
+                </span>
+</div>
+<p class="font-metric-mono text-xs text-text-muted">
+                Venue: Narendra Modi Stadium, Ahmedabad • 132,000 Capacity Floodlit Match
+              </p>
+<div class="p-space-xs bg-surface-container-high/80 rounded flex items-center justify-around text-center mt-1">
+<div class="flex flex-col">
+<span class="font-label-btn text-xs text-primary uppercase">Winner SF1</span>
+<span class="font-body-sm text-text-muted text-[11px]">TBD</span>
+</div>
+<span class="font-display-led text-broadcast-amber text-lg font-bold">VS</span>
+<div class="flex flex-col">
+<span class="font-label-btn text-xs text-secondary uppercase">Winner SF2</span>
+<span class="font-body-sm text-text-muted text-[11px]">TBD</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-metric-mono text-xs text-broadcast-amber font-bold">Prize: ₹300,000 Winner Take</span>
+<button class="px-space-sm py-1 bg-surface-container hover:bg-surface-container-highest text-text-primary rounded text-xs font-label-btn uppercase tracking-wider transition-all">
+                  Set Reminder
+                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Venue Spotlight Card -->
+<div class="relative w-full h-44 rounded-xl overflow-hidden shadow-lg group">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-500" data-alt="Vast packed cricket stadium at night with blazing LED floodlights illuminating vibrant green grass turf field and cheering fans in silhouette" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBA9AmHEOx9V4hIOQszKzliVQGP6NJHwviTX4x4hiAiCo0ESTVWDuTu9CR-Ph7KE5bu3jnOvqvopKKr5b1UToruG2XuVsu3x6x6r1zbXiZ7lMnxj6FE17JxEt52QbCtQYp75HPOdRm6v6z9V3OmXqry094l0gwYl18M4uh5hoNZ-AJuP5ETFApITpd5bNDw5D5kEFmyE83-QQrWMq-ANuWCnLv3fbE6BBkACNWohfCd2K4a595KmHQ2')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-midnight via-surface-midnight/60 to-transparent p-space-md flex flex-col justify-end">
+<span class="font-label-btn text-[10px] text-primary uppercase tracking-widest font-bold">CHAMPIONSHIP HOST ARENA</span>
+<span class="font-headline-sm text-headline-sm text-text-primary font-bold">Narendra Modi Stadium</span>
+<span class="font-metric-mono text-xs text-text-muted">Pitch: Red Clay (Fast Seam &amp; Turn) • Cloud Cover: 0%</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<script>
+  function switchTab(tabId) {
+    const tabs = ['standings', 'fixtures', 'bracket', 'leaders'];
+    tabs.forEach(t => {
+      const el = document.getElementById('tab-' + t);
+      if (!el) return;
+      if (t === tabId) {
+        el.className = 'px-space-md py-space-sm font-label-btn text-label-btn uppercase tracking-wider rounded-lg bg-surface-container-high text-primary font-bold shadow-sm transition-all flex items-center gap-1.5 shrink-0';
+      } else {
+        el.className = 'px-space-md py-space-sm font-label-btn text-label-btn uppercase tracking-wider rounded-lg bg-surface-container-low text-text-muted hover:text-text-primary hover:bg-surface-container transition-all flex items-center gap-1.5 shrink-0';
+      }
+    });
+  }
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-border-refraction py-space-xs"><div class="w-full px-margin flex flex-wrap items-center justify-between gap-space-sm"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="h-1.5 w-1.5 rounded-full bg-primary"></span><span class="font-metric-mono text-metric-mono text-text-muted">PROMETHEUS: <span class="text-primary">0.04ms IOPS</span></span></div><div class="hidden md:flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-sm">sync</span><span class="font-metric-mono text-metric-mono text-text-muted">SSE BEAT: <span class="text-secondary">SYNCED #88412</span></span></div><div class="hidden xl:flex items-center gap-space-xs"><span class="material-symbols-outlined text-outline text-sm">lock</span><span class="font-metric-mono text-metric-mono text-text-muted">LEDGER HASH: <span class="text-text-primary">0x8f2a...e91c</span></span></div></div><div class="flex items-center gap-space-md"><span class="font-metric-mono text-metric-mono text-text-muted">© 2025 CricOS v2.4.8 Broadcast Engine • ICC Class-A Official Certified</span></div></div></footer></body></html>
