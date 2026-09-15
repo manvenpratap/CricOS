@@ -7,7 +7,9 @@ import {
   canTransitionMatchStatus,
   isHoldExpired,
   calculatePoints,
-  computeReputationDelta
+  computeReputationDelta,
+  calculateBayesianRating,
+  evaluateProviderTrustState
 } from '../dist/index.js';
 
 describe('Domain Package', () => {
@@ -64,5 +66,43 @@ describe('Domain Package', () => {
     assert.equal(computeReputationDelta('MATCH_COMPLETED'), 0.01);
     assert.equal(computeReputationDelta('NO_SHOW'), -0.15);
     assert.equal(computeReputationDelta('RATING_RECEIVED', 5), 0.04);
+  });
+
+  it('calculates Bayesian weighted smoothed ratings correctly', () => {
+    // Single 5-star review should not yield 5.0 (smoothed towards platform average 4.2)
+    // (5*4.2 + 5) / 6 = 26 / 6 = 4.33
+    const singleReview = calculateBayesianRating([5]);
+    assert.equal(singleReview, 4.33);
+
+    // Large sample of 5-star reviews converges close to 5.0
+    const manyReviews = calculateBayesianRating([5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]);
+    assert.ok(manyReviews > 4.75);
+
+    // Empty reviews return default platform average
+    assert.equal(calculateBayesianRating([]), 4.2);
+  });
+
+  it('evaluates provider trust state and trips suspension circuit breaker', () => {
+    // Healthy provider remains VERIFIED
+    const healthy = evaluateProviderTrustState('VERIFIED', 0.95);
+    assert.equal(healthy.newState, 'VERIFIED');
+    assert.equal(healthy.transitioned, false);
+
+    // Score drops below 80% -> transitions to PROBATION
+    const probation = evaluateProviderTrustState('VERIFIED', 0.75);
+    assert.equal(probation.newState, 'PROBATION');
+    assert.equal(probation.transitioned, true);
+    assert.equal(probation.actionRequired, 'NOTIFY_PROBATION');
+
+    // Score drops below 65% -> trips circuit breaker to SUSPENDED
+    const suspended = evaluateProviderTrustState('PROBATION', 0.60);
+    assert.equal(suspended.newState, 'SUSPENDED');
+    assert.equal(suspended.transitioned, true);
+    assert.equal(suspended.actionRequired, 'SUSPEND_SLOTS_AND_ALERT');
+
+    // Recovery from PROBATION back to VERIFIED at >= 85%
+    const recovered = evaluateProviderTrustState('PROBATION', 0.88);
+    assert.equal(recovered.newState, 'VERIFIED');
+    assert.equal(recovered.transitioned, true);
   });
 });

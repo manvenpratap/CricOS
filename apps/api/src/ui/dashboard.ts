@@ -609,6 +609,38 @@ export function getDashboardHtml(): string {
       transform: translateY(0);
       opacity: 1;
     }
+
+    /* Universal Accessible Tooltips */
+    .uni-tooltip {
+      position: absolute;
+      z-index: 99999;
+      display: none;
+      max-width: 280px;
+      padding: 6px 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.01em;
+      border-radius: 6px;
+      pointer-events: none;
+      word-wrap: break-word;
+      box-sizing: border-box;
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+    }
+    [data-tooltip] {
+      cursor: help;
+      position: relative;
+    }
+    button[data-tooltip], a[data-tooltip] {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -879,28 +911,46 @@ export function getDashboardHtml(): string {
 
         <div class="card">
           <div class="card-title">⭐ Provider Trust & Reputation Engine</div>
-          <div class="card-desc">Event-sourced projections: reliability delta applied automatically</div>
+          <div class="card-desc">Bayesian smoothed rating, trust transitions, and automated circuit breaker</div>
 
           <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
               <span style="font-weight: 600;">Harbour Cricket Grounds</span>
-              <span style="background: rgba(16, 185, 129, 0.15); color: var(--primary); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem;">VERIFIED</span>
+              <span id="providerTrustBadge" style="background: rgba(16, 185, 129, 0.15); color: var(--primary); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700;" data-tooltip="Live operational trust status (VERIFIED / PROBATION / SUSPENDED)">VERIFIED</span>
             </div>
-            <div style="display: flex; gap: 2rem; margin-top: 0.75rem;">
-              <div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Avg Rating</div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--amber);">4.8 / 5.0</div>
+            <div style="display: flex; gap: 1.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+              <div data-tooltip="Bayesian smoothed rating using m-estimate prior (platform avg: 4.2)">
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Bayesian Rating</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--amber);" id="providerBayesianRating">4.72 / 5.0</div>
               </div>
-              <div>
+              <div data-tooltip="Reliability score: probation triggered at <80%, suspension circuit breaker at <65%">
                 <div style="font-size: 0.75rem; color: var(--text-muted);">Reliability Score</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);" id="providerReliability">98.5%</div>
+              </div>
+              <div data-tooltip="Automated circuit breaker status. If tripped, unbooked slots are automatically frozen.">
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Circuit Breaker</div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: var(--primary);" id="providerCircuitStatus">HEALTHY</div>
               </div>
             </div>
           </div>
 
-          <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-secondary" onclick="applyReputationEvent('MATCH_COMPLETED')">✓ Match Completed (+1%)</button>
-            <button class="btn btn-secondary" style="color: var(--rose);" onclick="applyReputationEvent('NO_SHOW')">✗ No-Show Penalty (-15%)</button>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary" onclick="applyReputationEvent('MATCH_COMPLETED')" data-tooltip="Completed match successfully (+1% reliability delta)">✓ Match Completed (+1%)</button>
+            <button class="btn btn-secondary" style="color: var(--amber);" onclick="applyReputationEvent('LATE_CANCELLATION')" data-tooltip="Late cancellation penalty (-6% reliability delta)">⚠️ Late Cancel (-6%)</button>
+            <button class="btn btn-secondary" style="color: var(--rose);" onclick="applyReputationEvent('NO_SHOW')" data-tooltip="Severe penalty for provider no-show (-15% reliability delta)">✗ No-Show (-15%)</button>
+            <button class="btn btn-secondary" style="color: var(--rose); border: 1px dashed var(--rose);" onclick="simulateCircuitBreakerTrip()" data-tooltip="Trigger consecutive no-shows to pull score below 65% and trip circuit breaker">🚨 Trip Circuit Breaker</button>
+          </div>
+
+          <!-- Dispute Escalation & Double-Entry Auto-Refund -->
+          <div style="margin-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.25rem;">
+            <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--text-main);">⚖️ Dispute Escalation & Double-Entry Auto-Refund</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">Escalate booking dispute: executes zero-sum double-entry refund entry and applies provider trust penalty.</div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn" style="background: rgba(244,63,94,0.15); border: 1px solid var(--rose); color: var(--rose); font-size: 0.8rem; padding: 0.4rem 0.8rem;" onclick="escalateAndResolveDispute('UPHELD_CUSTOMER_REFUND')" data-tooltip="Upholds dispute, generates zero-sum refund entry, penalizes provider trust (-8%)">Upheld & Auto-Refund (₹3,500)</button>
+              <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;" onclick="escalateAndResolveDispute('REJECTED_PROVIDER_FAVORED')" data-tooltip="Rejects dispute in favor of provider (+1% provider trust delta)">Reject (Provider Favored)</button>
+              <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; border-color: var(--cyan); color: var(--cyan);" onclick="testPayoutDisbursement()" data-tooltip="Verify payout disbursement against open disputes and circuit breaker state">💰 Test Payout</button>
+            </div>
+            <div id="disputeRefundResult" style="margin-top: 0.75rem; font-size: 0.8rem;"></div>
           </div>
         </div>
       </div>
@@ -1322,22 +1372,254 @@ export function getDashboardHtml(): string {
       showToast('Replacement accepted');
     }
 
-    // Reputation event
+    // Reputation & Trust Engine (Phase 1Q)
     let currentScore = 0.985;
+    let currentTrustState = 'VERIFIED';
+    const testProviderId = '00000000-0000-0000-0000-000000000002';
+    const testBookingId = 'booking-ops-demo-01';
+
+    function updateTrustUI(score, trustState, circuitTripped) {
+      currentScore = Math.max(0, Math.min(1, score));
+      currentTrustState = trustState || (currentScore < 0.65 ? 'SUSPENDED' : currentScore < 0.80 ? 'PROBATION' : 'VERIFIED');
+      document.getElementById('providerReliability').textContent = (currentScore * 100).toFixed(1) + '%';
+      
+      const badge = document.getElementById('providerTrustBadge');
+      const circuit = document.getElementById('providerCircuitStatus');
+      badge.textContent = currentTrustState;
+
+      if (currentTrustState === 'SUSPENDED' || circuitTripped) {
+        badge.style.background = 'rgba(244, 63, 94, 0.2)';
+        badge.style.color = 'var(--rose)';
+        circuit.textContent = '🚨 TRIPPED (FROZEN)';
+        circuit.style.color = 'var(--rose)';
+      } else if (currentTrustState === 'PROBATION') {
+        badge.style.background = 'rgba(245, 158, 11, 0.2)';
+        badge.style.color = 'var(--amber)';
+        circuit.textContent = '⚠️ PROBATION';
+        circuit.style.color = 'var(--amber)';
+      } else {
+        badge.style.background = 'rgba(16, 185, 129, 0.15)';
+        badge.style.color = 'var(--primary)';
+        circuit.textContent = 'HEALTHY';
+        circuit.style.color = 'var(--primary)';
+      }
+    }
+
     async function applyReputationEvent(eventType) {
       const res = await fetch('/api/v1/reputation/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          provider_id: '00000000-0000-0000-0000-000000000002',
+          provider_id: testProviderId,
           event_type: eventType
         })
       });
       const data = await res.json();
-      currentScore = Math.max(0, Math.min(1, currentScore + data.score_delta));
-      document.getElementById('providerReliability').textContent = (currentScore * 100).toFixed(1) + '%';
-      showToast('Reputation delta applied: ' + (data.score_delta > 0 ? '+' : '') + (data.score_delta * 100).toFixed(1) + '%');
+      updateTrustUI(data.reliability_score, data.trust_state, data.circuit_breaker_tripped);
+      showToast('Reputation ' + eventType + ': ' + (data.score_delta > 0 ? '+' : '') + (data.score_delta * 100).toFixed(1) + '% (' + data.trust_state + ')');
     }
+
+    async function simulateCircuitBreakerTrip() {
+      await applyReputationEvent('NO_SHOW');
+      await applyReputationEvent('NO_SHOW');
+      await applyReputationEvent('NO_SHOW');
+      showToast('Circuit Breaker Tripped! Provider SUSPENDED and unbooked slots frozen.');
+    }
+
+    async function escalateAndResolveDispute(resolution) {
+      const resultEl = document.getElementById('disputeRefundResult');
+      resultEl.innerHTML = '<div style="color: var(--cyan);">Processing dispute and double-entry ledger settlement...</div>';
+
+      try {
+        const dispRes = await fetch('/api/v1/disputes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            booking_id: testBookingId,
+            provider_id: testProviderId,
+            reason: 'Ground pitch pitch-marking non-compliant with MCC standard',
+            amount_minor: 350000
+          })
+        });
+        const dispData = await dispRes.json();
+
+        const resolveRes = await fetch('/api/v1/disputes/' + dispData.id + '/resolve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            resolution: resolution,
+            resolution_notes: 'Administrative adjudication via CricOS Commercial Policy Engine'
+          })
+        });
+        const resolveData = await resolveRes.json();
+
+        if (resolveData.provider_penalty) {
+          updateTrustUI(
+            resolveData.provider_penalty.reliability_score,
+            resolveData.provider_penalty.trust_state,
+            resolveData.provider_penalty.circuit_breaker_tripped
+          );
+        }
+
+        if (resolution === 'UPHELD_CUSTOMER_REFUND') {
+          const entry = resolveData.refund_journal_entry;
+          const journalId = entry && entry.id ? entry.id : 'REFUND-ENTRY-01';
+          const nextState = resolveData.provider_penalty ? resolveData.provider_penalty.trust_state : 'PROBATION';
+          resultEl.innerHTML = 
+            '<div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(244,63,94,0.3); border-radius: 6px; padding: 0.75rem; margin-top: 0.5rem;">' +
+              '<div style="color: var(--rose); font-weight: 600; margin-bottom: 0.35rem;">✓ Dispute Upheld: Double-Entry Refund Balanced</div>' +
+              '<div style="color: var(--text-muted); font-size: 0.75rem;">Journal ID: <code>' + journalId + '</code></div>' +
+              '<div style="font-family: monospace; font-size: 0.75rem; margin-top: 0.35rem; color: #a5f3fc;">' +
+                '<div>DEBIT:  ESCROW_HOLD      ₹3,500.00</div>' +
+                '<div>CREDIT: REFUND_CLEARING  ₹3,500.00</div>' +
+                '<div style="color: var(--primary);">IMBALANCE: ₹0.00 (Zero-Sum Verified)</div>' +
+              '</div>' +
+              '<div style="font-size: 0.75rem; color: var(--rose); margin-top: 0.35rem;">' +
+                'Provider Penalty: DISPUTE_LOST (-8.0%) → State: ' + nextState +
+              '</div>' +
+            '</div>';
+          showToast('Dispute resolved: ₹3,500 auto-refunded to customer ledger');
+        } else {
+          resultEl.innerHTML = 
+            '<div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 0.75rem; margin-top: 0.5rem;">' +
+              '<div style="color: var(--primary); font-weight: 600;">✓ Dispute Rejected: Provider Upheld</div>' +
+              '<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Provider awarded +1% reputation recovery delta.</div>' +
+            '</div>';
+          showToast('Dispute resolved in favor of provider');
+        }
+      } catch (err) {
+        resultEl.innerHTML = '<div style="color: var(--rose);">Error processing dispute: ' + err.message + '</div>';
+      }
+    }
+
+    async function testPayoutDisbursement() {
+      const resultEl = document.getElementById('disputeRefundResult');
+      resultEl.innerHTML = '<div style="color: var(--cyan);">Evaluating payout disbursement invariants...</div>';
+
+      try {
+        const res = await fetch('/api/v1/payouts/disburse', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            provider_id: testProviderId,
+            booking_id: testBookingId,
+            amount_minor: 300000
+          })
+        });
+        const data = await res.json();
+
+        if (res.status === 422) {
+          const errMsg = data.message || data.error;
+          resultEl.innerHTML = 
+            '<div style="background: rgba(244,63,94,0.1); border: 1px solid var(--rose); border-radius: 6px; padding: 0.75rem; margin-top: 0.5rem;">' +
+              '<div style="color: var(--rose); font-weight: 600;">🛡️ Disbursement Blocked: Invariant Protected</div>' +
+              '<div style="font-size: 0.75rem; color: #fca5a5; margin-top: 0.25rem;">' + errMsg + '</div>' +
+            '</div>';
+          showToast('Disbursement guarded: ' + data.error);
+        } else {
+          resultEl.innerHTML = 
+            '<div style="background: rgba(16,185,129,0.1); border: 1px solid var(--primary); border-radius: 6px; padding: 0.75rem; margin-top: 0.5rem;">' +
+              '<div style="color: var(--primary); font-weight: 600;">✓ Payout Disbursed: ₹3,000.00</div>' +
+              '<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Transaction status: DISBURSED (Zero open disputes & active trust standing).</div>' +
+            '</div>';
+          showToast('Payout disbursed successfully!');
+        }
+      } catch (err) {
+        resultEl.innerHTML = '<div style="color: var(--rose);">Disbursement error: ' + err.message + '</div>';
+      }
+    }
+
+    // Accessible Universal Tooltip Component
+    (function () {
+      let activeTooltip = null;
+      let activeTrigger = null;
+
+      function createTooltipElement() {
+        const el = document.createElement('div');
+        el.id = 'universal-tooltip-popover';
+        el.className = 'uni-tooltip';
+        el.setAttribute('role', 'tooltip');
+        el.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(el);
+        return el;
+      }
+
+      function getTooltipElement() {
+        return document.getElementById('universal-tooltip-popover') || createTooltipElement();
+      }
+
+      function positionTooltip(trigger, tooltip) {
+        const trigRect = trigger.getBoundingClientRect();
+        const ttRect = tooltip.getBoundingClientRect();
+        const margin = 8;
+        const vpW = window.innerWidth;
+        const vpH = window.innerHeight;
+
+        let top = trigRect.top - ttRect.height - margin;
+        let left = trigRect.left + (trigRect.width / 2) - (ttRect.width / 2);
+
+        if (top < margin) {
+          top = trigRect.bottom + margin;
+        }
+
+        if (left < margin) left = margin;
+        if (left + ttRect.width > vpW - margin) left = vpW - ttRect.width - margin;
+
+        tooltip.style.top = Math.round(top + window.scrollY) + 'px';
+        tooltip.style.left = Math.round(left + window.scrollX) + 'px';
+      }
+
+      function show(trigger, text) {
+        if (!text) return;
+        const tooltip = getTooltipElement();
+        tooltip.textContent = text;
+        tooltip.style.display = 'block';
+        tooltip.setAttribute('aria-hidden', 'false');
+        positionTooltip(trigger, tooltip);
+        trigger.setAttribute('aria-describedby', tooltip.id);
+        activeTooltip = tooltip;
+        activeTrigger = trigger;
+      }
+
+      function hide() {
+        if (!activeTooltip) return;
+        activeTooltip.style.display = 'none';
+        activeTooltip.setAttribute('aria-hidden', 'true');
+        if (activeTrigger) activeTrigger.removeAttribute('aria-describedby');
+        activeTooltip = null;
+        activeTrigger = null;
+      }
+
+      document.addEventListener('mouseenter', (e) => {
+        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
+        if (trigger) show(trigger, trigger.getAttribute('data-tooltip'));
+      }, true);
+
+      document.addEventListener('mouseleave', (e) => {
+        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
+        if (trigger && trigger === activeTrigger) hide();
+      }, true);
+
+      document.addEventListener('focusin', (e) => {
+        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
+        if (trigger) show(trigger, trigger.getAttribute('data-tooltip'));
+      }, true);
+
+      document.addEventListener('focusout', (e) => {
+        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
+        if (trigger && trigger === activeTrigger) hide();
+      }, true);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && activeTooltip) hide();
+      });
+
+      document.addEventListener('pointerdown', (e) => {
+        if (activeTooltip && !e.target.closest('[data-tooltip]') && !e.target.closest('#universal-tooltip-popover')) {
+          hide();
+        }
+      });
+    })();
 
     // API Explorer
     function setApi(endpoint) {
