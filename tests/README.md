@@ -18,6 +18,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | `apps/api` | `test/production_hardening.test.ts` | Config guardrails, liveness/readiness probes, metrics telemetry, connection draining |
 | `apps/web` | `test/web.test.ts` | Web client API, integer minor currency formatting, scoreboard chip rendering, commercial breakdown, trust badges |
 | `apps/mobile` | `test/mobile.test.ts` | Mobile API client, offline queueing, session caching, live match screen controller, marketplace booking, career stats |
+| Root | `tests/tournament-emulation.test.ts` | End-to-end synthetic tournament lifecycle, round-robin scheduling, NRR calculation, double-entry settlement verification |
 | Root | `tests/migrations-and-seed.test.ts` | Schema reconciliation and database seed integrity |
 
 ## Execution Protocol

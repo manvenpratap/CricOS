@@ -9,7 +9,13 @@ import {
   calculatePoints,
   computeReputationDelta,
   calculateBayesianRating,
-  evaluateProviderTrustState
+  evaluateProviderTrustState,
+  parseOversToBalls,
+  formatBallsToOvers,
+  calculateNetRunRate,
+  generateRoundRobinSchedule,
+  initializeStandings,
+  updateTournamentStandings
 } from '../dist/index.js';
 
 describe('Domain Package', () => {
@@ -104,5 +110,70 @@ describe('Domain Package', () => {
     const recovered = evaluateProviderTrustState('PROBATION', 0.88);
     assert.equal(recovered.newState, 'VERIFIED');
     assert.equal(recovered.transitioned, true);
+  });
+
+  it('converts overs to balls and back correctly', () => {
+    assert.equal(parseOversToBalls(20), 120);
+    assert.equal(parseOversToBalls('19.4'), 118);
+    assert.equal(parseOversToBalls('0.1'), 1);
+    assert.equal(parseOversToBalls(0), 0);
+
+    assert.equal(formatBallsToOvers(120), '20.0');
+    assert.equal(formatBallsToOvers(118), '19.4');
+    assert.equal(formatBallsToOvers(1), '0.1');
+    assert.equal(formatBallsToOvers(0), '0.0');
+  });
+
+  it('calculates official Net Run Rate (NRR) accurately', () => {
+    // Team scores 160 in 20 overs (8.00 RPO), concedes 140 in 20 overs (7.00 RPO)
+    // NRR = 8.00 - 7.00 = +1.000
+    const nrr = calculateNetRunRate(160, 120, 140, 120);
+    assert.equal(nrr, 1.0);
+
+    // Conceding more runs than scored yields negative NRR
+    const negNrr = calculateNetRunRate(120, 120, 150, 120);
+    assert.equal(negNrr, -1.5);
+  });
+
+  it('generates a complete, balanced round-robin fixture bracket', () => {
+    const teams = ['team-1', 'team-2', 'team-3', 'team-4'];
+    const fixtures = generateRoundRobinSchedule(teams);
+    // 4 teams -> (4 * 3) / 2 = 6 fixtures
+    assert.equal(fixtures.length, 6);
+
+    // Verify all unique pairings exist
+    const pairKeys = new Set<string>();
+    for (const f of fixtures) {
+      const sortedPair = [f.homeTeamId, f.awayTeamId].sort().join(':');
+      pairKeys.add(sortedPair);
+    }
+    assert.equal(pairKeys.size, 6);
+  });
+
+  it('updates standings with ICC all-out overs normalization and multi-tier sorting', () => {
+    const standings = initializeStandings(['team-A', 'team-B']);
+    // Team A (180/4 in 20 ov) def Team B (120 all out in 15 ov)
+    // For Team B (all out), balls faced normalizes to full 20 overs (120 balls)
+    const updated = updateTournamentStandings(standings, {
+      homeTeamId: 'team-A',
+      awayTeamId: 'team-B',
+      homeRuns: 180,
+      homeBallsFaced: 120,
+      awayRuns: 120,
+      awayBallsFaced: 90, // Bowled out in 15 overs
+      awayAllOut: true,
+      maxScheduledOvers: 20,
+      winnerId: 'team-A'
+    });
+
+    assert.equal(updated[0]?.teamId, 'team-A');
+    assert.equal(updated[0]?.points, 2);
+    assert.equal(updated[0]?.won, 1);
+    assert.equal(updated[0]?.netRunRate, 3.0); // 180/20 - 120/20 = 9 - 6 = +3.0
+
+    assert.equal(updated[1]?.teamId, 'team-B');
+    assert.equal(updated[1]?.points, 0);
+    assert.equal(updated[1]?.lost, 1);
+    assert.equal(updated[1]?.netRunRate, -3.0);
   });
 });

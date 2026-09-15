@@ -64,4 +64,19 @@ export async function tournamentsRoutes(app: FastifyInstance) {
       standings: [teamA, teamB]
     });
   });
+
+  app.post('/tournaments/orchestrate', async (req: FastifyRequest<{
+    Body: { name?: string; teamCount?: number; oversPerInnings?: number; seed?: number }
+  }>, reply: FastifyReply) => {
+    const { TournamentOrchestrator } = await import('../../platform/tournament-orchestrator.js');
+    const { name, teamCount = 4, oversPerInnings = 5, seed = 1001 } = req.body || {};
+    const orchestrator = new TournamentOrchestrator({
+      tournamentName: name,
+      teamCount,
+      oversPerInnings,
+      seed
+    });
+    const result = await orchestrator.orchestrate();
+    return reply.status(200).send(result);
+  });
 }

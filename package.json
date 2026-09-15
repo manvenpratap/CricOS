@@ -30,6 +30,7 @@
     "db:migrate": "node scripts/migrate.mjs",
     "db:seed": "node scripts/seed.mjs",
     "deploy:validate": "node scripts/validate-deployment.mjs",
+    "tournament:emulate": "node scripts/emulate-tournament.mjs",
     "dev": "pnpm --filter @cricket-platform/api dev",
     "start": "pnpm --filter @cricket-platform/api start"
   },
