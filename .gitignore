@@ -5,3 +5,9 @@ dist/
 coverage/
 .DS_Store
 archive/
+
+# Universal Pipeline local resources
+tests/screenshots/
+e2e-tests/screenshots/
+__pycache__/
+.pytest_cache/
