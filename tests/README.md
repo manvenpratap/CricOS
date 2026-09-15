@@ -16,6 +16,8 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | `apps/api` | `test/broadcast.test.ts` | Real-time SSE live match broadcast hub, pub/sub multiplexer |
 | `apps/api` | `test/reputation_pipeline.test.ts` | Bayesian ratings, circuit breaker slot freeze, dispute auto-refund, payout disbursement guards |
 | `apps/api` | `test/production_hardening.test.ts` | Config guardrails, liveness/readiness probes, metrics telemetry, connection draining |
+| `apps/web` | `test/web.test.ts` | Web client API, integer minor currency formatting, scoreboard chip rendering, commercial breakdown, trust badges |
+| `apps/mobile` | `test/mobile.test.ts` | Mobile API client, offline queueing, session caching, live match screen controller, marketplace booking, career stats |
 | Root | `tests/migrations-and-seed.test.ts` | Schema reconciliation and database seed integrity |
 
 ## Execution Protocol

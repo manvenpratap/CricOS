@@ -52,6 +52,44 @@ importers:
         specifier: ^8.11.6
         version: 8.23.1
 
+  apps/mobile:
+    dependencies:
+      '@cricket-platform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@cricket-platform/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
+      '@cricket-platform/scoring':
+        specifier: workspace:*
+        version: link:../../packages/scoring
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.2
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+
+  apps/web:
+    dependencies:
+      '@cricket-platform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@cricket-platform/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
+      '@cricket-platform/scoring':
+        specifier: workspace:*
+        version: link:../../packages/scoring
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.2
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+
   apps/worker:
     dependencies:
       '@cricket-platform/contracts':
