@@ -1,0 +1,26 @@
+{
+  "name": "@cricket-platform/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "dev": "node --experimental-strip-types src/main.ts",
+    "test": "NODE_ENV=test node --experimental-strip-types --test test/**/*.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@cricket-platform/contracts": "workspace:*",
+    "@cricket-platform/commercial": "workspace:*",
+    "@cricket-platform/domain": "workspace:*",
+    "@cricket-platform/scoring": "workspace:*",
+    "fastify": "^4.28.1",
+    "@fastify/cors": "^9.0.1",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.6"
+  }
+}

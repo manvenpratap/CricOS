@@ -1,0 +1,13 @@
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { query } from '../../platform/db.js';
+
+export async function notificationsRoutes(app: FastifyInstance) {
+  app.get('/notifications', async (_req: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const res = await query(`SELECT * FROM notification_events ORDER BY created_at DESC LIMIT 20`);
+      return reply.status(200).send(res.rows);
+    } catch {}
+
+    return reply.status(200).send([]);
+  });
+}
