@@ -1,6 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import crypto from 'node:crypto';
 import { query } from '../../platform/db.js';
+import { authenticate, requireRole } from '../../middleware/auth.js';
+import { createSettlementJournalEntry } from '@cricket-platform/commercial';
 
 export async function settlementRoutes(app: FastifyInstance) {
   app.get('/settlements', async (_req: FastifyRequest, reply: FastifyReply) => {
@@ -12,9 +14,11 @@ export async function settlementRoutes(app: FastifyInstance) {
     return reply.status(200).send([]);
   });
 
-  app.post('/settlements/process', async (req: FastifyRequest<{
-    Body: { booking_id: string; provider_id: string; gross_minor: number; commission_minor: number }
-  }>, reply: FastifyReply) => {
+  app.post<{
+    Body: { booking_id: string; provider_id: string; gross_minor: number; commission_minor: number };
+  }>('/settlements/process', {
+    preHandler: [authenticate, requireRole('ADMIN', 'ORGANISER')]
+  }, async (req, reply) => {
     const { booking_id, provider_id, gross_minor, commission_minor } = req.body || {};
     if (!booking_id || !provider_id || gross_minor === undefined || commission_minor === undefined) {
       return reply.status(400).send({ error: 'MISSING_FIELDS' });
@@ -22,6 +26,18 @@ export async function settlementRoutes(app: FastifyInstance) {
 
     const net_minor = gross_minor - commission_minor;
     const entryId = crypto.randomUUID();
+
+    let journalEntry;
+    try {
+      journalEntry = createSettlementJournalEntry({
+        orderId: booking_id,
+        totalPaidMinor: gross_minor,
+        platformFeeMinor: commission_minor,
+        taxMinor: 0,
+        providerPayoutMinor: net_minor,
+        currency: 'INR'
+      });
+    } catch {}
 
     try {
       await query(
@@ -40,7 +56,8 @@ export async function settlementRoutes(app: FastifyInstance) {
       commission_minor,
       net_minor,
       currency: 'INR',
-      status: 'RECORDED'
+      status: 'RECORDED',
+      journal_entry: journalEntry
     });
   });
 }

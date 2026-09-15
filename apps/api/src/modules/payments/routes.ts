@@ -1,34 +1,45 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import crypto from 'node:crypto';
 import { query, withTransaction } from '../../platform/db.js';
+import { getPaymentGateway } from './gateway.js';
 
 export async function paymentsRoutes(app: FastifyInstance) {
   app.post('/payments/intent', async (req: FastifyRequest<{
-    Body: { order_id: string; payment_method?: string }
+    Body: { order_id?: string; orderId?: string; payment_method?: string; amount_minor?: number; amountMinor?: number }
   }>, reply: FastifyReply) => {
-    const { order_id } = req.body || {};
+    const body = req.body || {};
+    const order_id = body.order_id || body.orderId;
+    const amount_minor = body.amount_minor ?? body.amountMinor ?? 368550;
+
     if (!order_id) {
       return reply.status(400).send({ error: 'ORDER_ID_REQUIRED' });
     }
 
+    const gateway = getPaymentGateway();
+    const gatewayOrder = await gateway.createOrder(order_id, amount_minor, 'INR');
     const intentId = crypto.randomUUID();
-    const clientSecret = `pi_sec_${intentId.slice(0, 16)}`;
 
     try {
       await query(
         `INSERT INTO payment_intents (
           id, order_id, status, amount_minor, currency, provider_ref
-        ) VALUES ($1, $2, 'REQUIRES_CONFIRMATION', 368550, 'INR', $3)`,
-        [intentId, order_id, clientSecret]
+        ) VALUES ($1, $2, 'REQUIRES_CONFIRMATION', $3, 'INR', $4)`,
+        [intentId, order_id, amount_minor, gatewayOrder.gatewayOrderId]
       );
     } catch {}
 
     return reply.status(201).send({
       payment_intent_id: intentId,
+      paymentIntentId: intentId,
       order_id,
-      client_secret: clientSecret,
+      orderId: order_id,
+      gateway_order_id: gatewayOrder.gatewayOrderId,
+      gatewayOrderId: gatewayOrder.gatewayOrderId,
+      client_secret: gatewayOrder.clientSecret,
+      clientSecret: gatewayOrder.clientSecret,
       status: 'REQUIRES_CONFIRMATION',
-      amount_minor: 368550,
+      amount_minor,
+      amountMinor: amount_minor,
       currency: 'INR'
     });
   });
@@ -36,22 +47,41 @@ export async function paymentsRoutes(app: FastifyInstance) {
   app.post('/payments/webhook', async (req: FastifyRequest<{
     Body: {
       idempotency_key?: string;
-      payment_intent_id: string;
+      idempotencyKey?: string;
+      payment_intent_id?: string;
+      paymentIntentId?: string;
       order_id?: string;
+      orderId?: string;
       event_type?: string;
+      eventType?: string;
       status?: string;
     }
   }>, reply: FastifyReply) => {
-    const {
-      idempotency_key = `wh-${Date.now()}`,
-      payment_intent_id,
-      order_id,
-      event_type = 'payment_intent.succeeded',
-      status = 'SUCCEEDED'
-    } = req.body || {};
+    const body = req.body || {};
+    const payment_intent_id = body.payment_intent_id || body.paymentIntentId;
+    const order_id = body.order_id || body.orderId;
+    const idempotency_key = body.idempotency_key || body.idempotencyKey || `wh-${Date.now()}`;
+    const event_type = body.event_type || body.eventType || 'payment_intent.succeeded';
+    const status = body.status || 'SUCCEEDED';
 
     if (!payment_intent_id) {
       return reply.status(400).send({ error: 'PAYMENT_INTENT_ID_REQUIRED' });
+    }
+
+    // Webhook signature verification
+    const signature = (req.headers['x-razorpay-signature'] || req.headers['x-signature']) as string | undefined;
+    const webhookSecret = process.env.PAYMENT_WEBHOOK_SECRET || 'wh_sec_cricos_test_secret';
+
+    if (signature) {
+      const gateway = getPaymentGateway();
+      const rawPayload = JSON.stringify(req.body);
+      const isValid = gateway.verifyWebhookSignature(rawPayload, signature, webhookSecret);
+      if (!isValid) {
+        return reply.status(400).send({
+          error: 'INVALID_SIGNATURE',
+          message: 'Webhook signature verification failed'
+        });
+      }
     }
 
     try {
@@ -114,7 +144,7 @@ export async function paymentsRoutes(app: FastifyInstance) {
         }
       });
     } catch {
-      // Fallback
+      // Fallback in offline sandbox mode
     }
 
     return reply.status(200).send({
