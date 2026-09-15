@@ -33,6 +33,21 @@ export async function expireHolds(client: pg.Client): Promise<number> {
   return res.rowCount || 0;
 }
 
+let pollInterval: NodeJS.Timeout | null = null;
+let isStopping = false;
+
+async function shutdownWorker(client: pg.Client, signal: string) {
+  if (isStopping) return;
+  isStopping = true;
+  console.log(`[Worker] Received ${signal}. Stopping worker intervals...`);
+  if (pollInterval) clearInterval(pollInterval);
+  try {
+    await client.end();
+    console.log('[Worker] Database client closed cleanly.');
+  } catch {}
+  process.exit(0);
+}
+
 async function runWorker() {
   console.log('[Worker] Cricket Platform Worker background service starting...');
   const client = new Client({
@@ -43,8 +58,13 @@ async function runWorker() {
     await client.connect();
     console.log('[Worker] Connected to PostgreSQL. Polling outbox and inventory holds.');
 
+    // Attach lifecycle signals
+    process.on('SIGTERM', () => shutdownWorker(client, 'SIGTERM'));
+    process.on('SIGINT', () => shutdownWorker(client, 'SIGINT'));
+
     // Run periodic tasks
-    setInterval(async () => {
+    pollInterval = setInterval(async () => {
+      if (isStopping) return;
       try {
         const outboxCount = await processOutbox(client);
         const holdCount = await expireHolds(client);
@@ -52,7 +72,9 @@ async function runWorker() {
           console.log(`[Worker] Processed ${outboxCount} outbox events, expired ${holdCount} holds.`);
         }
       } catch (err: any) {
-        console.error('[Worker Error]:', err.message);
+        if (!isStopping) {
+          console.error('[Worker Error]:', err.message);
+        }
       }
     }, 5000);
   } catch (err: any) {

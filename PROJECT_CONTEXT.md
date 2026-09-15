@@ -1,17 +1,17 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 02:06:24
-**Version:** 1.0.0-phase1q  
-**Stack:** TypeScript / Node.js (Fastify, PostgreSQL, pnpm workspaces)  
+**Last Updated:** 2026-09-16 02:13:54
+**Version:** 1.0.0-phase1r  
+**Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 1Q Completed (Provider Rating Aggregation, Reputation Auto-Penalty Circuit Breaker, Dispute Escalation with Auto-Refund, and Payout Disbursements).
-- **Test Health**: 100% Passing (59 automated tests across 8 test suites; 1.33s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 1R Completed (Staging Environment & Production Deployment Hardening).
+- **Test Health**: 100% Passing (70 automated tests across 9 test suites; 1.34s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 6 workspace projects.
-- **Runtime Daemon**: Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive Live Match Center & Operations Console at `GET /`.
+- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with zero-downtime graceful shutdown, liveness/readiness probes, and telemetry.
 
 ---
 
@@ -28,6 +28,10 @@
 - [x] **Provider Rating Aggregation & Reputation Circuit Breaker (Phase 1Q)**: Bayesian smoothed ratings (`calculateBayesianRating` with m-estimate prior), automated trust state evaluation (`evaluateProviderTrustState`), probation threshold (<80%), emergency suspension circuit breaker (<65%) with automated unbooked slot freezing (`service_slots.status = 'BLOCKED'`).
 - [x] **Dispute Escalation & Double-Entry Auto-Refund**: `POST /disputes/:id/resolve` generates balanced zero-sum journal entries (`createRefundJournalEntry`: debit `REFUND_CLEARING`, credit `ESCROW_HOLD`) and enforces provider penalty (`DISPUTE_LOST` -10%).
 - [x] **Guarded Payout Disbursement Pipeline**: `POST /payouts/disburse` validates that bookings have zero pending disputes and providers are in good trust standing before issuing disbursements.
+- [x] **Production & Staging Deployment Hardening (Phase 1R)**: Environment configuration validation (`loadConfig`), fatal production guardrails for weak JWT secrets, zero-downtime graceful shutdown (`SIGTERM`/`SIGINT`), connection draining, cloud-native liveness (`/health/live`), readiness (`/health/ready`), and metrics telemetry (`/health/metrics`).
+- [x] **Multi-Stage Containerization & Orchestration**: Production Dockerfiles (`Dockerfile.api`, `Dockerfile.worker`) using minimal Alpine images and non-root security, paired with `docker-compose.prod.yml`.
+- [x] **Pre-flight Migration & Deployment Verification**: Autonomous validation CLI (`scripts/validate-deployment.mjs` / `pnpm deploy:validate`) verifying migration completeness (0001–0015), GiST constraints, and environment safety.
+- [x] **Automated Continuous Integration**: GitHub Actions workflow (`.github/workflows/ci.yml`) enforcing build, typecheck, test summary, doctor, and deployment validation on all pull requests and main pushes.
 - [x] **Universal Pipeline Integration**: Autonomous doctor, low-token verification loop, and self-healing runner (`./pipeline.sh`).
 
 ---
@@ -38,6 +42,7 @@
 3. **Double-Entry Balance Invariant**: All financial ledger entries require non-negative debits and credits that sum to zero imbalance.
 4. **Node 24 ESM Strip-Types**: Internal module dependencies and tests must import compiled JavaScript from `dist/` or use `import type` to prevent runtime module resolution errors.
 5. **Universal Pipeline Token Invariant**: Test runs should use `./pipeline.sh test --summary` for token-efficient summaries.
+6. **Production Secrets Invariant**: In `NODE_ENV=production`, weak or default JWT secrets are fatally rejected on startup.
 
 ---
 
@@ -46,4 +51,5 @@
 - [x] Phase 1O: Security Hardening, MCC Scoring Engine, Gateway Adapter, Double-Entry Ledger
 - [x] Phase 1P: Real-time Live Match Scoring Broadcast (SSE) & Live Scoreboard
 - [x] Phase 1Q: Provider Rating Aggregation & Reputation Auto-Penalty Pipeline
-- [ ] Phase 1R: Staging Environment & Production Deployment Hardening
+- [x] Phase 1R: Staging Environment & Production Deployment Hardening
+- [ ] Phase 1S: Web & Mobile Client Application Deep Integration

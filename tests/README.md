@@ -15,6 +15,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | `apps/api` | `test/payments.test.ts` | Gateway adapter, Razorpay HMAC webhook verification |
 | `apps/api` | `test/broadcast.test.ts` | Real-time SSE live match broadcast hub, pub/sub multiplexer |
 | `apps/api` | `test/reputation_pipeline.test.ts` | Bayesian ratings, circuit breaker slot freeze, dispute auto-refund, payout disbursement guards |
+| `apps/api` | `test/production_hardening.test.ts` | Config guardrails, liveness/readiness probes, metrics telemetry, connection draining |
 | Root | `tests/migrations-and-seed.test.ts` | Schema reconciliation and database seed integrity |
 
 ## Execution Protocol

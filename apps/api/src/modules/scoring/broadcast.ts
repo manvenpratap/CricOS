@@ -104,6 +104,26 @@ export class MatchBroadcastHub {
       this.heartbeats.delete(matchId);
     }
   }
+
+  public getTotalSubscribers(): number {
+    let total = 0;
+    for (const subscribers of this.channels.values()) {
+      total += subscribers.size;
+    }
+    return total;
+  }
+
+  public getActiveChannelCount(): number {
+    return this.channels.size;
+  }
+
+  public closeAllChannels(): void {
+    for (const timer of this.heartbeats.values()) {
+      clearInterval(timer);
+    }
+    this.heartbeats.clear();
+    this.channels.clear();
+  }
 }
 
 export const broadcastHub = MatchBroadcastHub.getInstance();

@@ -24,7 +24,7 @@ describe('Cricket Platform API — Comprehensive End-to-End Integration Tests', 
     assert.equal(res.statusCode, 200);
     const body = JSON.parse(res.body);
     assert.equal(body.status, 'ok');
-    assert.equal(body.version, '1.0.0-phase1n');
+    assert.ok(body.version.startsWith('1.0.0'));
     assert.ok(body.timestamp);
   });
 

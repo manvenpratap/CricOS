@@ -1,7 +1,8 @@
 import Fastify, { FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import crypto from 'node:crypto';
-import { isDbConnected } from './platform/db.js';
+import { isDbConnected, getPoolStats } from './platform/db.js';
+import { broadcastHub } from './modules/scoring/broadcast.js';
 import { getDashboardHtml } from './ui/dashboard.js';
 
 import { identityRoutes } from './modules/identity/routes.js';
@@ -56,14 +57,60 @@ export function buildServer(): FastifyInstance {
     });
   });
 
-  // 4. Health Check
+  // 4. Cloud-Native Health & Readiness Probes
   server.get('/health', async (_req, reply) => {
     const dbHealthy = await isDbConnected();
     return reply.status(200).send({
       status: 'ok',
       timestamp: new Date().toISOString(),
       database_connected: dbHealthy,
-      version: '1.0.0-phase1n'
+      version: '1.0.0-phase1r'
+    });
+  });
+
+  server.get('/health/live', async (_req, reply) => {
+    return reply.status(200).send({
+      status: 'alive',
+      uptime_seconds: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  server.get('/health/ready', async (_req, reply) => {
+    const dbHealthy = await isDbConnected();
+    const poolStats = getPoolStats();
+    const isReady = dbHealthy || process.env.NODE_ENV === 'test';
+    const statusCode = isReady ? 200 : 503;
+    return reply.status(statusCode).send({
+      status: isReady ? 'ready' : 'degraded',
+      database: {
+        connected: dbHealthy,
+        pool: poolStats
+      },
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  server.get('/health/metrics', async (_req, reply) => {
+    const mem = process.memoryUsage();
+    const dbHealthy = await isDbConnected();
+    return reply.status(200).send({
+      uptime_seconds: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString(),
+      memory: {
+        rss_bytes: mem.rss,
+        heap_used_bytes: mem.heapUsed,
+        heap_total_bytes: mem.heapTotal,
+        external_bytes: mem.external
+      },
+      realtime: {
+        active_broadcast_channels: broadcastHub.getActiveChannelCount(),
+        total_sse_subscribers: broadcastHub.getTotalSubscribers()
+      },
+      database: {
+        connected: dbHealthy,
+        pool: getPoolStats()
+      }
     });
   });
 

@@ -54,3 +54,21 @@ export async function isDbConnected(): Promise<boolean> {
     return false;
   }
 }
+
+export async function closeDbPool(): Promise<void> {
+  try {
+    await pool.end();
+  } catch (err: any) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.warn('[DB] Error while closing pool:', err.message);
+    }
+  }
+}
+
+export function getPoolStats() {
+  return {
+    totalCount: pool.totalCount,
+    idleCount: pool.idleCount,
+    waitingCount: pool.waitingCount
+  };
+}

@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cricos-prod-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cricket
+      POSTGRES_PASSWORD: cricket_prod_password
+      POSTGRES_DB: cricket
+    ports:
+      - "5432:5432"
+    volumes:
+      - cricos_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cricket -d cricket"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cricos_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: cricos-prod-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - cricos_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cricos_net
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: cricos-prod-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://cricket:cricket_prod_password@postgres:5432/cricket
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: production_cricos_jwt_secret_min_32_characters_hmac256_strong_key_sample
+      APP_BASE_URL: https://cricos.app
+      PAYMENT_MODE: live
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cricos_net
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: cricos-prod-worker
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://cricket:cricket_prod_password@postgres:5432/cricket
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cricos_net
+
+volumes:
+  cricos_pgdata:
+  cricos_redisdata:
+
+networks:
+  cricos_net:
+    driver: bridge
