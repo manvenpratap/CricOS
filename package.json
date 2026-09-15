@@ -1,8 +1,26 @@
 {
-  "name": "cricket-platform",
+  "name": "cricos",
+  "version": "1.0.0",
+  "description": "Unified Cricket Operating System: tournament scheduling, provider marketplace, MCC Laws ball-by-ball scoring, real-time SSE broadcast, and double-entry financial settlements",
   "private": true,
   "packageManager": "pnpm@9.15.4",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manvenpratap/CricOS.git"
+  },
+  "keywords": [
+    "cricket",
+    "scoring-engine",
+    "mcc-laws",
+    "tournament-engine",
+    "sports-tech",
+    "fastify",
+    "typescript",
+    "double-entry-bookkeeping",
+    "server-sent-events"
+  ],
+  "license": "MIT",
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test && node --experimental-strip-types --test tests/**/*.test.ts",
