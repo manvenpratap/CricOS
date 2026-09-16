@@ -14,6 +14,9 @@ export * from './components/match-control.js';
 export * from './components/official-desk.js';
 export * from './components/ratings-modal.js';
 export * from './components/leaderboards.js';
+export * from './components/notifications-drawer.js';
+export * from './components/admin-desk.js';
+export * from './components/provider-storefront.js';
 
 import { CricOSApiClient, type ApiClientOptions } from './api/client.js';
 

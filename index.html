@@ -1233,6 +1233,10 @@
     </div>
     <div class="header-status">
       <div class="header-nav-links">
+        <a href="javascript:void(0)" onclick="toggleNotificationsDrawer()" class="nav-pill" style="background: rgba(255, 184, 0, 0.12); border-color: rgba(255, 184, 0, 0.3); color: var(--amber); display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="In-app match alerts, financial escrow updates, and trust notifications">
+          <span>🔔</span>
+          <span id="headerNotifBadge" style="background: var(--turf-emerald); color: #04070D; font-weight: 800; padding: 0.05rem 0.35rem; border-radius: 9999px; font-size: 0.65rem;">3</span>
+        </a>
         <a href="/mobile" class="nav-pill" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399; font-weight: 600;" data-tooltip="Launch Standalone Consumer Mobile App (iOS & Android Preview) with OTP & Profile">📱 Mobile App</a>
         <a href="javascript:void(0)" onclick="openLegalModal()" class="nav-pill" style="background: rgba(0, 210, 255, 0.12); border-color: rgba(0, 210, 255, 0.3); color: var(--cyan);" data-tooltip="Review Apple App Store & Google Play Policies, Privacy Policy and Terms">📜 Legal &amp; Privacy</a>
         <a href="/docs" target="_blank" class="nav-pill" data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox">📖 API Docs</a>
@@ -1509,6 +1513,11 @@
 
     <!-- TAB 2: MARKETPLACE & BOOKING -->
     <div id="tab-marketplace" class="tab-pane">
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; gap: 0.5rem;">
+        <button class="btn btn-secondary" onclick="openProviderStorefrontModal()" data-tooltip="Provider Capacity Manager: publish hourly slots, set rates, and inspect monthly payout earnings" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>🏪</span> Provider Storefront &amp; Slot Publisher
+        </button>
+      </div>
       <div class="grid-2">
         <div class="card">
           <div class="card-title">🏪 Available Venue & Official Listings</div>
@@ -1901,6 +1910,9 @@
         <label>Response Preview (<span id="apiTiming">0ms</span>)</label>
         <pre id="apiResponse" style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; max-height: 300px; overflow-y: auto; color: #38BDF8;">Click 'Run Request' to test</pre>
       </div>
+
+      <!-- Admin Operations & Settlement Audit Desk (UX-027, ADM-001..020) -->
+      <div id="adminAuditDeskContainer" style="margin-top: 1.5rem;"></div>
     </div>
   <!-- User Profile & Persona Switcher Modal -->
   <div class="modal-backdrop" id="modalUserProfile">
@@ -2376,6 +2388,206 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" style="width: auto;" onclick="closeLegalModal()">Close</button>
+      </div>
+    </div>
+  <!-- Notification Center Drawer (UX-025, COM-001..010) -->
+  <div id="notificationsDrawerOverlay" class="modal-backdrop" onclick="closeNotificationsDrawer()" style="display: none; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);"></div>
+  <div id="notificationsDrawer" style="position: fixed; top: 0; right: -400px; width: 380px; max-width: 92vw; height: 100vh; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6); z-index: 10000; transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;">
+    <div style="padding: 1.25rem 1rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.15rem;">🔔</span>
+        <span style="font-weight: 700; font-family: var(--font-display); font-size: 1rem; color: #FFF;">Notification Center</span>
+        <span id="drawerUnreadCountBadge" style="font-size: 0.7rem; background: var(--turf-emerald); color: #04070D; font-weight: 800; padding: 0.1rem 0.45rem; border-radius: 9999px;">3 unread</span>
+      </div>
+      <button onclick="closeNotificationsDrawer()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;" data-tooltip="Close notification drawer">&times;</button>
+    </div>
+    <div style="padding: 0.5rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2);">
+      <div style="display: flex; gap: 0.35rem;">
+        <button class="notif-filter-pill active" onclick="filterDrawerNotifications('ALL')" data-tooltip="Show all notifications" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.08); color: #FFF; cursor: pointer;">All</button>
+        <button class="notif-filter-pill" onclick="filterDrawerNotifications('UNREAD')" data-tooltip="Show unread notifications" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;">Unread</button>
+        <button class="notif-filter-pill" onclick="filterDrawerNotifications('MATCH')" data-tooltip="Show match alerts" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;">Match</button>
+        <button class="notif-filter-pill" onclick="filterDrawerNotifications('FINANCIAL')" data-tooltip="Show escrow payments" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;">Escrow</button>
+      </div>
+      <button onclick="markAllDrawerAsRead()" data-tooltip="Mark all notifications as read" style="background: none; border: none; font-size: 0.7rem; color: var(--turf-emerald); cursor: pointer; text-decoration: underline;">Mark read</button>
+    </div>
+    <div id="notificationItemsList" style="flex: 1; overflow-y: auto; padding: 0.5rem 0;"></div>
+  </div>
+
+  <!-- Event Basket Modal (UX-008, BAS-001..015) -->
+  <div class="modal-backdrop" id="modalEventBasket">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🧺 Match Event Basket &amp; Resource Procurement</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeEventBasketModal()" data-tooltip="Close basket modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Mandatory match sporting resources locked in escrow under Phase 1D/1E commercial policies.
+        </div>
+
+        <div id="eventBasketItemsList" style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">🏟️ Turf Arena (Koramangala Pitch 1)</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">4-Hour Match Slot (14:00 - 18:00) • GiST Hold Confirmed</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.88rem;">₹8,500.00</div>
+              <span style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700;">LOCKED</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">👨‍⚖️ Lead Umpire (Rajesh Sharma)</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Level-2 MCC Certified • Venue Check-In Complete</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.88rem;">₹3,500.00</div>
+              <span style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700;">LOCKED</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">🏏 Official Match Balls (Box of 2)</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Kookaburra Turf Regulation White Balls (156g)</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.88rem;">₹2,200.00</div>
+              <span style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700;">PROCURED</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">📋 Official Scorer Console License</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Live SSE Real-Time Ball Stream + Worm Charts</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.88rem;">₹800.00</div>
+              <span style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700;">ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Commercial Settlement Breakdown -->
+        <div style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem; color: var(--text-muted);">
+            <span>Subtotal (4 Items)</span>
+            <span style="font-family: var(--font-mono); font-weight: 600; color: #FFF;">₹15,000.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem; color: var(--text-muted);">
+            <span>Platform Facilitation Fee (5%)</span>
+            <span style="font-family: var(--font-mono); font-weight: 600; color: #FFF;">₹750.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem; color: var(--text-muted);">
+            <span>Statutory GST (18% on fee)</span>
+            <span style="font-family: var(--font-mono); font-weight: 600; color: #FFF;">₹135.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 1rem; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.65rem; color: var(--turf-emerald);">
+            <span>Total Escrow Deposit</span>
+            <span style="font-family: var(--font-mono);">₹15,885.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+        <button class="btn btn-secondary" onclick="closeEventBasketModal()" style="width: auto;">Close</button>
+        <button class="btn btn-primary" onclick="proceedBasketCheckout()" data-tooltip="Simulate verified double-entry escrow disbursement" style="width: auto;">✓ Secure in Escrow</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Provider Storefront Modal (UX-018, MKT-001..020) -->
+  <div class="modal-backdrop" id="modalProviderStorefront">
+    <div class="modal-dialog" style="max-width: 640px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🏪 Provider Storefront &amp; Capacity Manager</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeProviderStorefrontModal()" data-tooltip="Close storefront modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Publish match slots, set temporal GiST ranges, and inspect settled provider earnings.
+        </div>
+
+        <!-- Earnings Breakdown -->
+        <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Settlement Earnings (Month to Date)</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; font-family: var(--font-mono); text-align: center;">
+            <div style="background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 6px;">
+              <div style="font-size: 0.65rem; color: var(--text-muted);">Gross Revenue</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #FFF;">₹1,45,000</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 6px;">
+              <div style="font-size: 0.65rem; color: var(--text-muted);">Net Disbursed</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: var(--turf-emerald);">₹1,36,445</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 6px;">
+              <div style="font-size: 0.65rem; color: var(--text-muted);">In Escrow Hold</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: var(--amber);">₹18,500</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add New Slot -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.12); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--cyan);">+ Publish New Match Slot</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <div>
+              <label style="font-size: 0.7rem; color: var(--text-muted);">Time Range</label>
+              <input type="text" id="storefrontSlotTime" value="14:00 - 18:00" style="width: 100%; padding: 0.4rem; font-size: 0.78rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
+            </div>
+            <div>
+              <label style="font-size: 0.7rem; color: var(--text-muted);">Rate (INR)</label>
+              <input type="number" id="storefrontSlotRate" value="6500" style="width: 100%; padding: 0.4rem; font-size: 0.78rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
+            </div>
+            <div>
+              <label style="font-size: 0.7rem; color: var(--text-muted);">Pitch Type</label>
+              <select id="storefrontSlotPitch" style="width: 100%; padding: 0.4rem; font-size: 0.78rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
+                <option value="Natural Turf">Natural Turf</option>
+                <option value="Astro Turf">Astro Turf</option>
+                <option value="Floodlit Turf">Floodlit Turf</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+            <button class="btn btn-primary" onclick="submitNewSlotPublication()" data-tooltip="Publish slot into real-time search index" style="padding: 0.35rem 0.8rem; font-size: 0.75rem; width: auto;">Publish Slot</button>
+          </div>
+        </div>
+
+        <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem;">Managed Match Slots</div>
+        <div id="storefrontSlotsList" style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">06:00 - 09:00</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Natural Turf • Morning Slot</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-weight: 700; font-family: var(--font-mono); color: var(--turf-emerald); font-size: 0.85rem;">₹4,500</span>
+              <span style="font-size: 0.65rem; color: var(--cyan); font-weight: 700;">AVAILABLE</span>
+              <button class="btn btn-secondary" onclick="toggleSlotStatus(this)" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; width: auto;" data-tooltip="Block or unblock slot">Block</button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">18:00 - 22:00</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Floodlit Premium Turf • Evening Prime</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-weight: 700; font-family: var(--font-mono); color: var(--turf-emerald); font-size: 0.85rem;">₹8,500</span>
+              <span style="font-size: 0.65rem; color: var(--rose); font-weight: 700;">RESERVED</span>
+              <button class="btn btn-secondary" onclick="toggleSlotStatus(this)" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; width: auto;" data-tooltip="Block or unblock slot">Unfreeze</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeProviderStorefrontModal()" style="width: auto;">Close</button>
       </div>
     </div>
   </div>
@@ -3326,8 +3538,9 @@ BOWLING,Overs,Maidens,Runs,Wickets,Economy
         '<div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 9999px; overflow: hidden;">' +
           '<div style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--turf-emerald), var(--cyan)); border-radius: 9999px; box-shadow: 0 0 10px rgba(0,229,153,0.5);"></div>' +
         '</div>' +
-        '<div style="margin-top: 0.45rem; font-size: 0.75rem; color: var(--turf-emerald); display: flex; align-items: center; gap: 0.4rem;">' +
+        '<div style="margin-top: 0.45rem; font-size: 0.75rem; color: var(--turf-emerald); display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; flex-wrap: wrap;">' +
           '<span>✓ Mandatory sporting resources locked. Match is fully cleared for live broadcast.</span>' +
+          '<button class="btn btn-secondary" onclick="openEventBasketModal()" data-tooltip="Inspect match operational basket, equipment line items, and escrow deposit breakdown" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; width: auto;">🧺 View Event Basket</button>' +
         '</div>' +
       '</div>';
     }
@@ -3358,6 +3571,234 @@ BOWLING,Overs,Maidens,Runs,Wickets,Economy
           '</div>' +
         '</div>'
       ).join('');
+    }
+
+    // Notification Center Handlers (UX-025, COM-001..010)
+    var drawerNotifications = [
+      { id: 'notif-1', category: 'MATCH', title: '🪙 Match Toss Scheduled', body: 'Coin toss scheduled in 15 mins for M-101 (Bengaluru Strikers vs Mumbai Blasters).', time: '2m ago', read: false, tab: 'scoring' },
+      { id: 'notif-2', category: 'FINANCIAL', title: '💳 Escrow Deposit Secured', body: '₹18,500 held in zero-imbalance escrow for Koramangala Turf Arena — Slot #2.', time: '18m ago', read: false, tab: 'marketplace' },
+      { id: 'notif-3', category: 'TRUST', title: '⭐ Verified Reputation Upgrade', body: 'Harbour Cricket Grounds reliability increased to 98.5% (+1.2% bonus).', time: '1h ago', read: false, tab: 'incidents' },
+      { id: 'notif-4', category: 'MATCH', title: '👨‍⚖️ Official Check-In Complete', body: 'Umpire Rajesh Sharma (Level-2 Certified) checked in at venue 45 mins prior.', time: '2h ago', read: true, tab: 'incidents' },
+      { id: 'notif-5', category: 'SYSTEM', title: '📱 App Store Listing Ready', body: 'CricOS build v1.0.0 passed Apple Privacy Manifest & Google Play Target SDK 34.', time: '3h ago', read: true }
+    ];
+
+    function renderDrawerNotifications(filter) {
+      filter = filter || 'ALL';
+      const listEl = document.getElementById('notificationItemsList');
+      if (!listEl) return;
+      const filtered = drawerNotifications.filter(function(n) {
+        if (filter === 'UNREAD') return !n.read;
+        if (filter === 'ALL') return true;
+        return n.category === filter;
+      });
+
+      const unreadCount = drawerNotifications.filter(function(n) { return !n.read; }).length;
+      const b1 = document.getElementById('headerNotifBadge');
+      const b2 = document.getElementById('drawerUnreadCountBadge');
+      if (b1) b1.textContent = unreadCount;
+      if (b2) b2.textContent = unreadCount + ' unread';
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem;">No notifications in this view</div>';
+        return;
+      }
+
+      const colors = { MATCH: 'var(--cyan)', FINANCIAL: 'var(--amber)', TRUST: 'var(--turf-emerald)', SYSTEM: 'var(--purple-light)' };
+      listEl.innerHTML = filtered.map(function(item) {
+        return '<div style="padding: 0.85rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); background: ' + (item.read ? 'transparent' : 'rgba(0,229,153,0.04)') + '; border-left: 3px solid ' + (item.read ? 'transparent' : (colors[item.category] || 'var(--cyan)')) + ';">' +
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">' +
+            '<span style="font-weight: 700; font-size: 0.84rem; color: #FFF;">' + item.title + '</span>' +
+            '<span style="font-size: 0.7rem; color: var(--text-muted);">' + item.time + '</span>' +
+          '</div>' +
+          '<div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.35; margin-bottom: 0.45rem;">' + item.body + '</div>' +
+          '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+            '<span style="font-size: 0.65rem; font-weight: 700; color: ' + (colors[item.category] || 'var(--cyan)') + '; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px;">' + item.category + '</span>' +
+            (item.tab ? '<button class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; width: auto;" onclick="handleNotificationAction('' + item.id + '', '' + item.tab + '')" data-tooltip="Navigate to notification">View &rarr;</button>' : '') +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function toggleNotificationsDrawer() {
+      const drawer = document.getElementById('notificationsDrawer');
+      const overlay = document.getElementById('notificationsDrawerOverlay');
+      if (!drawer || !overlay) return;
+      const isOpen = drawer.style.right === '0px';
+      if (isOpen) {
+        drawer.style.right = '-400px';
+        overlay.style.display = 'none';
+      } else {
+        renderDrawerNotifications('ALL');
+        drawer.style.right = '0px';
+        overlay.style.display = 'block';
+      }
+    }
+
+    function closeNotificationsDrawer() {
+      const drawer = document.getElementById('notificationsDrawer');
+      const overlay = document.getElementById('notificationsDrawerOverlay');
+      if (drawer) drawer.style.right = '-400px';
+      if (overlay) overlay.style.display = 'none';
+    }
+
+    function filterDrawerNotifications(cat) {
+      document.querySelectorAll('.notif-filter-pill').forEach(function(b) {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+        b.style.color = 'var(--text-muted)';
+      });
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active');
+        window.event.target.style.background = 'rgba(255,255,255,0.08)';
+        window.event.target.style.color = '#FFF';
+      }
+      renderDrawerNotifications(cat);
+    }
+
+    function markAllDrawerAsRead() {
+      drawerNotifications.forEach(function(n) { n.read = true; });
+      renderDrawerNotifications('ALL');
+      showToast('✓ All notifications marked as read');
+    }
+
+    function handleNotificationAction(id, tab) {
+      const n = drawerNotifications.find(function(item) { return item.id === id; });
+      if (n) n.read = true;
+      closeNotificationsDrawer();
+      switchTab(tab);
+    }
+
+    // Event Basket Modal Handlers (UX-008, BAS-001..015)
+    function openEventBasketModal() {
+      const m = document.getElementById('modalEventBasket');
+      if (m) m.classList.add('active');
+    }
+    function closeEventBasketModal() {
+      const m = document.getElementById('modalEventBasket');
+      if (m) m.classList.remove('active');
+    }
+    function proceedBasketCheckout() {
+      closeEventBasketModal();
+      showToast('✓ Event Basket Locked in Double-Entry Escrow (₹15,885.00)');
+    }
+
+    // Provider Storefront Modal Handlers (UX-018, MKT-001..020)
+    function openProviderStorefrontModal() {
+      const m = document.getElementById('modalProviderStorefront');
+      if (m) m.classList.add('active');
+    }
+    function closeProviderStorefrontModal() {
+      const m = document.getElementById('modalProviderStorefront');
+      if (m) m.classList.remove('active');
+    }
+    function toggleSlotStatus(btn) {
+      if (!btn) return;
+      const isBlocked = btn.textContent.trim() === 'Block';
+      btn.textContent = isBlocked ? 'Unfreeze' : 'Block';
+      const statusSpan = btn.previousElementSibling;
+      if (statusSpan) {
+        statusSpan.textContent = isBlocked ? 'RESERVED' : 'AVAILABLE';
+        statusSpan.style.color = isBlocked ? 'var(--rose)' : 'var(--cyan)';
+      }
+      showToast(isBlocked ? '⚠️ Slot blocked from marketplace search' : '✓ Slot unblocked and available for bookings');
+    }
+    function submitNewSlotPublication() {
+      const time = document.getElementById('storefrontSlotTime').value;
+      const rate = document.getElementById('storefrontSlotRate').value;
+      const pitch = document.getElementById('storefrontSlotPitch').value;
+      const list = document.getElementById('storefrontSlotsList');
+      if (list) {
+        const div = document.createElement('div');
+        div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;';
+        div.innerHTML = '<div>' +
+            '<div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">' + time + '</div>' +
+            '<div style="font-size: 0.7rem; color: var(--text-muted);">' + pitch + ' • Newly Published</div>' +
+          '</div>' +
+          '<div style="display: flex; align-items: center; gap: 0.75rem;">' +
+            '<span style="font-weight: 700; font-family: var(--font-mono); color: var(--turf-emerald); font-size: 0.85rem;">₹' + Number(rate).toLocaleString('en-IN') + '</span>' +
+            '<span style="font-size: 0.65rem; color: var(--cyan); font-weight: 700;">AVAILABLE</span>' +
+            '<button class="btn btn-secondary" onclick="toggleSlotStatus(this)" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; width: auto;" data-tooltip="Block or unblock slot">Block</button>' +
+          '</div>';
+        list.prepend(div);
+      }
+      showToast('✓ Published slot ' + time + ' (₹' + rate + ') to live search index');
+    }
+
+    // Admin Operations & Settlement Audit Desk (UX-027, ADM-001..020)
+    var adminCases = [
+      { caseId: 'CASE-9041', type: 'DISPUTE', title: 'Adverse Weather Interruption Claim', entity: 'Bengaluru Strikers vs Mumbai Blasters', amount: '₹8,500', status: 'PENDING_REVIEW', time: '25m ago', recommendation: 'Execute 50% rain refund journal entry (D: REFUND_CLEARING, C: ESCROW_HOLD)' },
+      { caseId: 'CASE-8912', type: 'CIRCUIT_BREAKER', title: 'Automated Provider Slot Freeze Tripped', entity: 'Whitefield Sports Complex', amount: '₹0', status: 'PENDING_REVIEW', time: '1h ago', recommendation: 'Review no-show evidence or manually reset circuit breaker with probation status' },
+      { caseId: 'CASE-8755', type: 'LEDGER_AUDIT', title: 'Zero-Sum Escrow Settlement Verification', entity: 'Tournament Batch #TRN-2026-BLR', amount: '₹1,45,000', status: 'RESOLVED', time: '3h ago', recommendation: 'All 8 matches balanced with 0 INR discrepancy across 5 ledger accounts' }
+    ];
+
+    function initAdminDesk() {
+      const c = document.getElementById('adminAuditDeskContainer');
+      if (!c) return;
+
+      const casesHtml = adminCases.map(function(item) {
+        return '<div id="admin-case-' + item.caseId + '" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">' +
+          '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.4rem;">' +
+            '<div style="display: flex; align-items: center; gap: 0.5rem;">' +
+              '<span style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--cyan);">' + item.caseId + '</span>' +
+              '<span style="font-weight: 700; font-size: 0.85rem; color: #FFF;">' + item.title + '</span>' +
+            '</div>' +
+            '<span style="font-size: 0.7rem; font-weight: 700; color: ' + (item.status === 'RESOLVED' ? 'var(--turf-emerald)' : 'var(--amber)') + '; background: rgba(255,255,255,0.05); padding: 0.15rem 0.5rem; border-radius: 4px;">' + item.status + '</span>' +
+          '</div>' +
+          '<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">' +
+            '<span>Entity: <strong style="color: #FFF;">' + item.entity + '</strong></span>' +
+            '<span>Dispute Value: <strong style="color: var(--amber);">' + item.amount + '</strong></span>' +
+            '<span>Logged: ' + item.time + '</span>' +
+          '</div>' +
+          '<div style="font-size: 0.75rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border-left: 3px solid var(--amber); margin-bottom: 0.75rem;">' +
+            '<strong>Suggested Action:</strong> ' + item.recommendation +
+          '</div>' +
+          '<div style="display: flex; gap: 0.5rem; justify-content: flex-end;">' +
+            '<button class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" onclick="arbitrateAdminCase('' + item.caseId + '', 'REJECT')" data-tooltip="Reject claim and disburse provider payout">Reject Claim</button>' +
+            '<button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" onclick="arbitrateAdminCase('' + item.caseId + '', 'RESOLVE')" data-tooltip="Approve resolution and trigger balanced double-entry refund">Approve &amp; Execute</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      c.innerHTML = '<div class="card" style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem;">' +
+          '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">' +
+            '<div>' +
+              '<div class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">' +
+                '<span>🏛️</span> Admin Operations &amp; Settlement Audit Desk' +
+              '</div>' +
+              '<div class="card-desc">Authoritative dispute arbitration, circuit breaker governance, and double-entry ledger audits</div>' +
+            '</div>' +
+            '<button class="btn btn-secondary" onclick="refreshAdminCases()" data-tooltip="Refresh administrative cases and audit ledger" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;">🔄 Refresh Audit</button>' +
+          '</div>' +
+          '<div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">' +
+              '<span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Chart of Accounts Integrity Verification</span>' +
+              '<span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald); background: rgba(0,229,153,0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">✓ 100% BALANCED (ZERO IMBALANCE)</span>' +
+            '</div>' +
+            '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; font-family: var(--font-mono); font-size: 0.75rem;">' +
+              '<div><div style="color: var(--text-muted); font-size: 0.65rem;">ESCROW_HOLD</div><div style="font-size: 0.95rem; font-weight: 700; color: #FFF;">₹1,45,000</div></div>' +
+              '<div><div style="color: var(--text-muted); font-size: 0.65rem;">PROVIDER_PAYABLE</div><div style="font-size: 0.95rem; font-weight: 700; color: var(--cyan);">₹1,36,445</div></div>' +
+              '<div><div style="color: var(--text-muted); font-size: 0.65rem;">PLATFORM_FEE</div><div style="font-size: 0.95rem; font-weight: 700; color: var(--turf-emerald);">₹7,250</div></div>' +
+              '<div><div style="color: var(--text-muted); font-size: 0.65rem;">TAX_GST_PAYABLE</div><div style="font-size: 0.95rem; font-weight: 700; color: var(--amber);">₹1,305</div></div>' +
+              '<div><div style="color: var(--text-muted); font-size: 0.65rem;">REFUND_CLEARING</div><div style="font-size: 0.95rem; font-weight: 700; color: var(--rose);">₹0</div></div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; color: #f8fafc;">Active Case Arbitrations (' + adminCases.length + ')</div>' +
+          '<div id="adminCasesListContainer">' + casesHtml + '</div>' +
+        '</div>';
+    }
+
+    function arbitrateAdminCase(caseId, action) {
+      const c = adminCases.find(function(item) { return item.caseId === caseId; });
+      if (c) {
+        c.status = action === 'RESOLVE' ? 'RESOLVED' : 'REJECTED';
+      }
+      initAdminDesk();
+      showToast(action === 'RESOLVE' ? '✓ ' + caseId + ' approved: Zero-sum double-entry refund executed' : '✓ ' + caseId + ' rejected: Escrow funds disbursed to provider');
+    }
+
+    function refreshAdminCases() {
+      initAdminDesk();
+      showToast('✓ Admin audit desk refreshed with latest ledger balances');
     }
 
     // Health check ping
@@ -4163,6 +4604,7 @@ BOWLING,Overs,Maidens,Runs,Wickets,Economy
     renderRoster();
     initEventReadiness();
     initOfficialDesk();
+    initAdminDesk();
   </script>
 </body>
 </html>

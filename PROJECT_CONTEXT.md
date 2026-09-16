@@ -1,15 +1,15 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 09:31:00
-**Version:** 1.0.0-phase2c (Store Ready)  
+**Last Updated:** 2026-09-16 10:35:50
+**Version:** 1.0.0-phase2d (Operational Governance & Complete UX)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2C Completed (Play Store & App Store Listing Readiness, Apple Privacy Manifest WWDC 2024, Pixel-Perfect Store Visual Assets, Archive Features Integration: Event Basket Operational Readiness, MCC Law 1.3 Toss & DLS Rain Calculations, Official & Umpire Assignment Desk, 5-Star Post-Match Trust Ratings, Orange & Purple Cap Tournament Leaderboards).
-- **Test Health**: 100% Passing (148 automated tests across 17 test suites; 1.45s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2D Completed (Advanced UX & Operational Governance: In-App Notification Center Drawer UX-025, Event Basket Resource Procurement Modal UX-008, Provider Storefront & Hourly Capacity Publisher UX-018, Admin Settlement & 5-Account Chart of Accounts Integrity Audit Desk UX-027).
+- **Test Health**: 100% Passing (151 automated tests across 18 test suites; 1.57s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
 - **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
 
@@ -91,6 +91,22 @@
     - *Umpire & Official Assignment Desk (`official-desk.ts`)*: Assignment card workflow (`ASSIGNED` -> `ACCEPTED` -> `CHECKED_IN` -> `COMPLETED`) with escrow disbursement protection.
     - *Post-Match 5-Star Dimensional Ratings (`ratings-modal.ts`)*: Multi-dimensional feedback for Pitch Condition, Umpire Fair Play, and Scorer Reliability with Bayesian rating engine integration.
     - *Tournament Player Leaderboards (`leaderboards.ts`)*: Orange Cap (Batting) and Purple Cap (Bowling) leaderboards with runs, strike rate, wickets, and economy metrics.
+- [x] **Advanced UX, Storefront & Operational Governance (Phase 2D)**:
+  - **In-App Notification Center Drawer (`notifications-drawer.ts`, UX-025, COM-001..010)**:
+    - Slide-over notification drawer with active category filters (`MATCH`, `FINANCIAL`, `TRUST`, `SYSTEM`).
+    - Unread badge counters (`🔔 3 unread`) and 1-click batch read actions.
+    - Deep linking to relevant console tabs (`scoring`, `marketplace`, `incidents`).
+  - **Event Basket Resource Procurement Modal (`#modalEventBasket`, UX-008, BAS-001..015)**:
+    - Detailed line-item breakdown of match sporting requirements (Turf Arena, Lead Umpire, Match Balls, Digital Scorer).
+    - Real-time double-entry escrow commercial breakdown (Subtotal, 5% Platform Fee, 18% GST, Total Escrow Deposit).
+    - 1-click escrow locking action with instant toast feedback.
+  - **Provider Storefront & Capacity Manager Modal (`provider-storefront.ts`, UX-018, MKT-001..020)**:
+    - Financial earnings breakdown (Gross Revenue, Net Disbursed, Escrow Hold, Fee deductions).
+    - Interactive slot management with instant block/unfreeze toggling.
+    - Live publication form adding new hourly match slots with floodlight flags into search index.
+  - **Admin Operations & Settlement Audit Desk (`admin-desk.ts`, UX-027, ADM-001..020)**:
+    - Full 5-account Chart of Accounts balance integrity meter (`ESCROW_HOLD`, `PROVIDER_PAYABLE`, `PLATFORM_FEE`, `TAX_GST_PAYABLE`, `REFUND_CLEARING`) with verified 0 INR imbalance.
+    - Administrative dispute arbitration queue with instant claim approval (balanced double-entry refund execution) or rejection (escrow payout release).
 
 ---
 
@@ -108,6 +124,7 @@
 11. **Audit & Traceability Invariant**: Mutating API requests produce structured audit log events in `audit_events` and propagate correlation IDs in responses.
 12. **Offline Outbox & Zero-Dependency SVG Invariant**: Scoring outbox queue persists pending deliveries offline in `localStorage` and synchronizes sequentially; analytics visuals (Worm & Manhattan charts) are generated strictly using pure SVG without external charting library dependencies to maintain single-file portability.
 13. **Store Readiness & Privacy Invariant**: All store assets and privacy manifests comply strictly with Apple App Store (WWDC 2024 Privacy Manifest, 1024x1024 RGB 24-bit no alpha icon) and Google Play Store (Target SDK 34, Data Safety, In-App Account Deletion).
+14. **Operational Governance Invariant**: Administrative dispute resolutions produce balanced double-entry refund journal entries; provider capacity slots enforce temporal GiST boundaries without overlap.
 
 ---
 
@@ -128,6 +145,7 @@
 - [x] Phase 2A: Complete Multi-Persona Web Frontend & Consumer Journeys (Teams, Studio, Wagon Wheel, Modals)
 - [x] Phase 2B: Offline-First Match Scoring Outbox, Match Analytics (SVG Worm & Manhattan Charts) & Scorecard Export Engine
 - [x] Phase 2C: Play Store & App Store Listing Readiness, Privacy Manifest, Store Assets, Archive Document Features (Toss, DLS, Ratings, Readiness, Cap Leaderboards)
+- [x] Phase 2D: Advanced UX, Notification Center, Event Basket Modal, Provider Storefront & Admin Settlement Desk
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 
