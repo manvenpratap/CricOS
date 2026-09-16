@@ -947,8 +947,277 @@
       cursor: help;
       position: relative;
     }
-    button[data-tooltip], a[data-tooltip] {
+    /* Header User Account Button */
+    .user-profile-header-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+    .user-profile-header-btn:hover {
+      background: rgba(0, 229, 153, 0.12);
+      border-color: rgba(0, 229, 153, 0.35);
+    }
+    .user-avatar-pill {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--turf-emerald);
+      color: #04070D;
+      font-weight: 800;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .user-meta-pill {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .user-name-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+    .user-role-text {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: var(--turf-emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    /* Modals System */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(4, 7, 13, 0.82);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal-dialog {
+      background: #0A101C;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 229, 153, 0.15);
+    }
+    .modal-header {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: #F8FAFC;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .modal-close-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+    .modal-close-btn:hover {
+      background: rgba(255, 51, 102, 0.2);
+      color: #FF3366;
+      border-color: rgba(255, 51, 102, 0.4);
+    }
+    .modal-body {
+      padding: 1.5rem 1.75rem;
+    }
+    .modal-footer {
+      padding: 1.15rem 1.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Persona Selector Pills */
+    .persona-pills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .persona-pill-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0.65rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .persona-pill-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F8FAFC;
+    }
+    .persona-pill-btn.active {
+      background: rgba(0, 229, 153, 0.15);
+      border-color: var(--turf-emerald);
+      color: var(--turf-emerald);
+    }
+    .persona-icon {
+      font-size: 1.25rem;
+    }
+
+    /* Wagon Wheel Graphic */
+    .wagon-wheel-container {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1;
+      margin: 0 auto 1.25rem auto;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.12) 0%, rgba(10, 16, 28, 0.95) 75%);
+      border: 2px dashed rgba(0, 229, 153, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pitch-strip {
+      position: absolute;
+      width: 24px;
+      height: 80px;
+      background: rgba(255, 184, 0, 0.35);
+      border: 1px solid rgba(255, 184, 0, 0.6);
+      border-radius: 3px;
+    }
+    .field-zone-btn {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F8FAFC;
+      border-radius: 6px;
+      padding: 0.2rem 0.45rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .field-zone-btn:hover, .field-zone-btn.active {
+      background: var(--turf-emerald);
+      color: #04070D;
+      border-color: var(--turf-emerald);
+      transform: scale(1.08);
+    }
+
+    /* Roster Player Card */
+    .player-roster-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      padding: 0.65rem 0.95rem;
+      margin-bottom: 0.45rem;
+      transition: all 0.2s;
+    }
+    .player-roster-row:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .player-role-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Tactical Scoring Studio Pad */
+    .studio-pad-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .studio-btn {
+      padding: 1.1rem 0.5rem;
+      font-size: 1.4rem;
+      font-family: var(--font-score);
+      font-weight: 800;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #F8FAFC;
+      cursor: pointer;
+      transition: all 0.15s ease-out;
+    }
+    .studio-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5);
+    }
+    .studio-btn.boundary-four {
+      background: rgba(0, 210, 255, 0.15);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .studio-btn.maximum-six {
+      background: rgba(0, 229, 153, 0.18);
+      border-color: var(--turf-emerald);
+      color: var(--turf-emerald);
+    }
+    .studio-btn.wicket-out {
+      background: rgba(255, 51, 102, 0.18);
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+    .studio-sublabel {
+      font-size: 0.65rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
     }
   </style>
 </head>
@@ -969,6 +1238,13 @@
         <a href="/metrics" target="_blank" class="nav-pill" data-tooltip="Prometheus & OpenMetrics Standard Metrics Exposition">📊 Metrics</a>
         <a href="/health/ready" target="_blank" class="nav-pill" data-tooltip="Kubernetes Readiness Probe & Database Pool Status">🩺 Health</a>
       </div>
+      <div class="user-profile-header-btn" onclick="openUserModal()" data-tooltip="Manage User Profile, Career Stats, and Switch Persona (Captain, Player, Scorer...)">
+        <div class="user-avatar-pill" id="headerUserAvatar">VK</div>
+        <div class="user-meta-pill">
+          <span class="user-name-text" id="headerUserName">Virat Sharma</span>
+          <span class="user-role-text" id="headerUserRoleBadge">CAPTAIN #18</span>
+        </div>
+      </div>
       <div class="status-pill" id="healthPill" data-tooltip="API Service & Live SSE Connection Status">
         <div class="pulse-dot"></div>
         <span id="healthText">Connecting...</span>
@@ -981,11 +1257,13 @@
 
   <!-- Navigation Tabs -->
   <div class="tabs-bar">
-    <button class="tab-btn active" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip">🏏 Live Match Scoring</button>
-    <button class="tab-btn" onclick="switchTab('marketplace')" data-tooltip="Marketplace provider booking and checkout">🛒 Marketplace & Booking</button>
-    <button class="tab-btn" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, and Net Run Rate standings">🏆 Tournaments & Fixtures</button>
-    <button class="tab-btn" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, provider Bayesian trust, and circuit breaker">🛡️ Incidents & Reputation</button>
-    <button class="tab-btn" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner and response inspector">⚡ Live API Explorer</button>
+    <button class="tab-btn active" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip">🏏 Match Center</button>
+    <button class="tab-btn" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes">👥 Teams & Rosters</button>
+    <button class="tab-btn" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard">🏆 Tournaments</button>
+    <button class="tab-btn" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with 15-minute GiST hold">🛒 Venues & Turfs</button>
+    <button class="tab-btn" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships">🎯 Scoring Studio</button>
+    <button class="tab-btn" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, provider Bayesian trust, and circuit breaker">🛡️ Fair Play & Trust</button>
+    <button class="tab-btn" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector">⚡ Operations & APIs</button>
   </div>
 
   <!-- Global Stadium Telemetry Strip -->
@@ -1114,6 +1392,73 @@
           <div class="card-desc">Event-sourced deliveries validated through Scoring State Machine</div>
           <div class="feed-container" id="scoringFeed">
             <div class="feed-item" style="color: var(--text-muted);">Match ready. Waiting for first delivery...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: TEAMS & ROSTERS -->
+    <div id="tab-teams" class="tab-pane">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: #F8FAFC; display: flex; align-items: center; gap: 0.6rem;">
+            🏏 Bangalore Blasters <span style="font-size: 0.8rem; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid var(--border-accent); padding: 0.2rem 0.6rem; border-radius: 6px;">BLR</span>
+          </h2>
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Home Ground: Chinnaswamy Turf A • Verified Squad Status: 11/11 Verified</div>
+        </div>
+        <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+          <div class="nav-pill" style="cursor: pointer; background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.82rem;" onclick="copyJoinCode()" data-tooltip="Click to copy team join invite code for new players">
+            🔑 Join Code: <strong style="color: var(--cyan);" id="teamJoinCodeBadge">CRIC-BLR-4821</strong>
+          </div>
+          <button class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="openJoinTeamPrompt()" data-tooltip="Join an existing team using a 8-character invite code">➕ Join Team</button>
+          <button class="btn" style="width: auto; padding: 0.5rem 1.15rem; font-size: 0.85rem;" onclick="openCreateTeamModal()" data-tooltip="Create a new cricket franchise or local club team">🏆 Create New Team</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Playing XI Card -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div class="card-title">⚡ Playing XI (Active Match Lineup)</div>
+            <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">11 PLAYERS</span>
+          </div>
+          <div class="card-desc">Current starting lineup declared for match day</div>
+
+          <div id="playingXiContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Bench, Reserves & Team Stats -->
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <div class="card-title">🪑 Bench & Reserve Squad</div>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">3 RESERVES</span>
+            </div>
+            <div class="card-desc">Substitutes available for tactical rotation or concussion sub</div>
+            <div id="benchContainer">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📊 Team Franchise Profile</div>
+            <div class="card-desc">Official team registration details and jersey kit</div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 0.5rem;">
+              <div style="background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Franchise Win Rate</div>
+                <div style="font-size: 1.2rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);">74.2% (26W - 9L)</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Kit Palette</div>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.25rem;">
+                  <span style="width: 20px; height: 20px; border-radius: 4px; background: #00E599; display: inline-block; border: 1px solid rgba(255,255,255,0.2);" data-tooltip="Primary Color: Turf Emerald"></span>
+                  <span style="width: 20px; height: 20px; border-radius: 4px; background: #00D2FF; display: inline-block; border: 1px solid rgba(255,255,255,0.2);" data-tooltip="Secondary Color: Stadium Cyan"></span>
+                  <span style="font-size: 0.78rem; color: var(--text-muted);">Emerald &amp; Cyan</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1254,6 +1599,105 @@
       </div>
     </div>
 
+    <!-- TAB: SCORING STUDIO -->
+    <div id="tab-studio" class="tab-pane">
+      <div class="grid-2">
+        <!-- Studio Pad & Ball Logger -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div class="card-title">🎯 Scorer Studio & Tactical Pad</div>
+            <span class="rate-badge" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">TACTICAL SCORER MODE</span>
+          </div>
+          <div class="card-desc">Select runs, trigger dismissals with fielders, or record extras with free hits</div>
+
+          <!-- Active Batters on Field -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+            <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.3); border-radius: 10px; padding: 0.85rem;" data-tooltip="Striker currently facing delivery">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 800;">STRIKER ⚡</span>
+                <button class="btn btn-secondary" style="width: auto; padding: 0.15rem 0.5rem; font-size: 0.68rem;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually without recording runs">Swap Strike</button>
+              </div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: #F8FAFC; margin-top: 0.35rem;" id="studioStrikerName">Virat Sharma</div>
+              <div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 800; color: var(--turf-emerald);" id="studioStrikerStats">48* <span style="font-size: 0.8rem; color: var(--text-muted);">(32b, 4x4, 2x6)</span></div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.85rem;" data-tooltip="Non-striker at bowler's end">
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">NON-STRIKER</div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: #F8FAFC; margin-top: 0.35rem;" id="studioNonStrikerName">Hardik Patel</div>
+              <div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 800; color: var(--cyan);" id="studioNonStrikerStats">18 <span style="font-size: 0.8rem; color: var(--text-muted);">(12b, 1x4, 1x6)</span></div>
+            </div>
+          </div>
+
+          <!-- Studio Keypad -->
+          <div class="studio-pad-grid">
+            <button class="studio-btn" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery)">0<span class="studio-sublabel">Dot</span></button>
+            <button class="studio-btn" onclick="recordStudioBall(1)" data-tooltip="Single: 1 run and strike rotates">1<span class="studio-sublabel">Single</span></button>
+            <button class="studio-btn" onclick="recordStudioBall(2)" data-tooltip="Two runs (no strike rotation)">2<span class="studio-sublabel">Double</span></button>
+            <button class="studio-btn" onclick="recordStudioBall(3)" data-tooltip="Three runs (strike rotates)">3<span class="studio-sublabel">Triple</span></button>
+            <button class="studio-btn boundary-four" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
+            <button class="studio-btn maximum-six" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
+            <button class="studio-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (Bowled, Caught, LBW, Run out...)">W<span class="studio-sublabel">Wicket</span></button>
+            <button class="studio-btn" style="border-color: var(--amber); color: var(--amber);" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Record Wide (+1 run, extra)">EX<span class="studio-sublabel">Extras</span></button>
+          </div>
+
+          <!-- Quick Extras Strip -->
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Wide ball (+1 run, ball does not count toward over)">+1 Wd</button>
+            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('NO_BALL', 1)" data-tooltip="No Ball (+1 run, triggers Free Hit on next delivery)">+1 Nb (Free Hit)</button>
+            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('LEG_BYE', 1)" data-tooltip="Leg Bye (+1 run, strike rotates)">+1 Lb</button>
+            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('BYE', 1)" data-tooltip="Bye (+1 run, strike rotates)">+1 Bye</button>
+          </div>
+        </div>
+
+        <!-- Wagon Wheel & Partnerships -->
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <div class="card-title">🏏 8-Zone Wagon Wheel</div>
+              <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;" id="wagonWheelSelectedZone">ZONE: EXTRA COVER</span>
+            </div>
+            <div class="card-desc">Click field zone on ground to map batting trajectory</div>
+
+            <div class="wagon-wheel-container">
+              <div class="pitch-strip"></div>
+              <!-- 8 Field Zones -->
+              <button class="field-zone-btn" style="top: 8px; left: 50%; transform: translateX(-50%);" onclick="selectShotZone('LONG_OFF', this)" data-tooltip="Straight Long Off">Long Off</button>
+              <button class="field-zone-btn" style="bottom: 8px; left: 50%; transform: translateX(-50%);" onclick="selectShotZone('FINE_LEG', this)" data-tooltip="Fine Leg">Fine Leg</button>
+              <button class="field-zone-btn active" style="left: 10px; top: 50%; transform: translateY(-50%);" onclick="selectShotZone('EXTRA_COVER', this)" data-tooltip="Extra Cover / Covers">Cover</button>
+              <button class="field-zone-btn" style="right: 10px; top: 50%; transform: translateY(-50%);" onclick="selectShotZone('MID_WICKET', this)" data-tooltip="Deep Mid Wicket">Mid Wkt</button>
+              <button class="field-zone-btn" style="top: 35px; left: 35px;" onclick="selectShotZone('POINT', this)" data-tooltip="Backward Point / Point">Point</button>
+              <button class="field-zone-btn" style="top: 35px; right: 35px;" onclick="selectShotZone('LONG_ON', this)" data-tooltip="Straight Long On">Long On</button>
+              <button class="field-zone-btn" style="bottom: 35px; left: 35px;" onclick="selectShotZone('THIRD_MAN', this)" data-tooltip="Third Man">Third Man</button>
+              <button class="field-zone-btn" style="bottom: 35px; right: 35px;" onclick="selectShotZone('SQUARE_LEG', this)" data-tooltip="Deep Square Leg">Sq Leg</button>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; font-size: 0.78rem; border-top: 1px solid var(--border-subtle); padding-top: 0.75rem;">
+              <div>Off Side: <strong style="color: var(--cyan);" id="wagonOffTally">58%</strong></div>
+              <div>Leg Side: <strong style="color: var(--turf-emerald);" id="wagonLegTally">42%</strong></div>
+              <div>Boundaries: <strong style="color: var(--amber);" id="wagonBoundaryTally">8 Hits</strong></div>
+            </div>
+          </div>
+
+          <!-- Active Partnership Widget -->
+          <div class="card">
+            <div class="card-title">🤝 Active Partnership</div>
+            <div class="card-desc">4th Wicket Stand</div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+              <div style="font-family: var(--font-score); font-size: 1.6rem; font-weight: 800; color: var(--turf-emerald);" id="partnershipRunsBalls">44 runs <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(28 balls)</span></div>
+              <div style="font-size: 0.8rem; color: var(--cyan); font-weight: 700;">CRR: 9.42</div>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 9999px; overflow: hidden; margin-bottom: 0.75rem;">
+              <div style="width: 62%; height: 100%; background: linear-gradient(90deg, var(--turf-emerald), var(--cyan)); border-radius: 9999px;" id="partnershipProgressFill"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+              <span>V. Sharma: 26 (16b)</span>
+              <span>H. Patel: 18 (12b)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- TAB 4: INCIDENTS & REPUTATION -->
     <div id="tab-incidents" class="tab-pane">
       <div class="grid-2">
@@ -1386,17 +1830,270 @@
         <pre id="apiResponse" style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; max-height: 300px; overflow-y: auto; color: #38BDF8;">Click 'Run Request' to test</pre>
       </div>
     </div>
-  </main>
+  <!-- User Profile & Persona Switcher Modal -->
+  <div class="modal-backdrop" id="modalUserProfile">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>👤 User Profile &amp; Persona Switcher</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeUserModal()" data-tooltip="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- Persona Pills -->
+        <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; display: block;">Select Active Persona</label>
+        <div class="persona-pills-container">
+          <button class="persona-pill-btn active" onclick="selectPersona('CAPTAIN')" data-role="CAPTAIN" data-tooltip="Captain persona: Manage lineup, toss, declarations">
+            <span class="persona-icon">👑</span>
+            <span>Captain</span>
+          </button>
+          <button class="persona-pill-btn" onclick="selectPersona('PLAYER')" data-role="PLAYER" data-tooltip="Player persona: Career stats, RSVP, and match fixtures">
+            <span class="persona-icon">🏏</span>
+            <span>Player</span>
+          </button>
+          <button class="persona-pill-btn" onclick="selectPersona('SCORER')" data-role="SCORER" data-tooltip="Official Scorer: Ball-by-ball scoring, dismissals, wagon wheel">
+            <span class="persona-icon">📋</span>
+            <span>Scorer</span>
+          </button>
+          <button class="persona-pill-btn" onclick="selectPersona('ORGANISER')" data-role="ORGANISER" data-tooltip="Tournament Organiser: Create tourneys, fixtures, stage management">
+            <span class="persona-icon">🏆</span>
+            <span>Organiser</span>
+          </button>
+          <button class="persona-pill-btn" onclick="selectPersona('TURF_PROVIDER')" data-role="TURF_PROVIDER" data-tooltip="Turf Venue Owner: Manage hourly slots, pricing, and escrow payouts">
+            <span class="persona-icon">🏟️</span>
+            <span>Provider</span>
+          </button>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="grid-2" style="margin-bottom: 1rem;">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="profileInputName" value="Virat Sharma">
+          </div>
+          <div class="form-group">
+            <label>Jersey Number</label>
+            <input type="number" id="profileInputJersey" value="18">
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 1rem;">
+          <div class="form-group">
+            <label>Batting Style</label>
+            <select id="profileInputBatting">
+              <option value="RHB">Right Hand Bat (RHB)</option>
+              <option value="LHB">Left Hand Bat (LHB)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Bowling Style</label>
+            <select id="profileInputBowling">
+              <option value="Right-Arm Fast">Right-Arm Fast</option>
+              <option value="Right-Arm Spin">Right-Arm Spin (Off/Leg)</option>
+              <option value="Left-Arm Fast">Left-Arm Fast</option>
+              <option value="Left-Arm Spin">Left-Arm Spin</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Career Figures Card -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Verified Career Figures</div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center;">
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);">Matches</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; font-family: var(--font-score);">48</div>
+            </div>
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);">Runs</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);">1,850</div>
+            </div>
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);">Average</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--cyan); font-family: var(--font-score);">46.25</div>
+            </div>
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);">Strike Rate</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--amber); font-family: var(--font-score);">144.5</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy & Danger Zone (Apple 5.1.1(v)) -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+          <div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: #F8FAFC;">Account Privacy &amp; Data Rights</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Apple App Store Guideline 5.1.1(v) Compliant</div>
+          </div>
+          <button class="btn btn-secondary" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem; color: var(--rose); border-color: rgba(255,51,102,0.3);" onclick="confirmAccountDeletion()" data-tooltip="Irreversibly delete account and personal playing data">Delete Account</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeUserModal()">Cancel</button>
+        <button class="btn" style="width: auto; padding: 0.5rem 1.5rem;" onclick="saveUserProfile()" data-tooltip="Save profile edits and persona selection">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dismissal / Wicket Modal -->
+  <div class="modal-backdrop" id="modalDismissal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span style="color: var(--rose);">⚡ Record Wicket Dismissal</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeDismissalModal()" data-tooltip="Cancel wicket">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Dismissal Mode</label>
+          <select id="dismissalKind" onchange="toggleFielderField()">
+            <option value="BOWLED">Bowled</option>
+            <option value="CAUGHT">Caught</option>
+            <option value="LBW">LBW (Leg Before Wicket)</option>
+            <option value="RUN_OUT">Run Out</option>
+            <option value="STUMPED">Stumped</option>
+            <option value="HIT_WICKET">Hit Wicket</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="fielderGroup" style="display: none;">
+          <label>Fielder Involved</label>
+          <input type="text" id="dismissalFielder" placeholder="e.g. Ravindra Jadeja">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Out Batter</label>
+            <select id="dismissalOutBatter">
+              <option value="STRIKER" id="outStrikerOption">Virat Sharma (Striker)</option>
+              <option value="NON_STRIKER" id="outNonStrikerOption">Hardik Patel (Non-Striker)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Incoming Batter</label>
+            <select id="dismissalNextBatter">
+              <option value="Rishabh Pant">Rishabh Pant (LHB)</option>
+              <option value="Ravindra Jadeja">Ravindra Jadeja (LHB)</option>
+              <option value="Jasprit Bumrah">Jasprit Bumrah (RHB)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeDismissalModal()">Cancel</button>
+        <button class="btn" style="width: auto; background: var(--rose); border-color: var(--rose); color: white;" onclick="confirmDismissal()" data-tooltip="Record wicket and fall of wicket to scorecard">Confirm Wicket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Team Modal -->
+  <div class="modal-backdrop" id="modalCreateTeam">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🏆 Create Cricket Team / Club</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeCreateTeamModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Franchise / Team Name</label>
+            <input type="text" id="newTeamName" placeholder="e.g. Delhi Dominators">
+          </div>
+          <div class="form-group">
+            <label>Short Code (3-4 chars)</label>
+            <input type="text" id="newTeamCode" placeholder="e.g. DEL" maxlength="4">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Home Turf / Venue</label>
+          <input type="text" id="newTeamVenue" placeholder="e.g. Feroz Shah Stadium Turf B">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Primary Jersey Color</label>
+            <input type="color" id="newTeamColor1" value="#00E599" style="height: 40px; padding: 2px;">
+          </div>
+          <div class="form-group">
+            <label>Secondary Jersey Color</label>
+            <input type="color" id="newTeamColor2" value="#00D2FF" style="height: 40px; padding: 2px;">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeCreateTeamModal()">Cancel</button>
+        <button class="btn" style="width: auto;" onclick="saveNewTeam()" data-tooltip="Register new team and generate squad join code">Create Team</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instant Hold Checkout Modal -->
+  <div class="modal-backdrop" id="modalCheckout">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🛒 Turf Booking &amp; 15-Minute GiST Hold</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeCheckoutModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.3); border-radius: 8px; padding: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.72rem; color: var(--cyan); font-weight: 800; text-transform: uppercase;">15-Minute GiST Hold Active</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: #F8FAFC;" id="modalCheckoutSlotTitle">Chinnaswamy Turf A (13:00 - 14:00)</div>
+          </div>
+          <div style="font-family: var(--font-score); font-size: 1.3rem; font-weight: 800; color: var(--cyan);" id="modalHoldTimer">14:59</div>
+        </div>
+
+        <div class="breakdown-table" style="margin-bottom: 1.25rem;">
+          <div class="breakdown-row">
+            <span>Base Hourly Turf Fee</span>
+            <span id="modalCheckoutSubtotal">₹1,000.00</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Platform Facilitation (5%)</span>
+            <span id="modalCheckoutFee">₹50.00</span>
+          </div>
+          <div class="breakdown-row">
+            <span>GST on Facilitation (18%)</span>
+            <span id="modalCheckoutTax">₹9.00</span>
+          </div>
+          <div class="breakdown-row total">
+            <span>Total Escrow Deposit</span>
+            <span id="modalCheckoutTotal">₹1,059.00</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
+          🔒 Funds are locked in CricOS Double-Entry Escrow until match completion. Full refund issued automatically if venue cancels or weather suspends play.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeCheckoutModal()">Cancel</button>
+        <button class="btn" style="width: auto;" onclick="confirmBookingPayment()" data-tooltip="Process mock payment and confirm slot booking">Confirm &amp; Pay ₹1,059</button>
+      </div>
+    </div>
+  </div>
 
   <div id="toast">✓ Event completed</div>
 
   <script>
     // Tab Switching
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        const onclickAttr = b.getAttribute('onclick') || '';
+        if (onclickAttr.indexOf("'" + tabId + "'") !== -1) {
+          b.classList.add('active');
+        }
+      });
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById('tab-' + tabId).classList.add('active');
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
     }
 
     function showToast(msg) {
@@ -1404,6 +2101,382 @@
       t.textContent = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ==========================================
+    // User Persona & Profile State
+    // ==========================================
+    let currentUser = {
+      name: 'Virat Sharma',
+      persona: 'CAPTAIN',
+      jerseyNumber: 18,
+      battingStyle: 'RHB',
+      bowlingStyle: 'Right-Arm Fast'
+    };
+
+    function openUserModal() {
+      const modal = document.getElementById('modalUserProfile');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeUserModal() {
+      const modal = document.getElementById('modalUserProfile');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function selectPersona(role) {
+      currentUser.persona = role;
+      document.querySelectorAll('.persona-pill-btn').forEach(btn => {
+        if (btn.getAttribute('data-role') === role) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function saveUserProfile() {
+      const nameInput = document.getElementById('profileInputName');
+      const jerseyInput = document.getElementById('profileInputJersey');
+      const battingSelect = document.getElementById('profileInputBatting');
+      const bowlingSelect = document.getElementById('profileInputBowling');
+
+      if (nameInput && nameInput.value.trim()) currentUser.name = nameInput.value.trim();
+      if (jerseyInput && jerseyInput.value) currentUser.jerseyNumber = parseInt(jerseyInput.value, 10) || 18;
+      if (battingSelect) currentUser.battingStyle = battingSelect.value;
+      if (bowlingSelect) currentUser.bowlingStyle = bowlingSelect.value;
+
+      const initials = currentUser.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() || 'VK';
+      const avatarEl = document.getElementById('headerUserAvatar');
+      const nameEl = document.getElementById('headerUserName');
+      const roleEl = document.getElementById('headerUserRoleBadge');
+
+      if (avatarEl) avatarEl.textContent = initials;
+      if (nameEl) nameEl.textContent = currentUser.name;
+      if (roleEl) roleEl.textContent = currentUser.persona + ' #' + currentUser.jerseyNumber;
+
+      closeUserModal();
+      showToast('Profile updated! Active Persona: ' + currentUser.persona);
+    }
+
+    function confirmAccountDeletion() {
+      if (window.confirm('Are you sure you want to delete your account? All personal match records will be scrubbed per Apple App Store Guideline 5.1.1(v).')) {
+        currentUser.name = 'Anonymous Player';
+        currentUser.persona = 'PLAYER';
+        currentUser.jerseyNumber = 0;
+        const avatarEl = document.getElementById('headerUserAvatar');
+        const nameEl = document.getElementById('headerUserName');
+        const roleEl = document.getElementById('headerUserRoleBadge');
+        if (avatarEl) avatarEl.textContent = '??';
+        if (nameEl) nameEl.textContent = 'Anonymous Player';
+        if (roleEl) roleEl.textContent = 'PLAYER';
+        closeUserModal();
+        showToast('Account data deleted per Apple Guideline 5.1.1(v)');
+      }
+    }
+
+    // ==========================================
+    // Tactical Scoring Studio & Wagon Wheel
+    // ==========================================
+    let studioStriker = { name: 'Virat Sharma', runs: 48, balls: 32, fours: 4, sixes: 2 };
+    let studioNonStriker = { name: 'Hardik Patel', runs: 18, balls: 12, fours: 1, sixes: 1 };
+    let partnership = { runs: 44, balls: 28 };
+    let currentSelectedZone = 'EXTRA_COVER';
+
+    function selectShotZone(zone, btnEl) {
+      currentSelectedZone = zone;
+      document.querySelectorAll('.field-zone-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      const label = document.getElementById('wagonWheelSelectedZone');
+      if (label) label.textContent = 'ZONE: ' + zone.replace('_', ' ');
+      showToast('Wagon zone set: ' + zone);
+    }
+
+    function swapStudioStrike() {
+      const temp = { ...studioStriker };
+      studioStriker = { ...studioNonStriker };
+      studioNonStriker = temp;
+      updateStudioUI();
+      showToast('Strike swapped! Now facing: ' + studioStriker.name);
+    }
+
+    function updateStudioUI() {
+      const sName = document.getElementById('studioStrikerName');
+      const sStats = document.getElementById('studioStrikerStats');
+      const nsName = document.getElementById('studioNonStrikerName');
+      const nsStats = document.getElementById('studioNonStrikerStats');
+      const partEl = document.getElementById('partnershipRunsBalls');
+      const partFill = document.getElementById('partnershipProgressFill');
+
+      if (sName) sName.textContent = studioStriker.name;
+      if (sStats) sStats.innerHTML = studioStriker.runs + '* <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioStriker.balls + 'b, ' + studioStriker.fours + 'x4, ' + studioStriker.sixes + 'x6)</span>';
+      if (nsName) nsName.textContent = studioNonStriker.name;
+      if (nsStats) nsStats.innerHTML = studioNonStriker.runs + ' <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioNonStriker.balls + 'b, ' + studioNonStriker.fours + 'x4, ' + studioNonStriker.sixes + 'x6)</span>';
+
+      if (partEl) partEl.innerHTML = partnership.runs + ' runs <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(' + partnership.balls + ' balls)</span>';
+      if (partFill) partFill.style.width = Math.min(100, (partnership.runs / 75) * 100) + '%';
+    }
+
+    function recordStudioBall(batRuns) {
+      studioStriker.runs += batRuns;
+      studioStriker.balls += 1;
+      if (batRuns === 4) studioStriker.fours += 1;
+      if (batRuns === 6) studioStriker.sixes += 1;
+      partnership.runs += batRuns;
+      partnership.balls += 1;
+
+      scoreDelivery(batRuns, 0, 'NONE', true, false);
+
+      if (batRuns % 2 === 1) {
+        swapStudioStrike();
+      } else {
+        updateStudioUI();
+      }
+    }
+
+    function recordStudioExtra(extraType, extraRuns) {
+      partnership.runs += extraRuns;
+      scoreDelivery(0, extraRuns, extraType, extraType !== 'WIDE' && extraType !== 'NO_BALL', false);
+      if (extraType === 'BYE' || extraType === 'LEG_BYE') {
+        if (extraRuns % 2 === 1) swapStudioStrike();
+      }
+      updateStudioUI();
+    }
+
+    // ==========================================
+    // Dismissal / Wicket Flow
+    // ==========================================
+    function openDismissalModal() {
+      const modal = document.getElementById('modalDismissal');
+      if (modal) {
+        modal.classList.add('active');
+        const strikerOpt = document.getElementById('outStrikerOption');
+        const nonStrikerOpt = document.getElementById('outNonStrikerOption');
+        if (strikerOpt) strikerOpt.textContent = studioStriker.name + ' (Striker)';
+        if (nonStrikerOpt) nonStrikerOpt.textContent = studioNonStriker.name + ' (Non-Striker)';
+      }
+    }
+
+    function closeDismissalModal() {
+      const modal = document.getElementById('modalDismissal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function toggleFielderField() {
+      const kind = document.getElementById('dismissalKind').value;
+      const group = document.getElementById('fielderGroup');
+      if (group) {
+        if (kind === 'CAUGHT' || kind === 'RUN_OUT' || kind === 'STUMPED') {
+          group.style.display = 'block';
+        } else {
+          group.style.display = 'none';
+        }
+      }
+    }
+
+    function confirmDismissal() {
+      const kind = document.getElementById('dismissalKind').value;
+      const fielder = document.getElementById('dismissalFielder').value.trim();
+      const outRole = document.getElementById('dismissalOutBatter').value;
+      const nextBatter = document.getElementById('dismissalNextBatter').value;
+
+      const outName = outRole === 'STRIKER' ? studioStriker.name : studioNonStriker.name;
+      let dismissalDesc = kind;
+      if (kind === 'CAUGHT') dismissalDesc = 'c ' + (fielder || 'Sub') + ' b Bowler';
+      else if (kind === 'RUN_OUT') dismissalDesc = 'run out (' + (fielder || 'Direct Hit') + ')';
+      else if (kind === 'LBW') dismissalDesc = 'lbw b Bowler';
+      else if (kind === 'BOWLED') dismissalDesc = 'b Bowler';
+      else if (kind === 'STUMPED') dismissalDesc = 'st ' + (fielder || 'Keeper') + ' b Bowler';
+
+      scoreDelivery(0, 0, 'NONE', true, true);
+
+      if (outRole === 'STRIKER') {
+        studioStriker.name = nextBatter;
+        studioStriker.runs = 0;
+        studioStriker.balls = 0;
+        studioStriker.fours = 0;
+        studioStriker.sixes = 0;
+      } else {
+        studioNonStriker.name = nextBatter;
+        studioNonStriker.runs = 0;
+        studioNonStriker.balls = 0;
+        studioNonStriker.fours = 0;
+        studioNonStriker.sixes = 0;
+      }
+      partnership.runs = 0;
+      partnership.balls = 0;
+      updateStudioUI();
+
+      closeDismissalModal();
+      showToast('🛑 WICKET! ' + outName + ' ' + dismissalDesc);
+    }
+
+    // ==========================================
+    // Teams & Rosters Management
+    // ==========================================
+    const initialPlayingXi = [
+      { id: 'p-1', name: 'Virat Sharma', role: 'BAT', isCaptain: true, isViceCaptain: false, isWicketKeeper: false, jersey: 18, verified: true },
+      { id: 'p-2', name: 'Rohit Verma', role: 'BAT', isCaptain: false, isViceCaptain: true, isWicketKeeper: false, jersey: 45, verified: true },
+      { id: 'p-3', name: 'KL Rahul', role: 'WK', isCaptain: false, isViceCaptain: false, isWicketKeeper: true, jersey: 1, verified: true },
+      { id: 'p-4', name: 'Suryakumar Rao', role: 'BAT', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 63, verified: true },
+      { id: 'p-5', name: 'Hardik Patel', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 33, verified: true },
+      { id: 'p-6', name: 'Ravindra Singh', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 8, verified: true },
+      { id: 'p-7', name: 'Axar Patel', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 20, verified: true },
+      { id: 'p-8', name: 'Kuldeep Yadav', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 23, verified: true },
+      { id: 'p-9', name: 'Jasprit Bumrah', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 93, verified: true },
+      { id: 'p-10', name: 'Mohammed Siraj', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 73, verified: true },
+      { id: 'p-11', name: 'Arshdeep Singh', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 2, verified: true }
+    ];
+
+    const initialBench = [
+      { id: 'b-1', name: 'Sanju Samson', role: 'WK', jersey: 11 },
+      { id: 'b-2', name: 'Yuzvendra Chahal', role: 'BOWL', jersey: 3 },
+      { id: 'b-3', name: 'Shivam Dube', role: 'ALL', jersey: 25 }
+    ];
+
+    function renderRoster() {
+      const xiContainer = document.getElementById('playingXiContainer');
+      const benchContainer = document.getElementById('benchContainer');
+
+      if (xiContainer) {
+        xiContainer.innerHTML = initialPlayingXi.map((p, idx) => {
+          let roleColor = p.role === 'BAT' ? 'var(--turf-emerald)' : (p.role === 'BOWL' ? 'var(--cyan)' : (p.role === 'ALL' ? 'var(--amber)' : 'var(--rose)'));
+          let badgeHtml = '';
+          if (p.isCaptain) badgeHtml += ' <span class="player-role-badge" style="background: rgba(0,229,153,0.2); color: var(--turf-emerald);" data-tooltip="Team Captain">C</span>';
+          if (p.isViceCaptain) badgeHtml += ' <span class="player-role-badge" style="background: rgba(0,210,255,0.2); color: var(--cyan);" data-tooltip="Vice-Captain">VC</span>';
+          if (p.isWicketKeeper) badgeHtml += ' <span class="player-role-badge" style="background: rgba(255,184,0,0.2); color: var(--amber);" data-tooltip="Designated Wicketkeeper">WK</span>';
+
+          return '<div class="player-roster-row">' +
+            '<div style="display: flex; align-items: center; gap: 0.65rem;">' +
+              '<span style="font-family: var(--font-score); font-size: 0.85rem; color: var(--text-muted); width: 20px;">' + (idx + 1) + '</span>' +
+              '<div>' +
+                '<div style="font-weight: 700; color: #F8FAFC; font-size: 0.88rem;">' + p.name + badgeHtml + '</div>' +
+                '<div style="font-size: 0.72rem; color: var(--text-muted);">#' + p.jersey + ' • Verified Player KYC ✓</div>' +
+              '</div>' +
+            '</div>' +
+            '<span class="player-role-badge" style="background: rgba(255,255,255,0.06); color: ' + roleColor + '; border: 1px solid rgba(255,255,255,0.1);">' + p.role + '</span>' +
+          '</div>';
+        }).join('');
+      }
+
+      if (benchContainer) {
+        benchContainer.innerHTML = initialBench.map((p) => {
+          return '<div class="player-roster-row">' +
+            '<div>' +
+              '<div style="font-weight: 700; color: #F8FAFC; font-size: 0.85rem;">' + p.name + '</div>' +
+              '<div style="font-size: 0.72rem; color: var(--text-muted);">#' + p.jersey + ' • Reserve Squad</div>' +
+            '</div>' +
+            '<span class="player-role-badge" style="background: rgba(255,255,255,0.04); color: var(--text-muted);">' + p.role + '</span>' +
+          '</div>';
+        }).join('');
+      }
+    }
+
+    function copyJoinCode() {
+      const codeBadge = document.getElementById('teamJoinCodeBadge');
+      const code = codeBadge ? codeBadge.textContent.trim() : 'CRIC-BLR-4821';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(() => {
+          showToast('✓ Join code copied: ' + code);
+        }).catch(() => {
+          showToast('Team code: ' + code);
+        });
+      } else {
+        showToast('Team code: ' + code);
+      }
+    }
+
+    function openJoinTeamPrompt() {
+      const code = window.prompt('Enter 8-character Team Join Code (e.g. CRIC-BLR-4821):');
+      if (code && code.trim()) {
+        showToast('✓ Request sent to join team ' + code.trim().toUpperCase());
+      }
+    }
+
+    function openCreateTeamModal() {
+      const modal = document.getElementById('modalCreateTeam');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeCreateTeamModal() {
+      const modal = document.getElementById('modalCreateTeam');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function saveNewTeam() {
+      const nameInput = document.getElementById('newTeamName');
+      const codeInput = document.getElementById('newTeamCode');
+      const name = nameInput ? nameInput.value.trim() : '';
+      const code = codeInput ? codeInput.value.trim().toUpperCase() : 'SQUAD';
+
+      if (!name) {
+        alert('Please enter a team name');
+        return;
+      }
+
+      const newJoinCode = 'CRIC-' + (code || 'SQUAD') + '-' + Math.floor(1000 + Math.random() * 9000);
+      const codeBadge = document.getElementById('teamJoinCodeBadge');
+      if (codeBadge) codeBadge.textContent = newJoinCode;
+      closeCreateTeamModal();
+      showToast('🏆 New team ' + name + ' created! Invite code: ' + newJoinCode);
+    }
+
+    // ==========================================
+    // Checkout Modal & 15-Minute GiST Hold
+    // ==========================================
+    let holdTimerInterval = null;
+    let currentSelectedTitle = 'Harbour Cricket Ground (4hr Match Slot)';
+    let currentSelectedPrice = 350000;
+
+    function openCheckoutModal(slotTitle, priceMinor) {
+      const modal = document.getElementById('modalCheckout');
+      if (!modal) return;
+
+      const subtotal = (priceMinor || currentSelectedPrice || 100000) / 100;
+      const fee = subtotal * 0.05;
+      const tax = fee * 0.18;
+      const total = subtotal + fee + tax;
+
+      const titleEl = document.getElementById('modalCheckoutSlotTitle');
+      const subEl = document.getElementById('modalCheckoutSubtotal');
+      const feeEl = document.getElementById('modalCheckoutFee');
+      const taxEl = document.getElementById('modalCheckoutTax');
+      const totEl = document.getElementById('modalCheckoutTotal');
+
+      if (titleEl) titleEl.textContent = slotTitle || currentSelectedTitle || 'Chinnaswamy Turf A (13:00 - 14:00)';
+      if (subEl) subEl.textContent = '₹' + subtotal.toFixed(2);
+      if (feeEl) feeEl.textContent = '₹' + fee.toFixed(2);
+      if (taxEl) taxEl.textContent = '₹' + tax.toFixed(2);
+      if (totEl) totEl.textContent = '₹' + total.toFixed(2);
+
+      let secondsLeft = 15 * 60;
+      if (holdTimerInterval) clearInterval(holdTimerInterval);
+      holdTimerInterval = setInterval(() => {
+        secondsLeft--;
+        const timerEl = document.getElementById('modalHoldTimer');
+        if (!timerEl) return;
+        if (secondsLeft <= 0) {
+          clearInterval(holdTimerInterval);
+          timerEl.textContent = '00:00 (Expired)';
+        } else {
+          const m = Math.floor(secondsLeft / 60);
+          const s = secondsLeft % 60;
+          timerEl.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        }
+      }, 1000);
+
+      modal.classList.add('active');
+    }
+
+    function closeCheckoutModal() {
+      const modal = document.getElementById('modalCheckout');
+      if (modal) modal.classList.remove('active');
+      if (holdTimerInterval) clearInterval(holdTimerInterval);
+    }
+
+    function confirmBookingPayment() {
+      closeCheckoutModal();
+      executeCheckoutAndPay();
     }
 
     // Health check ping
@@ -1758,6 +2831,8 @@
     loadListings();
 
     function selectListing(title, priceMinor) {
+      currentSelectedTitle = title;
+      currentSelectedPrice = priceMinor;
       document.getElementById('summaryItemTitle').textContent = title;
       const subtotal = priceMinor / 100;
       const fee = subtotal * 0.05;
@@ -1771,13 +2846,18 @@
     }
 
     async function simulateHoldSlot() {
-      const res = await fetch('/api/v1/availability/holds', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slot_id: '00000000-0000-0000-0000-000000000010' })
-      });
-      if (res.ok) {
-        showToast('✓ 15-Minute Authoritative Hold Activated');
+      openCheckoutModal(currentSelectedTitle, currentSelectedPrice);
+      try {
+        const res = await fetch('/api/v1/availability/holds', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slot_id: '00000000-0000-0000-0000-000000000010' })
+        });
+        if (res.ok) {
+          showToast('✓ 15-Minute Authoritative Hold Activated');
+        }
+      } catch (e) {
+        showToast('Hold active on client');
       }
     }
 

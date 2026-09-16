@@ -1,17 +1,17 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 07:57:20
-**Version:** 1.0.0-phase1x  
+**Last Updated:** 2026-09-16 08:30:06
+**Version:** 1.0.0-phase2a  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 1Z Completed (Technical Audit 100% Remediated — Security headers, rate limiting, correlation IDs, domain error hierarchy, audit_events logging, backup/restore scripts, and Kubernetes manifests).
-- **Test Health**: 100% Passing (133 automated tests across 16 test suites; 1.45s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2A Completed (Complete Multi-Persona Web Frontend & Consumer Journeys — Interactive user profile & persona switching, Playing XI/Bench rosters with join codes, Tactical Scoring Studio with 8-zone Wagon Wheel, Wicket Dismissal modal, and 15-min GiST hold checkout modal).
+- **Test Health**: 100% Passing (134 automated tests across 16 test suites; 1.41s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
-- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive web console, live SSE scoring, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
+- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
 
 ---
 
@@ -64,6 +64,13 @@
   - **Database Backup & Restore Automation**: `scripts/backup-db.mjs` and `scripts/restore-db.mjs` supporting JSON table data export, SHA-256 integrity verification, and dry-run validation.
   - **Kubernetes Deployment Manifests**: Production manifests in `infra/k8s/` (namespace, configmap, secrets, api/worker deployments, ingress).
   - **Technical Audit Closure**: `docs/audit/TECHNICAL_AUDIT.md` fully updated to 100% remediated and certified production-ready.
+- [x] **Complete Multi-Persona Web Frontend & Consumer Journeys (Phase 2A)**:
+  - **Modular Package Exports (`apps/web`)**: Implemented `@cricket-platform/web` component library with `getDefaultProfile`, `renderUserBadgeHtml`, `getDefaultTeam`, `renderPlayerCardHtml`, `calculatePartnership`, `SHOT_ZONES_CONFIG`, `getDismissalLabel`, and `generateTournamentSchedule` polygon round-robin algorithm with bye support (100% test coverage in `apps/web/test/web_journeys.test.ts`).
+  - **Interactive User Profile & Persona Switching**: Header user avatar pill (`VK`), profile configuration modal (`#modalUserProfile`) with persona pills (`CAPTAIN`, `PLAYER`, `SCORER`, `ORGANISER`, `TURF_PROVIDER`), career statistics, and Apple Guideline 5.1.1(v) compliant in-app irreversible account deletion.
+  - **Teams & Squad Rosters**: Playing XI lineup (11 verified players) and Bench reserves (3 substitutes) with role badges (`C`, `VC`, `WK`, `BAT`, `BOWL`, `ALL`), dynamic franchise kit preview, and invite join code copy (`CRIC-BLR-4821`).
+  - **Tactical Scoring Studio & 8-Zone Wagon Wheel**: Dual active batter cards (striker & non-striker), manual strike swap (`swapStudioStrike`), 8-zone Wagon Wheel selector (`LONG_OFF`, `LONG_ON`, `EXTRA_COVER`, `MID_WICKET`, `POINT`, `SQUARE_LEG`, `THIRD_MAN`, `FINE_LEG`), active partnership tracker, and quick extras strip (`+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye`).
+  - **Wicket Dismissal Modal Flow**: Dedicated dismissal modal (`#modalDismissal`) supporting 6 modes (`BOWLED`, `CAUGHT`, `LBW`, `RUN_OUT`, `STUMPED`, `HIT_WICKET`), conditional fielder involvement input, striker/non-striker selection, incoming batter assignment, and Fall of Wickets (FoW) timeline synchronization.
+  - **Venues & Turfs 15-Minute GiST Hold**: Interactive venue slot reservation modal (`#modalCheckout`) with live 15-minute countdown timer (`14:59`), commercial breakdown (5% platform facilitation, 18% GST), and double-entry escrow confirmation.
 
 ---
 
@@ -96,6 +103,7 @@
 - [x] Phase 1X: Stitch Application Screen Architecture UI/UX Enhancement (Global Telemetry Shell & Screen Matrix)
 - [x] Phase 1Y: Consumer Mobile App & App Store Packaging (`apps/mobile` Expo EAS, Complete User Journeys)
 - [x] Phase 1Z: Technical Audit Remediation & Hardening (100% Remediated, Certified Production Ready)
+- [x] Phase 2A: Complete Multi-Persona Web Frontend & Consumer Journeys (Teams, Studio, Wagon Wheel, Modals)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 

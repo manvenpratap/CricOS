@@ -172,3 +172,44 @@ test('Distribution Packaging: Floodlit Stadium Broadcast & Athletic Precision De
   assert.ok(rootIndex.includes('popBall'));
 });
 
+test('Distribution Packaging: Consumer User Journeys & Interactive Modal Systems Invariants', () => {
+  const rootIndex = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+
+  // 1. User Profile & Persona Switcher
+  assert.ok(rootIndex.includes('id="modalUserProfile"'), 'User Profile modal must exist');
+  assert.ok(rootIndex.includes('id="headerUserAvatar"'), 'Header User Avatar pill must exist');
+  assert.ok(rootIndex.includes('id="headerUserName"'), 'Header User Name must exist');
+  assert.ok(rootIndex.includes('id="headerUserRoleBadge"'), 'Header User Role Badge must exist');
+  assert.ok(rootIndex.includes('data-role="CAPTAIN"'), 'Captain persona pill must exist');
+  assert.ok(rootIndex.includes('data-role="SCORER"'), 'Scorer persona pill must exist');
+  assert.ok(rootIndex.includes('data-role="TURF_PROVIDER"'), 'Turf Provider persona pill must exist');
+  assert.ok(rootIndex.includes('confirmAccountDeletion()'), 'Apple Guideline 5.1.1(v) account deletion handler must exist');
+
+  // 2. Dismissal Modal Flow
+  assert.ok(rootIndex.includes('id="modalDismissal"'), 'Dismissal modal must exist');
+  assert.ok(rootIndex.includes('id="dismissalKind"'), 'Dismissal kind dropdown must exist');
+  assert.ok(rootIndex.includes('id="fielderGroup"'), 'Fielder input group must exist');
+  assert.ok(rootIndex.includes('confirmDismissal()'), 'Confirm dismissal function must exist');
+
+  // 3. Tactical Scoring Studio & 8-Zone Wagon Wheel
+  assert.ok(rootIndex.includes('id="tab-studio"'), 'Scoring Studio tab pane must exist');
+  assert.ok(rootIndex.includes('wagon-wheel-container'), 'Wagon wheel container must exist');
+  assert.ok(rootIndex.includes('selectShotZone(\'LONG_OFF\''), 'Long off wagon zone must exist');
+  assert.ok(rootIndex.includes('selectShotZone(\'EXTRA_COVER\''), 'Extra cover wagon zone must exist');
+  assert.ok(rootIndex.includes('swapStudioStrike()'), 'Swap studio strike handler must exist');
+  assert.ok(rootIndex.includes('recordStudioBall(4)'), 'Boundary four scoring pad button must exist');
+  assert.ok(rootIndex.includes('openDismissalModal()'), 'Wicket button must trigger dismissal modal');
+
+  // 4. Teams & Rosters
+  assert.ok(rootIndex.includes('id="tab-teams"'), 'Teams tab pane must exist');
+  assert.ok(rootIndex.includes('id="playingXiContainer"'), 'Playing XI container must exist');
+  assert.ok(rootIndex.includes('id="benchContainer"'), 'Bench container must exist');
+  assert.ok(rootIndex.includes('id="teamJoinCodeBadge"'), 'Team join code badge must exist');
+  assert.ok(rootIndex.includes('id="modalCreateTeam"'), 'Create Team modal must exist');
+
+  // 5. 15-Minute GiST Hold & Checkout Modal
+  assert.ok(rootIndex.includes('id="modalCheckout"'), 'Checkout modal must exist');
+  assert.ok(rootIndex.includes('id="modalHoldTimer"'), '15-minute GiST hold timer must exist');
+  assert.ok(rootIndex.includes('confirmBookingPayment()'), 'Booking payment confirmation handler must exist');
+});
+

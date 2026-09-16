@@ -2,6 +2,10 @@ export * from './api/client.js';
 export * from './components/scoreboard.js';
 export * from './components/marketplace.js';
 export * from './components/disputes.js';
+export * from './components/auth-modal.js';
+export * from './components/team-roster.js';
+export * from './components/scoring-studio.js';
+export * from './components/tournament-wizard.js';
 
 import { CricOSApiClient, type ApiClientOptions } from './api/client.js';
 
