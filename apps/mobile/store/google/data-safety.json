@@ -1,0 +1,67 @@
+{
+  "data_safety_version": "2024-Q1",
+  "data_collection_and_security": {
+    "data_collected": true,
+    "data_shared_with_third_parties": false,
+    "encrypted_in_transit": true,
+    "user_can_request_data_deletion": true,
+    "account_deletion_url": "https://cricos.app/delete-account",
+    "in_app_deletion_available": true
+  },
+  "data_types_collected": [
+    {
+      "category": "Personal Info",
+      "type": "Name",
+      "collected": true,
+      "shared": false,
+      "ephemeral": false,
+      "optional": false,
+      "purpose": ["App functionality", "Account management"]
+    },
+    {
+      "category": "Personal Info",
+      "type": "Phone number",
+      "collected": true,
+      "shared": false,
+      "ephemeral": false,
+      "optional": false,
+      "purpose": ["App functionality", "Authentication"]
+    },
+    {
+      "category": "Personal Info",
+      "type": "User IDs",
+      "collected": true,
+      "shared": false,
+      "ephemeral": false,
+      "optional": false,
+      "purpose": ["App functionality", "Account management"]
+    },
+    {
+      "category": "Financial Info",
+      "type": "Purchase history",
+      "collected": true,
+      "shared": false,
+      "ephemeral": false,
+      "optional": true,
+      "purpose": ["App functionality", "Account management"]
+    },
+    {
+      "category": "App Info and Performance",
+      "type": "Crash logs",
+      "collected": true,
+      "shared": false,
+      "ephemeral": true,
+      "optional": false,
+      "purpose": ["Analytics"]
+    },
+    {
+      "category": "App Info and Performance",
+      "type": "Diagnostics",
+      "collected": true,
+      "shared": false,
+      "ephemeral": true,
+      "optional": false,
+      "purpose": ["Analytics"]
+    }
+  ]
+}

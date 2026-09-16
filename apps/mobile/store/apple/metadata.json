@@ -1,0 +1,30 @@
+{
+  "bundle_id": "com.cricos.app",
+  "sku": "CRICOS_IOS_V1",
+  "version": "1.0.0",
+  "build_number": "1",
+  "primary_language": "en-US",
+  "app_store_info": {
+    "title": "CricOS — Cricket Operating Sys",
+    "subtitle": "Scoring, Turfs & Tournaments",
+    "promotional_text": "The all-in-one cricket operating system. Live scoring, instant turf booking, tournament scheduling, and official ICC Net Run Rate standings.",
+    "keywords": "cricket,scoring,turf booking,tournament,box cricket,umpire,scoreboard,wagon wheel,nrr,cricket app",
+    "categories": {
+      "primary": "SPORTS",
+      "secondary": "PRODUCTIVITY"
+    },
+    "content_rating": "4+",
+    "support_url": "https://cricos.app/support",
+    "marketing_url": "https://cricos.app",
+    "privacy_policy_url": "https://cricos.app/privacy",
+    "copyright": "© 2026 CricOS Platform Technologies Pvt. Ltd.",
+    "description": "CricOS is the comprehensive Cricket Operating System and Marketplace designed for players, captains, umpires, scorers, and tournament organisers.\n\nKEY CAPABILITIES:\n\n• TACTICAL LIVE MATCH SCORING:\n- Fast, intuitive numeric pad with one-tap scoring for dots, singles, boundaries, and sixes.\n- 8-Zone Wagon Wheel shot direction tracking and partnership milestones.\n- Real-time Fall of Wickets (FoW) chronology and strike rotation.\n- Offline-first outbox queue ensures you never lose a ball during network disconnects.\n\n• TURF & GROUND BOOKINGS:\n- Real-time availability for natural turf, astro-turf, and floodlit grounds.\n- 15-minute authoritative holds prevent double-booking collisions.\n- Transparent commercial fee breakdown with double-entry escrow security.\n\n• TOURNAMENT OPERATING SYSTEM:\n- Polygon round-robin automated schedule generation.\n- Official ICC Net Run Rate (NRR) calculations with 3-decimal precision.\n- Group stages, Super 4s, playoffs, and tournament leaderboards.\n\n• UMPIRE & OFFICIAL NETWORK:\n- Certified umpire and scorer marketplace with Bayesian reputation scores.\n- Digital toss management, playing XI confirmation, and official sign-off.\n\n• STORE & PRIVACY COMPLIANCE:\n- In-app irreversible account deletion compliant with Apple Guideline 5.1.1(v).\n- Zero third-party data tracking. Your sporting privacy is guaranteed."
+  },
+  "review_information": {
+    "demo_account_required": true,
+    "demo_phone_number": "+91 98765 43210",
+    "demo_otp": "4821",
+    "demo_role": "CAPTAIN",
+    "notes_for_review": "CricOS operates with passwordless OTP SMS login. For App Store review, any test phone number starting with +91 98765 will accept the demo verification code 4821 to access the full application immediately with the Captain persona. Full live scoring, turf booking simulation, and account deletion can be tested without restriction."
+  }
+}
