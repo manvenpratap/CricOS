@@ -3887,14 +3887,14 @@ export function getDashboardHtml(): string {
     }
 
     function downloadScorecardCsv() {
-      let csv = 'Match,Delhi Daredevils vs Mumbai Super Strikers\nMatch ID,match-pilot-1\nResult,' + matchScorecardData.result + '\n\n' +
-                'BATTING,Dismissal,Runs,Balls,4s,6s,SR\n';
+      let csv = 'Match,Delhi Daredevils vs Mumbai Super Strikers\\nMatch ID,match-pilot-1\\nResult,' + matchScorecardData.result + '\\n\\n' +
+                'BATTING,Dismissal,Runs,Balls,4s,6s,SR\\n';
       matchScorecardData.batters.forEach(b => {
-        csv += '\"' + b.name + '\",\"' + b.dismissal + '\",' + b.runs + ',' + b.balls + ',' + b.fours + ',' + b.sixes + ',' + b.sr.toFixed(2) + '\n';
+        csv += '\"' + b.name + '\",\"' + b.dismissal + '\",' + b.runs + ',' + b.balls + ',' + b.fours + ',' + b.sixes + ',' + b.sr.toFixed(2) + '\\n';
       });
-      csv += '\nBOWLING,Overs,Maidens,Runs,Wickets,Economy\n';
+      csv += '\\nBOWLING,Overs,Maidens,Runs,Wickets,Economy\\n';
       matchScorecardData.bowlers.forEach(bw => {
-        csv += '\"' + bw.name + '\",' + bw.overs + ',' + bw.maidens + ',' + bw.runs + ',' + bw.wickets + ',' + bw.econ.toFixed(2) + '\n';
+        csv += '\"' + bw.name + '\",' + bw.overs + ',' + bw.maidens + ',' + bw.runs + ',' + bw.wickets + ',' + bw.econ.toFixed(2) + '\\n';
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -4200,7 +4200,7 @@ export function getDashboardHtml(): string {
           '<div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.35; margin-bottom: 0.45rem;">' + item.body + '</div>' +
           '<div style="display: flex; justify-content: space-between; align-items: center;">' +
             '<span style="font-size: 0.65rem; font-weight: 700; color: ' + (colors[item.category] || 'var(--cyan)') + '; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px;">' + item.category + '</span>' +
-            (item.tab ? '<button class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; width: auto;" onclick="handleNotificationAction(\'' + item.id + '\', \'' + item.tab + '\')" data-tooltip="Navigate to notification">View &rarr;</button>' : '') +
+            (item.tab ? '<button class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; width: auto;" onclick="handleNotificationAction(&apos;' + item.id + '&apos;, &apos;' + item.tab + '&apos;)" data-tooltip="Navigate to notification">View &rarr;</button>' : '') +
           '</div>' +
         '</div>';
       }).join('');
@@ -4340,8 +4340,8 @@ export function getDashboardHtml(): string {
             '<strong>Suggested Action:</strong> ' + item.recommendation +
           '</div>' +
           '<div style="display: flex; gap: 0.5rem; justify-content: flex-end;">' +
-            '<button class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" onclick="arbitrateAdminCase(\'' + item.caseId + '\', \'REJECT\')" data-tooltip="Reject claim and disburse provider payout">Reject Claim</button>' +
-            '<button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" onclick="arbitrateAdminCase(\'' + item.caseId + '\', \'RESOLVE\')" data-tooltip="Approve resolution and trigger balanced double-entry refund">Approve &amp; Execute</button>' +
+            '<button class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" onclick="arbitrateAdminCase(&apos;' + item.caseId + '&apos;, &apos;REJECT&apos;)" data-tooltip="Reject claim and disburse provider payout">Reject Claim</button>' +
+            '<button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" onclick="arbitrateAdminCase(&apos;' + item.caseId + '&apos;, &apos;RESOLVE&apos;)" data-tooltip="Approve resolution and trigger balanced double-entry refund">Approve &amp; Execute</button>' +
           '</div>' +
         '</div>';
       }).join('');
