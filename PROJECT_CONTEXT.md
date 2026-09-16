@@ -1,17 +1,17 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 10:35:50
-**Version:** 1.0.0-phase2d (Operational Governance & Complete UX)  
+**Last Updated:** 2026-09-16 14:08:14
+**Version:** 1.0.0-phase2e (Blueprint & FSD Functional Specification Completion)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2D Completed (Advanced UX & Operational Governance: In-App Notification Center Drawer UX-025, Event Basket Resource Procurement Modal UX-008, Provider Storefront & Hourly Capacity Publisher UX-018, Admin Settlement & 5-Account Chart of Accounts Integrity Audit Desk UX-027).
-- **Test Health**: 100% Passing (151 automated tests across 18 test suites; 1.57s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2E Completed (Blueprint & FSD Feature Matrix: Create Event Wizard UX-003, Event Overview & Readiness UX-004, Official Availability Calendar UX-015, Match Contextual Messaging FSD §45, Booking Lifecycle & Cancellation Engine Commercial §10-14, Financial Reconciliation & Payout Pipeline Commercial §17-18).
+- **Test Health**: 100% Passing (222 automated tests across 22 test suites; 1.77s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
-- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
+- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), tactile mobile mockup (`/mobile`), and accessible 6-modal operations desk.
 
 ---
 
@@ -107,6 +107,40 @@
   - **Admin Operations & Settlement Audit Desk (`admin-desk.ts`, UX-027, ADM-001..020)**:
     - Full 5-account Chart of Accounts balance integrity meter (`ESCROW_HOLD`, `PROVIDER_PAYABLE`, `PLATFORM_FEE`, `TAX_GST_PAYABLE`, `REFUND_CLEARING`) with verified 0 INR imbalance.
     - Administrative dispute arbitration queue with instant claim approval (balanced double-entry refund execution) or rejection (escrow payout release).
+- [x] **Blueprint & FSD Feature Completion & Accessible Desk (`apps/web`, Phase 2E)**:
+  - **Create Event Wizard (`create-event.ts`, UX-003, EVT-001..010)**:
+    - 3-step event creation wizard with validation gates (Format -> Teams/Officials -> Review/Basket).
+    - Multi-format configuration: T20, ODI, TEST, CUSTOM overs (5–50), ball type, powerplay overs, and estimated duration.
+    - Mandatory officials procurement (Lead Umpire, Leg Umpire, Official Scorer) and automatic event basket generation.
+  - **Event Overview & Procurement Readiness (`event-overview.ts`, UX-004, EVT-011..020)**:
+    - 6-stage lifecycle stepper (`DRAFT` -> `BASKET_HOLD` -> `CONFIRMED` -> `IN_PROGRESS` -> `COMPLETED` -> `SETTLED`).
+    - Dynamic SVG readiness ring calculating procurement percentage with held items (50%) and booked items (100%).
+    - Critical resource blocker detection surfacing unbooked mandatory services (Turf, Umpires, Match Balls).
+  - **Official Availability Calendar (`official-calendar.ts`, UX-015, OFC-001..015)**:
+    - 7-day weekly schedule grid (06:00–20:00) with conflict detection adhering to PostgreSQL GiST temporal exclusion semantics.
+    - Pre-match (30 min), post-match (30 min), and travel buffer (60 min) rule configuration.
+    - Status visualization for AVAILABLE, BOOKED, BLOCKED, and BUFFER slots.
+  - **Match Contextual Messaging (`messaging.ts`, FSD §45, MSG-001..015)**:
+    - Scoped communication threads (`MATCH`, `BOOKING`, `DISPUTE`) with participant typing and read receipts.
+    - Interactive quote cards with accept/reject price negotiation workflows in integer minor units.
+    - Quick-action operational chips (`Confirm Arrival`, `Inspect Pitch`, `Ready for Toss`, `Share Scorecard`).
+    - Offline outbox queue with status tracking (`SENDING`, `SENT`, `DELIVERED`, `READ`).
+  - **Booking Cancellation & Rescheduling Engine (`booking-lifecycle.ts`, Commercial §10-14, BKG-001..020)**:
+    - 4-tier graduated cancellation refund bands (>48h: 100%, 24-48h: 75%, 12-24h: 50%, <12h: 0%).
+    - Balanced double-entry refund journal entries (`REFUND_CLEARING` / `ESCROW_HOLD` / `PLATFORM_FEE_INCOME`).
+    - Reschedule price difference calculator with 3-attempt lifetime guard.
+    - Rain washout force-majeure claim handling (100% full refund across all held bookings).
+    - Provider no-show reporting with 100% refund, 10% compensation credit, and -15 trust score reputation penalty.
+  - **Financial Reconciliation Dashboard (`reconciliation.ts`, Commercial §17-18, REC-001..015)**:
+    - Provider net payout formula: $\text{Gross} - 5\% \text{ Platform Commission} - 18\% \text{ GST on Fee}$.
+    - Zero-drift integer minor calculation guaranteeing exact ledger reconciliation.
+    - 5-account balance sheet summary (`ESCROW_HOLD`, `PROVIDER_PAYABLE`, `PLATFORM_FEE_INCOME`, `TAX_GST_PAYABLE`, `REFUND_CLEARING`).
+    - Guarded payout disbursement validation (0 pending disputes required).
+    - RFC 4180-compliant CSV settlement report export.
+  - **Interactive Console Modal Desk (`apps/api/src/ui/dashboard.ts`)**:
+    - Navigation pills for all Phase 2E workflows (`➕ Create Match`, `📋 Readiness`, `📅 Calendar`, `💬 Chat`).
+    - 6 dedicated modal backdrops (`#modalCreateEvent`, `#modalEventOverview`, `#modalOfficialCalendar`, `#modalMessaging`, `#modalBookingLifecycle`, `#modalFinancialReconciliation`).
+    - 100% WCAG 2.2 AA accessible `data-tooltip` annotations, backdrop click-to-close, and Escape key dismissal.
 
 ---
 
@@ -125,6 +159,7 @@
 12. **Offline Outbox & Zero-Dependency SVG Invariant**: Scoring outbox queue persists pending deliveries offline in `localStorage` and synchronizes sequentially; analytics visuals (Worm & Manhattan charts) are generated strictly using pure SVG without external charting library dependencies to maintain single-file portability.
 13. **Store Readiness & Privacy Invariant**: All store assets and privacy manifests comply strictly with Apple App Store (WWDC 2024 Privacy Manifest, 1024x1024 RGB 24-bit no alpha icon) and Google Play Store (Target SDK 34, Data Safety, In-App Account Deletion).
 14. **Operational Governance Invariant**: Administrative dispute resolutions produce balanced double-entry refund journal entries; provider capacity slots enforce temporal GiST boundaries without overlap.
+15. **Graduated Cancellation & Zero-Drift Financial Invariant**: Booking cancellations strictly enforce the 4-tier refund schedule (>48h: 100%, 24-48h: 75%, 12-24h: 50%, <12h: 0%); financial reconciliations use integer minor units with exact rounding parity ($P_{\text{net}} = G - \lfloor 0.05 G \rfloor - \lfloor 0.18 \times \lfloor 0.05 G \rfloor \rfloor$) guaranteeing zero imbalance across all 5 ledger accounts.
 
 ---
 
@@ -146,6 +181,8 @@
 - [x] Phase 2B: Offline-First Match Scoring Outbox, Match Analytics (SVG Worm & Manhattan Charts) & Scorecard Export Engine
 - [x] Phase 2C: Play Store & App Store Listing Readiness, Privacy Manifest, Store Assets, Archive Document Features (Toss, DLS, Ratings, Readiness, Cap Leaderboards)
 - [x] Phase 2D: Advanced UX, Notification Center, Event Basket Modal, Provider Storefront & Admin Settlement Desk
+- [x] Phase 2E: Blueprint & FSD Feature Completion: Create Event (UX-003), Event Overview (UX-004), Official Calendar (UX-015), Messaging (FSD §45), Booking Lifecycle (Commercial §10-14), Financial Reconciliation (Commercial §17-18)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
+
 
 

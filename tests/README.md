@@ -21,6 +21,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | `apps/web` | `test/offline_and_analytics.test.ts` | Offline scoring outbox queue, RFC 4180 CSV scorecard export, printable HTML sheets, SVG Worm & Manhattan charts |
 | `apps/web` | `test/archive_features.test.ts` | Archive features: Event Basket readiness meter, MCC Law 1.3 Toss & DLS rain rule, Official Desk, 5-star post-match rating, Orange/Purple Cap leaderboards |
 | `apps/web` | `test/advanced_ux.test.ts` | Advanced UX: Notification Center drawer, Admin Desk & double-entry ledger audit, Provider Storefront & slot publisher |
+| `apps/web` | `test/phase2e_features.test.ts` | Phase 2E Blueprint & FSD: Create Event Wizard (UX-003), Event Overview (UX-004), Official Calendar (UX-015), Contextual Messaging (FSD §45), Booking Lifecycle (Commercial §10-14), Financial Reconciliation (Commercial §17-18) |
 | `apps/mobile` | `test/mobile.test.ts` | Mobile API client, offline queueing, session caching, live match screen controller, marketplace booking, career stats |
 | Root | `tests/tournament-emulation.test.ts` | End-to-end synthetic tournament lifecycle, round-robin scheduling, NRR calculation, double-entry settlement verification |
 | Root | `tests/operational-telemetry.test.ts` | Prometheus metrics text exposition, request latency histograms, event loop lag, OpenAPI 3.0 & /docs showcase |

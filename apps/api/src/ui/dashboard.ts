@@ -1234,6 +1234,13 @@ export function getDashboardHtml(): string {
     </div>
     <div class="header-status">
       <div class="header-nav-links">
+        <a href="javascript:void(0)" onclick="openCreateEventModal()" class="nav-pill" style="background: rgba(0, 229, 153, 0.15); border-color: rgba(0, 229, 153, 0.35); color: var(--turf-emerald); font-weight: 700;" data-tooltip="Create a new cricket match with format selection, team & official procurement (UX-003)">➕ Create Match</a>
+        <a href="javascript:void(0)" onclick="openEventOverviewModal()" class="nav-pill" style="background: rgba(0, 210, 255, 0.12); border-color: rgba(0, 210, 255, 0.3); color: var(--cyan);" data-tooltip="Event procurement readiness, blockers & lifecycle progression (UX-004)">📋 Readiness</a>
+        <a href="javascript:void(0)" onclick="openOfficialCalendarModal()" class="nav-pill" style="background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.3); color: var(--purple);" data-tooltip="Official weekly availability calendar, conflict detection & buffers (UX-015)">📅 Calendar</a>
+        <a href="javascript:void(0)" onclick="openMessagingModal()" class="nav-pill" style="background: rgba(255, 184, 0, 0.12); border-color: rgba(255, 184, 0, 0.3); color: var(--amber); display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Contextual match coordination, booking quotes & quick actions (FSD §45)">
+          <span>💬 Chat</span>
+          <span style="background: var(--amber); color: #04070D; font-weight: 800; padding: 0.05rem 0.35rem; border-radius: 9999px; font-size: 0.65rem;">1</span>
+        </a>
         <a href="javascript:void(0)" onclick="toggleNotificationsDrawer()" class="nav-pill" style="background: rgba(255, 184, 0, 0.12); border-color: rgba(255, 184, 0, 0.3); color: var(--amber); display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="In-app match alerts, financial escrow updates, and trust notifications">
           <span>🔔</span>
           <span id="headerNotifBadge" style="background: var(--turf-emerald); color: #04070D; font-weight: 800; padding: 0.05rem 0.35rem; border-radius: 9999px; font-size: 0.65rem;">3</span>
@@ -1514,7 +1521,13 @@ export function getDashboardHtml(): string {
 
     <!-- TAB 2: MARKETPLACE & BOOKING -->
     <div id="tab-marketplace" class="tab-pane">
-      <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; gap: 0.5rem;">
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; gap: 0.5rem; flex-wrap: wrap;">
+        <button class="btn btn-secondary" onclick="openBookingLifecycleModal()" data-tooltip="Manage booking cancellation bands, penalty calculations, reschedule price adjustments, and no-show dispute handling" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>🔄</span> Cancellation &amp; Reschedule Desk
+        </button>
+        <button class="btn btn-secondary" onclick="openOfficialCalendarModal()" data-tooltip="Inspect official weekly schedule, slot availability, buffer times, and conflict overlap checks" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>📅</span> Official Availability Calendar
+        </button>
         <button class="btn btn-secondary" onclick="openProviderStorefrontModal()" data-tooltip="Provider Capacity Manager: publish hourly slots, set rates, and inspect monthly payout earnings" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
           <span>🏪</span> Provider Storefront &amp; Slot Publisher
         </button>
@@ -2593,6 +2606,585 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
+  <!-- Modal 1: Create Event Wizard (UX-003) -->
+  <div class="modal-backdrop" id="modalCreateEvent">
+    <div class="modal-dialog" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🏏 Create Cricket Event &amp; Match Wizard</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeCreateEventModal()" data-tooltip="Close event wizard">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- Stepper -->
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; position: relative; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
+          <div class="wizard-step active" id="wizStep1Indicator" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--turf-emerald);">
+            <span style="width: 22px; height: 22px; border-radius: 50%; background: var(--turf-emerald); color: #04070D; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">1</span>
+            Format &amp; Overs
+          </div>
+          <div class="wizard-step" id="wizStep2Indicator" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">
+            <span style="width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #FFF; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">2</span>
+            Teams &amp; Officials
+          </div>
+          <div class="wizard-step" id="wizStep3Indicator" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">
+            <span style="width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #FFF; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">3</span>
+            Venue &amp; Schedule
+          </div>
+        </div>
+
+        <!-- Step 1 Panel: Format Selection -->
+        <div id="wizStep1Panel">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Select official cricket match format and playing conditions:</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.25rem;">
+            <div class="format-card active" onclick="selectWizardFormat('T20')" id="fmtCard-T20" style="background: rgba(0, 229, 153, 0.08); border: 2px solid var(--turf-emerald); border-radius: 8px; padding: 1rem; cursor: pointer;" data-tooltip="Twenty20: 20 overs per side, 6-over powerplay, max 4 overs/bowler">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: #FFF;">T20</span>
+                <span style="background: var(--turf-emerald); color: #04070D; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px;">RECOMMENDED</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">20 Overs • 6 Over Powerplay • Max 4 ov/bowler</div>
+            </div>
+            <div class="format-card" onclick="selectWizardFormat('ODI')" id="fmtCard-ODI" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; cursor: pointer;" data-tooltip="One Day International: 50 overs per side, 10-over powerplay">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: #FFF;">ODI (50 Overs)</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">50 Overs • 10 Over Powerplay • Max 10 ov/bowler</div>
+            </div>
+            <div class="format-card" onclick="selectWizardFormat('TEST')" id="fmtCard-TEST" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; cursor: pointer;" data-tooltip="Multi-day Test match: 4 innings, unlimited overs">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: #FFF;">TEST MATCH</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">4 Innings • Unlimited Overs • Traditional White Kit</div>
+            </div>
+            <div class="format-card" onclick="selectWizardFormat('CUSTOM')" id="fmtCard-CUSTOM" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; cursor: pointer;" data-tooltip="Configure custom overs, powerplay, and squad size">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: #FFF;">CUSTOM</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Box Cricket / 10-15 Overs • Dynamic Conditions</div>
+            </div>
+          </div>
+          <div id="customOversRow" style="display: none; background: rgba(0,0,0,0.3); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 1rem;">
+            <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Custom Overs Per Side (1 – 100)</label>
+            <input type="number" id="wizCustomOvers" value="12" min="1" max="100" style="width: 100px; padding: 0.4rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px; font-family: var(--font-mono);">
+          </div>
+        </div>
+
+        <!-- Step 2 Panel: Teams & Officials -->
+        <div id="wizStep2Panel" style="display: none;">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Assign participating teams and mandatory sporting officials:</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Home Team</label>
+              <select id="wizHomeTeam" style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px;">
+                <option value="BLR">Bengaluru Strikers (BLR)</option>
+                <option value="MUM">Mumbai Blasters (MUM)</option>
+                <option value="DEL">Delhi Daredevils (DEL)</option>
+                <option value="CHE">Chennai Super Kings (CHE)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Away Team</label>
+              <select id="wizAwayTeam" style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px;">
+                <option value="MUM">Mumbai Blasters (MUM)</option>
+                <option value="BLR">Bengaluru Strikers (BLR)</option>
+                <option value="DEL">Delhi Daredevils (DEL)</option>
+                <option value="CHE">Chennai Super Kings (CHE)</option>
+              </select>
+            </div>
+          </div>
+          <div style="font-weight: 700; font-size: 0.82rem; margin-bottom: 0.5rem; color: #f8fafc;">Mandatory Sporting Officials (Required for Live Sanction)</div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; background: rgba(0,0,0,0.25); padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #FFF; cursor: pointer;">
+              <input type="checkbox" id="wizUmpire1" checked disabled>
+              <span>Lead Umpire (Level-2 MCC Certified) • ₹3,500.00 Escrow</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #FFF; cursor: pointer;">
+              <input type="checkbox" id="wizUmpire2" checked disabled>
+              <span>Leg Umpire (State Board Certified) • ₹2,500.00 Escrow</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #FFF; cursor: pointer;">
+              <input type="checkbox" id="wizScorer" checked disabled>
+              <span>Official Digital Scorer (SSE Broadcast Hub) • ₹800.00 Escrow</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3 Panel: Venue & Schedule -->
+        <div id="wizStep3Panel" style="display: none;">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Configure venue reservation and match timing:</div>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Venue / Turf Arena</label>
+              <select id="wizVenue" style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px;">
+                <option value="V1">Chinnaswamy Turf Arena Ground A (Natural Turf) • ₹8,500.00</option>
+                <option value="V2">Koramangala Stadium Pitch 2 (Astro Turf) • ₹6,500.00</option>
+                <option value="V3">Indiranagar Cricket Ground (Floodlit) • ₹7,200.00</option>
+              </select>
+            </div>
+            <div style="grid-template-columns: 1fr 1fr; display: grid; gap: 0.75rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Match Date</label>
+                <input type="date" id="wizDate" value="2026-10-15" style="width: 100%; padding: 0.45rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px;">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Start Time (4-Hour Match Window)</label>
+                <input type="time" id="wizTime" value="14:00" style="width: 100%; padding: 0.45rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px;">
+              </div>
+            </div>
+            <div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); padding: 0.75rem 1rem; border-radius: 8px; margin-top: 0.5rem;">
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--turf-emerald);">✓ Auto-Generated Event Basket Total: ₹15,885.00</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Includes Venue + 2 Umpires + Official Scorer + Match Balls + 5% platform fee &amp; 18% GST. Protected by double-entry escrow.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+        <button class="btn btn-secondary" id="wizPrevBtn" onclick="prevWizardStep()" style="display: none; width: auto;">Previous</button>
+        <div style="display: flex; gap: 0.5rem; margin-left: auto;">
+          <button class="btn btn-secondary" onclick="closeCreateEventModal()" style="width: auto;">Cancel</button>
+          <button class="btn btn-primary" id="wizNextBtn" onclick="nextWizardStep()" style="width: auto;">Next: Teams &amp; Officials →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Event Overview & Readiness (UX-004) -->
+  <div class="modal-backdrop" id="modalEventOverview">
+    <div class="modal-dialog" style="max-width: 650px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>📋 Match Event Overview &amp; Procurement Readiness</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeEventOverviewModal()" data-tooltip="Close readiness modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;">
+          <div style="flex: 1;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--turf-emerald); letter-spacing: 0.05em; margin-bottom: 0.35rem;">Operational Clearance</div>
+            <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: #FFF; margin-bottom: 0.35rem;">Bengaluru Strikers vs Mumbai Blasters</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Match ID: #M-101 • Chinnaswamy Turf Arena Ground A • 20 Overs</div>
+          </div>
+          <!-- Dynamic SVG Readiness Ring -->
+          <div style="text-align: center; margin-left: 1rem;">
+            <svg width="84" height="84" viewBox="0 0 100 100" data-tooltip="Procurement readiness: 100% of required match resources secured">
+              <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.08)" stroke-width="8" fill="transparent"/>
+              <circle cx="50" cy="50" r="42" stroke="var(--turf-emerald)" stroke-width="8" fill="transparent" stroke-dasharray="264" stroke-dashoffset="0" stroke-linecap="round" style="filter: drop-shadow(0 0 6px var(--turf-emerald));"/>
+              <text x="50" y="55" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="20" fill="#FFF" text-anchor="middle">100%</text>
+            </svg>
+            <div style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700; margin-top: 0.2rem;">READY FOR TOSS</div>
+          </div>
+        </div>
+
+        <!-- 6-Stage Lifecycle Stepper -->
+        <div style="margin-bottom: 1.25rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Event Lifecycle Stage</div>
+          <div style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.25rem;">
+            <span style="font-size: 0.68rem; font-weight: 700; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.3); padding: 0.25rem 0.5rem; border-radius: 4px;" data-tooltip="Event created in draft">✓ CREATED</span>
+            <span style="font-size: 0.68rem; font-weight: 700; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.3); padding: 0.25rem 0.5rem; border-radius: 4px;" data-tooltip="Format, overs, and rules configured">✓ CONFIGURED</span>
+            <span style="font-size: 0.68rem; font-weight: 700; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.3); padding: 0.25rem 0.5rem; border-radius: 4px;" data-tooltip="All sporting resources procured in escrow">✓ RESOURCES_BOOKED</span>
+            <span style="font-size: 0.68rem; font-weight: 700; background: rgba(0,210,255,0.2); color: var(--cyan); border: 1px solid var(--cyan); padding: 0.25rem 0.5rem; border-radius: 4px;" data-tooltip="Both teams and officials checked in">● READY</span>
+            <span style="font-size: 0.68rem; font-weight: 700; background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.06); padding: 0.25rem 0.5rem; border-radius: 4px;" data-tooltip="Live match broadcast in progress">○ LIVE</span>
+            <span style="font-size: 0.68rem; font-weight: 700; background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.06); padding: 0.25rem 0.5rem; border-radius: 4px;" data-tooltip="Match finalized and escrow settled">○ COMPLETED</span>
+          </div>
+        </div>
+
+        <!-- Procurement Checklist -->
+        <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Procured Resources (4 of 4 Confirmed)</div>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">🏟️ Turf Arena (Chinnaswamy Ground A)</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">4-Hour Slot • Natural Grass Pitch • GiST Hold Active</div>
+            </div>
+            <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">BOOKED</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">👨‍⚖️ Lead Umpire (Rajesh Sharma)</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Level-2 MCC Certified • Venue Check-In Completed</div>
+            </div>
+            <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">CONFIRMED</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">👨‍⚖️ Leg Umpire (Vikram Rao)</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">State Board Certified • Ready at Bowler's End</div>
+            </div>
+            <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">CONFIRMED</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">📋 Official Scorer (Amit Patel)</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Digital Scorer Console • SSE Live Stream Synchronized</div>
+            </div>
+            <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">ACTIVE</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.25); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1rem;">✓</span>
+          <span style="font-size: 0.78rem; color: var(--turf-emerald); font-weight: 600;">Zero Blockers Detected: All required sporting assets secured in escrow. Event is fully cleared for live toss.</span>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+        <button class="btn btn-secondary" onclick="closeEventOverviewModal()" style="width: auto;">Close</button>
+        <button class="btn btn-primary" onclick="closeEventOverviewModal(); openEventBasketModal();" data-tooltip="Inspect escrow financial deposit breakdown" style="width: auto;">🧺 View Event Basket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Official Calendar & Availability (UX-015) -->
+  <div class="modal-backdrop" id="modalOfficialCalendar">
+    <div class="modal-dialog" style="max-width: 720px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>📅 Official Availability Calendar &amp; Slot Manager</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeOfficialCalendarModal()" data-tooltip="Close calendar modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Active Official</label>
+            <select id="calOfficialSelect" style="padding: 0.35rem 0.65rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; font-size: 0.8rem;">
+              <option value="1">Rajesh Sharma (Lead Umpire • 98% Trust • 42 Matches)</option>
+              <option value="2">Vikram Rao (Leg Umpire • 95% Trust • 28 Matches)</option>
+              <option value="3">Amit Patel (Official Scorer • 99% Trust • 65 Matches)</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.35rem; align-items: center;">
+            <span style="font-size: 0.7rem; color: var(--cyan); background: rgba(0,210,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">GiST Temporal Check: Active</span>
+          </div>
+        </div>
+
+        <!-- Day Selector Tabs -->
+        <div style="display: flex; gap: 0.35rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.25rem;">
+          <button class="cal-day-btn" onclick="selectCalendarDay('MON', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Mon</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('TUE', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Tue</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('WED', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Wed</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('THU', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Thu</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('FRI', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Fri</button>
+          <button class="cal-day-btn active" onclick="selectCalendarDay('SAT', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid var(--turf-emerald); background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-weight: 700; font-size: 0.75rem; cursor: pointer;">Sat (Matchday)</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('SUN', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Sun</button>
+        </div>
+
+        <!-- Hourly Schedule Grid -->
+        <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Saturday Schedule &amp; Temporal Allocations</div>
+        <div id="calendarGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem; margin-bottom: 1.25rem;">
+          <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.25); border-radius: 6px; padding: 0.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">06:00 - 09:00</div>
+            <div style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700; margin-top: 0.15rem;">AVAILABLE</div>
+          </div>
+          <div style="background: rgba(255,184,0,0.08); border: 1px solid rgba(255,184,0,0.25); border-radius: 6px; padding: 0.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">09:00 - 10:00</div>
+            <div style="font-size: 0.65rem; color: var(--amber); font-weight: 700; margin-top: 0.15rem;">BUFFER (30m Pre)</div>
+          </div>
+          <div style="background: rgba(255,51,102,0.12); border: 1px solid rgba(255,51,102,0.3); border-radius: 6px; padding: 0.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">10:00 - 14:00</div>
+            <div style="font-size: 0.65rem; color: var(--rose); font-weight: 700; margin-top: 0.15rem;">BOOKED (M-098)</div>
+          </div>
+          <div style="background: rgba(255,184,0,0.08); border: 1px solid rgba(255,184,0,0.25); border-radius: 6px; padding: 0.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">14:00 - 15:00</div>
+            <div style="font-size: 0.65rem; color: var(--amber); font-weight: 700; margin-top: 0.15rem;">BUFFER (Post)</div>
+          </div>
+          <div style="background: rgba(0,210,255,0.12); border: 1px solid rgba(0,210,255,0.3); border-radius: 6px; padding: 0.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">15:00 - 19:00</div>
+            <div style="font-size: 0.65rem; color: var(--cyan); font-weight: 700; margin-top: 0.15rem;">HELD (M-101 GiST)</div>
+          </div>
+          <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.25); border-radius: 6px; padding: 0.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">19:00 - 20:00</div>
+            <div style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700; margin-top: 0.15rem;">AVAILABLE</div>
+          </div>
+        </div>
+
+        <!-- Conflict Detector Interactive Bar -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">⏱️ Test Booking Slot for Conflict Overlap</div>
+          <div style="display: flex; gap: 0.5rem; align-items: flex-end; flex-wrap: wrap;">
+            <div>
+              <label style="font-size: 0.65rem; color: var(--text-muted); display: block;">Start Hour (24h)</label>
+              <input type="number" id="testSlotStart" value="11" min="6" max="20" style="width: 70px; padding: 0.35rem; font-size: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
+            </div>
+            <div>
+              <label style="font-size: 0.65rem; color: var(--text-muted); display: block;">End Hour (24h)</label>
+              <input type="number" id="testSlotEnd" value="13" min="7" max="21" style="width: 70px; padding: 0.35rem; font-size: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
+            </div>
+            <button class="btn btn-secondary" onclick="checkCalendarSlotConflict()" data-tooltip="Run PostgreSQL tsrange GiST conflict overlap algorithm" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; width: auto;">Check Overlap</button>
+            <div id="slotConflictResult" style="font-size: 0.75rem; color: var(--amber); margin-left: 0.5rem; align-self: center;"></div>
+          </div>
+        </div>
+
+        <!-- Buffer Times Configuration -->
+        <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); background: rgba(255,255,255,0.02); padding: 0.5rem 0.75rem; border-radius: 6px;">
+          <span>Pre-Match Buffer: <strong style="color: #FFF;">30 min</strong></span>
+          <span>Post-Match Buffer: <strong style="color: #FFF;">15 min</strong></span>
+          <span>Travel Buffer: <strong style="color: #FFF;">60 min</strong></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeOfficialCalendarModal()" style="width: auto;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Contextual Messaging (FSD §45) -->
+  <div class="modal-backdrop" id="modalMessaging">
+    <div class="modal-dialog" style="max-width: 680px; height: 600px; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>💬 Match Coordination &amp; Contextual Messaging</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeMessagingModal()" data-tooltip="Close messaging modal">✕</button>
+      </div>
+      <div class="modal-body" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
+        <!-- Thread Header Bar -->
+        <div style="padding: 0.75rem 1.25rem; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #FFF;">Match #M-101 Coordination Thread</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">Bengaluru Strikers vs Mumbai Blasters • Chinnaswamy Turf A</div>
+          </div>
+          <span style="font-size: 0.7rem; color: var(--turf-emerald); background: rgba(0,229,153,0.1); padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 700;">ACTIVE MATCH</span>
+        </div>
+
+        <!-- Message Bubbles Scroll Stream -->
+        <div id="messagingStream" style="flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+          <!-- System message -->
+          <div style="text-align: center; margin: 0.25rem 0;">
+            <span style="background: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 9999px;">🔒 Match created with ₹15,885.00 secured in double-entry escrow</span>
+          </div>
+
+          <!-- Provider Message -->
+          <div style="align-self: flex-start; max-width: 80%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem 0.85rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; gap: 1rem;">
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--cyan);">🏟️ Chinnaswamy Turf Manager</span>
+              <span style="font-size: 0.65rem; color: var(--text-muted);">13:10</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #e2e8f0;">Ground staff has prepped Pitch #3 with freshly marked regulation white bowling creases. Floodlights operational for second innings.</div>
+          </div>
+
+          <!-- Official Quote Card Message -->
+          <div style="align-self: flex-start; max-width: 85%; background: rgba(0,229,153,0.05); border: 1px solid rgba(0,229,153,0.25); border-radius: 8px; padding: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--turf-emerald);">👨‍⚖️ Rajesh Sharma (Level-2 Umpire)</span>
+              <span style="font-size: 0.65rem; color: var(--text-muted);">13:15</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #FFF; margin-bottom: 0.5rem;">Official Umpiring Quote for Match #M-101 (4-Hour Assignment)</div>
+            <div style="background: rgba(0,0,0,0.4); padding: 0.5rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Umpiring Fee:</span>
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹3,500.00</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-primary" onclick="acceptChatQuote()" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" data-tooltip="Accept quote and lock into match escrow">✓ Accept Quote</button>
+              <button class="btn btn-secondary" onclick="declineChatQuote()" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; width: auto;" data-tooltip="Decline quote">Decline</button>
+            </div>
+          </div>
+
+          <!-- Captain Message -->
+          <div style="align-self: flex-end; max-width: 80%; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.3); border-radius: 8px; padding: 0.65rem 0.85rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; gap: 1rem;">
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--turf-emerald);">Virat Sharma (Captain)</span>
+              <span style="font-size: 0.65rem; color: var(--text-muted);">13:20</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #FFF;">Confirmed! Squad will arrive at 13:30 for team warm-ups and pitch inspection before toss.</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Chips -->
+        <div style="padding: 0.4rem 1rem; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 0.4rem; overflow-x: auto;">
+          <button onclick="sendQuickAction('Confirm Arrival')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;" data-tooltip="Send fast check-in update">📍 Confirm Arrival</button>
+          <button onclick="sendQuickAction('Request Pitch Inspection')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;" data-tooltip="Ask umpires for pitch clearance">🏏 Inspect Pitch</button>
+          <button onclick="sendQuickAction('Ready for Toss')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;" data-tooltip="Notify scorer and officials">🪙 Ready for Toss</button>
+        </div>
+
+        <!-- Message Input Bar -->
+        <div style="padding: 0.75rem 1rem; background: rgba(9,13,22,0.95); border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 0.5rem; align-items: center;">
+          <input type="text" id="chatInputText" placeholder="Type match coordination message..." style="flex: 1; padding: 0.5rem 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; font-size: 0.82rem;">
+          <button class="btn btn-primary" onclick="submitChatMessage()" style="width: auto; padding: 0.5rem 1rem; font-size: 0.82rem;" data-tooltip="Send message across WebSocket / SSE channel">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Booking Lifecycle, Cancellation & Rescheduling (Commercial §10-14) -->
+  <div class="modal-backdrop" id="modalBookingLifecycle">
+    <div class="modal-dialog" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🔄 Cancellation Policy &amp; Rescheduling Engine</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeBookingLifecycleModal()" data-tooltip="Close cancellation modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Automated double-entry refund and penalty enforcement based on notice time bands:
+        </div>
+
+        <!-- 4-Tier Cancellation Bands -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1.25rem;">
+          <div style="background: rgba(0,229,153,0.08); border: 2px solid var(--turf-emerald); border-radius: 8px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.68rem; font-weight: 700; color: var(--turf-emerald);">ACTIVE WINDOW</div>
+            <div style="font-weight: 800; font-size: 1.1rem; color: #FFF; margin: 0.2rem 0;">&gt; 48 Hrs</div>
+            <div style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">100% Refund</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted);">0% Penalty</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.68rem; font-weight: 700; color: var(--text-muted);">BAND 2</div>
+            <div style="font-weight: 800; font-size: 1.1rem; color: #FFF; margin: 0.2rem 0;">24 – 48 Hrs</div>
+            <div style="font-size: 0.72rem; color: var(--cyan); font-weight: 700;">75% Refund</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted);">25% Provider Comp</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.68rem; font-weight: 700; color: var(--text-muted);">BAND 3</div>
+            <div style="font-weight: 800; font-size: 1.1rem; color: #FFF; margin: 0.2rem 0;">12 – 24 Hrs</div>
+            <div style="font-size: 0.72rem; color: var(--amber); font-weight: 700;">50% Refund</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted);">50% Provider Split</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.68rem; font-weight: 700; color: var(--text-muted);">BAND 4</div>
+            <div style="font-weight: 800; font-size: 1.1rem; color: #FFF; margin: 0.2rem 0;">&lt; 12 Hrs</div>
+            <div style="font-size: 0.72rem; color: var(--rose); font-weight: 700;">0% Refund</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted);">100% Forfeited</div>
+          </div>
+        </div>
+
+        <!-- Rescheduling Calculator -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">🔄 Reschedule Slot &amp; Price Adjustment Calculator</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <div>
+              <label style="font-size: 0.68rem; color: var(--text-muted);">Current Slot Rate</label>
+              <div style="font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem; color: #FFF; padding-top: 0.25rem;">₹3,500.00</div>
+            </div>
+            <div>
+              <label style="font-size: 0.68rem; color: var(--text-muted);">Select New Slot</label>
+              <select id="rescheduleTargetRate" onchange="calculateReschedulePriceAdjustment()" style="width: 100%; padding: 0.35rem; font-size: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
+                <option value="4000">Sunday 18:00 Prime (₹4,000)</option>
+                <option value="3500">Sunday 10:00 Standard (₹3,500)</option>
+                <option value="3000">Monday 07:00 Morning (₹3,000)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 0.68rem; color: var(--text-muted);">Price Adjustment</label>
+              <div id="rescheduleDiffDisplay" style="font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem; color: var(--amber); padding-top: 0.25rem;">+₹500.00 to pay</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem;">
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Reschedule Policy: 1 of 3 allowed reschedules used.</span>
+            <button class="btn btn-secondary" onclick="executeRescheduleBooking()" data-tooltip="Perform slot shift and adjust escrow balance" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;">Confirm Reschedule</button>
+          </div>
+        </div>
+
+        <!-- Special Event Protections -->
+        <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Special Protections &amp; Dispute Actions</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div style="background: rgba(0,210,255,0.05); border: 1px solid rgba(0,210,255,0.2); border-radius: 8px; padding: 0.75rem;">
+            <div style="font-weight: 700; font-size: 0.82rem; color: var(--cyan); margin-bottom: 0.25rem;">🌧️ Weather Washout Claim</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">Unplayable rain interruption triggers 100% full refund with zero cancellation penalty under force-majeure clause.</div>
+            <button class="btn btn-secondary" onclick="triggerWeatherWashout()" data-tooltip="Execute 100% full refund journal entry" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; width: auto;">Claim Weather Refund</button>
+          </div>
+          <div style="background: rgba(255,51,102,0.05); border: 1px solid rgba(255,51,102,0.2); border-radius: 8px; padding: 0.75rem;">
+            <div style="font-weight: 700; font-size: 0.82rem; color: var(--rose); margin-bottom: 0.25rem;">⚠️ Report Provider No-Show</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">Applies -15 trust penalty points, 10% provider penalty fine, and automatic customer refund from escrow.</div>
+            <button class="btn btn-secondary" onclick="reportNoShowProvider()" data-tooltip="Escalate provider failure to Fair Play desk" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; width: auto; color: var(--rose);">Report No-Show</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+        <button class="btn btn-secondary" onclick="closeBookingLifecycleModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="cancelCurrentBooking()" style="width: auto; color: var(--rose); border-color: rgba(255,51,102,0.3);" data-tooltip="Cancel booking under active band rules">Cancel Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Daily Financial Reconciliation (Commercial §17-18) -->
+  <div class="modal-backdrop" id="modalFinancialReconciliation">
+    <div class="modal-dialog" style="max-width: 720px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>📑 Daily Financial Reconciliation &amp; Ledger Audit</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeReconciliationModal()" data-tooltip="Close reconciliation modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- Metrics Header -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1.25rem; font-family: var(--font-mono); text-align: center;">
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem; border-radius: 6px;">
+            <div style="font-size: 0.65rem; color: var(--text-muted);">Total Settled</div>
+            <div style="font-size: 1rem; font-weight: 700; color: #FFF;">₹1,45,000</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem; border-radius: 6px;">
+            <div style="font-size: 0.65rem; color: var(--text-muted);">Provider Net</div>
+            <div style="font-size: 1rem; font-weight: 700; color: var(--turf-emerald);">₹1,36,445</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem; border-radius: 6px;">
+            <div style="font-size: 0.65rem; color: var(--text-muted);">Platform Fee (5%)</div>
+            <div style="font-size: 1rem; font-weight: 700; color: var(--cyan);">₹7,250</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem; border-radius: 6px;">
+            <div style="font-size: 0.65rem; color: var(--text-muted);">GST (18%)</div>
+            <div style="font-size: 1rem; font-weight: 700; color: var(--amber);">₹1,305</div>
+          </div>
+        </div>
+
+        <!-- 5-Account Double-Entry Trial Balance Table -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">5-Account Chart of Accounts Trial Balance</span>
+            <span style="font-size: 0.7rem; font-weight: 700; color: var(--turf-emerald); background: rgba(0,229,153,0.1); padding: 0.15rem 0.5rem; border-radius: 4px;">✓ ZERO IMBALANCE (Σ Debits ≡ Σ Credits)</span>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; font-family: var(--font-mono);">
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; color: var(--text-muted);">
+                <th style="padding: 0.35rem 0;">Account Name</th>
+                <th style="padding: 0.35rem 0; text-align: right;">Debit (INR)</th>
+                <th style="padding: 0.35rem 0; text-align: right;">Credit (INR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.4rem 0; color: #FFF;">ESCROW_HOLD (Escrow Funds)</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--text-muted);">-</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: #FFF;">₹1,45,000.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.4rem 0; color: #FFF;">PROVIDER_PAYABLE (Disbursed)</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--turf-emerald);">₹1,36,445.00</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--text-muted);">-</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.4rem 0; color: #FFF;">PLATFORM_FEE_INCOME (Revenue)</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--cyan);">₹7,250.00</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--text-muted);">-</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.4rem 0; color: #FFF;">TAX_GST_PAYABLE (Statutory GST)</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--amber);">₹1,305.00</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--text-muted);">-</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <td style="padding: 0.4rem 0; color: #FFF;">REFUND_CLEARING (Disputes &amp; Rain)</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--rose);">₹0.00</td>
+                <td style="padding: 0.4rem 0; text-align: right; color: var(--text-muted);">-</td>
+              </tr>
+              <tr style="font-weight: 700; color: var(--turf-emerald);">
+                <td style="padding: 0.5rem 0;">TOTALS &amp; IMBALANCE</td>
+                <td style="padding: 0.5rem 0; text-align: right;">₹1,45,000.00</td>
+                <td style="padding: 0.5rem 0; text-align: right;">₹1,45,000.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1rem; background: rgba(255,255,255,0.02); padding: 0.5rem 0.75rem; border-radius: 6px;">
+          All monetary ledger values strictly computed as 64-bit integer minor units. Zero floating-point drift. Verified against PostgreSQL GiST transaction constraints.
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+        <button class="btn btn-secondary" onclick="closeReconciliationModal()" style="width: auto;">Close</button>
+        <button class="btn btn-primary" onclick="downloadReconciliationCsv()" data-tooltip="Download full reconciliation audit ledger as RFC 4180 CSV" style="width: auto;">📥 Export Reconciliation CSV</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast">✓ Event completed</div>
 
   <script>
@@ -3532,7 +4124,10 @@ export function getDashboardHtml(): string {
         '</div>' +
         '<div style="margin-top: 0.45rem; font-size: 0.75rem; color: var(--turf-emerald); display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; flex-wrap: wrap;">' +
           '<span>✓ Mandatory sporting resources locked. Match is fully cleared for live broadcast.</span>' +
-          '<button class="btn btn-secondary" onclick="openEventBasketModal()" data-tooltip="Inspect match operational basket, equipment line items, and escrow deposit breakdown" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; width: auto;">🧺 View Event Basket</button>' +
+          '<div style="display: flex; gap: 0.4rem;">' +
+            '<button class="btn btn-secondary" onclick="openEventOverviewModal()" data-tooltip="Inspect full event lifecycle, procurement readiness ring, and resource blockers" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; width: auto;">📋 Full Readiness</button>' +
+            '<button class="btn btn-secondary" onclick="openEventBasketModal()" data-tooltip="Inspect match operational basket, equipment line items, and escrow deposit breakdown" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; width: auto;">🧺 View Event Basket</button>' +
+          '</div>' +
         '</div>' +
       '</div>';
     }
@@ -3791,6 +4386,256 @@ export function getDashboardHtml(): string {
     function refreshAdminCases() {
       initAdminDesk();
       showToast('✓ Admin audit desk refreshed with latest ledger balances');
+    }
+
+    // ==========================================
+    // Phase 2E Interactive Handlers:
+    // Create Event, Event Overview, Official Calendar,
+    // Contextual Messaging, Booking Lifecycle & Financial Reconciliation
+    // ==========================================
+
+    // 1. Create Event Wizard (UX-003)
+    let currentWizStep = 1;
+    let selectedWizFormat = 'T20';
+
+    function openCreateEventModal() {
+      currentWizStep = 1;
+      updateWizardStepUI();
+      const m = document.getElementById('modalCreateEvent');
+      if (m) m.classList.add('active');
+    }
+    function closeCreateEventModal() {
+      const m = document.getElementById('modalCreateEvent');
+      if (m) m.classList.remove('active');
+    }
+    function selectWizardFormat(fmt) {
+      selectedWizFormat = fmt;
+      document.querySelectorAll('.format-card').forEach(c => {
+        c.classList.remove('active');
+        c.style.borderColor = 'rgba(255,255,255,0.1)';
+        c.style.background = 'rgba(255,255,255,0.03)';
+      });
+      const target = document.getElementById('fmtCard-' + fmt);
+      if (target) {
+        target.classList.add('active');
+        target.style.borderColor = 'var(--turf-emerald)';
+        target.style.background = 'rgba(0, 229, 153, 0.08)';
+      }
+      const customRow = document.getElementById('customOversRow');
+      if (customRow) customRow.style.display = fmt === 'CUSTOM' ? 'block' : 'none';
+    }
+    function updateWizardStepUI() {
+      const s1 = document.getElementById('wizStep1Panel');
+      const s2 = document.getElementById('wizStep2Panel');
+      const s3 = document.getElementById('wizStep3Panel');
+      if (s1) s1.style.display = currentWizStep === 1 ? 'block' : 'none';
+      if (s2) s2.style.display = currentWizStep === 2 ? 'block' : 'none';
+      if (s3) s3.style.display = currentWizStep === 3 ? 'block' : 'none';
+      const prevBtn = document.getElementById('wizPrevBtn');
+      if (prevBtn) prevBtn.style.display = currentWizStep > 1 ? 'inline-block' : 'none';
+      const nextBtn = document.getElementById('wizNextBtn');
+      if (nextBtn) {
+        if (currentWizStep === 1) nextBtn.textContent = 'Next: Teams & Officials →';
+        else if (currentWizStep === 2) nextBtn.textContent = 'Next: Venue & Schedule →';
+        else if (currentWizStep === 3) nextBtn.textContent = '✓ Create Event & Lock Basket';
+      }
+
+      ['wizStep1Indicator', 'wizStep2Indicator', 'wizStep3Indicator'].forEach((id, idx) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.color = (idx + 1 <= currentWizStep) ? 'var(--turf-emerald)' : 'var(--text-muted)';
+          const badge = el.querySelector('span');
+          if (badge) {
+            badge.style.background = (idx + 1 <= currentWizStep) ? 'var(--turf-emerald)' : 'rgba(255,255,255,0.1)';
+            badge.style.color = (idx + 1 <= currentWizStep) ? '#04070D' : '#FFF';
+          }
+        }
+      });
+    }
+    function nextWizardStep() {
+      if (currentWizStep < 3) {
+        currentWizStep++;
+        updateWizardStepUI();
+      } else {
+        closeCreateEventModal();
+        showToast('✓ Event created! Opening match operational basket in escrow...');
+        openEventBasketModal();
+      }
+    }
+    function prevWizardStep() {
+      if (currentWizStep > 1) {
+        currentWizStep--;
+        updateWizardStepUI();
+      }
+    }
+
+    // 2. Event Overview & Readiness (UX-004)
+    function openEventOverviewModal() {
+      const m = document.getElementById('modalEventOverview');
+      if (m) m.classList.add('active');
+    }
+    function closeEventOverviewModal() {
+      const m = document.getElementById('modalEventOverview');
+      if (m) m.classList.remove('active');
+    }
+
+    // 3. Official Calendar & Availability (UX-015)
+    function openOfficialCalendarModal() {
+      const m = document.getElementById('modalOfficialCalendar');
+      if (m) m.classList.add('active');
+    }
+    function closeOfficialCalendarModal() {
+      const m = document.getElementById('modalOfficialCalendar');
+      if (m) m.classList.remove('active');
+    }
+    function selectCalendarDay(day, btn) {
+      document.querySelectorAll('.cal-day-btn').forEach(b => {
+        b.style.borderColor = 'rgba(255,255,255,0.1)';
+        b.style.background = 'transparent';
+        b.style.color = 'var(--text-muted)';
+        b.style.fontWeight = 'normal';
+      });
+      if (btn) {
+        btn.style.borderColor = 'var(--turf-emerald)';
+        btn.style.background = 'rgba(0,229,153,0.15)';
+        btn.style.color = 'var(--turf-emerald)';
+        btn.style.fontWeight = '700';
+      }
+      showToast('✓ Loaded schedule allocations for ' + day);
+    }
+    function checkCalendarSlotConflict() {
+      const start = parseInt(document.getElementById('testSlotStart').value, 10);
+      const end = parseInt(document.getElementById('testSlotEnd').value, 10);
+      const resEl = document.getElementById('slotConflictResult');
+      if (!resEl) return;
+      const overlaps = (start < 14 && end > 10) || (start < 19 && end > 15);
+      if (overlaps) {
+        resEl.textContent = '⚠️ GiST Collision: Overlaps with existing allocation!';
+        resEl.style.color = 'var(--rose)';
+      } else {
+        resEl.textContent = '✓ No Conflict Detected: Slot is clear for booking';
+        resEl.style.color = 'var(--turf-emerald)';
+      }
+    }
+
+    // 4. Contextual Messaging (FSD §45)
+    function openMessagingModal() {
+      const m = document.getElementById('modalMessaging');
+      if (m) m.classList.add('active');
+    }
+    function closeMessagingModal() {
+      const m = document.getElementById('modalMessaging');
+      if (m) m.classList.remove('active');
+    }
+    function acceptChatQuote() {
+      showToast('✓ Quote accepted! ₹3,500.00 locked in double-entry escrow');
+    }
+    function declineChatQuote() {
+      showToast('Quote declined. Notified official.');
+    }
+    function sendQuickAction(act) {
+      const stream = document.getElementById('messagingStream');
+      if (!stream) return;
+      const d = document.createElement('div');
+      d.style.cssText = 'align-self: flex-end; max-width: 80%; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.3); border-radius: 8px; padding: 0.65rem 0.85rem;';
+      d.innerHTML = '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; gap: 1rem;">' +
+        '<span style="font-size: 0.75rem; font-weight: 700; color: var(--turf-emerald);">Virat Sharma (Captain)</span>' +
+        '<span style="font-size: 0.65rem; color: var(--text-muted);">Just now</span>' +
+      '</div>' +
+      '<div style="font-size: 0.8rem; color: #FFF;">⚡ ' + act + '</div>';
+      stream.appendChild(d);
+      stream.scrollTop = stream.scrollHeight;
+      showToast('✓ Quick update broadcast: ' + act);
+    }
+    function submitChatMessage() {
+      const input = document.getElementById('chatInputText');
+      if (!input || !input.value.trim()) return;
+      const text = input.value.trim();
+      const stream = document.getElementById('messagingStream');
+      if (stream) {
+        const d = document.createElement('div');
+        d.style.cssText = 'align-self: flex-end; max-width: 80%; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.3); border-radius: 8px; padding: 0.65rem 0.85rem;';
+        d.innerHTML = '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; gap: 1rem;">' +
+          '<span style="font-size: 0.75rem; font-weight: 700; color: var(--turf-emerald);">Virat Sharma (Captain)</span>' +
+          '<span style="font-size: 0.65rem; color: var(--text-muted);">Just now</span>' +
+        '</div>' +
+        '<div style="font-size: 0.8rem; color: #FFF;">' + text + '</div>';
+        stream.appendChild(d);
+        stream.scrollTop = stream.scrollHeight;
+      }
+      input.value = '';
+      showToast('✓ Message sent across SSE/WebSocket sync');
+    }
+
+    // 5. Booking Lifecycle, Rescheduling & Cancellations (Commercial §10-14)
+    function openBookingLifecycleModal() {
+      const m = document.getElementById('modalBookingLifecycle');
+      if (m) m.classList.add('active');
+    }
+    function closeBookingLifecycleModal() {
+      const m = document.getElementById('modalBookingLifecycle');
+      if (m) m.classList.remove('active');
+    }
+    function calculateReschedulePriceAdjustment() {
+      const select = document.getElementById('rescheduleTargetRate');
+      if (!select) return;
+      const targetRate = parseInt(select.value, 10);
+      const diff = targetRate - 3500;
+      const display = document.getElementById('rescheduleDiffDisplay');
+      if (!display) return;
+      if (diff > 0) {
+        display.textContent = '+₹' + diff.toLocaleString('en-IN') + ' to pay';
+        display.style.color = 'var(--amber)';
+      } else if (diff < 0) {
+        display.textContent = '-₹' + Math.abs(diff).toLocaleString('en-IN') + ' refund';
+        display.style.color = 'var(--turf-emerald)';
+      } else {
+        display.textContent = '₹0.00 (Even swap)';
+        display.style.color = 'var(--cyan)';
+      }
+    }
+    function executeRescheduleBooking() {
+      closeBookingLifecycleModal();
+      showToast('✓ Booking rescheduled. Temporal GiST slot adjusted and escrow rebalanced.');
+    }
+    function triggerWeatherWashout() {
+      closeBookingLifecycleModal();
+      showToast('✓ Rain washout claim approved: 100% full refund journal entry executed (D: REFUND_CLEARING, C: ESCROW_HOLD)');
+    }
+    function reportNoShowProvider() {
+      closeBookingLifecycleModal();
+      showToast('⚠️ Provider no-show recorded: -15 reputation penalty applied and refund initiated.');
+    }
+    function cancelCurrentBooking() {
+      closeBookingLifecycleModal();
+      showToast('✓ Booking cancelled under Band 1 (>48h): 100% full refund processed to customer');
+    }
+
+    // 6. Financial Reconciliation & 5-Account Audit (Commercial §17-18)
+    function openReconciliationModal() {
+      const m = document.getElementById('modalFinancialReconciliation');
+      if (m) m.classList.add('active');
+    }
+    function closeReconciliationModal() {
+      const m = document.getElementById('modalFinancialReconciliation');
+      if (m) m.classList.remove('active');
+    }
+    function downloadReconciliationCsv() {
+      const csvContent = 'Settlement ID,Booking ID,Provider Name,Gross Base (INR),Platform Fee (INR),GST (INR),Net Disbursed (INR),Status,Dispute Flag\\n' +
+        'SETTL-2026-001,BK-101,Chinnaswamy Turf Arena,8500.00,425.00,76.50,7998.50,PAYOUT_COMPLETED,NO\\n' +
+        'SETTL-2026-002,BK-102,Rajesh Sharma (Lead Umpire),3500.00,175.00,31.50,3293.50,PAYOUT_COMPLETED,NO\\n' +
+        'SETTL-2026-003,BK-103,Vikram Rao (Leg Umpire),2500.00,125.00,22.50,2352.50,SETTLEMENT_ELIGIBLE,NO\\n' +
+        'SETTL-2026-004,BK-104,Amit Patel (Official Scorer),800.00,40.00,7.20,752.80,SETTLEMENT_ELIGIBLE,NO\\n' +
+        'SETTL-2026-005,BK-105,Whitefield Sports Ground,6500.00,325.00,58.50,6116.50,HELD_DISPUTE,YES\\n';
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'cricos_reconciliation_' + new Date().toISOString().split('T')[0] + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('✓ Exported RFC 4180 Reconciliation CSV (5 settlement rows)');
     }
 
     // Health check ping

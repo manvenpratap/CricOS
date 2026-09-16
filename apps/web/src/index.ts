@@ -17,6 +17,12 @@ export * from './components/leaderboards.js';
 export * from './components/notifications-drawer.js';
 export * from './components/admin-desk.js';
 export * from './components/provider-storefront.js';
+export * from './components/create-event.js';
+export * from './components/event-overview.js';
+export * from './components/official-calendar.js';
+export * from './components/messaging.js';
+export * from './components/booking-lifecycle.js';
+export * from './components/reconciliation.js';
 
 import { CricOSApiClient, type ApiClientOptions } from './api/client.js';
 
