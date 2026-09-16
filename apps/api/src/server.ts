@@ -237,19 +237,19 @@ export function buildServer(): FastifyInstance {
   });
 
   server.get('/docs', async (_req, reply) => {
-    return reply.type('text/html').send(getApiDocsHtml());
+    return reply.type('text/html; charset=utf-8').send(getApiDocsHtml());
   });
 
   server.get('/mobile', async (_req, reply) => {
-    return reply.type('text/html').send(getMobileAppHtml());
+    return reply.type('text/html; charset=utf-8').send(getMobileAppHtml());
   });
 
   // 5. Interactive Test & Operations Console UI
   server.get('/', async (_req, reply) => {
-    return reply.type('text/html').send(getDashboardHtml());
+    return reply.type('text/html; charset=utf-8').send(getDashboardHtml());
   });
   server.get('/app', async (_req, reply) => {
-    return reply.type('text/html').send(getDashboardHtml());
+    return reply.type('text/html; charset=utf-8').send(getDashboardHtml());
   });
 
   // 5. Register All Modules under /api/v1

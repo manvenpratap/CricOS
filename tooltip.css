@@ -40,11 +40,12 @@ body.light-theme .uni-tooltip,
 
 /* Interactive Trigger Elements */
 [data-tooltip] {
-  cursor: help;
+  cursor: pointer;
   position: relative;
 }
 
 button[data-tooltip],
-a[data-tooltip] {
+a[data-tooltip],
+[role="button"][data-tooltip] {
   cursor: pointer;
 }
