@@ -213,3 +213,32 @@ test('Distribution Packaging: Consumer User Journeys & Interactive Modal Systems
   assert.ok(rootIndex.includes('confirmBookingPayment()'), 'Booking payment confirmation handler must exist');
 });
 
+test('Distribution Packaging: Phase 2B Offline Scoring, Match Analytics Charts & Scorecard Export Invariants', () => {
+  const rootIndex = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+
+  // 1. Offline Scoring & Outbox Sync
+  assert.ok(rootIndex.includes('id="telemetrySyncNode"'), 'Telemetry sync node must exist');
+  assert.ok(rootIndex.includes('id="telemetrySyncVal"'), 'Telemetry sync value must exist');
+  assert.ok(rootIndex.includes('triggerQueueSync()'), 'Queue sync trigger function must exist');
+
+  // 2. Match Analytics Charts (Worm & Manhattan)
+  assert.ok(rootIndex.includes('id="matchChartContainer"'), 'Match chart container must exist');
+  assert.ok(rootIndex.includes('id="btnChartWorm"'), 'Worm chart toggle button must exist');
+  assert.ok(rootIndex.includes('id="btnChartManhattan"'), 'Manhattan chart toggle button must exist');
+  assert.ok(rootIndex.includes('showMatchChart(\'WORM\')'), 'Worm chart switcher must exist');
+  assert.ok(rootIndex.includes('showMatchChart(\'MANHATTAN\')'), 'Manhattan chart switcher must exist');
+  assert.ok(rootIndex.includes('renderMatchCharts()'), 'SVG chart renderer must exist');
+
+  // 3. Official Scorecard Export & Print Sheet
+  assert.ok(rootIndex.includes('id="modalScorecardExport"'), 'Scorecard export modal must exist');
+  assert.ok(rootIndex.includes('openScorecardModal()'), 'Open scorecard modal trigger must exist');
+  assert.ok(rootIndex.includes('downloadScorecardCsv()'), 'Download scorecard CSV handler must exist');
+  assert.ok(rootIndex.includes('printScorecardView()'), 'Print scorecard view handler must exist');
+  assert.ok(rootIndex.includes('id="scorecardBatterRows"'), 'Scorecard batter table body must exist');
+  assert.ok(rootIndex.includes('id="scorecardBowlerRows"'), 'Scorecard bowler table body must exist');
+
+  // 4. Match Conclusion & Victory Banner
+  assert.ok(rootIndex.includes('id="matchResultBanner"'), 'Match result victory banner must exist');
+  assert.ok(rootIndex.includes('id="matchResultText"'), 'Match result text display must exist');
+});
+

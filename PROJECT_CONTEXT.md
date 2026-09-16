@@ -1,17 +1,17 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 08:30:06
-**Version:** 1.0.0-phase2a  
+**Last Updated:** 2026-09-16 08:59:28
+**Version:** 1.0.0-phase2b  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2A Completed (Complete Multi-Persona Web Frontend & Consumer Journeys — Interactive user profile & persona switching, Playing XI/Bench rosters with join codes, Tactical Scoring Studio with 8-zone Wagon Wheel, Wicket Dismissal modal, and 15-min GiST hold checkout modal).
-- **Test Health**: 100% Passing (134 automated tests across 16 test suites; 1.41s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2B Completed (Offline-First Match Scoring Outbox, Match Analytics Visuals with Zero-Dependency SVG Worm & Manhattan Charts, Scorecard CSV & Printable Match Sheet Export Engine, Dynamic Match Victory Banner).
+- **Test Health**: 100% Passing (140 automated tests across 16 test suites; 1.43s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
-- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
+- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
 
 ---
 
@@ -71,6 +71,15 @@
   - **Tactical Scoring Studio & 8-Zone Wagon Wheel**: Dual active batter cards (striker & non-striker), manual strike swap (`swapStudioStrike`), 8-zone Wagon Wheel selector (`LONG_OFF`, `LONG_ON`, `EXTRA_COVER`, `MID_WICKET`, `POINT`, `SQUARE_LEG`, `THIRD_MAN`, `FINE_LEG`), active partnership tracker, and quick extras strip (`+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye`).
   - **Wicket Dismissal Modal Flow**: Dedicated dismissal modal (`#modalDismissal`) supporting 6 modes (`BOWLED`, `CAUGHT`, `LBW`, `RUN_OUT`, `STUMPED`, `HIT_WICKET`), conditional fielder involvement input, striker/non-striker selection, incoming batter assignment, and Fall of Wickets (FoW) timeline synchronization.
   - **Venues & Turfs 15-Minute GiST Hold**: Interactive venue slot reservation modal (`#modalCheckout`) with live 15-minute countdown timer (`14:59`), commercial breakdown (5% platform facilitation, 18% GST), and double-entry escrow confirmation.
+- [x] **Offline-First Match Scoring, SVG Analytics Visuals & Scorecard Export Engine (Phase 2B)**:
+  - **Modular Component Library (`apps/web`)**:
+    - `OfflineDeliveryQueue` (`offline-sync.ts`): Client-side outbox queue storing pending deliveries in `localStorage`, tracking retry attempts, sequential flushing on network recovery or manual trigger, and network event listeners (`online`/`offline`).
+    - `renderWormChartSvg` & `renderManhattanChartSvg` (`match-charts.ts`): Zero-dependency responsive SVG chart visualizer plotting progressive run comparative worm curves and over-by-over Manhattan bar charts with boundary indicators and wicket markers.
+    - `generateScorecardCsv` & `generatePrintableScorecardHtml` (`scorecard-export.ts`): RFC 4180-compliant CSV scorecard export and clean, printer-friendly CSS match sheet ready for PDF generation.
+  - **Telemetry Strip & Offline Status Badge**: Dynamic telemetry node (`#telemetrySyncNode`) displaying live connection status (`ONLINE (0 QUEUED)` / `OFFLINE (N QUEUED)` / `SYNCING...`) with instant manual sync trigger.
+  - **Match Analytics Sub-Panel**: Responsive SVG charting container (`#matchChartContainer`) with kinetic toggle tabs (`📈 Worm Chart` and `📊 Manhattan Bars`).
+  - **Scorecard Export Modal**: Accessible modal (`#modalScorecardExport`) with full batting scorecard, bowling analysis, CSV download (`downloadScorecardCsv()`), and printable match sheet (`printScorecardView()`).
+  - **Dynamic Victory & Result Engine**: Live calculation comparing chasing score against target runs; automatically surfaces prominent athletic `#matchResultBanner` when the match reaches conclusion.
 
 ---
 
@@ -86,6 +95,7 @@
 9. **Scoring Delivery Deduplication Invariant**: Every delivery event is idempotently processed across concurrent SSE broadcasts and HTTP responses using deterministic `event_id` / `client_event_id` keys.
 10. **Store Compliance & Account Deletion Invariant**: All consumer-facing auth flows provide explicit persona assignment and in-app account deletion under Apple Guideline 5.1.1(v).
 11. **Audit & Traceability Invariant**: Mutating API requests produce structured audit log events in `audit_events` and propagate correlation IDs in responses.
+12. **Offline Outbox & Zero-Dependency SVG Invariant**: Scoring outbox queue persists pending deliveries offline in `localStorage` and synchronizes sequentially; analytics visuals (Worm & Manhattan charts) are generated strictly using pure SVG without external charting library dependencies to maintain single-file portability.
 
 ---
 
@@ -104,6 +114,7 @@
 - [x] Phase 1Y: Consumer Mobile App & App Store Packaging (`apps/mobile` Expo EAS, Complete User Journeys)
 - [x] Phase 1Z: Technical Audit Remediation & Hardening (100% Remediated, Certified Production Ready)
 - [x] Phase 2A: Complete Multi-Persona Web Frontend & Consumer Journeys (Teams, Studio, Wagon Wheel, Modals)
+- [x] Phase 2B: Offline-First Match Scoring Outbox, Match Analytics (SVG Worm & Manhattan Charts) & Scorecard Export Engine
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 

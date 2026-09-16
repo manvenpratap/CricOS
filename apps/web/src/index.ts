@@ -6,6 +6,9 @@ export * from './components/auth-modal.js';
 export * from './components/team-roster.js';
 export * from './components/scoring-studio.js';
 export * from './components/tournament-wizard.js';
+export * from './components/offline-sync.js';
+export * from './components/scorecard-export.js';
+export * from './components/match-charts.js';
 
 import { CricOSApiClient, type ApiClientOptions } from './api/client.js';
 
