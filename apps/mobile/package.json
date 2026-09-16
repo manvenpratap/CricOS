@@ -7,7 +7,11 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "NODE_ENV=test node --experimental-strip-types --test test/**/*.test.ts"
+    "test": "NODE_ENV=test node --experimental-strip-types --test test/**/*.test.ts",
+    "start": "node dist/index.js",
+    "build:android": "eas build --platform android --profile production",
+    "build:ios": "eas build --platform ios --profile production",
+    "build:preview": "eas build --platform all --profile preview"
   },
   "dependencies": {
     "@cricket-platform/contracts": "workspace:*",

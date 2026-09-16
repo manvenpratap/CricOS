@@ -85,7 +85,20 @@ async function runPackaging() {
   fs.writeFileSync(distOpenApiPath, openapiJson, 'utf8');
   console.log('✓ Generated dist/openapi.json');
 
-  // 6. Compute Cryptographic Checksums & Manifest
+  // 6. Generate Standalone Mobile App Console HTML
+  const mobileViewModulePath = path.join(rootDir, 'apps/api/dist/ui/mobile-view.js');
+  let mobileHtml = '';
+  if (fs.existsSync(mobileViewModulePath)) {
+    const { getMobileAppHtml } = await import(mobileViewModulePath);
+    mobileHtml = getMobileAppHtml();
+    const distMobilePath = path.join(distDir, 'mobile.html');
+    const distPublicMobilePath = path.join(distPublicDir, 'mobile.html');
+    fs.writeFileSync(distMobilePath, mobileHtml, 'utf8');
+    fs.writeFileSync(distPublicMobilePath, mobileHtml, 'utf8');
+    console.log('✓ Generated dist/mobile.html & dist/public/mobile.html');
+  }
+
+  // 7. Compute Cryptographic Checksums & Manifest
   const gitCommit = getGitCommit();
   const now = new Date().toISOString();
 
@@ -128,7 +141,13 @@ async function runPackaging() {
       'dist/openapi.json': {
         bytes: Buffer.byteLength(openapiJson, 'utf8'),
         sha256: calculateSha256(Buffer.from(openapiJson, 'utf8'))
-      }
+      },
+      ...(mobileHtml ? {
+        'dist/mobile.html': {
+          bytes: Buffer.byteLength(mobileHtml, 'utf8'),
+          sha256: calculateSha256(Buffer.from(mobileHtml, 'utf8'))
+        }
+      } : {})
     },
     single_file_sync_verified: true
   };

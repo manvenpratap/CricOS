@@ -1,6 +1,6 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 03:37:28
+**Last Updated:** 2026-09-16 07:48:50
 **Version:** 1.0.0-phase1x  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
@@ -8,10 +8,10 @@
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 1X Completed (Stitch Application Screen Architecture UI/UX Enhancement — Global Telemetry Strip, Target Equation Bar, Fall of Wickets Timeline, Hourly Slot Matrix, Tournament Stage Stepper, Prometheus Metric Gauges).
-- **Test Health**: 100% Passing (108 automated tests across 14 test suites; 1.47s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 1Y Completed (Standalone Consumer Mobile App in `apps/mobile` with Expo EAS App Store / Google Play packaging, OTP onboarding, Player Profile with Apple 5.1.1(v) deletion, tactile match scoring pad, and live preview).
+- **Test Health**: 100% Passing (124 automated tests across 15 test suites including 16 mobile tests; 1.44s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
-- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with floodlit stadium broadcast UI, live SSE scoring, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, and interactive API documentation.
+- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive web console, live SSE scoring, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
 
 ---
 
@@ -34,7 +34,6 @@
 - [x] **Automated Continuous Integration**: GitHub Actions workflow (`.github/workflows/ci.yml`) enforcing build, typecheck, test summary, doctor, and deployment validation on all pull requests and main pushes.
 - [x] **Universal Pipeline Integration**: Autonomous doctor, low-token verification loop, and self-healing runner (`./pipeline.sh`).
 - [x] **Web Client Application Package (`apps/web`) (Phase 1S)**: `@cricket-platform/web` with typed API client, accessible live scoreboard with delivery chips (`[ • ] [ 1 ] [ 4 ] [ W ] [ 1wd ] [ 6 ]`), commercial fee breakdown, provider trust badges (`VERIFIED`, `PROBATION`, `SUSPENDED`), and HTML template with WCAG 2.2 AA tooltips.
-- [x] **Mobile Client Application Package (`apps/mobile`) (Phase 1S)**: `@cricket-platform/mobile` with offline queueing, session persistence, `LiveMatchScreenController` with dynamic strike rotation & wicket fall tracking, `MarketplaceScreenController` with commercial fee breakdown, and `ProfileScreenController` with career figures.
 - [x] **Synthetic Tournament Orchestrator & Match Simulator (`apps/api`) (Phase 1T)**: Autonomous tournament orchestration pipeline (`TournamentOrchestrator`, `SimulatedMatchEngine`) coordinating round-robin scheduling, multi-match simulation, provider marketplace bookings, and double-entry escrow settlement.
 - [x] **Domain Tournament Mathematics (`packages/domain`) (Phase 1T)**: Official ICC/MCC Net Run Rate formula (`calculateNetRunRate`), ball-fraction conversions, polygon round-robin scheduling (`generateRoundRobinSchedule`), and multi-tier standings tie-breaking (`updateTournamentStandings`).
 - [x] **High-Throughput Load Emulation CLI (Phase 1T)**: `scripts/emulate-tournament.mjs` / `pnpm tournament:emulate` profiling delivery throughput (>45,000 deliveries/sec), latency, and zero-imbalance ledger verification.
@@ -42,12 +41,20 @@
 - [x] **OpenAPI 3.0 Specification & Interactive Documentation Showcase (`apps/api`) (Phase 1U)**: Automated OpenAPI 3.0.3 catalog at `GET /api/v1/openapi.json` spanning all 26 modular routes, interactive dark-mode glassmorphism documentation showcase at `GET /docs` featuring live copyable cURL commands, response schemas, and accessible `data-tooltip` annotations.
 - [x] **Automated Performance Profiler CLI (Phase 1U)**: `scripts/benchmark-performance.mjs` / `pnpm benchmark:profile` driving multi-route concurrency load profiling, measuring latency percentiles (min, avg, p50, p95, p99, max), event loop delay, and memory delta.
 - [x] **Multi-Architecture Containerization & Docker Hardening (`Dockerfile.api`, `Dockerfile.worker`) (Phase 1V)**: Multi-stage Alpine containerization supporting `linux/amd64` and `linux/arm64` cross-platform builds with complete 8-workspace package tree inclusion, non-root `USER node` security context, and native liveness healthchecks.
-- [x] **Distribution Packaging & Release Manifest Pipeline (Phase 1V)**: Standalone packaging automation (`scripts/package-distribution.mjs` / `pnpm package:dist`) producing verified distribution artifacts (`dist/index.html`, `dist/docs.html`, `dist/openapi.json`), calculating SHA-256 cryptographic hashes in `dist/release-manifest.json`, and guaranteeing byte-for-byte equality between root `index.html` and `dist/index.html` (Rule 6).
+- [x] **Distribution Packaging & Release Manifest Pipeline (Phase 1V)**: Standalone packaging automation (`scripts/package-distribution.mjs` / `pnpm package:dist`) producing verified distribution artifacts (`dist/index.html`, `dist/docs.html`, `dist/openapi.json`, `dist/mobile.html`), calculating SHA-256 cryptographic hashes in `dist/release-manifest.json`, and guaranteeing byte-for-byte equality between root `index.html` and `dist/index.html` (Rule 6).
 - [x] **Distribution & Container Verification CLI (Phase 1V)**: `scripts/verify-distribution.mjs` / `pnpm verify:dist` validating artifact checksums, single-file parity, Dockerfile layer declarations, `.dockerignore` hygiene, and production environment templates.
-- [x] **Interactive Console & Navigation Polish (Phase 1V)**: Enhanced CricOS branding (`CricOS — Unified Cricket Operating System`), responsive header navigation pills with direct links to `/docs` (OpenAPI Showcase), `/metrics` (Prometheus), and `/health/ready` (Health Probes) with 100% accessible `data-tooltip` coverage.
-- [x] **World-Class Frontend Design Overhaul (Phase 1W)**: Implemented "Floodlit Stadium Broadcast & Athletic Precision Glassmorphism" design system (DFII 17/15). Replaced generic fonts with Google Fonts typography suite (`Space Grotesk`, `Plus Jakarta Sans`, `Chakra Petch`, `JetBrains Mono`), crafted 3.5rem LED scoreboard HUD with turf-emerald (`#00E599`) and cyan (`#00D2FF`) glow effects, kinetic over strip with pop-animated ball bubbles, athletic tactile scoring pad buttons, and 100% WCAG 2.2 AA accessible `data-tooltip` coverage.
-- [x] **Stitch Application Screen Architecture Implementation (Phase 1X)**: Structured 5-screen wireframe & state machine design in `STITCH_APPLICATION_SCREEN_ARCHITECTURE.md`. Implemented persistent Global Stadium Telemetry Strip (`1 LIVE`, `₹500k Escrow`, `Circuit 100%`, `<10ms SSE Latency`), Screen 1 dynamic Target Equation Bar & Fall of Wickets Timeline, Screen 2 interactive Hourly Slot Matrix (`08:00 Avail`, `13:00 Avail`, `18:00 Booked`), Screen 3 Tournament Stage Stepper with official ICC Net Run Rate precision tags (`+0.850`, `-0.420`), and Screen 5 real-time Prometheus Metric Cards.
-- [x] **Scoring Delivery Deduplication & SSE Synchronization (Phase 1X.1)**: Eliminated duplicate ball bubble and feed entry generation on scoring pad clicks. Implemented client-side event deduplication via unique delivery keys (`event_id` / `client_event_id` / `sequence`), coordinated fallback execution against `isSseConnected`, bounded historical cache (`renderedDeliveryKeys`, `feedDeliveryKeys`), fixed inverted placeholder dot condition, and prevented ReferenceError in FoW timeline.
+- [x] **World-Class Frontend Design Overhaul (Phase 1W)**: Implemented "Floodlit Stadium Broadcast & Athletic Precision Glassmorphism" design system. Replaced generic fonts with Google Fonts typography suite (`Space Grotesk`, `Plus Jakarta Sans`, `Chakra Petch`, `JetBrains Mono`), crafted 3.5rem LED scoreboard HUD with turf-emerald (`#00E599`) and cyan (`#00D2FF`) glow effects, kinetic over strip with pop-animated ball bubbles, athletic tactile scoring pad buttons, and 100% WCAG 2.2 AA accessible `data-tooltip` coverage.
+- [x] **Stitch Application Screen Architecture (Phase 1X)**: Structured 5-screen wireframe & state machine design. Implemented persistent Global Stadium Telemetry Strip (`1 LIVE`, `₹500k Escrow`, `Circuit 100%`, `<10ms SSE Latency`), Screen 1 dynamic Target Equation Bar & Fall of Wickets Timeline, Screen 2 interactive Hourly Slot Matrix (`08:00 Avail`, `13:00 Avail`, `18:00 Booked`), Screen 3 Tournament Stage Stepper with official ICC Net Run Rate precision tags (`+0.850`, `-0.420`), and Screen 5 real-time Prometheus Metric Cards.
+- [x] **Scoring Delivery Deduplication & SSE Synchronization (Phase 1X.1)**: Eliminated duplicate ball bubble and feed entry generation on scoring pad clicks using deterministic `event_id` / `client_event_id` keys and bounded caches.
+- [x] **Consumer Mobile Application & App Store Packaging (`apps/mobile`) (Phase 1Y)**:
+  - **Expo / React Native Store Configuration**: `apps/mobile/app.json` and `apps/mobile/eas.json` configured for Google Play Store (`.aab`) and Apple App Store (`.ipa`) with package identifier `com.cricos.app`, camera, and push notification permissions.
+  - **Complete Consumer Journeys**:
+    1. *Authentication & Persona Selection*: Mobile OTP request and verification (`POST /api/v1/auth/otp/request` & `/verify`) with role pill switcher (`CAPTAIN`, `PLAYER`, `SCORER`, `ORGANISER`).
+    2. *Player Profile & Apple 5.1.1(v) Compliance*: Dynamic batting average, strike rate, bowling economy, and in-app irreversible account deletion confirmation workflow compliant with App Store Review Guideline 5.1.1(v).
+    3. *Tactile Match Scoring Center*: Mobile-optimized numeric pad (`0`, `1`, `2`, `3`, `4`, `6`, `W`, `Wd`), live over bubble strip, active batter/bowler HUD, and undo action.
+    4. *Tournament Standings*: 4-stage stepper, ICC Net Run Rate calculations with 3-decimal precision (`+1.420`, `+0.850`, `-0.420`).
+    5. *Turf & Official Marketplace*: Turf listings with 15-minute GiST hold timer and transparent commercial fee breakdown (5% platform fee, 18% GST).
+  - **Interactive Mobile Webview Mockup**: High-fidelity iPhone mockup with Dynamic Island served at `http://localhost:3000/mobile` and directly accessible from the main console header via `📱 Mobile App`.
 
 ---
 
@@ -61,6 +68,7 @@
 7. **Single-File Distribution Invariant**: Under Rule 6, root `index.html` and `dist/index.html` must remain byte-for-byte identical.
 8. **Stadium Broadcast Design Invariant**: Consistent athletic typography tokens (`--font-display`, `--font-score`, `--font-body`), pitch emerald, cyan glow, and accessible contextual tooltips on all interactive elements.
 9. **Scoring Delivery Deduplication Invariant**: Every delivery event is idempotently processed across concurrent SSE broadcasts and HTTP responses using deterministic `event_id` / `client_event_id` keys.
+10. **Store Compliance & Account Deletion Invariant**: All consumer-facing auth flows provide explicit persona assignment and in-app account deletion under Apple Guideline 5.1.1(v).
 
 ---
 
@@ -76,6 +84,7 @@
 - [x] Phase 1V: Production Multi-Architecture Packaging, Distribution Hardening & Final Polish
 - [x] Phase 1W: World-Class Frontend Design Overhaul (Floodlit Stadium Broadcast & Athletic Precision)
 - [x] Phase 1X: Stitch Application Screen Architecture UI/UX Enhancement (Global Telemetry Shell & Screen Matrix)
-- [x] **CricOS 1.0.0 Production Release Milestone Achieved**
+- [x] Phase 1Y: Consumer Mobile App & App Store Packaging (`apps/mobile` Expo EAS, Complete User Journeys)
+- [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 

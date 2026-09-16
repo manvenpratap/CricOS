@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import { isDbConnected, getPoolStats } from './platform/db.js';
 import { broadcastHub } from './modules/scoring/broadcast.js';
 import { getDashboardHtml } from './ui/dashboard.js';
+import { getMobileAppHtml } from './ui/mobile-view.js';
 import { metricsRegistry } from './platform/metrics.js';
 import { generateOpenApiSpec, getApiDocsHtml } from './platform/openapi.js';
 
@@ -143,6 +144,10 @@ export function buildServer(): FastifyInstance {
 
   server.get('/docs', async (_req, reply) => {
     return reply.type('text/html').send(getApiDocsHtml());
+  });
+
+  server.get('/mobile', async (_req, reply) => {
+    return reply.type('text/html').send(getMobileAppHtml());
   });
 
   // 5. Interactive Test & Operations Console UI

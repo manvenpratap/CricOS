@@ -26,6 +26,7 @@ export interface PlayerProfileData {
   role: 'BATTER' | 'BOWLER' | 'ALL_ROUNDER' | 'WICKET_KEEPER';
   teamName: string;
   jerseyNumber: number;
+  persona: 'ADMIN' | 'CAPTAIN' | 'PLAYER' | 'SCORER' | 'ORGANISER' | 'PROVIDER';
   batting: CareerBattingStats;
   bowling: CareerBowlingStats;
 }
@@ -33,12 +34,43 @@ export interface PlayerProfileData {
 export class ProfileScreenController {
   private profile: PlayerProfileData;
 
-  constructor(profile: PlayerProfileData) {
-    this.profile = JSON.parse(JSON.stringify(profile));
+  constructor(profile?: Partial<PlayerProfileData>) {
+    this.profile = {
+      id: profile?.id || 'usr-pilot-18',
+      name: profile?.name || 'Virat K.',
+      role: profile?.role || 'BATTER',
+      teamName: profile?.teamName || 'Delhi Daredevils',
+      jerseyNumber: profile?.jerseyNumber || 18,
+      persona: profile?.persona || 'CAPTAIN',
+      batting: profile?.batting || {
+        matches: 124,
+        innings: 118,
+        runs: 4892,
+        ballsFaced: 3624,
+        notOuts: 19,
+        highestScore: 122,
+        centuries: 5,
+        fifties: 38,
+        fours: 462,
+        sixes: 118
+      },
+      bowling: profile?.bowling || {
+        matches: 124,
+        overs: 48,
+        maidens: 1,
+        runsConceded: 384,
+        wickets: 8,
+        bestBowling: '2/18'
+      }
+    };
   }
 
   public getProfile(): PlayerProfileData {
     return JSON.parse(JSON.stringify(this.profile));
+  }
+
+  public updateProfile(updates: Partial<PlayerProfileData>): void {
+    this.profile = { ...this.profile, ...updates };
   }
 
   public getBattingAverage(): string {
@@ -66,50 +98,80 @@ export class ProfileScreenController {
 
   public renderMobileHtml(): string {
     return `
-      <div class="mobile-profile-screen" style="padding:16px;background:#090d16;color:#f8fafc;font-family:sans-serif;max-width:480px;margin:auto;">
-        <!-- Profile Header -->
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
-          <div style="width:54px;height:54px;border-radius:27px;background:rgba(16,185,129,0.15);border:2px solid #10b981;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#10b981;">
-            #${this.profile.jerseyNumber}
+      <div class="mobile-profile-screen" style="padding: 1rem; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <!-- Profile Header Card -->
+        <div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2px solid #00E599; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; color: #00E599; font-family: 'Chakra Petch', monospace;">
+              #${this.profile.jerseyNumber}
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 1.25rem; font-weight: 700; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">${this.profile.name}</div>
+              <div style="font-size: 0.8rem; color: #94a3b8; display: flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem;">
+                <span style="background: rgba(0, 229, 153, 0.15); color: #00E599; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">${this.profile.persona}</span>
+                <span>• ${this.profile.role} • ${this.profile.teamName}</span>
+              </div>
+            </div>
           </div>
-          <div>
-            <div style="font-size:18px;font-weight:700;color:#f8fafc;">${this.profile.name}</div>
-            <div style="font-size:12px;color:#94a3b8;">${this.profile.role} • ${this.profile.teamName}</div>
+
+          <div style="display: flex; gap: 0.5rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.75rem;">
+            <div style="flex: 1; text-align: center; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 8px;">
+              <div style="font-size: 0.7rem; color: #94a3b8;">Escrow Wallet</div>
+              <div style="font-size: 1rem; font-weight: 700; color: #00E599; font-family: 'Chakra Petch', monospace;">₹500,000</div>
+            </div>
+            <div style="flex: 1; text-align: center; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 8px;">
+              <div style="font-size: 0.7rem; color: #94a3b8;">Trust Rating</div>
+              <div style="font-size: 1rem; font-weight: 700; color: #FFB800;">★ 4.9 <small style="font-size: 0.7rem; color: #94a3b8;">(124 matches)</small></div>
+            </div>
           </div>
         </div>
 
-        <!-- Batting Metrics Grid -->
-        <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:#cbd5e1;">🏏 Batting Career</div>
-        <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-bottom:16px;">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;text-align:center;" data-tooltip="Total Career Runs">
-            <div style="font-size:16px;font-weight:800;color:#10b981;">${this.profile.batting.runs}</div>
-            <div style="font-size:11px;color:#94a3b8;">Runs</div>
+        <!-- Batting Career Metrics Grid -->
+        <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">🏏 Batting Career Figures</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+          <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; text-align: center;" data-tooltip="Total Career Runs">
+            <div style="font-size: 1.25rem; font-weight: 800; color: #00E599; font-family: 'Chakra Petch', monospace;">${this.profile.batting.runs}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">Runs</div>
           </div>
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;text-align:center;" data-tooltip="Batting Average">
-            <div style="font-size:16px;font-weight:800;color:#f8fafc;">${this.getBattingAverage()}</div>
-            <div style="font-size:11px;color:#94a3b8;">Average</div>
+          <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; text-align: center;" data-tooltip="Career Batting Average">
+            <div style="font-size: 1.25rem; font-weight: 800; color: #f8fafc; font-family: 'Chakra Petch', monospace;">${this.getBattingAverage()}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">Average</div>
           </div>
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;text-align:center;" data-tooltip="Batting Strike Rate">
-            <div style="font-size:16px;font-weight:800;color:#f8fafc;">${this.getBattingStrikeRate()}</div>
-            <div style="font-size:11px;color:#94a3b8;">Strike Rate</div>
+          <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; text-align: center;" data-tooltip="Career Batting Strike Rate">
+            <div style="font-size: 1.25rem; font-weight: 800; color: #00D2FF; font-family: 'Chakra Petch', monospace;">${this.getBattingStrikeRate()}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">Strike Rate</div>
           </div>
         </div>
 
-        <!-- Bowling Metrics Grid -->
-        <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:#cbd5e1;">🎳 Bowling Career</div>
-        <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;text-align:center;" data-tooltip="Total Wickets Taken">
-            <div style="font-size:16px;font-weight:800;color:#38bdf8;">${this.profile.bowling.wickets}</div>
-            <div style="font-size:11px;color:#94a3b8;">Wickets</div>
+        <!-- Bowling Career Metrics Grid -->
+        <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">🎳 Bowling Career Figures</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1.25rem;">
+          <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; text-align: center;" data-tooltip="Career Wickets Taken">
+            <div style="font-size: 1.25rem; font-weight: 800; color: #00D2FF; font-family: 'Chakra Petch', monospace;">${this.profile.bowling.wickets}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">Wickets</div>
           </div>
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;text-align:center;" data-tooltip="Bowling Economy Rate">
-            <div style="font-size:16px;font-weight:800;color:#f8fafc;">${this.getBowlingEconomy()}</div>
-            <div style="font-size:11px;color:#94a3b8;">Economy</div>
+          <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; text-align: center;" data-tooltip="Bowling Economy Rate">
+            <div style="font-size: 1.25rem; font-weight: 800; color: #f8fafc; font-family: 'Chakra Petch', monospace;">${this.getBowlingEconomy()}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">Economy</div>
           </div>
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;text-align:center;" data-tooltip="Best Bowling Spell">
-            <div style="font-size:16px;font-weight:800;color:#f8fafc;">${this.profile.bowling.bestBowling}</div>
-            <div style="font-size:11px;color:#94a3b8;">Best</div>
+          <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; text-align: center;" data-tooltip="Best Bowling Figures">
+            <div style="font-size: 1.25rem; font-weight: 800; color: #FFB800; font-family: 'Chakra Petch', monospace;">${this.profile.bowling.bestBowling}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">Best</div>
           </div>
+        </div>
+
+        <!-- Account Actions & Compliance -->
+        <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.75rem;">Account & Session Security</div>
+          
+          <button type="button" onclick="window.cricosMobileApp.signOutAction()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.75rem; cursor: pointer;">
+            🚪 Sign Out of CricOS
+          </button>
+
+          <!-- Apple Guideline 5.1.1(v) Compliant Account Deletion -->
+          <button type="button" onclick="window.cricosMobileApp.promptDeleteAccount()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff6688; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
+            🗑️ Delete Account & All Data (App Store Compliance)
+          </button>
         </div>
       </div>
     `;
