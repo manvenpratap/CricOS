@@ -35,6 +35,13 @@ import { providerIntelligenceRoutes } from './modules/provider-intelligence/rout
 import { replacementRoutes } from './modules/replacement/routes.js';
 import { reputationRoutes } from './modules/reputation/routes.js';
 
+import { AppError } from './platform/errors.js';
+import { recordAuditEvent } from './platform/audit.js';
+
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 500; // 500 requests per minute per IP
+
 export function buildServer(): FastifyInstance {
   const server = Fastify({
     logger: false, // Clean test output
@@ -47,12 +54,65 @@ export function buildServer(): FastifyInstance {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
   });
 
-  // 2. Correlation ID & Request timing hook
-  server.addHook('onRequest', async (req) => {
-    (req.raw as any).correlationId = req.headers['x-correlation-id'] || crypto.randomUUID();
+  // 2. Correlation ID, Request Timing & Security Headers Hook
+  server.addHook('onRequest', async (req, reply) => {
+    const correlationId = (req.headers['x-correlation-id'] as string) || crypto.randomUUID();
+    (req.raw as any).correlationId = correlationId;
     (req.raw as any).startTime = process.hrtime.bigint();
+
+    // Echo correlation and request ID headers back to the client
+    reply.header('x-correlation-id', correlationId);
+    reply.header('x-request-id', correlationId);
+
+    // Baseline security headers (XSS, Sniffing, Framing)
+    reply.header('x-content-type-options', 'nosniff');
+    reply.header('x-frame-options', 'SAMEORIGIN');
+    reply.header('referrer-policy', 'strict-origin-when-cross-origin');
+    reply.header('x-xss-protection', '1; mode=block');
   });
 
+  // 3. Rate Limiting PreHandler Hook
+  server.addHook('preHandler', async (req, reply) => {
+    const url = req.url || '';
+    // Skip rate limiting for probes, docs, metrics, and static previews
+    if (
+      url.startsWith('/health') ||
+      url.startsWith('/metrics') ||
+      url === '/' ||
+      url === '/mobile' ||
+      url === '/docs' ||
+      process.env.NODE_ENV === 'test'
+    ) {
+      return;
+    }
+
+    const clientIp = String(req.headers['x-forwarded-for'] || req.ip || '127.0.0.1');
+    const now = Date.now();
+    let entry = rateLimitMap.get(clientIp);
+
+    if (!entry || now > entry.resetTime) {
+      entry = { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS };
+      rateLimitMap.set(clientIp, entry);
+    } else {
+      entry.count++;
+    }
+
+    const remaining = Math.max(0, RATE_LIMIT_MAX - entry.count);
+    reply.header('x-ratelimit-limit', RATE_LIMIT_MAX);
+    reply.header('x-ratelimit-remaining', remaining);
+    reply.header('x-ratelimit-reset', Math.ceil(entry.resetTime / 1000));
+
+    if (entry.count > RATE_LIMIT_MAX) {
+      const retryAfter = Math.ceil((entry.resetTime - now) / 1000);
+      reply.header('retry-after', retryAfter);
+      return reply.status(429).send({
+        error: 'RATE_LIMIT_EXCEEDED',
+        message: `Too many requests. Please retry in ${retryAfter} seconds.`
+      });
+    }
+  });
+
+  // 4. Metrics Recording & Mutating Audit Event Logging
   server.addHook('onResponse', async (req, reply) => {
     const startTime = (req.raw as any).startTime;
     if (startTime) {
@@ -66,11 +126,45 @@ export function buildServer(): FastifyInstance {
         durationMs
       });
     }
+
+    // Persist audit event on successful mutations under /api/v1
+    const method = req.method;
+    const statusCode = reply.statusCode;
+    const url = req.url;
+    if (['POST', 'PUT', 'DELETE'].includes(method) && url.startsWith('/api/v1/') && statusCode < 400) {
+      const user = (req as any).user;
+      const actorUserId = user?.userId || null;
+      const basePath = (url || '').split('?')[0] || '';
+      const segments = basePath.split('/').filter(Boolean);
+      const objectType = segments[2] || 'system';
+      const rawId = segments[3];
+      const objectId = rawId && rawId.length > 10 ? rawId : null;
+
+      recordAuditEvent({
+        actorUserId,
+        action: `${method}_${objectType.toUpperCase()}`,
+        objectType,
+        objectId,
+        metadata: {
+          url,
+          statusCode,
+          correlationId: (req.raw as any).correlationId
+        }
+      }).catch(() => {});
+    }
   });
 
-  // 3. Global Error Handler
+  // 5. Global Error Handler with AppError Hierarchy Support
   server.setErrorHandler((error, _req, reply) => {
-    reply.status(error.statusCode || 500).send({
+    if (error instanceof AppError) {
+      return reply.status(error.statusCode).send({
+        error: error.code,
+        message: error.message,
+        details: error.details
+      });
+    }
+    const statusCode = (error as any).statusCode || 500;
+    return reply.status(statusCode).send({
       error: error.name || 'INTERNAL_ERROR',
       message: error.message || 'An unexpected error occurred'
     });

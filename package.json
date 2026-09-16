@@ -29,6 +29,8 @@
     "typecheck": "pnpm -r typecheck",
     "db:migrate": "node scripts/migrate.mjs",
     "db:seed": "node scripts/seed.mjs",
+    "db:backup": "node scripts/backup-db.mjs",
+    "db:restore": "node scripts/restore-db.mjs",
     "deploy:validate": "node scripts/validate-deployment.mjs",
     "tournament:emulate": "node scripts/emulate-tournament.mjs",
     "benchmark:profile": "node scripts/benchmark-performance.mjs",

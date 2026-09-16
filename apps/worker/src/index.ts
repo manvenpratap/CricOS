@@ -5,7 +5,7 @@ const { Client } = pg;
 export async function processOutbox(client: pg.Client): Promise<number> {
   const res = await client.query(`
     SELECT * FROM outbox_events 
-    WHERE processed_at IS NULL 
+    WHERE published_at IS NULL 
     ORDER BY created_at ASC 
     LIMIT 20 
     FOR UPDATE SKIP LOCKED
@@ -15,7 +15,7 @@ export async function processOutbox(client: pg.Client): Promise<number> {
     // Process outbox event (e.g. dispatch webhook, send notification)
     await client.query(`
       UPDATE outbox_events 
-      SET processed_at = now() 
+      SET published_at = now() 
       WHERE id = $1
     `, [event.id]);
   }

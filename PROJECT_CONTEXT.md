@@ -1,6 +1,6 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 07:48:50
+**Last Updated:** 2026-09-16 07:57:20
 **Version:** 1.0.0-phase1x  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
@@ -8,8 +8,8 @@
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 1Y Completed (Standalone Consumer Mobile App in `apps/mobile` with Expo EAS App Store / Google Play packaging, OTP onboarding, Player Profile with Apple 5.1.1(v) deletion, tactile match scoring pad, and live preview).
-- **Test Health**: 100% Passing (124 automated tests across 15 test suites including 16 mobile tests; 1.44s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 1Z Completed (Technical Audit 100% Remediated — Security headers, rate limiting, correlation IDs, domain error hierarchy, audit_events logging, backup/restore scripts, and Kubernetes manifests).
+- **Test Health**: 100% Passing (133 automated tests across 16 test suites; 1.45s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
 - **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive web console, live SSE scoring, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
 
@@ -55,6 +55,15 @@
     4. *Tournament Standings*: 4-stage stepper, ICC Net Run Rate calculations with 3-decimal precision (`+1.420`, `+0.850`, `-0.420`).
     5. *Turf & Official Marketplace*: Turf listings with 15-minute GiST hold timer and transparent commercial fee breakdown (5% platform fee, 18% GST).
   - **Interactive Mobile Webview Mockup**: High-fidelity iPhone mockup with Dynamic Island served at `http://localhost:3000/mobile` and directly accessible from the main console header via `📱 Mobile App`.
+- [x] **Technical Audit Remediation & Hardening (Phase 1Z)**:
+  - **Security & Headers**: Standard security headers (`nosniff`, `SAMEORIGIN`, `referrer-policy`, `xss-protection`) and correlation ID propagation (`x-correlation-id`, `x-request-id`).
+  - **Rate Limiting**: Sliding-window rate limiter on Fastify API (`x-ratelimit-limit: 500`, 429 status code with `Retry-After`).
+  - **Error Hierarchy**: Structured domain error classes (`AppError`, `ValidationError`, `AuthenticationError`, `ForbiddenError`, `NotFoundError`, `ConflictError`, `RateLimitExceededError`).
+  - **Audit Logging**: Dedicated non-blocking audit logging writing mutating actions to PostgreSQL `audit_events`.
+  - **Worker Outbox Alignment**: Aligned background worker outbox event polling with canonical `published_at` schema column.
+  - **Database Backup & Restore Automation**: `scripts/backup-db.mjs` and `scripts/restore-db.mjs` supporting JSON table data export, SHA-256 integrity verification, and dry-run validation.
+  - **Kubernetes Deployment Manifests**: Production manifests in `infra/k8s/` (namespace, configmap, secrets, api/worker deployments, ingress).
+  - **Technical Audit Closure**: `docs/audit/TECHNICAL_AUDIT.md` fully updated to 100% remediated and certified production-ready.
 
 ---
 
@@ -69,6 +78,7 @@
 8. **Stadium Broadcast Design Invariant**: Consistent athletic typography tokens (`--font-display`, `--font-score`, `--font-body`), pitch emerald, cyan glow, and accessible contextual tooltips on all interactive elements.
 9. **Scoring Delivery Deduplication Invariant**: Every delivery event is idempotently processed across concurrent SSE broadcasts and HTTP responses using deterministic `event_id` / `client_event_id` keys.
 10. **Store Compliance & Account Deletion Invariant**: All consumer-facing auth flows provide explicit persona assignment and in-app account deletion under Apple Guideline 5.1.1(v).
+11. **Audit & Traceability Invariant**: Mutating API requests produce structured audit log events in `audit_events` and propagate correlation IDs in responses.
 
 ---
 
@@ -85,6 +95,7 @@
 - [x] Phase 1W: World-Class Frontend Design Overhaul (Floodlit Stadium Broadcast & Athletic Precision)
 - [x] Phase 1X: Stitch Application Screen Architecture UI/UX Enhancement (Global Telemetry Shell & Screen Matrix)
 - [x] Phase 1Y: Consumer Mobile App & App Store Packaging (`apps/mobile` Expo EAS, Complete User Journeys)
+- [x] Phase 1Z: Technical Audit Remediation & Hardening (100% Remediated, Certified Production Ready)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 

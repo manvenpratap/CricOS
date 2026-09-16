@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cricos-config
+  namespace: cricos-production
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  LOG_LEVEL: "info"
+  CORS_ORIGIN: "*"
+  SSE_PING_INTERVAL_MS: "15000"
+  PROVIDER_PROBATION_THRESHOLD: "0.80"
+  PROVIDER_SUSPENSION_THRESHOLD: "0.65"

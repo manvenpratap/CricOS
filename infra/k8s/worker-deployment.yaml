@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cricos-worker
+  namespace: cricos-production
+  labels:
+    app.kubernetes.io/name: cricos-worker
+    app.kubernetes.io/component: background-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cricos-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cricos-worker
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: worker
+          image: ghcr.io/manvenpratap/cricos-worker:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: cricos-config
+            - secretRef:
+                name: cricos-secrets
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
