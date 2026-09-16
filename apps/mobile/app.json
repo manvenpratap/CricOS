@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "CricOS — Cricket Operating System",
+    "slug": "cricos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#04070D"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cricos.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "UIBackgroundModes": ["fetch", "remote-notification"],
+        "NSCameraUsageDescription": "CricOS uses camera access for player profile photo capture and umpire match document verification."
+      }
+    },
+    "android": {
+      "package": "com.cricos.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#04070D"
+      },
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cricos-unified-cricket-platform"
+      },
+      "apiBaseUrl": "http://localhost:3000"
+    }
+  }
+}
