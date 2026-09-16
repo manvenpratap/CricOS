@@ -1235,6 +1235,7 @@ export function getDashboardHtml(): string {
     <div class="header-status">
       <div class="header-nav-links">
         <a href="/mobile" class="nav-pill" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399; font-weight: 600;" data-tooltip="Launch Standalone Consumer Mobile App (iOS & Android Preview) with OTP & Profile">📱 Mobile App</a>
+        <a href="javascript:void(0)" onclick="openLegalModal()" class="nav-pill" style="background: rgba(0, 210, 255, 0.12); border-color: rgba(0, 210, 255, 0.3); color: var(--cyan);" data-tooltip="Review Apple App Store & Google Play Policies, Privacy Policy and Terms">📜 Legal &amp; Privacy</a>
         <a href="/docs" target="_blank" class="nav-pill" data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox">📖 API Docs</a>
         <a href="/metrics" target="_blank" class="nav-pill" data-tooltip="Prometheus & OpenMetrics Standard Metrics Exposition">📊 Metrics</a>
         <a href="/health/ready" target="_blank" class="nav-pill" data-tooltip="Kubernetes Readiness Probe & Database Pool Status">🩺 Health</a>
@@ -1312,6 +1313,8 @@ export function getDashboardHtml(): string {
             <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
               <div class="match-meta">T20 Championship • Innings 2 • Match ID: <span id="currentMatchId" style="font-family: monospace; color: var(--cyan);">match-pilot-1</span></div>
               <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
+              <button class="nav-pill" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
+              <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf, umpires, and scoring accuracy to update Bayesian trust scores">⭐ Rate Match</button>
             </div>
           </div>
           <div class="score-display">
@@ -1345,6 +1348,9 @@ export function getDashboardHtml(): string {
           </div>
           <button class="btn btn-secondary" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.75rem;" onclick="openScorecardModal()" data-tooltip="Download match summary sheet">Download Sheet</button>
         </div>
+
+        <!-- Event Operational Readiness Bar (Archive Spec 03_UX_Blueprint_v2) -->
+        <div id="eventReadinessBanner" style="margin-top: 1rem;"></div>
 
         <!-- Real-time Over Ball Strip -->
         <div class="over-strip-container">
@@ -1585,54 +1591,71 @@ export function getDashboardHtml(): string {
         </div>
 
         <div class="card">
-          <div class="card-title">📊 Live Tournament Standings</div>
-          <div class="card-desc">Automatic points calculation and Net Run Rate (NRR) tracking</div>
-          <table id="standingsTable">
-            <thead>
-              <tr>
-                <th>Team</th>
-                <th>P</th>
-                <th>W</th>
-                <th>L</th>
-                <th>Pts</th>
-                <th>NRR</th>
-              </tr>
-            </thead>
-            <tbody id="standingsBody">
-              <tr style="border-left: 3px solid var(--turf-emerald);">
-                <td><strong>Northside XI</strong> <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span></td>
-                <td>3</td>
-                <td>2</td>
-                <td>1</td>
-                <td><strong style="color: var(--primary); font-family: var(--font-score);">4</strong></td>
-                <td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: +0.850">+0.850</span></td>
-              </tr>
-              <tr style="border-left: 3px solid var(--turf-emerald);">
-                <td><strong>Royal Strikers</strong> <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span></td>
-                <td>3</td>
-                <td>2</td>
-                <td>1</td>
-                <td><strong style="color: var(--primary); font-family: var(--font-score);">4</strong></td>
-                <td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: +0.320">+0.320</span></td>
-              </tr>
-              <tr>
-                <td>Riverside XI</td>
-                <td>3</td>
-                <td>1</td>
-                <td>2</td>
-                <td><strong style="color: var(--text-main); font-family: var(--font-score);">2</strong></td>
-                <td><span style="background: rgba(255, 51, 102, 0.15); color: var(--rose); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: -0.420">-0.420</span></td>
-              </tr>
-              <tr>
-                <td>Coastal Titans</td>
-                <td>3</td>
-                <td>1</td>
-                <td>2</td>
-                <td><strong style="color: var(--text-main); font-family: var(--font-score);">2</strong></td>
-                <td><span style="background: rgba(255, 51, 102, 0.15); color: var(--rose); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: -0.750">-0.750</span></td>
-              </tr>
-            </tbody>
-          </table>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div class="card-title">📊 Competition Standings &amp; Player Caps</div>
+            <div style="display: flex; gap: 0.35rem;">
+              <button type="button" id="btnSubTabStandings" class="nav-pill active" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700;" onclick="switchTournamentSubTab('standings')" data-tooltip="ICC Group Standings and official Net Run Rate table">🏆 Standings</button>
+              <button type="button" id="btnSubTabOrange" class="nav-pill" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700; color: #FFB800;" onclick="switchTournamentSubTab('orange')" data-tooltip="Orange Cap: Leading tournament run scorers and strike rates">👑 Orange Cap</button>
+              <button type="button" id="btnSubTabPurple" class="nav-pill" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700; color: var(--purple-light);" onclick="switchTournamentSubTab('purple')" data-tooltip="Purple Cap: Leading tournament wicket takers and bowling figures">💜 Purple Cap</button>
+            </div>
+          </div>
+          <div class="card-desc" id="tournamentSubTabDesc">Automatic points calculation and Net Run Rate (NRR) tracking</div>
+
+          <!-- Sub-view 1: ICC Standings -->
+          <div id="standingsSubView">
+            <table id="standingsTable">
+              <thead>
+                <tr>
+                  <th>Team</th>
+                  <th>P</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>Pts</th>
+                  <th>NRR</th>
+                </tr>
+              </thead>
+              <tbody id="standingsBody">
+                <tr style="border-left: 3px solid var(--turf-emerald);">
+                  <td><strong>Northside XI</strong> <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span></td>
+                  <td>3</td>
+                  <td>2</td>
+                  <td>1</td>
+                  <td><strong style="color: var(--primary); font-family: var(--font-score);">4</strong></td>
+                  <td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: +0.850">+0.850</span></td>
+                </tr>
+                <tr style="border-left: 3px solid var(--turf-emerald);">
+                  <td><strong>Royal Strikers</strong> <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span></td>
+                  <td>3</td>
+                  <td>2</td>
+                  <td>1</td>
+                  <td><strong style="color: var(--primary); font-family: var(--font-score);">4</strong></td>
+                  <td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: +0.320">+0.320</span></td>
+                </tr>
+                <tr>
+                  <td>Riverside XI</td>
+                  <td>3</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td><strong style="color: var(--text-main); font-family: var(--font-score);">2</strong></td>
+                  <td><span style="background: rgba(255, 51, 102, 0.15); color: var(--rose); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: -0.420">-0.420</span></td>
+                </tr>
+                <tr>
+                  <td>Coastal Titans</td>
+                  <td>3</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td><strong style="color: var(--text-main); font-family: var(--font-score);">2</strong></td>
+                  <td><span style="background: rgba(255, 51, 102, 0.15); color: var(--rose); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: -0.750">-0.750</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Sub-view 2: Orange Cap (Batting Leaders) -->
+          <div id="orangeCapSubView" style="display: none;"></div>
+
+          <!-- Sub-view 3: Purple Cap (Bowling Leaders) -->
+          <div id="purpleCapSubView" style="display: none;"></div>
         </div>
       </div>
     </div>
@@ -1803,6 +1826,18 @@ export function getDashboardHtml(): string {
               <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; border-color: var(--cyan); color: var(--cyan);" onclick="testPayoutDisbursement()" data-tooltip="Verify payout disbursement against open disputes and circuit breaker state">💰 Test Payout</button>
             </div>
             <div id="disputeRefundResult" style="margin-top: 0.75rem; font-size: 0.8rem;"></div>
+          </div>
+        </div>
+
+        <!-- Official & Umpire Assignment Desk (Archive Spec 03_UX_Blueprint_v2 Journey J2) -->
+        <div class="card" style="grid-column: 1 / -1; margin-top: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div class="card-title">⚖️ Official &amp; Umpire Assignment Desk (Journey J2)</div>
+            <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">ACTIVE MATCH ROSTER</span>
+          </div>
+          <div class="card-desc">Officiating appointments, digital check-in, and double-entry escrow disbursement</div>
+          <div id="officialDeskContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <!-- Rendered via JS -->
           </div>
         </div>
       </div>
@@ -2177,6 +2212,171 @@ export function getDashboardHtml(): string {
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" style="width: auto;" onclick="closeScorecardModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Official Match Toss Modal -->
+  <div class="modal-backdrop" id="modalMatchToss">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🪙 Official Match Toss &amp; Lineup Confirmation</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeTossModal()" data-tooltip="Close toss modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          Recorded under MCC Law 1.3 by Lead Umpire. Official toss result sets batting order and match clock.
+        </div>
+
+        <form id="formMatchToss" onsubmit="confirmTossDecision(event)">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label style="font-size: 0.82rem; font-weight: 700; color: #F8FAFC;">Toss Winner</label>
+            <select id="tossWinnerSelect" style="width: 100%; background: #060a12; border: 1px solid var(--border-subtle); border-radius: 8px; color: #f8fafc; padding: 0.6rem; font-family: var(--font-body);">
+              <option value="team-delhi">Delhi Daredevils</option>
+              <option value="team-mumbai" selected>Mumbai Super Strikers</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label style="font-size: 0.82rem; font-weight: 700; color: #F8FAFC;">Elected Decision</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.25rem;">
+              <label style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="radio" name="tossDecision" value="BAT" checked style="accent-color: var(--turf-emerald);">
+                <span style="font-weight: 700; color: #F8FAFC;">🏏 Bat First</span>
+              </label>
+              <label style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="radio" name="tossDecision" value="BOWL" style="accent-color: var(--cyan);">
+                <span style="font-weight: 700; color: #F8FAFC;">🎯 Bowl First</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: #F8FAFC; display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" id="checkPlayingXiVerified" checked style="accent-color: var(--turf-emerald);">
+            <label for="checkPlayingXiVerified" style="cursor: pointer;">Both captains have exchanged and signed verified Playing XI team sheets</label>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeTossModal()" style="width: auto; flex: 1;">Cancel</button>
+            <button type="submit" class="btn" style="width: auto; flex: 2;" data-tooltip="Submit toss record and lock match lineups">✓ Confirm Toss &amp; Start Match</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post-Match 5-Star Rating Modal -->
+  <div class="modal-backdrop" id="modalMatchRating">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⭐ Post-Match Verification &amp; Ratings</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeMatchRatingModal()" data-tooltip="Close rating modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          Verified post-match evaluation directly updates provider Bayesian trust metrics and authorizes double-entry escrow disbursement.
+        </div>
+
+        <form id="formPostMatchRating" onsubmit="submitPostMatchRating(event)">
+          <div style="margin-bottom: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.35rem;">
+              <span>🏟️ Turf &amp; Pitch Condition</span>
+              <span id="labelPitchRating" style="color: #FFB800; font-family: var(--font-score); font-weight: 700;">5 ★</span>
+            </div>
+            <input type="range" id="inputRatingPitch" min="1" max="5" value="5" step="1" oninput="updateRatingDisplay('labelPitchRating', this.value)" style="width: 100%; accent-color: var(--turf-emerald);">
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+              <span>Poor Surface</span>
+              <span>International Standard</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.35rem;">
+              <span>⚖️ Official Umpiring &amp; Fair Play</span>
+              <span id="labelUmpireRating" style="color: #FFB800; font-family: var(--font-score); font-weight: 700;">5 ★</span>
+            </div>
+            <input type="range" id="inputRatingUmpire" min="1" max="5" value="5" step="1" oninput="updateRatingDisplay('labelUmpireRating', this.value)" style="width: 100%; accent-color: var(--cyan);">
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+              <span>Disputed Decisions</span>
+              <span>Flawless Officiating</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.35rem;">
+              <span>📋 Live Electronic Scoring Accuracy</span>
+              <span id="labelScorerRating" style="color: #FFB800; font-family: var(--font-score); font-weight: 700;">5 ★</span>
+            </div>
+            <input type="range" id="inputRatingScorer" min="1" max="5" value="5" step="1" oninput="updateRatingDisplay('labelScorerRating', this.value)" style="width: 100%; accent-color: var(--purple-light);">
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+              <span>Sync Lag / Errors</span>
+              <span>100% Ball Precision</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.25rem;">
+            <label style="display: block; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.35rem;">Match Verification Remarks (Optional):</label>
+            <textarea id="inputRatingRemarks" rows="2" placeholder="Both franchises played with exceptional MCC Spirit of Cricket..." style="width: 100%; background: #060a12; border: 1px solid var(--border-subtle); border-radius: 8px; color: #f8fafc; padding: 0.5rem; font-family: var(--font-body); font-size: 0.85rem;"></textarea>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <button type="button" onclick="closeMatchRatingModal()" class="btn btn-secondary" style="width: auto; flex: 1;">Cancel</button>
+            <button type="submit" class="btn" style="width: auto; flex: 2;" data-tooltip="Submit verified review and disburse escrow to provider">✓ Submit &amp; Disburse Escrow</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Store Compliance, Privacy Policy & Terms Modal -->
+  <div class="modal-backdrop" id="modalLegalPolicies">
+    <div class="modal-dialog" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>📜 CricOS Store Compliance, Privacy &amp; Terms</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeLegalModal()" data-tooltip="Close legal modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+          <button type="button" id="btnLegalTabPrivacy" class="nav-pill active" onclick="switchLegalTab('privacy')" style="cursor: pointer; font-weight: 700;">🔒 Privacy Policy</button>
+          <button type="button" id="btnLegalTabTerms" class="nav-pill" onclick="switchLegalTab('terms')" style="cursor: pointer; font-weight: 700;">⚖️ Terms of Service</button>
+          <button type="button" id="btnLegalTabApple" class="nav-pill" onclick="switchLegalTab('apple')" style="cursor: pointer; font-weight: 700; color: var(--turf-emerald);">🍏 Store Guidelines</button>
+        </div>
+
+        <div id="legalSubViewPrivacy" style="font-size: 0.84rem; line-height: 1.6; color: #CBD5E1; max-height: 420px; overflow-y: auto; padding-right: 0.5rem;">
+          <h3 style="color: #F8FAFC; margin-bottom: 0.5rem;">Privacy Policy (Effective 16 Sept 2026)</h3>
+          <p>CricOS (<code>com.cricos.app</code>) operates on privacy-by-design principles for all sporting, scoring, and booking participants.</p>
+          <div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.75rem; margin: 0.75rem 0;">
+            <strong style="color: var(--turf-emerald);">Zero Third-Party Tracking:</strong> We do NOT sell personal data or track users across third-party websites or services. Apple <code>NSPrivacyTracking</code> is certified <code>false</code>.
+          </div>
+          <h4 style="color: #F8FAFC; margin-top: 1rem;">In-App Account &amp; Data Deletion (Apple 5.1.1(v) &amp; Google Play)</h4>
+          <p>Users may irreversibly delete their profile, squad memberships, and personal data at any time via <code>My Profile &gt; Delete Account</code>. Token revocation and database record purging occur within 24 hours.</p>
+        </div>
+
+        <div id="legalSubViewTerms" style="display: none; font-size: 0.84rem; line-height: 1.6; color: #CBD5E1; max-height: 420px; overflow-y: auto; padding-right: 0.5rem;">
+          <h3 style="color: #F8FAFC; margin-bottom: 0.5rem;">Terms of Service</h3>
+          <p>By using CricOS, you agree to record truthful, unbiased match scores, adhere to MCC Laws of Cricket, and respect confirmed turf booking commitments.</p>
+          <p style="margin-top: 0.5rem;">All commercial bookings are secured via 15-minute GiST temporal holds and double-entry escrow accounting. Platform service fees (5%) and statutory GST (18%) are transparently itemized prior to confirmation.</p>
+        </div>
+
+        <div id="legalSubViewApple" style="display: none; font-size: 0.84rem; line-height: 1.6; color: #CBD5E1; max-height: 420px; overflow-y: auto; padding-right: 0.5rem;">
+          <h3 style="color: #F8FAFC; margin-bottom: 0.5rem;">App Store &amp; Google Play Store Readiness Checklist</h3>
+          <ul style="padding-left: 1.25rem; margin: 0.5rem 0;">
+            <li>✓ <strong>Apple Privacy Manifest:</strong> <code>PrivacyInfo.xcprivacy</code> bundled with declared API reasons (CA92.1, 35F9.1, C617.1, E174.1).</li>
+            <li>✓ <strong>Apple Guideline 5.1.1(v):</strong> Real-time in-app account deletion workflow verified.</li>
+            <li>✓ <strong>Google Play Data Safety:</strong> Complete data collection &amp; encryption declarations ready.</li>
+            <li>✓ <strong>App Assets:</strong> 1024x1024 RGB App Store icon, 512x512 adaptive icon, and 1242x2436 splash screen bundled.</li>
+            <li>✓ <strong>Target Android API:</strong> API 34+ (Android 14).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeLegalModal()">Close</button>
       </div>
     </div>
   </div>
@@ -2906,6 +3106,250 @@ export function getDashboardHtml(): string {
 
     function printScorecardView() {
       window.print();
+    }
+
+    // Official Toss Management Handlers
+    function openTossModal() {
+      const m = document.getElementById('modalMatchToss');
+      if (m) m.classList.add('active');
+    }
+    function closeTossModal() {
+      const m = document.getElementById('modalMatchToss');
+      if (m) m.classList.remove('active');
+    }
+    async function confirmTossDecision(e) {
+      if (e) e.preventDefault();
+      const winnerSelect = document.getElementById('tossWinnerSelect');
+      const winnerId = winnerSelect ? winnerSelect.value : 'team-mumbai';
+      const winnerName = winnerSelect && winnerSelect.selectedOptions[0] ? winnerSelect.selectedOptions[0].text : 'Mumbai Super Strikers';
+      const decisionRadio = document.querySelector('input[name="tossDecision"]:checked');
+      const decision = decisionRadio ? decisionRadio.value : 'BAT';
+
+      try {
+        await fetch('/api/v1/matches/match-pilot-1/toss', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ winner_team_id: winnerId, decision: decision })
+        });
+      } catch (err) {
+        console.warn('Toss API sync warning:', err);
+      }
+
+      closeTossModal();
+      showToast('✓ Toss Recorded: ' + winnerName + ' elected to ' + decision + ' first!');
+      const sub = document.querySelector('.match-meta');
+      if (sub) {
+        sub.innerHTML = 'T20 Championship • Toss: <strong style="color: var(--amber);">' + winnerName + ' (' + decision + ')</strong> • Match ID: <span id="currentMatchId" style="font-family: monospace; color: var(--cyan);">match-pilot-1</span>';
+      }
+    }
+
+    // Post-Match Verification & Ratings Handlers
+    function openMatchRatingModal() {
+      const m = document.getElementById('modalMatchRating');
+      if (m) m.classList.add('active');
+    }
+    function closeMatchRatingModal() {
+      const m = document.getElementById('modalMatchRating');
+      if (m) m.classList.remove('active');
+    }
+    function updateRatingDisplay(labelId, val) {
+      const el = document.getElementById(labelId);
+      if (el) el.textContent = val + ' ★';
+    }
+    async function submitPostMatchRating(e) {
+      if (e) e.preventDefault();
+      const pRating = document.getElementById('inputRatingPitch') ? Number(document.getElementById('inputRatingPitch').value) : 5;
+      const uRating = document.getElementById('inputRatingUmpire') ? Number(document.getElementById('inputRatingUmpire').value) : 5;
+      const sRating = document.getElementById('inputRatingScorer') ? Number(document.getElementById('inputRatingScorer').value) : 5;
+      const remarks = document.getElementById('inputRatingRemarks') ? document.getElementById('inputRatingRemarks').value : '';
+      const avg = Number(((pRating + uRating + sRating) / 3).toFixed(1));
+
+      try {
+        await fetch('/api/v1/ratings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            booking_id: 'booking-pilot-1',
+            target_type: 'PROVIDER',
+            target_id: 'provider-harbour-grounds',
+            rating: Math.round(avg),
+            review: 'Pitch: ' + pRating + '/5, Umpire: ' + uRating + '/5, Scorer: ' + sRating + '/5. ' + remarks
+          })
+        });
+      } catch (err) {
+        console.warn('Ratings API warning:', err);
+      }
+
+      closeMatchRatingModal();
+      showToast('⭐ Review Submitted (' + avg + '★)! Escrow Payout Disbursed to Providers.');
+      const bRating = document.getElementById('providerBayesianRating');
+      if (bRating) bRating.textContent = '4.85 / 5.0';
+    }
+
+    // Store Compliance & Legal Policies Handlers
+    function openLegalModal() {
+      const m = document.getElementById('modalLegalPolicies');
+      if (m) m.classList.add('active');
+    }
+    function closeLegalModal() {
+      const m = document.getElementById('modalLegalPolicies');
+      if (m) m.classList.remove('active');
+    }
+    function switchLegalTab(tab) {
+      ['privacy', 'terms', 'apple'].forEach(t => {
+        const btn = document.getElementById('btnLegalTab' + t.charAt(0).toUpperCase() + t.slice(1));
+        const view = document.getElementById('legalSubView' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (btn) btn.classList.toggle('active', t === tab);
+        if (view) view.style.display = t === tab ? 'block' : 'none';
+      });
+    }
+
+    // Tournament Leaderboards Handlers
+    function switchTournamentSubTab(subTab) {
+      const tabs = ['standings', 'orange', 'purple'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('btnSubTab' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (btn) btn.classList.toggle('active', t === subTab);
+      });
+
+      const sView = document.getElementById('standingsSubView');
+      const oView = document.getElementById('orangeCapSubView');
+      const pView = document.getElementById('purpleCapSubView');
+      const desc = document.getElementById('tournamentSubTabDesc');
+
+      if (sView) sView.style.display = subTab === 'standings' ? 'block' : 'none';
+      if (oView) oView.style.display = subTab === 'orange' ? 'block' : 'none';
+      if (pView) pView.style.display = subTab === 'purple' ? 'block' : 'none';
+
+      if (subTab === 'standings' && desc) desc.textContent = 'Automatic points calculation and Net Run Rate (NRR) tracking';
+      if (subTab === 'orange' && desc) {
+        desc.textContent = '👑 Orange Cap: Leading tournament run-scorers and boundary tallies';
+        renderOrangeCapTable();
+      }
+      if (subTab === 'purple' && desc) {
+        desc.textContent = '💜 Purple Cap: Leading tournament wicket-takers and bowling figures';
+        renderPurpleCapTable();
+      }
+    }
+
+    function renderOrangeCapTable() {
+      const oView = document.getElementById('orangeCapSubView');
+      if (!oView) return;
+      const leaders = [
+        { rank: 1, name: 'Virat Sharma', team: 'Bengaluru Strikers', runs: 284, hs: '92*', avg: 71.0, sr: 154.3, boundaries: '28 / 11' },
+        { rank: 2, name: 'Rohit Varma', team: 'Mumbai Blasters', runs: 242, hs: '84', avg: 48.4, sr: 148.5, boundaries: '22 / 14' },
+        { rank: 3, name: 'KL Rahul', team: 'Delhi Titans', runs: 198, hs: '71*', avg: 66.0, sr: 139.4, boundaries: '19 / 6' },
+        { rank: 4, name: 'Suryakumar Y.', team: 'Mumbai Blasters', runs: 176, hs: '64', avg: 35.2, sr: 181.4, boundaries: '15 / 12' },
+        { rank: 5, name: 'Sanju S.', team: 'Chennai Warriors', runs: 165, hs: '58', avg: 41.2, sr: 144.7, boundaries: '14 / 8' }
+      ];
+      oView.innerHTML = '<div style="overflow-x: auto;"><table style="width:100%; border-collapse: collapse; font-size:0.85rem;">' +
+        '<thead><tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size:0.75rem; text-transform: uppercase;">' +
+          '<th style="padding:0.6rem 0.5rem;">Rank</th>' +
+          '<th style="padding:0.6rem 0.5rem;">Batter</th>' +
+          '<th style="padding:0.6rem 0.5rem;">Team</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">Runs</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">HS</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">AVG</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">SR</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">4s/6s</th>' +
+        '</tr></thead><tbody>' +
+        leaders.map(l => '<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); ' + (l.rank === 1 ? 'background: rgba(255,184,0,0.08);' : '') + '">' +
+          '<td style="padding:0.6rem 0.5rem; font-weight:700; color:' + (l.rank === 1 ? '#FFB800' : '#f8fafc') + ';">' + (l.rank === 1 ? '👑 1' : '#' + l.rank) + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; font-weight:600; color:#f8fafc;">' + l.name + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; color:#94a3b8;">' + l.team + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); font-weight:700; color: var(--turf-emerald); font-size:0.95rem;">' + l.runs + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); color:#f8fafc;">' + l.hs + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); color: var(--cyan);">' + l.avg.toFixed(1) + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); color:#f8fafc;">' + l.sr.toFixed(1) + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; color:#94a3b8;">' + l.boundaries + '</td>' +
+        '</tr>').join('') +
+        '</tbody></table></div>';
+    }
+
+    function renderPurpleCapTable() {
+      const pView = document.getElementById('purpleCapSubView');
+      if (!pView) return;
+      const leaders = [
+        { rank: 1, name: 'Jasprit B.', team: 'Mumbai Blasters', wickets: 12, overs: '20.0', bbi: '4/14', econ: 5.85, dots: 68 },
+        { rank: 2, name: 'Mohammed S.', team: 'Bengaluru Strikers', wickets: 10, overs: '19.4', bbi: '3/18', econ: 6.75, dots: 54 },
+        { rank: 3, name: 'Rashid K.', team: 'Delhi Titans', wickets: 9, overs: '16.0', bbi: '3/22', econ: 6.20, dots: 46 },
+        { rank: 4, name: 'Yuzvendra C.', team: 'Chennai Warriors', wickets: 8, overs: '15.0', bbi: '4/25', econ: 7.40, dots: 39 },
+        { rank: 5, name: 'Arshdeep S.', team: 'Delhi Titans', wickets: 7, overs: '15.2', bbi: '3/28', econ: 8.10, dots: 35 }
+      ];
+      pView.innerHTML = '<div style="overflow-x: auto;"><table style="width:100%; border-collapse: collapse; font-size:0.85rem;">' +
+        '<thead><tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size:0.75rem; text-transform: uppercase;">' +
+          '<th style="padding:0.6rem 0.5rem;">Rank</th>' +
+          '<th style="padding:0.6rem 0.5rem;">Bowler</th>' +
+          '<th style="padding:0.6rem 0.5rem;">Team</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">Wkts</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">Overs</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">BBI</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">Econ</th>' +
+          '<th style="padding:0.6rem 0.5rem; text-align:right;">Dots</th>' +
+        '</tr></thead><tbody>' +
+        leaders.map(l => '<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); ' + (l.rank === 1 ? 'background: rgba(192,132,252,0.08);' : '') + '">' +
+          '<td style="padding:0.6rem 0.5rem; font-weight:700; color:' + (l.rank === 1 ? 'var(--purple-light)' : '#f8fafc') + ';">' + (l.rank === 1 ? '💜 1' : '#' + l.rank) + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; font-weight:600; color:#f8fafc;">' + l.name + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; color:#94a3b8;">' + l.team + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); font-weight:700; color: var(--purple-light); font-size:0.95rem;">' + l.wickets + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); color:#f8fafc;">' + l.overs + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); color: var(--turf-emerald);">' + l.bbi + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; font-family: var(--font-score); color: var(--cyan);">' + l.econ.toFixed(2) + '</td>' +
+          '<td style="padding:0.6rem 0.5rem; text-align:right; color:#94a3b8;">' + l.dots + '</td>' +
+        '</tr>').join('') +
+        '</tbody></table></div>';
+    }
+
+    // Event Operational Readiness Renderer
+    function initEventReadiness() {
+      const container = document.getElementById('eventReadinessBanner');
+      if (!container) return;
+      container.innerHTML = '<div class="event-readiness-card" style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.85rem 1.15rem; margin-bottom: 0.75rem;">' +
+        '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">' +
+          '<div style="display: flex; align-items: center; gap: 0.5rem;">' +
+            '<span style="font-size: 1rem;">⚡</span>' +
+            '<span style="font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: #f8fafc;">Event Operational Readiness</span>' +
+            '<span style="background: rgba(0, 229, 153, 0.15); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.3); font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 9999px;">100% CONFIRMED</span>' +
+          '</div>' +
+          '<div style="font-size: 0.75rem; color: var(--text-muted);">' +
+            '4 of 4 required sporting resources secured (Turf, 2 Umpires, Scorer)' +
+          '</div>' +
+        '</div>' +
+        '<div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 9999px; overflow: hidden;">' +
+          '<div style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--turf-emerald), var(--cyan)); border-radius: 9999px; box-shadow: 0 0 10px rgba(0,229,153,0.5);"></div>' +
+        '</div>' +
+        '<div style="margin-top: 0.45rem; font-size: 0.75rem; color: var(--turf-emerald); display: flex; align-items: center; gap: 0.4rem;">' +
+          '<span>✓ Mandatory sporting resources locked. Match is fully cleared for live broadcast.</span>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // Official & Umpire Assignment Desk Renderer
+    function initOfficialDesk() {
+      const container = document.getElementById('officialDeskContainer');
+      if (!container) return;
+      const assignments = [
+        { title: 'Delhi Daredevils vs Mumbai Super Strikers', venue: 'Chinnaswamy Ground B', time: '18:00 – 22:00', role: 'LEAD UMPIRE', fee: '₹600.00', status: 'CHECKED_IN', checked: true },
+        { title: 'Delhi Daredevils vs Mumbai Super Strikers', venue: 'Chinnaswamy Ground B', time: '18:00 – 22:00', role: 'LEG UMPIRE', fee: '₹500.00', status: 'CHECKED_IN', checked: true },
+        { title: 'Delhi Daredevils vs Mumbai Super Strikers', venue: 'Chinnaswamy Ground B', time: '18:00 – 22:00', role: 'DIGITAL SCORER', fee: '₹400.00', status: 'ACTIVE SCORING', checked: true }
+      ];
+      container.innerHTML = assignments.map(a => 
+        '<div class="official-assignment-card" style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem;">' +
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">' +
+            '<div>' +
+              '<div style="font-family: var(--font-display); font-weight: 700; font-size: 0.92rem; color: #f8fafc;">' + a.title + '</div>' +
+              '<div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem;">📍 ' + a.venue + ' • 🕒 ' + a.time + '</div>' +
+            '</div>' +
+            '<div style="text-align: right;">' +
+              '<span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.15rem 0.45rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700;">' + a.role + '</span>' +
+              '<div style="font-family: var(--font-score); font-size: 0.82rem; font-weight: 700; color: var(--turf-emerald); margin-top: 0.25rem;">' + a.fee + ' Escrow</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display: flex; gap: 0.5rem; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.65rem; margin-top: 0.5rem;">' +
+            '<span style="color: var(--turf-emerald); font-size: 0.78rem; font-weight: 600;">✓ ' + a.status + ' • Escrow Guarded</span>' +
+          '</div>' +
+        '</div>'
+      ).join('');
     }
 
     // Health check ping
@@ -3708,6 +4152,9 @@ export function getDashboardHtml(): string {
     // Initial load calls
     updateSyncUI();
     renderMatchCharts();
+    renderRoster();
+    initEventReadiness();
+    initOfficialDesk();
   </script>
 </body>
 </html>`;

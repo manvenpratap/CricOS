@@ -19,10 +19,11 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | `apps/web` | `test/web.test.ts` | Web client API, integer minor currency formatting, scoreboard chip rendering, commercial breakdown, trust badges |
 | `apps/web` | `test/web_journeys.test.ts` | Multi-persona profiles, Playing XI squad rosters, Tactical scoring studio, 8-zone wagon wheel, round-robin fixtures |
 | `apps/web` | `test/offline_and_analytics.test.ts` | Offline scoring outbox queue, RFC 4180 CSV scorecard export, printable HTML sheets, SVG Worm & Manhattan charts |
+| `apps/web` | `test/archive_features.test.ts` | Archive features: Event Basket readiness meter, MCC Law 1.3 Toss & DLS rain rule, Official Desk, 5-star post-match rating, Orange/Purple Cap leaderboards |
 | `apps/mobile` | `test/mobile.test.ts` | Mobile API client, offline queueing, session caching, live match screen controller, marketplace booking, career stats |
 | Root | `tests/tournament-emulation.test.ts` | End-to-end synthetic tournament lifecycle, round-robin scheduling, NRR calculation, double-entry settlement verification |
 | Root | `tests/operational-telemetry.test.ts` | Prometheus metrics text exposition, request latency histograms, event loop lag, OpenAPI 3.0 & /docs showcase |
-| Root | `tests/distribution-packaging.test.ts` | Standalone distribution packaging, byte-for-byte HTML parity, release manifest hashes, Dockerfiles, and Floodlit Stadium Broadcast design tokens |
+| Root | `tests/distribution-packaging.test.ts` | Standalone distribution packaging, byte-for-byte HTML parity, release manifest hashes, Dockerfiles, App Store/Play Store compliance & visual assets, Floodlit Stadium Broadcast tokens |
 | Root | `tests/migrations-and-seed.test.ts` | Schema reconciliation and database seed integrity |
 
 ## Execution Protocol

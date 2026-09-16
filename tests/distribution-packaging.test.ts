@@ -242,3 +242,94 @@ test('Distribution Packaging: Phase 2B Offline Scoring, Match Analytics Charts &
   assert.ok(rootIndex.includes('id="matchResultText"'), 'Match result text display must exist');
 });
 
+test('Distribution Packaging: App Store & Google Play Store Listing Readiness Invariants', () => {
+  const assetsDir = path.join(rootDir, 'apps/mobile/assets');
+  const storeDir = path.join(rootDir, 'apps/mobile/store');
+
+  // 1. Visual Store Assets
+  const iconPath = path.join(assetsDir, 'icon.png');
+  const adaptiveIconPath = path.join(assetsDir, 'adaptive-icon.png');
+  const splashPath = path.join(assetsDir, 'splash.png');
+  const featureGraphicPath = path.join(assetsDir, 'feature-graphic.png');
+  const faviconPath = path.join(assetsDir, 'favicon.png');
+
+  assert.ok(fs.existsSync(iconPath), 'App Store 1024x1024 icon.png must exist');
+  assert.ok(fs.statSync(iconPath).size > 10000, 'icon.png must be non-empty valid PNG');
+  assert.ok(fs.existsSync(adaptiveIconPath), 'Google Play 512x512 adaptive-icon.png must exist');
+  assert.ok(fs.existsSync(splashPath), 'Mobile 1242x2436 splash.png must exist');
+  assert.ok(fs.existsSync(featureGraphicPath), 'Google Play 1024x500 feature-graphic.png must exist');
+  assert.ok(fs.existsSync(faviconPath), 'Favicon 48x48 must exist');
+
+  // 2. Apple App Store Privacy Manifest (WWDC 2024 compliance)
+  const privacyManifestPath = path.join(rootDir, 'apps/mobile/PrivacyInfo.xcprivacy');
+  assert.ok(fs.existsSync(privacyManifestPath), 'PrivacyInfo.xcprivacy must exist');
+  const privacyXml = fs.readFileSync(privacyManifestPath, 'utf8');
+  assert.ok(privacyXml.includes('<key>NSPrivacyTracking</key>'), 'Privacy manifest must declare tracking state');
+  assert.ok(privacyXml.includes('<false/>'), 'CricOS must declare zero tracking (<false/>)');
+  assert.ok(privacyXml.includes('NSPrivacyAccessedAPITypeUserDefaults'), 'Must declare user defaults reason');
+
+  // 3. Apple App Store Metadata Package
+  const appleMetaPath = path.join(storeDir, 'apple/metadata.json');
+  assert.ok(fs.existsSync(appleMetaPath), 'Apple metadata.json must exist');
+  const appleMeta = JSON.parse(fs.readFileSync(appleMetaPath, 'utf8'));
+  assert.ok(appleMeta.app_store_info.title.length <= 30, 'App Store title must not exceed 30 characters');
+  assert.ok(appleMeta.app_store_info.subtitle.length <= 30, 'App Store subtitle must not exceed 30 characters');
+  assert.ok(appleMeta.app_store_info.keywords.length <= 100, 'App Store keywords must not exceed 100 characters');
+  assert.ok(appleMeta.app_store_info.description.length <= 4000, 'App Store description must not exceed 4000 characters');
+  assert.ok(appleMeta.review_information.notes_for_review.length > 50, 'Review notes must provide reviewer demo instructions');
+
+  // 4. Google Play Store Metadata & Data Safety Package
+  const googleMetaPath = path.join(storeDir, 'google/metadata.json');
+  const googleSafetyPath = path.join(storeDir, 'google/data-safety.json');
+  assert.ok(fs.existsSync(googleMetaPath), 'Google Play metadata.json must exist');
+  assert.ok(fs.existsSync(googleSafetyPath), 'Google Play data-safety.json must exist');
+
+  const googleMeta = JSON.parse(fs.readFileSync(googleMetaPath, 'utf8'));
+  assert.ok(googleMeta.listing.title.length <= 30, 'Google Play title must not exceed 30 characters');
+  assert.ok(googleMeta.listing.short_description.length <= 80, 'Google Play short description must not exceed 80 characters');
+  assert.ok(googleMeta.listing.full_description.length <= 4000, 'Google Play full description must not exceed 4000 characters');
+  assert.equal(googleMeta.target_sdk_version, 34, 'Must target Android 14 (API level 34)');
+
+  const googleSafety = JSON.parse(fs.readFileSync(googleSafetyPath, 'utf8'));
+  assert.equal(googleSafety.data_collection_and_security.data_shared_with_third_parties, false);
+  assert.equal(googleSafety.data_collection_and_security.encrypted_in_transit, true);
+  assert.equal(googleSafety.data_collection_and_security.in_app_deletion_available, true);
+
+  // 5. Legal Policies
+  assert.ok(fs.existsSync(path.join(storeDir, 'legal/PRIVACY_POLICY.md')), 'PRIVACY_POLICY.md must exist');
+  assert.ok(fs.existsSync(path.join(storeDir, 'legal/TERMS_OF_SERVICE.md')), 'TERMS_OF_SERVICE.md must exist');
+});
+
+test('Distribution Packaging: Archive Features & Stitch UI Invariants in Root index.html', () => {
+  const rootIndex = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+
+  // 1. Official Toss Management (03_UX_Blueprint_v2)
+  assert.ok(rootIndex.includes('id="modalMatchToss"'), 'Official Match Toss modal must exist');
+  assert.ok(rootIndex.includes('confirmTossDecision(event)'), 'Confirm toss decision handler must exist');
+  assert.ok(rootIndex.includes('openTossModal()'), 'Open toss modal button must exist');
+
+  // 2. Post-Match 5-Star Ratings & Escrow Disbursement (TRU-001...008)
+  assert.ok(rootIndex.includes('id="modalMatchRating"'), 'Post-match rating modal must exist');
+  assert.ok(rootIndex.includes('submitPostMatchRating(event)'), 'Submit post-match rating handler must exist');
+  assert.ok(rootIndex.includes('openMatchRatingModal()'), 'Open match rating modal button must exist');
+
+  // 3. Store Compliance & Legal Modal
+  assert.ok(rootIndex.includes('id="modalLegalPolicies"'), 'Store compliance legal policies modal must exist');
+  assert.ok(rootIndex.includes('openLegalModal()'), 'Open legal modal button must exist in header');
+  assert.ok(rootIndex.includes('switchLegalTab('), 'Switch legal tab function must exist');
+
+  // 4. Event Operational Readiness Bar
+  assert.ok(rootIndex.includes('id="eventReadinessBanner"'), 'Event readiness banner container must exist');
+  assert.ok(rootIndex.includes('initEventReadiness()'), 'Event readiness initializer must exist');
+
+  // 5. Tournament Player Leaderboards (Orange Cap & Purple Cap, TMT-007)
+  assert.ok(rootIndex.includes('id="orangeCapSubView"'), 'Orange cap batting leaderboard container must exist');
+  assert.ok(rootIndex.includes('id="purpleCapSubView"'), 'Purple cap bowling leaderboard container must exist');
+  assert.ok(rootIndex.includes('switchTournamentSubTab('), 'Tournament sub-tab switcher must exist');
+
+  // 6. Umpire & Official Assignment Desk (Journey J2)
+  assert.ok(rootIndex.includes('id="officialDeskContainer"'), 'Official assignment desk container must exist');
+  assert.ok(rootIndex.includes('initOfficialDesk()'), 'Official desk initializer must exist');
+});
+
+

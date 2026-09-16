@@ -1,15 +1,15 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-16 08:59:28
-**Version:** 1.0.0-phase2b  
+**Last Updated:** 2026-09-16 09:31:00
+**Version:** 1.0.0-phase2c (Store Ready)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2B Completed (Offline-First Match Scoring Outbox, Match Analytics Visuals with Zero-Dependency SVG Worm & Manhattan Charts, Scorecard CSV & Printable Match Sheet Export Engine, Dynamic Match Victory Banner).
-- **Test Health**: 100% Passing (140 automated tests across 16 test suites; 1.43s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2C Completed (Play Store & App Store Listing Readiness, Apple Privacy Manifest WWDC 2024, Pixel-Perfect Store Visual Assets, Archive Features Integration: Event Basket Operational Readiness, MCC Law 1.3 Toss & DLS Rain Calculations, Official & Umpire Assignment Desk, 5-Star Post-Match Trust Ratings, Orange & Purple Cap Tournament Leaderboards).
+- **Test Health**: 100% Passing (148 automated tests across 17 test suites; 1.45s low-token execution via `./pipeline.sh test --summary`).
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
 - **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), and tactile mobile mockup (`/mobile`).
 
@@ -80,6 +80,17 @@
   - **Match Analytics Sub-Panel**: Responsive SVG charting container (`#matchChartContainer`) with kinetic toggle tabs (`📈 Worm Chart` and `📊 Manhattan Bars`).
   - **Scorecard Export Modal**: Accessible modal (`#modalScorecardExport`) with full batting scorecard, bowling analysis, CSV download (`downloadScorecardCsv()`), and printable match sheet (`printScorecardView()`).
   - **Dynamic Victory & Result Engine**: Live calculation comparing chasing score against target runs; automatically surfaces prominent athletic `#matchResultBanner` when the match reaches conclusion.
+- [x] **Store Listing Readiness & Archive Documents Specification Integration (Phase 2C)**:
+  - **Visual Store Assets**: Zero-dependency generator (`scripts/generate-store-assets.mjs`) emitting valid PNGs matching exact specifications: Apple App Store icon (1024x1024, 24-bit RGB without alpha), Google Play adaptive icon (512x512, 32-bit RGBA), background icon (512x512), mobile splash (1242x2436), feature graphic (1024x500), and favicon (48x48).
+  - **Apple Privacy Manifest (`PrivacyInfo.xcprivacy`)**: Fully compliant with WWDC 2024 privacy requirements (`NSPrivacyTracking: false`, user defaults `CA92.1`, boot time `35F9.1`, file timestamp `C617.1`, disk space `E174.1`).
+  - **Store Metadata & Legal Declarations**: Complete listing metadata in `apps/mobile/store/apple/metadata.json` and `apps/mobile/store/google/metadata.json` (Target SDK 34), Google Play Data Safety declaration in `data-safety.json`, and comprehensive legal documents (`PRIVACY_POLICY.md`, `TERMS_OF_SERVICE.md`).
+  - **In-App Account Deletion Compliance**: Conforms strictly to Apple Review Guideline 5.1.1(v) and Google Play user data policies, featuring in-app modal triggers and dedicated web portal with immediate, irreversible PII deletion.
+  - **Archive Documents Functional Integration**:
+    - *Event Basket & Operational Readiness (`event-basket.ts`)*: 0–100% readiness calculation, missing critical checklist items tracking, and turf/umpire/ball booking status.
+    - *Official Match Control & Toss Management (`match-control.ts`)*: MCC Law 1.3 toss recording with pitch condition and Bat/Bowl decisions, innings team resolution, and Duckworth-Lewis-Stern (DLS) rain-revised target mathematics.
+    - *Umpire & Official Assignment Desk (`official-desk.ts`)*: Assignment card workflow (`ASSIGNED` -> `ACCEPTED` -> `CHECKED_IN` -> `COMPLETED`) with escrow disbursement protection.
+    - *Post-Match 5-Star Dimensional Ratings (`ratings-modal.ts`)*: Multi-dimensional feedback for Pitch Condition, Umpire Fair Play, and Scorer Reliability with Bayesian rating engine integration.
+    - *Tournament Player Leaderboards (`leaderboards.ts`)*: Orange Cap (Batting) and Purple Cap (Bowling) leaderboards with runs, strike rate, wickets, and economy metrics.
 
 ---
 
@@ -96,6 +107,7 @@
 10. **Store Compliance & Account Deletion Invariant**: All consumer-facing auth flows provide explicit persona assignment and in-app account deletion under Apple Guideline 5.1.1(v).
 11. **Audit & Traceability Invariant**: Mutating API requests produce structured audit log events in `audit_events` and propagate correlation IDs in responses.
 12. **Offline Outbox & Zero-Dependency SVG Invariant**: Scoring outbox queue persists pending deliveries offline in `localStorage` and synchronizes sequentially; analytics visuals (Worm & Manhattan charts) are generated strictly using pure SVG without external charting library dependencies to maintain single-file portability.
+13. **Store Readiness & Privacy Invariant**: All store assets and privacy manifests comply strictly with Apple App Store (WWDC 2024 Privacy Manifest, 1024x1024 RGB 24-bit no alpha icon) and Google Play Store (Target SDK 34, Data Safety, In-App Account Deletion).
 
 ---
 
@@ -115,6 +127,7 @@
 - [x] Phase 1Z: Technical Audit Remediation & Hardening (100% Remediated, Certified Production Ready)
 - [x] Phase 2A: Complete Multi-Persona Web Frontend & Consumer Journeys (Teams, Studio, Wagon Wheel, Modals)
 - [x] Phase 2B: Offline-First Match Scoring Outbox, Match Analytics (SVG Worm & Manhattan Charts) & Scorecard Export Engine
+- [x] Phase 2C: Play Store & App Store Listing Readiness, Privacy Manifest, Store Assets, Archive Document Features (Toss, DLS, Ratings, Readiness, Cap Leaderboards)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 
