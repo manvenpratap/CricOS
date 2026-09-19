@@ -52,30 +52,40 @@ export function getDashboardHtml(): string {
     }
 
     /* Top Navigation Header */
+    /* Top Navigation Header - Athletic Broadcast Command Bar */
     header {
-      background: rgba(9, 13, 22, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0.85rem 2rem;
+      background: rgba(6, 10, 18, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.65rem 1.75rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
+      gap: 1rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    header::-webkit-scrollbar {
+      display: none;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 0.85rem;
+      flex-shrink: 0;
     }
 
     .brand-logo {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       background: linear-gradient(135deg, var(--turf-emerald), var(--cyan));
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -86,76 +96,182 @@ export function getDashboardHtml(): string {
     .brand-title {
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       letter-spacing: -0.03em;
+      line-height: 1.1;
       background: linear-gradient(135deg, #FFFFFF 40%, var(--turf-emerald) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .brand-subtitle {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       letter-spacing: 0.06em;
       text-transform: uppercase;
       font-family: var(--font-body);
+      font-weight: 600;
     }
 
-    .header-status {
-      display: flex;
+    .broadcast-tag {
+      display: inline-flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.35rem;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--turf-emerald);
+      background: rgba(0, 229, 153, 0.1);
+      border: 1px solid rgba(0, 229, 153, 0.25);
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      margin-left: 0.4rem;
+      text-transform: uppercase;
     }
 
-    .header-nav-links {
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--turf-emerald);
+      box-shadow: 0 0 8px var(--turf-emerald);
+      animation: livePulse 2s infinite ease-in-out;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.8); }
+    }
+
+    .header-center-group {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .header-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: linear-gradient(135deg, #00E599, #00C782);
+      color: #04070D;
+      border: 1px solid rgba(0, 229, 153, 0.5);
+      padding: 0.42rem 0.95rem;
+      border-radius: 9999px;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      box-shadow: 0 0 16px rgba(0, 229, 153, 0.28), 0 2px 4px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .header-cta-btn:hover {
+      background: linear-gradient(135deg, #05f5a4, #00E599);
+      box-shadow: 0 0 24px rgba(0, 229, 153, 0.45), 0 4px 10px rgba(0, 0, 0, 0.5);
+      transform: translateY(-1px);
+    }
+    .header-cta-btn:active {
+      transform: scale(0.97);
+    }
+
+    .header-ops-group,
+    .header-tech-links {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .header-nav-divider {
+      width: 1px;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 0.15rem;
+      flex-shrink: 0;
+    }
+
+    .header-utility-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-shrink: 0;
     }
 
     .nav-pill {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-subtle);
-      padding: 0.35rem 0.75rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 0.36rem 0.72rem;
       border-radius: 9999px;
-      font-size: 0.8rem;
-      font-weight: 500;
+      font-size: 0.78rem;
+      font-weight: 600;
       color: var(--text-muted);
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .nav-pill:hover {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: var(--border-accent);
-      color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(0, 229, 153, 0.35);
+      color: #FFFFFF;
       transform: translateY(-1px);
+    }
+    .nav-pill:active {
+      transform: scale(0.97);
+    }
+
+    .counter-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.08rem 0.36rem;
+      border-radius: 9999px;
+      line-height: 1;
+    }
+    .counter-badge.amber {
+      background: var(--amber);
+      color: #04070D;
+    }
+    .counter-badge.emerald {
+      background: var(--turf-emerald);
+      color: #04070D;
     }
 
     .status-pill {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid var(--border-accent);
-      padding: 0.4rem 0.85rem;
+      background: rgba(0, 229, 153, 0.08);
+      border: 1px solid rgba(0, 229, 153, 0.25);
+      padding: 0.36rem 0.8rem;
       border-radius: 9999px;
-      font-size: 0.8rem;
-      font-weight: 500;
+      font-size: 0.78rem;
+      font-weight: 600;
       color: var(--primary);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .status-pill:hover {
+      background: rgba(0, 229, 153, 0.15);
+      border-color: rgba(0, 229, 153, 0.45);
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
     }
 
     .pulse-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       background: var(--primary);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--primary);
-      animation: pulse 2s infinite;
+      animation: livePulse 2s infinite ease-in-out;
     }
 
     @keyframes pulse {
@@ -1246,40 +1362,53 @@ export function getDashboardHtml(): string {
   </style>
 </head>
 <body>
-  <!-- Header -->
+  <!-- Header - Broadcast Command Center -->
   <header>
     <div class="brand">
       <div class="brand-logo">🏏</div>
       <div>
-        <div class="brand-title">CricOS</div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <div class="brand-title">CricOS</div>
+          <span class="broadcast-tag"><span class="live-dot"></span> Live Console</span>
+        </div>
         <div class="brand-subtitle">Unified Cricket Operating System</div>
       </div>
     </div>
-    <div class="header-status">
-      <div class="header-nav-links">
-        <button type="button" onclick="openCreateEventModal()" class="nav-pill" style="background: rgba(0, 229, 153, 0.15); border-color: rgba(0, 229, 153, 0.35); color: var(--turf-emerald); font-weight: 700;" data-tooltip="Create a new cricket match with format selection, team &amp; official procurement (UX-003)">
-          <span class="pill-icon">➕</span> Create Match
-        </button>
-        <button type="button" onclick="openEventOverviewModal()" class="nav-pill" style="background: rgba(0, 210, 255, 0.12); border-color: rgba(0, 210, 255, 0.3); color: var(--cyan);" data-tooltip="Event procurement readiness, blockers &amp; lifecycle progression (UX-004)">
+
+    <!-- Center Operations & Primary Action -->
+    <div class="header-center-group">
+      <button type="button" onclick="openCreateEventModal()" class="header-cta-btn" data-tooltip="Schedule match fixtures, select formats, and procure verified officials and venues">
+        <span class="pill-icon">➕</span> Create Match
+      </button>
+      <div class="header-nav-divider"></div>
+      <div class="header-ops-group">
+        <button type="button" onclick="openEventOverviewModal()" class="nav-pill" data-tooltip="Event procurement readiness, operational checklists, and match countdown">
           <span class="pill-icon">📋</span> Readiness
         </button>
-        <button type="button" onclick="openOfficialCalendarModal()" class="nav-pill" style="background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.3); color: var(--purple);" data-tooltip="Official weekly availability calendar, conflict detection &amp; buffers (UX-015)">
+        <button type="button" onclick="openOfficialCalendarModal()" class="nav-pill" data-tooltip="Weekly availability schedule, match assignments, and rest buffers">
           <span class="pill-icon">📅</span> Calendar
         </button>
-        <button type="button" onclick="openMessagingModal()" class="nav-pill" style="background: rgba(255, 184, 0, 0.12); border-color: rgba(255, 184, 0, 0.3); color: var(--amber); display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Contextual match coordination, booking quotes &amp; quick actions (FSD §45)">
+        <button type="button" onclick="openMessagingModal()" class="nav-pill" data-tooltip="Match operations chat, official dispatch, and booking alerts">
           <span class="pill-icon">💬</span> Chat
-          <span style="background: var(--amber); color: #04070D; font-weight: 800; padding: 0.05rem 0.35rem; border-radius: 9999px; font-size: 0.65rem;">1</span>
+          <span class="counter-badge amber">1</span>
         </button>
-        <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" style="background: rgba(255, 184, 0, 0.12); border-color: rgba(255, 184, 0, 0.3); color: var(--amber); display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="In-app match alerts, financial escrow updates, and trust notifications">
-          <span class="pill-icon">🔔</span>
-          <span id="headerNotifBadge" style="background: var(--turf-emerald); color: #04070D; font-weight: 800; padding: 0.05rem 0.35rem; border-radius: 9999px; font-size: 0.65rem;">3</span>
-        </button>
-        <button type="button" onclick="openMobilePreviewModal()" class="nav-pill" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399; font-weight: 600;" data-tooltip="Launch Standalone Consumer Mobile App (iOS &amp; Android Preview) with OTP &amp; Profile">
-          <span class="pill-icon">📱</span> Mobile App
-        </button>
-        <button type="button" onclick="openLegalModal()" class="nav-pill" style="background: rgba(0, 210, 255, 0.12); border-color: rgba(0, 210, 255, 0.3); color: var(--cyan);" data-tooltip="Review Apple App Store &amp; Google Play Policies, Privacy Policy and Terms">
-          <span class="pill-icon">📜</span> Legal &amp; Privacy
-        </button>
+      </div>
+    </div>
+
+    <!-- Utilities, Status & User Account -->
+    <div class="header-utility-group">
+      <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
+        <span class="pill-icon">🔔</span>
+        <span id="headerNotifBadge" class="counter-badge emerald">3</span>
+      </button>
+      <button type="button" onclick="openMobilePreviewModal()" class="nav-pill" data-tooltip="Launch Standalone Consumer Mobile App (iOS &amp; Android Preview) with OTP &amp; Profile">
+        <span class="pill-icon">📱</span> Mobile App
+      </button>
+      <button type="button" onclick="openLegalModal()" class="nav-pill" data-tooltip="Review Apple App Store &amp; Google Play Policies, Privacy Policy and Terms">
+        <span class="pill-icon">📜</span> Legal &amp; Privacy
+      </button>
+      <div class="header-nav-divider"></div>
+      <div class="header-tech-links">
         <a href="/docs" onclick="openApiDocsModal(); return false;" class="nav-pill" data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox">
           <span class="pill-icon">📖</span> API Docs
         </a>
@@ -1290,6 +1419,7 @@ export function getDashboardHtml(): string {
           <span class="pill-icon">🩺</span> Health
         </a>
       </div>
+      <div class="header-nav-divider"></div>
       <div class="user-profile-header-btn" onclick="openUserModal()" data-tooltip="Manage User Profile, Career Stats, and Switch Persona (Captain, Player, Scorer...)">
         <div class="user-avatar-pill" id="headerUserAvatar">VK</div>
         <div class="user-meta-pill">
@@ -1301,7 +1431,7 @@ export function getDashboardHtml(): string {
         <div class="pulse-dot"></div>
         <span id="healthText">Connecting...</span>
       </div>
-      <div style="font-size: 0.85rem; color: var(--text-muted);" data-tooltip="Fastify HTTP Port">
+      <div style="font-size: 0.82rem; color: var(--text-muted);" data-tooltip="Fastify HTTP Port">
         Port: <span style="color: var(--primary); font-family: monospace;">3000</span>
       </div>
     </div>
@@ -1312,9 +1442,9 @@ export function getDashboardHtml(): string {
     <button class="tab-btn active" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip"><span class="tab-icon">🏏</span> Match Center</button>
     <button class="tab-btn" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes"><span class="tab-icon">👥</span> Teams &amp; Rosters</button>
     <button class="tab-btn" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard"><span class="tab-icon">🏆</span> Tournaments</button>
-    <button class="tab-btn" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with 15-minute GiST hold"><span class="tab-icon">🛒</span> Venues &amp; Turfs</button>
+    <button class="tab-btn" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold"><span class="tab-icon">🛒</span> Venues &amp; Turfs</button>
     <button class="tab-btn" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships"><span class="tab-icon">🎯</span> Scoring Studio</button>
-    <button class="tab-btn" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, provider Bayesian trust, and circuit breaker"><span class="tab-icon">🛡️</span> Fair Play &amp; Trust</button>
+    <button class="tab-btn" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection"><span class="tab-icon">🛡️</span> Fair Play &amp; Trust</button>
     <button class="tab-btn" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector"><span class="tab-icon">⚡</span> Operations &amp; APIs</button>
   </div>
 
@@ -1364,7 +1494,7 @@ export function getDashboardHtml(): string {
               <div class="match-meta">T20 Championship • Innings 2 • Match ID: <span id="currentMatchId" style="font-family: monospace; color: var(--cyan);">match-pilot-1</span></div>
               <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
               <button class="nav-pill" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
-              <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf, umpires, and scoring accuracy to update Bayesian trust scores">⭐ Rate Match</button>
+              <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
             </div>
           </div>
           <div class="score-display">
@@ -1582,7 +1712,7 @@ export function getDashboardHtml(): string {
 
         <div class="card">
           <div class="card-title">🧾 Checkout & Commercial Breakdown</div>
-          <div class="card-desc">Phase 1D Order Items Model + Policy Snapshot Calculation</div>
+          <div class="card-desc">Itemized Sporting Resource Breakdown &amp; Escrow Hold</div>
 
           <div class="breakdown-table">
             <div class="breakdown-row">
@@ -1605,7 +1735,7 @@ export function getDashboardHtml(): string {
 
           <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
             <button class="btn" onclick="executeCheckoutAndPay()" data-tooltip="Execute booking checkout, platform fee calculation, and payment webhook">💳 Confirm Order & Simulate Payment Webhook</button>
-            <button class="btn btn-secondary" onclick="simulateHoldSlot()" data-tooltip="Reserve slot with 15-minute temporary hold with GiST temporal exclusion">⏱️ Hold Slot (15-min TTL)</button>
+            <button class="btn btn-secondary" onclick="simulateHoldSlot()" data-tooltip="Reserve slot with 15-minute exclusive hold preventing schedule overlaps">⏱️ Hold Slot (15-min TTL)</button>
           </div>
 
           <div id="bookingConfirmation" style="margin-top: 1rem; font-size: 0.85rem; color: var(--primary); display: none;">
@@ -1825,7 +1955,7 @@ export function getDashboardHtml(): string {
       <div class="grid-2">
         <div class="card">
           <div class="card-title">⚠️ Service Incidents & Replacement Proposals</div>
-          <div class="card-desc">Automated recovery when providers fail or no-show (Phase 1L/1M)</div>
+          <div class="card-desc">Automated official replacement and incident protection</div>
 
           <div class="form-group">
             <label>Incident Type</label>
@@ -1840,14 +1970,14 @@ export function getDashboardHtml(): string {
             <input type="text" id="incidentReason" value="Umpire did not arrive 30 mins before match toss">
           </div>
 
-          <button class="btn" style="background: var(--rose); color: #FFF;" onclick="logIncidentAndFindReplacement()" data-tooltip="File operational dispute and search Bayesian-rated replacement provider">🚨 Open Incident & Propose Emergency Replacement</button>
+          <button class="btn" style="background: var(--rose); color: #FFF;" onclick="logIncidentAndFindReplacement()" data-tooltip="File operational dispute and search top-rated replacement officials">🚨 Open Incident &amp; Propose Emergency Replacement</button>
 
           <div id="replacementResult" style="margin-top: 1.25rem;"></div>
         </div>
 
         <div class="card">
           <div class="card-title">⭐ Provider Trust & Reputation Engine</div>
-          <div class="card-desc">Bayesian smoothed rating, trust transitions, and automated circuit breaker</div>
+          <div class="card-desc">Weighted reliability score, trust transitions, and automated quality guard</div>
 
           <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -1855,8 +1985,8 @@ export function getDashboardHtml(): string {
               <span id="providerTrustBadge" style="background: rgba(16, 185, 129, 0.15); color: var(--primary); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700;" data-tooltip="Live operational trust status (VERIFIED / PROBATION / SUSPENDED)">VERIFIED</span>
             </div>
             <div style="display: flex; gap: 1.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
-              <div data-tooltip="Bayesian smoothed rating using m-estimate prior (platform avg: 4.2)">
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Bayesian Rating</div>
+              <div data-tooltip="Weighted reliability score computed from verified match reviews">
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Trust Score</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--amber);" id="providerBayesianRating">4.72 / 5.0</div>
               </div>
               <div data-tooltip="Reliability score: probation triggered at <80%, suspension circuit breaker at <65%">
@@ -1964,7 +2094,7 @@ export function getDashboardHtml(): string {
         <pre id="apiResponse" style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; max-height: 300px; overflow-y: auto; color: #38BDF8;">Click 'Run Request' to test</pre>
       </div>
 
-      <!-- Admin Operations & Settlement Audit Desk (UX-027, ADM-001..020) -->
+      <!-- Admin Operations & Settlement Audit Desk -->
       <div id="adminAuditDeskContainer" style="margin-top: 1.5rem;"></div>
     </div>
   <!-- User Profile & Persona Switcher Modal -->
@@ -2173,14 +2303,14 @@ export function getDashboardHtml(): string {
     <div class="modal-dialog">
       <div class="modal-header">
         <div class="modal-title">
-          <span>🛒 Turf Booking &amp; 15-Minute GiST Hold</span>
+          <span>🛒 Turf Booking &amp; 15-Minute Reservation Hold</span>
         </div>
         <button class="modal-close-btn" onclick="closeCheckoutModal()">✕</button>
       </div>
       <div class="modal-body">
         <div style="background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.3); border-radius: 8px; padding: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
           <div>
-            <div style="font-size: 0.72rem; color: var(--cyan); font-weight: 800; text-transform: uppercase;">15-Minute GiST Hold Active</div>
+            <div style="font-size: 0.72rem; color: var(--cyan); font-weight: 800; text-transform: uppercase;">15-Minute Reservation Lock Active</div>
             <div style="font-size: 0.95rem; font-weight: 700; color: #F8FAFC;" id="modalCheckoutSlotTitle">Chinnaswamy Turf A (13:00 - 14:00)</div>
           </div>
           <div style="font-family: var(--font-score); font-size: 1.3rem; font-weight: 800; color: var(--cyan);" id="modalHoldTimer">14:59</div>
@@ -2342,7 +2472,7 @@ export function getDashboardHtml(): string {
       </div>
       <div class="modal-body">
         <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-          Verified post-match evaluation directly updates provider Bayesian trust metrics and authorizes double-entry escrow disbursement.
+          Verified post-match evaluation directly updates provider trust ratings and authorizes double-entry escrow disbursement.
         </div>
 
         <form id="formPostMatchRating" onsubmit="submitPostMatchRating(event)">
@@ -2425,7 +2555,7 @@ export function getDashboardHtml(): string {
         <div id="legalSubViewTerms" style="display: none; font-size: 0.84rem; line-height: 1.6; color: #CBD5E1; max-height: 420px; overflow-y: auto; padding-right: 0.5rem;">
           <h3 style="color: #F8FAFC; margin-bottom: 0.5rem;">Terms of Service</h3>
           <p>By using CricOS, you agree to record truthful, unbiased match scores, adhere to MCC Laws of Cricket, and respect confirmed turf booking commitments.</p>
-          <p style="margin-top: 0.5rem;">All commercial bookings are secured via 15-minute GiST temporal holds and double-entry escrow accounting. Platform service fees (5%) and statutory GST (18%) are transparently itemized prior to confirmation.</p>
+          <p style="margin-top: 0.5rem;">All commercial bookings are secured via 15-minute exclusive reservation locks and double-entry escrow accounting. Platform service fees (5%) and statutory GST (18%) are transparently itemized prior to confirmation.</p>
         </div>
 
         <div id="legalSubViewApple" style="display: none; font-size: 0.84rem; line-height: 1.6; color: #CBD5E1; max-height: 420px; overflow-y: auto; padding-right: 0.5rem;">
@@ -2444,7 +2574,7 @@ export function getDashboardHtml(): string {
       </div>
     </div>
   </div>
-  <!-- Notification Center Drawer (UX-025, COM-001..010) -->
+  <!-- Notification Center Drawer -->
   <div id="notificationsDrawerOverlay" class="modal-backdrop" onclick="closeNotificationsDrawer()" style="display: none; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);"></div>
   <div id="notificationsDrawer" style="position: fixed; top: 0; right: -400px; width: 380px; max-width: 92vw; height: 100vh; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6); z-index: 10000; transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;">
     <div style="padding: 1.25rem 1rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
@@ -2467,7 +2597,7 @@ export function getDashboardHtml(): string {
     <div id="notificationItemsList" style="flex: 1; overflow-y: auto; padding: 0.5rem 0;"></div>
   </div>
 
-  <!-- Event Basket Modal (UX-008, BAS-001..015) -->
+  <!-- Event Basket Modal -->
   <div class="modal-backdrop" id="modalEventBasket">
     <div class="modal-dialog" style="max-width: 600px;">
       <div class="modal-header">
@@ -2478,14 +2608,14 @@ export function getDashboardHtml(): string {
       </div>
       <div class="modal-body">
         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
-          Mandatory match sporting resources locked in escrow under Phase 1D/1E commercial policies.
+          Mandatory match sporting resources locked in double-entry escrow under verified commercial policies.
         </div>
 
         <div id="eventBasketItemsList" style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
             <div>
               <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">🏟️ Turf Arena (Koramangala Pitch 1)</div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">4-Hour Match Slot (14:00 - 18:00) • GiST Hold Confirmed</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">4-Hour Match Slot (14:00 - 18:00) • Reservation Lock Confirmed</div>
             </div>
             <div style="text-align: right;">
               <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.88rem;">₹8,500.00</div>
@@ -2554,7 +2684,7 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Provider Storefront Modal (UX-018, MKT-001..020) -->
+  <!-- Provider Storefront Modal -->
   <div class="modal-backdrop" id="modalProviderStorefront">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-header">
@@ -2565,7 +2695,7 @@ export function getDashboardHtml(): string {
       </div>
       <div class="modal-body">
         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
-          Publish match slots, set temporal GiST ranges, and inspect settled provider earnings.
+          Publish match slots, set availability hours, and inspect settled provider earnings.
         </div>
 
         <!-- Earnings Breakdown -->
@@ -2646,7 +2776,7 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Modal 1: Create Event Wizard (UX-003) -->
+  <!-- Modal 1: Create Match Wizard -->
   <div class="modal-backdrop" id="modalCreateEvent">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
@@ -2787,7 +2917,7 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Modal 2: Event Overview & Readiness (UX-004) -->
+  <!-- Modal 2: Event Overview & Readiness -->
   <div class="modal-backdrop" id="modalEventOverview">
     <div class="modal-dialog" style="max-width: 650px;">
       <div class="modal-header">
@@ -2833,7 +2963,7 @@ export function getDashboardHtml(): string {
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
             <div>
               <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">🏟️ Turf Arena (Chinnaswamy Ground A)</div>
-              <div style="font-size: 0.7rem; color: var(--text-muted);">4-Hour Slot • Natural Grass Pitch • GiST Hold Active</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">4-Hour Slot • Natural Grass Pitch • Reservation Lock Active</div>
             </div>
             <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">BOOKED</span>
           </div>
@@ -2872,7 +3002,7 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Modal 3: Official Calendar & Availability (UX-015) -->
+  <!-- Modal 3: Official Calendar & Availability -->
   <div class="modal-backdrop" id="modalOfficialCalendar">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
@@ -2892,7 +3022,7 @@ export function getDashboardHtml(): string {
             </select>
           </div>
           <div style="display: flex; gap: 0.35rem; align-items: center;">
-            <span style="font-size: 0.7rem; color: var(--cyan); background: rgba(0,210,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">GiST Temporal Check: Active</span>
+            <span style="font-size: 0.7rem; color: var(--cyan); background: rgba(0,210,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">Conflict Guard: Active</span>
           </div>
         </div>
 
@@ -2928,7 +3058,7 @@ export function getDashboardHtml(): string {
           </div>
           <div style="background: rgba(0,210,255,0.12); border: 1px solid rgba(0,210,255,0.3); border-radius: 6px; padding: 0.5rem; text-align: center;">
             <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">15:00 - 19:00</div>
-            <div style="font-size: 0.65rem; color: var(--cyan); font-weight: 700; margin-top: 0.15rem;">HELD (M-101 GiST)</div>
+            <div style="font-size: 0.65rem; color: var(--cyan); font-weight: 700; margin-top: 0.15rem;">HELD (M-101)</div>
           </div>
           <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.25); border-radius: 6px; padding: 0.5rem; text-align: center;">
             <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #FFF;">19:00 - 20:00</div>
@@ -2948,7 +3078,7 @@ export function getDashboardHtml(): string {
               <label style="font-size: 0.65rem; color: var(--text-muted); display: block;">End Hour (24h)</label>
               <input type="number" id="testSlotEnd" value="13" min="7" max="21" style="width: 70px; padding: 0.35rem; font-size: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
             </div>
-            <button class="btn btn-secondary" onclick="checkCalendarSlotConflict()" data-tooltip="Run PostgreSQL tsrange GiST conflict overlap algorithm" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; width: auto;">Check Overlap</button>
+            <button class="btn btn-secondary" onclick="checkCalendarSlotConflict()" data-tooltip="Check schedule availability and detect overlapping match bookings" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; width: auto;">Check Overlap</button>
             <div id="slotConflictResult" style="font-size: 0.75rem; color: var(--amber); margin-left: 0.5rem; align-self: center;"></div>
           </div>
         </div>
@@ -2966,7 +3096,7 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Modal 4: Contextual Messaging (FSD §45) -->
+  <!-- Modal 4: Contextual Match Messaging -->
   <div class="modal-backdrop" id="modalMessaging">
     <div class="modal-dialog" style="max-width: 680px; height: 600px; display: flex; flex-direction: column;">
       <div class="modal-header">
@@ -3044,7 +3174,7 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Modal 5: Booking Lifecycle, Cancellation & Rescheduling (Commercial §10-14) -->
+  <!-- Modal 5: Booking Lifecycle, Cancellation & Rescheduling -->
   <div class="modal-backdrop" id="modalBookingLifecycle">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
@@ -3135,7 +3265,7 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Modal 6: Daily Financial Reconciliation (Commercial §17-18) -->
+  <!-- Modal 6: Daily Financial Reconciliation -->
   <div class="modal-backdrop" id="modalFinancialReconciliation">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
@@ -3215,7 +3345,7 @@ export function getDashboardHtml(): string {
         </div>
 
         <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1rem; background: rgba(255,255,255,0.02); padding: 0.5rem 0.75rem; border-radius: 6px;">
-          All monetary ledger values strictly computed as 64-bit integer minor units. Zero floating-point drift. Verified against PostgreSQL GiST transaction constraints.
+          All monetary ledger values strictly computed as 64-bit integer minor units. Zero floating-point drift. Verified against strict double-entry ledger constraints.
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
@@ -3295,7 +3425,7 @@ export function getDashboardHtml(): string {
           </div>
           <div style="padding: 0.45rem 0.65rem; background: rgba(255, 184, 0, 0.06); border: 1px solid rgba(255,184,0,0.2); border-radius: 6px; display: flex; justify-content: space-between;">
             <span><strong style="color: var(--amber);">POST</strong> /api/v1/marketplace/bookings/checkout</span>
-            <span style="color: var(--text-muted);">15-min GiST Hold</span>
+            <span style="color: var(--text-muted);">15-min Reservation Lock</span>
           </div>
           <div style="padding: 0.45rem 0.65rem; background: rgba(168, 85, 247, 0.06); border: 1px solid rgba(168,85,247,0.2); border-radius: 6px; display: flex; justify-content: space-between;">
             <span><strong style="color: var(--purple);">GET</strong> /api/v1/tournaments/fixtures</span>
@@ -3321,7 +3451,7 @@ export function getDashboardHtml(): string {
           <span style="font-size: 1.4rem;">🩺</span>
           <div>
             <div class="modal-title">System Health &amp; Readiness Diagnostics</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Fastify v4 Server &bull; PostgreSQL GiST Engine &bull; Probes</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Fastify Server &bull; PostgreSQL Database &bull; Health Probes</div>
           </div>
         </div>
         <button class="modal-close-btn" onclick="closeHealthModal()" data-tooltip="Close health diagnostics">×</button>
@@ -3764,7 +3894,7 @@ cricos_active_sse_connections 1</pre>
     }
 
     // ==========================================
-    // Checkout Modal & 15-Minute GiST Hold
+    // Checkout Modal & 15-Minute Reservation Hold
     // ==========================================
     let holdTimerInterval = null;
     let currentSelectedTitle = 'Harbour Cricket Ground (4hr Match Slot)';
@@ -4396,7 +4526,7 @@ cricos_active_sse_connections 1</pre>
       ).join('');
     }
 
-    // Notification Center Handlers (UX-025, COM-001..010)
+    // Notification Center Handlers
     var drawerNotifications = [
       { id: 'notif-1', category: 'MATCH', title: '🪙 Match Toss Scheduled', body: 'Coin toss scheduled in 15 mins for M-101 (Bengaluru Strikers vs Mumbai Blasters).', time: '2m ago', read: false, tab: 'scoring' },
       { id: 'notif-2', category: 'FINANCIAL', title: '💳 Escrow Deposit Secured', body: '₹18,500 held in zero-imbalance escrow for Koramangala Turf Arena — Slot #2.', time: '18m ago', read: false, tab: 'marketplace' },
@@ -4491,7 +4621,7 @@ cricos_active_sse_connections 1</pre>
       switchTab(tab);
     }
 
-    // Event Basket Modal Handlers (UX-008, BAS-001..015)
+    // Event Basket Modal Handlers
     function openEventBasketModal() {
       const m = document.getElementById('modalEventBasket');
       if (m) m.classList.add('active');
@@ -4505,7 +4635,7 @@ cricos_active_sse_connections 1</pre>
       showToast('✓ Event Basket Locked in Double-Entry Escrow (₹15,885.00)');
     }
 
-    // Provider Storefront Modal Handlers (UX-018, MKT-001..020)
+    // Provider Storefront Modal Handlers
     function openProviderStorefrontModal() {
       const m = document.getElementById('modalProviderStorefront');
       if (m) m.classList.add('active');
@@ -4547,7 +4677,7 @@ cricos_active_sse_connections 1</pre>
       showToast('✓ Published slot ' + time + ' (₹' + rate + ') to live search index');
     }
 
-    // Admin Operations & Settlement Audit Desk (UX-027, ADM-001..020)
+    // Admin Operations & Settlement Audit Desk
     var adminCases = [
       { caseId: 'CASE-9041', type: 'DISPUTE', title: 'Adverse Weather Interruption Claim', entity: 'Bengaluru Strikers vs Mumbai Blasters', amount: '₹8,500', status: 'PENDING_REVIEW', time: '25m ago', recommendation: 'Execute 50% rain refund journal entry (D: REFUND_CLEARING, C: ESCROW_HOLD)' },
       { caseId: 'CASE-8912', type: 'CIRCUIT_BREAKER', title: 'Automated Provider Slot Freeze Tripped', entity: 'Whitefield Sports Complex', amount: '₹0', status: 'PENDING_REVIEW', time: '1h ago', recommendation: 'Review no-show evidence or manually reset circuit breaker with probation status' },
@@ -4625,12 +4755,12 @@ cricos_active_sse_connections 1</pre>
     }
 
     // ==========================================
-    // Phase 2E Interactive Handlers:
+    // Interactive Handlers:
     // Create Event, Event Overview, Official Calendar,
     // Contextual Messaging, Booking Lifecycle & Financial Reconciliation
     // ==========================================
 
-    // 1. Create Event Wizard (UX-003)
+    // 1. Create Event Wizard
     let currentWizStep = 1;
     let selectedWizFormat = 'T20';
 
@@ -4705,7 +4835,7 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
-    // 2. Event Overview & Readiness (UX-004)
+    // 2. Event Overview & Readiness
     function openEventOverviewModal() {
       const m = document.getElementById('modalEventOverview');
       if (m) m.classList.add('active');
@@ -4715,7 +4845,7 @@ cricos_active_sse_connections 1</pre>
       if (m) m.classList.remove('active');
     }
 
-    // 3. Official Calendar & Availability (UX-015)
+    // 3. Official Calendar & Availability
     function openOfficialCalendarModal() {
       const m = document.getElementById('modalOfficialCalendar');
       if (m) m.classList.add('active');
@@ -4746,7 +4876,7 @@ cricos_active_sse_connections 1</pre>
       if (!resEl) return;
       const overlaps = (start < 14 && end > 10) || (start < 19 && end > 15);
       if (overlaps) {
-        resEl.textContent = '⚠️ GiST Collision: Overlaps with existing allocation!';
+        resEl.textContent = '⚠️ Schedule Conflict: Overlaps with existing match booking!';
         resEl.style.color = 'var(--rose)';
       } else {
         resEl.textContent = '✓ No Conflict Detected: Slot is clear for booking';
@@ -4754,7 +4884,7 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
-    // 4. Contextual Messaging (FSD §45)
+    // 4. Contextual Messaging
     function openMessagingModal() {
       const m = document.getElementById('modalMessaging');
       if (m) m.classList.add('active');
@@ -4803,7 +4933,7 @@ cricos_active_sse_connections 1</pre>
       showToast('✓ Message sent across SSE/WebSocket sync');
     }
 
-    // 5. Booking Lifecycle, Rescheduling & Cancellations (Commercial §10-14)
+    // 5. Booking Lifecycle, Rescheduling & Cancellations
     function openBookingLifecycleModal() {
       const m = document.getElementById('modalBookingLifecycle');
       if (m) m.classList.add('active');
@@ -4832,7 +4962,7 @@ cricos_active_sse_connections 1</pre>
     }
     function executeRescheduleBooking() {
       closeBookingLifecycleModal();
-      showToast('✓ Booking rescheduled. Temporal GiST slot adjusted and escrow rebalanced.');
+      showToast('✓ Booking rescheduled. Match slot updated and escrow rebalanced.');
     }
     function triggerWeatherWashout() {
       closeBookingLifecycleModal();
@@ -4847,7 +4977,7 @@ cricos_active_sse_connections 1</pre>
       showToast('✓ Booking cancelled under Band 1 (>48h): 100% full refund processed to customer');
     }
 
-    // 6. Financial Reconciliation & 5-Account Audit (Commercial §17-18)
+    // 6. Financial Reconciliation & 5-Account Audit
     function openReconciliationModal() {
       const m = document.getElementById('modalFinancialReconciliation');
       if (m) m.classList.add('active');
@@ -5267,7 +5397,7 @@ cricos_active_sse_connections 1</pre>
             <div class="slot-matrix">
               <span class="slot-chip available" data-tooltip="Morning match slot: 08:00 - 12:00 (Available)">08:00 Avail</span>
               <span class="slot-chip available" data-tooltip="Afternoon practice slot: 13:00 - 17:00 (Available)">13:00 Avail</span>
-              <span class="slot-chip booked" data-tooltip="Peak night fixture: 18:00 - 22:00 (GiST Temporal Exclusion Locked)">18:00 Booked</span>
+              <span class="slot-chip booked" data-tooltip="Peak night fixture: 18:00 - 22:00 (Match Confirmed &amp; Reserved)">18:00 Booked</span>
             </div>
           </div>
         \`).join('');
@@ -5399,7 +5529,7 @@ cricos_active_sse_connections 1</pre>
       showToast('Replacement accepted');
     }
 
-    // Reputation & Trust Engine (Phase 1Q)
+    // Reputation & Trust Engine
     let currentScore = 0.985;
     let currentTrustState = 'VERIFIED';
     const testProviderId = '00000000-0000-0000-0000-000000000002';
