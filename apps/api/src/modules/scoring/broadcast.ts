@@ -7,6 +7,9 @@ export type BroadcastEventType =
   | 'OVER_COMPLETED'
   | 'WICKET_FALLEN'
   | 'INNINGS_CLOSED'
+  | 'UNDO_DELIVERY'
+  | 'BOWLER_CHANGED'
+  | 'STRIKE_SWAPPED'
   | 'HEARTBEAT';
 
 export interface BroadcastMessage {

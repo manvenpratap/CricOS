@@ -64,13 +64,13 @@ export function getMobileAppHtml(): string {
     /* High-End Smartphone Frame */
     .device-wrapper {
       position: relative;
-      width: 390px;
+      width: min(390px, 92vw);
       height: 844px;
-      max-width: 95vw;
-      max-height: 90vh;
+      max-height: 88vh;
+      aspect-ratio: 390 / 844;
       background: #000;
       border-radius: 50px;
-      box-shadow: 0 0 0 4px #262e3d, 0 0 0 8px #131722, 0 30px 70px rgba(0,0,0,0.9), 0 0 60px rgba(0, 229, 153, 0.15);
+      box-shadow: 0 0 0 4px #262e3d, 0 0 0 8px #131722, 0 30px 70px rgba(0,0,0,0.9), 0 0 60px rgba(0, 229, 153, 0.18);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -83,7 +83,7 @@ export function getMobileAppHtml(): string {
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 120px;
+      width: 124px;
       height: 30px;
       background: #000;
       border-radius: 20px;
@@ -92,6 +92,12 @@ export function getMobileAppHtml(): string {
       align-items: center;
       justify-content: space-between;
       padding: 0 12px;
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .device-notch:hover {
+      width: 170px;
+      box-shadow: 0 0 22px rgba(0, 229, 153, 0.45);
     }
     .notch-camera {
       width: 10px;
@@ -119,6 +125,7 @@ export function getMobileAppHtml(): string {
       color: #f8fafc;
       z-index: 90;
       background: #04070D;
+      font-variant-numeric: tabular-nums;
     }
     .status-icons {
       display: flex;
@@ -133,6 +140,7 @@ export function getMobileAppHtml(): string {
       overflow-y: auto;
       background: #04070D;
       position: relative;
+      transition: opacity 0.15s ease-out;
     }
     .screen-viewport::-webkit-scrollbar { width: 0px; }
 
@@ -148,6 +156,20 @@ export function getMobileAppHtml(): string {
       transform: translateX(-50%);
       z-index: 100;
       pointer-events: none;
+    }
+
+    /* Accessible Focus & Tactile Feedback */
+    :focus-visible {
+      outline: 2px solid #00E599 !important;
+      outline-offset: 2px !important;
+    }
+    button, .role-pill, .slot-pill {
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    button:active, .role-pill:active, .slot-pill:active {
+      transform: scale(0.97);
     }
 
     /* Interactive pill buttons inside app */

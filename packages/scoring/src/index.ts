@@ -16,6 +16,9 @@ export interface ScoreEvent {
   striker_id?: string;
   non_striker_id?: string;
   next_batter_id?: string;
+  fielder_id?: string;
+  is_free_hit?: boolean;
+  shot_zone?: string;
 }
 
 export interface BatterScorecard {
@@ -66,6 +69,7 @@ export interface ScoreState {
   overs_display: string;
   target?: number;
   is_innings_closed: boolean;
+  is_free_hit?: boolean;
   striker_id?: string;
   non_striker_id?: string;
   current_bowler_id?: string;
@@ -139,6 +143,7 @@ export function createInitialScoreState(
     overs_display: '0.0',
     target,
     is_innings_closed: false,
+    is_free_hit: false,
     striker_id: strikerId,
     non_striker_id: nonStrikerId,
     current_bowler_id: openingBowlerId,
@@ -198,6 +203,9 @@ export function applyDelivery(state: ScoreState, event: ScoreEvent): ScoreState 
   const isLegal = event.legal_ball && event.extra_type !== 'WIDE' && event.extra_type !== 'NO_BALL';
   const newLegalBalls = state.legal_balls + (isLegal ? 1 : 0);
   const { overs, balls, display } = calculateOver(newLegalBalls);
+
+  // Free hit tracking: Next ball is Free Hit if this ball is NO_BALL, or if previous ball was Free Hit and this delivery was illegal
+  const nextIsFreeHit = event.extra_type === 'NO_BALL' || Boolean(state.is_free_hit && !isLegal);
 
   // 2. Extras accounting
   const extras = { ...state.extras };
@@ -329,6 +337,7 @@ export function applyDelivery(state: ScoreState, event: ScoreEvent): ScoreState 
         dismissal: {
           kind: event.wicket_type || 'BOWLED',
           bowlerId: currentBowlerId,
+          fielderId: event.fielder_id,
           description: `${event.wicket_type || 'Bowled'} b ${currentBowlerId || 'bowler'}`
         }
       };
@@ -399,6 +408,7 @@ export function applyDelivery(state: ScoreState, event: ScoreEvent): ScoreState 
     overs_display: display,
     target: state.target,
     is_innings_closed: isClosed,
+    is_free_hit: nextIsFreeHit,
     striker_id: nextStriker,
     non_striker_id: nextNonStriker,
     current_bowler_id: currentBowlerId,
@@ -407,5 +417,75 @@ export function applyDelivery(state: ScoreState, event: ScoreEvent): ScoreState 
     bowlers,
     fall_of_wickets: fallOfWickets,
     extras
+  };
+}
+
+export function undoDelivery(
+  events: ScoreEvent[],
+  initial?: ScoreState
+): { state: ScoreState; undoneEvent: ScoreEvent | null } {
+  if (events.length === 0) {
+    return { state: initial || createInitialScoreState(), undoneEvent: null };
+  }
+  const undoneEvent = events.pop() || null;
+  let state = initial ? { ...initial } : createInitialScoreState();
+  for (const ev of events) {
+    state = applyDelivery(state, ev);
+  }
+  return { state, undoneEvent };
+}
+
+export function swapStrike(state: ScoreState): ScoreState {
+  return {
+    ...state,
+    striker_id: state.non_striker_id,
+    non_striker_id: state.striker_id
+  };
+}
+
+export function changeBowler(
+  state: ScoreState,
+  nextBowlerId: string,
+  enforceConsecutiveRule = true
+): ScoreState {
+  if (
+    enforceConsecutiveRule &&
+    state.previous_bowler_id &&
+    nextBowlerId === state.previous_bowler_id &&
+    state.legal_balls > 0 &&
+    state.legal_balls % 6 === 0
+  ) {
+    throw new Error('SCORE_CONSECUTIVE_BOWLER_OVER: Bowler cannot bowl two consecutive overs');
+  }
+
+  const bowlers: Record<string, BowlerFigures> = { ...state.bowlers };
+  if (!bowlers[nextBowlerId]) {
+    bowlers[nextBowlerId] = {
+      bowlerId: nextBowlerId,
+      legalBalls: 0,
+      oversDisplay: '0.0',
+      maidens: 0,
+      runsConceded: 0,
+      wickets: 0,
+      wides: 0,
+      noBalls: 0,
+      economyRate: 0,
+      currentOverBalls: 0,
+      currentOverRuns: 0
+    };
+  }
+
+  return {
+    ...state,
+    current_bowler_id: nextBowlerId,
+    bowlers
+  };
+}
+
+export function closeInnings(state: ScoreState, target?: number): ScoreState {
+  return {
+    ...state,
+    is_innings_closed: true,
+    target: target !== undefined ? target : state.target
   };
 }

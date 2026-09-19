@@ -106,3 +106,282 @@ export interface ScoreStateResponse {
   target?: number;
   status: MatchStatus;
 }
+
+// ── P1 Contracts: RFQ & Procurement Quotes (P1-001) ──────────────────────────
+
+export interface RfqRequest {
+  id: ID;
+  event_id?: ID;
+  category: ProviderType;
+  title: string;
+  description: string;
+  budget_minor: number;
+  currency: string;
+  deadline: string;
+  status: 'OPEN' | 'AWARDED' | 'EXPIRED' | 'CANCELLED';
+}
+
+export interface RfqQuote {
+  id: ID;
+  rfq_id: ID;
+  provider_id: ID;
+  quote_price_minor: number;
+  currency: string;
+  notes?: string;
+  valid_until: string;
+  status: 'SUBMITTED' | 'ACCEPTED' | 'REJECTED';
+}
+
+// ── P1 Contracts: Physical Products & Gear Commerce (P1-002) ──────────────────
+
+export interface ProductListing {
+  id: ID;
+  provider_id: ID;
+  title: string;
+  description: string;
+  category: 'BALLS' | 'KITS' | 'EQUIPMENT' | 'TROPHIES' | 'MERCHANDISE';
+  price_minor: number;
+  currency: string;
+  stock_quantity: number;
+  variants?: { name: string; options: string[] }[];
+  status: 'ACTIVE' | 'OUT_OF_STOCK';
+}
+
+export interface ProductOrder {
+  id: ID;
+  order_id: ID;
+  product_id: ID;
+  quantity: number;
+  price_minor: number;
+  delivery_address?: string;
+  delivery_status: 'PROCESSING' | 'DISPATCHED' | 'DELIVERED' | 'RETURNED';
+}
+
+// ── P1 Contracts: Multi-Vendor Suborders (P1-003) ────────────────────────────
+
+export interface Suborder {
+  id: ID;
+  parent_order_id: ID;
+  provider_id: ID;
+  items_count: number;
+  subtotal_minor: number;
+  fee_minor: number;
+  tax_minor: number;
+  total_minor: number;
+  status: BookingStatus;
+}
+
+// ── P1 Contracts: Scorer & Media Marketplace (P1-004, P1-005) ────────────────
+
+export interface ScorerListing {
+  id: ID;
+  provider_id: ID;
+  certification_level: 'BCCI_LEVEL_1' | 'STATE' | 'CLUB';
+  scoring_software_expertise: string[];
+  match_fee_minor: number;
+  currency: string;
+  status: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface MediaListing {
+  id: ID;
+  provider_id: ID;
+  media_type: 'STREAMER' | 'COMMENTATOR' | 'PHOTOGRAPHER' | 'VIDEOGRAPHER';
+  package_title: string;
+  package_price_minor: number;
+  equipment_details: string[];
+  status: 'ACTIVE' | 'INACTIVE';
+}
+
+// ── P1 Contracts: Tournament Fixture Board & Bulk Import (P1-006, P1-007) ──────
+
+export interface FixtureBoardItem {
+  fixture_id: ID;
+  match_id?: ID;
+  tournament_id: ID;
+  round: number;
+  team_a: string;
+  team_b: string;
+  ground_id: string;
+  slot_id: string;
+  starts_at: string;
+  status: string;
+  conflicts: string[];
+  readiness_percentage: number;
+}
+
+export interface BulkFixtureImportItem {
+  round: number;
+  team_a: string;
+  team_b: string;
+  date: string;
+  time_slot: string;
+  ground_title?: string;
+}
+
+// ── P1 Contracts: Social & Activity Feed (P1-008) ─────────────────────────────
+
+export interface SocialActivityItem {
+  id: ID;
+  actor_id: ID;
+  actor_name: string;
+  action_type: 'MATCH_STARTED' | 'WICKET_FALL' | 'CENTURY' | 'MATCH_WON' | 'TOURNAMENT_CHAMPION';
+  title: string;
+  details: string;
+  timestamp: string;
+}
+
+export interface FollowTarget {
+  user_id: ID;
+  target_id: ID;
+  target_type: 'TEAM' | 'PLAYER' | 'TOURNAMENT';
+}
+
+// ── P1 Contracts: Advanced Analytics & MVP (P1-010) ───────────────────────────
+
+export interface MvpScorecard {
+  match_id: ID;
+  player_id: ID;
+  player_name: string;
+  team_name: string;
+  batting_impact: number;
+  bowling_impact: number;
+  fielding_impact: number;
+  total_impact_points: number;
+  is_potm: boolean;
+}
+
+// ── P1 Contracts: Provider Check-In & Dual Sign-Off (P1-011) ─────────────────
+
+export interface ProviderCheckInRequest {
+  booking_id: ID;
+  provider_id: ID;
+  otp: string;
+  timestamp: string;
+  geofence_coords?: { lat: number; lng: number };
+}
+
+export interface MatchSignOffRequest {
+  match_id: ID;
+  captain_a_signed: boolean;
+  captain_b_signed: boolean;
+  official_signed: boolean;
+  signoff_notes?: string;
+}
+
+// ── P1 Contracts: Promotional Coupons (P1-012) ────────────────────────────────
+
+export interface CouponValidationRequest {
+  code: string;
+  basket_value_minor: number;
+  currency: string;
+}
+
+export interface CouponValidationResponse {
+  valid: boolean;
+  code: string;
+  discount_minor: number;
+  final_amount_minor: number;
+  message: string;
+}
+
+// ── P2 Contracts: AI Match Insights & Narratives (P2-001) ─────────────────────
+
+export interface MatchNarrative {
+  match_id: ID;
+  headline: string;
+  summary: string;
+  turning_point: {
+    over: number;
+    ball: number;
+    description: string;
+    win_prob_swing: number;
+  };
+  key_performers: string[];
+}
+
+// ── P2 Contracts: Smart Recommendations (P2-002) ──────────────────────────────
+
+export interface ProcurementRecommendation {
+  category: ProviderType;
+  recommended_id: ID;
+  title: string;
+  match_score: number;
+  trust_rating: number;
+  price_minor: number;
+  rationale: string;
+}
+
+// ── P2 Contracts: Dynamic Demand Pricing (P2-003) ─────────────────────────────
+
+export interface DynamicPriceQuote {
+  slot_id: ID;
+  base_price_minor: number;
+  demand_multiplier: number;
+  surge_minor: number;
+  final_price_minor: number;
+  is_peak: boolean;
+}
+
+// ── P2 Contracts: Sponsorship Inventory (P2-004) ──────────────────────────────
+
+export interface SponsorshipInventoryItem {
+  id: ID;
+  tournament_id: ID;
+  tier: 'TITLE' | 'POWERED_BY' | 'BALL_SPONSOR' | 'PLAYER_OF_MATCH';
+  title: string;
+  pledge_amount_minor: number;
+  currency: string;
+  sponsor_name?: string;
+  status: 'AVAILABLE' | 'PLEDGED' | 'CONFIRMED';
+}
+
+// ── P2 Contracts: Broadcast Overlays & Logistics (P2-005, P2-007) ─────────────
+
+export interface BroadcastOverlayData {
+  match_id: ID;
+  batting_team: string;
+  bowling_team: string;
+  runs: number;
+  wickets: number;
+  overs: string;
+  target?: number;
+  striker: { name: string; runs: number; balls: number };
+  non_striker: { name: string; runs: number; balls: number };
+  bowler: { name: string; overs: string; maidens: number; runs: number; wickets: number };
+  recent_deliveries: string[];
+}
+
+export interface LogisticsTrackingInfo {
+  order_id: ID;
+  carrier: string;
+  tracking_number: string;
+  estimated_delivery: string;
+  status: 'DISPATCHED' | 'IN_TRANSIT' | 'OUT_FOR_DELIVERY' | 'DELIVERED';
+}
+
+// ── P3 Contracts: Franchise Player Auction & Weather Insurance (P3-001, P3-002)
+
+export interface AuctionBidRequest {
+  auction_id: ID;
+  team_id: ID;
+  player_id: ID;
+  bid_amount_minor: number;
+}
+
+export interface AuctionBidResponse {
+  bid_id: ID;
+  status: 'ACCEPTED' | 'OUTBID' | 'REJECTED';
+  current_highest_bid_minor: number;
+  highest_bidder_team_id: ID;
+}
+
+export interface WeatherInsuranceClaim {
+  booking_id: ID;
+  match_id: ID;
+  precipitation_mm: number;
+  threshold_mm: number;
+  status: 'VERIFIED' | 'REJECTED' | 'SETTLED';
+  payout_minor: number;
+}
+

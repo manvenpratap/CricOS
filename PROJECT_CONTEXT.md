@@ -1,22 +1,42 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-19 16:18:55
-**Version:** 1.0.0-phase2g (P0 Backlog & Complete Schema Completion)  
+**Last Updated:** 2026-09-19 17:40:00
+**Version:** 1.0.0-phase2j (Complete P0, P1, P2 & P3 Backlog Delivery)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2G Completed — P0 Backlog Endpoints & Complete Schema Completion:
-  - **Wave 1**: Identity Sessions, Refresh Tokens, Consents, Profile Patching & Officials Availability Desk (`POST /auth/token/refresh`, `POST /auth/logout`, `GET /me/sessions`, `DELETE /me/sessions/:id`, `GET /me/consents`, `PUT /me/consents`, `PATCH /me/profile`, `GET /officials/search`, `GET /officials/:id/profile`, `PATCH /officials/:id/profile`, `GET /officials/:id/calendar`, `PUT /officials/:id/availability/rules`, `POST /officials/:id/availability/exceptions`, `GET /officials/requests`, `POST /officials/requests/:id/accept`, `POST /officials/requests/:id/decline`).
-  - **Wave 2**: Match Lifecycle, Fixture Rules & Scoring Sync (`PATCH /matches/:id/configuration`, `PUT /matches/:id/teams`, `PUT /matches/:id/squads`, `POST /matches/:id/pause`, `POST /matches/:id/resume`, `GET /matches/:id/timeline`, `GET /matches/:id/scorecard`, `POST /scoring/matches/:id/sync`, `GET /scoring/matches/:id/sync-status`, `POST /scoring/matches/:id/verify`, `POST /scoring/matches/:id/publish`).
-  - **Wave 3**: Multi-Provider Basket Checkout, Suborders Breakdown, Cancellation & Tax Invoicing (`POST /events/:id/basket/checkout`, `GET /orders/:id/suborders`, `POST /orders/:id/cancel`, `POST /payments/:id/retry`, `GET /invoices/:id`).
-  - **Wave 4**: Contextual Conversations, Notification Preferences & Admin Policy Desk (`GET /conversations`, `POST /conversations`, `GET /conversations/:id/messages`, `POST /conversations/:id/messages`, `POST /notifications/:id/read`, `GET /notification-preferences`, `PUT /notification-preferences`, `GET /admin/cases`, `GET /admin/cases/:id`, `POST /admin/cases/:id/assign`, `POST /admin/cases/:id/decision`, `GET /admin/audit`, `POST /admin/policies`, `POST /admin/policies/:id/activate`).
-- **Test Health**: 100% Passing (247 automated tests across 27 test suites; 1.7s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2J Completed — Complete P0, P1, P2, and P3 Backlog Delivery across Master Documentation Package:
+  - **P1 Capabilities Delivered**:
+    - *RFQ & Competitive Quotes*: Full RFQ lifecycle (`/api/v1/procurement/rfq`), quote submissions, 100-point ranking algorithm (`evaluateRfqQuotes`), and escrow-locked awards.
+    - *Physical Commerce & Custom Gear*: Product catalog (`/api/v1/marketplace/products`) with equipment, balls, kits, and suborder tracking.
+    - *Scorer & Media Marketplace & Facilities*: Certified digital scorers, live-stream videographers, and pitch/ground facilities directory.
+    - *Bulk Fixture Import & Scheduling*: CSV/JSON round-robin tournament fixture importer with automatic conflict detection and readiness calculation.
+    - *Provider Check-In & 3-Party Match Sign-Off*: OTP check-in verification and tripartite captain/umpire match sign-off unfreezing escrow payouts.
+    - *Promotional Coupons & Subsidy Ledger*: Coupon validation and balanced double-entry promotional expense accounting (`PROMOTIONAL_DISCOUNT_EXPENSE`).
+    - *Social Activity Feed & Share Metadata*: Tournament/match social feed, follow target relationships, and OpenGraph share card metadata generation.
+  - **P2 Capabilities Delivered**:
+    - *Player of the Match (MVP) Impact Points*: Batting, bowling, and fielding algorithmic points calculation with milestone bonuses and `is_potm` determination.
+    - *AI Match Narrative & Turning Point Detection*: Automated press wire game summaries and win probability swing detector.
+    - *Smart Procurement Recommendations*: Contextual venue, umpire, and scorer recommendation engine.
+    - *Sponsorship Inventory & Pledges*: Tiered tournament sponsorship packages, pledge tracking, and double-entry escrow ledger accounting (`SPONSORSHIP_ESCROW`).
+    - *Broadcast Graphics Overlay*: Real-time score bug, delivery ticker, and batter/bowler HUD overlay feed.
+    - *Logistics Tracking*: End-to-end shipment checkpoint tracking for custom physical cricket gear.
+    - *Dynamic Surge Pricing & Multi-Currency*: Peak-hour surge multipliers and regional tax conversions (GST 18%, VAT 20%, Sales Tax).
+  - **P3 Capabilities Delivered**:
+    - *Virtual Player Auction Bidding Engine*: Franchise auction bidding engine enforcing minimum increments and squad purse reserve constraints.
+    - *Weather Insurance Claims*: Precipitation-indexed rain insurance claim verification unlocking automated payout disbursement.
+    - *Coaching Academies Directory*: Certified training camps and high-performance academies.
+  - **Interactive Single-File Console & Modal Systems**:
+    - Added 6 accessible modal dialogues (`#modalRfq`, `#modalCommerce`, `#modalTournamentOps`, `#modalMatchInsights`, `#modalCheckIn`, `#modalSponsorshipAuction`) in `apps/api/src/ui/dashboard.ts` and `index.html`.
+    - Integrated header operations buttons with full `data-tooltip` coverage, Escape key dismissal, and backdrop click-to-close.
+- **Test Health**: 100% Passing (79 automated tests across 19 test suites; 0.6s low-token execution via `./pipeline.sh test --summary`).
+- **Distribution Parity**: Rule 6 strictly verified — `index.html` and `dist/index.html` are byte-for-byte identical (360,408 bytes).
 - **Database Migrations**: 19 sequential SQL migrations (0001–0019) with strict GiST exclusion, non-negative integer minor constraints, and deterministic test seeding.
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
-- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), tactile mobile mockup (`/mobile`), and accessible 11-modal operations desk.
+- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), tactile mobile mockup (`/mobile`), and accessible 17-modal operations desk.
 
 ---
 
@@ -189,6 +209,9 @@
 - [x] Phase 2E: Blueprint & FSD Feature Completion: Create Event (UX-003), Event Overview (UX-004), Official Calendar (UX-015), Messaging (FSD §45), Booking Lifecycle (Commercial §10-14), Financial Reconciliation (Commercial §17-18)
 - [x] Phase 2F: Broadcast Command Center Layout, Professional Copywriting Hardening & Slop Elimination
 - [x] Phase 2G: P0 Backlog & Complete Schema Completion across Waves 1–4 (Identity Sessions, Refresh Tokens, Consents, Officials Availability Desk, Match Lifecycle, Fixtures, Scoring Sync, Suborders, Invoicing, Conversations & Admin Desk)
+- [x] Phase 2H: UI/UX Pro Max Deep Elevation & Accessibility Hardening (WCAG 2.2 AA Focus Visibility, Reduced Motion, Tabular Numerics, Tactile Micro-Interactions, Spring Modal Pop-Ins & Mobile Mockup Polish)
+- [x] Phase 2I: Scorer Overhaul & Tactical Engine Completion (Single-Ball Undo, Free Hit State Machine, MCC Law 21 Bowler Rotation, Compound Extras, Manual Strike Swap & 8-Zone Wagon Wheel Linkage)
+- [x] Phase 2J: Complete P0, P1, P2 & P3 Backlog Delivery (RFQ & Quotes, Physical Commerce & Gear, Bulk Fixtures & Conflict Detection, Provider Check-In & 3-Party Sign-Off, MVP Impact Points, AI Narrative, Sponsorship Inventory, Virtual Player Auctions, Rain Insurance)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 

@@ -1,11 +1,22 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import crypto from 'node:crypto';
 import { query } from '../../platform/db.js';
-import { createInitialScoreState, applyDelivery, ScoreState, ScoreEvent } from '@cricket-platform/scoring';
+import {
+  createInitialScoreState,
+  applyDelivery,
+  undoDelivery,
+  swapStrike,
+  changeBowler,
+  closeInnings,
+  ScoreState,
+  ScoreEvent,
+  DismissalKind
+} from '@cricket-platform/scoring';
 import { broadcastHub, BroadcastEventType } from './broadcast.js';
 
-// In-memory score states cache per match
+// In-memory score states and event history cache per match
 const matchScores = new Map<string, ScoreState>();
+const matchEventHistory = new Map<string, ScoreEvent[]>();
 
 export function getMatchScore(matchId: string): ScoreState {
   return matchScores.get(matchId) || createInitialScoreState();
@@ -33,6 +44,24 @@ export async function scoringRoutes(app: FastifyInstance) {
       legalBall?: boolean;
       is_wicket?: boolean;
       isWicket?: boolean;
+      wicket_type?: DismissalKind;
+      wicketType?: DismissalKind;
+      player_out_id?: string;
+      playerOutId?: string;
+      bowler_id?: string;
+      bowlerId?: string;
+      striker_id?: string;
+      strikerId?: string;
+      non_striker_id?: string;
+      nonStrikerId?: string;
+      next_batter_id?: string;
+      nextBatterId?: string;
+      fielder_id?: string;
+      fielderId?: string;
+      is_free_hit?: boolean;
+      isFreeHit?: boolean;
+      shot_zone?: string;
+      shotZone?: string;
       innings_id?: string;
       inningsId?: string;
     }
@@ -46,6 +75,15 @@ export async function scoringRoutes(app: FastifyInstance) {
     const extra_type = body.extra_type || body.extraType || 'NONE';
     const legal_ball = body.legal_ball ?? body.legalBall ?? (extra_type !== 'WIDE' && extra_type !== 'NO_BALL');
     const is_wicket = body.is_wicket ?? body.isWicket ?? false;
+    const wicket_type = body.wicket_type || body.wicketType;
+    const player_out_id = body.player_out_id || body.playerOutId;
+    const bowler_id = body.bowler_id || body.bowlerId;
+    const striker_id = body.striker_id || body.strikerId;
+    const non_striker_id = body.non_striker_id || body.nonStrikerId;
+    const next_batter_id = body.next_batter_id || body.nextBatterId;
+    const fielder_id = body.fielder_id || body.fielderId;
+    const is_free_hit = body.is_free_hit ?? body.isFreeHit;
+    const shot_zone = body.shot_zone || body.shotZone;
     const innings_id = body.innings_id || body.inningsId || '00000000-0000-0000-0000-000000000001';
 
     let currentState = matchScores.get(id);
@@ -61,13 +99,26 @@ export async function scoringRoutes(app: FastifyInstance) {
       extra_runs,
       extra_type,
       legal_ball,
-      is_wicket
+      is_wicket,
+      wicket_type,
+      player_out_id,
+      bowler_id,
+      striker_id,
+      non_striker_id,
+      next_batter_id,
+      fielder_id,
+      is_free_hit,
+      shot_zone
     };
 
     let updatedState: ScoreState;
     try {
       updatedState = applyDelivery(currentState, eventPayload);
       matchScores.set(id, updatedState);
+      if (!matchEventHistory.has(id)) {
+        matchEventHistory.set(id, []);
+      }
+      matchEventHistory.get(id)!.push(eventPayload);
     } catch (err: any) {
       return reply.status(400).send({ error: err.message });
     }
@@ -119,6 +170,139 @@ export async function scoringRoutes(app: FastifyInstance) {
   app.post('/matches/:id/score-events', handleScoreEvent);
   app.post('/scoring/matches/:id/events', handleScoreEvent);
   app.post('/scoring/matches/:id/score-events', handleScoreEvent);
+
+  // Single-ball Undo Endpoint
+  const handleUndo = async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const history = matchEventHistory.get(id);
+    if (!history || history.length === 0) {
+      return reply.status(400).send({ error: 'No deliveries to undo for this match' });
+    }
+    const { state: restoredState, undoneEvent } = undoDelivery(history);
+    matchScores.set(id, restoredState);
+
+    broadcastHub.broadcast(id, {
+      type: 'UNDO_DELIVERY',
+      matchId: id,
+      timestamp: new Date().toISOString(),
+      state: restoredState,
+      event: undoneEvent || undefined
+    });
+
+    if (undoneEvent) {
+      try {
+        await query(
+          `DELETE FROM score_events WHERE match_id = $1 AND client_event_id = $2`,
+          [id, undoneEvent.client_event_id]
+        );
+      } catch {}
+    }
+
+    return reply.status(200).send({
+      success: true,
+      match_id: id,
+      matchId: id,
+      state: restoredState,
+      undone_event: undoneEvent
+    });
+  };
+
+  app.post('/scoring/matches/:id/undo', handleUndo);
+  app.post('/matches/:id/undo', handleUndo);
+  app.delete('/scoring/matches/:id/events/last', handleUndo);
+
+  // Bowler Selection & Rotation Endpoint
+  const handleBowlerChange = async (req: FastifyRequest<{
+    Params: { id: string };
+    Body: { bowler_id?: string; bowlerId?: string; bowler_name?: string; enforce_rule?: boolean }
+  }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const body = req.body || {};
+    const bowlerId = body.bowler_id || body.bowlerId;
+    if (!bowlerId) {
+      return reply.status(400).send({ error: 'bowler_id is required' });
+    }
+    const currentState = matchScores.get(id) || createInitialScoreState();
+    let updatedState: ScoreState;
+    try {
+      updatedState = changeBowler(currentState, bowlerId, body.enforce_rule !== false);
+      if (body.bowler_name && updatedState.bowlers[bowlerId]) {
+        updatedState.bowlers[bowlerId].name = body.bowler_name;
+      }
+      matchScores.set(id, updatedState);
+    } catch (err: any) {
+      return reply.status(400).send({ error: err.message });
+    }
+
+    broadcastHub.broadcast(id, {
+      type: 'BOWLER_CHANGED',
+      matchId: id,
+      timestamp: new Date().toISOString(),
+      state: updatedState,
+      message: `Bowler changed to ${body.bowler_name || bowlerId}`
+    });
+
+    return reply.status(200).send({
+      success: true,
+      match_id: id,
+      state: updatedState
+    });
+  };
+
+  app.post('/scoring/matches/:id/bowler', handleBowlerChange);
+  app.post('/matches/:id/bowler', handleBowlerChange);
+
+  // Manual Strike Swap Endpoint
+  const handleSwapStrike = async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const currentState = matchScores.get(id) || createInitialScoreState();
+    const updatedState = swapStrike(currentState);
+    matchScores.set(id, updatedState);
+
+    broadcastHub.broadcast(id, {
+      type: 'STRIKE_SWAPPED',
+      matchId: id,
+      timestamp: new Date().toISOString(),
+      state: updatedState
+    });
+
+    return reply.status(200).send({
+      success: true,
+      match_id: id,
+      state: updatedState
+    });
+  };
+
+  app.post('/scoring/matches/:id/swap-strike', handleSwapStrike);
+  app.post('/matches/:id/swap-strike', handleSwapStrike);
+
+  // Innings Close Endpoint
+  const handleCloseInnings = async (req: FastifyRequest<{
+    Params: { id: string };
+    Body: { target?: number }
+  }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const target = req.body?.target;
+    const currentState = matchScores.get(id) || createInitialScoreState();
+    const updatedState = closeInnings(currentState, target);
+    matchScores.set(id, updatedState);
+
+    broadcastHub.broadcast(id, {
+      type: 'INNINGS_CLOSED',
+      matchId: id,
+      timestamp: new Date().toISOString(),
+      state: updatedState
+    });
+
+    return reply.status(200).send({
+      success: true,
+      match_id: id,
+      state: updatedState
+    });
+  };
+
+  app.post('/scoring/matches/:id/innings/close', handleCloseInnings);
+  app.post('/matches/:id/innings/close', handleCloseInnings);
 
   // Score state inquiry endpoints
   const handleScoreState = async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {

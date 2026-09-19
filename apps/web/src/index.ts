@@ -23,6 +23,12 @@ export * from './components/official-calendar.js';
 export * from './components/messaging.js';
 export * from './components/booking-lifecycle.js';
 export * from './components/reconciliation.js';
+export * from './components/rfq-manager.js';
+export * from './components/commerce-catalog.js';
+export * from './components/tournament-ops.js';
+export * from './components/match-insights.js';
+export * from './components/operations-checkin.js';
+export * from './components/sponsorship-auction.js';
 
 import { CricOSApiClient, type ApiClientOptions } from './api/client.js';
 

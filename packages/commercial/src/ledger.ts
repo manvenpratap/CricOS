@@ -3,7 +3,9 @@ export type LedgerAccount =
   | 'PROVIDER_PAYABLE'
   | 'PLATFORM_FEE_INCOME'
   | 'TAX_GST_PAYABLE'
-  | 'REFUND_CLEARING';
+  | 'REFUND_CLEARING'
+  | 'PROMOTIONAL_DISCOUNT_EXPENSE'
+  | 'SPONSORSHIP_ESCROW';
 
 export type EntryType = 'DEBIT' | 'CREDIT';
 
@@ -18,7 +20,7 @@ export interface JournalLine {
 export interface JournalEntry {
   id: string;
   referenceId: string;
-  referenceType: 'ORDER_SETTLEMENT' | 'ORDER_REFUND' | 'PAYOUT_DISBURSEMENT';
+  referenceType: 'ORDER_SETTLEMENT' | 'ORDER_REFUND' | 'PAYOUT_DISBURSEMENT' | 'PROMOTIONAL_SETTLEMENT' | 'SPONSORSHIP_PLEDGE';
   timestamp: string;
   lines: JournalLine[];
 }
@@ -157,3 +159,135 @@ export function createRefundJournalEntry(params: {
 
   return entry;
 }
+
+export function createPromotionalSettlementJournalEntry(params: {
+  orderId: string;
+  totalPaidByCustomerMinor: number;
+  discountSubsidyMinor: number;
+  platformFeeMinor: number;
+  taxMinor: number;
+  providerPayoutMinor: number;
+  currency?: string;
+  id?: string;
+}): JournalEntry {
+  const {
+    orderId,
+    totalPaidByCustomerMinor,
+    discountSubsidyMinor,
+    platformFeeMinor,
+    taxMinor,
+    providerPayoutMinor,
+    currency = 'INR',
+    id
+  } = params;
+
+  const totalFunds = totalPaidByCustomerMinor + discountSubsidyMinor;
+  const totalOutflows = providerPayoutMinor + platformFeeMinor + taxMinor;
+
+  if (totalFunds !== totalOutflows) {
+    throw new Error(
+      `LEDGER_IMBALANCE: Total funds (${totalFunds}) must equal total outflows (${totalOutflows})`
+    );
+  }
+
+  const lines: JournalLine[] = [
+    {
+      account: 'ESCROW_HOLD',
+      entryType: 'DEBIT',
+      amountMinor: totalPaidByCustomerMinor,
+      currency,
+      description: `Customer escrow release for order ${orderId}`
+    },
+    {
+      account: 'PROMOTIONAL_DISCOUNT_EXPENSE',
+      entryType: 'DEBIT',
+      amountMinor: discountSubsidyMinor,
+      currency,
+      description: `Platform promotional subsidy absorbed for order ${orderId}`
+    },
+    {
+      account: 'PROVIDER_PAYABLE',
+      entryType: 'CREDIT',
+      amountMinor: providerPayoutMinor,
+      currency,
+      description: `Net earnings payable to provider for order ${orderId}`
+    },
+    {
+      account: 'PLATFORM_FEE_INCOME',
+      entryType: 'CREDIT',
+      amountMinor: platformFeeMinor,
+      currency,
+      description: `CricOS platform service fee for order ${orderId}`
+    }
+  ];
+
+  if (taxMinor > 0) {
+    lines.push({
+      account: 'TAX_GST_PAYABLE',
+      entryType: 'CREDIT',
+      amountMinor: taxMinor,
+      currency,
+      description: `GST collected on platform fee for order ${orderId}`
+    });
+  }
+
+  const entry: JournalEntry = {
+    id: id || `je_promo_${orderId.replace(/-/g, '').slice(0, 8)}_${Date.now()}`,
+    referenceId: orderId,
+    referenceType: 'PROMOTIONAL_SETTLEMENT',
+    timestamp: new Date().toISOString(),
+    lines
+  };
+
+  if (!validateJournalEntry(entry)) {
+    throw new Error('LEDGER_VALIDATION_FAILED: Promotional settlement journal entry does not balance');
+  }
+
+  return entry;
+}
+
+export function createSponsorshipJournalEntry(params: {
+  tournamentId: string;
+  pledgeAmountMinor: number;
+  sponsorName: string;
+  currency?: string;
+  id?: string;
+}): JournalEntry {
+  const { tournamentId, pledgeAmountMinor, sponsorName, currency = 'INR', id } = params;
+
+  if (pledgeAmountMinor <= 0) {
+    throw new Error('LEDGER_INVALID_AMOUNT: Pledge amount must be greater than zero');
+  }
+
+  const lines: JournalLine[] = [
+    {
+      account: 'SPONSORSHIP_ESCROW',
+      entryType: 'DEBIT',
+      amountMinor: pledgeAmountMinor,
+      currency,
+      description: `Sponsorship escrow pledge from ${sponsorName} for tournament ${tournamentId}`
+    },
+    {
+      account: 'PROVIDER_PAYABLE',
+      entryType: 'CREDIT',
+      amountMinor: pledgeAmountMinor,
+      currency,
+      description: `Prize pool allocation from sponsor ${sponsorName} for tournament ${tournamentId}`
+    }
+  ];
+
+  const entry: JournalEntry = {
+    id: id || `je_spons_${tournamentId.replace(/-/g, '').slice(0, 8)}_${Date.now()}`,
+    referenceId: tournamentId,
+    referenceType: 'SPONSORSHIP_PLEDGE',
+    timestamp: new Date().toISOString(),
+    lines
+  };
+
+  if (!validateJournalEntry(entry)) {
+    throw new Error('LEDGER_VALIDATION_FAILED: Sponsorship journal entry does not balance');
+  }
+
+  return entry;
+}
+

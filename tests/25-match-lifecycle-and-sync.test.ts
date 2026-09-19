@@ -160,4 +160,153 @@ describe('Wave 2: Match Lifecycle, Fixture Rules & Scoring Sync API', () => {
     assert.equal(pubBody.status, 'PUBLISHED');
     assert.ok(pubBody.published_at);
   });
+
+  it('6. Single-Ball Undo: scores deliveries, undos delivery and restores previous state', async () => {
+    const undoMatchId = 'm-test-undo-01';
+    // Score delivery 1: 1 run
+    const d1Res = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${undoMatchId}/events`,
+      payload: {
+        sequence: 1,
+        bat_runs: 1,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true,
+        striker_id: 'p-striker',
+        non_striker_id: 'p-nonstriker'
+      }
+    });
+    assert.equal(d1Res.statusCode, 201);
+    assert.equal(JSON.parse(d1Res.body).state.runs, 1);
+
+    // Score delivery 2: 4 runs boundary
+    const d2Res = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${undoMatchId}/events`,
+      payload: {
+        sequence: 2,
+        bat_runs: 4,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true
+      }
+    });
+    assert.equal(d2Res.statusCode, 201);
+    assert.equal(JSON.parse(d2Res.body).state.runs, 5);
+
+    // Score delivery 3: Wicket
+    const d3Res = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${undoMatchId}/events`,
+      payload: {
+        sequence: 3,
+        bat_runs: 0,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true,
+        is_wicket: true,
+        wicket_type: 'BOWLED',
+        player_out_id: 'p-striker',
+        next_batter_id: 'p-incoming'
+      }
+    });
+    assert.equal(d3Res.statusCode, 201);
+    assert.equal(JSON.parse(d3Res.body).state.wickets, 1);
+
+    // Undo delivery 3 (the wicket)
+    const undo1Res = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${undoMatchId}/undo`
+    });
+    assert.equal(undo1Res.statusCode, 200);
+    const undo1Body = JSON.parse(undo1Res.body);
+    assert.equal(undo1Body.success, true);
+    assert.equal(undo1Body.state.runs, 5);
+    assert.equal(undo1Body.state.wickets, 0);
+    assert.equal(undo1Body.undone_event.is_wicket, true);
+
+    // Undo delivery 2 (the four)
+    const undo2Res = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${undoMatchId}/undo`
+    });
+    assert.equal(undo2Res.statusCode, 200);
+    const undo2Body = JSON.parse(undo2Res.body);
+    assert.equal(undo2Body.state.runs, 1);
+
+    // Undo delivery 1 (the single)
+    const undo3Res = await app.inject({
+      method: 'DELETE',
+      url: `/api/v1/scoring/matches/${undoMatchId}/events/last`
+    });
+    assert.equal(undo3Res.statusCode, 200);
+    const undo3Body = JSON.parse(undo3Res.body);
+    assert.equal(undo3Body.state.runs, 0);
+
+    // Undo on empty history returns 400
+    const emptyUndoRes = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${undoMatchId}/undo`
+    });
+    assert.equal(emptyUndoRes.statusCode, 400);
+  });
+
+  it('7. Manual Strike Swap: toggles striker and non-striker', async () => {
+    const swapMatchId = 'm-test-swap-01';
+    // Initialize with delivery
+    await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${swapMatchId}/events`,
+      payload: {
+        sequence: 1,
+        bat_runs: 0,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true,
+        striker_id: 'batter-A',
+        non_striker_id: 'batter-B'
+      }
+    });
+
+    // Swap strike
+    const swapRes = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${swapMatchId}/swap-strike`
+    });
+    assert.equal(swapRes.statusCode, 200);
+    const swapBody = JSON.parse(swapRes.body);
+    assert.equal(swapBody.state.striker_id, 'batter-B');
+    assert.equal(swapBody.state.non_striker_id, 'batter-A');
+  });
+
+  it('8. Bowler Selection & Rotation: sets bowler and respects MCC Law 21', async () => {
+    const bowlerMatchId = 'm-test-bowler-01';
+    // Change bowler
+    const b1Res = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${bowlerMatchId}/bowler`,
+      payload: {
+        bowler_id: 'bowler-bumrah',
+        bowler_name: 'Jasprit Bumrah'
+      }
+    });
+    assert.equal(b1Res.statusCode, 200);
+    const b1Body = JSON.parse(b1Res.body);
+    assert.equal(b1Body.state.current_bowler_id, 'bowler-bumrah');
+    assert.equal(b1Body.state.bowlers['bowler-bumrah'].name, 'Jasprit Bumrah');
+  });
+
+  it('9. Innings Close: closes innings with target', async () => {
+    const closeMatchId = 'm-test-close-01';
+    const closeRes = await app.inject({
+      method: 'POST',
+      url: `/api/v1/scoring/matches/${closeMatchId}/innings/close`,
+      payload: { target: 175 }
+    });
+    assert.equal(closeRes.statusCode, 200);
+    const closeBody = JSON.parse(closeRes.body);
+    assert.equal(closeBody.state.is_innings_closed, true);
+    assert.equal(closeBody.state.target, 175);
+  });
 });

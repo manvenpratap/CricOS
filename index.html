@@ -37,6 +37,58 @@
       padding: 0;
     }
 
+    /* Accessible Focus Ring (WCAG 2.2 AA) */
+    :focus-visible {
+      outline: 2px solid var(--turf-emerald) !important;
+      outline-offset: 3px !important;
+    }
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    .tab-btn:focus-visible,
+    .nav-pill:focus-visible,
+    .pad-btn:focus-visible,
+    .modal-close-btn:focus-visible {
+      outline: 2px solid var(--turf-emerald) !important;
+      outline-offset: 2px !important;
+    }
+
+    /* Reduced Motion Safeguard */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .live-dot, .telemetry-pulse {
+        animation: none !important;
+        opacity: 1 !important;
+      }
+      .modal-backdrop.active .modal-dialog,
+      .ball-bubble {
+        animation: none !important;
+      }
+    }
+
+    /* Tabular Numbers Alignment */
+    .score-text,
+    .live-score,
+    .overs-val,
+    .runrate-val,
+    .target-badge,
+    .fow-pill,
+    .ball-bubble,
+    .pad-btn,
+    .stat-player-figures,
+    .telemetry-val,
+    .counter-badge,
+    .price-tag,
+    .timer-val {
+      font-variant-numeric: tabular-nums;
+    }
+
     body {
       background-color: var(--bg-dark);
       background-image: 
@@ -285,12 +337,16 @@
       background: rgba(13, 19, 32, 0.5);
       border-bottom: 1px solid var(--border-subtle);
       overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs-bar::-webkit-scrollbar {
+      display: none;
     }
 
     .tab-btn {
       background: none;
       border: none;
-      padding: 1rem 1.35rem;
+      padding: 0.95rem 1.35rem;
       font-family: var(--font-display);
       font-size: 0.95rem;
       font-weight: 700;
@@ -300,17 +356,26 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
+      border-radius: 8px 8px 0 0;
+      position: relative;
     }
 
     .tab-btn:hover {
-      color: var(--text-main);
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
+      color: var(--turf-emerald);
+      border-bottom-color: var(--turf-emerald);
+      background: rgba(0, 229, 153, 0.08);
+      box-shadow: inset 0 -2px 0 var(--turf-emerald), inset 0 0 16px rgba(0, 229, 153, 0.06);
+    }
+
+    .tab-btn:active {
+      transform: scale(0.98);
     }
 
     /* Global Stadium Telemetry Strip */
@@ -821,18 +886,21 @@
       font-weight: 700;
       padding: 0.9rem 0;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      min-height: 52px;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .pad-btn span {
       font-family: var(--font-body);
       font-size: 0.72rem;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 0.04em;
       margin-top: 2px;
       text-transform: uppercase;
@@ -841,10 +909,12 @@
     .pad-btn:hover {
       transform: translateY(-2px);
       border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.4);
     }
 
     .pad-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.96) translateY(1px);
+      box-shadow: inset 0 0 16px var(--turf-glow);
     }
 
     .pad-btn.boundary-4 {
@@ -1141,6 +1211,7 @@
       height: 100vh;
       background: rgba(4, 7, 13, 0.82);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -1158,7 +1229,21 @@
       max-width: 620px;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 229, 153, 0.15);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 229, 153, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transform-origin: center center;
+    }
+    .modal-backdrop.active .modal-dialog {
+      animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes modalPopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
     .modal-header {
       padding: 1.25rem 1.75rem;
@@ -1391,6 +1476,24 @@
           <span class="pill-icon">💬</span> Chat
           <span class="counter-badge amber">1</span>
         </button>
+        <button type="button" onclick="openModal('modalRfq')" class="nav-pill" data-tooltip="Tournament procurement requests, quote submissions, and provider bids">
+          <span class="pill-icon">📋</span> RFQ
+        </button>
+        <button type="button" onclick="openModal('modalCommerce')" class="nav-pill" data-tooltip="Cricket gear, match leather balls, practice nets, and trophies">
+          <span class="pill-icon">🛒</span> Gear Store
+        </button>
+        <button type="button" onclick="openModal('modalTournamentOps')" class="nav-pill" data-tooltip="Tournament fixture board, conflict detection, and bulk CSV schedule import">
+          <span class="pill-icon">📊</span> Fixtures
+        </button>
+        <button type="button" onclick="openModal('modalMatchInsights')" class="nav-pill" data-tooltip="AI match narrative recap, turning points, and Player of the Match MVP">
+          <span class="pill-icon">🤖</span> AI Insights
+        </button>
+        <button type="button" onclick="openModal('modalCheckIn')" class="nav-pill" data-tooltip="Provider arrival OTP verification and 3-party match scorecard sign-off">
+          <span class="pill-icon">📍</span> Check-In
+        </button>
+        <button type="button" onclick="openModal('modalSponsorshipAuction')" class="nav-pill" data-tooltip="Tournament sponsorship prize pool pledges and virtual player auction desk">
+          <span class="pill-icon">🤝</span> Sponsors &amp; Auction
+        </button>
       </div>
     </div>
 
@@ -1437,14 +1540,14 @@
   </header>
 
   <!-- Navigation Tabs -->
-  <div class="tabs-bar">
-    <button class="tab-btn active" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip"><span class="tab-icon">🏏</span> Match Center</button>
-    <button class="tab-btn" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes"><span class="tab-icon">👥</span> Teams &amp; Rosters</button>
-    <button class="tab-btn" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard"><span class="tab-icon">🏆</span> Tournaments</button>
-    <button class="tab-btn" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold"><span class="tab-icon">🛒</span> Venues &amp; Turfs</button>
-    <button class="tab-btn" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships"><span class="tab-icon">🎯</span> Scoring Studio</button>
-    <button class="tab-btn" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection"><span class="tab-icon">🛡️</span> Fair Play &amp; Trust</button>
-    <button class="tab-btn" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector"><span class="tab-icon">⚡</span> Operations &amp; APIs</button>
+  <div class="tabs-bar" role="tablist" aria-label="Operating system consoles and studios">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-scoring" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip"><span class="tab-icon">🏏</span> Match Center</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-teams" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes"><span class="tab-icon">👥</span> Teams &amp; Rosters</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tournaments" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard"><span class="tab-icon">🏆</span> Tournaments</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-marketplace" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold"><span class="tab-icon">🛒</span> Venues &amp; Turfs</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships"><span class="tab-icon">🎯</span> Scoring Studio</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-incidents" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection"><span class="tab-icon">🛡️</span> Fair Play &amp; Trust</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-explorer" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector"><span class="tab-icon">⚡</span> Operations &amp; APIs</button>
   </div>
 
   <!-- Global Stadium Telemetry Strip -->
@@ -1543,7 +1646,10 @@
         <!-- Live Player Stats -->
         <div class="live-match-stats">
           <div class="stat-mini-card">
-            <div class="stat-mini-title"><span>Striker</span><span style="color: var(--primary);">★ On Strike</span></div>
+            <div class="stat-mini-title">
+              <span style="display: flex; align-items: center; gap: 0.4rem;">Striker <button class="btn btn-secondary" style="width: auto; padding: 0.1rem 0.45rem; font-size: 0.65rem;" onclick="swapMatchStrike()" data-tooltip="Manually rotate strike between batters">Swap Strike</button></span>
+              <span style="color: var(--primary);">★ On Strike</span>
+            </div>
             <div class="stat-player-name" id="strikerName">Virat K. *</div>
             <div class="stat-player-figures" id="strikerFigures">0 <span style="font-size: 0.85rem; color: var(--text-muted);">(0b) • SR: 0.0</span></div>
           </div>
@@ -1556,6 +1662,15 @@
             <div class="stat-mini-title"><span>Bowler</span><span style="color: var(--amber);">Current Spell</span></div>
             <div class="stat-player-name" id="bowlerName">Jasprit B.</div>
             <div class="stat-player-figures" id="bowlerFigures" style="color: var(--amber);">0-0-0-0 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(Econ: 0.00)</span></div>
+          </div>
+        </div>
+
+        <!-- Free Hit Active Alert Banner -->
+        <div id="freeHitBanner" style="display: none; background: rgba(255,184,0,0.15); border: 1px solid var(--amber); border-radius: 8px; padding: 0.65rem 1.15rem; margin-top: 1rem; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.25rem;">⚡</span>
+          <div>
+            <div style="font-weight: 800; color: var(--amber); font-size: 0.95rem;">FREE HIT IN EFFECT!</div>
+            <div style="font-size: 0.75rem; color: #F8FAFC;">Batter cannot be dismissed bowled, caught, lbw, or stumped on this delivery. Only run out applies!</div>
           </div>
         </div>
 
@@ -1583,12 +1698,21 @@
             <button class="pad-btn" onclick="scoreDelivery(3, 0, 'NONE', true)" data-tooltip="Score 3 runs and rotate strike">3<span>Triple</span></button>
             <button class="pad-btn boundary-4" onclick="scoreDelivery(4, 0, 'NONE', true)" data-tooltip="Score 4 runs boundary">4 FOUR<span>Boundary</span></button>
             <button class="pad-btn boundary-6" onclick="scoreDelivery(6, 0, 'NONE', true)" data-tooltip="Score 6 runs over-the-rope maximum">6 SIX<span>Maximum</span></button>
-            <button class="pad-btn wicket" onclick="scoreDelivery(0, 0, 'NONE', true, true)" data-tooltip="Wicket fell: record out and update strike">W WICKET<span>Out</span></button>
+            <button class="pad-btn wicket" onclick="openDismissalModal()" data-tooltip="Record wicket: select mode, fielder, and incoming batter">W WICKET<span>Out</span></button>
             <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'WIDE', false)" data-tooltip="Wide: +1 run extra, delivery re-bowled">Wd WIDE<span>+1 Run</span></button>
-            <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'NO_BALL', false)" data-tooltip="No Ball: +1 run extra, delivery re-bowled">Nb NO BALL<span>+1 Run</span></button>
+            <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'NO_BALL', false)" data-tooltip="No Ball: +1 run extra, triggers Free Hit">Nb NO BALL<span>+1 Run</span></button>
             <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'BYE', true)" data-tooltip="Byes: +1 run extra, strike rotates if odd">B BYE<span>+1 Run</span></button>
             <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'LEG_BYE', true)" data-tooltip="Leg Byes: +1 run extra, strike rotates if odd">Lb LEG BYE<span>+1 Run</span></button>
+            <button class="pad-btn" id="btnUndoDelivery" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber);" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">↺ UNDO<span>Ctrl+Z</span></button>
             <button class="pad-btn btn-secondary" onclick="resetMatchScore()" data-tooltip="Reset match score to 0/0 for new innings">↺ RESET<span>New Innings</span></button>
+
+            <!-- Compound Extras Strip -->
+            <div style="grid-column: 1 / -1; display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 0.65rem; border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'WIDE', false)" data-tooltip="Wide + 4 Byes: +5 runs total, delivery re-bowled">+5 Wd (4b)</button>
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(4, 1, 'NO_BALL', false)" data-tooltip="No Ball + Boundary 4: +5 runs, Free Hit next delivery">+4 Nb (5 runs)</button>
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(6, 1, 'NO_BALL', false)" data-tooltip="No Ball + Maximum 6: +7 runs, Free Hit next delivery">+6 Nb (7 runs)</button>
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'PENALTY', false)" data-tooltip="Penalty runs awarded (+5 runs)">+5 Penalty</button>
+            </div>
           </div>
         </div>
 
@@ -2103,7 +2227,7 @@
         <div class="modal-title">
           <span>👤 User Profile &amp; Persona Switcher</span>
         </div>
-        <button class="modal-close-btn" onclick="closeUserModal()" data-tooltip="Close modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeUserModal()" data-tooltip="Close modal">✕</button>
       </div>
       <div class="modal-body">
         <!-- Persona Pills -->
@@ -2208,7 +2332,7 @@
         <div class="modal-title">
           <span style="color: var(--rose);">⚡ Record Wicket Dismissal</span>
         </div>
-        <button class="modal-close-btn" onclick="closeDismissalModal()" data-tooltip="Cancel wicket">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeDismissalModal()" data-tooltip="Cancel wicket">✕</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -2253,6 +2377,38 @@
     </div>
   </div>
 
+  <!-- Bowler Rotation / Over End Modal -->
+  <div class="modal-backdrop" id="modalBowlerRotation">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span style="color: var(--amber);">🏏 Over Completed — Select Next Bowler</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeBowlerModal()" data-tooltip="Dismiss dialog">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;" id="bowlerModalDesc">
+          Over has completed. Select the next bowler to commence the next over.
+          <div style="color: var(--amber); margin-top: 0.35rem; font-size: 0.78rem;">⚠️ MCC Law 21: A bowler cannot bowl two consecutive overs.</div>
+        </div>
+        <div class="form-group">
+          <label>Next Bowler</label>
+          <select id="nextBowlerSelect">
+            <option value="p-bowler-2">Mohammed Shami (Right-arm Fast)</option>
+            <option value="p-bowler-3">Ravindra Jadeja (Left-arm Orthodox)</option>
+            <option value="p-bowler-4">Kuldeep Yadav (Left-arm Wrist Spin)</option>
+            <option value="p-bowler-5">Hardik Pandya (Right-arm Medium Fast)</option>
+            <option value="p-bowler-1" id="optPrevBowler" disabled>Jasprit Bumrah (Current Bowler - Cannot Bowl Consecutively)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeBowlerModal()">Close</button>
+        <button class="btn" style="width: auto; background: var(--turf-emerald); border-color: var(--turf-emerald); color: black; font-weight: 700;" onclick="confirmBowlerChange()" data-tooltip="Set new bowler for next over">Confirm Bowler</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Create Team Modal -->
   <div class="modal-backdrop" id="modalCreateTeam">
     <div class="modal-dialog">
@@ -2260,7 +2416,7 @@
         <div class="modal-title">
           <span>🏆 Create Cricket Team / Club</span>
         </div>
-        <button class="modal-close-btn" onclick="closeCreateTeamModal()">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCreateTeamModal()">✕</button>
       </div>
       <div class="modal-body">
         <div class="grid-2">
@@ -2304,7 +2460,7 @@
         <div class="modal-title">
           <span>🛒 Turf Booking &amp; 15-Minute Reservation Hold</span>
         </div>
-        <button class="modal-close-btn" onclick="closeCheckoutModal()">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCheckoutModal()">✕</button>
       </div>
       <div class="modal-body">
         <div style="background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.3); border-radius: 8px; padding: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
@@ -2352,7 +2508,7 @@
         <div class="modal-title">
           <span>📥 Official Match Scorecard &amp; Export</span>
         </div>
-        <button class="modal-close-btn" onclick="closeScorecardModal()" data-tooltip="Close modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeScorecardModal()" data-tooltip="Close modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -2416,7 +2572,7 @@
         <div class="modal-title">
           <span>🪙 Official Match Toss &amp; Lineup Confirmation</span>
         </div>
-        <button class="modal-close-btn" onclick="closeTossModal()" data-tooltip="Close toss modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeTossModal()" data-tooltip="Close toss modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
@@ -2467,7 +2623,7 @@
         <div class="modal-title">
           <span>⭐ Post-Match Verification &amp; Ratings</span>
         </div>
-        <button class="modal-close-btn" onclick="closeMatchRatingModal()" data-tooltip="Close rating modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMatchRatingModal()" data-tooltip="Close rating modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
@@ -2532,7 +2688,7 @@
         <div class="modal-title">
           <span>📜 CricOS Store Compliance, Privacy &amp; Terms</span>
         </div>
-        <button class="modal-close-btn" onclick="closeLegalModal()" data-tooltip="Close legal modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeLegalModal()" data-tooltip="Close legal modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
@@ -2603,7 +2759,7 @@
         <div class="modal-title">
           <span>🧺 Match Event Basket &amp; Resource Procurement</span>
         </div>
-        <button class="modal-close-btn" onclick="closeEventBasketModal()" data-tooltip="Close basket modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeEventBasketModal()" data-tooltip="Close basket modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
@@ -2690,7 +2846,7 @@
         <div class="modal-title">
           <span>🏪 Provider Storefront &amp; Capacity Manager</span>
         </div>
-        <button class="modal-close-btn" onclick="closeProviderStorefrontModal()" data-tooltip="Close storefront modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeProviderStorefrontModal()" data-tooltip="Close storefront modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
@@ -2782,7 +2938,7 @@
         <div class="modal-title">
           <span>🏏 Create Cricket Event &amp; Match Wizard</span>
         </div>
-        <button class="modal-close-btn" onclick="closeCreateEventModal()" data-tooltip="Close event wizard">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCreateEventModal()" data-tooltip="Close event wizard">✕</button>
       </div>
       <div class="modal-body">
         <!-- Stepper -->
@@ -2923,7 +3079,7 @@
         <div class="modal-title">
           <span>📋 Match Event Overview &amp; Procurement Readiness</span>
         </div>
-        <button class="modal-close-btn" onclick="closeEventOverviewModal()" data-tooltip="Close readiness modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeEventOverviewModal()" data-tooltip="Close readiness modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;">
@@ -3008,7 +3164,7 @@
         <div class="modal-title">
           <span>📅 Official Availability Calendar &amp; Slot Manager</span>
         </div>
-        <button class="modal-close-btn" onclick="closeOfficialCalendarModal()" data-tooltip="Close calendar modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeOfficialCalendarModal()" data-tooltip="Close calendar modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -3102,7 +3258,7 @@
         <div class="modal-title">
           <span>💬 Match Coordination &amp; Contextual Messaging</span>
         </div>
-        <button class="modal-close-btn" onclick="closeMessagingModal()" data-tooltip="Close messaging modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMessagingModal()" data-tooltip="Close messaging modal">✕</button>
       </div>
       <div class="modal-body" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
         <!-- Thread Header Bar -->
@@ -3180,7 +3336,7 @@
         <div class="modal-title">
           <span>🔄 Cancellation Policy &amp; Rescheduling Engine</span>
         </div>
-        <button class="modal-close-btn" onclick="closeBookingLifecycleModal()" data-tooltip="Close cancellation modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeBookingLifecycleModal()" data-tooltip="Close cancellation modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
@@ -3271,7 +3427,7 @@
         <div class="modal-title">
           <span>📑 Daily Financial Reconciliation &amp; Ledger Audit</span>
         </div>
-        <button class="modal-close-btn" onclick="closeReconciliationModal()" data-tooltip="Close reconciliation modal">✕</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeReconciliationModal()" data-tooltip="Close reconciliation modal">✕</button>
       </div>
       <div class="modal-body">
         <!-- Metrics Header -->
@@ -3365,7 +3521,7 @@
             <div style="font-size: 0.75rem; color: var(--text-muted);">Consumer iOS &amp; Android App (Expo EAS / Target SDK 34)</div>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="closeMobilePreviewModal()" data-tooltip="Close mobile preview">×</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMobilePreviewModal()" data-tooltip="Close mobile preview">×</button>
       </div>
       <div class="modal-body" style="padding: 1rem; text-align: center;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px;">
@@ -3394,7 +3550,7 @@
             <div style="font-size: 0.75rem; color: var(--text-muted);">26 Production Endpoints across 8 Workspace Modules</div>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="closeApiDocsModal()" data-tooltip="Close documentation">×</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeApiDocsModal()" data-tooltip="Close documentation">×</button>
       </div>
       <div class="modal-body" style="padding: 1.25rem;">
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem;">
@@ -3453,7 +3609,7 @@
             <div style="font-size: 0.75rem; color: var(--text-muted);">Fastify Server &bull; PostgreSQL Database &bull; Health Probes</div>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="closeHealthModal()" data-tooltip="Close health diagnostics">×</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeHealthModal()" data-tooltip="Close health diagnostics">×</button>
       </div>
       <div class="modal-body" style="padding: 1.25rem;">
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.25rem;">
@@ -3507,7 +3663,7 @@
             <div style="font-size: 0.75rem; color: var(--text-muted);">Real-time Prometheus Exposition &bull; Sub-Millisecond Profiling</div>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="closeMetricsModal()" data-tooltip="Close metrics">×</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMetricsModal()" data-tooltip="Close metrics">×</button>
       </div>
       <div class="modal-body" style="padding: 1.25rem;">
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-bottom: 1.25rem;">
@@ -3550,6 +3706,358 @@ cricos_active_sse_connections 1</pre>
     </div>
   </div>
 
+  <!-- P1-001: Modal RFQ & Quote Negotiation -->
+  <div class="modal-backdrop" id="modalRfq">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">📋</span>
+          <div>
+            <div class="modal-title">Tournament RFQ &amp; Quote Negotiation Desk</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Procurement Requests &bull; Provider Bids &bull; Escrow Awarding</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalRfq')" data-tooltip="Close RFQ modal">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge badge-cyan">Active Tournament RFQs</span>
+          <button class="btn btn-secondary btn-sm" onclick="showToast('Create RFQ form ready')">+ New Requirement</button>
+        </div>
+        <div id="rfqContainer">
+          <div class="glass-panel" style="padding: 1.25rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(10, 16, 28, 0.75);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div>
+                <span class="badge badge-amber" style="font-size: 0.75rem; margin-right: 0.5rem;">UMPIRE</span>
+                <span class="badge badge-cyan">● OPEN</span>
+                <h4 style="margin: 0.5rem 0 0.25rem; font-family: var(--font-display); font-size: 1.1rem; color: #fff;">T20 Championship Lead Umpire Procurement</h4>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: var(--turf-emerald);">₹3,000</div>
+                <div style="font-size: 0.75rem; color: #8E9BAE;">Budget Cap</div>
+              </div>
+            </div>
+            <p style="font-size: 0.85rem; color: #CBD5E1; margin: 0.5rem 0 1rem;">Need certified lead umpire for 20-over night final match with floodlights.</p>
+            <div style="background: rgba(15, 23, 42, 0.65); padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.5rem;">SUBMITTED QUOTES (1)</div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">Elite Certified Umpire</div>
+                  <div style="font-size: 0.75rem; color: #8E9BAE;">Trust: <strong style="color: var(--amber);">94%</strong> • BCCI Level 1 Certified</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹2,800</span>
+                  <button class="btn btn-primary btn-sm" onclick="awardSampleQuote()" data-tooltip="Award contract and bind escrow hold">🏆 Award Quote</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalRfq')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- P1-002: Modal Commerce & Cricket Gear -->
+  <div class="modal-backdrop" id="modalCommerce">
+    <div class="modal-card" style="max-width: 720px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">🛒</span>
+          <div>
+            <div class="modal-title">Cricket Gear, Match Balls &amp; Equipment Store</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Match Balls &bull; Practice Cages &bull; Trophies &bull; Free Venue Delivery</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalCommerce')" data-tooltip="Close gear store">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <!-- Coupon Bar -->
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+          <input type="text" id="promoCodeInput" placeholder="Promo code (try CRIC20 or TURF500)" style="flex: 1; padding: 0.5rem 0.75rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: var(--font-mono); text-transform: uppercase;" />
+          <button class="btn btn-primary btn-sm" onclick="applyPromoCode()" data-tooltip="Apply discount code to order">Apply Code</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;">
+          <div class="glass-panel" style="padding: 1rem; border-radius: 10px; background: rgba(10,16,28,0.7); border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-purple" style="font-size: 0.65rem;">BALLS</span>
+              <h4 style="margin: 0.5rem 0 0.25rem; font-size: 0.95rem; color: #fff;">Match Leather Balls (Box of 6)</h4>
+              <p style="font-size: 0.75rem; color: #94A3B8; line-height: 1.3;">4-piece alum tanned English leather, MCC Law 4 compliant.</p>
+            </div>
+            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹4,800</span>
+              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Box of Match Balls to Basket!')">Add</button>
+            </div>
+          </div>
+
+          <div class="glass-panel" style="padding: 1rem; border-radius: 10px; background: rgba(10,16,28,0.7); border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-cyan" style="font-size: 0.65rem;">EQUIPMENT</span>
+              <h4 style="margin: 0.5rem 0 0.25rem; font-size: 0.95rem; color: #fff;">Pro Practice Net (Day Rental)</h4>
+              <p style="font-size: 0.75rem; color: #94A3B8; line-height: 1.3;">Heavy duty 12x4m cricket practice cage with frame.</p>
+            </div>
+            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹1,500</span>
+              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Practice Net Rental to Basket!')">Add</button>
+            </div>
+          </div>
+
+          <div class="glass-panel" style="padding: 1rem; border-radius: 10px; background: rgba(10,16,28,0.7); border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-amber" style="font-size: 0.65rem;">TROPHIES</span>
+              <h4 style="margin: 0.5rem 0 0.25rem; font-size: 0.95rem; color: #fff;">Championship Trophy Set</h4>
+              <p style="font-size: 0.75rem; color: #94A3B8; line-height: 1.3;">24-inch gold-plated trophy plus 16 embossed medals.</p>
+            </div>
+            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹8,500</span>
+              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Trophy Set to Basket!')">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalCommerce')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- P1-006 & P1-007: Modal Tournament Ops & Fixture Board -->
+  <div class="modal-backdrop" id="modalTournamentOps">
+    <div class="modal-card" style="max-width: 750px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">📊</span>
+          <div>
+            <div class="modal-title">Tournament Fixture Board &amp; Command Centre</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Round-Robin Schedule &bull; Conflict Engine &bull; Bulk CSV Upload</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalTournamentOps')" data-tooltip="Close fixture board">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <span class="badge badge-emerald">✓ Zero Conflicts Detected</span>
+            <span style="font-size: 0.8rem; color: #8E9BAE; margin-left: 0.5rem;">Overall Readiness: <strong style="color: var(--turf-emerald);">100%</strong></span>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="showBulkImportPrompt()" data-tooltip="Upload fixture schedule via CSV">📤 Bulk Import</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #8E9BAE; font-size: 0.7rem; text-transform: uppercase;">
+                <th style="padding: 0.5rem 0.75rem;">Round</th>
+                <th style="padding: 0.5rem 0.75rem;">Matchup &amp; Venue</th>
+                <th style="padding: 0.5rem 0.75rem;">Slot</th>
+                <th style="padding: 0.5rem 0.75rem;">Readiness</th>
+                <th style="padding: 0.5rem 0.75rem; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.65rem 0.75rem; font-weight: 700; color: var(--cyan);">R1</td>
+                <td style="padding: 0.65rem 0.75rem;">
+                  <div style="font-weight: 700; color: #fff;">Northside XI vs Riverside XI</div>
+                  <div style="font-size: 0.75rem; color: #8E9BAE;">Harbour Ground - Pitch 1</div>
+                </td>
+                <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sat, 13:00</td>
+                <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
+                <td style="padding: 0.65rem 0.75rem; text-align: right;">
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')">📋 Verified</button>
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.65rem 0.75rem; font-weight: 700; color: var(--cyan);">R1</td>
+                <td style="padding: 0.65rem 0.75rem;">
+                  <div style="font-weight: 700; color: #fff;">Eastern Knights vs Southern Stars</div>
+                  <div style="font-size: 0.75rem; color: #8E9BAE;">Harbour Ground - Pitch 2</div>
+                </td>
+                <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sun, 09:00</td>
+                <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
+                <td style="padding: 0.65rem 0.75rem; text-align: right;">
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')">📋 Verified</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalTournamentOps')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- P1-010 & P2-001: Modal Match Insights & AI Recap -->
+  <div class="modal-backdrop" id="modalMatchInsights">
+    <div class="modal-card" style="max-width: 650px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">🤖</span>
+          <div>
+            <div class="modal-title">AI Match Insights &amp; MVP Impact Analysis</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Algorithmic POTM &bull; Automated Press Recap &bull; Turning Point Swing</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalMatchInsights')" data-tooltip="Close insights">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <!-- MVP Card -->
+        <div style="padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 184, 0, 0.35); background: linear-gradient(135deg, rgba(255, 184, 0, 0.08), rgba(10, 16, 28, 0.85)); margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span class="badge badge-amber" style="font-weight: 700;">🏆 PLAYER OF THE MATCH (MVP)</span>
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.2rem; color: var(--amber);">96 pts</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+              <h3 style="margin: 0; font-family: var(--font-display); font-size: 1.3rem; color: #fff;">Virat Sharma</h3>
+              <div style="font-size: 0.85rem; color: var(--cyan); font-weight: 600;">Northside XI &bull; 74 (42) + 2 Catches</div>
+            </div>
+            <div style="display: flex; gap: 0.75rem; text-align: right; font-size: 0.8rem;">
+              <div><span style="color: #8E9BAE;">Bat:</span> <strong>84</strong></div>
+              <div><span style="color: #8E9BAE;">Field:</span> <strong>20</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Narrative -->
+        <div style="padding: 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; color: var(--cyan); font-weight: 700; margin-bottom: 0.4rem;">PRESS WIRE SUMMARY</div>
+          <h4 style="margin: 0 0 0.5rem; color: #fff; font-size: 1.05rem;">Riverside XI clinch victory by 5 wickets in thrilling chase</h4>
+          <p style="font-size: 0.85rem; color: #CBD5E1; line-height: 1.45; margin: 0;">Northside XI posted 168/6 in 20 overs led by Virat Sharma (74 off 42). In response, Riverside XI chased down the target reaching 169/5 in 19.3 overs.</p>
+        </div>
+
+        <!-- Turning Point -->
+        <div style="padding: 0.85rem; border-radius: 8px; background: rgba(0, 229, 153, 0.05); border: 1px solid rgba(0, 229, 153, 0.2);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--turf-emerald);">⚡ MATCH TURNING POINT (Over 16.4)</span>
+            <span class="badge badge-emerald">+34% Win Prob Swing</span>
+          </div>
+          <div style="font-size: 0.8rem; color: #fff;">Decisive boundary and dropped catch in over 16 shifted match win probability decisively.</div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalMatchInsights')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- P1-011: Modal Provider Check-In & Match Sign-Off -->
+  <div class="modal-backdrop" id="modalCheckIn">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">📍</span>
+          <div>
+            <div class="modal-title">Provider Check-In &amp; Match Sign-Off</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Arrival OTP Verification &bull; 3-Party Digital Sign-Off</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalCheckIn')" data-tooltip="Close check-in">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <!-- Provider OTP Verification -->
+        <div style="padding: 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); margin-bottom: 1.25rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.5rem;">STEP 1: PROVIDER ARRIVAL OTP</div>
+          <p style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 0.75rem;">Official enters 4-digit PIN upon arrival at the venue.</p>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="providerOtpInput" maxlength="6" value="4821" style="width: 140px; text-align: center; font-family: var(--font-mono); font-size: 1.2rem; letter-spacing: 0.2rem; padding: 0.4rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: var(--turf-emerald);" />
+            <button class="btn btn-primary btn-sm" onclick="showToast('✓ Provider Check-In Verified via OTP 4821!')">Verify Arrival</button>
+          </div>
+        </div>
+
+        <!-- 3-Party Sign-Off -->
+        <div style="padding: 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--turf-emerald); margin-bottom: 0.5rem;">STEP 2: OFFICIAL MATCH SIGN-OFF</div>
+          <p style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 0.75rem;">All 3 stakeholders digitally sign to unlock escrow payouts.</p>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #fff; cursor: pointer;">
+              <input type="checkbox" checked /> Home Captain (Virat Sharma) Digitally Signed
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #fff; cursor: pointer;">
+              <input type="checkbox" checked /> Away Captain (David Warner) Digitally Signed
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #fff; cursor: pointer;">
+              <input type="checkbox" checked /> Lead Umpire (Certified Official) Digitally Signed
+            </label>
+          </div>
+          <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="showToast('✍ 3-Party Sign-Off Complete! Escrow Payouts Unlocked.')">
+            ✍ Complete Digital Sign-Off
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalCheckIn')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- P2-004 & P3-001: Modal Sponsorship & Player Auction -->
+  <div class="modal-backdrop" id="modalSponsorshipAuction">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">🤝</span>
+          <div>
+            <div class="modal-title">Sponsorship Inventory &amp; Player Auction Desk</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Prize Pool Pledges &bull; Live Franchise Bidding &bull; Double-Entry Escrow</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalSponsorshipAuction')" data-tooltip="Close sponsors and auction">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <!-- Sponsorship Section -->
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.75rem;">SPONSORSHIP INVENTORY TIERS</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+            <div class="glass-panel" style="padding: 0.85rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle);">
+              <span class="badge badge-purple" style="font-size: 0.65rem;">TITLE SPONSOR</span>
+              <div style="font-weight: 700; color: #fff; margin: 0.35rem 0;">Premier Trophy Title</div>
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 1.1rem;">₹2,50,000</div>
+              <div style="margin-top: 0.5rem;"><span class="badge badge-emerald">✓ PLEDGED (RedBull)</span></div>
+            </div>
+            <div class="glass-panel" style="padding: 0.85rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle);">
+              <span class="badge badge-cyan" style="font-size: 0.65rem;">BALL SPONSOR</span>
+              <div style="font-weight: 700; color: #fff; margin: 0.35rem 0;">Official Match Balls</div>
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 1.1rem;">₹75,000</div>
+              <div style="margin-top: 0.5rem;"><span class="badge badge-emerald">✓ PLEDGED (SG)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Virtual Player Auction Live Bidding -->
+        <div style="padding: 1rem; border-radius: 10px; background: rgba(0, 210, 255, 0.05); border: 1px solid rgba(0, 210, 255, 0.25);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span class="badge badge-purple">LIVE FRANCHISE AUCTION</span>
+            <span style="font-size: 0.75rem; color: #8E9BAE;">Purse Remaining: <strong style="color: #fff;">₹10,00,000</strong></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1rem;">
+            <div>
+              <h3 style="margin: 0; color: #fff; font-size: 1.25rem;">K.L. Rahul</h3>
+              <div style="font-size: 0.8rem; color: #8E9BAE;">Wicketkeeper-Batter &bull; Base: ₹1,00,000</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.7rem; color: #8E9BAE;">Highest Bid</div>
+              <div style="font-family: var(--font-mono); font-size: 1.5rem; font-weight: 800; color: var(--turf-emerald);" id="auctionHighestBid">₹3,25,000</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary btn-sm" style="flex: 1;" onclick="submitAuctionBid(2500000)">+ ₹25k</button>
+            <button class="btn btn-secondary btn-sm" style="flex: 1;" onclick="submitAuctionBid(5000000)">+ ₹50k</button>
+            <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="submitAuctionBid(10000000)">+ ₹1,00,000</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalSponsorshipAuction')">Close</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast">✓ Event completed</div>
 
   <script>
@@ -3557,9 +4065,11 @@ cricos_active_sse_connections 1</pre>
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
         const onclickAttr = b.getAttribute('onclick') || '';
         if (onclickAttr.indexOf("'" + tabId + "'") !== -1) {
           b.classList.add('active');
+          b.setAttribute('aria-selected', 'true');
         }
       });
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -3723,8 +4233,10 @@ cricos_active_sse_connections 1</pre>
         modal.classList.add('active');
         const strikerOpt = document.getElementById('outStrikerOption');
         const nonStrikerOpt = document.getElementById('outNonStrikerOption');
-        if (strikerOpt) strikerOpt.textContent = studioStriker.name + ' (Striker)';
-        if (nonStrikerOpt) nonStrikerOpt.textContent = studioNonStriker.name + ' (Non-Striker)';
+        const currentStriker = document.getElementById('strikerName')?.textContent?.replace(' *', '').trim() || studioStriker.name;
+        const currentNonStriker = document.getElementById('nonStrikerName')?.textContent?.trim() || studioNonStriker.name;
+        if (strikerOpt) strikerOpt.textContent = currentStriker + ' (Striker)';
+        if (nonStrikerOpt) nonStrikerOpt.textContent = currentNonStriker + ' (Non-Striker)';
       }
     }
 
@@ -3751,7 +4263,10 @@ cricos_active_sse_connections 1</pre>
       const outRole = document.getElementById('dismissalOutBatter').value;
       const nextBatter = document.getElementById('dismissalNextBatter').value;
 
-      const outName = outRole === 'STRIKER' ? studioStriker.name : studioNonStriker.name;
+      const currentStriker = document.getElementById('strikerName')?.textContent?.replace(' *', '').trim() || studioStriker.name;
+      const currentNonStriker = document.getElementById('nonStrikerName')?.textContent?.trim() || studioNonStriker.name;
+      const outName = outRole === 'STRIKER' ? currentStriker : currentNonStriker;
+
       let dismissalDesc = kind;
       if (kind === 'CAUGHT') dismissalDesc = 'c ' + (fielder || 'Sub') + ' b Bowler';
       else if (kind === 'RUN_OUT') dismissalDesc = 'run out (' + (fielder || 'Direct Hit') + ')';
@@ -3759,7 +4274,12 @@ cricos_active_sse_connections 1</pre>
       else if (kind === 'BOWLED') dismissalDesc = 'b Bowler';
       else if (kind === 'STUMPED') dismissalDesc = 'st ' + (fielder || 'Keeper') + ' b Bowler';
 
-      scoreDelivery(0, 0, 'NONE', true, true);
+      scoreDelivery(0, 0, 'NONE', true, true, {
+        wicket_type: kind,
+        fielder_id: fielder || undefined,
+        player_out_id: outName,
+        next_batter_id: nextBatter
+      });
 
       if (outRole === 'STRIKER') {
         studioStriker.name = nextBatter;
@@ -4353,6 +4873,51 @@ cricos_active_sse_connections 1</pre>
       showToast('⭐ Review Submitted (' + avg + '★)! Escrow Payout Disbursed to Providers.');
       const bRating = document.getElementById('providerBayesianRating');
       if (bRating) bRating.textContent = '4.85 / 5.0';
+    }
+
+    // Universal Modal Handlers
+    function openModal(modalId) {
+      const m = document.getElementById(modalId);
+      if (m) m.classList.add('active');
+    }
+    function closeModal(modalId) {
+      const m = document.getElementById(modalId);
+      if (m) m.classList.remove('active');
+    }
+
+    function awardSampleQuote() {
+      showToast('🏆 Quote Awarded to Elite Certified Umpire! Escrow Hold Locked.');
+      closeModal('modalRfq');
+    }
+
+    function applyPromoCode() {
+      const input = document.getElementById('promoCodeInput');
+      const val = (input ? input.value : '').trim().toUpperCase();
+      if (!val) {
+        showToast('⚠ Please enter a promo code');
+        return;
+      }
+      if (val === 'CRIC20') {
+        showToast('✓ Coupon CRIC20 applied! 20% discount applied to basket.');
+      } else if (val === 'TURF500') {
+        showToast('✓ Coupon TURF500 applied! ₹500 flat discount applied.');
+      } else {
+        showToast('⚠ Invalid or expired promo code: ' + val);
+      }
+    }
+
+    function showBulkImportPrompt() {
+      showToast('📤 Bulk fixture schedule imported: 4 matches scheduled with 0 conflicts!');
+      closeModal('modalTournamentOps');
+    }
+
+    let auctionBidMinor = 32500000;
+    function submitAuctionBid(incrementMinor) {
+      auctionBidMinor += incrementMinor;
+      const formatted = '₹' + (auctionBidMinor / 100).toLocaleString('en-IN');
+      const el = document.getElementById('auctionHighestBid');
+      if (el) el.textContent = formatted;
+      showToast('🔨 New Highest Bid Placed: ' + formatted + '!');
     }
 
     // Store Compliance & Legal Policies Handlers
@@ -5076,6 +5641,17 @@ cricos_active_sse_connections 1</pre>
         if (text) text.textContent = 'Mumbai Super Strikers won by ' + Math.max(1, 10 - wickets) + ' wickets!';
       }
 
+      // Update Free Hit active status banner
+      const fhBanner = document.getElementById('freeHitBanner');
+      if (fhBanner) {
+        fhBanner.style.display = state.is_free_hit ? 'flex' : 'none';
+      }
+
+      // Prompt bowler rotation on over completion
+      if (eventType === 'OVER_COMPLETED' || (state.legal_balls > 0 && state.legal_balls % 6 === 0 && event && event.legal_ball)) {
+        promptBowlerChange(state);
+      }
+
       renderMatchCharts();
 
       // Deduplication check for delivery progression
@@ -5235,6 +5811,45 @@ cricos_active_sse_connections 1</pre>
           showToast('🏆 Innings Closed! Total: ' + data.state.runs + '/' + data.state.wickets);
         });
 
+        source.addEventListener('undo_delivery', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state, null, 'UNDO_DELIVERY');
+          const strip = document.getElementById('overBallStrip');
+          if (strip && strip.lastElementChild) {
+            strip.removeChild(strip.lastElementChild);
+            if (strip.children.length === 0) {
+              strip.innerHTML = '<div class="ball-bubble dot">•</div>';
+            }
+          }
+          if (data.event && data.event.is_wicket) {
+            const fowStrip = document.getElementById('fowStrip');
+            if (fowStrip && fowStrip.lastElementChild) {
+              fowStrip.removeChild(fowStrip.lastElementChild);
+            }
+          }
+          const feed = document.getElementById('scoringFeed');
+          if (feed) {
+            const item = document.createElement('div');
+            item.className = 'feed-item';
+            item.style.color = 'var(--amber)';
+            item.innerHTML = '<span>↺ Delivery Undone (Over ' + (data.state.overs_display || '0.0') + ')</span><span style="color: var(--text-muted); font-weight: 600;">' + data.state.runs + '/' + data.state.wickets + '</span>';
+            feed.prepend(item);
+          }
+          showToast('↺ Delivery undone via broadcast stream');
+        });
+
+        source.addEventListener('bowler_changed', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state, null, 'BOWLER_CHANGED');
+          showToast('🏏 ' + (data.message || 'Bowler updated'));
+        });
+
+        source.addEventListener('strike_swapped', (e) => {
+          const data = JSON.parse(e.data);
+          renderScoreState(data.state, null, 'STRIKE_SWAPPED');
+          showToast('⚡ Strike swapped via live stream');
+        });
+
         source.onopen = () => {
           isSseConnected = true;
           const badge = document.getElementById('sseStatusBadge');
@@ -5280,21 +5895,23 @@ cricos_active_sse_connections 1</pre>
       feed.prepend(item);
     }
 
-    async function scoreDelivery(batRuns, extraRuns, extraType, legalBall, isWicket = false) {
+    async function scoreDelivery(batRuns, extraRuns, extraType, legalBall, isWicket = false, wicketOptions = null) {
       sequence++;
       const clientEventId = 'evt-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+      const payload = {
+        client_event_id: clientEventId,
+        sequence,
+        bat_runs: batRuns,
+        extra_runs: extraRuns,
+        extra_type: extraType,
+        legal_ball: legalBall,
+        is_wicket: isWicket,
+        shot_zone: typeof currentSelectedZone !== 'undefined' ? currentSelectedZone : undefined,
+        ...(wicketOptions || {})
+      };
 
       // Offline detection & optimistic local outbox queueing
       if (typeof navigator !== 'undefined' && navigator.onLine === false) {
-        const payload = {
-          client_event_id: clientEventId,
-          sequence,
-          bat_runs: batRuns,
-          extra_runs: extraRuns,
-          extra_type: extraType,
-          legal_ball: legalBall,
-          is_wicket: isWicket
-        };
         offlineDeliveries.push(payload);
         updateSyncUI();
         runs += batRuns + extraRuns;
@@ -5313,52 +5930,143 @@ cricos_active_sse_connections 1</pre>
         const res = await fetch('/api/v1/scoring/matches/' + matchId + '/events', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            client_event_id: clientEventId,
-            sequence,
-            bat_runs: batRuns,
-            extra_runs: extraRuns,
-            extra_type: extraType,
-            legal_ball: legalBall,
-            is_wicket: isWicket
-          })
+          body: JSON.stringify(payload)
         });
 
         if (res.ok) {
           const data = await res.json();
           // If SSE stream is disconnected or inactive, apply local update as fallback
           if (!isSseConnected) {
-            const fallbackEvent = data.event || {
-              client_event_id: clientEventId,
-              sequence,
-              bat_runs: batRuns,
-              extra_runs: extraRuns,
-              extra_type: extraType,
-              legal_ball: legalBall,
-              is_wicket: isWicket
-            };
+            const fallbackEvent = data.event || payload;
             renderScoreState(data.state, fallbackEvent, data.broadcast_type);
             logFeedItem(data.state, fallbackEvent);
           }
           renderMatchCharts();
-          let desc = isWicket ? '🛑 WICKET!' : (batRuns === 4 ? '🏏 FOUR!' : (batRuns === 6 ? '🚀 SIX!' : (extraType !== 'NONE' ? extraType + ' (+1)' : batRuns + ' run(s)')));
+          let desc = isWicket ? '🛑 WICKET!' : (batRuns === 4 ? '🏏 FOUR!' : (batRuns === 6 ? '🚀 SIX!' : (extraType !== 'NONE' ? extraType + ' (+' + (extraRuns || 1) + ')' : batRuns + ' run(s)')));
           showToast('Delivered: ' + desc);
         }
       } catch (err) {
         // Network drop during request: save to outbox
-        offlineDeliveries.push({
-          client_event_id: clientEventId,
-          sequence,
-          bat_runs: batRuns,
-          extra_runs: extraRuns,
-          extra_type: extraType,
-          legal_ball: legalBall,
-          is_wicket: isWicket
-        });
+        offlineDeliveries.push(payload);
         updateSyncUI();
         showToast('⚠️ Network failure: Delivery queued in outbox');
       }
     }
+
+    async function undoLastDelivery() {
+      try {
+        const res = await fetch('/api/v1/scoring/matches/' + matchId + '/undo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          renderScoreState(data.state, null, 'UNDO_DELIVERY');
+          const strip = document.getElementById('overBallStrip');
+          if (strip && strip.lastElementChild) {
+            strip.removeChild(strip.lastElementChild);
+            if (strip.children.length === 0) {
+              strip.innerHTML = '<div class="ball-bubble dot">•</div>';
+            }
+          }
+          if (data.undone_event && data.undone_event.is_wicket) {
+            const fowStrip = document.getElementById('fowStrip');
+            if (fowStrip && fowStrip.lastElementChild) {
+              fowStrip.removeChild(fowStrip.lastElementChild);
+            }
+          }
+          const feed = document.getElementById('scoringFeed');
+          if (feed) {
+            const item = document.createElement('div');
+            item.className = 'feed-item';
+            item.style.color = 'var(--amber)';
+            item.innerHTML = '<span>↺ Delivery Undone (Over ' + (data.state.overs_display || '0.0') + ')</span><span style="color: var(--text-muted); font-weight: 600;">' + data.state.runs + '/' + data.state.wickets + '</span>';
+            feed.prepend(item);
+          }
+          showToast('↺ Last delivery undone');
+        } else {
+          const err = await res.json();
+          showToast('⚠️ ' + (err.error || 'Cannot undo delivery'));
+        }
+      } catch (e) {
+        showToast('⚠️ Error undoing delivery: Network error');
+      }
+    }
+
+    async function swapMatchStrike() {
+      try {
+        const res = await fetch('/api/v1/scoring/matches/' + matchId + '/swap-strike', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          renderScoreState(data.state, null, 'STRIKE_SWAPPED');
+          showToast('⚡ Strike rotated');
+        }
+      } catch (e) {
+        showToast('⚠️ Error swapping strike');
+      }
+    }
+
+    function promptBowlerChange(state) {
+      const modal = document.getElementById('modalBowlerRotation');
+      if (!modal) return;
+      const desc = document.getElementById('bowlerModalDesc');
+      const prevBowler = state.previous_bowler_id || state.current_bowler_id;
+      if (desc && prevBowler) {
+        const bowlerDisplayName = state.bowlers?.[prevBowler]?.name || prevBowler;
+        desc.innerHTML = 'Over has concluded (' + (state.overs_display || '1.0') + ' ov). Select the next bowler.<br><span style="color: var(--amber); font-weight: 700; margin-top: 0.35rem; display: inline-block;">⚠️ ' + bowlerDisplayName + ' cannot bowl two consecutive overs (MCC Law 21).</span>';
+      }
+      const optPrev = document.getElementById('optPrevBowler');
+      if (optPrev && prevBowler) {
+        optPrev.value = prevBowler;
+        optPrev.textContent = (state.bowlers?.[prevBowler]?.name || prevBowler) + ' (Current Bowler - Cannot Bowl Consecutively)';
+        optPrev.disabled = true;
+      }
+      modal.classList.add('active');
+    }
+
+    function closeBowlerModal() {
+      const modal = document.getElementById('modalBowlerRotation');
+      if (modal) modal.classList.remove('active');
+    }
+
+    async function confirmBowlerChange() {
+      const sel = document.getElementById('nextBowlerSelect');
+      if (!sel) return;
+      const bowlerId = sel.value;
+      const bowlerName = sel.options[sel.selectedIndex]?.text.split('(')[0].trim();
+      try {
+        const res = await fetch('/api/v1/scoring/matches/' + matchId + '/bowler', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bowler_id: bowlerId, bowler_name: bowlerName, enforce_rule: true })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          renderScoreState(data.state, null, 'BOWLER_CHANGED');
+          closeBowlerModal();
+          showToast('🏏 Next Bowler set: ' + bowlerName);
+        } else {
+          const err = await res.json();
+          showToast('⚠️ ' + (err.error || 'Bowler change rejected'));
+        }
+      } catch (e) {
+        showToast('⚠️ Error updating bowler');
+      }
+    }
+
+    // Global keyboard listener for Undo (Ctrl+Z / Cmd+Z)
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        if (activeTag !== 'input' && activeTag !== 'textarea') {
+          e.preventDefault();
+          undoLastDelivery();
+        }
+      }
+    });
 
     function resetMatchScore() {
       runs = 0; wickets = 0; legalBalls = 0; sequence = 0;

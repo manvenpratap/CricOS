@@ -31,11 +31,8 @@ PYTHON_BIN="$(command -v python3 || command -v python || true)"
 if [ -n "$PYTHON_BIN" ]; then
     for candidate in \
         "$SCRIPT_DIR/pipeline.py" \
-        "$SCRIPT_DIR/scripts/pipeline.py" \
-        "$SKILL_ROOT/scripts/pipeline.py" \
-        "/Volumes/Study/Projects/universal-pipeline/scripts/pipeline.py" \
-        "/Users/manvenpratapsingh/.gemini/config/skills/universal-pipeline/scripts/pipeline.py"; do
-        if [ -f "$candidate" ]; then
+        "$SCRIPT_DIR/scripts/pipeline.py"; do
+        if [ -f "$candidate" ] && [ -r "$candidate" ]; then
             exec "$PYTHON_BIN" "$candidate" "$@"
         fi
     done
@@ -106,7 +103,7 @@ EOF
                 fi
             done
         fi
-        [ -f pom.xml ] && mvn package -DskipTests -q
+        [ -f pom.xml ] && mvn package -DskipTests -q || true
         ;;
     doc)
         if [ -f PROJECT_CONTEXT.md ]; then

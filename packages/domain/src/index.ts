@@ -6,3 +6,4 @@ export * from './tournament.js';
 export * from './provider.js';
 export * from './incident.js';
 export * from './reputation.js';
+export * from './intelligence.js';

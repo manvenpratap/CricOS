@@ -37,6 +37,9 @@ import { reputationRoutes } from './modules/reputation/routes.js';
 import { officialsRoutes } from './modules/officials/routes.js';
 import { conversationsRoutes } from './modules/conversations/routes.js';
 import { adminRoutes } from './modules/admin/routes.js';
+import { operationsExtendedRoutes } from './modules/operations/extended-routes.js';
+import { intelligenceRoutes } from './modules/intelligence/routes.js';
+import { promotionsAndSponsorshipRoutes } from './modules/promotions-and-sponsorship/routes.js';
 
 import { AppError } from './platform/errors.js';
 import { recordAuditEvent } from './platform/audit.js';
@@ -286,6 +289,9 @@ export function buildServer(): FastifyInstance {
     api.register(officialsRoutes);
     api.register(conversationsRoutes);
     api.register(adminRoutes);
+    api.register(operationsExtendedRoutes);
+    api.register(intelligenceRoutes);
+    api.register(promotionsAndSponsorshipRoutes);
   }, { prefix: '/api/v1' });
 
   return server;

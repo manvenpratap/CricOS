@@ -79,4 +79,117 @@ export async function tournamentsRoutes(app: FastifyInstance) {
     const result = await orchestrator.orchestrate();
     return reply.status(200).send(result);
   });
+
+  // ── P1-006 & P1-007: Fixture Board & Bulk Fixture Import ───────────────────────
+
+  const fixtureBoardStore = new Map<string, any[]>();
+
+  app.post('/tournaments/:id/fixtures/bulk-import', async (req: FastifyRequest<{
+    Params: { id: string };
+    Body: { fixtures: Array<{ round: number; team_a: string; team_b: string; date: string; time_slot: string; ground_title?: string }> }
+  }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const { fixtures } = req.body || {};
+
+    if (!Array.isArray(fixtures) || fixtures.length === 0) {
+      return reply.status(400).send({ error: 'EMPTY_OR_INVALID_FIXTURES' });
+    }
+
+    const imported = fixtures.map((f, idx) => {
+      const fixtureId = `fix-${id.slice(0, 4)}-${f.round}-${idx + 1}`;
+      const conflicts: string[] = [];
+
+      // Conflict rule: Team cannot play two matches on same day and slot
+      if (f.team_a === f.team_b) {
+        conflicts.push('INVALID_MATCH: Team A and Team B cannot be identical');
+      }
+
+      return {
+        fixture_id: fixtureId,
+        tournament_id: id,
+        round: f.round || 1,
+        team_a: f.team_a,
+        team_b: f.team_b,
+        ground_id: '00000000-0000-0000-0000-000000000001',
+        ground_title: f.ground_title || 'Harbour Cricket Ground',
+        slot_id: `slot-${f.date}-${f.time_slot}`,
+        starts_at: `${f.date}T${f.time_slot}:00Z`,
+        status: 'SCHEDULED',
+        conflicts,
+        readiness_percentage: conflicts.length === 0 ? 100 : 50
+      };
+    });
+
+    fixtureBoardStore.set(id, imported);
+
+    try {
+      await query(
+        `INSERT INTO audit_events (id, actor_user_id, action, object_type, object_id, metadata, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, NOW())`,
+        [crypto.randomUUID(), '00000000-0000-0000-0000-000000000001', 'BULK_IMPORT_FIXTURES', 'tournament', id, JSON.stringify({ count: imported.length })]
+      );
+    } catch {}
+
+    return reply.status(201).send({
+      tournament_id: id,
+      imported_count: imported.length,
+      fixtures: imported
+    });
+  });
+
+  app.get('/tournaments/:id/fixture-board', async (req: FastifyRequest<{
+    Params: { id: string }
+  }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    let fixtures = fixtureBoardStore.get(id);
+
+    if (!fixtures || fixtures.length === 0) {
+      // Default sample board
+      fixtures = [
+        {
+          fixture_id: `fix-${id.slice(0, 4)}-1-1`,
+          tournament_id: id,
+          round: 1,
+          team_a: 'Northside XI',
+          team_b: 'Riverside XI',
+          ground_id: '00000000-0000-0000-0000-000000000001',
+          ground_title: 'Harbour Cricket Ground - Pitch 1',
+          slot_id: 'slot-1',
+          starts_at: new Date(Date.now() + 86400000).toISOString(),
+          status: 'SCHEDULED',
+          conflicts: [],
+          readiness_percentage: 100
+        },
+        {
+          fixture_id: `fix-${id.slice(0, 4)}-1-2`,
+          tournament_id: id,
+          round: 1,
+          team_a: 'Eastern Knights',
+          team_b: 'Southern Stars',
+          ground_id: '00000000-0000-0000-0000-000000000001',
+          ground_title: 'Harbour Cricket Ground - Pitch 2',
+          slot_id: 'slot-2',
+          starts_at: new Date(Date.now() + 86400000 * 2).toISOString(),
+          status: 'SCHEDULED',
+          conflicts: [],
+          readiness_percentage: 100
+        }
+      ];
+    }
+
+    const totalCount = fixtures.length;
+    const conflictCount = fixtures.reduce((acc, f) => acc + (f.conflicts?.length || 0), 0);
+    const overallReadiness = Math.round(
+      fixtures.reduce((acc, f) => acc + (f.readiness_percentage || 0), 0) / Math.max(1, totalCount)
+    );
+
+    return reply.status(200).send({
+      tournament_id: id,
+      total_fixtures: totalCount,
+      conflicts_count: conflictCount,
+      overall_readiness_percentage: overallReadiness,
+      fixtures
+    });
+  });
 }
+

@@ -7,7 +7,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | Module / Workspace | Test File | Covered Capabilities |
 | :--- | :--- | :--- |
 | `packages/contracts` | `test/contracts.test.ts` | Shared schemas, DTOs, payload validation |
-| `packages/scoring` | `test/scoring.test.ts` | MCC Laws scoring engine, strike rotation, bowling figures, maidens |
+| `packages/scoring` | `test/scoring.test.ts` | MCC Laws scoring engine, strike rotation, bowling figures, maidens, single-ball undo, bowler rotation, free hit tracking, strike swap, innings close |
 | `packages/domain` | `test/domain.test.ts` | Match status FSM, hold timeouts, points allocation, Bayesian ratings, trust transitions |
 | `packages/commercial` | `test/ledger.test.ts` | Double-entry chart of accounts, zero-sum balancing, refund journals |
 | `apps/api` | `test/api.test.ts` | Modular API route endpoints under `/api/v1` |
@@ -29,9 +29,13 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | Root | `tests/migrations-and-seed.test.ts` | Schema reconciliation and database seed integrity (19 sequential migrations) |
 | Root | `tests/23-sessions-and-consents.test.ts` | Identity Sessions, Refresh Tokens, Consents & Profile Updates |
 | Root | `tests/24-officials-availability-desk.test.ts` | Officials Availability Desk, Rule-based Availability & Assignment Workflow |
-| Root | `tests/25-match-lifecycle-and-sync.test.ts` | Match Lifecycle, Fixture Configuration, Timeline, Pause/Resume & Scoring Sync |
+| Root | `tests/25-match-lifecycle-and-sync.test.ts` | Match Lifecycle, Fixture Configuration, Timeline, Pause/Resume, Scoring Sync, Single-Ball Undo, Strike Swap, Bowler Rotation & Innings Close |
 | Root | `tests/26-suborders-and-invoicing.test.ts` | Multi-Provider Basket Checkout, Suborders Breakdown, Order Cancellation & GST Invoicing |
 | Root | `tests/27-conversations-and-admin-policies.test.ts` | Contextual Conversations, Notification Preferences & Admin Policy Desk |
+| Root | `tests/28-rfq-and-commerce.test.ts` | RFQ & Quotes, Physical Commerce & Gear, Scorer & Media Marketplace, Promotional Coupons & Subsidy Ledger (P1-001, P1-002, P1-004, P1-005, P1-009, P1-012) |
+| Root | `tests/29-tournament-ops-and-scheduling.test.ts` | Tournament Fixture Command Centre, Conflict Detection Engine, Readiness Percentage & Bulk Fixture Import (P1-006, P1-007) |
+| Root | `tests/30-analytics-insights-and-fulfilment.test.ts` | Player of the Match (MVP) Impact Points, AI Match Narrative & Turning Points, Smart Recommendations, Broadcast Overlays, Provider Arrival OTP & 3-Party Sign-Off, Social Feed & Logistics (P1-008, P1-010, P1-011, P2-001, P2-002, P2-005, P2-007) |
+| Root | `tests/31-sponsorship-auctions-and-p2-p3.test.ts` | Sponsorship Inventory & Pledges, Virtual Player Auction Bidding Engine, Weather-Triggered Rain Insurance, Academies, Dynamic Surge Pricing & Multi-Currency (P2-003, P2-004, P2-006, P2-008, P3-001, P3-002) |
 
 ## Execution Protocol
 ```bash
