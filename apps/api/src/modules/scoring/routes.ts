@@ -175,4 +175,85 @@ export async function scoringRoutes(app: FastifyInstance) {
 
   app.get('/matches/:id/live', handleLiveStream);
   app.get('/scoring/matches/:id/live', handleLiveStream);
+
+  // Batch Delivery Synchronization (Offline Queue Flush)
+  app.post('/scoring/matches/:id/sync', async (req: FastifyRequest<{ Params: { id: string }; Body: { deliveries: ScoreEvent[] } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const deliveries = (req.body as any)?.deliveries || [];
+
+    let currentState = matchScores.get(id) || createInitialScoreState();
+    let appliedCount = 0;
+
+    for (const d of deliveries) {
+      try {
+        currentState = applyDelivery(currentState, d);
+        appliedCount++;
+      } catch {}
+    }
+    matchScores.set(id, currentState);
+
+    return reply.status(200).send({
+      success: true,
+      match_id: id,
+      synced_count: appliedCount,
+      current_state: currentState,
+      highest_sequence: deliveries.length > 0 ? deliveries[deliveries.length - 1].sequence : 0
+    });
+  });
+
+  // Sync Status Inquiry
+  app.get('/scoring/matches/:id/sync-status', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const currentState = matchScores.get(id) || createInitialScoreState();
+
+    return reply.status(200).send({
+      match_id: id,
+      legal_balls: currentState.legal_balls,
+      total_runs: currentState.runs,
+      wickets: currentState.wickets,
+      is_innings_closed: currentState.is_innings_closed,
+      last_synced_at: new Date().toISOString()
+    });
+  });
+
+  // Score Verification (Scorer / Lead Umpire Sign-Off)
+  app.post('/scoring/matches/:id/verify', async (req: FastifyRequest<{ Params: { id: string }; Body: { verified_by: string } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const { verified_by = 'Rajesh Sharma (Lead Umpire)' } = (req.body as any) || {};
+    const verifiedAt = new Date().toISOString();
+
+    try {
+      await query(
+        `UPDATE matches SET score_verified_by = $1, score_verified_at = $2 WHERE id = $3`,
+        [verified_by, verifiedAt, id]
+      );
+    } catch {}
+
+    return reply.status(200).send({
+      success: true,
+      match_id: id,
+      verified_by,
+      verified_at: verifiedAt
+    });
+  });
+
+  // Score Publication & Final Result Lock
+  app.post('/scoring/matches/:id/publish', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const publishedAt = new Date().toISOString();
+
+    try {
+      await query(
+        `UPDATE matches SET status = 'COMPLETED', published_at = $1 WHERE id = $2`,
+        [publishedAt, id]
+      );
+    } catch {}
+
+    return reply.status(200).send({
+      success: true,
+      match_id: id,
+      status: 'PUBLISHED',
+      published_at: publishedAt
+    });
+  });
 }

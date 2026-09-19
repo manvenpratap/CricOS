@@ -26,7 +26,12 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | Root | `tests/tournament-emulation.test.ts` | End-to-end synthetic tournament lifecycle, round-robin scheduling, NRR calculation, double-entry settlement verification |
 | Root | `tests/operational-telemetry.test.ts` | Prometheus metrics text exposition, request latency histograms, event loop lag, OpenAPI 3.0 & /docs showcase |
 | Root | `tests/distribution-packaging.test.ts` | Standalone distribution packaging, byte-for-byte HTML parity, release manifest hashes, Dockerfiles, App Store/Play Store compliance & visual assets, Floodlit Stadium Broadcast tokens |
-| Root | `tests/migrations-and-seed.test.ts` | Schema reconciliation and database seed integrity |
+| Root | `tests/migrations-and-seed.test.ts` | Schema reconciliation and database seed integrity (19 sequential migrations) |
+| Root | `tests/23-sessions-and-consents.test.ts` | Identity Sessions, Refresh Tokens, Consents & Profile Updates |
+| Root | `tests/24-officials-availability-desk.test.ts` | Officials Availability Desk, Rule-based Availability & Assignment Workflow |
+| Root | `tests/25-match-lifecycle-and-sync.test.ts` | Match Lifecycle, Fixture Configuration, Timeline, Pause/Resume & Scoring Sync |
+| Root | `tests/26-suborders-and-invoicing.test.ts` | Multi-Provider Basket Checkout, Suborders Breakdown, Order Cancellation & GST Invoicing |
+| Root | `tests/27-conversations-and-admin-policies.test.ts` | Contextual Conversations, Notification Preferences & Admin Policy Desk |
 
 ## Execution Protocol
 ```bash

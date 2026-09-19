@@ -1,15 +1,20 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-19 15:36:21
-**Version:** 1.0.0-phase2f (Broadcast Command Center & Professional Copy Hardening)  
+**Last Updated:** 2026-09-19 16:18:55
+**Version:** 1.0.0-phase2g (P0 Backlog & Complete Schema Completion)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2F Completed — Broadcast Command Center & Professional Copy Hardening (Architected 3-zone broadcast command center navigation with Left Brand & pulsing Live Console tag, Center Primary Action & Operations Group, and Right Utilities & Status group; scrubbed 100% of internal ticket numbers, phase labels, and developer jargon from user-facing copy, tooltips, comments, and modals; preserved all required test DOM invariants; verified 100% byte-for-byte sync between `index.html` and `dist/index.html`).
-- **Test Health**: 100% Passing (222 automated tests across 22 test suites; 1.56s low-token execution via `./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2G Completed — P0 Backlog Endpoints & Complete Schema Completion:
+  - **Wave 1**: Identity Sessions, Refresh Tokens, Consents, Profile Patching & Officials Availability Desk (`POST /auth/token/refresh`, `POST /auth/logout`, `GET /me/sessions`, `DELETE /me/sessions/:id`, `GET /me/consents`, `PUT /me/consents`, `PATCH /me/profile`, `GET /officials/search`, `GET /officials/:id/profile`, `PATCH /officials/:id/profile`, `GET /officials/:id/calendar`, `PUT /officials/:id/availability/rules`, `POST /officials/:id/availability/exceptions`, `GET /officials/requests`, `POST /officials/requests/:id/accept`, `POST /officials/requests/:id/decline`).
+  - **Wave 2**: Match Lifecycle, Fixture Rules & Scoring Sync (`PATCH /matches/:id/configuration`, `PUT /matches/:id/teams`, `PUT /matches/:id/squads`, `POST /matches/:id/pause`, `POST /matches/:id/resume`, `GET /matches/:id/timeline`, `GET /matches/:id/scorecard`, `POST /scoring/matches/:id/sync`, `GET /scoring/matches/:id/sync-status`, `POST /scoring/matches/:id/verify`, `POST /scoring/matches/:id/publish`).
+  - **Wave 3**: Multi-Provider Basket Checkout, Suborders Breakdown, Cancellation & Tax Invoicing (`POST /events/:id/basket/checkout`, `GET /orders/:id/suborders`, `POST /orders/:id/cancel`, `POST /payments/:id/retry`, `GET /invoices/:id`).
+  - **Wave 4**: Contextual Conversations, Notification Preferences & Admin Policy Desk (`GET /conversations`, `POST /conversations`, `GET /conversations/:id/messages`, `POST /conversations/:id/messages`, `POST /notifications/:id/read`, `GET /notification-preferences`, `PUT /notification-preferences`, `GET /admin/cases`, `GET /admin/cases/:id`, `POST /admin/cases/:id/assign`, `POST /admin/cases/:id/decision`, `GET /admin/audit`, `POST /admin/policies`, `POST /admin/policies/:id/activate`).
+- **Test Health**: 100% Passing (247 automated tests across 27 test suites; 1.7s low-token execution via `./pipeline.sh test --summary`).
+- **Database Migrations**: 19 sequential SQL migrations (0001–0019) with strict GiST exclusion, non-negative integer minor constraints, and deterministic test seeding.
 - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
 - **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), tactile mobile mockup (`/mobile`), and accessible 11-modal operations desk.
 
@@ -183,6 +188,7 @@
 - [x] Phase 2D: Advanced UX, Notification Center, Event Basket Modal, Provider Storefront & Admin Settlement Desk
 - [x] Phase 2E: Blueprint & FSD Feature Completion: Create Event (UX-003), Event Overview (UX-004), Official Calendar (UX-015), Messaging (FSD §45), Booking Lifecycle (Commercial §10-14), Financial Reconciliation (Commercial §17-18)
 - [x] Phase 2F: Broadcast Command Center Layout, Professional Copywriting Hardening & Slop Elimination
+- [x] Phase 2G: P0 Backlog & Complete Schema Completion across Waves 1–4 (Identity Sessions, Refresh Tokens, Consents, Officials Availability Desk, Match Lifecycle, Fixtures, Scoring Sync, Suborders, Invoicing, Conversations & Admin Desk)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 

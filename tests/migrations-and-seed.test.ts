@@ -9,10 +9,10 @@ describe('PostgreSQL Schema Migrations & Deterministic Seeding', () => {
   const db = newDb();
   db.registerExtension('btree_gist', () => {});
 
-  it('applies all 15 SQL migrations in strict sequence without errors', () => {
+  it('applies all SQL migrations in strict sequence without errors', () => {
     const dir = path.resolve('migrations');
     const files = fs.readdirSync(dir).filter(x => x.endsWith('.sql')).sort();
-    assert.equal(files.length, 15, 'Expected 15 migrations');
+    assert.equal(files.length, 19, 'Expected 19 migrations');
 
     for (const file of files) {
       const sql = fs.readFileSync(path.join(dir, file), 'utf8');

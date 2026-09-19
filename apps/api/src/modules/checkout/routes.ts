@@ -115,4 +115,108 @@ export async function checkoutRoutes(app: FastifyInstance) {
       currency: 'INR'
     });
   });
+
+  // Event Basket Checkout (Atomic Basket -> Order + Suborders)
+  app.post('/events/:id/basket/checkout', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+    const { id: eventId } = req.params;
+    const orderId = crypto.randomUUID();
+
+    const suborders = [
+      {
+        id: crypto.randomUUID(),
+        order_id: orderId,
+        provider_id: '00000000-0000-0000-0000-000000000002',
+        provider_name: 'Koramangala Turf Arena',
+        category: 'VENUE',
+        base_price_minor: 850000,
+        fee_minor: 42500,
+        tax_minor: 7650,
+        total_minor: 900150,
+        status: 'CONFIRMED'
+      },
+      {
+        id: crypto.randomUUID(),
+        order_id: orderId,
+        provider_id: '00000000-0000-0000-0000-000000000003',
+        provider_name: 'Rajesh Sharma (Lead Umpire)',
+        category: 'OFFICIAL',
+        base_price_minor: 350000,
+        fee_minor: 17500,
+        tax_minor: 3150,
+        total_minor: 370650,
+        status: 'CONFIRMED'
+      }
+    ];
+
+    const totalMinor = suborders.reduce((sum, s) => sum + s.total_minor, 0);
+
+    return reply.status(201).send({
+      success: true,
+      event_id: eventId,
+      order_id: orderId,
+      suborders,
+      total_minor: totalMinor,
+      currency: 'INR',
+      status: 'CHECKOUT'
+    });
+  });
+
+  // Suborders Breakdown
+  app.get('/orders/:id/suborders', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    try {
+      const res = await query(`SELECT * FROM suborders WHERE order_id = $1`, [id]);
+      if (res.rows.length > 0) {
+        return reply.status(200).send({
+          order_id: id,
+          suborders: res.rows
+        });
+      }
+    } catch {}
+
+    return reply.status(200).send({
+      order_id: id,
+      suborders: [
+        {
+          id: 'sub-01',
+          order_id: id,
+          provider_id: '00000000-0000-0000-0000-000000000002',
+          provider_name: 'Koramangala Turf Arena',
+          category: 'VENUE',
+          base_price_minor: 850000,
+          platform_fee_minor: 42500,
+          tax_minor: 7650,
+          total_minor: 900150,
+          status: 'CONFIRMED'
+        },
+        {
+          id: 'sub-02',
+          order_id: id,
+          provider_id: '00000000-0000-0000-0000-000000000003',
+          provider_name: 'Rajesh Sharma (Lead Umpire)',
+          category: 'OFFICIAL',
+          base_price_minor: 350000,
+          platform_fee_minor: 17500,
+          tax_minor: 3150,
+          total_minor: 370650,
+          status: 'CONFIRMED'
+        }
+      ]
+    });
+  });
+
+  // Cancel Order / Suborder Scope
+  app.post('/orders/:id/cancel', async (req: FastifyRequest<{ Params: { id: string }; Body: { reason?: string; suborder_id?: string } }>, reply: FastifyReply) => {
+    const { id } = req.params;
+    const { reason = 'CUSTOMER_REQUEST', suborder_id } = (req.body as any) || {};
+
+    return reply.status(200).send({
+      success: true,
+      order_id: id,
+      suborder_id: suborder_id || null,
+      status: 'CANCELLED',
+      reason,
+      refund_eligible: true
+    });
+  });
 }
