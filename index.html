@@ -1327,46 +1327,110 @@
       font-size: 1.25rem;
     }
 
-    /* Wagon Wheel Graphic */
+    /* Wagon Wheel Precision Stadium Graphic */
+    .wagon-wheel-card {
+      position: relative;
+      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(13, 20, 36, 0.88) 0%, rgba(8, 12, 22, 0.96) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(16px);
+      padding: 1.5rem;
+    }
     .wagon-wheel-container {
       position: relative;
       width: 100%;
-      max-width: 320px;
+      max-width: 360px;
       aspect-ratio: 1;
-      margin: 0 auto 1.25rem auto;
+      margin: 0.75rem auto 1.25rem auto;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 229, 153, 0.12) 0%, rgba(10, 16, 28, 0.95) 75%);
-      border: 2px dashed rgba(0, 229, 153, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
+      user-select: none;
     }
-    .pitch-strip {
-      position: absolute;
-      width: 24px;
-      height: 80px;
-      background: rgba(255, 184, 0, 0.35);
-      border: 1px solid rgba(255, 184, 0, 0.6);
-      border-radius: 3px;
+    .wagon-wheel-svg {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: visible;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+    }
+    .wagon-sector-wedge {
+      cursor: pointer;
+      transition: fill 0.2s ease, opacity 0.2s ease;
+      fill: transparent;
+    }
+    .wagon-sector-wedge:hover {
+      fill: rgba(0, 229, 153, 0.14);
+    }
+    .wagon-sector-wedge.active {
+      fill: rgba(0, 229, 153, 0.24);
     }
     .field-zone-btn {
       position: absolute;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(10, 16, 28, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       color: #F8FAFC;
-      border-radius: 6px;
-      padding: 0.2rem 0.45rem;
-      font-size: 0.65rem;
+      border-radius: 20px;
+      padding: 0.22rem 0.52rem;
+      font-size: 0.68rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      z-index: 10;
     }
-    .field-zone-btn:hover, .field-zone-btn.active {
+    .field-zone-btn:hover {
+      border-color: var(--cyan);
+      transform: scale(1.06);
+      background: rgba(15, 23, 42, 0.95);
+    }
+    .field-zone-btn.active {
       background: var(--turf-emerald);
       color: #04070D;
       border-color: var(--turf-emerald);
       transform: scale(1.08);
+      box-shadow: 0 0 14px rgba(0, 229, 153, 0.45);
+    }
+    .field-zone-runs {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 0.05rem 0.3rem;
+      border-radius: 10px;
+    }
+    .field-zone-btn.active .field-zone-runs {
+      background: rgba(0, 0, 0, 0.25);
+      color: #04070D;
+    }
+    .wagon-filter-pill {
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .wagon-filter-pill:hover, .wagon-filter-pill.active {
+      background: rgba(0, 229, 153, 0.12);
+      border-color: var(--turf-emerald);
+      color: var(--turf-emerald);
+      font-weight: 600;
+    }
+    .wagon-shot-ray {
+      transition: opacity 0.3s ease, stroke-width 0.2s ease;
+      cursor: pointer;
+    }
+    .wagon-shot-ray:hover {
+      stroke-width: 3.5px !important;
+      filter: drop-shadow(0 0 6px currentColor);
     }
 
     /* Roster Player Card */
@@ -1541,13 +1605,13 @@
 
   <!-- Navigation Tabs -->
   <div class="tabs-bar" role="tablist" aria-label="Operating system consoles and studios">
-    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-scoring" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip"><span class="tab-icon">🏏</span> Match Center</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-teams" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes"><span class="tab-icon">👥</span> Teams &amp; Rosters</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tournaments" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard"><span class="tab-icon">🏆</span> Tournaments</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-marketplace" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold"><span class="tab-icon">🛒</span> Venues &amp; Turfs</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships"><span class="tab-icon">🎯</span> Scoring Studio</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-incidents" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection"><span class="tab-icon">🛡️</span> Fair Play &amp; Trust</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-explorer" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector"><span class="tab-icon">⚡</span> Operations &amp; APIs</button>
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-scoring" data-tab="scoring" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip"><span class="tab-icon">🏏</span> Match Center</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-teams" data-tab="teams" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes"><span class="tab-icon">👥</span> Teams &amp; Rosters</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tournaments" data-tab="tournaments" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard"><span class="tab-icon">🏆</span> Tournaments</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-marketplace" data-tab="marketplace" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold"><span class="tab-icon">🛒</span> Venues &amp; Turfs</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-studio" data-tab="studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships"><span class="tab-icon">🎯</span> Scoring Studio</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-incidents" data-tab="incidents" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection"><span class="tab-icon">🛡️</span> Fair Play &amp; Trust</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-explorer" data-tab="explorer" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector"><span class="tab-icon">⚡</span> Operations &amp; APIs</button>
   </div>
 
   <!-- Global Stadium Telemetry Strip -->
@@ -1595,7 +1659,7 @@
             <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
               <div class="match-meta">T20 Championship • Innings 2 • Match ID: <span id="currentMatchId" style="font-family: monospace; color: var(--cyan);">match-pilot-1</span></div>
               <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
-              <button class="nav-pill" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
+              <button class="nav-pill" id="btnConductToss" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
               <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
             </div>
           </div>
@@ -1683,11 +1747,53 @@
             <span class="fow-pill" data-tooltip="Wicket 3: V. Kohli caught behind off Siraj">112/3 <small>(13.1 ov)</small></span>
           </div>
         </div>
+
+        <!-- Fan Cheering & Community Pulse Console (Active for FAN persona) -->
+        <div id="fanCheerSection" style="display: none; margin-top: 1.25rem; background: linear-gradient(135deg, rgba(192, 132, 252, 0.08) 0%, rgba(13, 20, 36, 0.95) 100%); border: 1px solid rgba(192, 132, 252, 0.25); border-radius: 12px; padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 1.25rem;">🎪</span>
+              <div>
+                <div style="font-size: 0.95rem; font-weight: 800; color: #FFF;">Fan Stadium Cheering &amp; Match Pulse</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Send real-time stadium cheers, crowd noise, and predict match turning points</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.72rem; color: var(--purple-light); font-weight: 700; background: rgba(192, 132, 252, 0.15); padding: 0.2rem 0.5rem; border-radius: 4px;">LIVE FAN SPECTATOR MODE</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Total Cheers: <strong id="fanTotalCheers" style="color: var(--purple-light); font-family: var(--font-mono);">1,428</strong></span>
+            </div>
+          </div>
+
+          <!-- Cheering Buttons -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.6rem; margin-bottom: 1rem;">
+            <button class="btn btn-secondary" onclick="sendFanCheer('🔥 Let's Go Bangalore!')" data-tooltip="Cheer for Bangalore Blasters with fire energy" style="border-color: rgba(255, 184, 0, 0.4); color: var(--amber);">🔥 Cheer BLR (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('👏 Clapping Strikers!')" data-tooltip="Applaud the active partnership" style="border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald);">👏 Applause (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('💥 Boundary Expected!')" data-tooltip="Predict boundary next delivery" style="border-color: rgba(0, 210, 255, 0.4); color: var(--cyan);">💥 Boundary (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('⚡ Maximum Six!')" data-tooltip="Call for a maximum 6" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple-light);">⚡ Sixer! (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('🛡️ Wicket Alert!')" data-tooltip="Back the bowling team for a breakthrough" style="border-color: rgba(255, 51, 102, 0.4); color: var(--rose);">🛡️ Breakthrough (+1)</button>
+          </div>
+
+          <!-- Fan Win Probability Prediction Poll -->
+          <div style="background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 0.75rem 1rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.35rem;">
+              <span style="font-weight: 700; color: #FFF;">Fan Win Prediction Poll:</span>
+              <span style="color: var(--text-muted);"><span id="fanVotePctBLR" style="color: var(--turf-emerald); font-weight: 700;">68% Bangalore</span> vs <span id="fanVotePctMUM" style="color: var(--cyan); font-weight: 700;">32% Mumbai</span></span>
+            </div>
+            <div style="height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; display: flex; margin-bottom: 0.5rem;">
+              <div id="fanVoteBarBLR" style="width: 68%; background: var(--turf-emerald); transition: width 0.3s;"></div>
+              <div id="fanVoteBarMUM" style="width: 32%; background: var(--cyan); transition: width 0.3s;"></div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+              <button class="btn btn-secondary" onclick="voteFanPoll('BLR')" style="width: auto; padding: 0.2rem 0.6rem; font-size: 0.7rem;" data-tooltip="Vote for Bangalore Blasters to win">Vote BLR</button>
+              <button class="btn btn-secondary" onclick="voteFanPoll('MUM')" style="width: auto; padding: 0.2rem 0.6rem; font-size: 0.7rem;" data-tooltip="Vote for Mumbai Super Strikers to win">Vote MUM</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="grid-2">
         <!-- Ball-by-Ball Scoring Pad -->
-        <div class="card">
+        <div class="card" id="cardMatchScoringPad">
           <div class="card-title">⚡ Interactive Ball-by-Ball Scoring Pad</div>
           <div class="card-desc">Click delivery buttons to trigger real-time scoring events via Fastify <code>POST /api/v1/matches/:id/score-events</code></div>
 
@@ -1978,12 +2084,13 @@
     <div id="tab-studio" class="tab-pane">
       <div class="grid-2">
         <!-- Studio Pad & Ball Logger -->
-        <div class="card">
+        <div class="card" id="cardStudioKeypad">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
             <div class="card-title">🎯 Scorer Studio & Tactical Pad</div>
-            <span class="rate-badge" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">TACTICAL SCORER MODE</span>
+            <span class="rate-badge" id="studioModePill" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">TACTICAL SCORER MODE</span>
           </div>
           <div class="card-desc">Select runs, trigger dismissals with fielders, or record extras with free hits</div>
+          <div id="captainTacticalNotice" style="display: none; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700;">👑 Captain Tactical View: Wagon Wheel &amp; Shot Telemetry (Official ball scoring managed by Scorer)</div>
 
           <!-- Active Batters on Field -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
@@ -2026,30 +2133,179 @@
 
         <!-- Wagon Wheel & Partnerships -->
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-          <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <div class="card-title">🏏 8-Zone Wagon Wheel</div>
-              <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;" id="wagonWheelSelectedZone">ZONE: EXTRA COVER</span>
+          <div class="card wagon-wheel-card" id="wagonWheelCard">
+            <!-- Header: Title, Stance Switcher, Selected Zone Badge -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div class="card-title" style="margin: 0; font-size: 1.05rem;">8-Zone Precision Wagon Wheel</div>
+                <div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2px;">
+                  <button type="button" class="btn-stance active" id="btnStanceRhb" onclick="setBatterStance('RHB')" data-tooltip="Right-Handed Batsman orientation (Off-side Left, Leg-side Right)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: var(--turf-emerald); color: #04070D; cursor: pointer;">RHB</button>
+                  <button type="button" class="btn-stance" id="btnStanceLhb" onclick="setBatterStance('LHB')" data-tooltip="Left-Handed Batsman orientation (Off-side Right, Leg-side Left)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: transparent; color: #8E9BAE; cursor: pointer;">LHB</button>
+                </div>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 6px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25);" id="wagonWheelSelectedZone">ZONE: EXTRA COVER (OFF-SIDE)</span>
             </div>
-            <div class="card-desc">Click field zone on ground to map batting trajectory</div>
 
+            <!-- Filter Strip: Shot Types & Batter Selection -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 0.75rem;">
+              <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;" id="wagonShotFilters">
+                <button type="button" class="wagon-filter-pill active" onclick="filterWagonShots('ALL', this)" data-tooltip="Show all recorded deliveries">All Shots (18)</button>
+                <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('BOUNDARIES', this)" data-tooltip="Show 4s and 6s only">4s &amp; 6s (6)</button>
+                <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('SINGLES', this)" data-tooltip="Show 1s, 2s, 3s only">Singles / 2s (8)</button>
+                <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('DOTS', this)" data-tooltip="Show dot balls">Dots (4)</button>
+              </div>
+              <div style="font-size: 0.72rem; color: #8E9BAE;">
+                Facing: <strong style="color: #FFFFFF;" id="wagonFacingBatter">Virat Sharma</strong>
+              </div>
+            </div>
+
+            <!-- Stadium Outfield SVG Visualizer -->
             <div class="wagon-wheel-container">
-              <div class="pitch-strip"></div>
-              <!-- 8 Field Zones -->
-              <button class="field-zone-btn" style="top: 8px; left: 50%; transform: translateX(-50%);" onclick="selectShotZone('LONG_OFF', this)" data-tooltip="Straight Long Off">Long Off</button>
-              <button class="field-zone-btn" style="bottom: 8px; left: 50%; transform: translateX(-50%);" onclick="selectShotZone('FINE_LEG', this)" data-tooltip="Fine Leg">Fine Leg</button>
-              <button class="field-zone-btn active" style="left: 10px; top: 50%; transform: translateY(-50%);" onclick="selectShotZone('EXTRA_COVER', this)" data-tooltip="Extra Cover / Covers">Cover</button>
-              <button class="field-zone-btn" style="right: 10px; top: 50%; transform: translateY(-50%);" onclick="selectShotZone('MID_WICKET', this)" data-tooltip="Deep Mid Wicket">Mid Wkt</button>
-              <button class="field-zone-btn" style="top: 35px; left: 35px;" onclick="selectShotZone('POINT', this)" data-tooltip="Backward Point / Point">Point</button>
-              <button class="field-zone-btn" style="top: 35px; right: 35px;" onclick="selectShotZone('LONG_ON', this)" data-tooltip="Straight Long On">Long On</button>
-              <button class="field-zone-btn" style="bottom: 35px; left: 35px;" onclick="selectShotZone('THIRD_MAN', this)" data-tooltip="Third Man">Third Man</button>
-              <button class="field-zone-btn" style="bottom: 35px; right: 35px;" onclick="selectShotZone('SQUARE_LEG', this)" data-tooltip="Deep Square Leg">Sq Leg</button>
+              <svg class="wagon-wheel-svg" id="wagonWheelSvg" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <!-- Stadium Grass Radial Gradient -->
+                  <radialGradient id="turfGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" stop-color="#0E3324"/>
+                    <stop offset="60%" stop-color="#092418"/>
+                    <stop offset="90%" stop-color="#05170F"/>
+                    <stop offset="100%" stop-color="#030C08"/>
+                  </radialGradient>
+                  <!-- Pitch Clay Gradient -->
+                  <linearGradient id="pitchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#8C6E3D"/>
+                    <stop offset="50%" stop-color="#A38350"/>
+                    <stop offset="100%" stop-color="#8C6E3D"/>
+                  </linearGradient>
+                  <!-- Boundary Glow -->
+                  <filter id="boundaryGlow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                  </filter>
+                </defs>
+
+                <!-- Ground Circle -->
+                <circle cx="180" cy="180" r="168" fill="url(#turfGrad)" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" filter="url(#boundaryGlow)"/>
+                
+                <!-- Concentric Mower Stripes -->
+                <circle cx="180" cy="180" r="140" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>
+                <circle cx="180" cy="180" r="110" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>
+                <circle cx="180" cy="180" r="80" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>
+                <circle cx="180" cy="180" r="50" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>
+
+                <!-- 30-Yard Infield Circle -->
+                <circle cx="180" cy="180" r="88" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.2" stroke-dasharray="4,4"/>
+                <text x="180" y="98" fill="rgba(0, 210, 255, 0.6)" font-size="6.5" font-family="var(--font-mono)" text-anchor="middle" letter-spacing="1">30 YD CIRCLE</text>
+
+                <!-- Outer Boundary Rope (75m) -->
+                <circle cx="180" cy="180" r="162" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5"/>
+                <text x="180" y="26" fill="rgba(255, 255, 255, 0.45)" font-size="7" font-family="var(--font-mono)" text-anchor="middle">75m BOUNDARY ROPE</text>
+
+                <!-- 8 Radial Sector Lines -->
+                <line x1="180" y1="18" x2="180" y2="342" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+                <line x1="18" y1="180" x2="342" y2="180" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+                <line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+                <line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+
+                <!-- Interactive 8 Sector Slices (Paths) -->
+                <g id="wagonSectorSlices">
+                  <!-- LONG_ON: 0° to 45° -->
+                  <path id="wedge_LONG_ON" class="wagon-sector-wedge" d="M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z" onclick="selectShotZone('LONG_ON')" data-tooltip="Long On (Leg-Side Straight)"/>
+                  <!-- MID_WICKET: 45° to 90° -->
+                  <path id="wedge_MID_WICKET" class="wagon-sector-wedge" d="M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z" onclick="selectShotZone('MID_WICKET')" data-tooltip="Deep Mid Wicket (Leg-Side Forward)"/>
+                  <!-- SQUARE_LEG: 90° to 135° -->
+                  <path id="wedge_SQUARE_LEG" class="wagon-sector-wedge" d="M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z" onclick="selectShotZone('SQUARE_LEG')" data-tooltip="Deep Square Leg (Leg-Side Square)"/>
+                  <!-- FINE_LEG: 135° to 180° -->
+                  <path id="wedge_FINE_LEG" class="wagon-sector-wedge" d="M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z" onclick="selectShotZone('FINE_LEG')" data-tooltip="Fine Leg (Leg-Side Behind)"/>
+                  <!-- THIRD_MAN: 180° to 225° -->
+                  <path id="wedge_THIRD_MAN" class="wagon-sector-wedge" d="M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z" onclick="selectShotZone('THIRD_MAN')" data-tooltip="Third Man (Off-Side Behind)"/>
+                  <!-- POINT: 225° to 270° -->
+                  <path id="wedge_POINT" class="wagon-sector-wedge" d="M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z" onclick="selectShotZone('POINT')" data-tooltip="Point (Off-Side Square)"/>
+                  <!-- EXTRA_COVER: 270° to 315° -->
+                  <path id="wedge_EXTRA_COVER" class="wagon-sector-wedge active" d="M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z" onclick="selectShotZone('EXTRA_COVER')" data-tooltip="Extra Cover (Off-Side Forward)"/>
+                  <!-- LONG_OFF: 315° to 360° -->
+                  <path id="wedge_LONG_OFF" class="wagon-sector-wedge" d="M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z" onclick="selectShotZone('LONG_OFF')" data-tooltip="Long Off (Off-Side Straight)"/>
+                </g>
+
+                <!-- Pitch Strip in Center -->
+                <rect x="168" y="140" width="24" height="80" rx="3" fill="url(#pitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
+                <!-- Bowling Crease & Popping Crease (Bowler's End - Top) -->
+                <line x1="164" y1="150" x2="196" y2="150" stroke="#FFFFFF" stroke-width="1.2"/>
+                <line x1="168" y1="156" x2="192" y2="156" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>
+                <!-- Stumps (Bowler's End) -->
+                <circle cx="177" cy="148" r="1" fill="#FFFFFF"/>
+                <circle cx="180" cy="148" r="1" fill="#FFFFFF"/>
+                <circle cx="183" cy="148" r="1" fill="#FFFFFF"/>
+
+                <!-- Bowling Crease & Popping Crease (Striker's End - Bottom) -->
+                <line x1="164" y1="210" x2="196" y2="210" stroke="#FFFFFF" stroke-width="1.2"/>
+                <line x1="168" y1="204" x2="192" y2="204" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>
+                <!-- Stumps (Striker's End) -->
+                <circle cx="177" cy="212" r="1" fill="#FFFFFF"/>
+                <circle cx="180" cy="212" r="1" fill="#FFFFFF"/>
+                <circle cx="183" cy="212" r="1" fill="#FFFFFF"/>
+
+                <!-- Batsman Origin Marker -->
+                <circle cx="180" cy="204" r="3.5" fill="var(--turf-emerald)" stroke="#FFFFFF" stroke-width="1.5"/>
+
+                <!-- Off-Side / Leg-Side Arc Labels -->
+                <text x="35" y="174" fill="var(--cyan)" font-size="8" font-family="var(--font-mono)" font-weight="700" letter-spacing="0.5" id="wagonLabelOff">◀ OFF SIDE</text>
+                <text x="325" y="174" fill="var(--turf-emerald)" font-size="8" font-family="var(--font-mono)" font-weight="700" text-anchor="end" letter-spacing="0.5" id="wagonLabelLeg">LEG SIDE ▶</text>
+
+                <!-- Dynamic Shot Trajectory Rays Group -->
+                <g id="wagonWheelRays">
+                  <!-- Generated dynamically by JS -->
+                </g>
+              </svg>
+
+              <!-- 8 Factually Accurate Outer Perimeter Field Zone Buttons -->
+              <!-- Long Off: ~337.5° (Top-Left Straight) -->
+              <button type="button" class="field-zone-btn" style="top: 14px; left: 24%; transform: translateX(-50%);" onclick="selectShotZone('LONG_OFF', this)" data-tooltip="Long Off: Straight off-side drive">
+                <span>Long Off</span> <span class="field-zone-runs" id="zoneRuns_LONG_OFF">4r</span>
+              </button>
+              <!-- Long On: ~22.5° (Top-Right Straight) -->
+              <button type="button" class="field-zone-btn" style="top: 14px; left: 76%; transform: translateX(-50%);" onclick="selectShotZone('LONG_ON', this)" data-tooltip="Long On: Straight leg-side drive">
+                <span>Long On</span> <span class="field-zone-runs" id="zoneRuns_LONG_ON">8r</span>
+              </button>
+              <!-- Deep Mid Wicket: ~67.5° (Upper-Right Forward) -->
+              <button type="button" class="field-zone-btn" style="top: 26%; right: 4px;" onclick="selectShotZone('MID_WICKET', this)" data-tooltip="Deep Mid Wicket: Forward of square on leg side">
+                <span>Mid Wkt</span> <span class="field-zone-runs" id="zoneRuns_MID_WICKET">14r</span>
+              </button>
+              <!-- Deep Square Leg: ~112.5° (Mid-Right Square) -->
+              <button type="button" class="field-zone-btn" style="top: 66%; right: 4px;" onclick="selectShotZone('SQUARE_LEG', this)" data-tooltip="Deep Square Leg: Square of the wicket on leg side">
+                <span>Sq Leg</span> <span class="field-zone-runs" id="zoneRuns_SQUARE_LEG">5r</span>
+              </button>
+              <!-- Fine Leg: ~157.5° (Lower-Right Behind) -->
+              <button type="button" class="field-zone-btn" style="bottom: 14px; left: 76%; transform: translateX(-50%);" onclick="selectShotZone('FINE_LEG', this)" data-tooltip="Fine Leg: Behind square on leg side">
+                <span>Fine Leg</span> <span class="field-zone-runs" id="zoneRuns_FINE_LEG">3r</span>
+              </button>
+              <!-- Third Man: ~202.5° (Lower-Left Behind) -->
+              <button type="button" class="field-zone-btn" style="bottom: 14px; left: 24%; transform: translateX(-50%);" onclick="selectShotZone('THIRD_MAN', this)" data-tooltip="Third Man: Behind square on off side">
+                <span>Third Man</span> <span class="field-zone-runs" id="zoneRuns_THIRD_MAN">1r</span>
+              </button>
+              <!-- Point: ~247.5° (Mid-Left Square) -->
+              <button type="button" class="field-zone-btn" style="top: 66%; left: 4px;" onclick="selectShotZone('POINT', this)" data-tooltip="Point: Square of the wicket on off side">
+                <span>Point</span> <span class="field-zone-runs" id="zoneRuns_POINT">4r</span>
+              </button>
+              <!-- Extra Cover: ~292.5° (Upper-Left Forward) -->
+              <button type="button" class="field-zone-btn active" style="top: 26%; left: 4px;" onclick="selectShotZone('EXTRA_COVER', this)" data-tooltip="Cover / Extra Cover: Forward of square on off side">
+                <span>Cover</span> <span class="field-zone-runs" id="zoneRuns_EXTRA_COVER">9r</span>
+              </button>
             </div>
 
-            <div style="display: flex; justify-content: space-around; font-size: 0.78rem; border-top: 1px solid var(--border-subtle); padding-top: 0.75rem;">
-              <div>Off Side: <strong style="color: var(--cyan);" id="wagonOffTally">58%</strong></div>
-              <div>Leg Side: <strong style="color: var(--turf-emerald);" id="wagonLegTally">42%</strong></div>
-              <div>Boundaries: <strong style="color: var(--amber);" id="wagonBoundaryTally">8 Hits</strong></div>
+            <!-- Telemetry & Distribution Bar -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.85rem; font-size: 0.78rem;">
+              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Off Side Ratio</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonOffTally">58% (27 runs)</div>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Leg Side Ratio</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonLegTally">42% (21 runs)</div>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Boundaries</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--amber); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonBoundaryTally">6 Hits (4x4, 2x6)</div>
+              </div>
             </div>
           </div>
 
@@ -2233,23 +2489,35 @@
         <!-- Persona Pills -->
         <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; display: block;">Select Active Persona</label>
         <div class="persona-pills-container">
-          <button class="persona-pill-btn active" onclick="selectPersona('CAPTAIN')" data-role="CAPTAIN" data-tooltip="Captain persona: Manage lineup, toss, declarations">
+          <button class="persona-pill-btn active" onclick="selectPersona('CAPTAIN')" data-role="CAPTAIN" data-tooltip="Captain persona: Manage Playing XI, toss, declarations, and tactical pad">
             <span class="persona-icon">👑</span>
             <span>Captain</span>
           </button>
-          <button class="persona-pill-btn" onclick="selectPersona('PLAYER')" data-role="PLAYER" data-tooltip="Player persona: Career stats, RSVP, and match fixtures">
+          <button class="persona-pill-btn" onclick="selectPersona('PLAYER')" data-role="PLAYER" data-tooltip="Player persona: Career stats, RSVP, squad roster, and match fixtures">
             <span class="persona-icon">🏏</span>
             <span>Player</span>
           </button>
-          <button class="persona-pill-btn" onclick="selectPersona('SCORER')" data-role="SCORER" data-tooltip="Official Scorer: Ball-by-ball scoring, dismissals, wagon wheel">
+          <button class="persona-pill-btn" onclick="selectPersona('SCORER')" data-role="SCORER" data-tooltip="Official Scorer: Ball-by-ball scoring, dismissals, wagon wheel, and match sign-off">
             <span class="persona-icon">📋</span>
             <span>Scorer</span>
           </button>
-          <button class="persona-pill-btn" onclick="selectPersona('ORGANISER')" data-role="ORGANISER" data-tooltip="Tournament Organiser: Create tourneys, fixtures, stage management">
+          <button class="persona-pill-btn" onclick="selectPersona('FAN')" data-role="FAN" data-tooltip="Fan persona: Live spectator broadcast, cheering console, polls, and MVP insights">
+            <span class="persona-icon">🎪</span>
+            <span>Fan</span>
+          </button>
+          <button class="persona-pill-btn" onclick="selectPersona('UMPIRE')" data-role="UMPIRE" data-tooltip="Official Umpire: Fair play reports, code of conduct breaches, DRS reviews, and sign-off">
+            <span class="persona-icon">⚖️</span>
+            <span>Umpire</span>
+          </button>
+          <button class="persona-pill-btn" onclick="selectPersona('ADMIN')" data-role="ADMIN" data-tooltip="Platform Admin: Unrestricted access across all consoles, ledgers, audit desk, and APIs">
+            <span class="persona-icon">⚡</span>
+            <span>Admin</span>
+          </button>
+          <button class="persona-pill-btn" onclick="selectPersona('ORGANISER')" data-role="ORGANISER" data-tooltip="Tournament Organiser: Fixture brackets, round-robin scheduler, and venue RFQs">
             <span class="persona-icon">🏆</span>
             <span>Organiser</span>
           </button>
-          <button class="persona-pill-btn" onclick="selectPersona('TURF_PROVIDER')" data-role="TURF_PROVIDER" data-tooltip="Turf Venue Owner: Manage hourly slots, pricing, and escrow payouts">
+          <button class="persona-pill-btn" onclick="selectPersona('TURF_PROVIDER')" data-role="TURF_PROVIDER" data-tooltip="Turf Venue Owner: Manage ground slots, surge pricing, and escrow payouts">
             <span class="persona-icon">🏟️</span>
             <span>Provider</span>
           </button>
@@ -3708,54 +3976,82 @@ cricos_active_sse_connections 1</pre>
 
   <!-- P1-001: Modal RFQ & Quote Negotiation -->
   <div class="modal-backdrop" id="modalRfq">
-    <div class="modal-card" style="max-width: 680px;">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">📋</span>
+    <div class="modal-card" style="max-width: 720px; border-radius: 20px; background: linear-gradient(145deg, rgba(12, 18, 34, 0.92) 0%, rgba(7, 10, 20, 0.96) 100%); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 25px 50px -12px rgba(0, 0, 0, 0.65); backdrop-filter: blur(20px);">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.07); padding: 1.25rem 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+          </div>
           <div>
-            <div class="modal-title">Tournament RFQ &amp; Quote Negotiation Desk</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Procurement Requests &bull; Provider Bids &bull; Escrow Awarding</div>
+            <div class="modal-title" style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: #FFFFFF;">Procurement RFQ &amp; Quote Negotiation Desk</div>
+            <div style="font-size: 0.75rem; color: #8E9BAE; margin-top: 2px;">Tournament Requirements &bull; Competitive Bidding &bull; Escrow Contract Awarding</div>
           </div>
         </div>
-        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalRfq')" data-tooltip="Close RFQ modal">×</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalRfq')" data-tooltip="Close RFQ modal" style="font-size: 1.25rem; width: 32px; height: 32px; border-radius: 8px;">×</button>
       </div>
-      <div class="modal-body" style="padding: 1.25rem;">
-        <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-          <span class="badge badge-cyan">Active Tournament RFQs</span>
-          <button class="btn btn-secondary btn-sm" onclick="showToast('Create RFQ form ready')">+ New Requirement</button>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <div style="margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="badge badge-cyan" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 6px;">Active Requirements</span>
+            <span style="font-size: 0.75rem; color: #8E9BAE;">1 Open Tender</span>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="showToast('Create RFQ specification builder opened')" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; padding: 0.4rem 0.75rem; border-radius: 8px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>New Requirement</span>
+          </button>
         </div>
         <div id="rfqContainer">
-          <div class="glass-panel" style="padding: 1.25rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(10, 16, 28, 0.75);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <article class="glass-panel" style="padding: 1.4rem; border-radius: 14px; margin-bottom: 1rem; border: 1px solid rgba(255, 255, 255, 0.08); background: linear-gradient(135deg, rgba(14, 21, 38, 0.85) 0%, rgba(9, 13, 24, 0.95) 100%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
               <div>
-                <span class="badge badge-amber" style="font-size: 0.75rem; margin-right: 0.5rem;">UMPIRE</span>
-                <span class="badge badge-cyan">● OPEN</span>
-                <h4 style="margin: 0.5rem 0 0.25rem; font-family: var(--font-display); font-size: 1.1rem; color: #fff;">T20 Championship Lead Umpire Procurement</h4>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                  <span class="badge" style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #CBD5E1; padding: 0.15rem 0.5rem; border-radius: 4px;">OFFICIAL: UMPIRE</span>
+                  <span class="badge badge-cyan" style="font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.3rem;">
+                    <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan);"></span>
+                    OPEN FOR BIDS
+                  </span>
+                </div>
+                <h4 style="margin: 0; font-family: var(--font-display); font-size: 1.12rem; font-weight: 600; color: #FFFFFF; letter-spacing: -0.015em;">T20 Championship Lead Umpire Procurement</h4>
               </div>
-              <div style="text-align: right;">
-                <div style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: var(--turf-emerald);">₹3,000</div>
-                <div style="font-size: 0.75rem; color: #8E9BAE;">Budget Cap</div>
+              <div style="text-align: right; flex-shrink: 0;">
+                <div style="font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; color: var(--turf-emerald); font-variant-numeric: tabular-nums; line-height: 1.1;">₹3,000</div>
+                <div style="font-size: 0.7rem; color: #8E9BAE; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.2rem;">Budget Cap</div>
               </div>
             </div>
-            <p style="font-size: 0.85rem; color: #CBD5E1; margin: 0.5rem 0 1rem;">Need certified lead umpire for 20-over night final match with floodlights.</p>
-            <div style="background: rgba(15, 23, 42, 0.65); padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-              <div style="font-size: 0.75rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.5rem;">SUBMITTED QUOTES (1)</div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
+            <p style="font-size: 0.85rem; color: #94A3B8; margin: 0 0 1.1rem; line-height: 1.5; max-width: 60ch;">
+              Need certified lead umpire for 20-over floodlit tournament final. Requires minimum BCCI Level-1 credential or State Association certification.
+            </p>
+            <div style="background: rgba(15, 23, 42, 0.6); padding: 1rem 1.1rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+                <div style="font-size: 0.72rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.05em; text-transform: uppercase;">
+                  Submitted Proposals (1 Verified Bid)
+                </div>
+                <span style="font-size: 0.7rem; color: #8E9BAE;">Algorithm Score: 92/100</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
                 <div>
-                  <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">Elite Certified Umpire</div>
-                  <div style="font-size: 0.75rem; color: #8E9BAE;">Trust: <strong style="color: var(--amber);">94%</strong> • BCCI Level 1 Certified</div>
+                  <div style="font-weight: 600; color: #FFFFFF; font-size: 0.92rem;">R. Venkatesh (BCCI Level-2 Official)</div>
+                  <div style="font-size: 0.75rem; color: #8E9BAE; margin-top: 2px;">
+                    Trust Track Record: <strong style="color: var(--amber);">96.8%</strong> &bull; 14 Matches Officiated &bull; Zero Incident Reports
+                  </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                  <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹2,800</span>
-                  <button class="btn btn-primary btn-sm" onclick="awardSampleQuote()" data-tooltip="Award contract and bind escrow hold">🏆 Award Quote</button>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <div style="text-align: right;">
+                    <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 1.15rem; font-variant-numeric: tabular-nums;">₹2,800</span>
+                    <div style="font-size: 0.68rem; color: #8E9BAE;">Excl. GST</div>
+                  </div>
+                  <button class="btn btn-primary btn-sm" onclick="awardSampleQuote()" data-tooltip="Award contract, lock escrow deposit, and dispatch confirmation" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; border-radius: 8px; padding: 0.45rem 0.9rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span>Award Contract</span>
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
         </div>
       </div>
-      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalRfq')">Close</button>
+      <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.07); padding: 1rem 1.5rem; display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalRfq')" style="border-radius: 8px;">Close</button>
       </div>
     </div>
   </div>
@@ -4061,13 +4357,146 @@ cricos_active_sse_connections 1</pre>
   <div id="toast">✓ Event completed</div>
 
   <script>
-    // Tab Switching
+    // ==========================================
+    // Role-Based Access Control (RBAC) & Feature Gating
+    // ==========================================
+    const ROLE_PERMISSIONS = {
+      CAPTAIN: {
+        allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace', 'studio'],
+        defaultTab: 'teams',
+        badgeColor: '#00E599',
+        badgeBg: 'rgba(0, 229, 153, 0.15)',
+        icon: '👑',
+        label: 'Captain',
+        canConductToss: true,
+        canManageLineup: true,
+        canScore: false, // Tactical mode in studio
+        canFileIncident: false,
+        canAccessAdmin: false,
+        canAccessExplorer: false,
+        fanCheerConsole: false
+      },
+      PLAYER: {
+        allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace'],
+        defaultTab: 'teams',
+        badgeColor: '#00D2FF',
+        badgeBg: 'rgba(0, 210, 255, 0.15)',
+        icon: '🏏',
+        label: 'Player',
+        canConductToss: false,
+        canManageLineup: false,
+        canScore: false,
+        canFileIncident: false,
+        canAccessAdmin: false,
+        canAccessExplorer: false,
+        fanCheerConsole: false
+      },
+      SCORER: {
+        allowedTabs: ['scoring', 'studio', 'tournaments'],
+        defaultTab: 'studio',
+        badgeColor: '#FFB800',
+        badgeBg: 'rgba(255, 184, 0, 0.15)',
+        icon: '📋',
+        label: 'Official Scorer',
+        canConductToss: false,
+        canManageLineup: false,
+        canScore: true,
+        canFileIncident: false,
+        canAccessAdmin: false,
+        canAccessExplorer: false,
+        fanCheerConsole: false
+      },
+      FAN: {
+        allowedTabs: ['scoring', 'teams', 'tournaments'],
+        defaultTab: 'scoring',
+        badgeColor: '#C084FC',
+        badgeBg: 'rgba(192, 132, 252, 0.15)',
+        icon: '🎪',
+        label: 'Fan',
+        canConductToss: false,
+        canManageLineup: false,
+        canScore: false,
+        canFileIncident: false,
+        canAccessAdmin: false,
+        canAccessExplorer: false,
+        fanCheerConsole: true
+      },
+      UMPIRE: {
+        allowedTabs: ['scoring', 'incidents', 'tournaments'],
+        defaultTab: 'incidents',
+        badgeColor: '#38BDF8',
+        badgeBg: 'rgba(56, 189, 248, 0.15)',
+        icon: '⚖️',
+        label: 'Official Umpire',
+        canConductToss: false,
+        canManageLineup: false,
+        canScore: false,
+        canFileIncident: true,
+        canAccessAdmin: false,
+        canAccessExplorer: false,
+        fanCheerConsole: false
+      },
+      ADMIN: {
+        allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace', 'studio', 'incidents', 'explorer'],
+        defaultTab: 'explorer',
+        badgeColor: '#FF3366',
+        badgeBg: 'rgba(255, 51, 102, 0.15)',
+        icon: '⚡',
+        label: 'Admin',
+        canConductToss: true,
+        canManageLineup: true,
+        canScore: true,
+        canFileIncident: true,
+        canAccessAdmin: true,
+        canAccessExplorer: true,
+        fanCheerConsole: false
+      },
+      ORGANISER: {
+        allowedTabs: ['tournaments', 'marketplace', 'teams', 'scoring', 'incidents'],
+        defaultTab: 'tournaments',
+        badgeColor: '#A855F7',
+        badgeBg: 'rgba(168, 85, 247, 0.15)',
+        icon: '🏆',
+        label: 'Organiser',
+        canConductToss: false,
+        canManageLineup: true,
+        canScore: false,
+        canFileIncident: true,
+        canAccessAdmin: false,
+        canAccessExplorer: false,
+        fanCheerConsole: false
+      },
+      TURF_PROVIDER: {
+        allowedTabs: ['marketplace', 'scoring', 'incidents'],
+        defaultTab: 'marketplace',
+        badgeColor: '#34D399',
+        badgeBg: 'rgba(52, 211, 153, 0.15)',
+        icon: '🏟️',
+        label: 'Provider',
+        canConductToss: false,
+        canManageLineup: false,
+        canScore: false,
+        canFileIncident: false,
+        canAccessAdmin: false,
+        canAccessExplorer: false,
+        fanCheerConsole: false
+      }
+    };
+
+    // Tab Switching with RBAC Enforcer
     function switchTab(tabId) {
+      const perms = ROLE_PERMISSIONS[currentUser.persona] || ROLE_PERMISSIONS.FAN;
+      if (!perms.allowedTabs.includes(tabId)) {
+        showToast('Access Restricted: ' + currentUser.persona + ' role cannot access ' + tabId);
+        tabId = perms.defaultTab;
+      }
+
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.remove('active');
         b.setAttribute('aria-selected', 'false');
+        const t = b.getAttribute('data-tab');
         const onclickAttr = b.getAttribute('onclick') || '';
-        if (onclickAttr.indexOf("'" + tabId + "'") !== -1) {
+        if (t === tabId || onclickAttr.indexOf("'" + tabId + "'") !== -1) {
           b.classList.add('active');
           b.setAttribute('aria-selected', 'true');
         }
@@ -4075,10 +4504,15 @@ cricos_active_sse_connections 1</pre>
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       const target = document.getElementById('tab-' + tabId);
       if (target) target.classList.add('active');
+      if (tabId === 'studio') {
+        renderWagonWheelRays();
+        updateWagonTelemetry();
+      }
     }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
+      if (!t) return;
       t.textContent = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
@@ -4105,15 +4539,161 @@ cricos_active_sse_connections 1</pre>
       if (modal) modal.classList.remove('active');
     }
 
-    function selectPersona(role) {
-      currentUser.persona = role;
+    function applyRolePermissions(role) {
+      const perms = ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.FAN;
+
+      // 1. Update modal active pill
       document.querySelectorAll('.persona-pill-btn').forEach(btn => {
         if (btn.getAttribute('data-role') === role) {
           btn.classList.add('active');
+          btn.style.borderColor = perms.badgeColor;
+          btn.style.color = perms.badgeColor;
         } else {
           btn.classList.remove('active');
+          btn.style.borderColor = '';
+          btn.style.color = '';
         }
       });
+
+      // 2. Update header badge
+      const initials = currentUser.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() || 'VK';
+      const avatarEl = document.getElementById('headerUserAvatar');
+      const nameEl = document.getElementById('headerUserName');
+      const roleEl = document.getElementById('headerUserRoleBadge');
+
+      if (avatarEl) {
+        avatarEl.textContent = initials;
+        avatarEl.style.background = perms.badgeColor;
+      }
+      if (nameEl) nameEl.textContent = currentUser.name;
+      if (roleEl) {
+        roleEl.textContent = perms.icon + ' ' + role + ' #' + currentUser.jerseyNumber;
+        roleEl.style.color = perms.badgeColor;
+      }
+
+      // 3. Update tabs visibility
+      let activeTabAllowed = false;
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        const tabKey = b.getAttribute('data-tab');
+        if (tabKey && perms.allowedTabs.includes(tabKey)) {
+          b.style.display = 'inline-flex';
+          if (b.classList.contains('active')) activeTabAllowed = true;
+        } else {
+          b.style.display = 'none';
+        }
+      });
+
+      // If current active tab is forbidden, navigate to default tab
+      if (!activeTabAllowed) {
+        switchTab(perms.defaultTab);
+      }
+
+      // 4. Update Match Center elements: Fan Cheering vs Scorer Pad
+      const cheerSection = document.getElementById('fanCheerSection');
+      const matchScoringPad = document.getElementById('cardMatchScoringPad');
+      const tossBtn = document.getElementById('btnConductToss');
+
+      if (cheerSection) cheerSection.style.display = perms.fanCheerConsole ? 'block' : 'none';
+      if (matchScoringPad) matchScoringPad.style.display = perms.fanCheerConsole ? 'none' : 'block';
+      if (tossBtn) tossBtn.style.display = perms.canConductToss ? 'inline-block' : 'none';
+
+      // 5. Update Studio Pad modes
+      const studioModePill = document.getElementById('studioModePill');
+      const captainNotice = document.getElementById('captainTacticalNotice');
+      if (studioModePill) {
+        if (role === 'CAPTAIN') {
+          studioModePill.textContent = 'CAPTAIN TACTICAL MODE';
+          studioModePill.style.color = 'var(--turf-emerald)';
+          studioModePill.style.borderColor = 'rgba(0, 229, 153, 0.3)';
+        } else if (role === 'SCORER') {
+          studioModePill.textContent = 'OFFICIAL SCORER MODE';
+          studioModePill.style.color = 'var(--amber)';
+          studioModePill.style.borderColor = 'rgba(255, 184, 0, 0.3)';
+        } else if (role === 'ADMIN') {
+          studioModePill.textContent = 'ADMIN SCORING OVERRIDE';
+          studioModePill.style.color = 'var(--rose)';
+          studioModePill.style.borderColor = 'rgba(255, 51, 102, 0.3)';
+        } else {
+          studioModePill.textContent = perms.label.toUpperCase();
+        }
+      }
+      if (captainNotice) {
+        captainNotice.style.display = (role === 'CAPTAIN') ? 'block' : 'none';
+      }
+
+      // 6. Admin Audit Desk Visibility
+      const auditDesk = document.getElementById('adminAuditDeskContainer');
+      if (auditDesk) {
+        auditDesk.style.display = perms.canAccessAdmin ? 'block' : 'none';
+      }
+
+      showToast('Switched to ' + perms.label + ' persona: ' + perms.description);
+    }
+
+    function selectPersona(role) {
+      currentUser.persona = role;
+      const defaultProfiles = {
+        CAPTAIN: { name: 'Virat Sharma', jersey: 18, batting: 'RHB', bowling: 'Right-Arm Fast' },
+        PLAYER: { name: 'Hardik Patel', jersey: 33, batting: 'RHB', bowling: 'Right-Arm Medium' },
+        SCORER: { name: 'Sunil Gavaskar', jersey: 18, batting: 'RHB', bowling: 'None' },
+        FAN: { name: 'Aarav Mehta', jersey: 7, batting: 'RHB', bowling: 'None' },
+        UMPIRE: { name: 'Nitin Menon', jersey: 44, batting: 'RHB', bowling: 'None' },
+        ADMIN: { name: 'System Root', jersey: 99, batting: 'RHB', bowling: 'Right-Arm Fast' },
+        ORGANISER: { name: 'Jay Shah', jersey: 10, batting: 'RHB', bowling: 'None' },
+        TURF_PROVIDER: { name: 'Bengaluru Turf Ops', jersey: 12, batting: 'RHB', bowling: 'None' }
+      };
+      const def = defaultProfiles[role];
+      if (def) {
+        currentUser.name = def.name;
+        currentUser.jerseyNumber = def.jersey;
+        currentUser.battingStyle = def.batting;
+        currentUser.bowlingStyle = def.bowling;
+        const nameInput = document.getElementById('profileInputName');
+        const jerseyInput = document.getElementById('profileInputJersey');
+        const battingSelect = document.getElementById('profileInputBatting');
+        const bowlingSelect = document.getElementById('profileInputBowling');
+        if (nameInput) nameInput.value = def.name;
+        if (jerseyInput) jerseyInput.value = def.jersey;
+        if (battingSelect) battingSelect.value = def.batting;
+        if (bowlingSelect) bowlingSelect.value = def.bowling;
+      }
+      applyRolePermissions(role);
+    }
+
+    // Fan Cheering & Pulse Handlers
+    let fanTotalCheers = 1428;
+    let fanVotes = { BLR: 68, MUM: 32 };
+
+    function sendFanCheer(cheerText) {
+      fanTotalCheers++;
+      const counter = document.getElementById('fanTotalCheers');
+      if (counter) counter.textContent = fanTotalCheers.toLocaleString();
+      showToast('📢 Cheer Sent: ' + cheerText);
+      const feed = document.getElementById('scoringFeed');
+      if (feed) {
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        item.style.borderLeft = '3px solid var(--purple-light)';
+        item.innerHTML = '<span style="color: var(--purple-light); font-weight: 700;">[FAN CHEER]</span> 🎪 ' + currentUser.name + ': ' + cheerText;
+        feed.insertBefore(item, feed.firstChild);
+      }
+    }
+
+    function voteFanPoll(team) {
+      if (team === 'BLR') fanVotes.BLR++;
+      else fanVotes.MUM++;
+      const total = fanVotes.BLR + fanVotes.MUM;
+      const pctBLR = Math.round((fanVotes.BLR / total) * 100);
+      const pctMUM = 100 - pctBLR;
+      const barBLR = document.getElementById('fanVoteBarBLR');
+      const barMUM = document.getElementById('fanVoteBarMUM');
+      const lblBLR = document.getElementById('fanVotePctBLR');
+      const lblMUM = document.getElementById('fanVotePctMUM');
+      if (barBLR) barBLR.style.width = pctBLR + '%';
+      if (barMUM) barMUM.style.width = pctMUM + '%';
+      if (lblBLR) lblBLR.textContent = pctBLR + '% Bangalore';
+      if (lblMUM) lblMUM.textContent = pctMUM + '% Mumbai';
+      showToast('Voted for ' + (team === 'BLR' ? 'Bangalore Blasters' : 'Mumbai Super Strikers') + '!');
     }
 
     function saveUserProfile() {
@@ -4127,16 +4707,8 @@ cricos_active_sse_connections 1</pre>
       if (battingSelect) currentUser.battingStyle = battingSelect.value;
       if (bowlingSelect) currentUser.bowlingStyle = bowlingSelect.value;
 
-      const initials = currentUser.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() || 'VK';
-      const avatarEl = document.getElementById('headerUserAvatar');
-      const nameEl = document.getElementById('headerUserName');
-      const roleEl = document.getElementById('headerUserRoleBadge');
-
-      if (avatarEl) avatarEl.textContent = initials;
-      if (nameEl) nameEl.textContent = currentUser.name;
-      if (roleEl) roleEl.textContent = currentUser.persona + ' #' + currentUser.jerseyNumber;
-
       closeUserModal();
+      applyRolePermissions(currentUser.persona);
       showToast('Profile updated! Active Persona: ' + currentUser.persona);
     }
 
@@ -4145,32 +4717,249 @@ cricos_active_sse_connections 1</pre>
         currentUser.name = 'Anonymous Player';
         currentUser.persona = 'PLAYER';
         currentUser.jerseyNumber = 0;
-        const avatarEl = document.getElementById('headerUserAvatar');
-        const nameEl = document.getElementById('headerUserName');
-        const roleEl = document.getElementById('headerUserRoleBadge');
-        if (avatarEl) avatarEl.textContent = '??';
-        if (nameEl) nameEl.textContent = 'Anonymous Player';
-        if (roleEl) roleEl.textContent = 'PLAYER';
         closeUserModal();
+        applyRolePermissions('PLAYER');
         showToast('Account data deleted per Apple Guideline 5.1.1(v)');
       }
     }
 
     // ==========================================
-    // Tactical Scoring Studio & Wagon Wheel
+    // Tactical Scoring Studio & Precision Wagon Wheel
     // ==========================================
     let studioStriker = { name: 'Virat Sharma', runs: 48, balls: 32, fours: 4, sixes: 2 };
     let studioNonStriker = { name: 'Hardik Patel', runs: 18, balls: 12, fours: 1, sixes: 1 };
     let partnership = { runs: 44, balls: 28 };
     let currentSelectedZone = 'EXTRA_COVER';
+    let currentStance = 'RHB';
+    let currentShotFilter = 'ALL';
+
+    const SHOT_ZONES_DATA = [
+      { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', angleDeg: 22.5, side: 'LEG' },
+      { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', angleDeg: 67.5, side: 'LEG' },
+      { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', angleDeg: 112.5, side: 'LEG' },
+      { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 157.5, side: 'LEG' },
+      { id: 'THIRD_MAN', label: 'Third Man', shortLabel: 'Third Man', angleDeg: 202.5, side: 'OFF' },
+      { id: 'POINT', label: 'Point', shortLabel: 'Point', angleDeg: 247.5, side: 'OFF' },
+      { id: 'EXTRA_COVER', label: 'Cover / Extra Cover', shortLabel: 'Cover', angleDeg: 292.5, side: 'OFF' },
+      { id: 'LONG_OFF', label: 'Long Off', shortLabel: 'Long Off', angleDeg: 337.5, side: 'OFF' }
+    ];
+
+    let shotHistory = [
+      // Virat Sharma (48* off 32: 4x4, 2x6)
+      { id: 's1', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 4, angleDeg: 298, distanceFraction: 0.98 },
+      { id: 's2', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 9, angleDeg: 288, distanceFraction: 0.99 },
+      { id: 's3', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat Sharma', ballNumber: 14, angleDeg: 65, distanceFraction: 1.15 },
+      { id: 's4', zone: 'LONG_ON', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat Sharma', ballNumber: 21, angleDeg: 18, distanceFraction: 1.18 },
+      { id: 's5', zone: 'POINT', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 26, angleDeg: 250, distanceFraction: 0.97 },
+      { id: 's6', zone: 'LONG_OFF', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 30, angleDeg: 340, distanceFraction: 0.98 },
+      { id: 's7', zone: 'SQUARE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 2, angleDeg: 105, distanceFraction: 0.65 },
+      { id: 's8', zone: 'FINE_LEG', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 7, angleDeg: 145, distanceFraction: 0.72 },
+      { id: 's9', zone: 'THIRD_MAN', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 11, angleDeg: 212, distanceFraction: 0.68 },
+      { id: 's10', zone: 'MID_WICKET', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 17, angleDeg: 78, distanceFraction: 0.75 },
+      { id: 's11', zone: 'EXTRA_COVER', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 1, angleDeg: 290, distanceFraction: 0.35 },
+      { id: 's12', zone: 'POINT', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 6, angleDeg: 255, distanceFraction: 0.38 },
+
+      // Hardik Patel (18 off 12: 1x4, 1x6)
+      { id: 's13', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Hardik Patel', ballNumber: 16, angleDeg: 72, distanceFraction: 1.14 },
+      { id: 's14', zone: 'SQUARE_LEG', runs: 4, isBoundary: true, isSix: false, batterName: 'Hardik Patel', ballNumber: 23, angleDeg: 118, distanceFraction: 0.98 },
+      { id: 's15', zone: 'LONG_ON', runs: 2, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 18, angleDeg: 28, distanceFraction: 0.78 },
+      { id: 's16', zone: 'FINE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 20, angleDeg: 150, distanceFraction: 0.62 },
+      { id: 's17', zone: 'EXTRA_COVER', runs: 1, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 27, angleDeg: 305, distanceFraction: 0.58 },
+      { id: 's18', zone: 'MID_WICKET', runs: 0, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 15, angleDeg: 82, distanceFraction: 0.4 }
+    ];
 
     function selectShotZone(zone, btnEl) {
       currentSelectedZone = zone;
       document.querySelectorAll('.field-zone-btn').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
+      document.querySelectorAll('.wagon-sector-wedge').forEach(w => w.classList.remove('active'));
+
+      const matchedBtn = btnEl || document.querySelector('.field-zone-btn[onclick*="'' + zone + ''"]');
+      if (matchedBtn) matchedBtn.classList.add('active');
+
+      const matchedWedge = document.getElementById('wedge_' + zone);
+      if (matchedWedge) matchedWedge.classList.add('active');
+
+      const zoneDef = SHOT_ZONES_DATA.find(z => z.id === zone);
+      const isOff = currentStance === 'RHB' ? zoneDef?.side === 'OFF' : zoneDef?.side === 'LEG';
+      const sideLabel = isOff ? 'OFF-SIDE' : 'LEG-SIDE';
+
       const label = document.getElementById('wagonWheelSelectedZone');
-      if (label) label.textContent = 'ZONE: ' + zone.replace('_', ' ');
-      showToast('Wagon zone set: ' + zone);
+      if (label && zoneDef) {
+        label.textContent = 'ZONE: ' + zoneDef.label.toUpperCase() + ' (' + sideLabel + ' • ' + Math.round(zoneDef.angleDeg) + '°)';
+      }
+      showToast('Wagon Zone: ' + (zoneDef?.label || zone) + ' (' + sideLabel + ')');
+    }
+
+    function setBatterStance(stance) {
+      currentStance = stance;
+      const btnRhb = document.getElementById('btnStanceRhb');
+      const btnLhb = document.getElementById('btnStanceLhb');
+      const offLabel = document.getElementById('wagonLabelOff');
+      const legLabel = document.getElementById('wagonLabelLeg');
+
+      if (stance === 'RHB') {
+        if (btnRhb) { btnRhb.style.background = 'var(--turf-emerald)'; btnRhb.style.color = '#04070D'; }
+        if (btnLhb) { btnLhb.style.background = 'transparent'; btnLhb.style.color = '#8E9BAE'; }
+        if (offLabel) { offLabel.setAttribute('x', '35'); offLabel.textContent = '◀ OFF SIDE'; }
+        if (legLabel) { legLabel.setAttribute('x', '325'); legLabel.textContent = 'LEG SIDE ▶'; }
+      } else {
+        if (btnLhb) { btnLhb.style.background = 'var(--turf-emerald)'; btnLhb.style.color = '#04070D'; }
+        if (btnRhb) { btnRhb.style.background = 'transparent'; btnRhb.style.color = '#8E9BAE'; }
+        if (offLabel) { offLabel.setAttribute('x', '325'); offLabel.textContent = 'OFF SIDE ▶'; }
+        if (legLabel) { legLabel.setAttribute('x', '35'); legLabel.textContent = '◀ LEG SIDE'; }
+      }
+
+      selectShotZone(currentSelectedZone);
+      renderWagonWheelRays();
+      updateWagonTelemetry();
+      showToast('Batsman stance set to ' + stance + ' (field geometry flipped)');
+    }
+
+    function filterWagonShots(filterType, btnEl) {
+      currentShotFilter = filterType;
+      document.querySelectorAll('.wagon-filter-pill').forEach(p => p.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderWagonWheelRays();
+    }
+
+    function renderWagonWheelRays() {
+      const container = document.getElementById('wagonWheelRays');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const centerX = 180;
+      const centerY = 204; // Striker's popping crease
+      const radius = 162;
+
+      const filteredShots = shotHistory.filter(s => {
+        if (currentShotFilter === 'BOUNDARIES') return s.isBoundary;
+        if (currentShotFilter === 'SINGLES') return !s.isBoundary && s.runs > 0;
+        if (currentShotFilter === 'DOTS') return s.runs === 0;
+        return true;
+      });
+
+      filteredShots.forEach((shot) => {
+        // Adjust angle if LHB
+        let angle = shot.angleDeg;
+        if (currentStance === 'LHB') {
+          angle = (360 - angle) % 360;
+        }
+
+        const rad = ((angle - 90) * Math.PI) / 180;
+        const dist = shot.distanceFraction * radius;
+        const targetX = Math.round(centerX + dist * Math.cos(rad));
+        const targetY = Math.round(centerY + dist * Math.sin(rad));
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'wagon-shot-ray');
+        g.setAttribute('data-tooltip', shot.batterName + ' • ' + shot.runs + (shot.runs === 1 ? ' Run' : ' Runs') + (shot.isSix ? ' (MAXIMUM)' : shot.isBoundary ? ' (FOUR)' : '') + ' to ' + shot.zone.replace('_', ' '));
+
+        if (shot.isSix) {
+          // Curved Arc for Sixes
+          const midX = (centerX + targetX) / 2 + (Math.random() * 8 - 4);
+          const midY = (centerY + targetY) / 2 - 16;
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', 'M ' + centerX + ',' + centerY + ' Q ' + midX + ',' + midY + ' ' + targetX + ',' + targetY);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', '#FFB800');
+          path.setAttribute('stroke-width', '2.8');
+          path.setAttribute('stroke-linecap', 'round');
+          path.setAttribute('filter', 'drop-shadow(0 0 4px rgba(255, 184, 0, 0.7))');
+          g.appendChild(path);
+
+          // Star marker at impact
+          const marker = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+          marker.setAttribute('points', targetX + ',' + (targetY - 5) + ' ' + (targetX + 2) + ',' + (targetY - 1) + ' ' + (targetX + 6) + ',' + targetY + ' ' + (targetX + 2) + ',' + (targetY + 1) + ' ' + targetX + ',' + (targetY + 5) + ' ' + (targetX - 2) + ',' + (targetY + 1) + ' ' + (targetX - 6) + ',' + targetY + ' ' + (targetX - 2) + ',' + (targetY - 1));
+          marker.setAttribute('fill', '#FFB800');
+          g.appendChild(marker);
+        } else {
+          // Straight Line
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', String(centerX));
+          line.setAttribute('y1', String(centerY));
+          line.setAttribute('x2', String(targetX));
+          line.setAttribute('y2', String(targetY));
+          line.setAttribute('stroke-linecap', 'round');
+
+          if (shot.isBoundary) {
+            line.setAttribute('stroke', '#00E599');
+            line.setAttribute('stroke-width', '2.4');
+            line.setAttribute('filter', 'drop-shadow(0 0 3px rgba(0, 229, 153, 0.6))');
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('cx', String(targetX));
+            dot.setAttribute('cy', String(targetY));
+            dot.setAttribute('r', '3.5');
+            dot.setAttribute('fill', '#00E599');
+            dot.setAttribute('stroke', '#04070D');
+            dot.setAttribute('stroke-width', '1');
+            g.appendChild(dot);
+          } else if (shot.runs > 0) {
+            line.setAttribute('stroke', '#00D2FF');
+            line.setAttribute('stroke-width', shot.runs >= 2 ? '1.8' : '1.3');
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('cx', String(targetX));
+            dot.setAttribute('cy', String(targetY));
+            dot.setAttribute('r', '2');
+            dot.setAttribute('fill', '#00D2FF');
+            g.appendChild(dot);
+          } else {
+            line.setAttribute('stroke', '#64748B');
+            line.setAttribute('stroke-width', '1.1');
+            line.setAttribute('stroke-dasharray', '3,3');
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('cx', String(targetX));
+            dot.setAttribute('cy', String(targetY));
+            dot.setAttribute('r', '1.5');
+            dot.setAttribute('fill', '#64748B');
+            g.appendChild(dot);
+          }
+          g.appendChild(line);
+        }
+
+        container.appendChild(g);
+      });
+    }
+
+    function updateWagonTelemetry() {
+      const zoneRuns = {};
+      SHOT_ZONES_DATA.forEach(z => { zoneRuns[z.id] = 0; });
+
+      let offRuns = 0;
+      let legRuns = 0;
+      let boundaries = 0;
+      let sixes = 0;
+      let fours = 0;
+
+      shotHistory.forEach(s => {
+        if (zoneRuns[s.zone] !== undefined) {
+          zoneRuns[s.zone] += s.runs;
+        }
+        const zoneDef = SHOT_ZONES_DATA.find(z => z.id === s.zone);
+        const isOff = currentStance === 'RHB' ? zoneDef?.side === 'OFF' : zoneDef?.side === 'LEG';
+        if (isOff) offRuns += s.runs;
+        else legRuns += s.runs;
+
+        if (s.isSix) { sixes++; boundaries++; }
+        else if (s.isBoundary) { fours++; boundaries++; }
+      });
+
+      // Update Zone Badge Numbers
+      SHOT_ZONES_DATA.forEach(z => {
+        const el = document.getElementById('zoneRuns_' + z.id);
+        if (el) el.textContent = zoneRuns[z.id] + 'r';
+      });
+
+      const totalRuns = offRuns + legRuns || 1;
+      const offPct = Math.round((offRuns / totalRuns) * 100);
+      const legPct = 100 - offPct;
+
+      const offEl = document.getElementById('wagonOffTally');
+      const legEl = document.getElementById('wagonLegTally');
+      const bndEl = document.getElementById('wagonBoundaryTally');
+
+      if (offEl) offEl.textContent = offPct + '% (' + offRuns + ' runs)';
+      if (legEl) legEl.textContent = legPct + '% (' + legRuns + ' runs)';
+      if (bndEl) bndEl.textContent = boundaries + ' Hits (' + fours + 'x4, ' + sixes + 'x6)';
     }
 
     function swapStudioStrike() {
@@ -4178,6 +4967,8 @@ cricos_active_sse_connections 1</pre>
       studioStriker = { ...studioNonStriker };
       studioNonStriker = temp;
       updateStudioUI();
+      const facingEl = document.getElementById('wagonFacingBatter');
+      if (facingEl) facingEl.textContent = studioStriker.name;
       showToast('Strike swapped! Now facing: ' + studioStriker.name);
     }
 
@@ -4188,11 +4979,13 @@ cricos_active_sse_connections 1</pre>
       const nsStats = document.getElementById('studioNonStrikerStats');
       const partEl = document.getElementById('partnershipRunsBalls');
       const partFill = document.getElementById('partnershipProgressFill');
+      const facingEl = document.getElementById('wagonFacingBatter');
 
       if (sName) sName.textContent = studioStriker.name;
       if (sStats) sStats.innerHTML = studioStriker.runs + '* <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioStriker.balls + 'b, ' + studioStriker.fours + 'x4, ' + studioStriker.sixes + 'x6)</span>';
       if (nsName) nsName.textContent = studioNonStriker.name;
       if (nsStats) nsStats.innerHTML = studioNonStriker.runs + ' <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioNonStriker.balls + 'b, ' + studioNonStriker.fours + 'x4, ' + studioNonStriker.sixes + 'x6)</span>';
+      if (facingEl) facingEl.textContent = studioStriker.name;
 
       if (partEl) partEl.innerHTML = partnership.runs + ' runs <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(' + partnership.balls + ' balls)</span>';
       if (partFill) partFill.style.width = Math.min(100, (partnership.runs / 75) * 100) + '%';
@@ -4201,10 +4994,32 @@ cricos_active_sse_connections 1</pre>
     function recordStudioBall(batRuns) {
       studioStriker.runs += batRuns;
       studioStriker.balls += 1;
+      const isSix = batRuns === 6;
+      const isBoundary = batRuns === 4 || isSix;
       if (batRuns === 4) studioStriker.fours += 1;
       if (batRuns === 6) studioStriker.sixes += 1;
       partnership.runs += batRuns;
       partnership.balls += 1;
+
+      // Add shot to wagon wheel
+      const zoneDef = SHOT_ZONES_DATA.find(z => z.id === currentSelectedZone);
+      const angle = zoneDef ? zoneDef.angleDeg + (Math.random() * 16 - 8) : 290;
+      const dist = isSix ? 1.16 : isBoundary ? 0.98 : batRuns === 0 ? 0.36 : 0.72;
+
+      shotHistory.push({
+        id: 's' + Date.now(),
+        zone: currentSelectedZone,
+        runs: batRuns,
+        isBoundary,
+        isSix,
+        batterName: studioStriker.name,
+        ballNumber: studioStriker.balls,
+        angleDeg: angle,
+        distanceFraction: dist
+      });
+
+      renderWagonWheelRays();
+      updateWagonTelemetry();
 
       scoreDelivery(batRuns, 0, 'NONE', true, false);
 
@@ -6615,6 +7430,9 @@ cricos_active_sse_connections 1</pre>
     initEventReadiness();
     initOfficialDesk();
     initAdminDesk();
+    renderWagonWheelRays();
+    updateWagonTelemetry();
+    applyRolePermissions(currentUser.persona);
   </script>
 </body>
 </html>

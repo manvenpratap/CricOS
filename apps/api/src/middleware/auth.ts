@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export type UserRole = 'CAPTAIN' | 'ORGANISER' | 'PROVIDER' | 'ADMIN';
+export type UserRole = 'CAPTAIN' | 'ORGANISER' | 'PROVIDER' | 'ADMIN' | 'SCORER' | 'PLAYER' | 'UMPIRE' | 'FAN';
 
 export interface AuthTokenPayload {
   userId: string;

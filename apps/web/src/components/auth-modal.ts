@@ -1,4 +1,197 @@
-export type PersonaRole = 'CAPTAIN' | 'PLAYER' | 'ORGANISER' | 'SCORER' | 'TURF_PROVIDER';
+export type PersonaRole = 'CAPTAIN' | 'PLAYER' | 'ORGANISER' | 'SCORER' | 'TURF_PROVIDER' | 'UMPIRE' | 'FAN' | 'ADMIN';
+
+export interface RolePermissions {
+  allowedTabs: string[];
+  defaultTab: string;
+  canScore: boolean;
+  canManageLineup: boolean;
+  canFileIncident: boolean;
+  canManageTournaments: boolean;
+  canManageVenues: boolean;
+  canAccessApiExplorer: boolean;
+  canAccessExplorer: boolean;
+  canAccessAdmin: boolean;
+  canAccessAdminAudit: boolean;
+  canSignOffMatch: boolean;
+  canConductToss: boolean;
+  fanCheerConsole: boolean;
+  scoringMode: 'SCORER' | 'TACTICAL_VIEW' | 'FAN_SPECTATOR' | 'OFFICIAL_OVERSIGHT';
+  description: string;
+  badgeColor: string;
+  icon: string;
+}
+
+export const ROLE_PERMISSIONS_MATRIX: Record<PersonaRole, RolePermissions> = {
+  CAPTAIN: {
+    allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace', 'studio'],
+    defaultTab: 'teams',
+    canScore: true,
+    canManageLineup: true,
+    canFileIncident: false,
+    canManageTournaments: false,
+    canManageVenues: true,
+    canAccessApiExplorer: false,
+    canAccessExplorer: false,
+    canAccessAdmin: false,
+    canAccessAdminAudit: false,
+    canSignOffMatch: true,
+    canConductToss: true,
+    fanCheerConsole: false,
+    scoringMode: 'TACTICAL_VIEW',
+    description: 'Team Captain: Manage Playing XI, toss, match tactics, and sign-offs',
+    badgeColor: '#00E599',
+    icon: '👑'
+  },
+  PLAYER: {
+    allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace'],
+    defaultTab: 'teams',
+    canScore: false,
+    canManageLineup: false,
+    canFileIncident: false,
+    canManageTournaments: false,
+    canManageVenues: false,
+    canAccessApiExplorer: false,
+    canAccessExplorer: false,
+    canAccessAdmin: false,
+    canAccessAdminAudit: false,
+    canSignOffMatch: false,
+    canConductToss: false,
+    fanCheerConsole: false,
+    scoringMode: 'FAN_SPECTATOR',
+    description: 'Player: View career stats, squad roster, and match fixtures',
+    badgeColor: '#00D2FF',
+    icon: '🏏'
+  },
+  SCORER: {
+    allowedTabs: ['scoring', 'studio', 'tournaments'],
+    defaultTab: 'studio',
+    canScore: true,
+    canManageLineup: false,
+    canFileIncident: false,
+    canManageTournaments: false,
+    canManageVenues: false,
+    canAccessApiExplorer: false,
+    canAccessExplorer: false,
+    canAccessAdmin: false,
+    canAccessAdminAudit: false,
+    canSignOffMatch: true,
+    canConductToss: false,
+    fanCheerConsole: false,
+    scoringMode: 'SCORER',
+    description: 'Official Scorer: Full ball-by-ball scoring, dismissals, and wagon wheel',
+    badgeColor: '#FFB800',
+    icon: '📋'
+  },
+  FAN: {
+    allowedTabs: ['scoring', 'teams', 'tournaments'],
+    defaultTab: 'scoring',
+    canScore: false,
+    canManageLineup: false,
+    canFileIncident: false,
+    canManageTournaments: false,
+    canManageVenues: false,
+    canAccessApiExplorer: false,
+    canAccessExplorer: false,
+    canAccessAdmin: false,
+    canAccessAdminAudit: false,
+    canSignOffMatch: false,
+    canConductToss: false,
+    fanCheerConsole: true,
+    scoringMode: 'FAN_SPECTATOR',
+    description: 'Fan: Live spectator broadcast, cheering console, and match insights',
+    badgeColor: '#C084FC',
+    icon: '🎪'
+  },
+  UMPIRE: {
+    allowedTabs: ['scoring', 'incidents', 'tournaments'],
+    defaultTab: 'incidents',
+    canScore: false,
+    canManageLineup: false,
+    canFileIncident: true,
+    canManageTournaments: false,
+    canManageVenues: false,
+    canAccessApiExplorer: false,
+    canAccessExplorer: false,
+    canAccessAdmin: false,
+    canAccessAdminAudit: false,
+    canSignOffMatch: true,
+    canConductToss: false,
+    fanCheerConsole: false,
+    scoringMode: 'OFFICIAL_OVERSIGHT',
+    description: 'Official Umpire: Fair play reports, dispute logging, and match sign-offs',
+    badgeColor: '#38BDF8',
+    icon: '⚖️'
+  },
+  ADMIN: {
+    allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace', 'studio', 'incidents', 'explorer'],
+    defaultTab: 'explorer',
+    canScore: true,
+    canManageLineup: true,
+    canFileIncident: true,
+    canManageTournaments: true,
+    canManageVenues: true,
+    canAccessApiExplorer: true,
+    canAccessExplorer: true,
+    canAccessAdmin: true,
+    canAccessAdminAudit: true,
+    canSignOffMatch: true,
+    canConductToss: true,
+    fanCheerConsole: false,
+    scoringMode: 'SCORER',
+    description: 'Platform Admin: Unrestricted access to all studios, ledgers, and APIs',
+    badgeColor: '#FF3366',
+    icon: '⚡'
+  },
+  ORGANISER: {
+    allowedTabs: ['tournaments', 'marketplace', 'teams', 'scoring', 'incidents'],
+    defaultTab: 'tournaments',
+    canScore: false,
+    canManageLineup: true,
+    canFileIncident: true,
+    canManageTournaments: true,
+    canManageVenues: true,
+    canAccessApiExplorer: false,
+    canAccessExplorer: false,
+    canAccessAdmin: false,
+    canAccessAdminAudit: false,
+    canSignOffMatch: false,
+    canConductToss: false,
+    fanCheerConsole: false,
+    scoringMode: 'OFFICIAL_OVERSIGHT',
+    description: 'Tournament Organiser: Fixture generator, brackets, and venue RFQs',
+    badgeColor: '#A855F7',
+    icon: '🏆'
+  },
+  TURF_PROVIDER: {
+    allowedTabs: ['marketplace', 'scoring', 'incidents'],
+    defaultTab: 'marketplace',
+    canScore: false,
+    canManageLineup: false,
+    canFileIncident: false,
+    canManageTournaments: false,
+    canManageVenues: true,
+    canAccessApiExplorer: false,
+    canAccessExplorer: false,
+    canAccessAdmin: false,
+    canAccessAdminAudit: false,
+    canSignOffMatch: true,
+    canConductToss: false,
+    fanCheerConsole: false,
+    scoringMode: 'FAN_SPECTATOR',
+    description: 'Turf Provider: Manage ground slots, surge pricing, and escrow payouts',
+    badgeColor: '#34D399',
+    icon: '🏟️'
+  }
+};
+
+export function isTabAllowedForRole(role: PersonaRole, tabId: string): boolean {
+  const perms = ROLE_PERMISSIONS_MATRIX[role];
+  return perms ? perms.allowedTabs.includes(tabId) : false;
+}
+
+export function getRolePermissions(role: PersonaRole): RolePermissions {
+  return ROLE_PERMISSIONS_MATRIX[role] || ROLE_PERMISSIONS_MATRIX.FAN;
+}
 
 export interface UserProfile {
   id: string;
@@ -22,15 +215,28 @@ export interface UserProfile {
 }
 
 export function getDefaultProfile(role: PersonaRole = 'CAPTAIN'): UserProfile {
+  const profileConfigs: Record<PersonaRole, { name: string; jersey: number; skill: UserProfile['primarySkill'] }> = {
+    CAPTAIN: { name: 'Virat Sharma', jersey: 18, skill: 'BATTER' },
+    PLAYER: { name: 'Hardik Patel', jersey: 33, skill: 'ALL_ROUNDER' },
+    SCORER: { name: 'Sunil Gavaskar', jersey: 18, skill: 'BATTER' },
+    FAN: { name: 'Aarav Mehta', jersey: 7, skill: 'BATTER' },
+    UMPIRE: { name: 'Nitin Menon', jersey: 44, skill: 'ALL_ROUNDER' },
+    ADMIN: { name: 'System Root', jersey: 99, skill: 'ALL_ROUNDER' },
+    ORGANISER: { name: 'Jay Shah', jersey: 10, skill: 'BATTER' },
+    TURF_PROVIDER: { name: 'Bengaluru Turf Ops', jersey: 12, skill: 'ALL_ROUNDER' }
+  };
+
+  const cfg = profileConfigs[role] || profileConfigs.CAPTAIN;
+
   return {
-    id: 'usr-default-77',
-    name: 'Virat Sharma',
+    id: `usr-${role.toLowerCase()}-77`,
+    name: cfg.name,
     identifier: '+91 98765 43210',
     role,
-    jerseyNumber: 18,
+    jerseyNumber: cfg.jersey,
     battingStyle: 'RHB',
     bowlingStyle: 'RIGHT_FAST',
-    primarySkill: 'BATTER',
+    primarySkill: cfg.skill,
     teamId: 'tm-rcb-01',
     teamName: 'Bangalore Blasters',
     careerStats: {
@@ -45,15 +251,8 @@ export function getDefaultProfile(role: PersonaRole = 'CAPTAIN'): UserProfile {
 }
 
 export function renderUserBadgeHtml(profile: UserProfile): string {
-  const roleColorMap: Record<PersonaRole, string> = {
-    CAPTAIN: '#00E599',
-    PLAYER: '#00D2FF',
-    ORGANISER: '#A855F7',
-    SCORER: '#FFB800',
-    TURF_PROVIDER: '#38BDF8'
-  };
-
-  const badgeColor = roleColorMap[profile.role] || '#00E599';
+  const perms = getRolePermissions(profile.role);
+  const badgeColor = perms.badgeColor;
 
   return `
     <div class="user-profile-badge" style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:0.35rem 0.85rem;border-radius:9999px;cursor:pointer;" data-tooltip="User profile & persona switcher (${profile.role})">
@@ -62,7 +261,7 @@ export function renderUserBadgeHtml(profile: UserProfile): string {
       </div>
       <div style="display:flex;flex-direction:column;text-align:left;">
         <span style="font-size:0.82rem;font-weight:700;color:#F8FAFC;">${profile.name}</span>
-        <span style="font-size:0.68rem;font-weight:700;color:${badgeColor};text-transform:uppercase;">${profile.role} #${profile.jerseyNumber}</span>
+        <span style="font-size:0.68rem;font-weight:700;color:${badgeColor};text-transform:uppercase;">${perms.icon} ${profile.role} #${profile.jerseyNumber}</span>
       </div>
     </div>
   `;

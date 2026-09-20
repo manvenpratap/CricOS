@@ -36,6 +36,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | Root | `tests/29-tournament-ops-and-scheduling.test.ts` | Tournament Fixture Command Centre, Conflict Detection Engine, Readiness Percentage & Bulk Fixture Import (P1-006, P1-007) |
 | Root | `tests/30-analytics-insights-and-fulfilment.test.ts` | Player of the Match (MVP) Impact Points, AI Match Narrative & Turning Points, Smart Recommendations, Broadcast Overlays, Provider Arrival OTP & 3-Party Sign-Off, Social Feed & Logistics (P1-008, P1-010, P1-011, P2-001, P2-002, P2-005, P2-007) |
 | Root | `tests/31-sponsorship-auctions-and-p2-p3.test.ts` | Sponsorship Inventory & Pledges, Virtual Player Auction Bidding Engine, Weather-Triggered Rain Insurance, Academies, Dynamic Surge Pricing & Multi-Currency (P2-003, P2-004, P2-006, P2-008, P3-001, P3-002) |
+| Root | `tests/32-role-based-access-control.test.ts` | Role-Based Access Control (RBAC), 8-Persona Matrix (Scorer, Captain, Fan, Player, Umpire, Admin, Organiser, Provider), Tab & Feature Gating, Fan Cheering Console, JWT Role Guards |
 
 ## Execution Protocol
 ```bash

@@ -1,42 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-19 17:40:00
-**Version:** 1.0.0-phase2j (Complete P0, P1, P2 & P3 Backlog Delivery)  
+**Last Updated:** 2026-09-20 12:00:00
+**Version:** 1.0.0-phase2k (Role-Based Access Control & Factual Wagon Wheel Delivery)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2J Completed — Complete P0, P1, P2, and P3 Backlog Delivery across Master Documentation Package:
-  - **P1 Capabilities Delivered**:
-    - *RFQ & Competitive Quotes*: Full RFQ lifecycle (`/api/v1/procurement/rfq`), quote submissions, 100-point ranking algorithm (`evaluateRfqQuotes`), and escrow-locked awards.
-    - *Physical Commerce & Custom Gear*: Product catalog (`/api/v1/marketplace/products`) with equipment, balls, kits, and suborder tracking.
-    - *Scorer & Media Marketplace & Facilities*: Certified digital scorers, live-stream videographers, and pitch/ground facilities directory.
-    - *Bulk Fixture Import & Scheduling*: CSV/JSON round-robin tournament fixture importer with automatic conflict detection and readiness calculation.
-    - *Provider Check-In & 3-Party Match Sign-Off*: OTP check-in verification and tripartite captain/umpire match sign-off unfreezing escrow payouts.
-    - *Promotional Coupons & Subsidy Ledger*: Coupon validation and balanced double-entry promotional expense accounting (`PROMOTIONAL_DISCOUNT_EXPENSE`).
-    - *Social Activity Feed & Share Metadata*: Tournament/match social feed, follow target relationships, and OpenGraph share card metadata generation.
-  - **P2 Capabilities Delivered**:
-    - *Player of the Match (MVP) Impact Points*: Batting, bowling, and fielding algorithmic points calculation with milestone bonuses and `is_potm` determination.
-    - *AI Match Narrative & Turning Point Detection*: Automated press wire game summaries and win probability swing detector.
-    - *Smart Procurement Recommendations*: Contextual venue, umpire, and scorer recommendation engine.
-    - *Sponsorship Inventory & Pledges*: Tiered tournament sponsorship packages, pledge tracking, and double-entry escrow ledger accounting (`SPONSORSHIP_ESCROW`).
-    - *Broadcast Graphics Overlay*: Real-time score bug, delivery ticker, and batter/bowler HUD overlay feed.
-    - *Logistics Tracking*: End-to-end shipment checkpoint tracking for custom physical cricket gear.
-    - *Dynamic Surge Pricing & Multi-Currency*: Peak-hour surge multipliers and regional tax conversions (GST 18%, VAT 20%, Sales Tax).
-  - **P3 Capabilities Delivered**:
-    - *Virtual Player Auction Bidding Engine*: Franchise auction bidding engine enforcing minimum increments and squad purse reserve constraints.
-    - *Weather Insurance Claims*: Precipitation-indexed rain insurance claim verification unlocking automated payout disbursement.
-    - *Coaching Academies Directory*: Certified training camps and high-performance academies.
-  - **Interactive Single-File Console & Modal Systems**:
-    - Added 6 accessible modal dialogues (`#modalRfq`, `#modalCommerce`, `#modalTournamentOps`, `#modalMatchInsights`, `#modalCheckIn`, `#modalSponsorshipAuction`) in `apps/api/src/ui/dashboard.ts` and `index.html`.
-    - Integrated header operations buttons with full `data-tooltip` coverage, Escape key dismissal, and backdrop click-to-close.
-- **Test Health**: 100% Passing (79 automated tests across 19 test suites; 0.6s low-token execution via `./pipeline.sh test --summary`).
-- **Distribution Parity**: Rule 6 strictly verified — `index.html` and `dist/index.html` are byte-for-byte identical (360,408 bytes).
-- **Database Migrations**: 19 sequential SQL migrations (0001–0019) with strict GiST exclusion, non-negative integer minor constraints, and deterministic test seeding.
-- **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
-- **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), tactile mobile mockup (`/mobile`), and accessible 17-modal operations desk.
+- **Active Phase**: Phase 2K Completed — Role-Based Access Control (RBAC) & Factual Wagon Wheel Overhaul:
+  - **Role-Based Access Control (RBAC) & Persona-Specific Feature Gating**:
+    - *8-Persona Matrix*: Comprehensive support for `CAPTAIN`, `PLAYER`, `SCORER`, `FAN`, `UMPIRE`, `ADMIN`, `ORGANISER`, and `TURF_PROVIDER`.
+    - *Dynamic Tab & Feature Gating*: Tabs and action buttons dynamically show/hide based on persona permissions. Automatic redirection if a restricted tab is selected.
+    - *Fan Spectator Experience*: Scoring pad replaced with high-fidelity **Fan Stadium Cheering & Match Pulse Console** (`🔥 Cheer BLR`, `👏 Applause`, `💥 Boundary`, `⚡ Sixer`, `🛡️ Breakthrough`, live cheer counter, and interactive Win Probability Poll).
+    - *Official Scorer Console*: Unrestricted access to Scoring Studio, 8-zone wagon wheel ball entry, dismissals, and match sign-off.
+    - *Captain Leadership Console*: Playing XI selection, bench reserves, toss declaration (`🪙 Conduct Toss`), gear RFQs, and tactical read-only wagon wheel view.
+    - *Official Umpire Console*: Fair Play & Trust incident reporting, code of conduct logging, DRS reviews, and official match sign-off.
+    - *Admin Operations Console*: Complete unrestricted access across all 7 tabs, API explorer, and Admin Operations & Settlement Audit Desk.
+    - *Backend Middleware Hardening*: Extended `UserRole` union type across JWT signing and Fastify `requireRole` preHandler guards with Admin bypass.
+  - **Factually Accurate Cricket Wagon Wheel Overhaul**:
+    - *Fielding Geometry*: Correct radial angles clockwise from North (Bowler end 0°): Long On (22.5°), Mid Wicket (67.5°), Square Leg (112.5°), Fine Leg (157.5°), Third Man (202.5°), Point (247.5°), Extra Cover (292.5°), Long Off (337.5°).
+    - *Stance Geometry*: RHB/LHB stance switcher with dynamic off/leg side geometric reflection.
+    - *Interactive Stadium Visualizer*: $360 \times 360$ SVG pitch strip, popping crease, 30-yard circle, boundary rope, 8 interactive sector wedges, and dynamic shot rays (gold curved arcs for 6s, emerald lines for 4s, cyan lines for singles, dashed slate lines for dots).
+  - **Test Health**: 100% Passing (88 automated tests across 23 test suites; 0.7s low-token execution via `./pipeline.sh test --summary`).
+  - **Distribution Parity**: Rule 6 strictly verified — `index.html` and `dist/index.html` are byte-for-byte identical (409,704 bytes).
+  - **Database Migrations**: 19 sequential SQL migrations (0001–0019) with strict GiST exclusion, non-negative integer minor constraints, and deterministic test seeding.
+  - **Build Status**: Strict TypeScript compilation with 0 errors across 8 workspace projects.
+  - **Runtime Daemon**: Hardened Fastify API server running on port 3000 (`http://localhost:3000/`) with interactive 7-tab web console, live SSE scoring, offline outbox retry queue, zero-downtime graceful shutdown, liveness/readiness probes, metrics exposition, interactive API documentation (`/docs`), tactile mobile mockup (`/mobile`), and accessible 17-modal operations desk.
 
 ---
 
