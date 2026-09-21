@@ -22,7 +22,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | `apps/web` | `test/archive_features.test.ts` | Archive features: Event Basket readiness meter, MCC Law 1.3 Toss & DLS rain rule, Official Desk, 5-star post-match rating, Orange/Purple Cap leaderboards |
 | `apps/web` | `test/advanced_ux.test.ts` | Advanced UX: Notification Center drawer, Admin Desk & double-entry ledger audit, Provider Storefront & slot publisher |
 | `apps/web` | `test/phase2e_features.test.ts` | Phase 2E Blueprint & FSD: Create Event Wizard (UX-003), Event Overview (UX-004), Official Calendar (UX-015), Contextual Messaging (FSD §45), Booking Lifecycle (Commercial §10-14), Financial Reconciliation (Commercial §17-18) |
-| `apps/mobile` | `test/mobile.test.ts` | Mobile API client, offline queueing, session caching, live match screen controller, marketplace booking, career stats |
+| `apps/mobile` | `test/mobile.test.ts` | Mobile API client, offline queueing, session caching, live match controller, marketplace booking, career stats, teams lineup, incidents desk, admin ledger, tournaments stepper |
 | Root | `tests/tournament-emulation.test.ts` | End-to-end synthetic tournament lifecycle, round-robin scheduling, NRR calculation, double-entry settlement verification |
 | Root | `tests/operational-telemetry.test.ts` | Prometheus metrics text exposition, request latency histograms, event loop lag, OpenAPI 3.0 & /docs showcase |
 | Root | `tests/distribution-packaging.test.ts` | Standalone distribution packaging, byte-for-byte HTML parity, release manifest hashes, Dockerfiles, App Store/Play Store compliance & visual assets, Floodlit Stadium Broadcast tokens |
@@ -37,6 +37,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | Root | `tests/30-analytics-insights-and-fulfilment.test.ts` | Player of the Match (MVP) Impact Points, AI Match Narrative & Turning Points, Smart Recommendations, Broadcast Overlays, Provider Arrival OTP & 3-Party Sign-Off, Social Feed & Logistics (P1-008, P1-010, P1-011, P2-001, P2-002, P2-005, P2-007) |
 | Root | `tests/31-sponsorship-auctions-and-p2-p3.test.ts` | Sponsorship Inventory & Pledges, Virtual Player Auction Bidding Engine, Weather-Triggered Rain Insurance, Academies, Dynamic Surge Pricing & Multi-Currency (P2-003, P2-004, P2-006, P2-008, P3-001, P3-002) |
 | Root | `tests/32-role-based-access-control.test.ts` | Role-Based Access Control (RBAC), 8-Persona Matrix (Scorer, Captain, Fan, Player, Umpire, Admin, Organiser, Provider), Tab & Feature Gating, Fan Cheering Console, JWT Role Guards |
+| Root | `tests/33-mobile-app-journeys.test.ts` | Multi-persona mobile app journeys (Captain, Player, Scorer, Fan, Umpire, Organiser, Turf Provider, Admin), interactive controls, tooltips & single-file release parity |
 
 ## Execution Protocol
 ```bash

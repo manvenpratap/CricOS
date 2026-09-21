@@ -111,45 +111,125 @@ export class MarketplaceScreenController {
     return [...this.bookings];
   }
 
-  public renderMobileHtml(): string {
+  public addSlot(slot: Omit<MobileMarketplaceSlot, 'id' | 'isAvailable'>): MobileMarketplaceSlot {
+    const newSlot: MobileMarketplaceSlot = {
+      ...slot,
+      id: `slot-${Date.now()}`,
+      isAvailable: true
+    };
+    this.slots.unshift(newSlot);
+    return newSlot;
+  }
+
+  public toggleSlotAvailability(slotId: string): boolean {
+    const s = this.slots.find(item => item.id === slotId);
+    if (!s) return false;
+    s.isAvailable = !s.isAvailable;
+    return s.isAvailable;
+  }
+
+  public renderMobileHtml(isProvider: boolean = false): string {
     const filtered = this.getFilteredSlots();
 
     return `
-      <div class="mobile-marketplace-screen" style="padding:16px;background:#090d16;color:#f8fafc;font-family:sans-serif;max-width:480px;margin:auto;">
-        <div style="font-size:18px;font-weight:700;margin-bottom:12px;color:#10b981;">🏟️ Cricket Marketplace</div>
-        
-        <!-- Filter Tabs -->
-        <div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;">
-          ${(['ALL', 'GROUND', 'UMPIRE', 'SCORER', 'COACH'] as const).map(cat => `
-            <span style="padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;background:${this.selectedCategory === cat ? '#10b981' : 'rgba(255,255,255,0.06)'};color:${this.selectedCategory === cat ? '#042f2e' : '#cbd5e1'};cursor:pointer;">
-              ${cat}
-            </span>
-          `).join('')}
+      <div class="mobile-marketplace-screen" style="padding: 1rem; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <!-- Header Card -->
+        <div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div style="font-size: 0.75rem; color: #00E599; font-weight: 700; text-transform: uppercase;">
+                ${isProvider ? 'Provider Operations' : 'Marketplace & Booking'}
+              </div>
+              <h2 style="margin: 0.2rem 0 0; font-size: 1.25rem; font-family: 'Space Grotesk', sans-serif;">
+                ${isProvider ? 'Turf Capacity & Storefront' : 'Book Venues & Umpires'}
+              </h2>
+              <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.2rem;">
+                ${isProvider ? 'Manage hourly slots, floodlights & payouts' : 'Authoritative 15-min GiST hold with escrow'}
+              </div>
+            </div>
+            <span style="font-size: 1.25rem;">${isProvider ? '🏟️' : '🛒'}</span>
+          </div>
+
+          ${isProvider ? `
+            <!-- Provider Earnings Dashboard -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08);">
+              <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 0.5rem; text-align: center;">
+                <div style="font-size: 0.65rem; color: #94a3b8;">Gross Revenue</div>
+                <div style="font-size: 0.85rem; font-weight: 800; color: #00E599; font-family: 'Chakra Petch', monospace;">₹35,000</div>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 0.5rem; text-align: center;">
+                <div style="font-size: 0.65rem; color: #94a3b8;">Net Disbursed</div>
+                <div style="font-size: 0.85rem; font-weight: 800; color: #00D2FF; font-family: 'Chakra Petch', monospace;">₹32,882</div>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 0.5rem; text-align: center;">
+                <div style="font-size: 0.65rem; color: #94a3b8;">Trust Rating</div>
+                <div style="font-size: 0.85rem; font-weight: 800; color: #FFB800; font-family: 'Chakra Petch', monospace;">★ 4.9</div>
+              </div>
+            </div>
+          ` : ''}
         </div>
 
+        ${isProvider ? `
+          <!-- Provider Slot Publisher Form -->
+          <div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.6rem; font-family: 'Space Grotesk', sans-serif;">
+              ➕ Publish Hourly Match Slot
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.4rem;">
+              <input type="text" id="slotTitleInput" placeholder="Slot Title (e.g. Pitch 2 Floodlit)" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.5rem; color: #f8fafc; font-size: 0.75rem;" />
+              <input type="text" id="slotPriceInput" placeholder="Price (INR, e.g. 3500)" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.5rem; color: #00E599; font-size: 0.75rem; font-family: 'Chakra Petch', monospace;" />
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.6rem;">
+              <input type="text" id="slotTimeInput" placeholder="18:00 - 22:00" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.5rem; color: #f8fafc; font-size: 0.75rem;" />
+              <button type="button" onclick="window.cricosMobileApp.publishSlotAction()" style="padding: 0.5rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.75rem; cursor: pointer;" data-tooltip="Publish slot to live search index">
+                Publish Slot
+              </button>
+            </div>
+          </div>
+        ` : `
+          <!-- Consumer Category Filter Tabs -->
+          <div style="display: flex; gap: 0.4rem; overflow-x: auto; margin-bottom: 1rem; padding-bottom: 0.2rem;">
+            ${(['ALL', 'GROUND', 'UMPIRE', 'SCORER', 'COACH'] as const).map(cat => `
+              <button type="button" onclick="window.cricosMobileApp.setMarketCategory('${cat}')" style="padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid ${this.selectedCategory === cat ? '#00E599' : 'rgba(255,255,255,0.1)'}; background: ${this.selectedCategory === cat ? '#00E599' : 'rgba(255,255,255,0.04)'}; color: ${this.selectedCategory === cat ? '#04070D' : '#cbd5e1'}; cursor: pointer;">
+                ${cat}
+              </button>
+            `).join('')}
+          </div>
+        `}
+
         <!-- Slot Cards -->
-        <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
           ${filtered.map(slot => {
             const breakdown = this.calculateBreakdown(slot.priceMinor);
             return `
-              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;" data-tooltip="Slot: ${slot.startTime} - ${slot.endTime}">
-                <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.85rem;" data-tooltip="Slot: ${slot.startTime} - ${slot.endTime}">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                   <div>
-                    <div style="font-weight:700;font-size:14px;color:#f8fafc;">${slot.title}</div>
-                    <div style="font-size:12px;color:#94a3b8;">${slot.location} • ⭐ ${slot.rating.toFixed(1)}</div>
+                    <div style="font-size: 0.7rem; color: #00E599; font-weight: 700;">${slot.category}</div>
+                    <div style="font-weight: 700; font-size: 0.95rem; margin: 0.15rem 0; color: #f8fafc;">${slot.title}</div>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">★ ${slot.rating.toFixed(1)} • ${slot.location}</div>
                   </div>
-                  <span style="font-size:11px;padding:2px 6px;border-radius:4px;background:rgba(16,185,129,0.1);color:#10b981;font-weight:600;">
-                    ${slot.category}
-                  </span>
+                  <div style="text-align: right;">
+                    <div style="font-weight: 800; color: #00E599; font-family: 'Chakra Petch', monospace; font-size: 1.1rem;">
+                      ₹${(slot.priceMinor / 100).toFixed(2)}
+                    </div>
+                    <div style="font-size: 0.65rem; color: #94a3b8;">per slot</div>
+                  </div>
                 </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid rgba(255,255,255,0.05);padding-top:8px;">
-                  <div>
-                    <span style="font-size:15px;font-weight:700;color:#f8fafc;">₹${(breakdown.totalMinor / 100).toFixed(2)}</span>
-                    <span style="font-size:11px;color:#94a3b8;"> incl. taxes</span>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.6rem;">
+                  <div style="font-size: 0.75rem; color: #94a3b8;">
+                    Time: <strong style="color: #cbd5e1;">${slot.startTime} - ${slot.endTime}</strong>
                   </div>
-                  <button style="padding:6px 14px;border-radius:6px;background:${slot.isAvailable ? '#10b981' : '#475569'};color:${slot.isAvailable ? '#042f2e' : '#94a3b8'};font-weight:700;font-size:12px;border:none;cursor:pointer;" ${slot.isAvailable ? '' : 'disabled'} data-tooltip="${slot.isAvailable ? 'Book instantly with escrow hold' : 'Slot already booked'}">
-                    ${slot.isAvailable ? 'Book' : 'Booked'}
-                  </button>
+                  ${isProvider ? `
+                    <button type="button" onclick="window.cricosMobileApp.toggleSlotFreeze('${slot.id}')" style="padding: 0.4rem 0.8rem; border-radius: 6px; border: 1px solid ${slot.isAvailable ? '#ff3366' : '#00E599'}; background: ${slot.isAvailable ? 'rgba(255,51,102,0.15)' : 'rgba(0,229,153,0.15)'}; color: ${slot.isAvailable ? '#ff8099' : '#00E599'}; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="${slot.isAvailable ? 'Freeze slot to prevent bookings' : 'Unfreeze slot to accept bookings'}">
+                      ${slot.isAvailable ? 'Freeze Slot ❄️' : 'Unfreeze Slot ✓'}
+                    </button>
+                  ` : `
+                    <button type="button" onclick="window.cricosMobileApp.bookTurfInstant('${slot.title}', '${(breakdown.totalMinor / 100).toFixed(2)}')" style="padding: 0.4rem 0.85rem; border-radius: 6px; border: none; background: ${slot.isAvailable ? 'linear-gradient(135deg, #00E599, #00D2FF)' : '#475569'}; color: ${slot.isAvailable ? '#04070D' : '#94a3b8'}; font-weight: 700; font-size: 0.75rem; cursor: pointer;" ${slot.isAvailable ? '' : 'disabled'} data-tooltip="${slot.isAvailable ? 'Lock slot with 15-minute GiST hold' : 'Slot already booked'}">
+                      ${slot.isAvailable ? 'Instant 15-Min Hold →' : 'Booked'}
+                    </button>
+                  `}
                 </div>
               </div>
             `;
@@ -159,3 +239,4 @@ export class MarketplaceScreenController {
     `;
   }
 }
+

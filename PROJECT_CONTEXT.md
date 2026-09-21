@@ -1,14 +1,35 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-21 12:54:00
-**Version:** 1.0.0-phase2q (Athletic Collapsible Sidebar Navigation & Top Bar Declutter)  
+**Last Updated:** 2026-09-21 22:45:00
+**Version:** 1.0.0-phase2r (Comprehensive Mobile App Architecture & 8-Persona Journeys)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2Q Completed — Athletic Collapsible Sidebar Navigation & Top Bar Declutter:
+- **Active Phase**: Phase 2R Completed — Comprehensive Mobile App Architecture & 8-Persona Journeys:
+  - **Full 8-Persona Support on Mobile**:
+    - *CAPTAIN*: Playing XI squad lineup (11 players), bench reserves (3 substitutes), tactical bench swap, team join code (`CRIC-BLR-4821`), official coin toss declaration, and tactical wagon wheel view.
+    - *PLAYER*: Career stats calculations (batting average, strike rate, bowling economy, bowling average), squad inspection, instant 15-min GiST hold turf booking, and Apple App Store 5.1.1(v) compliant account deletion.
+    - *SCORER*: Boundary scoring pad (0, 1, 2, 3, 4, 6), compound extras (+1 Wd, +1 Nb with Free Hit, +1 Bye, +1 Leg Bye), 6-mode dismissals (caught, bowled, lbw, run out, stumped, hit wicket), strike rotation on odd runs & over completion, single-ball undo, strike swap, and official scorecard export modal.
+    - *FAN*: Stadium Cheering Pulse (`🔥 666!`, `💥 Clean Bowled!`, `👏 Boundary!`), live cheer pulse counter, and Win Probability poll voting (BLR vs MUM).
+    - *UMPIRE*: Fair Play & MCC Laws code of conduct breach reporting (Level 1-4), DRS review tracking & ball tracking trajectory, +5 penalty runs award (Law 41/42), and official match sign-off certification.
+    - *ORGANISER*: 4-stage tournament stepper, round-robin fixtures schedule, ICC Points Table & Net Run Rate, Orange & Purple Cap leaderboards, and Event Basket procurement modal with 15-minute GiST hold & escrow breakdown (5% platform fee, 18% GST).
+    - *TURF_PROVIDER*: Turf Provider Storefront, hourly match slot publisher, freeze/unfreeze slot availability toggles, and monthly net earnings dashboard ($G - 5\% \text{ fee} - 18\% \text{ GST}$).
+    - *ADMIN*: 5-account Chart of Accounts balance integrity meter (`ESCROW_HOLD`, `PROVIDER_PAYABLE`, `PLATFORM_FEE_INCOME`, `TAX_GST_PAYABLE`, `REFUND_CLEARING` with net zero imbalance), dispute arbitration queue with balanced double-entry refund journal, and system operations telemetry.
+  - **Mobile Package & Standalone Webview Parity**:
+    - Enhanced `@cricket-platform/mobile` (`apps/mobile/src/`) with modular screen controllers (`AuthScreen`, `LiveMatchScreen`, `TeamsScreen`, `TournamentsScreen`, `MarketplaceScreen`, `IncidentsScreen`, `AdminDeskScreen`, `ProfileScreen`) and dynamic persona-based navigation bar.
+    - Upgraded standalone mobile webview (`apps/api/src/ui/mobile-view.ts`) and packaged `dist/mobile.html` & `dist/public/mobile.html` to offer identical 8-persona capabilities.
+  - **Testing & Verification**:
+    - Created `tests/33-mobile-app-journeys.test.ts` with 23 comprehensive tests.
+    - Expanded `apps/mobile/test/mobile.test.ts` to 35 tests covering all 8 personas.
+    - Total test suite: 111 tests across 34 suites, 100% passing via `./pipeline.sh test --summary`.
+  - **Rule 5 & Rule 6 Compliance**:
+    - All interactive elements contain accessible `data-tooltip="..."` attributes.
+    - Single-file parity verified (`index.html` == `dist/index.html`).
+    - Cryptographic release manifest verified (`dist/release-manifest.json`).
+- **Phase 2Q Completed**: Athletic Collapsible Sidebar Navigation & Top Bar Declutter:
   - **Sidebar Architecture & Layout Shell**: Introduced `.app-layout` flex shell with a fixed/sticky `.app-sidebar` (250px expanded, 68px collapsed) and `.app-main-wrapper`, eliminating all vertical stacking of redundant horizontal bars.
   - **Categorized Sidebar Sections**:
     1. *Consoles & Studios*: Transposed the 7 core navigation tabs (`Match Center`, `Teams & Rosters`, `Tournaments`, `Venues & Turfs`, `Scoring Studio`, `Fair Play & Trust`, `Operations & APIs`) into the primary sidebar section with glowing turf-emerald active accents and icon alignment.

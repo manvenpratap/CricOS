@@ -5,9 +5,16 @@ import {
   LiveMatchScreenController,
   MarketplaceScreenController,
   ProfileScreenController,
+  TeamsScreenController,
+  IncidentsScreenController,
+  AdminDeskScreenController,
+  TournamentsScreenController,
+  AuthScreenController,
   CricOSMobileApp,
   type LiveMatchScreenState,
-  type PlayerProfileData
+  type PlayerProfileData,
+  type MobileUserRole,
+  type TournamentStage
 } from '../dist/index.js';
 
 describe('CricOS Mobile Client Application (@cricket-platform/mobile)', () => {
@@ -162,8 +169,8 @@ describe('CricOS Mobile Client Application (@cricket-platform/mobile)', () => {
     it('renders accessible mobile HTML with tooltips', () => {
       const controller = new LiveMatchScreenController(createSampleState());
       const html = controller.renderMobileHtml();
-      assert.ok(html.includes('data-tooltip="On Strike"'));
-      assert.ok(html.includes('data-tooltip="Non-Striker"'));
+      assert.ok(html.includes('data-tooltip="Active striker on strike"'));
+      assert.ok(html.includes('data-tooltip="Non-striker at bowler\'s end"'));
       assert.ok(html.includes('data-tooltip="Current Bowler Figures"'));
       assert.ok(html.includes('Rohit'));
     });
@@ -233,7 +240,7 @@ describe('CricOS Mobile Client Application (@cricket-platform/mobile)', () => {
       const html = controller.renderMobileHtml();
       assert.ok(html.includes('Eden Pitch 1'));
       assert.ok(html.includes('data-tooltip'));
-      assert.ok(html.includes('Cricket Marketplace'));
+      assert.ok(html.includes('Book Venues & Umpires'));
     });
   });
 
@@ -304,6 +311,264 @@ describe('CricOS Mobile Client Application (@cricket-platform/mobile)', () => {
 
       app.navigateTo('PROFILE');
       assert.strictEqual(app.getCurrentScreen(), 'PROFILE');
+    });
+  });
+
+  describe('6. Teams Screen Controller & Squad Management (CAPTAIN / PLAYER)', () => {
+    it('initializes with 11 playing squad members and 3 bench reserves', () => {
+      const controller = new TeamsScreenController();
+      const state = controller.getState();
+      assert.strictEqual(state.playingXI.length, 11);
+      assert.strictEqual(state.bench.length, 3);
+      assert.strictEqual(state.playingXI[0]?.role, 'C');
+      assert.strictEqual(state.playingXI[0]?.name, 'Virat Sharma');
+    });
+
+    it('records certified coin toss details', () => {
+      const controller = new TeamsScreenController();
+      controller.recordToss('Bangalore Royal Challengers', 'BAT');
+      const state = controller.getState();
+      assert.strictEqual(state.tossWinner, 'Bangalore Royal Challengers');
+      assert.strictEqual(state.tossDecision, 'BAT');
+    });
+
+    it('executes tactical bench swap between XI and reserves', () => {
+      const controller = new TeamsScreenController();
+      const xiPlayerId = controller.getState().playingXI[1]!.id; // Faf du Plessis
+      const benchPlayerId = controller.getState().bench[0]!.id; // Anuj Rawat
+
+      controller.swapPlayerWithBench(xiPlayerId, benchPlayerId);
+      const state = controller.getState();
+      assert.strictEqual(state.playingXI.some(p => p.id === benchPlayerId), true);
+      assert.strictEqual(state.bench.some(p => p.id === xiPlayerId), true);
+    });
+
+    it('renders accessible mobile HTML with team code and tooltips', () => {
+      const controller = new TeamsScreenController();
+      const captainHtml = controller.renderMobileHtml(true);
+      assert.ok(captainHtml.includes('CRIC-BLR-4821'));
+      assert.ok(captainHtml.includes('data-tooltip="Conduct official MCC match toss"'));
+      assert.ok(captainHtml.includes('data-tooltip="Move to bench"'));
+
+      const playerHtml = controller.renderMobileHtml(false);
+      assert.ok(playerHtml.includes('CRIC-BLR-4821'));
+      assert.ok(!playerHtml.includes('Conduct Toss'));
+    });
+  });
+
+  describe('7. Incidents Screen Controller & MCC Laws (UMPIRE / ADMIN)', () => {
+    it('logs Fair Play code of conduct breach', () => {
+      const controller = new IncidentsScreenController();
+      controller.reportIncident({
+        matchId: 'match-101',
+        playerName: 'Shubman Gill',
+        teamName: 'Delhi Daredevils',
+        severity: 'LEVEL_1',
+        type: 'DISSENT',
+        description: 'Excessive appealing and questioning umpire',
+        penaltyRuns: 0
+      });
+
+      const state = controller.getState();
+      assert.strictEqual(state.incidents.length, 2);
+      assert.strictEqual(state.incidents[0]?.playerName, 'Shubman Gill');
+      assert.strictEqual(state.incidents[0]?.severity, 'LEVEL_1');
+    });
+
+    it('tracks DRS reviews history', () => {
+      const controller = new IncidentsScreenController();
+      assert.strictEqual(controller.getState().drsReviews.length, 1);
+
+      controller.logDrsReview({
+        over: '15.2',
+        battingTeam: 'Mumbai Super Strikers',
+        decision: 'OUT',
+        retained: false,
+        ballTracking: 'Pitching In-Line • Impact Outside'
+      });
+      assert.strictEqual(controller.getState().drsReviews.length, 2);
+      assert.strictEqual(controller.getState().drsReviews[0]?.decision, 'OUT');
+    });
+
+    it('executes official match sign-off under MCC Laws', () => {
+      const controller = new IncidentsScreenController();
+      assert.strictEqual(controller.getState().matchSignedOff, false);
+
+      controller.signOffMatch();
+      assert.strictEqual(controller.getState().matchSignedOff, true);
+    });
+
+    it('renders accessible HTML with tooltips for Umpire', () => {
+      const controller = new IncidentsScreenController();
+      const html = controller.renderMobileHtml(true);
+      assert.ok(html.includes('Official Umpire Desk'));
+      assert.ok(html.includes('data-tooltip="Certify match results under MCC Laws"'));
+      assert.ok(html.includes('data-tooltip="Award 5 penalty runs to batting team per MCC Law 41/42"'));
+    });
+  });
+
+  describe('8. Admin Desk Screen Controller & Double-Entry Integrity (ADMIN)', () => {
+    it('verifies 5-account balance sheet equality and zero ledger imbalance', () => {
+      const controller = new AdminDeskScreenController();
+      assert.strictEqual(controller.isLedgerBalanced(), true);
+      const state = controller.getState();
+      const { accounts, totalDebitsMinor, totalCreditsMinor } = state;
+      assert.strictEqual(accounts.length, 5);
+      assert.strictEqual(totalDebitsMinor, totalCreditsMinor);
+    });
+
+    it('arbitrates disputes with balanced double-entry refund journal', () => {
+      const controller = new AdminDeskScreenController();
+      const disputeId = controller.getState().disputes[0]!.id;
+
+      controller.approveDispute(disputeId);
+      assert.strictEqual(controller.getState().disputes[0]?.status, 'REFUNDED');
+      assert.strictEqual(controller.isLedgerBalanced(), true);
+
+      controller.rejectDispute('dsp-102');
+      assert.strictEqual(controller.getState().disputes[1]?.status, 'REJECTED');
+    });
+
+    it('renders accessible Admin Desk HTML with tooltips', () => {
+      const controller = new AdminDeskScreenController();
+      const html = controller.renderMobileHtml();
+      assert.ok(html.includes('Admin & Settlement Desk'));
+      assert.ok(html.includes('5-Account Balance Sheet'));
+      assert.ok(html.includes('data-tooltip="Execute balanced zero-sum refund journal entry"'));
+      assert.ok(html.includes('data-tooltip="Reject claim and disburse escrow to provider"'));
+    });
+  });
+
+  describe('9. Tournaments Screen Controller & Event Basket (ORGANISER)', () => {
+    it('manages 4-stage stepper state transitions', () => {
+      const controller = new TournamentsScreenController();
+      assert.strictEqual(controller.getState().currentStage, 2);
+
+      controller.setStage(3);
+      assert.strictEqual(controller.getState().currentStage, 3);
+    });
+
+    it('calculates event basket with 5% platform fee and 18% GST', () => {
+      const controller = new TournamentsScreenController();
+      // base: 530000 (₹5,300)
+      // fee: 5% of 530000 = 26500 (₹265)
+      // gst: 18% of 26500 = 4770 (₹47.70)
+      // total: 561270 (₹5,612.70)
+      const basket = controller.calculateEventBasket(530000);
+      assert.strictEqual(basket.baseMinor, 530000);
+      assert.strictEqual(basket.platformFeeMinor, 26500);
+      assert.strictEqual(basket.gstMinor, 4770);
+      assert.strictEqual(basket.totalMinor, 561270);
+    });
+
+    it('renders Organiser HTML with fixtures and event basket procurement', () => {
+      const controller = new TournamentsScreenController();
+      const html = controller.renderMobileHtml(true);
+      assert.ok(html.includes('National Club Premier League'));
+      assert.ok(html.includes('data-tooltip="Manage Event Basket & Procurement"'));
+      assert.ok(html.includes('data-tooltip="Auto-generate round-robin bracket"'));
+      assert.ok(html.includes('Orange Cap'));
+      assert.ok(html.includes('Purple Cap'));
+    });
+  });
+
+  describe('10. Turf Provider Storefront & Slot Publisher (TURF_PROVIDER)', () => {
+    it('publishes and toggles availability of turf slots', () => {
+      const controller = new MarketplaceScreenController([]);
+      controller.addSlot({
+        providerId: 'prv-10',
+        providerName: 'Kallam Turf',
+        category: 'GROUND',
+        title: 'Kallam Pitch 1 Floodlit',
+        location: 'Hyderabad, TS',
+        startTime: '19:00',
+        endTime: '22:00',
+        priceMinor: 450000,
+        rating: 4.9
+      });
+
+      assert.strictEqual(controller.getFilteredSlots().length, 1);
+      const slotId = controller.getFilteredSlots()[0]!.id;
+      assert.strictEqual(controller.getFilteredSlots()[0]!.isAvailable, true);
+
+      controller.toggleSlotAvailability(slotId);
+      assert.strictEqual(controller.getFilteredSlots()[0]!.isAvailable, false);
+    });
+
+    it('renders Turf Provider storefront HTML with earnings and slot controls', () => {
+      const controller = new MarketplaceScreenController([
+        {
+          id: 'slot-tp-1',
+          providerId: 'prv-1',
+          providerName: 'Wankhede Club',
+          category: 'GROUND',
+          title: 'Wankhede Arena',
+          location: 'Mumbai, MH',
+          startTime: '08:00',
+          endTime: '12:00',
+          priceMinor: 350000,
+          rating: 4.9,
+          isAvailable: true
+        }
+      ]);
+      const html = controller.renderMobileHtml(true);
+      assert.ok(html.includes('Turf Capacity & Storefront'));
+      assert.ok(html.includes('Gross Revenue'));
+      assert.ok(html.includes('data-tooltip="Publish slot to live search index"'));
+      assert.ok(html.includes('data-tooltip="Freeze slot to prevent bookings"'));
+    });
+  });
+
+  describe('11. Fan Engagement & Match Pulse (FAN)', () => {
+    it('renders live match screen with fan cheering and win probability poll', () => {
+      const app = new CricOSMobileApp();
+      app.switchUserPersona('FAN');
+      assert.strictEqual(app.getUserPersona(), 'FAN');
+
+      const liveHtml = app.matchCtrl.renderMobileHtml('FAN');
+      assert.ok(liveHtml.includes('Fan Stadium Cheering Pulse'));
+      assert.ok(liveHtml.includes('🔥 Cheer BLR'));
+      assert.ok(liveHtml.includes('Vote BLR'));
+      assert.ok(liveHtml.includes('Vote MUM'));
+    });
+  });
+
+  describe('12. Persona Navigation Adaptation & Apple App Store Compliance', () => {
+    it('adapts screen and navigation for each of the 8 personas', () => {
+      const app = new CricOSMobileApp();
+      const allRoles: MobileUserRole[] = [
+        'CAPTAIN',
+        'PLAYER',
+        'SCORER',
+        'FAN',
+        'UMPIRE',
+        'ORGANISER',
+        'TURF_PROVIDER',
+        'ADMIN'
+      ];
+
+      for (const role of allRoles) {
+        app.switchUserPersona(role);
+        assert.strictEqual(app.getUserPersona(), role);
+
+        // Verify role-appropriate screen routing
+        if (role === 'UMPIRE') {
+          assert.strictEqual(app.getCurrentScreen(), 'INCIDENTS');
+        } else if (role === 'ADMIN') {
+          assert.strictEqual(app.getCurrentScreen(), 'ADMIN');
+        } else if (role === 'TURF_PROVIDER') {
+          assert.strictEqual(app.getCurrentScreen(), 'MARKETPLACE');
+        } else if (role === 'CAPTAIN') {
+          assert.strictEqual(app.getCurrentScreen(), 'TEAMS');
+        }
+      }
+    });
+
+    it('renders Apple App Store Guideline 5.1.1(v) account deletion action', () => {
+      const app = new CricOSMobileApp();
+      const profileHtml = app.profileCtrl.renderMobileHtml();
+      assert.ok(profileHtml.includes('data-tooltip="Mandatory permanent account deletion per Apple App Store 5.1.1(v)"'));
+      assert.ok(profileHtml.includes('Delete Account & All Data (App Store Compliance)'));
     });
   });
 });

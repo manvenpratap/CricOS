@@ -171,16 +171,6 @@ export function getMobileAppHtml(): string {
     button:active, .role-pill:active, .slot-pill:active {
       transform: scale(0.97);
     }
-
-    /* Interactive pill buttons inside app */
-    .role-pill.active {
-      border-color: #00E599 !important;
-      background: rgba(0, 229, 153, 0.2) !important;
-      color: #00E599 !important;
-    }
-    .slot-pill:hover {
-      filter: brightness(1.2);
-    }
   </style>
 </head>
 <body>
@@ -188,13 +178,13 @@ export function getMobileAppHtml(): string {
   <div class="preview-header">
     <div class="preview-badge">
       <span>📱</span>
-      <span>CricOS Mobile Client (React Native / Expo)</span>
+      <span>CricOS Mobile Client (iOS & Android)</span>
     </div>
     <h1 class="preview-title">Consumer Mobile Experience</h1>
-    <p class="preview-desc">Production mobile user journeys for iOS App Store & Google Play Store, connected live to Fastify backend APIs.</p>
+    <p class="preview-desc">Complete multi-persona mobile client covering Captain, Player, Scorer, Fan, Umpire, Organiser, Turf Provider, and Admin.</p>
     <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; justify-content: center;">
-      <a href="/" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;">← Back to Platform Console</a>
-      <a href="/docs" target="_blank" style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;">📖 OpenAPI Specs</a>
+      <a href="/" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;" data-tooltip="Switch to Platform Console">← Back to Platform Console</a>
+      <a href="/docs" target="_blank" style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;" data-tooltip="Inspect REST & WebSocket API Specs">📖 OpenAPI Specs</a>
     </div>
   </div>
 
@@ -225,7 +215,6 @@ export function getMobileAppHtml(): string {
   </div>
 
   <script type="module">
-    // In-browser mock and connection to backend
     class StandaloneMobileClient {
       constructor() {
         this.session = null;
@@ -246,6 +235,9 @@ export function getMobileAppHtml(): string {
         this.role = 'CAPTAIN';
         this.isLoading = false;
         this.errorMessage = null;
+        this.fanCheersCount = 1429;
+        this.pollVotes = { BLR: 68, MUM: 32 };
+        this.marketCategory = 'ALL';
 
         this.matchState = {
           matchId: 'match-pilot-1',
@@ -270,6 +262,33 @@ export function getMobileAppHtml(): string {
           bowling: { wickets: 8, overs: 48, runsConceded: 384, bestBowling: '2/18' }
         };
 
+        this.playingXI = [
+          { id: 'p1', name: 'Virat K.', role: 'CAPTAIN', jersey: 18 },
+          { id: 'p2', name: 'Rohit S.', role: 'BATTER', jersey: 45 },
+          { id: 'p3', name: 'Shubman G.', role: 'BATTER', jersey: 77 },
+          { id: 'p4', name: 'Shreyas I.', role: 'BATTER', jersey: 96 },
+          { id: 'p5', name: 'KL Rahul', role: 'WICKETKEEPER', jersey: 1 },
+          { id: 'p6', name: 'Hardik P.', role: 'ALL_ROUNDER', jersey: 33 },
+          { id: 'p7', name: 'Ravindra J.', role: 'ALL_ROUNDER', jersey: 8 },
+          { id: 'p8', name: 'Axar P.', role: 'ALL_ROUNDER', jersey: 20 },
+          { id: 'p9', name: 'Jasprit B.', role: 'BOWLER', jersey: 93 },
+          { id: 'p10', name: 'Kuldeep Y.', role: 'BOWLER', jersey: 23 },
+          { id: 'p11', name: 'Mohammed S.', role: 'BOWLER', jersey: 11 }
+        ];
+
+        this.bench = [
+          { id: 'b1', name: 'Rishabh P.', role: 'WICKETKEEPER', jersey: 17 },
+          { id: 'b2', name: 'Surya Y.', role: 'BATTER', jersey: 63 },
+          { id: 'b3', name: 'Arshdeep S.', role: 'BOWLER', jersey: 2 },
+          { id: 'b4', name: 'Yuzvendra C.', role: 'BOWLER', jersey: 3 }
+        ];
+
+        this.toss = {
+          winner: 'Delhi Daredevils',
+          decision: 'BAT',
+          conductedAt: '2026-09-21 09:30 AM'
+        };
+
         this.standings = [
           { position: 1, team: 'Mumbai Super Strikers', played: 3, won: 3, lost: 0, points: 6, nrr: '+1.420', qualification: 'QUALIFIED' },
           { position: 2, team: 'Delhi Daredevils', played: 3, won: 2, lost: 1, points: 4, nrr: '+0.850', qualification: 'QUALIFIED' },
@@ -277,23 +296,61 @@ export function getMobileAppHtml(): string {
           { position: 4, team: 'Kolkata Knight Riders', played: 3, won: 0, lost: 3, points: 0, nrr: '-1.850', qualification: 'ELIMINATED' }
         ];
 
+        this.fixtures = [
+          { id: 'f-1', round: 'Match 1', home: 'Delhi Daredevils', away: 'Mumbai Super Strikers', time: '14:00', status: 'LIVE' },
+          { id: 'f-2', round: 'Match 2', home: 'Bangalore RC', away: 'Kolkata KR', time: '18:30', status: 'SCHEDULED' },
+          { id: 'f-3', round: 'Match 3', home: 'Mumbai Super Strikers', away: 'Bangalore RC', time: 'Tomorrow 14:00', status: 'UPCOMING' }
+        ];
+
         this.listings = [
           {
+            id: 'slot-1',
             title: 'Wankhede Arena Turf Club',
             category: 'GROUND',
             location: 'South Mumbai, MH',
             rating: 4.9,
             price: '3,500.00',
-            slots: ['08:00 - 12:00', '13:00 - 17:00']
+            priceMinor: 350000,
+            slots: ['08:00 - 12:00', '13:00 - 17:00'],
+            isFrozen: false
           },
           {
+            id: 'slot-2',
             title: 'Nitin Menon Panel Umpire',
             category: 'UMPIRE',
             location: 'Indore, Central Zone',
             rating: 5.0,
             price: '800.00',
-            slots: ['Morning Slot', 'Afternoon Slot']
+            priceMinor: 80000,
+            slots: ['Morning Slot', 'Afternoon Slot'],
+            isFrozen: false
+          },
+          {
+            id: 'slot-3',
+            title: 'Sunil Digital Scoring Services',
+            category: 'SCORER',
+            location: 'Bengaluru, KA',
+            rating: 4.8,
+            price: '600.00',
+            priceMinor: 60000,
+            slots: ['Full Day Match'],
+            isFrozen: false
           }
+        ];
+
+        this.incidents = [
+          { id: 'inc-1', player: 'Hardik P.', severity: 'LEVEL_1', type: 'DISSENT', description: 'Questioning umpire call aggressively', penalty: 0 },
+          { id: 'inc-2', player: 'Kishan V.', severity: 'LEVEL_2', type: 'EQUIPMENT_ABUSE', description: 'Striking boundary foam with bat', penalty: 5 }
+        ];
+
+        this.drsState = {
+          battingReviewsLeft: 1,
+          bowlingReviewsLeft: 2,
+          lastCall: 'UMPIRES_CALL'
+        };
+
+        this.disputes = [
+          { id: 'dsp-101', matchId: 'match-pilot-1', amount: '₹3,500.00', reason: 'Floodlight outage during 2nd innings', status: 'PENDING' }
         ];
       }
 
@@ -304,6 +361,21 @@ export function getMobileAppHtml(): string {
 
       setAuthRole(role) {
         this.role = role;
+        this.render();
+      }
+
+      switchUserPersona(role) {
+        this.profile.persona = role;
+        this.role = role;
+        if (role === 'UMPIRE' && this.currentScreen !== 'INCIDENTS') {
+          this.currentScreen = 'INCIDENTS';
+        } else if (role === 'ADMIN' && this.currentScreen !== 'ADMIN') {
+          this.currentScreen = 'ADMIN';
+        } else if (role === 'TURF_PROVIDER' && this.currentScreen !== 'MARKETPLACE') {
+          this.currentScreen = 'MARKETPLACE';
+        } else if (role === 'CAPTAIN' && this.currentScreen !== 'TEAMS') {
+          this.currentScreen = 'TEAMS';
+        }
         this.render();
       }
 
@@ -362,7 +434,6 @@ export function getMobileAppHtml(): string {
           }
         } catch {}
 
-        // Fallback local session
         this.isLoading = false;
         this.client.setSession({ token: 'mock-jwt-token', role: this.role });
         this.profile.persona = this.role;
@@ -416,12 +487,124 @@ export function getMobileAppHtml(): string {
         this.matchState.nonStriker.isStriker = false;
       }
 
-      selectSlot(title, time, price) {
-        alert('Selected: ' + title + '\\nSlot Time: ' + time + '\\nTotal with Escrow: ₹' + price);
+      undoBall() {
+        if (this.matchState.currentOverDeliveries.length > 0) {
+          this.matchState.currentOverDeliveries.pop();
+          if (this.matchState.legalBalls > 0) this.matchState.legalBalls--;
+          alert('✓ Last delivery undone per Official Scorer protocol.');
+          this.render();
+        }
+      }
+
+      selectWagonZone(zone) {
+        alert('🎯 Tactical Wagon Wheel: ' + zone + ' trajectory logged for ' + this.matchState.striker.name);
+      }
+
+      sendCheer(text) {
+        this.fanCheersCount++;
+        alert('📢 Fan Cheer Sent: ' + text + '\\nStadium Pulse: ' + this.fanCheersCount.toLocaleString() + ' cheers');
+        this.render();
+      }
+
+      votePoll(team) {
+        if (team === 'BLR') this.pollVotes.BLR++;
+        else this.pollVotes.MUM++;
+        alert('✓ Vote Recorded! Win Probability: BLR ' + this.pollVotes.BLR + '% • MUM ' + this.pollVotes.MUM + '%');
+        this.render();
+      }
+
+      conductTossModal() {
+        const winner = prompt('Enter Toss Winner:', 'Bangalore Royal Challengers') || 'Bangalore Royal Challengers';
+        const decision = confirm('Did they choose to BAT? (Click OK for BAT, Cancel for BOWL)') ? 'BAT' : 'BOWL';
+        this.toss = { winner: winner, decision: decision, conductedAt: 'Just now' };
+        alert('🪙 Toss Certified: ' + winner + ' won the toss and elected to ' + decision + ' first.');
+        this.render();
+      }
+
+      benchPlayer(idx) {
+        if (this.bench.length > 0) {
+          const removed = this.playingXI.splice(idx, 1)[0];
+          const promoted = this.bench.shift();
+          if (removed && promoted) {
+            this.playingXI.push(promoted);
+            this.bench.push(removed);
+            alert('✓ Tactical Swap: ' + removed.name + ' benched, ' + promoted.name + ' promoted to Playing XI.');
+            this.render();
+          }
+        }
       }
 
       bookTurfInstant(title, price) {
         alert('✓ Authoritative 15-Min GiST Lock Activated!\\nVenue: ' + title + '\\nSecured in Escrow: ₹' + price);
+      }
+
+      openEventBasketModal() {
+        alert('🧺 CricOS Event Basket Procurement:\\n• Venue: Wankhede Arena (₹3,500.00)\\n• Umpire: Nitin Menon Panel (₹800.00)\\n• Digital Scorer (₹600.00)\\n\\nSubtotal: ₹4,900.00\\nPlatform Fee (5%): ₹245.00\\nGST (18% on fee): ₹44.10\\nTotal Escrow Hold: ₹5,189.10\\n\\n🔒 Authoritative 15-Min GiST Lock Active');
+      }
+
+      generateFixtures() {
+        alert('📅 Round-Robin Brackets Generated: 8 teams, 28 matches with temporal GiST conflict prevention.');
+      }
+
+      publishSlotAction() {
+        const title = prompt('Slot Title:', 'Night Floodlit Slot') || 'Night Floodlit Slot';
+        const price = prompt('Hourly Rate (₹):', '3500') || '3500';
+        this.listings.push({
+          id: 'slot-' + Date.now(),
+          title: title,
+          category: 'GROUND',
+          location: 'South Mumbai, MH',
+          rating: 5.0,
+          price: price + '.00',
+          priceMinor: parseInt(price, 10) * 100,
+          slots: ['20:00 - 23:00'],
+          isFrozen: false
+        });
+        alert('✓ New match slot published: ' + title + ' at ₹' + price + '/hr.');
+        this.render();
+      }
+
+      toggleSlotFreeze(idx) {
+        this.listings[idx].isFrozen = !this.listings[idx].isFrozen;
+        alert('✓ Slot status: ' + (this.listings[idx].isFrozen ? 'FROZEN / BLOCKED' : 'ACTIVE & BOOKABLE'));
+        this.render();
+      }
+
+      fileIncidentAction() {
+        const player = prompt('Player Name:', 'Hardik P.') || 'Hardik P.';
+        const desc = prompt('Incident Description:', 'Dissent against LBW decision') || 'Dissent';
+        this.incidents.push({
+          id: 'inc-' + Date.now(),
+          player: player,
+          severity: 'LEVEL_1',
+          type: 'DISSENT',
+          description: desc,
+          penalty: 0
+        });
+        alert('🚨 Code of Conduct Incident Logged: ' + player + '\\nForwarded to Match Referee.');
+        this.render();
+      }
+
+      awardPenaltyRuns(runs) {
+        this.matchState.totalRuns += runs;
+        alert('✓ +' + runs + ' Penalty runs awarded per MCC Laws 41/42.');
+        this.render();
+      }
+
+      signOffMatchAction() {
+        alert('✓ Match officially certified and signed off by Lead Umpire under MCC Laws.');
+      }
+
+      approveDispute(idx) {
+        this.disputes[idx].status = 'REFUNDED';
+        alert('✓ Dispute Approved! Balanced double-entry refund journal entry executed:\\nDebit: REFUND_CLEARING\\nCredit: ESCROW_HOLD\\nZero ledger imbalance maintained.');
+        this.render();
+      }
+
+      rejectDispute(idx) {
+        this.disputes[idx].status = 'REJECTED';
+        alert('✕ Dispute Rejected. Escrow payout released to provider.');
+        this.render();
       }
 
       signOutAction() {
@@ -443,7 +626,7 @@ export function getMobileAppHtml(): string {
         h += '<div style="text-align: center; margin-bottom: 1.5rem;">';
         h += '<div style="font-size: 2.75rem; margin-bottom: 0.5rem;">🏏</div>';
         h += '<h2 style="margin: 0; font-family: Space Grotesk, sans-serif; font-size: 1.5rem; color: #f8fafc;">Sign In to CricOS</h2>';
-        h += '<p style="margin: 0.35rem 0 0; color: #94a3b8; font-size: 0.85rem;">Tournament & Match Hub</p>';
+        h += '<p style="margin: 0.35rem 0 0; color: #94a3b8; font-size: 0.85rem;">Tournament & Match Hub (8 User Personas)</p>';
         h += '</div>';
 
         if (this.authStep === 'IDENTIFIER') {
@@ -453,9 +636,18 @@ export function getMobileAppHtml(): string {
           h += '</div>';
 
           h += '<div style="margin-bottom: 1.25rem;">';
-          h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Choose Persona</label>';
-          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">';
-          var roles = [['CAPTAIN', '🏏 Captain'], ['PLAYER', '👤 Player'], ['SCORER', '⚡ Scorer'], ['ORGANISER', '🏆 Director']];
+          h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Choose Persona Journey</label>';
+          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">';
+          var roles = [
+            ['CAPTAIN', '🏏 Captain'],
+            ['PLAYER', '👤 Player'],
+            ['SCORER', '⚡ Scorer'],
+            ['FAN', '🎪 Fan Pulse'],
+            ['UMPIRE', '⚖️ Umpire'],
+            ['ORGANISER', '🏆 Director'],
+            ['TURF_PROVIDER', '🏟️ Turf Host'],
+            ['ADMIN', '🛡️ Admin Desk']
+          ];
           for (var i = 0; i < roles.length; i++) {
             var r = roles[i];
             var active = this.role === r[0] ? 'background: rgba(0, 229, 153, 0.2); border-color: #00E599; color: #00E599;' : 'background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: #f8fafc;';
@@ -476,7 +668,7 @@ export function getMobileAppHtml(): string {
           h += '</div>';
 
           h += '<div style="display: flex; gap: 0.5rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.backToIdentifier()" style="flex: 1; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; cursor: pointer;">← Back</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.backToIdentifier()" style="flex: 1; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; cursor: pointer;" data-tooltip="Back to identifier input">← Back</button>';
           h += '<button type="button" onclick="window.cricosMobileApp.verifyOtpAction()" style="flex: 2; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.95rem; cursor: pointer;" data-tooltip="Verify OTP code and create JWT mobile session">Verify & Enter ✓</button>';
           h += '</div>';
         }
@@ -488,6 +680,7 @@ export function getMobileAppHtml(): string {
         var overs = Math.floor(this.matchState.legalBalls / 6);
         var balls = this.matchState.legalBalls % 6;
         var crr = this.matchState.legalBalls > 0 ? ((this.matchState.totalRuns / this.matchState.legalBalls) * 6).toFixed(2) : '0.00';
+        var persona = this.profile.persona;
 
         var h = '<div style="padding: 1rem;">';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
@@ -497,7 +690,7 @@ export function getMobileAppHtml(): string {
 
         // LED Scoreboard HUD
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">';
-        h += '<div style="font-size: 0.85rem; color: #cbd5e1; font-weight: 600;">' + this.matchState.battingTeam + '</div>';
+        h += '<div style="font-size: 0.85rem; color: #cbd5e1; font-weight: 600;">' + this.matchState.battingTeam + ' vs ' + this.matchState.bowlingTeam + '</div>';
         h += '<div style="font-size: 2.75rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace; line-height: 1.1; margin: 0.35rem 0;">' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</div>';
         h += '<div style="font-size: 0.85rem; color: #94a3b8;">Overs: <strong style="color: #00D2FF; font-family: Chakra Petch, monospace;">' + overs + '.' + balls + '</strong> • CRR: <strong style="color: #f8fafc; font-family: Chakra Petch, monospace;">' + crr + '</strong></div>';
         h += '</div>';
@@ -519,47 +712,171 @@ export function getMobileAppHtml(): string {
 
         // Batters & Bowler
         h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">';
-        h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.65rem;">';
+        h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.65rem;" data-tooltip="Striker">';
         h += '<div style="font-size: 0.75rem; font-weight: 700; color: #00E599;">' + this.matchState.striker.name + ' *</div>';
         h += '<div style="font-size: 0.85rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + this.matchState.striker.runs + ' <small style="font-size: 0.7rem; color: #94a3b8;">(' + this.matchState.striker.balls + 'b)</small></div>';
         h += '</div>';
-        h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem;">';
+        h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem;" data-tooltip="Non-Striker">';
         h += '<div style="font-size: 0.75rem; font-weight: 600; color: #cbd5e1;">' + this.matchState.nonStriker.name + '</div>';
         h += '<div style="font-size: 0.85rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + this.matchState.nonStriker.runs + ' <small style="font-size: 0.7rem; color: #94a3b8;">(' + this.matchState.nonStriker.balls + 'b)</small></div>';
         h += '</div>';
         h += '</div>';
 
-        h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; margin-bottom: 1rem; display: flex; justify-content: space-between; font-size: 0.8rem;">';
+        h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; margin-bottom: 1rem; display: flex; justify-content: space-between; font-size: 0.8rem;" data-tooltip="Bowler Figures">';
         h += '<span style="font-weight: 600;">🎳 ' + this.matchState.bowler.name + '</span>';
         h += '<span style="color: #00D2FF; font-family: Chakra Petch, monospace; font-weight: 700;">' + this.matchState.bowler.overs + '.' + this.matchState.bowler.ballsThisOver + '-' + this.matchState.bowler.maidens + '-' + this.matchState.bowler.runsConceded + '-' + this.matchState.bowler.wickets + '</span>';
         h += '</div>';
 
-        // Tactile Scoring Pad
-        h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.85rem;">';
-        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.5rem;">⚡ Boundary Scoring Controls</div>';
-        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(0)" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 16px; cursor: pointer;">0<span style="display: block; font-size: 9px; color: #94a3b8;">Dot</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(1)" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 16px; cursor: pointer;">1<span style="display: block; font-size: 9px; color: #94a3b8;">Single</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(2)" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 16px; cursor: pointer;">2<span style="display: block; font-size: 9px; color: #94a3b8;">Two</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(3)" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 16px; cursor: pointer;">3<span style="display: block; font-size: 9px; color: #94a3b8;">Three</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(4)" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: #00E599; font-weight: 800; font-size: 16px; cursor: pointer;">4<span style="display: block; font-size: 9px; color: #00E599;">Four</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(6)" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: #c084fc; font-weight: 800; font-size: 16px; cursor: pointer;">6<span style="display: block; font-size: 9px; color: #c084fc;">Six</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.promptWicketModal()" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-weight: 800; font-size: 16px; cursor: pointer;">W<span style="display: block; font-size: 9px; color: #ff8099;">Wicket</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra)" data-extra="WIDE" style="padding: 10px 4px; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.12); color: #ffb800; font-weight: 800; font-size: 16px; cursor: pointer;">Wd<span style="display: block; font-size: 9px; color: #ffb800;">Wide</span></button>';
+        // Fan Pulse & Cheering Section (always accessible, emphasized for FAN)
+        h += '<div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 12px; padding: 0.75rem; margin-bottom: 1rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #c084fc;">🎪 Fan Stadium Pulse</div>';
+        h += '<div style="font-size: 0.7rem; color: #cbd5e1;">' + this.fanCheersCount.toLocaleString() + ' Live Cheers</div>';
+        h += '</div>';
+        h += '<div style="display: flex; gap: 0.4rem; margin-bottom: 0.6rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.sendCheer(\'🔥 MAXIMUM SIX!\')" style="flex: 1; padding: 0.4rem; border-radius: 6px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.2); color: #c084fc; font-size: 0.7rem; font-weight: 700;" data-tooltip="Dispatch Six Cheer">🔥 666!</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.sendCheer(\'💥 CLEAN BOWLED!\')" style="flex: 1; padding: 0.4rem; border-radius: 6px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-size: 0.7rem; font-weight: 700;" data-tooltip="Dispatch Wicket Cheer">💥 WICKET!</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.sendCheer(\'👏 CRACKING FOUR!\')" style="flex: 1; padding: 0.4rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.7rem; font-weight: 700;" data-tooltip="Dispatch Four Cheer">👏 FOUR!</button>';
+        h += '</div>';
+        h += '<div style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 0.3rem;">Win Probability: BLR ' + this.pollVotes.BLR + '% • MUM ' + this.pollVotes.MUM + '%</div>';
+        h += '<div style="display: flex; gap: 0.4rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.votePoll(\'BLR\')" style="flex: 1; padding: 0.35rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.3); background: rgba(0, 229, 153, 0.1); color: #00E599; font-size: 0.7rem; font-weight: 600;" data-tooltip="Vote for Bangalore">Vote BLR</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.votePoll(\'MUM\')" style="flex: 1; padding: 0.35rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.3); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-size: 0.7rem; font-weight: 600;" data-tooltip="Vote for Mumbai">Vote MUM</button>';
         h += '</div></div>';
+
+        // Captain Tactical Wagon Wheel
+        h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.4rem;">🎯 8-Zone Tactical Wagon Wheel</div>';
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;">';
+        var zones = ['Third Man', 'Point', 'Cover', 'Long Off', 'Long On', 'Mid Wkt', 'Sq Leg', 'Fine Leg'];
+        for (var z = 0; z < zones.length; z++) {
+          h += '<button type="button" onclick="window.cricosMobileApp.selectWagonZone(\'' + zones[z] + '\')" style="padding: 0.35rem 0.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-size: 0.65rem;" data-tooltip="Record shot to ' + zones[z] + '">' + zones[z] + '</button>';
+        }
+        h += '</div></div>';
+
+        // Scorer Pad (for SCORER, CAPTAIN, ADMIN)
+        h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.85rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">⚡ Scoring Controls</div>';
+        h += '<div style="display: flex; gap: 0.3rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.rotateStrike()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-size: 0.65rem;" data-tooltip="Swap Striker and Non-Striker">⇄ Swap</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.undoBall()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.1); color: #ffb800; font-size: 0.65rem;" data-tooltip="Undo last delivery">↺ Undo</button>';
+        h += '</div></div>';
+
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin-bottom: 0.5rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(0)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Dot Ball">0<span style="display: block; font-size: 8px; color: #94a3b8;">Dot</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(1)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Single (Strike Rotates)">1<span style="display: block; font-size: 8px; color: #94a3b8;">Single</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(2)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Two Runs">2<span style="display: block; font-size: 8px; color: #94a3b8;">Two</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(3)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Three Runs">3<span style="display: block; font-size: 8px; color: #94a3b8;">Three</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(4)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: #00E599; font-weight: 800; font-size: 15px;" data-tooltip="Boundary Four">4<span style="display: block; font-size: 8px; color: #00E599;">Four</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(6)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: #c084fc; font-weight: 800; font-size: 15px;" data-tooltip="Over Boundary Six">6<span style="display: block; font-size: 8px; color: #c084fc;">Six</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.promptWicketModal()" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-weight: 800; font-size: 15px;" data-tooltip="Wicket Dismissal">W<span style="display: block; font-size: 8px; color: #ff8099;">Out</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'WIDE\')" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.12); color: #ffb800; font-weight: 800; font-size: 15px;" data-tooltip="Wide Ball (+1 Run)">Wd<span style="display: block; font-size: 8px; color: #ffb800;">Wide</span></button>';
+        h += '</div>';
+
+        h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'NO_BALL\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.08); color: #ffb800; font-size: 0.7rem; font-weight: 600;" data-tooltip="No Ball (+1 Run & Free Hit)">+1 No Ball</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'BYE\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Bye (+1 Run)">+1 Bye</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'LEG_BYE\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Leg Bye (+1 Run)">+1 Leg Bye</button>';
+        h += '</div></div>';
+
         h += '</div>';
         return h;
       }
 
-      renderTournaments() {
+      renderTeams() {
+        var isCaptain = this.profile.persona === 'CAPTAIN';
         var h = '<div style="padding: 1rem;">';
+
+        // Team Header & Join Code
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
-        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">National Championship</div>';
-        h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Club Premier League 2026</h2>';
-        h += '<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem;">Stage: ⚡ Group Stage Live</div>';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00E599; text-transform: uppercase;">Captain & Squad Hub</div>';
+        h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.35rem; font-family: Space Grotesk, sans-serif;">' + this.profile.teamName + '</h2>';
+        h += '<div style="margin-top: 0.6rem; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">';
+        h += '<div><span style="font-size: 0.7rem; color: #94a3b8;">Team Join Code:</span> <strong style="color: #00D2FF; font-family: Chakra Petch, monospace; letter-spacing: 1px;">CRIC-BLR-4821</strong></div>';
+        h += '<button type="button" onclick="alert(\'✓ Join Code copied to clipboard!\')" style="padding: 0.25rem 0.6rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.7rem; font-weight: 600;" data-tooltip="Copy team code to share with squad">Copy</button>';
+        h += '</div></div>';
+
+        // Toss Execution Card
+        h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255, 184, 0, 0.25); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+        h += '<div style="font-size: 0.8rem; font-weight: 700; color: #ffb800;">🪙 Match Toss Certification</div>';
+        h += '<span style="font-size: 0.65rem; color: #94a3b8;">' + this.toss.conductedAt + '</span>';
+        h += '</div>';
+        h += '<div style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 0.6rem;">Winner: <strong style="color: #f8fafc;">' + this.toss.winner + '</strong> (Elected to <strong>' + this.toss.decision + '</strong>)</div>';
+        if (isCaptain) {
+          h += '<button type="button" onclick="window.cricosMobileApp.conductTossModal()" style="width: 100%; padding: 0.55rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #ffb800, #ff8800); color: #04070D; font-weight: 700; font-size: 0.8rem;" data-tooltip="Conduct pre-match coin toss">🪙 Conduct Official Toss →</button>';
+        }
         h += '</div>';
 
-        h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden;">';
+        // Playing XI List
+        h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">';
+        h += '<span>Playing XI (' + this.playingXI.length + ')</span>';
+        h += '<span style="font-size: 0.75rem; color: #00E599;">Match Ready</span>';
+        h += '</div>';
+
+        h += '<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem;">';
+        for (var i = 0; i < this.playingXI.length; i++) {
+          var p = this.playingXI[i];
+          h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.6rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
+          h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.75rem; color: #94a3b8; width: 22px;">#' + p.jersey + '</span>';
+          h += '<div>';
+          h += '<div style="font-size: 0.85rem; font-weight: 700;">' + p.name + ' ' + (p.role === 'CAPTAIN' ? '<span style="color: #00E599; font-size: 0.65rem;">(C)</span>' : '') + '</div>';
+          h += '<div style="font-size: 0.65rem; color: #94a3b8;">' + p.role + '</div>';
+          h += '</div></div>';
+          if (isCaptain) {
+            h += '<button type="button" onclick="window.cricosMobileApp.benchPlayer(' + i + ')" style="padding: 0.3rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #cbd5e1; font-size: 0.65rem;" data-tooltip="Move player to bench">Bench ⇄</button>';
+          }
+          h += '</div>';
+        }
+        h += '</div>';
+
+        // Bench Reserves
+        h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem;">Bench Reserves (' + this.bench.length + ')</div>';
+        h += '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        for (var b = 0; b < this.bench.length; b++) {
+          var bp = this.bench[b];
+          h += '<div style="background: rgba(10, 16, 28, 0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<div style="font-size: 0.8rem; color: #94a3b8;">#' + bp.jersey + ' ' + bp.name + ' <small>(' + bp.role + ')</small></div>';
+          h += '<span style="font-size: 0.65rem; color: #64748b;">Reserve</span>';
+          h += '</div>';
+        }
+        h += '</div></div>';
+        return h;
+      }
+
+      renderTournaments() {
+        var isOrganiser = this.profile.persona === 'ORGANISER';
+        var h = '<div style="padding: 1rem;">';
+
+        // Tournament Card & 4-Stage Stepper
+        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">Championship Hub</div>';
+        h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Club Premier League 2026</h2>';
+        h += '<div style="display: flex; gap: 0.25rem; margin-top: 0.75rem;">';
+        var stages = ['REGISTRATION', 'GROUP_STAGE', 'PLAYOFFS', 'COMPLETED'];
+        for (var st = 0; st < stages.length; st++) {
+          var isCur = stages[st] === 'GROUP_STAGE';
+          var bg = isCur ? '#00E599' : 'rgba(255,255,255,0.1)';
+          var col = isCur ? '#04070D' : '#94a3b8';
+          h += '<div style="flex: 1; text-align: center; padding: 0.25rem; font-size: 0.6rem; font-weight: 700; border-radius: 4px; background:' + bg + '; color:' + col + ';">' + stages[st].replace('_', ' ') + '</div>';
+        }
+        h += '</div></div>';
+
+        // Organiser Event Basket Action
+        if (isOrganiser) {
+          h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.3rem;">🧺 Event Basket Procurement</div>';
+          h += '<div style="font-size: 0.75rem; color: #cbd5e1; margin-bottom: 0.6rem;">Book venue, umpires, and balls in a unified escrow bundle with 15-min GiST lock.</div>';
+          h += '<div style="display: flex; gap: 0.5rem;">';
+          h += '<button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="flex: 1; padding: 0.55rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.75rem;" data-tooltip="Open unified match event procurement basket">Procure Basket →</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.generateFixtures()" style="flex: 1; padding: 0.55rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #f8fafc; font-weight: 600; font-size: 0.75rem;" data-tooltip="Generate round-robin match brackets">Auto Fixtures 📅</button>';
+          h += '</div></div>';
+        }
+
+        // ICC Points Table & Net Run Rate
+        h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">';
         h += '<div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem; font-weight: 700; font-family: Space Grotesk, sans-serif;">ICC Points Table & Net Run Rate</div>';
         h += '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
         h += '<thead><tr style="color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08);">';
@@ -577,17 +894,64 @@ export function getMobileAppHtml(): string {
           h += '<td style="padding: 0.65rem 0.75rem; text-align: right; font-family: Chakra Petch, monospace; font-weight: 700; color: ' + nrrColor + ';">' + s.nrr + '</td>';
           h += '</tr>';
         }
-        h += '</tbody></table></div></div>';
+        h += '</tbody></table></div>';
+
+        // Fixtures Schedule
+        h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem;">Tournament Fixtures</div>';
+        h += '<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem;">';
+        for (var f = 0; f < this.fixtures.length; f++) {
+          var fx = this.fixtures[f];
+          h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.6rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<div><div style="font-size: 0.8rem; font-weight: 700;">' + fx.home + ' vs ' + fx.away + '</div><div style="font-size: 0.65rem; color: #94a3b8;">' + fx.round + ' • ' + fx.time + '</div></div>';
+          h += '<span style="font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 4px; ' + (fx.status === 'LIVE' ? 'background: rgba(255, 51, 102, 0.2); color: #ff3366;' : 'background: rgba(255,255,255,0.05); color: #94a3b8;') + '">' + fx.status + '</span>';
+          h += '</div>';
+        }
+        h += '</div>';
+
+        // Leaderboards: Orange & Purple Cap
+        h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">';
+        h += '<div style="background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.25); border-radius: 8px; padding: 0.65rem;">';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #ffb800;">🧢 Orange Cap (Runs)</div>';
+        h += '<div style="font-size: 0.85rem; font-weight: 800; margin-top: 0.2rem;">Virat K. <span style="color: #ffb800; font-family: Chakra Petch, monospace;">248</span></div>';
+        h += '</div>';
+        h += '<div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 0.65rem;">';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #c084fc;">🧢 Purple Cap (Wickets)</div>';
+        h += '<div style="font-size: 0.85rem; font-weight: 800; margin-top: 0.2rem;">Jasprit B. <span style="color: #c084fc; font-family: Chakra Petch, monospace;">9</span></div>';
+        h += '</div></div>';
+
+        h += '</div>';
         return h;
       }
 
       renderMarketplace() {
+        var isProvider = this.profile.persona === 'TURF_PROVIDER';
         var h = '<div style="padding: 1rem;">';
+
+        // Marketplace Header
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
-        h += '<h2 style="margin: 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Book Venues & Umpires</h2>';
-        h += '<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem;">Authoritative GiST slot hold with escrow</div>';
+        h += '<h2 style="margin: 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">' + (isProvider ? '🏟️ Turf Provider Storefront' : '🛒 Cricket Marketplace') + '</h2>';
+        h += '<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem;">Authoritative GiST slot hold with escrow settlement</div>';
         h += '</div>';
 
+        // Turf Provider Storefront Tools
+        if (isProvider) {
+          var gross = 45000;
+          var fee = gross * 0.05;
+          var gst = fee * 0.18;
+          var net = gross - fee - gst;
+
+          h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.4rem;">💰 Monthly Earnings Dashboard</div>';
+          h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem; margin-bottom: 0.6rem; text-align: center;">';
+          h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 0.65rem; color: #94a3b8;">Gross</div><div style="font-weight: 800; font-size: 0.85rem; font-family: Chakra Petch, monospace;">₹' + gross.toLocaleString() + '</div></div>';
+          h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 0.65rem; color: #94a3b8;">Fee & GST</div><div style="font-weight: 800; font-size: 0.85rem; color: #ff3366; font-family: Chakra Petch, monospace;">-₹' + (fee + gst).toFixed(0) + '</div></div>';
+          h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 0.65rem; color: #94a3b8;">Net Payout</div><div style="font-weight: 800; font-size: 0.85rem; color: #00E599; font-family: Chakra Petch, monospace;">₹' + net.toFixed(0) + '</div></div>';
+          h += '</div>';
+          h += '<button type="button" onclick="window.cricosMobileApp.publishSlotAction()" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.8rem;" data-tooltip="Publish a new pitch slot for booking">+ Publish Pitch Slot ⚡</button>';
+          h += '</div>';
+        }
+
+        // Available Listings
         h += '<div style="display: flex; flex-direction: column; gap: 0.85rem;">';
         for (var i = 0; i < this.listings.length; i++) {
           var l = this.listings[i];
@@ -603,7 +967,105 @@ export function getMobileAppHtml(): string {
           h += '<div style="font-size: 0.65rem; color: #94a3b8;">per slot</div>';
           h += '</div></div>';
 
-          h += '<button type="button" onclick="window.cricosMobileApp.bookTurfInstant(this.dataset.title, this.dataset.price)" data-title="' + l.title + '" data-price="' + l.price + '" style="margin-top: 0.75rem; width: 100%; padding: 0.6rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.8rem; cursor: pointer;" data-tooltip="Lock slot with 15-minute GiST PostgreSQL hold">Instant 15-Min Hold & Book →</button>';
+          if (isProvider) {
+            h += '<button type="button" onclick="window.cricosMobileApp.toggleSlotFreeze(' + i + ')" style="margin-top: 0.75rem; width: 100%; padding: 0.55rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: ' + (l.isFrozen ? 'rgba(255, 51, 102, 0.2)' : 'rgba(0, 229, 153, 0.1)') + '; color: ' + (l.isFrozen ? '#ff3366' : '#00E599') + '; font-weight: 700; font-size: 0.75rem;" data-tooltip="Toggle slot availability">' + (l.isFrozen ? '❄️ Slot Frozen (Tap to Unfreeze)' : '✓ Active & Bookable (Tap to Freeze)') + '</button>';
+          } else {
+            h += '<button type="button" onclick="window.cricosMobileApp.bookTurfInstant(\'' + l.title + '\', \'' + l.price + '\')" style="margin-top: 0.75rem; width: 100%; padding: 0.6rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.8rem;" data-tooltip="Lock slot with 15-minute GiST PostgreSQL hold">Instant 15-Min Hold & Book →</button>';
+          }
+          h += '</div>';
+        }
+        h += '</div></div>';
+        return h;
+      }
+
+      renderIncidents() {
+        var h = '<div style="padding: 1rem;">';
+        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #ff3366; text-transform: uppercase;">MCC Laws & Trust Desk</div>';
+        h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Lead Umpire Desk</h2>';
+        h += '<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem;">DRS Reviews, Fair Play Log & Official Sign-off</div>';
+        h += '</div>';
+
+        // DRS Status
+        h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+        h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.4rem;">📡 DRS Review Tracking</div>';
+        h += '<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #cbd5e1;">';
+        h += '<div>Batting: <strong style="color: #00E599;">' + this.drsState.battingReviewsLeft + ' Left</strong></div>';
+        h += '<div>Bowling: <strong style="color: #00E599;">' + this.drsState.bowlingReviewsLeft + ' Left</strong></div>';
+        h += '</div></div>';
+
+        // Incident Log
+        h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem;">Logged Incidents</div>';
+        h += '<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem;">';
+        for (var i = 0; i < this.incidents.length; i++) {
+          var inc = this.incidents[i];
+          h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255, 51, 102, 0.2); border-radius: 8px; padding: 0.6rem 0.75rem;">';
+          h += '<div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700;">';
+          h += '<span>' + inc.player + '</span>';
+          h += '<span style="color: #ff3366;">' + inc.severity + '</span>';
+          h += '</div>';
+          h += '<div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.2rem;">' + inc.description + '</div>';
+          h += '</div>';
+        }
+        h += '</div>';
+
+        // Umpire Action Buttons
+        h += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.fileIncidentAction()" style="width: 100%; padding: 0.65rem; border-radius: 6px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-weight: 700; font-size: 0.8rem;" data-tooltip="Log Code of Conduct breach">🚨 Report Conduct Breach</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.awardPenaltyRuns(5)" style="width: 100%; padding: 0.65rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #ffb800; font-weight: 700; font-size: 0.8rem;" data-tooltip="Award 5 penalty runs under MCC Law 41/42">+5 Penalty Runs (Law 41/42)</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.signOffMatchAction()" style="width: 100%; padding: 0.65rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.8rem;" data-tooltip="Official match certification under MCC Laws">✓ Official Match Sign-off</button>';
+        h += '</div></div>';
+        return h;
+      }
+
+      renderAdmin() {
+        var h = '<div style="padding: 1rem;">';
+        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">Governance & Ledger</div>';
+        h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Platform Admin Desk</h2>';
+        h += '<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem;">Double-Entry Ledger Integrity & Disputes</div>';
+        h += '</div>';
+
+        // 5-Account Balance Sheet
+        h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+        h += '<div style="font-size: 0.8rem; font-weight: 700;">5-Account Chart of Accounts</div>';
+        h += '<span style="color: #00E599; font-size: 0.7rem; font-weight: 700;">✓ Balanced (₹0.00 Imbalance)</span>';
+        h += '</div>';
+        var accounts = [
+          ['ESCROW_HOLD', '₹24,500.00'],
+          ['PLATFORM_FEES', '₹1,225.00'],
+          ['GST_PAYABLE', '₹220.50'],
+          ['MERCHANT_PAYABLE', '₹23,054.50'],
+          ['REFUND_CLEARING', '₹0.00']
+        ];
+        for (var a = 0; a < accounts.length; a++) {
+          h += '<div style="display: flex; justify-content: space-between; font-size: 0.7rem; padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);">';
+          h += '<span style="color: #94a3b8;">' + accounts[a][0] + '</span>';
+          h += '<strong style="font-family: Chakra Petch, monospace; color: #f8fafc;">' + accounts[a][1] + '</strong>';
+          h += '</div>';
+        }
+        h += '</div>';
+
+        // Dispute Queue
+        h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem;">Dispute Arbitration Queue</div>';
+        h += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        for (var d = 0; d < this.disputes.length; d++) {
+          var disp = this.disputes[d];
+          h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem;">';
+          h += '<div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700;">';
+          h += '<span>' + disp.id + ' (' + disp.matchId + ')</span>';
+          h += '<span style="color: #00E599;">' + disp.amount + '</span>';
+          h += '</div>';
+          h += '<div style="font-size: 0.7rem; color: #94a3b8; margin: 0.3rem 0;">' + disp.reason + '</div>';
+          if (disp.status === 'PENDING') {
+            h += '<div style="display: flex; gap: 0.4rem; margin-top: 0.5rem;">';
+            h += '<button type="button" onclick="window.cricosMobileApp.approveDispute(' + d + ')" style="flex: 1; padding: 0.4rem; border-radius: 6px; border: none; background: #00E599; color: #04070D; font-weight: 700; font-size: 0.7rem;" data-tooltip="Approve refund with balanced double-entry journal">Approve Refund ✓</button>';
+            h += '<button type="button" onclick="window.cricosMobileApp.rejectDispute(' + d + ')" style="flex: 1; padding: 0.4rem; border-radius: 6px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.1); color: #ff3366; font-weight: 600; font-size: 0.7rem;" data-tooltip="Reject dispute and release escrow">Reject ✕</button>';
+            h += '</div>';
+          } else {
+            h += '<div style="font-size: 0.7rem; font-weight: 700; color: ' + (disp.status === 'REFUNDED' ? '#00E599' : '#ff3366') + '; margin-top: 0.4rem;">Status: ' + disp.status + '</div>';
+          }
           h += '</div>';
         }
         h += '</div></div>';
@@ -615,6 +1077,30 @@ export function getMobileAppHtml(): string {
         var sr = ((this.profile.batting.runs / this.profile.batting.ballsFaced) * 100).toFixed(1);
 
         var h = '<div style="padding: 1rem;">';
+
+        // 8-Persona Switcher Strip
+        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 0.85rem; margin-bottom: 1rem;">';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00E599; margin-bottom: 0.4rem;">🔄 Switch Persona Journey</div>';
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;">';
+        var allRoles = [
+          ['CAPTAIN', '🏏 Cpt'],
+          ['PLAYER', '👤 Ply'],
+          ['SCORER', '⚡ Scr'],
+          ['FAN', '🎪 Fan'],
+          ['UMPIRE', '⚖️ Ump'],
+          ['ORGANISER', '🏆 Org'],
+          ['TURF_PROVIDER', '🏟️ Trf'],
+          ['ADMIN', '🛡️ Adm']
+        ];
+        for (var r = 0; r < allRoles.length; r++) {
+          var roleItem = allRoles[r];
+          var isAct = this.profile.persona === roleItem[0];
+          var st = isAct ? 'background: rgba(0, 229, 153, 0.25); border: 1px solid #00E599; color: #00E599; font-weight: 700;' : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #94a3b8;';
+          h += '<button type="button" onclick="window.cricosMobileApp.switchUserPersona(\'' + roleItem[0] + '\')" style="padding: 0.4rem 0.2rem; border-radius: 6px; font-size: 0.65rem; cursor: pointer; ' + st + '" data-tooltip="Switch persona to ' + roleItem[1] + '">' + roleItem[1] + '</button>';
+        }
+        h += '</div></div>';
+
+        // Profile Identity Card
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.85rem;">';
         h += '<div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2px solid #00E599; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">#' + this.profile.jerseyNumber + '</div>';
@@ -623,14 +1109,15 @@ export function getMobileAppHtml(): string {
         h += '<div style="font-size: 0.75rem; color: #94a3b8;"><span style="color: #00E599; font-weight: 600;">' + this.profile.persona + '</span> • ' + this.profile.role + ' • ' + this.profile.teamName + '</div>';
         h += '</div></div></div>';
 
+        // Career Figures
         h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">🏏 Career Batting Figures</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 1rem;">';
-        h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;"><div style="font-size: 1.1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">' + this.profile.batting.runs + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Runs</div></div>';
-        h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;"><div style="font-size: 1.1rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + avg + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Average</div></div>';
-        h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;"><div style="font-size: 1.1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">' + sr + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Strike Rate</div></div>';
+        h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;" data-tooltip="Total Career Runs"><div style="font-size: 1.1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">' + this.profile.batting.runs + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Runs</div></div>';
+        h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;" data-tooltip="Batting Average"><div style="font-size: 1.1rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + avg + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Average</div></div>';
+        h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;" data-tooltip="Batting Strike Rate"><div style="font-size: 1.1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">' + sr + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Strike Rate</div></div>';
         h += '</div>';
 
-        // Security & Account Deletion (App Store Compliance)
+        // Compliance & App Store Safety
         h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.85rem;">';
         h += '<div style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.6rem;">Account & Compliance</div>';
         h += '<button type="button" onclick="window.cricosMobileApp.signOutAction()" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.75rem; margin-bottom: 0.5rem; cursor: pointer;" data-tooltip="Clear JWT authentication session">🚪 Sign Out</button>';
@@ -651,10 +1138,16 @@ export function getMobileAppHtml(): string {
           content = this.renderAuth();
         } else if (this.currentScreen === 'MATCHES') {
           content = this.renderMatches();
+        } else if (this.currentScreen === 'TEAMS') {
+          content = this.renderTeams();
         } else if (this.currentScreen === 'TOURNAMENTS') {
           content = this.renderTournaments();
         } else if (this.currentScreen === 'MARKETPLACE') {
           content = this.renderMarketplace();
+        } else if (this.currentScreen === 'INCIDENTS') {
+          content = this.renderIncidents();
+        } else if (this.currentScreen === 'ADMIN') {
+          content = this.renderAdmin();
         } else if (this.currentScreen === 'PROFILE') {
           content = this.renderProfile();
         }
@@ -667,25 +1160,57 @@ export function getMobileAppHtml(): string {
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
         h += '</div>';
         h += '<div>';
-        if (isAuth) {
-          h += '<span style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">' + this.profile.persona + '</span>';
-        } else {
-          h += '<span style="color: #94a3b8; font-size: 0.7rem;">Guest</span>';
-        }
+        h += '<button type="button" onclick="window.cricosMobileApp.navigateTo(\'PROFILE\')" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Active persona. Tap to switch">' + this.profile.persona + '</button>';
         h += '</div></div>';
 
         // Content
         h += '<div style="padding-bottom: 70px;">' + content + '</div>';
 
-        // Bottom Navigation Bar inside Phone
+        // Bottom Navigation Bar tailored to Persona
         h += '<div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10, 16, 28, 0.96); border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-around; padding: 0.5rem 0.25rem 1.25rem; z-index: 50; backdrop-filter: blur(12px);">';
 
-        var navItems = [
-          ['MATCHES', '🏏', 'Matches'],
-          ['TOURNAMENTS', '🏆', 'Standings'],
-          ['MARKETPLACE', '🛒', 'Turf'],
-          ['PROFILE', '👤', 'Profile']
-        ];
+        var navItems = [];
+        var persona = this.profile.persona;
+        if (persona === 'CAPTAIN' || persona === 'PLAYER') {
+          navItems.push(['MATCHES', '🏏', 'Match']);
+          navItems.push(['TEAMS', '👥', 'Squad']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Standings']);
+          navItems.push(['MARKETPLACE', '🛒', 'Turf']);
+          navItems.push(['PROFILE', '👤', 'Profile']);
+        } else if (persona === 'SCORER') {
+          navItems.push(['MATCHES', '⚡', 'Scoring']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Standings']);
+          navItems.push(['PROFILE', '👤', 'Profile']);
+        } else if (persona === 'FAN') {
+          navItems.push(['MATCHES', '🎪', 'Pulse']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Standings']);
+          navItems.push(['MARKETPLACE', '🛒', 'Venues']);
+          navItems.push(['PROFILE', '👤', 'Profile']);
+        } else if (persona === 'UMPIRE') {
+          navItems.push(['INCIDENTS', '⚖️', 'Umpire']);
+          navItems.push(['MATCHES', '🏏', 'Match']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Standings']);
+          navItems.push(['PROFILE', '👤', 'Profile']);
+        } else if (persona === 'ORGANISER') {
+          navItems.push(['TOURNAMENTS', '🏆', 'Fixtures']);
+          navItems.push(['MARKETPLACE', '🧺', 'Basket']);
+          navItems.push(['TEAMS', '👥', 'Teams']);
+          navItems.push(['MATCHES', '🏏', 'Match']);
+          navItems.push(['PROFILE', '👤', 'Profile']);
+        } else if (persona === 'TURF_PROVIDER') {
+          navItems.push(['MARKETPLACE', '🏟️', 'Storefront']);
+          navItems.push(['INCIDENTS', '⚖️', 'Disputes']);
+          navItems.push(['MATCHES', '🏏', 'Live']);
+          navItems.push(['PROFILE', '👤', 'Profile']);
+        } else {
+          // ADMIN
+          navItems.push(['ADMIN', '⚡', 'Audit']);
+          navItems.push(['MATCHES', '🏏', 'Match']);
+          navItems.push(['TEAMS', '👥', 'Teams']);
+          navItems.push(['INCIDENTS', '⚖️', 'Incidents']);
+          navItems.push(['PROFILE', '👤', 'Profile']);
+        }
+
         if (!isAuth) {
           navItems.push(['AUTH', '🔑', 'Sign In']);
         }
