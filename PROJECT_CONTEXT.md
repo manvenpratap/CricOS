@@ -1,14 +1,24 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-21 11:40:00
-**Version:** 1.0.0-phase2o (Dynamic Off-Side & On-Side Field Geometry Based on Batsman on Strike)  
+**Last Updated:** 2026-09-21 12:05:00
+**Version:** 1.0.0-phase2p (Rishabh Pant & Incoming Batsmen LHB/RHB Stance Persistence on Dismissal)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2O Completed — Dynamic Off-Side & On-Side Field Geometry Based on Batsman on Strike:
+- **Active Phase**: Phase 2P Completed — Rishabh Pant & Incoming Batsmen LHB/RHB Stance Persistence on Dismissal:
+  - **Stance Preservation & Multi-Tier Resolver**: Eliminated an incomplete hardcoded stance array in `confirmDismissal()` that omitted `Rishabh Pant` (causing him to wrongly flip to `RHB` when taking strike). Introduced `KNOWN_BATTER_STANCES` mapping standard players (Rishabh Pant, Ravindra Jadeja, Axar Patel, Shivam Dube, Nicholas Pooran, Quinton de Kock, David Warner, Travis Head, etc., to `LHB`) and built a multi-tier stance resolver `getBatterStanceByName(name, optionEl)` checking:
+    1. Dropdown element `data-stance` attribute and option text `(LHB)` / `(RHB)`.
+    2. Playing XI and bench rosters (`p.battingStyle`).
+    3. Canonical `KNOWN_BATTER_STANCES` dictionary.
+    4. Fuzzy keyword fallback ('pant', 'jadeja', 'axar', 'dube', 'lhb').
+  - **Dynamic Batsman Selector Strip Sync**: Updated `updateStudioUI()` so batsman selector pills (`#wagonBatterBtn_Virat`, `#wagonBatterBtn_Hardik`) dynamically reflect the active striker and non-striker names, scores, and stance badges (e.g. `RP • LHB | Rishabh Pant | 0* (0)`).
+  - **Live Wagon Wheel Field Geometry Flip**: When an incoming left-handed batsman (like Rishabh Pant) takes strike, the wagon wheel instantly reorients to the LHB geometry (`◀ ON SIDE` on left, `OFF SIDE ▶` on right) with cyan stance badge indicators.
+  - **Test Suite Health**: 100% passing (88 tests across 23 suites in 0.70s via `./pipeline.sh test --summary`).
+  - **Distribution Parity (Rule 6)**: `index.html` and `dist/index.html` verified byte-for-byte identical (433,930 bytes).
+- **Phase 2O Completed**: Dynamic Off-Side & On-Side Field Geometry Based on Batsman on Strike:
   - **Dynamic Off/On Side Reflection**: The wagon wheel outfield labels (`◀ OFF SIDE` and `ON SIDE ▶`), sector wedges, perimeter buttons, and shot rays dynamically flip between left and right based on the active batsman on strike:
     - *Right-Handed Batsman (`RHB`)*: Off Side is on the LEFT (West, 180°–360°: Third Man, Point, Cover, Long Off); On Side (Leg) is on the RIGHT (East, 0°–180°: Fine Leg, Sq Leg, Mid Wkt, Long On).
     - *Left-Handed Batsman (`LHB`)*: Off Side dynamically flips to the RIGHT (East, 0°–180°: Third Man, Point, Cover, Long Off); On Side (Leg) dynamically flips to the LEFT (West, 180°–360°: Fine Leg, Sq Leg, Mid Wkt, Long On).

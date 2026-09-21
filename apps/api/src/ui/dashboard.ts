@@ -2729,9 +2729,9 @@ export function getDashboardHtml(): string {
           <div class="form-group">
             <label>Incoming Batter</label>
             <select id="dismissalNextBatter">
-              <option value="Rishabh Pant">Rishabh Pant (LHB)</option>
-              <option value="Ravindra Jadeja">Ravindra Jadeja (LHB)</option>
-              <option value="Jasprit Bumrah">Jasprit Bumrah (RHB)</option>
+              <option value="Rishabh Pant" data-stance="LHB">Rishabh Pant (LHB)</option>
+              <option value="Ravindra Jadeja" data-stance="LHB">Ravindra Jadeja (LHB)</option>
+              <option value="Jasprit Bumrah" data-stance="RHB">Jasprit Bumrah (RHB)</option>
             </select>
           </div>
         </div>
@@ -4824,6 +4824,67 @@ cricos_active_sse_connections 1</pre>
     // ==========================================
     // Tactical Scoring Studio & Precision Wagon Wheel
     // ==========================================
+    const KNOWN_BATTER_STANCES = {
+      'Rishabh Pant': 'LHB',
+      'Hardik Patel': 'LHB',
+      'Ravindra Jadeja': 'LHB',
+      'Ravindra Singh': 'LHB',
+      'Axar Patel': 'LHB',
+      'Shivam Dube': 'LHB',
+      'Kuldeep Yadav': 'LHB',
+      'Arshdeep Singh': 'LHB',
+      'Yashasvi Jaiswal': 'LHB',
+      'Rinku Singh': 'LHB',
+      'Nicholas Pooran': 'LHB',
+      'Quinton de Kock': 'LHB',
+      'David Warner': 'LHB',
+      'Travis Head': 'LHB',
+      'Shikhar Dhawan': 'LHB',
+      'Suresh Raina': 'LHB',
+      'Gautam Gambhir': 'LHB',
+      'Brian Lara': 'LHB',
+      'Sourav Ganguly': 'LHB',
+      'Virat Sharma': 'RHB',
+      'Virat Kohli': 'RHB',
+      'Rohit Verma': 'RHB',
+      'Rohit Sharma': 'RHB',
+      'KL Rahul': 'RHB',
+      'Suryakumar Rao': 'RHB',
+      'Suryakumar Yadav': 'RHB',
+      'Surya Kumar': 'RHB',
+      'Jasprit Bumrah': 'RHB',
+      'Mohammed Siraj': 'RHB',
+      'Mohammed Shami': 'RHB',
+      'Sanju Samson': 'RHB',
+      'Yuzvendra Chahal': 'RHB',
+      'Shubman Gill': 'RHB',
+      'Shreyas Iyer': 'RHB',
+      'MS Dhoni': 'RHB'
+    };
+
+    function getBatterStanceByName(name, optionEl) {
+      if (!name) return 'RHB';
+      if (optionEl) {
+        if (optionEl.dataset && optionEl.dataset.stance) return optionEl.dataset.stance;
+        if (optionEl.textContent && optionEl.textContent.includes('(LHB)')) return 'LHB';
+        if (optionEl.textContent && optionEl.textContent.includes('(RHB)')) return 'RHB';
+      }
+      if (typeof initialPlayingXi !== 'undefined') {
+        const inXi = initialPlayingXi.find(p => p.name === name);
+        if (inXi && inXi.battingStyle) return inXi.battingStyle;
+      }
+      if (typeof initialBench !== 'undefined') {
+        const inBench = initialBench.find(p => p.name === name);
+        if (inBench && inBench.battingStyle) return inBench.battingStyle;
+      }
+      if (KNOWN_BATTER_STANCES[name]) return KNOWN_BATTER_STANCES[name];
+      const lower = name.toLowerCase();
+      if (lower.includes('pant') || lower.includes('jadeja') || lower.includes('axar') || lower.includes('dube') || lower.includes('lhb')) {
+        return 'LHB';
+      }
+      return 'RHB';
+    }
+
     let studioStriker = { name: 'Virat Sharma', runs: 48, balls: 32, fours: 4, sixes: 2, battingStyle: 'RHB' };
     let studioNonStriker = { name: 'Hardik Patel', runs: 18, balls: 12, fours: 1, sixes: 1, battingStyle: 'LHB' };
     let partnership = { runs: 44, balls: 28 };
@@ -5003,11 +5064,13 @@ cricos_active_sse_connections 1</pre>
       // Automatically select stance based on selected batter
       let targetStance = 'RHB';
       if (batterName === studioStriker.name) {
-        targetStance = studioStriker.battingStyle || 'RHB';
+        targetStance = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
       } else if (batterName === studioNonStriker.name) {
-        targetStance = studioNonStriker.battingStyle || 'LHB';
+        targetStance = studioNonStriker.battingStyle || getBatterStanceByName(studioNonStriker.name);
       } else if (batterName === 'ALL') {
-        targetStance = studioStriker.battingStyle || 'RHB';
+        targetStance = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
+      } else {
+        targetStance = getBatterStanceByName(batterName);
       }
       if (currentStance !== targetStance) {
         setBatterStance(targetStance, false);
@@ -5208,7 +5271,8 @@ cricos_active_sse_connections 1</pre>
       studioNonStriker = temp;
       
       // Update stance dynamically based on new batsman on strike
-      const newStance = studioStriker.battingStyle || 'RHB';
+      const newStance = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
+      studioStriker.battingStyle = newStance;
       setBatterStance(newStance, false);
       updateStudioUI();
 
@@ -5231,20 +5295,53 @@ cricos_active_sse_connections 1</pre>
       const partEl = document.getElementById('partnershipRunsBalls');
       const partFill = document.getElementById('partnershipProgressFill');
       const facingEl = document.getElementById('wagonFacingBatter');
-      const scoreVirat = document.getElementById('wagonBatterScore_Virat');
-      const scoreHardik = document.getElementById('wagonBatterScore_Hardik');
       const scoreAll = document.getElementById('wagonBatterScore_All');
 
-      if (sName) sName.textContent = studioStriker.name;
-      if (sBadge) sBadge.textContent = studioStriker.battingStyle || 'RHB';
-      if (sStats) sStats.innerHTML = studioStriker.runs + '* <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioStriker.balls + 'b, ' + studioStriker.fours + 'x4, ' + studioStriker.sixes + 'x6)</span>';
-      if (nsName) nsName.textContent = studioNonStriker.name;
-      if (nsBadge) nsBadge.textContent = studioNonStriker.battingStyle || 'LHB';
-      if (nsStats) nsStats.innerHTML = studioNonStriker.runs + ' <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioNonStriker.balls + 'b, ' + studioNonStriker.fours + 'x4, ' + studioNonStriker.sixes + 'x6)</span>';
-      if (facingEl) facingEl.textContent = studioStriker.name + ' (' + (studioStriker.battingStyle || 'RHB') + ')';
+      // Update Batsman Selector Pills dynamically
+      const pillStriker = document.getElementById('wagonBatterBtn_Virat');
+      const pillNonStriker = document.getElementById('wagonBatterBtn_Hardik');
+      if (pillStriker) {
+        const inits1 = studioStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+        const stance1 = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
+        pillStriker.setAttribute('onclick', "filterWagonBatter('" + studioStriker.name + "', this)");
+        pillStriker.setAttribute('data-tooltip', 'Wagon wheel for ' + studioStriker.name + ' (' + stance1 + '): ' + studioStriker.runs + '* (' + studioStriker.balls + ' balls)');
+        pillStriker.innerHTML = '<span class="batter-pill-badge">' + inits1 + ' • ' + stance1 + '</span>' +
+          '<span>' + studioStriker.name + '</span>' +
+          '<span class="batter-pill-score" id="wagonBatterScore_Virat">' + studioStriker.runs + '* (' + studioStriker.balls + ')</span>';
+      }
+      if (pillNonStriker) {
+        const inits2 = studioNonStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+        const stance2 = studioNonStriker.battingStyle || getBatterStanceByName(studioNonStriker.name);
+        pillNonStriker.setAttribute('onclick', "filterWagonBatter('" + studioNonStriker.name + "', this)");
+        pillNonStriker.setAttribute('data-tooltip', 'Wagon wheel for ' + studioNonStriker.name + ' (' + stance2 + '): ' + studioNonStriker.runs + ' (' + studioNonStriker.balls + ')');
+        pillNonStriker.innerHTML = '<span class="batter-pill-badge">' + inits2 + ' • ' + stance2 + '</span>' +
+          '<span>' + studioNonStriker.name + '</span>' +
+          '<span class="batter-pill-score" id="wagonBatterScore_Hardik">' + studioNonStriker.runs + ' (' + studioNonStriker.balls + ')</span>';
+      }
 
-      if (scoreVirat) scoreVirat.textContent = (studioStriker.name === 'Virat Sharma' ? studioStriker.runs + '*' : studioNonStriker.runs) + ' (' + (studioStriker.name === 'Virat Sharma' ? studioStriker.balls : studioNonStriker.balls) + ')';
-      if (scoreHardik) scoreHardik.textContent = (studioStriker.name === 'Hardik Patel' ? studioStriker.runs + '*' : studioNonStriker.runs) + ' (' + (studioStriker.name === 'Hardik Patel' ? studioStriker.balls : studioNonStriker.balls) + ')';
+      if (sName) sName.textContent = studioStriker.name;
+      if (sBadge) {
+        const sStance = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
+        sBadge.textContent = sStance;
+        sBadge.style.background = sStance === 'LHB' ? 'rgba(0, 210, 255, 0.15)' : 'rgba(0, 229, 153, 0.15)';
+        sBadge.style.color = sStance === 'LHB' ? 'var(--cyan)' : 'var(--turf-emerald)';
+      }
+      if (sStats) sStats.innerHTML = studioStriker.runs + '* <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioStriker.balls + 'b, ' + studioStriker.fours + 'x4, ' + studioStriker.sixes + 'x6)</span>';
+      
+      if (nsName) nsName.textContent = studioNonStriker.name;
+      if (nsBadge) {
+        const nsStance = studioNonStriker.battingStyle || getBatterStanceByName(studioNonStriker.name);
+        nsBadge.textContent = nsStance;
+        nsBadge.style.background = nsStance === 'LHB' ? 'rgba(0, 210, 255, 0.15)' : 'rgba(0, 229, 153, 0.15)';
+        nsBadge.style.color = nsStance === 'LHB' ? 'var(--cyan)' : 'var(--turf-emerald)';
+      }
+      if (nsStats) nsStats.innerHTML = studioNonStriker.runs + ' <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioNonStriker.balls + 'b, ' + studioNonStriker.fours + 'x4, ' + studioNonStriker.sixes + 'x6)</span>';
+      
+      if (facingEl) {
+        const facingStance = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
+        facingEl.textContent = studioStriker.name + ' (' + facingStance + ')';
+      }
+
       if (scoreAll) scoreAll.textContent = partnership.runs + ' (' + partnership.balls + ')';
 
       if (partEl) partEl.innerHTML = partnership.runs + ' runs <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(' + partnership.balls + ' balls)</span>';
@@ -5336,7 +5433,9 @@ cricos_active_sse_connections 1</pre>
       const kind = document.getElementById('dismissalKind').value;
       const fielder = document.getElementById('dismissalFielder').value.trim();
       const outRole = document.getElementById('dismissalOutBatter').value;
-      const nextBatter = document.getElementById('dismissalNextBatter').value;
+      const nextBatterSelect = document.getElementById('dismissalNextBatter');
+      const nextBatter = nextBatterSelect ? nextBatterSelect.value : 'Rishabh Pant';
+      const selectedOption = nextBatterSelect && nextBatterSelect.selectedIndex >= 0 ? nextBatterSelect.options[nextBatterSelect.selectedIndex] : null;
 
       const currentStriker = document.getElementById('strikerName')?.textContent?.replace(' *', '').trim() || studioStriker.name;
       const currentNonStriker = document.getElementById('nonStrikerName')?.textContent?.trim() || studioNonStriker.name;
@@ -5356,8 +5455,7 @@ cricos_active_sse_connections 1</pre>
         next_batter_id: nextBatter
       });
 
-      const leftHanders = ['Hardik Patel', 'Ravindra Singh', 'Axar Patel', 'Shivam Dube', 'Arshdeep Singh'];
-      const nextStance = leftHanders.includes(nextBatter) ? 'LHB' : 'RHB';
+      const nextStance = getBatterStanceByName(nextBatter, selectedOption);
 
       if (outRole === 'STRIKER') {
         studioStriker.name = nextBatter;
@@ -5378,32 +5476,34 @@ cricos_active_sse_connections 1</pre>
       partnership.runs = 0;
       partnership.balls = 0;
       updateStudioUI();
+      filterWagonBatter(studioStriker.name);
 
       closeDismissalModal();
-      showToast('🛑 WICKET! ' + outName + ' ' + dismissalDesc);
+      showToast('🛑 WICKET! ' + outName + ' ' + dismissalDesc + ' • Next: ' + nextBatter + ' (' + nextStance + ')');
     }
 
     // ==========================================
     // Teams & Rosters Management
     // ==========================================
     const initialPlayingXi = [
-      { id: 'p-1', name: 'Virat Sharma', role: 'BAT', isCaptain: true, isViceCaptain: false, isWicketKeeper: false, jersey: 18, verified: true },
-      { id: 'p-2', name: 'Rohit Verma', role: 'BAT', isCaptain: false, isViceCaptain: true, isWicketKeeper: false, jersey: 45, verified: true },
-      { id: 'p-3', name: 'KL Rahul', role: 'WK', isCaptain: false, isViceCaptain: false, isWicketKeeper: true, jersey: 1, verified: true },
-      { id: 'p-4', name: 'Suryakumar Rao', role: 'BAT', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 63, verified: true },
-      { id: 'p-5', name: 'Hardik Patel', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 33, verified: true },
-      { id: 'p-6', name: 'Ravindra Singh', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 8, verified: true },
-      { id: 'p-7', name: 'Axar Patel', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 20, verified: true },
-      { id: 'p-8', name: 'Kuldeep Yadav', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 23, verified: true },
-      { id: 'p-9', name: 'Jasprit Bumrah', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 93, verified: true },
-      { id: 'p-10', name: 'Mohammed Siraj', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 73, verified: true },
-      { id: 'p-11', name: 'Arshdeep Singh', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 2, verified: true }
+      { id: 'p-1', name: 'Virat Sharma', role: 'BAT', isCaptain: true, isViceCaptain: false, isWicketKeeper: false, jersey: 18, verified: true, battingStyle: 'RHB' },
+      { id: 'p-2', name: 'Rohit Verma', role: 'BAT', isCaptain: false, isViceCaptain: true, isWicketKeeper: false, jersey: 45, verified: true, battingStyle: 'RHB' },
+      { id: 'p-3', name: 'KL Rahul', role: 'WK', isCaptain: false, isViceCaptain: false, isWicketKeeper: true, jersey: 1, verified: true, battingStyle: 'RHB' },
+      { id: 'p-4', name: 'Suryakumar Rao', role: 'BAT', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 63, verified: true, battingStyle: 'RHB' },
+      { id: 'p-5', name: 'Hardik Patel', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 33, verified: true, battingStyle: 'LHB' },
+      { id: 'p-6', name: 'Ravindra Singh', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 8, verified: true, battingStyle: 'LHB' },
+      { id: 'p-7', name: 'Axar Patel', role: 'ALL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 20, verified: true, battingStyle: 'LHB' },
+      { id: 'p-8', name: 'Kuldeep Yadav', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 23, verified: true, battingStyle: 'LHB' },
+      { id: 'p-9', name: 'Jasprit Bumrah', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 93, verified: true, battingStyle: 'RHB' },
+      { id: 'p-10', name: 'Mohammed Siraj', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 73, verified: true, battingStyle: 'RHB' },
+      { id: 'p-11', name: 'Arshdeep Singh', role: 'BOWL', isCaptain: false, isViceCaptain: false, isWicketKeeper: false, jersey: 2, verified: true, battingStyle: 'LHB' }
     ];
 
     const initialBench = [
-      { id: 'b-1', name: 'Sanju Samson', role: 'WK', jersey: 11 },
-      { id: 'b-2', name: 'Yuzvendra Chahal', role: 'BOWL', jersey: 3 },
-      { id: 'b-3', name: 'Shivam Dube', role: 'ALL', jersey: 25 }
+      { id: 'b-1', name: 'Rishabh Pant', role: 'WK', jersey: 17, verified: true, battingStyle: 'LHB' },
+      { id: 'b-2', name: 'Sanju Samson', role: 'WK', jersey: 11, verified: true, battingStyle: 'RHB' },
+      { id: 'b-3', name: 'Yuzvendra Chahal', role: 'BOWL', jersey: 3, verified: true, battingStyle: 'RHB' },
+      { id: 'b-4', name: 'Shivam Dube', role: 'ALL', jersey: 25, verified: true, battingStyle: 'LHB' }
     ];
 
     function renderRoster() {
@@ -5423,7 +5523,7 @@ cricos_active_sse_connections 1</pre>
               '<span style=\"font-family: var(--font-score); font-size: 0.85rem; color: var(--text-muted); width: 20px;\">' + (idx + 1) + '</span>' +
               '<div>' +
                 '<div style=\"font-weight: 700; color: #F8FAFC; font-size: 0.88rem;\">' + p.name + badgeHtml + '</div>' +
-                '<div style=\"font-size: 0.72rem; color: var(--text-muted);\">#' + p.jersey + ' • Verified Player KYC ✓</div>' +
+                '<div style=\"font-size: 0.72rem; color: var(--text-muted);\">#' + p.jersey + ' • ' + (p.battingStyle || 'RHB') + ' • Verified Player KYC ✓</div>' +
               '</div>' +
             '</div>' +
             '<span class=\"player-role-badge\" style=\"background: rgba(255,255,255,0.06); color: ' + roleColor + '; border: 1px solid rgba(255,255,255,0.1);\">' + p.role + '</span>' +
@@ -5436,7 +5536,7 @@ cricos_active_sse_connections 1</pre>
           return '<div class=\"player-roster-row\">' +
             '<div>' +
               '<div style=\"font-weight: 700; color: #F8FAFC; font-size: 0.85rem;\">' + p.name + '</div>' +
-              '<div style=\"font-size: 0.72rem; color: var(--text-muted);\">#' + p.jersey + ' • Reserve Squad</div>' +
+              '<div style=\"font-size: 0.72rem; color: var(--text-muted);\">#' + p.jersey + ' • ' + (p.battingStyle || 'RHB') + ' • Reserve Squad</div>' +
             '</div>' +
             '<span class=\"player-role-badge\" style=\"background: rgba(255,255,255,0.04); color: var(--text-muted);\">' + p.role + '</span>' +
           '</div>';
