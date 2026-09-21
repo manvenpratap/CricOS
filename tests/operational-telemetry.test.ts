@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
 import { MetricsRegistry, metricsRegistry } from '../apps/api/dist/platform/metrics.js';

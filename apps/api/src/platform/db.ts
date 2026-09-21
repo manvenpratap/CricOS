@@ -25,7 +25,8 @@ export async function query<T extends pg.QueryResultRow = pg.QueryResultRow>(
     return res;
   } catch (err: any) {
     if (process.env.NODE_ENV !== 'test') {
-      console.error(`[DB Query Error] duration=${Date.now() - start}ms sql="${text.slice(0, 100)}..." error=${err.message}`);
+      const errMsg = err?.message || err?.code || String(err);
+      console.error(`[DB Query Error] duration=${Date.now() - start}ms sql="${text.slice(0, 100)}..." error=${errMsg}`);
     }
     throw err;
   }
