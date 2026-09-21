@@ -8,7 +8,10 @@ import {
   calculatePartnership,
   SHOT_ZONES_CONFIG,
   getDismissalLabel,
-  generateTournamentSchedule
+  generateTournamentSchedule,
+  filterShotsByBatter,
+  calculateBatterWagonStats,
+  DEFAULT_SHOT_TRAJECTORIES
 } from '../dist/index.js';
 
 describe('CricOS Web User Journeys & Components (@cricket-platform/web)', () => {
@@ -74,6 +77,43 @@ describe('CricOS Web User Journeys & Components (@cricket-platform/web)', () => 
       assert.strictEqual(getDismissalLabel('RUN_OUT', 'Pant'), 'run out (Pant)');
       assert.strictEqual(getDismissalLabel('STUMPED', 'Dhoni'), 'st. Dhoni b. Bowler');
       assert.strictEqual(getDismissalLabel('HIT_WICKET'), 'hit wicket');
+    });
+
+    it('filters wagon wheel shot events by batsman name', () => {
+      const viratShots = filterShotsByBatter(DEFAULT_SHOT_TRAJECTORIES, 'Virat Sharma');
+      const hardikShots = filterShotsByBatter(DEFAULT_SHOT_TRAJECTORIES, 'Hardik Patel');
+      const allShots = filterShotsByBatter(DEFAULT_SHOT_TRAJECTORIES, 'ALL');
+
+      assert.strictEqual(viratShots.length, 12);
+      assert.strictEqual(hardikShots.length, 6);
+      assert.strictEqual(allShots.length, 18);
+      assert.ok(viratShots.every(s => s.batterName === 'Virat Sharma'));
+      assert.ok(hardikShots.every(s => s.batterName === 'Hardik Patel'));
+    });
+
+    it('calculates batsman wagon wheel telemetry and off/leg distributions', () => {
+      const viratStats = calculateBatterWagonStats(DEFAULT_SHOT_TRAJECTORIES, 'Virat Sharma', false);
+      assert.strictEqual(viratStats.batterName, 'Virat Sharma');
+      assert.strictEqual(viratStats.totalRuns, 34);
+      assert.strictEqual(viratStats.ballsFaced, 12);
+      assert.strictEqual(viratStats.fours, 4);
+      assert.strictEqual(viratStats.sixes, 2);
+      assert.strictEqual(viratStats.strikeRate, 283.33);
+      assert.strictEqual(viratStats.offSidePct + viratStats.legSidePct, 100);
+
+      const hardikStats = calculateBatterWagonStats(DEFAULT_SHOT_TRAJECTORIES, 'Hardik Patel', false);
+      assert.strictEqual(hardikStats.batterName, 'Hardik Patel');
+      assert.strictEqual(hardikStats.totalRuns, 14);
+      assert.strictEqual(hardikStats.ballsFaced, 6);
+      assert.strictEqual(hardikStats.fours, 1);
+      assert.strictEqual(hardikStats.sixes, 1);
+      assert.strictEqual(hardikStats.strikeRate, 233.33);
+
+      const allStats = calculateBatterWagonStats(DEFAULT_SHOT_TRAJECTORIES, 'ALL', false);
+      assert.strictEqual(allStats.totalRuns, 48);
+      assert.strictEqual(allStats.ballsFaced, 18);
+      assert.strictEqual(allStats.fours, 5);
+      assert.strictEqual(allStats.sixes, 3);
     });
   });
 

@@ -1,18 +1,43 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-21 10:40:00
-**Version:** 1.0.0-phase2l (Workspace Cleanup & Hygiene Audit)  
+**Last Updated:** 2026-09-21 11:40:00
+**Version:** 1.0.0-phase2o (Dynamic Off-Side & On-Side Field Geometry Based on Batsman on Strike)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2L Completed — Workspace Cleanup & Hygiene Audit:
+- **Active Phase**: Phase 2O Completed — Dynamic Off-Side & On-Side Field Geometry Based on Batsman on Strike:
+  - **Dynamic Off/On Side Reflection**: The wagon wheel outfield labels (`◀ OFF SIDE` and `ON SIDE ▶`), sector wedges, perimeter buttons, and shot rays dynamically flip between left and right based on the active batsman on strike:
+    - *Right-Handed Batsman (`RHB`)*: Off Side is on the LEFT (West, 180°–360°: Third Man, Point, Cover, Long Off); On Side (Leg) is on the RIGHT (East, 0°–180°: Fine Leg, Sq Leg, Mid Wkt, Long On).
+    - *Left-Handed Batsman (`LHB`)*: Off Side dynamically flips to the RIGHT (East, 0°–180°: Third Man, Point, Cover, Long Off); On Side (Leg) dynamically flips to the LEFT (West, 180°–360°: Fine Leg, Sq Leg, Mid Wkt, Long On).
+  - **Automatic Strike Triggers**: Strike rotation (`swapStudioStrike()` or scoring 1/3 odd runs via `recordStudioBall()`) immediately updates the active batsman's stance and dynamically flips the wagon wheel field orientation and side labels.
+  - **Interactive Batsman Pill Sync**: Clicking batsman selector pills (`Virat Sharma [RHB]` or `Hardik Patel [LHB]`) automatically adjusts the stance switcher, SVG pitch badge, and field geometry.
+  - **Factual In-Match Dismissal Integration**: Fall of wickets (`confirmDismissal()`) automatically assigns the incoming batsman's stance and updates the wagon wheel if the dismissal occurred at the striker's end.
+  - **Test Suite Health**: 100% passing (88 tests across 23 suites in 0.88s via `./pipeline.sh test --summary`).
+  - **Distribution Parity (Rule 6)**: `index.html` and `dist/index.html` verified byte-for-byte identical (428,775 bytes).
+- **Phase 2N Completed**: Wagon Wheel 180° Rotation to Standard Broadcast Pitch View:
+  - **Standard Broadcast Pitch Orientation**: Rotated the wagon wheel visualizer, pitch strip, and fielding geometry by 180° so the striker stands at the **top crease** (`cy="156"`) facing down towards the bowler (`cy="204"` at the bottom crease), exactly mirroring traditional television and coaching pitch perspectives.
+  - **Fielding Zones 180° Realignment**:
+    - *Top Quadrants (Behind the Wicket)*: Third Man (Top-Left, 315°–360°), Fine Leg (Top-Right, 0°–45°).
+    - *Mid Quadrants (Square of the Wicket)*: Point (Mid-Left, 270°–315°), Deep Square Leg (Mid-Right, 45°–90°).
+    - *Forward Quadrants (In Front of the Wicket)*: Cover / Extra Cover (Lower-Left, 225°–270°), Deep Mid Wicket (Lower-Right, 90°–135°).
+    - *Bottom Quadrants (Straight Down the Ground)*: Long Off (Bottom-Left, 180°–225°), Long On (Bottom-Right, 135°–180°).
+  - **Interactivity & Inter-Component Sync**: Updated `SHOT_ZONES_CONFIG` and `DEFAULT_SHOT_TRAJECTORIES` in `@cricket-platform/web` (`scoring-studio.ts`), SVG sector wedges (`#wagonSectorSlices`), perimeter buttons, and live scoring calculations.
+  - **Test Suite Health**: 100% passing (88 tests across 23 suites in 0.67s via `./pipeline.sh test --summary`).
+  - **Distribution Parity (Rule 6)**: `index.html` and `dist/index.html` verified byte-for-byte identical (420,528 bytes).
+- **Phase 2M Completed**: Wagon Wheel Batsman Display & Interactive Filtering:
+  - **On-Pitch Batsman Visualizer**: Outfield SVG stadium view displays the active striker directly at the crease with player initials badge, name, live score (`48*`), and stance indicator (`RHB`), along with the non-striker.
+  - **Interactive Batsman Selector Strip**: Added pill controls for `Virat Sharma (48* off 32)`, `Hardik Patel (18 off 12)`, and `Partnership Stand (66 off 44)` allowing users to inspect individual wagon wheels or the stand.
+  - **Dynamic Shot Ray & Telemetry Filtering**: Shot trajectories and the 4-column telemetry bar dynamically recompute based on selected batsman.
+  - **Scoring Studio Strike & Run Sync**: Strike rotation and scoring entries immediately update the wagon wheel's active striker and pill scores in real time.
+  - **Distribution Parity (Rule 6)**: `index.html` and `dist/index.html` verified byte-for-byte identical (421,061 bytes).
+- **Phase 2L Completed**: Workspace Cleanup & Hygiene Audit:
   - **Audit Event Persistence & Un-mocked DB Handling**: Resolved `[DB Query Error]` and `[Audit Logger] Could not persist audit event` during tests and offline runs. Enhanced `recordAuditEvent` in `audit.ts` to gracefully return UUIDs in test mode without querying offline PostgreSQL, formatted error logs in `db.ts`, and enforced `NODE_ENV=test` across `pipeline.sh` and integration test suites.
   - **Obsolete Historical Directory Removal**: Purged legacy `archive/` (3.1 MB of deprecated Phase 1A–1M zip archives and duplicate monolith packages).
   - **OS & Test Cache Cleanup**: Purged `.DS_Store` files and Python/pytest cache directories (`.pytest_cache/`, `tests/__pycache__/`).
-  - **Distribution Parity (Rule 6)**: Verified byte-for-byte identity between `index.html` and `dist/index.html` (409,704 bytes).
+  - **Distribution Parity (Rule 6)**: Verified byte-for-byte identity between `index.html` and `dist/index.html`.
   - **Test Suite Health**: 100% passing (88 tests across 23 test suites in 0.63s).
 - **Phase 2K Completed**: Role-Based Access Control (RBAC) & Factual Wagon Wheel Overhaul:
   - **Role-Based Access Control (RBAC) & Persona-Specific Feature Gating**:

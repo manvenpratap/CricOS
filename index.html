@@ -1424,6 +1424,44 @@
       color: var(--turf-emerald);
       font-weight: 600;
     }
+    .wagon-batter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .wagon-batter-pill:hover, .wagon-batter-pill.active {
+      background: rgba(0, 229, 153, 0.14);
+      border-color: var(--turf-emerald);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+    .wagon-batter-pill.active .batter-pill-badge {
+      background: var(--turf-emerald);
+      color: #04070D;
+    }
+    .batter-pill-badge {
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #CBD5E1;
+    }
+    .batter-pill-score {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--turf-emerald);
+      font-weight: 700;
+    }
     .wagon-shot-ray {
       transition: opacity 0.3s ease, stroke-width 0.2s ease;
       cursor: pointer;
@@ -2093,18 +2131,27 @@
           <div id="captainTacticalNotice" style="display: none; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700;">👑 Captain Tactical View: Wagon Wheel &amp; Shot Telemetry (Official ball scoring managed by Scorer)</div>
 
           <!-- Active Batters on Field -->
+          <!-- Active Batters on Field -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
             <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.3); border-radius: 10px; padding: 0.85rem;" data-tooltip="Striker currently facing delivery">
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 800;">STRIKER ⚡</span>
-                <button class="btn btn-secondary" style="width: auto; padding: 0.15rem 0.5rem; font-size: 0.68rem;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually without recording runs">Swap Strike</button>
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 800;">STRIKER ⚡</span>
+                  <span id="studioStrikerStanceBadge" style="font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(0, 229, 153, 0.15); color: var(--turf-emerald); font-weight: 800;">RHB</span>
+                </div>
+                <button class="btn btn-secondary" style="width: auto; padding: 0.15rem 0.5rem; font-size: 0.68rem;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually: flips off/on side for opposite batting stance">Swap Strike</button>
               </div>
               <div style="font-size: 1.05rem; font-weight: 800; color: #F8FAFC; margin-top: 0.35rem;" id="studioStrikerName">Virat Sharma</div>
               <div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 800; color: var(--turf-emerald);" id="studioStrikerStats">48* <span style="font-size: 0.8rem; color: var(--text-muted);">(32b, 4x4, 2x6)</span></div>
             </div>
 
             <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.85rem;" data-tooltip="Non-striker at bowler's end">
-              <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">NON-STRIKER</div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">NON-STRIKER</span>
+                  <span id="studioNonStrikerStanceBadge" style="font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(0, 210, 255, 0.15); color: var(--cyan); font-weight: 800;">LHB</span>
+                </div>
+              </div>
               <div style="font-size: 1.05rem; font-weight: 800; color: #F8FAFC; margin-top: 0.35rem;" id="studioNonStrikerName">Hardik Patel</div>
               <div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 800; color: var(--cyan);" id="studioNonStrikerStats">18 <span style="font-size: 0.8rem; color: var(--text-muted);">(12b, 1x4, 1x6)</span></div>
             </div>
@@ -2139,20 +2186,47 @@
               <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <div class="card-title" style="margin: 0; font-size: 1.05rem;">8-Zone Precision Wagon Wheel</div>
                 <div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2px;">
-                  <button type="button" class="btn-stance active" id="btnStanceRhb" onclick="setBatterStance('RHB')" data-tooltip="Right-Handed Batsman orientation (Off-side Left, Leg-side Right)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: var(--turf-emerald); color: #04070D; cursor: pointer;">RHB</button>
-                  <button type="button" class="btn-stance" id="btnStanceLhb" onclick="setBatterStance('LHB')" data-tooltip="Left-Handed Batsman orientation (Off-side Right, Leg-side Left)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: transparent; color: #8E9BAE; cursor: pointer;">LHB</button>
+                  <button type="button" class="btn-stance active" id="btnStanceRhb" onclick="setBatterStance('RHB', true)" data-tooltip="Right-Handed Batsman orientation (Off-side Left, On-side Right)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: var(--turf-emerald); color: #04070D; cursor: pointer;">RHB</button>
+                  <button type="button" class="btn-stance" id="btnStanceLhb" onclick="setBatterStance('LHB', true)" data-tooltip="Left-Handed Batsman orientation (Off-side Right, On-side Left)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: transparent; color: #8E9BAE; cursor: pointer;">LHB</button>
                 </div>
               </div>
               <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 6px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25);" id="wagonWheelSelectedZone">ZONE: EXTRA COVER (OFF-SIDE)</span>
             </div>
 
+            <!-- Batsman Selector Strip -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem; padding: 0.45rem 0.65rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 8px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                <span style="font-size: 0.7rem; font-weight: 700; color: #8E9BAE; text-transform: uppercase; letter-spacing: 0.5px;">Batsman:</span>
+                <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;" id="wagonBatterSelector">
+                  <button type="button" class="wagon-batter-pill active" id="wagonBatterBtn_Virat" onclick="filterWagonBatter('Virat Sharma', this)" data-tooltip="Wagon wheel for Virat Sharma (RHB): 48* (32 balls, 4x4, 2x6)">
+                    <span class="batter-pill-badge">VK • RHB</span>
+                    <span>Virat Sharma</span>
+                    <span class="batter-pill-score" id="wagonBatterScore_Virat">48* (32)</span>
+                  </button>
+                  <button type="button" class="wagon-batter-pill" id="wagonBatterBtn_Hardik" onclick="filterWagonBatter('Hardik Patel', this)" data-tooltip="Wagon wheel for Hardik Patel (LHB): 18 (12 balls, 1x4, 1x6)">
+                    <span class="batter-pill-badge">HP • LHB</span>
+                    <span>Hardik Patel</span>
+                    <span class="batter-pill-score" id="wagonBatterScore_Hardik">18 (12)</span>
+                  </button>
+                  <button type="button" class="wagon-batter-pill" id="wagonBatterBtn_All" onclick="filterWagonBatter('ALL', this)" data-tooltip="Combined partnership stand wagon wheel (66 runs, 44 balls)">
+                    <span class="batter-pill-badge">🤝</span>
+                    <span>Partnership Stand</span>
+                    <span class="batter-pill-score" id="wagonBatterScore_All">66 (44)</span>
+                  </button>
+                </div>
+              </div>
+              <div style="font-size: 0.72rem; color: #8E9BAE;" id="wagonBatterSummaryInfo">
+                Wagon for: <strong style="color: var(--turf-emerald);" id="wagonActiveBatterLabel">Virat Sharma (48* off 32)</strong>
+              </div>
+            </div>
+
             <!-- Filter Strip: Shot Types & Batter Selection -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 0.75rem;">
               <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;" id="wagonShotFilters">
-                <button type="button" class="wagon-filter-pill active" onclick="filterWagonShots('ALL', this)" data-tooltip="Show all recorded deliveries">All Shots (18)</button>
+                <button type="button" class="wagon-filter-pill active" onclick="filterWagonShots('ALL', this)" data-tooltip="Show all recorded deliveries for selected batsman">All Shots (12)</button>
                 <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('BOUNDARIES', this)" data-tooltip="Show 4s and 6s only">4s &amp; 6s (6)</button>
-                <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('SINGLES', this)" data-tooltip="Show 1s, 2s, 3s only">Singles / 2s (8)</button>
-                <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('DOTS', this)" data-tooltip="Show dot balls">Dots (4)</button>
+                <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('SINGLES', this)" data-tooltip="Show 1s, 2s, 3s only">Singles / 2s (4)</button>
+                <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('DOTS', this)" data-tooltip="Show dot balls">Dots (2)</button>
               </div>
               <div style="font-size: 0.72rem; color: #8E9BAE;">
                 Facing: <strong style="color: #FFFFFF;" id="wagonFacingBatter">Virat Sharma</strong>
@@ -2206,50 +2280,69 @@
                 <line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
                 <line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
 
-                <!-- Interactive 8 Sector Slices (Paths) -->
+                <!-- Interactive 8 Sector Slices (Paths) Rotated 180° for Standard Pitch View -->
                 <g id="wagonSectorSlices">
-                  <!-- LONG_ON: 0° to 45° -->
-                  <path id="wedge_LONG_ON" class="wagon-sector-wedge" d="M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z" onclick="selectShotZone('LONG_ON')" data-tooltip="Long On (Leg-Side Straight)"/>
-                  <!-- MID_WICKET: 45° to 90° -->
-                  <path id="wedge_MID_WICKET" class="wagon-sector-wedge" d="M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z" onclick="selectShotZone('MID_WICKET')" data-tooltip="Deep Mid Wicket (Leg-Side Forward)"/>
-                  <!-- SQUARE_LEG: 90° to 135° -->
-                  <path id="wedge_SQUARE_LEG" class="wagon-sector-wedge" d="M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z" onclick="selectShotZone('SQUARE_LEG')" data-tooltip="Deep Square Leg (Leg-Side Square)"/>
-                  <!-- FINE_LEG: 135° to 180° -->
-                  <path id="wedge_FINE_LEG" class="wagon-sector-wedge" d="M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z" onclick="selectShotZone('FINE_LEG')" data-tooltip="Fine Leg (Leg-Side Behind)"/>
-                  <!-- THIRD_MAN: 180° to 225° -->
-                  <path id="wedge_THIRD_MAN" class="wagon-sector-wedge" d="M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z" onclick="selectShotZone('THIRD_MAN')" data-tooltip="Third Man (Off-Side Behind)"/>
-                  <!-- POINT: 225° to 270° -->
-                  <path id="wedge_POINT" class="wagon-sector-wedge" d="M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z" onclick="selectShotZone('POINT')" data-tooltip="Point (Off-Side Square)"/>
-                  <!-- EXTRA_COVER: 270° to 315° -->
-                  <path id="wedge_EXTRA_COVER" class="wagon-sector-wedge active" d="M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z" onclick="selectShotZone('EXTRA_COVER')" data-tooltip="Extra Cover (Off-Side Forward)"/>
-                  <!-- LONG_OFF: 315° to 360° -->
-                  <path id="wedge_LONG_OFF" class="wagon-sector-wedge" d="M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z" onclick="selectShotZone('LONG_OFF')" data-tooltip="Long Off (Off-Side Straight)"/>
+                  <!-- top_left: Third Man (RHB) / Fine Leg (LHB) -->
+                  <path id="wedge_top_left" data-pos="top_left" data-zone="THIRD_MAN" class="wagon-sector-wedge" d="M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z" onclick="selectShotZone('THIRD_MAN')" data-tooltip="Third Man (Off-Side Behind)"/>
+                  <!-- top_right: Fine Leg (RHB) / Third Man (LHB) -->
+                  <path id="wedge_top_right" data-pos="top_right" data-zone="FINE_LEG" class="wagon-sector-wedge" d="M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z" onclick="selectShotZone('FINE_LEG')" data-tooltip="Fine Leg (On-Side Behind)"/>
+                  <!-- mid_left: Point (RHB) / Deep Square Leg (LHB) -->
+                  <path id="wedge_mid_left" data-pos="mid_left" data-zone="POINT" class="wagon-sector-wedge" d="M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z" onclick="selectShotZone('POINT')" data-tooltip="Point (Off-Side Square)"/>
+                  <!-- mid_right: Deep Square Leg (RHB) / Point (LHB) -->
+                  <path id="wedge_mid_right" data-pos="mid_right" data-zone="SQUARE_LEG" class="wagon-sector-wedge" d="M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z" onclick="selectShotZone('SQUARE_LEG')" data-tooltip="Deep Square Leg (On-Side Square)"/>
+                  <!-- lower_left: Cover (RHB) / Deep Mid Wicket (LHB) -->
+                  <path id="wedge_lower_left" data-pos="lower_left" data-zone="EXTRA_COVER" class="wagon-sector-wedge active" d="M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z" onclick="selectShotZone('EXTRA_COVER')" data-tooltip="Extra Cover (Off-Side Forward)"/>
+                  <!-- lower_right: Deep Mid Wicket (RHB) / Cover (LHB) -->
+                  <path id="wedge_lower_right" data-pos="lower_right" data-zone="MID_WICKET" class="wagon-sector-wedge" d="M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z" onclick="selectShotZone('MID_WICKET')" data-tooltip="Deep Mid Wicket (On-Side Forward)"/>
+                  <!-- bottom_left: Long Off (RHB) / Long On (LHB) -->
+                  <path id="wedge_bottom_left" data-pos="bottom_left" data-zone="LONG_OFF" class="wagon-sector-wedge" d="M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z" onclick="selectShotZone('LONG_OFF')" data-tooltip="Long Off (Off-Side Straight)"/>
+                  <!-- bottom_right: Long On (RHB) / Long Off (LHB) -->
+                  <path id="wedge_bottom_right" data-pos="bottom_right" data-zone="LONG_ON" class="wagon-sector-wedge" d="M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z" onclick="selectShotZone('LONG_ON')" data-tooltip="Long On (On-Side Straight)"/>
                 </g>
 
-                <!-- Pitch Strip in Center -->
+                <!-- Pitch Strip in Center (Standard Broadcast View: Batsman at Top, Bowler at Bottom) -->
                 <rect x="168" y="140" width="24" height="80" rx="3" fill="url(#pitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
-                <!-- Bowling Crease & Popping Crease (Bowler's End - Top) -->
+                <!-- Bowling Crease & Popping Crease (Striker's End - Top) -->
                 <line x1="164" y1="150" x2="196" y2="150" stroke="#FFFFFF" stroke-width="1.2"/>
                 <line x1="168" y1="156" x2="192" y2="156" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>
-                <!-- Stumps (Bowler's End) -->
+                <!-- Stumps (Striker's End) -->
                 <circle cx="177" cy="148" r="1" fill="#FFFFFF"/>
                 <circle cx="180" cy="148" r="1" fill="#FFFFFF"/>
                 <circle cx="183" cy="148" r="1" fill="#FFFFFF"/>
 
-                <!-- Bowling Crease & Popping Crease (Striker's End - Bottom) -->
+                <!-- Bowling Crease & Popping Crease (Bowler's End - Bottom) -->
                 <line x1="164" y1="210" x2="196" y2="210" stroke="#FFFFFF" stroke-width="1.2"/>
                 <line x1="168" y1="204" x2="192" y2="204" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>
-                <!-- Stumps (Striker's End) -->
+                <!-- Stumps (Bowler's End) -->
                 <circle cx="177" cy="212" r="1" fill="#FFFFFF"/>
                 <circle cx="180" cy="212" r="1" fill="#FFFFFF"/>
                 <circle cx="183" cy="212" r="1" fill="#FFFFFF"/>
 
-                <!-- Batsman Origin Marker -->
-                <circle cx="180" cy="204" r="3.5" fill="var(--turf-emerald)" stroke="#FFFFFF" stroke-width="1.5"/>
+                <!-- Batsman at Crease Indicator (Striker at Top Crease cy=156) -->
+                <g id="wagonPitchStrikerGroup">
+                  <!-- Striker Crease Circle -->
+                  <circle cx="180" cy="156" r="4.5" fill="var(--turf-emerald)" stroke="#FFFFFF" stroke-width="1.5" filter="url(#boundaryGlow)"/>
+                  <circle cx="180" cy="156" r="2" fill="#04070D"/>
+                  <!-- Batsman Name & Figure Banner Overlay (Above striker) -->
+                  <g id="wagonPitchBatterBadge" transform="translate(180, 134)">
+                    <rect x="-68" y="-9" width="136" height="18" rx="9" fill="rgba(4, 7, 13, 0.92)" stroke="rgba(0, 229, 153, 0.45)" stroke-width="1.2"/>
+                    <circle cx="-56" cy="0" r="6" fill="var(--turf-emerald)"/>
+                    <text x="-56" y="2.5" fill="#04070D" font-size="6.5" font-family="var(--font-heading)" font-weight="800" text-anchor="middle" id="svgPitchBatterInitials">VK</text>
+                    <text x="-46" y="2.8" fill="#FFFFFF" font-size="6.5" font-family="var(--font-heading)" font-weight="700" id="svgPitchBatterName">Virat Sharma</text>
+                    <text x="60" y="2.8" fill="var(--turf-emerald)" font-size="6.5" font-family="var(--font-score)" font-weight="700" text-anchor="end" id="svgPitchBatterScore">48* (32)</text>
+                  </g>
+                </g>
 
-                <!-- Off-Side / Leg-Side Arc Labels -->
+                <!-- Non-Striker Pitch Indicator (Bowler end cy=204, banner below) -->
+                <g id="wagonPitchNonStrikerGroup" transform="translate(180, 226)">
+                  <circle cx="0" cy="-22" r="3" fill="#64748B" stroke="#FFFFFF" stroke-width="1"/>
+                  <rect x="-46" y="-7" width="92" height="14" rx="7" fill="rgba(4, 7, 13, 0.85)" stroke="rgba(255, 255, 255, 0.18)" stroke-width="0.8"/>
+                  <text x="0" y="2.5" fill="#94A3B8" font-size="5.5" font-family="var(--font-heading)" font-weight="600" text-anchor="middle" id="svgPitchNonStrikerText">Hardik Patel 18 (12)</text>
+                </g>
+
+                <!-- Off-Side / On-Side Arc Labels -->
                 <text x="35" y="174" fill="var(--cyan)" font-size="8" font-family="var(--font-mono)" font-weight="700" letter-spacing="0.5" id="wagonLabelOff">◀ OFF SIDE</text>
-                <text x="325" y="174" fill="var(--turf-emerald)" font-size="8" font-family="var(--font-mono)" font-weight="700" text-anchor="end" letter-spacing="0.5" id="wagonLabelLeg">LEG SIDE ▶</text>
+                <text x="325" y="174" fill="var(--turf-emerald)" font-size="8" font-family="var(--font-mono)" font-weight="700" text-anchor="end" letter-spacing="0.5" id="wagonLabelLeg">ON SIDE ▶</text>
 
                 <!-- Dynamic Shot Trajectory Rays Group -->
                 <g id="wagonWheelRays">
@@ -2257,54 +2350,58 @@
                 </g>
               </svg>
 
-              <!-- 8 Factually Accurate Outer Perimeter Field Zone Buttons -->
-              <!-- Long Off: ~337.5° (Top-Left Straight) -->
-              <button type="button" class="field-zone-btn" style="top: 14px; left: 24%; transform: translateX(-50%);" onclick="selectShotZone('LONG_OFF', this)" data-tooltip="Long Off: Straight off-side drive">
-                <span>Long Off</span> <span class="field-zone-runs" id="zoneRuns_LONG_OFF">4r</span>
-              </button>
-              <!-- Long On: ~22.5° (Top-Right Straight) -->
-              <button type="button" class="field-zone-btn" style="top: 14px; left: 76%; transform: translateX(-50%);" onclick="selectShotZone('LONG_ON', this)" data-tooltip="Long On: Straight leg-side drive">
-                <span>Long On</span> <span class="field-zone-runs" id="zoneRuns_LONG_ON">8r</span>
-              </button>
-              <!-- Deep Mid Wicket: ~67.5° (Upper-Right Forward) -->
-              <button type="button" class="field-zone-btn" style="top: 26%; right: 4px;" onclick="selectShotZone('MID_WICKET', this)" data-tooltip="Deep Mid Wicket: Forward of square on leg side">
-                <span>Mid Wkt</span> <span class="field-zone-runs" id="zoneRuns_MID_WICKET">14r</span>
-              </button>
-              <!-- Deep Square Leg: ~112.5° (Mid-Right Square) -->
-              <button type="button" class="field-zone-btn" style="top: 66%; right: 4px;" onclick="selectShotZone('SQUARE_LEG', this)" data-tooltip="Deep Square Leg: Square of the wicket on leg side">
-                <span>Sq Leg</span> <span class="field-zone-runs" id="zoneRuns_SQUARE_LEG">5r</span>
-              </button>
-              <!-- Fine Leg: ~157.5° (Lower-Right Behind) -->
-              <button type="button" class="field-zone-btn" style="bottom: 14px; left: 76%; transform: translateX(-50%);" onclick="selectShotZone('FINE_LEG', this)" data-tooltip="Fine Leg: Behind square on leg side">
-                <span>Fine Leg</span> <span class="field-zone-runs" id="zoneRuns_FINE_LEG">3r</span>
-              </button>
-              <!-- Third Man: ~202.5° (Lower-Left Behind) -->
-              <button type="button" class="field-zone-btn" style="bottom: 14px; left: 24%; transform: translateX(-50%);" onclick="selectShotZone('THIRD_MAN', this)" data-tooltip="Third Man: Behind square on off side">
+              <!-- 8 Factually Accurate Outer Perimeter Field Zone Buttons (Dynamic Positional IDs for Stance Flip) -->
+              <!-- Top-Left: Third Man (RHB) / Fine Leg (LHB) -->
+              <button type="button" class="field-zone-btn" id="btnZone_top_left" data-pos="top_left" data-zone="THIRD_MAN" style="top: 14px; left: 24%; transform: translateX(-50%);" onclick="selectShotZone('THIRD_MAN', this)" data-tooltip="Third Man: Behind square on off side">
                 <span>Third Man</span> <span class="field-zone-runs" id="zoneRuns_THIRD_MAN">1r</span>
               </button>
-              <!-- Point: ~247.5° (Mid-Left Square) -->
-              <button type="button" class="field-zone-btn" style="top: 66%; left: 4px;" onclick="selectShotZone('POINT', this)" data-tooltip="Point: Square of the wicket on off side">
+              <!-- Top-Right: Fine Leg (RHB) / Third Man (LHB) -->
+              <button type="button" class="field-zone-btn" id="btnZone_top_right" data-pos="top_right" data-zone="FINE_LEG" style="top: 14px; left: 76%; transform: translateX(-50%);" onclick="selectShotZone('FINE_LEG', this)" data-tooltip="Fine Leg: Behind square on on-side">
+                <span>Fine Leg</span> <span class="field-zone-runs" id="zoneRuns_FINE_LEG">3r</span>
+              </button>
+              <!-- Mid-Left: Point (RHB) / Deep Square Leg (LHB) -->
+              <button type="button" class="field-zone-btn" id="btnZone_mid_left" data-pos="mid_left" data-zone="POINT" style="top: 36%; left: 4px;" onclick="selectShotZone('POINT', this)" data-tooltip="Point: Square of the wicket on off side">
                 <span>Point</span> <span class="field-zone-runs" id="zoneRuns_POINT">4r</span>
               </button>
-              <!-- Extra Cover: ~292.5° (Upper-Left Forward) -->
-              <button type="button" class="field-zone-btn active" style="top: 26%; left: 4px;" onclick="selectShotZone('EXTRA_COVER', this)" data-tooltip="Cover / Extra Cover: Forward of square on off side">
+              <!-- Mid-Right: Deep Square Leg (RHB) / Point (LHB) -->
+              <button type="button" class="field-zone-btn" id="btnZone_mid_right" data-pos="mid_right" data-zone="SQUARE_LEG" style="top: 36%; right: 4px;" onclick="selectShotZone('SQUARE_LEG', this)" data-tooltip="Deep Square Leg: Square of the wicket on on-side">
+                <span>Sq Leg</span> <span class="field-zone-runs" id="zoneRuns_SQUARE_LEG">5r</span>
+              </button>
+              <!-- Lower-Left: Cover (RHB) / Deep Mid Wicket (LHB) -->
+              <button type="button" class="field-zone-btn active" id="btnZone_lower_left" data-pos="lower_left" data-zone="EXTRA_COVER" style="top: 66%; left: 4px;" onclick="selectShotZone('EXTRA_COVER', this)" data-tooltip="Cover / Extra Cover: Forward of square on off side">
                 <span>Cover</span> <span class="field-zone-runs" id="zoneRuns_EXTRA_COVER">9r</span>
+              </button>
+              <!-- Lower-Right: Deep Mid Wicket (RHB) / Cover (LHB) -->
+              <button type="button" class="field-zone-btn" id="btnZone_lower_right" data-pos="lower_right" data-zone="MID_WICKET" style="top: 66%; right: 4px;" onclick="selectShotZone('MID_WICKET', this)" data-tooltip="Deep Mid Wicket: Forward of square on on-side">
+                <span>Mid Wkt</span> <span class="field-zone-runs" id="zoneRuns_MID_WICKET">14r</span>
+              </button>
+              <!-- Bottom-Left: Long Off (RHB) / Long On (LHB) -->
+              <button type="button" class="field-zone-btn" id="btnZone_bottom_left" data-pos="bottom_left" data-zone="LONG_OFF" style="bottom: 14px; left: 24%; transform: translateX(-50%);" onclick="selectShotZone('LONG_OFF', this)" data-tooltip="Long Off: Straight off-side drive">
+                <span>Long Off</span> <span class="field-zone-runs" id="zoneRuns_LONG_OFF">4r</span>
+              </button>
+              <!-- Bottom-Right: Long On (RHB) / Long Off (LHB) -->
+              <button type="button" class="field-zone-btn" id="btnZone_bottom_right" data-pos="bottom_right" data-zone="LONG_ON" style="bottom: 14px; left: 76%; transform: translateX(-50%);" onclick="selectShotZone('LONG_ON', this)" data-tooltip="Long On: Straight on-side drive">
+                <span>Long On</span> <span class="field-zone-runs" id="zoneRuns_LONG_ON">8r</span>
               </button>
             </div>
 
             <!-- Telemetry & Distribution Bar -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.85rem; font-size: 0.78rem;">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.85rem; font-size: 0.78rem;">
               <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
                 <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Off Side Ratio</div>
-                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonOffTally">58% (27 runs)</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonOffTally">58% (28 runs)</div>
               </div>
               <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
                 <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Leg Side Ratio</div>
-                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonLegTally">42% (21 runs)</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonLegTally">42% (20 runs)</div>
               </div>
               <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
                 <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Boundaries</div>
                 <div style="font-family: var(--font-mono); font-weight: 700; color: var(--amber); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonBoundaryTally">6 Hits (4x4, 2x6)</div>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Batsman SR</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; color: #FFFFFF; font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonBatterSrTally">150.0 SR (32b)</div>
               </div>
             </div>
           </div>
@@ -4726,62 +4823,106 @@ cricos_active_sse_connections 1</pre>
     // ==========================================
     // Tactical Scoring Studio & Precision Wagon Wheel
     // ==========================================
-    let studioStriker = { name: 'Virat Sharma', runs: 48, balls: 32, fours: 4, sixes: 2 };
-    let studioNonStriker = { name: 'Hardik Patel', runs: 18, balls: 12, fours: 1, sixes: 1 };
+    let studioStriker = { name: 'Virat Sharma', runs: 48, balls: 32, fours: 4, sixes: 2, battingStyle: 'RHB' };
+    let studioNonStriker = { name: 'Hardik Patel', runs: 18, balls: 12, fours: 1, sixes: 1, battingStyle: 'LHB' };
     let partnership = { runs: 44, balls: 28 };
     let currentSelectedZone = 'EXTRA_COVER';
     let currentStance = 'RHB';
     let currentShotFilter = 'ALL';
+    let currentBatterFilter = 'Virat Sharma';
 
     const SHOT_ZONES_DATA = [
-      { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', angleDeg: 22.5, side: 'LEG' },
-      { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', angleDeg: 67.5, side: 'LEG' },
-      { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', angleDeg: 112.5, side: 'LEG' },
-      { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 157.5, side: 'LEG' },
-      { id: 'THIRD_MAN', label: 'Third Man', shortLabel: 'Third Man', angleDeg: 202.5, side: 'OFF' },
-      { id: 'POINT', label: 'Point', shortLabel: 'Point', angleDeg: 247.5, side: 'OFF' },
-      { id: 'EXTRA_COVER', label: 'Cover / Extra Cover', shortLabel: 'Cover', angleDeg: 292.5, side: 'OFF' },
-      { id: 'LONG_OFF', label: 'Long Off', shortLabel: 'Long Off', angleDeg: 337.5, side: 'OFF' }
+      { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 22.5, side: 'LEG' },
+      { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', angleDeg: 67.5, side: 'LEG' },
+      { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', angleDeg: 112.5, side: 'LEG' },
+      { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', angleDeg: 157.5, side: 'LEG' },
+      { id: 'LONG_OFF', label: 'Long Off', shortLabel: 'Long Off', angleDeg: 202.5, side: 'OFF' },
+      { id: 'EXTRA_COVER', label: 'Cover / Extra Cover', shortLabel: 'Cover', angleDeg: 247.5, side: 'OFF' },
+      { id: 'POINT', label: 'Point', shortLabel: 'Point', angleDeg: 292.5, side: 'OFF' },
+      { id: 'THIRD_MAN', label: 'Third Man', shortLabel: 'Third Man', angleDeg: 337.5, side: 'OFF' }
     ];
+
+    const ZONE_LAYOUT = {
+      RHB: {
+        top_left: { id: 'THIRD_MAN', label: 'Third Man', shortLabel: 'Third Man', side: 'OFF', angleDeg: 337.5, tooltip: 'Third Man: Behind square on off side' },
+        top_right: { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', side: 'ON', angleDeg: 22.5, tooltip: 'Fine Leg: Behind square on on-side' },
+        mid_left: { id: 'POINT', label: 'Point', shortLabel: 'Point', side: 'OFF', angleDeg: 292.5, tooltip: 'Point: Square of the wicket on off side' },
+        mid_right: { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', side: 'ON', angleDeg: 67.5, tooltip: 'Deep Square Leg: Square of the wicket on on-side' },
+        lower_left: { id: 'EXTRA_COVER', label: 'Cover / Extra Cover', shortLabel: 'Cover', side: 'OFF', angleDeg: 247.5, tooltip: 'Cover / Extra Cover: Forward of square on off side' },
+        lower_right: { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', side: 'ON', angleDeg: 112.5, tooltip: 'Deep Mid Wicket: Forward of square on on-side' },
+        bottom_left: { id: 'LONG_OFF', label: 'Long Off', shortLabel: 'Long Off', side: 'OFF', angleDeg: 202.5, tooltip: 'Long Off: Straight off-side drive' },
+        bottom_right: { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', side: 'ON', angleDeg: 157.5, tooltip: 'Long On: Straight on-side drive' }
+      },
+      LHB: {
+        top_left: { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', side: 'ON', angleDeg: 22.5, tooltip: 'Fine Leg: Behind square on on-side (left for LHB)' },
+        top_right: { id: 'THIRD_MAN', label: 'Third Man', shortLabel: 'Third Man', side: 'OFF', angleDeg: 337.5, tooltip: 'Third Man: Behind square on off side (right for LHB)' },
+        mid_left: { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', side: 'ON', angleDeg: 67.5, tooltip: 'Deep Square Leg: Square of the wicket on on-side (left for LHB)' },
+        mid_right: { id: 'POINT', label: 'Point', shortLabel: 'Point', side: 'OFF', angleDeg: 292.5, tooltip: 'Point: Square of the wicket on off side (right for LHB)' },
+        lower_left: { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', side: 'ON', angleDeg: 112.5, tooltip: 'Deep Mid Wicket: Forward of square on on-side (left for LHB)' },
+        lower_right: { id: 'EXTRA_COVER', label: 'Cover / Extra Cover', shortLabel: 'Cover', side: 'OFF', angleDeg: 247.5, tooltip: 'Cover / Extra Cover: Forward of square on off side (right for LHB)' },
+        bottom_left: { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', side: 'ON', angleDeg: 157.5, tooltip: 'Long On: Straight on-side drive (left for LHB)' },
+        bottom_right: { id: 'LONG_OFF', label: 'Long Off', shortLabel: 'Long Off', side: 'OFF', angleDeg: 202.5, tooltip: 'Long Off: Straight off-side drive (right for LHB)' }
+      }
+    };
 
     let shotHistory = [
       // Virat Sharma (48* off 32: 4x4, 2x6)
-      { id: 's1', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 4, angleDeg: 298, distanceFraction: 0.98 },
-      { id: 's2', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 9, angleDeg: 288, distanceFraction: 0.99 },
-      { id: 's3', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat Sharma', ballNumber: 14, angleDeg: 65, distanceFraction: 1.15 },
-      { id: 's4', zone: 'LONG_ON', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat Sharma', ballNumber: 21, angleDeg: 18, distanceFraction: 1.18 },
-      { id: 's5', zone: 'POINT', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 26, angleDeg: 250, distanceFraction: 0.97 },
-      { id: 's6', zone: 'LONG_OFF', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 30, angleDeg: 340, distanceFraction: 0.98 },
-      { id: 's7', zone: 'SQUARE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 2, angleDeg: 105, distanceFraction: 0.65 },
-      { id: 's8', zone: 'FINE_LEG', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 7, angleDeg: 145, distanceFraction: 0.72 },
-      { id: 's9', zone: 'THIRD_MAN', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 11, angleDeg: 212, distanceFraction: 0.68 },
-      { id: 's10', zone: 'MID_WICKET', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 17, angleDeg: 78, distanceFraction: 0.75 },
-      { id: 's11', zone: 'EXTRA_COVER', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 1, angleDeg: 290, distanceFraction: 0.35 },
-      { id: 's12', zone: 'POINT', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 6, angleDeg: 255, distanceFraction: 0.38 },
+      { id: 's1', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 4, angleDeg: 248, distanceFraction: 0.98 },
+      { id: 's2', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 9, angleDeg: 255, distanceFraction: 0.99 },
+      { id: 's3', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat Sharma', ballNumber: 14, angleDeg: 115, distanceFraction: 1.15 },
+      { id: 's4', zone: 'LONG_ON', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat Sharma', ballNumber: 21, angleDeg: 160, distanceFraction: 1.18 },
+      { id: 's5', zone: 'POINT', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 26, angleDeg: 290, distanceFraction: 0.97 },
+      { id: 's6', zone: 'LONG_OFF', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat Sharma', ballNumber: 30, angleDeg: 200, distanceFraction: 0.98 },
+      { id: 's7', zone: 'SQUARE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 2, angleDeg: 75, distanceFraction: 0.65 },
+      { id: 's8', zone: 'FINE_LEG', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 7, angleDeg: 25, distanceFraction: 0.72 },
+      { id: 's9', zone: 'THIRD_MAN', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 11, angleDeg: 335, distanceFraction: 0.68 },
+      { id: 's10', zone: 'MID_WICKET', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 17, angleDeg: 110, distanceFraction: 0.75 },
+      { id: 's11', zone: 'EXTRA_COVER', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 1, angleDeg: 250, distanceFraction: 0.35 },
+      { id: 's12', zone: 'POINT', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat Sharma', ballNumber: 6, angleDeg: 295, distanceFraction: 0.38 },
 
       // Hardik Patel (18 off 12: 1x4, 1x6)
-      { id: 's13', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Hardik Patel', ballNumber: 16, angleDeg: 72, distanceFraction: 1.14 },
-      { id: 's14', zone: 'SQUARE_LEG', runs: 4, isBoundary: true, isSix: false, batterName: 'Hardik Patel', ballNumber: 23, angleDeg: 118, distanceFraction: 0.98 },
-      { id: 's15', zone: 'LONG_ON', runs: 2, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 18, angleDeg: 28, distanceFraction: 0.78 },
-      { id: 's16', zone: 'FINE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 20, angleDeg: 150, distanceFraction: 0.62 },
-      { id: 's17', zone: 'EXTRA_COVER', runs: 1, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 27, angleDeg: 305, distanceFraction: 0.58 },
-      { id: 's18', zone: 'MID_WICKET', runs: 0, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 15, angleDeg: 82, distanceFraction: 0.4 }
+      { id: 's13', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Hardik Patel', ballNumber: 16, angleDeg: 112, distanceFraction: 1.14 },
+      { id: 's14', zone: 'SQUARE_LEG', runs: 4, isBoundary: true, isSix: false, batterName: 'Hardik Patel', ballNumber: 23, angleDeg: 70, distanceFraction: 0.98 },
+      { id: 's15', zone: 'LONG_ON', runs: 2, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 18, angleDeg: 162, distanceFraction: 0.78 },
+      { id: 's16', zone: 'FINE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 20, angleDeg: 22, distanceFraction: 0.62 },
+      { id: 's17', zone: 'EXTRA_COVER', runs: 1, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 27, angleDeg: 245, distanceFraction: 0.58 },
+      { id: 's18', zone: 'MID_WICKET', runs: 0, isBoundary: false, isSix: false, batterName: 'Hardik Patel', ballNumber: 15, angleDeg: 118, distanceFraction: 0.4 }
     ];
+
+    function updateZoneElementsForStance(stance) {
+      const layout = ZONE_LAYOUT[stance] || ZONE_LAYOUT.RHB;
+      Object.keys(layout).forEach(pos => {
+        const info = layout[pos];
+        const btn = document.getElementById('btnZone_' + pos);
+        if (btn) {
+          btn.setAttribute('data-zone', info.id);
+          btn.setAttribute('onclick', "selectShotZone('" + info.id + "', this)");
+          btn.setAttribute('data-tooltip', info.tooltip);
+          btn.innerHTML = '<span>' + info.shortLabel + '</span> <span class="field-zone-runs" id="zoneRuns_' + info.id + '">0r</span>';
+        }
+        const wedge = document.getElementById('wedge_' + pos);
+        if (wedge) {
+          wedge.setAttribute('data-zone', info.id);
+          wedge.setAttribute('onclick', "selectShotZone('" + info.id + "')");
+          wedge.setAttribute('data-tooltip', info.label + ' (' + (info.side === 'OFF' ? 'Off-Side' : 'On-Side') + ')');
+        }
+      });
+    }
 
     function selectShotZone(zone, btnEl) {
       currentSelectedZone = zone;
       document.querySelectorAll('.field-zone-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.wagon-sector-wedge').forEach(w => w.classList.remove('active'));
 
-      const matchedBtn = btnEl || document.querySelector('.field-zone-btn[onclick*="'' + zone + ''"]');
+      const matchedBtn = btnEl || document.querySelector('.field-zone-btn[data-zone="' + zone + '"]');
       if (matchedBtn) matchedBtn.classList.add('active');
 
-      const matchedWedge = document.getElementById('wedge_' + zone);
+      const matchedWedge = document.querySelector('.wagon-sector-wedge[data-zone="' + zone + '"]');
       if (matchedWedge) matchedWedge.classList.add('active');
 
       const zoneDef = SHOT_ZONES_DATA.find(z => z.id === zone);
       const isOff = currentStance === 'RHB' ? zoneDef?.side === 'OFF' : zoneDef?.side === 'LEG';
-      const sideLabel = isOff ? 'OFF-SIDE' : 'LEG-SIDE';
+      const sideLabel = isOff ? 'OFF-SIDE' : 'ON-SIDE';
 
       const label = document.getElementById('wagonWheelSelectedZone');
       if (label && zoneDef) {
@@ -4790,8 +4931,13 @@ cricos_active_sse_connections 1</pre>
       showToast('Wagon Zone: ' + (zoneDef?.label || zone) + ' (' + sideLabel + ')');
     }
 
-    function setBatterStance(stance) {
+    function setBatterStance(stance, updateStriker = false) {
       currentStance = stance;
+      if (updateStriker) {
+        studioStriker.battingStyle = stance;
+        const strikerBadge = document.getElementById('studioStrikerStanceBadge');
+        if (strikerBadge) strikerBadge.textContent = stance;
+      }
       const btnRhb = document.getElementById('btnStanceRhb');
       const btnLhb = document.getElementById('btnStanceLhb');
       const offLabel = document.getElementById('wagonLabelOff');
@@ -4800,19 +4946,40 @@ cricos_active_sse_connections 1</pre>
       if (stance === 'RHB') {
         if (btnRhb) { btnRhb.style.background = 'var(--turf-emerald)'; btnRhb.style.color = '#04070D'; }
         if (btnLhb) { btnLhb.style.background = 'transparent'; btnLhb.style.color = '#8E9BAE'; }
-        if (offLabel) { offLabel.setAttribute('x', '35'); offLabel.textContent = '◀ OFF SIDE'; }
-        if (legLabel) { legLabel.setAttribute('x', '325'); legLabel.textContent = 'LEG SIDE ▶'; }
+        if (offLabel) {
+          offLabel.setAttribute('x', '35');
+          offLabel.setAttribute('text-anchor', 'start');
+          offLabel.setAttribute('fill', 'var(--cyan)');
+          offLabel.textContent = '◀ OFF SIDE';
+        }
+        if (legLabel) {
+          legLabel.setAttribute('x', '325');
+          legLabel.setAttribute('text-anchor', 'end');
+          legLabel.setAttribute('fill', 'var(--turf-emerald)');
+          legLabel.textContent = 'ON SIDE ▶';
+        }
       } else {
         if (btnLhb) { btnLhb.style.background = 'var(--turf-emerald)'; btnLhb.style.color = '#04070D'; }
         if (btnRhb) { btnRhb.style.background = 'transparent'; btnRhb.style.color = '#8E9BAE'; }
-        if (offLabel) { offLabel.setAttribute('x', '325'); offLabel.textContent = 'OFF SIDE ▶'; }
-        if (legLabel) { legLabel.setAttribute('x', '35'); legLabel.textContent = '◀ LEG SIDE'; }
+        if (offLabel) {
+          offLabel.setAttribute('x', '325');
+          offLabel.setAttribute('text-anchor', 'end');
+          offLabel.setAttribute('fill', 'var(--cyan)');
+          offLabel.textContent = 'OFF SIDE ▶';
+        }
+        if (legLabel) {
+          legLabel.setAttribute('x', '35');
+          legLabel.setAttribute('text-anchor', 'start');
+          legLabel.setAttribute('fill', 'var(--turf-emerald)');
+          legLabel.textContent = '◀ ON SIDE';
+        }
       }
 
+      updateZoneElementsForStance(stance);
       selectShotZone(currentSelectedZone);
       renderWagonWheelRays();
       updateWagonTelemetry();
-      showToast('Batsman stance set to ' + stance + ' (field geometry flipped)');
+      showToast('Batsman stance: ' + stance + ' (Off-Side & On-Side flipped dynamically)');
     }
 
     function filterWagonShots(filterType, btnEl) {
@@ -4822,16 +4989,78 @@ cricos_active_sse_connections 1</pre>
       renderWagonWheelRays();
     }
 
+    function filterWagonBatter(batterName, btnEl) {
+      currentBatterFilter = batterName;
+      document.querySelectorAll('.wagon-batter-pill').forEach(p => p.classList.remove('active'));
+      if (btnEl) {
+        btnEl.classList.add('active');
+      } else {
+        const targetBtn = document.querySelector('.wagon-batter-pill[onclick*="' + batterName + '"]');
+        if (targetBtn) targetBtn.classList.add('active');
+      }
+
+      // Automatically select stance based on selected batter
+      let targetStance = 'RHB';
+      if (batterName === studioStriker.name) {
+        targetStance = studioStriker.battingStyle || 'RHB';
+      } else if (batterName === studioNonStriker.name) {
+        targetStance = studioNonStriker.battingStyle || 'LHB';
+      } else if (batterName === 'ALL') {
+        targetStance = studioStriker.battingStyle || 'RHB';
+      }
+      if (currentStance !== targetStance) {
+        setBatterStance(targetStance, false);
+      }
+
+      // Update Pitch SVG Badge & Stance
+      const svgInitials = document.getElementById('svgPitchBatterInitials');
+      const svgName = document.getElementById('svgPitchBatterName');
+      const svgScore = document.getElementById('svgPitchBatterScore');
+      const svgNonStriker = document.getElementById('svgPitchNonStrikerText');
+      const activeLabel = document.getElementById('wagonActiveBatterLabel');
+      const facingEl = document.getElementById('wagonFacingBatter');
+
+      if (batterName === 'ALL') {
+        if (svgInitials) svgInitials.textContent = '🤝';
+        if (svgName) svgName.textContent = 'Partnership';
+        if (svgScore) svgScore.textContent = partnership.runs + ' (' + partnership.balls + ')';
+        if (svgNonStriker) svgNonStriker.textContent = studioStriker.name + ' & ' + studioNonStriker.name;
+        if (activeLabel) activeLabel.textContent = 'Partnership Stand (' + partnership.runs + ' runs off ' + partnership.balls + 'b)';
+        if (facingEl) facingEl.textContent = 'Both Batsmen (Partnership)';
+      } else if (batterName === studioStriker.name) {
+        const inits = studioStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+        if (svgInitials) svgInitials.textContent = inits;
+        if (svgName) svgName.textContent = studioStriker.name + ' (' + targetStance + ')';
+        if (svgScore) svgScore.textContent = studioStriker.runs + '* (' + studioStriker.balls + ')';
+        if (svgNonStriker) svgNonStriker.textContent = studioNonStriker.name + ' ' + studioNonStriker.runs + ' (' + studioNonStriker.balls + ')';
+        if (activeLabel) activeLabel.textContent = studioStriker.name + ' [' + targetStance + '] (' + studioStriker.runs + '* off ' + studioStriker.balls + 'b)';
+        if (facingEl) facingEl.textContent = studioStriker.name + ' (' + targetStance + ' - Striker)';
+      } else if (batterName === studioNonStriker.name) {
+        const inits = studioNonStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+        if (svgInitials) svgInitials.textContent = inits;
+        if (svgName) svgName.textContent = studioNonStriker.name + ' (' + targetStance + ')';
+        if (svgScore) svgScore.textContent = studioNonStriker.runs + ' (' + studioNonStriker.balls + ')';
+        if (svgNonStriker) svgNonStriker.textContent = studioStriker.name + ' ' + studioStriker.runs + '* (' + studioStriker.balls + ')';
+        if (activeLabel) activeLabel.textContent = studioNonStriker.name + ' [' + targetStance + '] (' + studioNonStriker.runs + ' off ' + studioNonStriker.balls + 'b)';
+        if (facingEl) facingEl.textContent = studioNonStriker.name + ' (' + targetStance + ' - Non-Striker)';
+      }
+
+      renderWagonWheelRays();
+      updateWagonTelemetry();
+      showToast('Wagon wheel filtered for: ' + (batterName === 'ALL' ? 'Partnership Stand' : batterName + ' (' + targetStance + ')'));
+    }
+
     function renderWagonWheelRays() {
       const container = document.getElementById('wagonWheelRays');
       if (!container) return;
       container.innerHTML = '';
 
       const centerX = 180;
-      const centerY = 204; // Striker's popping crease
+      const centerY = 156; // Striker's popping crease in standard top-crease orientation
       const radius = 162;
 
       const filteredShots = shotHistory.filter(s => {
+        if (currentBatterFilter !== 'ALL' && s.batterName !== currentBatterFilter) return false;
         if (currentShotFilter === 'BOUNDARIES') return s.isBoundary;
         if (currentShotFilter === 'SINGLES') return !s.isBoundary && s.runs > 0;
         if (currentShotFilter === 'DOTS') return s.runs === 0;
@@ -4839,7 +5068,7 @@ cricos_active_sse_connections 1</pre>
       });
 
       filteredShots.forEach((shot) => {
-        // Adjust angle if LHB
+        // Adjust angle if LHB (mirrored across the North-South 0°-180° pitch line)
         let angle = shot.angleDeg;
         if (currentStance === 'LHB') {
           angle = (360 - angle) % 360;
@@ -4929,8 +5158,13 @@ cricos_active_sse_connections 1</pre>
       let boundaries = 0;
       let sixes = 0;
       let fours = 0;
+      let totalRuns = 0;
+      let totalBalls = 0;
 
       shotHistory.forEach(s => {
+        if (currentBatterFilter !== 'ALL' && s.batterName !== currentBatterFilter) return;
+        totalRuns += s.runs;
+        totalBalls += 1;
         if (zoneRuns[s.zone] !== undefined) {
           zoneRuns[s.zone] += s.runs;
         }
@@ -4949,43 +5183,68 @@ cricos_active_sse_connections 1</pre>
         if (el) el.textContent = zoneRuns[z.id] + 'r';
       });
 
-      const totalRuns = offRuns + legRuns || 1;
-      const offPct = Math.round((offRuns / totalRuns) * 100);
-      const legPct = 100 - offPct;
+      const totalScored = offRuns + legRuns;
+      const offPct = totalScored > 0 ? Math.round((offRuns / totalScored) * 100) : 50;
+      const legPct = totalScored > 0 ? (100 - offPct) : 50;
 
       const offEl = document.getElementById('wagonOffTally');
       const legEl = document.getElementById('wagonLegTally');
       const bndEl = document.getElementById('wagonBoundaryTally');
+      const srEl = document.getElementById('wagonBatterSrTally');
 
       if (offEl) offEl.textContent = offPct + '% (' + offRuns + ' runs)';
       if (legEl) legEl.textContent = legPct + '% (' + legRuns + ' runs)';
       if (bndEl) bndEl.textContent = boundaries + ' Hits (' + fours + 'x4, ' + sixes + 'x6)';
+      if (srEl) {
+        const sr = totalBalls > 0 ? ((totalRuns / totalBalls) * 100).toFixed(1) : '0.0';
+        srEl.textContent = sr + ' SR (' + totalBalls + 'b)';
+      }
     }
 
     function swapStudioStrike() {
       const temp = { ...studioStriker };
       studioStriker = { ...studioNonStriker };
       studioNonStriker = temp;
+      
+      // Update stance dynamically based on new batsman on strike
+      const newStance = studioStriker.battingStyle || 'RHB';
+      setBatterStance(newStance, false);
       updateStudioUI();
-      const facingEl = document.getElementById('wagonFacingBatter');
-      if (facingEl) facingEl.textContent = studioStriker.name;
-      showToast('Strike swapped! Now facing: ' + studioStriker.name);
+
+      if (currentBatterFilter !== 'ALL') {
+        filterWagonBatter(studioStriker.name);
+      } else {
+        const svgNonStriker = document.getElementById('svgPitchNonStrikerText');
+        if (svgNonStriker) svgNonStriker.textContent = studioStriker.name + ' & ' + studioNonStriker.name;
+      }
+      showToast('Strike swapped! Now facing: ' + studioStriker.name + ' (' + newStance + ')');
     }
 
     function updateStudioUI() {
       const sName = document.getElementById('studioStrikerName');
       const sStats = document.getElementById('studioStrikerStats');
+      const sBadge = document.getElementById('studioStrikerStanceBadge');
       const nsName = document.getElementById('studioNonStrikerName');
       const nsStats = document.getElementById('studioNonStrikerStats');
+      const nsBadge = document.getElementById('studioNonStrikerStanceBadge');
       const partEl = document.getElementById('partnershipRunsBalls');
       const partFill = document.getElementById('partnershipProgressFill');
       const facingEl = document.getElementById('wagonFacingBatter');
+      const scoreVirat = document.getElementById('wagonBatterScore_Virat');
+      const scoreHardik = document.getElementById('wagonBatterScore_Hardik');
+      const scoreAll = document.getElementById('wagonBatterScore_All');
 
       if (sName) sName.textContent = studioStriker.name;
+      if (sBadge) sBadge.textContent = studioStriker.battingStyle || 'RHB';
       if (sStats) sStats.innerHTML = studioStriker.runs + '* <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioStriker.balls + 'b, ' + studioStriker.fours + 'x4, ' + studioStriker.sixes + 'x6)</span>';
       if (nsName) nsName.textContent = studioNonStriker.name;
+      if (nsBadge) nsBadge.textContent = studioNonStriker.battingStyle || 'LHB';
       if (nsStats) nsStats.innerHTML = studioNonStriker.runs + ' <span style="font-size: 0.8rem; color: var(--text-muted);">(' + studioNonStriker.balls + 'b, ' + studioNonStriker.fours + 'x4, ' + studioNonStriker.sixes + 'x6)</span>';
-      if (facingEl) facingEl.textContent = studioStriker.name;
+      if (facingEl) facingEl.textContent = studioStriker.name + ' (' + (studioStriker.battingStyle || 'RHB') + ')';
+
+      if (scoreVirat) scoreVirat.textContent = (studioStriker.name === 'Virat Sharma' ? studioStriker.runs + '*' : studioNonStriker.runs) + ' (' + (studioStriker.name === 'Virat Sharma' ? studioStriker.balls : studioNonStriker.balls) + ')';
+      if (scoreHardik) scoreHardik.textContent = (studioStriker.name === 'Hardik Patel' ? studioStriker.runs + '*' : studioNonStriker.runs) + ' (' + (studioStriker.name === 'Hardik Patel' ? studioStriker.balls : studioNonStriker.balls) + ')';
+      if (scoreAll) scoreAll.textContent = partnership.runs + ' (' + partnership.balls + ')';
 
       if (partEl) partEl.innerHTML = partnership.runs + ' runs <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(' + partnership.balls + ' balls)</span>';
       if (partFill) partFill.style.width = Math.min(100, (partnership.runs / 75) * 100) + '%';
@@ -5003,7 +5262,7 @@ cricos_active_sse_connections 1</pre>
 
       // Add shot to wagon wheel
       const zoneDef = SHOT_ZONES_DATA.find(z => z.id === currentSelectedZone);
-      const angle = zoneDef ? zoneDef.angleDeg + (Math.random() * 16 - 8) : 290;
+      const angle = zoneDef ? zoneDef.angleDeg + (Math.random() * 16 - 8) : 247.5;
       const dist = isSix ? 1.16 : isBoundary ? 0.98 : batRuns === 0 ? 0.36 : 0.72;
 
       shotHistory.push({
@@ -5096,14 +5355,20 @@ cricos_active_sse_connections 1</pre>
         next_batter_id: nextBatter
       });
 
+      const leftHanders = ['Hardik Patel', 'Ravindra Singh', 'Axar Patel', 'Shivam Dube', 'Arshdeep Singh'];
+      const nextStance = leftHanders.includes(nextBatter) ? 'LHB' : 'RHB';
+
       if (outRole === 'STRIKER') {
         studioStriker.name = nextBatter;
+        studioStriker.battingStyle = nextStance;
         studioStriker.runs = 0;
         studioStriker.balls = 0;
         studioStriker.fours = 0;
         studioStriker.sixes = 0;
+        setBatterStance(nextStance, false);
       } else {
         studioNonStriker.name = nextBatter;
+        studioNonStriker.battingStyle = nextStance;
         studioNonStriker.runs = 0;
         studioNonStriker.balls = 0;
         studioNonStriker.fours = 0;
