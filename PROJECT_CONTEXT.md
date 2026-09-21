@@ -1,14 +1,25 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-21 12:05:00
-**Version:** 1.0.0-phase2p (Rishabh Pant & Incoming Batsmen LHB/RHB Stance Persistence on Dismissal)  
+**Last Updated:** 2026-09-21 12:54:00
+**Version:** 1.0.0-phase2q (Athletic Collapsible Sidebar Navigation & Top Bar Declutter)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2P Completed — Rishabh Pant & Incoming Batsmen LHB/RHB Stance Persistence on Dismissal:
+- **Active Phase**: Phase 2Q Completed — Athletic Collapsible Sidebar Navigation & Top Bar Declutter:
+  - **Sidebar Architecture & Layout Shell**: Introduced `.app-layout` flex shell with a fixed/sticky `.app-sidebar` (250px expanded, 68px collapsed) and `.app-main-wrapper`, eliminating all vertical stacking of redundant horizontal bars.
+  - **Categorized Sidebar Sections**:
+    1. *Consoles & Studios*: Transposed the 7 core navigation tabs (`Match Center`, `Teams & Rosters`, `Tournaments`, `Venues & Turfs`, `Scoring Studio`, `Fair Play & Trust`, `Operations & APIs`) into the primary sidebar section with glowing turf-emerald active accents and icon alignment.
+    2. *Operations & Workflows*: Neatly organized operational modal triggers (`Readiness`, `Calendar`, `Match Chat` with amber badge `1`, `RFQ Desk`, `Gear Store`, `Fixtures Ops`, `AI Insights`, `Check-In`, `Sponsors & Auction`).
+    3. *Developer & Platform*: Grouped developer and system tools (`Mobile App`, `API Docs`, `Metrics`, `System Health`, `Legal & Privacy`).
+    4. *Footer Profile*: Anchored user profile card (`VS`, `Virat Sharma`, `👑 CAPTAIN #18`) linking to `#modalUserProfile`.
+  - **Streamlined Top Command Bar**: Replaced the 20+ item cluttered top bar with a sleek 54px header displaying the breadcrumb trail (`🏏 CricOS / [Active Tab] / [Match Title]`), compact telemetry pills (`1 LIVE`, `₹500,000`, `100% NOMINAL`, `<10ms`, `ONLINE`), notification drawer button, and live health status.
+  - **Collapsible Rail & Responsive Drawer**: Added `toggleSidebarCollapse()` and `toggleSidebarMobile()` with smooth CSS transitions, `localStorage` persistence, and mobile backdrop overlay.
+  - **Test Suite Health**: 100% passing (88 tests across 23 suites in 0.68s via `./pipeline.sh test --summary`).
+  - **Distribution Parity (Rule 6)**: `index.html` and `dist/index.html` verified byte-for-byte identical (447,640 bytes).
+- **Phase 2P Completed**: Rishabh Pant & Incoming Batsmen LHB/RHB Stance Persistence on Dismissal:
   - **Stance Preservation & Multi-Tier Resolver**: Eliminated an incomplete hardcoded stance array in `confirmDismissal()` that omitted `Rishabh Pant` (causing him to wrongly flip to `RHB` when taking strike). Introduced `KNOWN_BATTER_STANCES` mapping standard players (Rishabh Pant, Ravindra Jadeja, Axar Patel, Shivam Dube, Nicholas Pooran, Quinton de Kock, David Warner, Travis Head, etc., to `LHB`) and built a multi-tier stance resolver `getBatterStanceByName(name, optionEl)` checking:
     1. Dropdown element `data-stance` attribute and option text `(LHB)` / `(RHB)`.
     2. Playing XI and bench rosters (`p.battingStyle`).

@@ -102,52 +102,82 @@
       flex-direction: column;
     }
 
-    /* Top Navigation Header */
-    /* Top Navigation Header - Athletic Broadcast Command Bar */
-    header {
-      background: rgba(6, 10, 18, 0.92);
+    /* ==========================================================================
+       App Layout & Athletic Sidebar Architecture
+       ========================================================================== */
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+    }
+
+    .app-sidebar {
+      width: 250px;
+      min-width: 250px;
+      background: rgba(6, 10, 18, 0.96);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0.65rem 1.75rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      z-index: 120;
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .app-sidebar.collapsed {
+      width: 68px;
+      min-width: 68px;
+    }
+
+    .sidebar-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      gap: 1rem;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    header::-webkit-scrollbar {
-      display: none;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      min-height: 56px;
+      position: relative;
     }
 
-    .brand {
+    .sidebar-header .brand {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
-      flex-shrink: 0;
+      gap: 0.75rem;
+      overflow: hidden;
+      text-decoration: none;
     }
 
     .brand-logo {
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       background: linear-gradient(135deg, var(--turf-emerald), var(--cyan));
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 10px;
-      box-shadow: 0 0 20px var(--turf-glow);
+      border-radius: 9px;
+      box-shadow: 0 0 16px var(--turf-glow);
+      flex-shrink: 0;
+    }
+
+    .sidebar-header .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      transition: opacity 0.2s ease;
     }
 
     .brand-title {
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: 1.3rem;
+      font-size: 1.15rem;
       letter-spacing: -0.03em;
       line-height: 1.1;
       background: linear-gradient(135deg, #FFFFFF 40%, var(--turf-emerald) 100%);
@@ -156,25 +186,26 @@
     }
 
     .brand-subtitle {
-      font-size: 0.68rem;
+      font-size: 0.6rem;
       color: var(--text-muted);
       letter-spacing: 0.06em;
       text-transform: uppercase;
       font-family: var(--font-body);
       font-weight: 600;
+      white-space: nowrap;
     }
 
     .broadcast-tag {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      font-size: 0.64rem;
+      font-size: 0.62rem;
       font-weight: 800;
       letter-spacing: 0.08em;
       color: var(--turf-emerald);
       background: rgba(0, 229, 153, 0.1);
       border: 1px solid rgba(0, 229, 153, 0.25);
-      padding: 0.2rem 0.55rem;
+      padding: 0.15rem 0.45rem;
       border-radius: 9999px;
       margin-left: 0.4rem;
       text-transform: uppercase;
@@ -188,64 +219,377 @@
       box-shadow: 0 0 8px var(--turf-emerald);
       animation: livePulse 2s infinite ease-in-out;
     }
+
     @keyframes livePulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.35; transform: scale(0.8); }
     }
 
-    .header-center-group {
+    .sidebar-collapse-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
     }
 
-    .header-cta-btn {
-      display: inline-flex;
+    .sidebar-collapse-btn:hover {
+      background: rgba(0, 229, 153, 0.12);
+      border-color: rgba(0, 229, 153, 0.3);
+      color: var(--turf-emerald);
+    }
+
+    .sidebar-cta-wrap {
+      padding: 0.85rem 1rem 0.5rem 1rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-cta-btn {
+      width: 100%;
+      display: flex;
       align-items: center;
-      gap: 0.45rem;
+      justify-content: center;
+      gap: 0.5rem;
       background: linear-gradient(135deg, #00E599, #00C782);
       color: #04070D;
       border: 1px solid rgba(0, 229, 153, 0.5);
-      padding: 0.42rem 0.95rem;
-      border-radius: 9999px;
+      padding: 0.55rem 0.95rem;
+      border-radius: 8px;
       font-family: var(--font-display);
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
       cursor: pointer;
       box-shadow: 0 0 16px rgba(0, 229, 153, 0.28), 0 2px 4px rgba(0, 0, 0, 0.4);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
-    }
-    .header-cta-btn:hover {
-      background: linear-gradient(135deg, #05f5a4, #00E599);
-      box-shadow: 0 0 24px rgba(0, 229, 153, 0.45), 0 4px 10px rgba(0, 0, 0, 0.5);
-      transform: translateY(-1px);
-    }
-    .header-cta-btn:active {
-      transform: scale(0.97);
+      overflow: hidden;
     }
 
-    .header-ops-group,
-    .header-tech-links {
+    .sidebar-cta-btn:hover {
+      background: linear-gradient(135deg, #05f5a4, #00E599);
+      box-shadow: 0 0 24px rgba(0, 229, 153, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .sidebar-nav-scroll {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    }
+
+    .sidebar-nav-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar-nav-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .sidebar-nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
+      font-family: var(--font-body);
+      opacity: 0.7;
+    }
+
+    .sidebar-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .sidebar-nav-item,
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.5rem 0.65rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      text-align: left;
+      width: 100%;
+      position: relative;
+      font-family: var(--font-body);
+    }
+
+    .sidebar-nav-item:hover,
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateX(2px);
+    }
+
+    .sidebar-nav-item:active,
+    .tab-btn:active {
+      transform: scale(0.98);
+    }
+
+    .sidebar-nav-item.active,
+    .tab-btn.active {
+      background: rgba(0, 229, 153, 0.1);
+      border-color: rgba(0, 229, 153, 0.3);
+      color: var(--turf-emerald);
+      font-weight: 700;
+      box-shadow: inset 3px 0 0 var(--turf-emerald);
+    }
+
+    .sidebar-nav-item .tab-icon,
+    .tab-btn .tab-icon {
+      font-size: 1rem;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav-label {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: var(--font-body);
+    }
+
+    .sidebar-footer {
+      padding: 0.75rem 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(4, 7, 13, 0.6);
+      flex-shrink: 0;
+    }
+
+    /* Collapsed Sidebar State */
+    .app-sidebar.collapsed .brand-text,
+    .app-sidebar.collapsed .sidebar-section-title,
+    .app-sidebar.collapsed .sidebar-nav-label,
+    .app-sidebar.collapsed .sidebar-btn-label,
+    .app-sidebar.collapsed .user-meta-pill,
+    .app-sidebar.collapsed .broadcast-tag,
+    .app-sidebar.collapsed .counter-badge {
+      display: none !important;
+    }
+
+    .app-sidebar.collapsed .sidebar-header {
+      justify-content: center;
+      padding: 0.85rem 0.5rem;
+    }
+
+    .app-sidebar.collapsed .sidebar-collapse-btn {
+      position: absolute;
+      right: -12px;
+      top: 14px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      z-index: 130;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .app-sidebar.collapsed .sidebar-cta-wrap {
+      padding: 0.6rem 0.5rem;
+    }
+
+    .app-sidebar.collapsed .sidebar-cta-btn {
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto;
+    }
+
+    .app-sidebar.collapsed .sidebar-nav-scroll {
+      padding: 0.5rem 0.35rem;
+      align-items: center;
+    }
+
+    .app-sidebar.collapsed .sidebar-nav-item,
+    .app-sidebar.collapsed .tab-btn {
+      justify-content: center;
+      padding: 0.55rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+    }
+
+    .app-sidebar.collapsed .sidebar-nav-item.active,
+    .app-sidebar.collapsed .tab-btn.active {
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.3);
+      border-color: var(--turf-emerald);
+    }
+
+    .app-sidebar.collapsed .sidebar-footer {
+      display: flex;
+      justify-content: center;
+      padding: 0.6rem 0.35rem;
+    }
+
+    /* Streamlined Main & Top Command Bar */
+    .app-main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: transparent;
+    }
+
+    .app-topbar {
+      background: rgba(6, 10, 18, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.5rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 1rem;
+      min-height: 54px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .mobile-sidebar-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .topbar-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .breadcrumb-brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .breadcrumb-sep {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .breadcrumb-crumb {
+      color: var(--turf-emerald);
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+
+    .breadcrumb-sub {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .topbar-telemetry-group {
       display: flex;
       align-items: center;
       gap: 0.45rem;
     }
 
-    .header-nav-divider {
-      width: 1px;
-      height: 22px;
-      background: rgba(255, 255, 255, 0.1);
-      margin: 0 0.15rem;
-      flex-shrink: 0;
+    .topbar-node,
+    .telemetry-node {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.25rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      transition: background 0.2s;
     }
 
-    .header-utility-group {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
+    .topbar-node:hover,
+    .telemetry-node:hover {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .topbar-node-val,
+    .telemetry-val {
+      font-family: var(--font-score);
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 0.75rem;
+    }
+
+    .telemetry-pulse {
+      width: 7px;
+      height: 7px;
+      background: var(--turf-emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--turf-emerald);
+      animation: pulse 2s infinite;
+    }
+
+    .header-nav-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 0.1rem;
       flex-shrink: 0;
     }
 
@@ -330,97 +674,36 @@
       50% { opacity: 0.4; transform: scale(0.85); }
     }
 
-    /* Tab Navigation */
-    .tabs-bar {
-      display: flex;
-      padding: 0 2rem;
-      background: rgba(13, 19, 32, 0.5);
-      border-bottom: 1px solid var(--border-subtle);
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .tabs-bar::-webkit-scrollbar {
-      display: none;
-    }
-
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 0.95rem 1.35rem;
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      white-space: nowrap;
-      border-radius: 8px 8px 0 0;
-      position: relative;
-    }
-
-    .tab-btn:hover {
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .tab-btn.active {
-      color: var(--turf-emerald);
-      border-bottom-color: var(--turf-emerald);
-      background: rgba(0, 229, 153, 0.08);
-      box-shadow: inset 0 -2px 0 var(--turf-emerald), inset 0 0 16px rgba(0, 229, 153, 0.06);
-    }
-
-    .tab-btn:active {
-      transform: scale(0.98);
-    }
-
-    /* Global Stadium Telemetry Strip */
-    .stadium-telemetry-bar {
-      background: rgba(6, 10, 18, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0.6rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 0.8rem;
-    }
-
-    .telemetry-node {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 0.2rem 0.5rem;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-
-    .telemetry-node:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .telemetry-pulse {
-      width: 8px;
-      height: 8px;
-      background: var(--turf-emerald);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--turf-emerald);
-      animation: pulse 2s infinite;
-    }
-
-    .telemetry-val {
-      font-family: var(--font-score);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      color: var(--text-main);
+    /* Mobile responsive drawer */
+    @media (max-width: 1024px) {
+      .mobile-sidebar-toggle {
+        display: flex;
+      }
+      .app-sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        bottom: 0;
+        z-index: 200;
+        transition: left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .app-sidebar.mobile-open {
+        left: 0;
+      }
+      .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 190;
+      }
+      .sidebar-backdrop.active {
+        display: block;
+      }
+      .topbar-telemetry-group {
+        display: none;
+      }
     }
 
     /* Target Equation & Chase Progress */
@@ -1548,140 +1831,218 @@
   </style>
 </head>
 <body>
-  <!-- Header - Broadcast Command Center -->
-  <header>
-    <div class="brand">
-      <div class="brand-logo">🏏</div>
-      <div>
-        <div style="display: flex; align-items: center; gap: 0.4rem;">
-          <div class="brand-title">CricOS</div>
-          <span class="broadcast-tag"><span class="live-dot"></span> Live Console</span>
+  <!-- Mobile Backdrop for responsive drawer -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebarMobile()"></div>
+
+  <div class="app-layout" id="appLayout">
+    <!-- Left Athletic Glassmorphism Sidebar -->
+    <aside class="app-sidebar" id="appSidebar">
+      <!-- 1. Sidebar Header: Brand & Collapse Toggle -->
+      <div class="sidebar-header">
+        <a href="/" class="brand" data-tooltip="CricOS Broadcast Console">
+          <div class="brand-logo">🏏</div>
+          <div class="brand-text">
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <span class="brand-title">CricOS</span>
+              <span class="broadcast-tag"><span class="live-dot"></span> LIVE</span>
+            </div>
+            <span class="brand-subtitle">Unified Cricket Operating System</span>
+          </div>
+        </a>
+        <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" data-tooltip="Toggle sidebar (expand/collapse)" aria-label="Toggle Sidebar">
+          <span class="collapse-icon">◀</span>
+        </button>
+      </div>
+
+      <!-- 2. Primary CTA: Create Match -->
+      <div class="sidebar-cta-wrap">
+        <button type="button" onclick="openCreateEventModal()" class="sidebar-cta-btn" data-tooltip="Schedule match fixtures, select formats, and procure verified officials and venues">
+          <span class="pill-icon">➕</span>
+          <span class="sidebar-btn-label">Create Match</span>
+        </button>
+      </div>
+
+      <!-- 3. Navigation Sections (Scrollable Container) -->
+      <div class="sidebar-nav-scroll">
+        <!-- Section A: Main Consoles & Studios (The 7 Tabs) -->
+        <div class="sidebar-nav-section">
+          <div class="sidebar-section-title">Consoles &amp; Studios</div>
+          <div class="sidebar-nav-list" role="tablist" aria-label="Operating system consoles and studios">
+            <button class="tab-btn sidebar-nav-item active" role="tab" aria-selected="true" aria-controls="tab-scoring" data-tab="scoring" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip">
+              <span class="tab-icon">🏏</span>
+              <span class="sidebar-nav-label">Match Center</span>
+            </button>
+            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-teams" data-tab="teams" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes">
+              <span class="tab-icon">👥</span>
+              <span class="sidebar-nav-label">Teams &amp; Rosters</span>
+            </button>
+            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-tournaments" data-tab="tournaments" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard">
+              <span class="tab-icon">🏆</span>
+              <span class="sidebar-nav-label">Tournaments</span>
+            </button>
+            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-marketplace" data-tab="marketplace" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold">
+              <span class="tab-icon">🛒</span>
+              <span class="sidebar-nav-label">Venues &amp; Turfs</span>
+            </button>
+            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-studio" data-tab="studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships">
+              <span class="tab-icon">🎯</span>
+              <span class="sidebar-nav-label">Scoring Studio</span>
+            </button>
+            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-incidents" data-tab="incidents" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection">
+              <span class="tab-icon">🛡️</span>
+              <span class="sidebar-nav-label">Fair Play &amp; Trust</span>
+            </button>
+            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-explorer" data-tab="explorer" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector">
+              <span class="tab-icon">⚡</span>
+              <span class="sidebar-nav-label">Operations &amp; APIs</span>
+            </button>
+          </div>
         </div>
-        <div class="brand-subtitle">Unified Cricket Operating System</div>
-      </div>
-    </div>
 
-    <!-- Center Operations & Primary Action -->
-    <div class="header-center-group">
-      <button type="button" onclick="openCreateEventModal()" class="header-cta-btn" data-tooltip="Schedule match fixtures, select formats, and procure verified officials and venues">
-        <span class="pill-icon">➕</span> Create Match
-      </button>
-      <div class="header-nav-divider"></div>
-      <div class="header-ops-group">
-        <button type="button" onclick="openEventOverviewModal()" class="nav-pill" data-tooltip="Event procurement readiness, operational checklists, and match countdown">
-          <span class="pill-icon">📋</span> Readiness
-        </button>
-        <button type="button" onclick="openOfficialCalendarModal()" class="nav-pill" data-tooltip="Weekly availability schedule, match assignments, and rest buffers">
-          <span class="pill-icon">📅</span> Calendar
-        </button>
-        <button type="button" onclick="openMessagingModal()" class="nav-pill" data-tooltip="Match operations chat, official dispatch, and booking alerts">
-          <span class="pill-icon">💬</span> Chat
-          <span class="counter-badge amber">1</span>
-        </button>
-        <button type="button" onclick="openModal('modalRfq')" class="nav-pill" data-tooltip="Tournament procurement requests, quote submissions, and provider bids">
-          <span class="pill-icon">📋</span> RFQ
-        </button>
-        <button type="button" onclick="openModal('modalCommerce')" class="nav-pill" data-tooltip="Cricket gear, match leather balls, practice nets, and trophies">
-          <span class="pill-icon">🛒</span> Gear Store
-        </button>
-        <button type="button" onclick="openModal('modalTournamentOps')" class="nav-pill" data-tooltip="Tournament fixture board, conflict detection, and bulk CSV schedule import">
-          <span class="pill-icon">📊</span> Fixtures
-        </button>
-        <button type="button" onclick="openModal('modalMatchInsights')" class="nav-pill" data-tooltip="AI match narrative recap, turning points, and Player of the Match MVP">
-          <span class="pill-icon">🤖</span> AI Insights
-        </button>
-        <button type="button" onclick="openModal('modalCheckIn')" class="nav-pill" data-tooltip="Provider arrival OTP verification and 3-party match scorecard sign-off">
-          <span class="pill-icon">📍</span> Check-In
-        </button>
-        <button type="button" onclick="openModal('modalSponsorshipAuction')" class="nav-pill" data-tooltip="Tournament sponsorship prize pool pledges and virtual player auction desk">
-          <span class="pill-icon">🤝</span> Sponsors &amp; Auction
-        </button>
-      </div>
-    </div>
+        <!-- Section B: Operations & Workflows -->
+        <div class="sidebar-nav-section">
+          <div class="sidebar-section-title">Operations &amp; Workflows</div>
+          <div class="sidebar-nav-list">
+            <button type="button" onclick="openEventOverviewModal()" class="sidebar-nav-item" data-tooltip="Event procurement readiness, operational checklists, and match countdown">
+              <span class="tab-icon">📋</span>
+              <span class="sidebar-nav-label">Readiness</span>
+            </button>
+            <button type="button" onclick="openOfficialCalendarModal()" class="sidebar-nav-item" data-tooltip="Weekly availability schedule, match assignments, and rest buffers">
+              <span class="tab-icon">📅</span>
+              <span class="sidebar-nav-label">Calendar</span>
+            </button>
+            <button type="button" onclick="openMessagingModal()" class="sidebar-nav-item" data-tooltip="Match operations chat, official dispatch, and booking alerts">
+              <span class="tab-icon">💬</span>
+              <span class="sidebar-nav-label">Match Chat</span>
+              <span class="counter-badge amber">1</span>
+            </button>
+            <button type="button" onclick="openModal('modalRfq')" class="sidebar-nav-item" data-tooltip="Tournament procurement requests, quote submissions, and provider bids">
+              <span class="tab-icon">📑</span>
+              <span class="sidebar-nav-label">RFQ Desk</span>
+            </button>
+            <button type="button" onclick="openModal('modalCommerce')" class="sidebar-nav-item" data-tooltip="Cricket gear, match leather balls, practice nets, and trophies">
+              <span class="tab-icon">🛍️</span>
+              <span class="sidebar-nav-label">Gear Store</span>
+            </button>
+            <button type="button" onclick="openModal('modalTournamentOps')" class="sidebar-nav-item" data-tooltip="Tournament fixture board, conflict detection, and bulk CSV schedule import">
+              <span class="tab-icon">📊</span>
+              <span class="sidebar-nav-label">Fixtures Ops</span>
+            </button>
+            <button type="button" onclick="openModal('modalMatchInsights')" class="sidebar-nav-item" data-tooltip="AI match narrative recap, turning points, and Player of the Match MVP">
+              <span class="tab-icon">🤖</span>
+              <span class="sidebar-nav-label">AI Insights</span>
+            </button>
+            <button type="button" onclick="openModal('modalCheckIn')" class="sidebar-nav-item" data-tooltip="Provider arrival OTP verification and 3-party match scorecard sign-off">
+              <span class="tab-icon">📍</span>
+              <span class="sidebar-nav-label">Check-In</span>
+            </button>
+            <button type="button" onclick="openModal('modalSponsorshipAuction')" class="sidebar-nav-item" data-tooltip="Tournament sponsorship prize pool pledges and virtual player auction desk">
+              <span class="tab-icon">🤝</span>
+              <span class="sidebar-nav-label">Sponsors &amp; Auction</span>
+            </button>
+          </div>
+        </div>
 
-    <!-- Utilities, Status & User Account -->
-    <div class="header-utility-group">
-      <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
-        <span class="pill-icon">🔔</span>
-        <span id="headerNotifBadge" class="counter-badge emerald">3</span>
-      </button>
-      <button type="button" onclick="openMobilePreviewModal()" class="nav-pill" data-tooltip="Launch Standalone Consumer Mobile App (iOS &amp; Android Preview) with OTP &amp; Profile">
-        <span class="pill-icon">📱</span> Mobile App
-      </button>
-      <button type="button" onclick="openLegalModal()" class="nav-pill" data-tooltip="Review Apple App Store &amp; Google Play Policies, Privacy Policy and Terms">
-        <span class="pill-icon">📜</span> Legal &amp; Privacy
-      </button>
-      <div class="header-nav-divider"></div>
-      <div class="header-tech-links">
-        <a href="/docs" onclick="openApiDocsModal(); return false;" class="nav-pill" data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox">
-          <span class="pill-icon">📖</span> API Docs
-        </a>
-        <a href="/metrics" onclick="openMetricsModal(); return false;" class="nav-pill" data-tooltip="Prometheus & OpenMetrics Standard Metrics Exposition">
-          <span class="pill-icon">📊</span> Metrics
-        </a>
-        <a href="/health/ready" onclick="openHealthModal(); return false;" class="nav-pill" data-tooltip="Kubernetes Readiness Probe & Database Pool Status">
-          <span class="pill-icon">🩺</span> Health
-        </a>
-      </div>
-      <div class="header-nav-divider"></div>
-      <div class="user-profile-header-btn" onclick="openUserModal()" data-tooltip="Manage User Profile, Career Stats, and Switch Persona (Captain, Player, Scorer...)">
-        <div class="user-avatar-pill" id="headerUserAvatar">VK</div>
-        <div class="user-meta-pill">
-          <span class="user-name-text" id="headerUserName">Virat Sharma</span>
-          <span class="user-role-text" id="headerUserRoleBadge">CAPTAIN #18</span>
+        <!-- Section C: Developer & Platform -->
+        <div class="sidebar-nav-section">
+          <div class="sidebar-section-title">Developer &amp; Platform</div>
+          <div class="sidebar-nav-list">
+            <button type="button" onclick="openMobilePreviewModal()" class="sidebar-nav-item" data-tooltip="Launch Standalone Consumer Mobile App (iOS &amp; Android Preview) with OTP &amp; Profile">
+              <span class="tab-icon">📱</span>
+              <span class="sidebar-nav-label">Mobile App</span>
+            </button>
+            <a href="/docs" onclick="openApiDocsModal(); return false;" class="sidebar-nav-item" data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox">
+              <span class="tab-icon">📖</span>
+              <span class="sidebar-nav-label">API Docs</span>
+            </a>
+            <a href="/metrics" onclick="openMetricsModal(); return false;" class="sidebar-nav-item" data-tooltip="Prometheus & OpenMetrics Standard Metrics Exposition">
+              <span class="tab-icon">📈</span>
+              <span class="sidebar-nav-label">Metrics</span>
+            </a>
+            <a href="/health/ready" onclick="openHealthModal(); return false;" class="sidebar-nav-item" data-tooltip="Kubernetes Readiness Probe & Database Pool Status">
+              <span class="tab-icon">🩺</span>
+              <span class="sidebar-nav-label">System Health</span>
+            </a>
+            <button type="button" onclick="openLegalModal()" class="sidebar-nav-item" data-tooltip="Review Apple App Store &amp; Google Play Policies, Privacy Policy and Terms">
+              <span class="tab-icon">📜</span>
+              <span class="sidebar-nav-label">Legal &amp; Privacy</span>
+            </button>
+          </div>
         </div>
       </div>
-      <div class="status-pill" id="healthPill" onclick="openHealthModal()" style="cursor: pointer;" data-tooltip="API Service &amp; Live SSE Connection Status. Click for detailed diagnostics.">
-        <div class="pulse-dot"></div>
-        <span id="healthText">Connecting...</span>
+
+      <!-- 4. Sidebar Footer: User Profile & Quick Persona -->
+      <div class="sidebar-footer">
+        <div class="user-profile-header-btn" onclick="openUserModal()" data-tooltip="Manage User Profile, Career Stats, and Switch Persona (Captain, Player, Scorer...)" style="width: 100%; display: flex; align-items: center; gap: 0.65rem; padding: 0.35rem; cursor: pointer; border-radius: 8px; transition: background 0.2s;">
+          <div class="user-avatar-pill" id="headerUserAvatar" style="width: 34px; height: 34px; font-size: 0.85rem; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; background: var(--turf-emerald); color: #04070D;">VK</div>
+          <div class="user-meta-pill" style="display: flex; flex-direction: column; min-width: 0; overflow: hidden;">
+            <span class="user-name-text" id="headerUserName" style="font-weight: 700; font-size: 0.82rem; color: #FFFFFF; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Virat Sharma</span>
+            <span class="user-role-text" id="headerUserRoleBadge" style="font-size: 0.65rem; color: var(--turf-emerald); font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">CAPTAIN #18</span>
+          </div>
+        </div>
       </div>
-      <div style="font-size: 0.82rem; color: var(--text-muted);" data-tooltip="Fastify HTTP Port">
-        Port: <span style="color: var(--primary); font-family: monospace;">3000</span>
-      </div>
-    </div>
-  </header>
+    </aside>
 
-  <!-- Navigation Tabs -->
-  <div class="tabs-bar" role="tablist" aria-label="Operating system consoles and studios">
-    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-scoring" data-tab="scoring" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip"><span class="tab-icon">🏏</span> Match Center</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-teams" data-tab="teams" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes"><span class="tab-icon">👥</span> Teams &amp; Rosters</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tournaments" data-tab="tournaments" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard"><span class="tab-icon">🏆</span> Tournaments</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-marketplace" data-tab="marketplace" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold"><span class="tab-icon">🛒</span> Venues &amp; Turfs</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-studio" data-tab="studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships"><span class="tab-icon">🎯</span> Scoring Studio</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-incidents" data-tab="incidents" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection"><span class="tab-icon">🛡️</span> Fair Play &amp; Trust</button>
-    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-explorer" data-tab="explorer" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector"><span class="tab-icon">⚡</span> Operations &amp; APIs</button>
-  </div>
+    <!-- Main Content Area -->
+    <div class="app-main-wrapper">
+      <!-- Streamlined, Decluttered Top Bar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button type="button" class="mobile-sidebar-toggle" onclick="toggleSidebarMobile()" data-tooltip="Toggle Navigation Menu" aria-label="Toggle Navigation">
+            <span>☰</span>
+          </button>
+          <div class="topbar-breadcrumb">
+            <span class="breadcrumb-brand">🏏 CricOS</span>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-crumb" id="topbarCurrentTab">Match Center</span>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-sub">Delhi Daredevils vs Mumbai Super Strikers</span>
+          </div>
+        </div>
 
-  <!-- Global Stadium Telemetry Strip -->
-  <div class="stadium-telemetry-bar">
-    <div class="telemetry-node" data-tooltip="Live matches running across the platform with active SSE stream">
-      <span class="telemetry-pulse"></span>
-      <span class="telemetry-label">Active Matches:</span>
-      <span class="telemetry-val" id="telemetryMatches">1 LIVE IN PROGRESS</span>
-    </div>
-    <div class="telemetry-node" data-tooltip="Total platform funds locked in double-entry escrow ledger">
-      <span class="telemetry-icon">🔒</span>
-      <span class="telemetry-label">Escrow Guarded:</span>
-      <span class="telemetry-val" id="telemetryEscrow">₹500,000</span>
-    </div>
-    <div class="telemetry-node" data-tooltip="Automated provider circuit breaker: freezes unbooked slots if reliability drops below 65%">
-      <span class="telemetry-icon">🛡️</span>
-      <span class="telemetry-label">Circuit Health:</span>
-      <span class="telemetry-val" style="color: var(--turf-emerald);" id="telemetryCircuit">100% NOMINAL</span>
-    </div>
-    <div class="telemetry-node" data-tooltip="Real-time Server-Sent Events delivery latency">
-      <span class="telemetry-icon">⚡</span>
-      <span class="telemetry-label">SSE Broadcast:</span>
-      <span class="telemetry-val" style="color: var(--cyan);" id="telemetryLatency">&lt;10ms LATENCY</span>
-    </div>
-    <div class="telemetry-node" id="telemetrySyncNode" onclick="triggerQueueSync()" data-tooltip="Offline Scoring Queue: Click to flush queued deliveries to Fastify API">
-      <span class="telemetry-pulse" id="telemetrySyncPulse" style="background: var(--turf-emerald);"></span>
-      <span class="telemetry-label">Scoring Sync:</span>
-      <span class="telemetry-val" style="color: var(--turf-emerald);" id="telemetrySyncVal">ONLINE (0 QUEUED)</span>
-    </div>
-  </div>
+        <!-- Center / Right: Clean Status & Actions -->
+        <div class="topbar-right">
+          <!-- Compact Telemetry Pills -->
+          <div class="topbar-telemetry-group">
+            <div class="topbar-node" data-tooltip="Live matches running across the platform with active SSE stream">
+              <span class="telemetry-pulse"></span>
+              <span class="topbar-node-val" id="telemetryMatches">1 LIVE</span>
+            </div>
+            <div class="topbar-node" data-tooltip="Total platform funds locked in double-entry escrow ledger">
+              <span class="topbar-node-icon">🔒</span>
+              <span class="topbar-node-val" id="telemetryEscrow">₹500,000</span>
+            </div>
+            <div class="topbar-node" data-tooltip="Automated provider circuit breaker: freezes unbooked slots if reliability drops below 65%">
+              <span class="topbar-node-icon">🛡️</span>
+              <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetryCircuit">100% NOMINAL</span>
+            </div>
+            <div class="topbar-node" data-tooltip="Real-time Server-Sent Events delivery latency">
+              <span class="topbar-node-icon">⚡</span>
+              <span class="topbar-node-val" style="color: var(--cyan);" id="telemetryLatency">&lt;10ms</span>
+            </div>
+            <div class="topbar-node" id="telemetrySyncNode" onclick="triggerQueueSync()" data-tooltip="Offline Scoring Queue: Click to flush queued deliveries to Fastify API" style="cursor: pointer;">
+              <span class="telemetry-pulse" id="telemetrySyncPulse" style="background: var(--turf-emerald);"></span>
+              <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetrySyncVal">ONLINE (0)</span>
+            </div>
+          </div>
 
-  <main>
+          <div class="header-nav-divider"></div>
+
+          <!-- Utility: Notifications Drawer -->
+          <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
+            <span class="pill-icon">🔔</span>
+            <span id="headerNotifBadge" class="counter-badge emerald">3</span>
+          </button>
+
+          <!-- Status Pill -->
+          <div class="status-pill" id="healthPill" onclick="openHealthModal()" style="cursor: pointer;" data-tooltip="API Service &amp; Live SSE Connection Status. Click for detailed diagnostics.">
+            <div class="pulse-dot"></div>
+            <span id="healthText">Online</span>
+          </div>
+        </div>
+      </header>
+
+      <main id="appMainContent">
     <!-- TAB 1: LIVE MATCH SCORING -->
     <div id="tab-scoring" class="tab-pane active">
       <div class="scoreboard">
@@ -1804,7 +2165,7 @@
 
           <!-- Cheering Buttons -->
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.6rem; margin-bottom: 1rem;">
-            <button class="btn btn-secondary" onclick="sendFanCheer('🔥 Let's Go Bangalore!')" data-tooltip="Cheer for Bangalore Blasters with fire energy" style="border-color: rgba(255, 184, 0, 0.4); color: var(--amber);">🔥 Cheer BLR (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('🔥 Lets Go Bangalore!')" data-tooltip="Cheer for Bangalore Blasters with fire energy" style="border-color: rgba(255, 184, 0, 0.4); color: var(--amber);">🔥 Cheer BLR (+1)</button>
             <button class="btn btn-secondary" onclick="sendFanCheer('👏 Clapping Strikers!')" data-tooltip="Applaud the active partnership" style="border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald);">👏 Applause (+1)</button>
             <button class="btn btn-secondary" onclick="sendFanCheer('💥 Boundary Expected!')" data-tooltip="Predict boundary next delivery" style="border-color: rgba(0, 210, 255, 0.4); color: var(--cyan);">💥 Boundary (+1)</button>
             <button class="btn btn-secondary" onclick="sendFanCheer('⚡ Maximum Six!')" data-tooltip="Call for a maximum 6" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple-light);">⚡ Sixer! (+1)</button>
@@ -2573,6 +2934,10 @@
       <!-- Admin Operations & Settlement Audit Desk -->
       <div id="adminAuditDeskContainer" style="margin-top: 1.5rem;"></div>
     </div>
+  </main>
+</div>
+</div>
+
   <!-- User Profile & Persona Switcher Modal -->
   <div class="modal-backdrop" id="modalUserProfile">
     <div class="modal-dialog">
@@ -4605,6 +4970,54 @@ cricos_active_sse_connections 1</pre>
         renderWagonWheelRays();
         updateWagonTelemetry();
       }
+
+      // Update topbar breadcrumb active tab
+      const tabNames = {
+        scoring: 'Match Center',
+        teams: 'Teams & Rosters',
+        tournaments: 'Tournaments',
+        marketplace: 'Venues & Turfs',
+        studio: 'Scoring Studio',
+        incidents: 'Fair Play & Trust',
+        explorer: 'Operations & APIs'
+      };
+      const currentTabEl = document.getElementById('topbarCurrentTab');
+      if (currentTabEl && tabNames[tabId]) {
+        currentTabEl.textContent = tabNames[tabId];
+      }
+      closeSidebarMobile();
+    }
+
+    function toggleSidebarCollapse() {
+      const sidebar = document.getElementById('appSidebar');
+      const collapseBtn = document.getElementById('sidebarCollapseBtn');
+      if (!sidebar) return;
+      sidebar.classList.toggle('collapsed');
+      const isCollapsed = sidebar.classList.contains('collapsed');
+      if (collapseBtn) {
+        collapseBtn.innerHTML = isCollapsed ? '<span class="collapse-icon">▶</span>' : '<span class="collapse-icon">◀</span>';
+        collapseBtn.setAttribute('data-tooltip', isCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      }
+      try {
+        localStorage.setItem('cricos_sidebar_collapsed', isCollapsed ? '1' : '0');
+      } catch (e) {}
+    }
+
+    function toggleSidebarMobile() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (!sidebar) return;
+      sidebar.classList.toggle('mobile-open');
+      if (backdrop) {
+        backdrop.classList.toggle('active', sidebar.classList.contains('mobile-open'));
+      }
+    }
+
+    function closeSidebarMobile() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (sidebar) sidebar.classList.remove('mobile-open');
+      if (backdrop) backdrop.classList.remove('active');
     }
 
     function showToast(msg) {
@@ -4673,7 +5086,7 @@ cricos_active_sse_connections 1</pre>
       document.querySelectorAll('.tab-btn').forEach(b => {
         const tabKey = b.getAttribute('data-tab');
         if (tabKey && perms.allowedTabs.includes(tabKey)) {
-          b.style.display = 'inline-flex';
+          b.style.display = 'flex';
           if (b.classList.contains('active')) activeTabAllowed = true;
         } else {
           b.style.display = 'none';
@@ -7789,6 +8202,18 @@ cricos_active_sse_connections 1</pre>
     }
 
     // Initial load calls
+    try {
+      if (localStorage.getItem('cricos_sidebar_collapsed') === '1') {
+        const sb = document.getElementById('appSidebar');
+        const cb = document.getElementById('sidebarCollapseBtn');
+        if (sb) sb.classList.add('collapsed');
+        if (cb) {
+          cb.innerHTML = '<span class="collapse-icon">▶</span>';
+          cb.setAttribute('data-tooltip', 'Expand sidebar');
+        }
+      }
+    } catch (e) {}
+
     updateSyncUI();
     renderMatchCharts();
     renderRoster();
