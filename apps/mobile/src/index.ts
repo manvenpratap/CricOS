@@ -34,7 +34,7 @@ export class CricOSMobileApp {
   private client: CricOSMobileClient;
   private currentScreen: MobileScreenType = 'LIVE_MATCH';
   private container: HTMLElement | null = null;
-  private activeChart: 'NONE' | 'WORM' | 'MANHATTAN' = 'NONE';
+  private activeChart: 'NONE' | 'WORM' | 'MANHATTAN' | 'WAGON' | 'SCORECARD' = 'NONE';
   private fanCheersCount: number = 1429;
   private pollVotes = { BLR: 68, MUM: 32 };
 
@@ -222,16 +222,28 @@ export class CricOSMobileApp {
 
   // Live Match & Scoring Handlers
   public scoreBall(runs: number): void {
+    if (this.getUserPersona() !== 'SCORER') {
+      alert('🔒 Only official Scorers can score deliveries.');
+      return;
+    }
     this.matchCtrl.recordDelivery({ runs });
     this.render();
   }
 
   public scoreExtra(extraType: 'WIDE' | 'NO_BALL' | 'BYE' | 'LEG_BYE'): void {
+    if (this.getUserPersona() !== 'SCORER') {
+      alert('🔒 Only official Scorers can score extras.');
+      return;
+    }
     this.matchCtrl.recordDelivery({ runs: 1, isExtra: true, extraType });
     this.render();
   }
 
   public promptWicketModal(): void {
+    if (this.getUserPersona() !== 'SCORER') {
+      alert('🔒 Only official Scorers can record wickets.');
+      return;
+    }
     const confirmed = confirm('Confirm Wicket: Dismiss current striker and bring in new batter?');
     if (confirmed) {
       this.matchCtrl.recordDelivery({
@@ -245,11 +257,19 @@ export class CricOSMobileApp {
   }
 
   public swapMobileStrike(): void {
+    if (this.getUserPersona() !== 'SCORER') {
+      alert('🔒 Only official Scorers can swap strike.');
+      return;
+    }
     this.matchCtrl.rotateStrike();
     this.render();
   }
 
   public undoMobileBall(): void {
+    if (this.getUserPersona() !== 'SCORER') {
+      alert('🔒 Only official Scorers can undo deliveries.');
+      return;
+    }
     this.matchCtrl.undo();
     this.render();
   }
@@ -258,9 +278,13 @@ export class CricOSMobileApp {
     alert(`🎯 Wagon Wheel Zone Selected: ${zone}\nTrajectory recorded for batter ${this.matchCtrl.getStriker().name}`);
   }
 
-  public toggleMobileChart(type: 'WORM' | 'MANHATTAN'): void {
+  public toggleMobileChart(type: 'WORM' | 'MANHATTAN' | 'WAGON' | 'SCORECARD'): void {
     this.activeChart = this.activeChart === type ? 'NONE' : type;
     this.render();
+  }
+
+  public getActiveChart(): 'NONE' | 'WORM' | 'MANHATTAN' | 'WAGON' | 'SCORECARD' {
+    return this.activeChart;
   }
 
   public openScorecardModal(): void {
@@ -447,7 +471,7 @@ export class CricOSMobileApp {
         break;
       case 'MATCHES':
       case 'LIVE_MATCH':
-        contentHtml = this.matchCtrl.renderMobileHtml(persona);
+        contentHtml = this.matchCtrl.renderMobileHtml(persona, this.activeChart);
         break;
       case 'TEAMS':
         contentHtml = this.teamsCtrl.renderMobileHtml(isCaptain);

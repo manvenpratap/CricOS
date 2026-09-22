@@ -1,14 +1,58 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-21 22:45:00
-**Version:** 1.0.0-phase2r (Comprehensive Mobile App Architecture & 8-Persona Journeys)  
+**Last Updated:** 2026-09-22 05:41:00
+**Version:** 1.0.0-phase2t (Scorer-Only Scoring Authorization Enforcement)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2R Completed — Comprehensive Mobile App Architecture & 8-Persona Journeys:
+- **Active Phase**: Phase 2T Completed — Scorer-Only Scoring Authorization Enforcement:
+  - **Strict Single-Role Scoring Authority**:
+    - Across all 8 personas (`CAPTAIN`, `PLAYER`, `SCORER`, `FAN`, `UMPIRE`, `ADMIN`, `ORGANISER`, `TURF_PROVIDER`), **ONLY the `SCORER`** persona has `canScore: true`.
+    - `ROLE_PERMISSIONS_MATRIX`: Set `ADMIN.canScore = false` and `CAPTAIN.canScore = false` across `apps/web/src/components/auth-modal.ts`, `index.html`, and `apps/api/src/ui/dashboard.ts`.
+  - **Web Console Match Center & Scoring Studio Lockdown**:
+    - Match Center: `#cardMatchScoringPad` is displayed strictly for `role === 'SCORER'`. Non-scorers who are not fans see `#nonScorerMatchCenterNotice` (`🔒 Scoring Console Locked`).
+    - Scoring Studio: `#studioScoringControlsGroup` and `#btnStudioSwapStrike` are displayed strictly for `role === 'SCORER'`. Non-scorers see role-specific notices (`captainTacticalNotice`, `fanTacticalNotice`, `adminTacticalNotice`).
+    - Runtime Guards: Enforced `if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER')` across `scoreDelivery`, `undoLastDelivery`, `swapMatchStrike`, `confirmBowlerChange`, `resetMatchScore`, `recordStudioBall`, `recordStudioExtra`, `openDismissalModal`, `confirmDismissal`, and `swapStudioStrike`.
+  - **Mobile App Live Match Screen & Webview Lockdown**:
+    - `LiveMatchScreen.ts`: `isScorer = userRole === 'SCORER'`. Scoring pad rendered strictly when `isScorer` is true; other roles receive `🔒 Live Scoring Console Locked` notice.
+    - `apps/mobile/src/index.ts`: Protected `scoreBall`, `scoreExtra`, `promptWicketModal`, `swapMobileStrike`, `undoMobileBall` with `if (this.getUserPersona() !== 'SCORER')`.
+    - `apps/api/src/ui/mobile-view.ts`: Scoring controls rendered strictly for `this.profile.persona === 'SCORER'` and all scoring methods guarded at runtime.
+  - **Regression Testing & Governance**:
+    - Updated `tests/32-role-based-access-control.test.ts` to assert that `adminPerms.canScore === false` and `allRoles.filter(r => getRolePermissions(r).canScore)` is strictly `['SCORER']`.
+    - Updated `tests/34-fan-scorecard-and-visualizations.test.ts` to assert that `studioControls.style.display = (role === 'SCORER') ? 'block' : 'none';`.
+    - Full test suite: 130 tests across 41 suites, 100% passing in low-token mode (`./pipeline.sh test --summary`).
+    - Rule 6: Distribution packaging verified byte-for-byte identical (`index.html` == `dist/index.html`).
+- **Phase 2S Completed**: Fan Detailed Scorecard & Match Center Visualizations:
+  - **Match Center Detailed Scorecard**:
+    - Complete broadcast-spec scorecard card (`#cardDetailedScorecard`) added to `tab-scoring` (Match Center).
+    - Innings 1 / Innings 2 toggle (`#btnScorecardInn1`, `#btnScorecardInn2`) allowing fans to inspect both Delhi Daredevils (178/10) and Mumbai Super Strikers (142/3).
+    - Detailed Batting Table: Batter name, dismissal method, Runs, Balls, 4s, 6s, and Strike Rate.
+    - Extras & Total Strip: Byes, leg byes, wides, no-balls breakdown, total runs, wickets, and overs.
+    - Fall of Wickets Timeline: Sequential dismissal timeline with wicket number, player name, team score, and over.
+    - Detailed Bowling Figures: Bowler name, Overs, Maidens, Runs conceded, Wickets, Economy rate, and Dot balls.
+    - Did Not Bat (DNB) strip.
+    - Official RFC 4180 CSV Export (`downloadScorecardCsv()`) and clean printable view (`printScorecardView()`).
+  - **Match Center Analytics Suite (4 Visualization Modes)**:
+    - *📈 Worm Chart*: Zero-dependency responsive SVG comparative run progression curve comparing Delhi (1st Inn) vs Mumbai (Chase) with wicket markers.
+    - *📊 Manhattan Bars*: Over-by-over run bar chart with boundary and wicket highlights.
+    - *🎯 Wagon Wheel*: Interactive 360° SVG stadium ground with 8 radial sectors, batter filter (`Virat Sharma`, `Hardik Patel`, `Partnership Stand`), RHB/LHB stance reflection, shot rays (emerald lines for 4s, gold arcs for 6s, cyan lines for singles, dashed lines for dots), and 4-column zone telemetry stats (Off Runs, On Runs, Boundaries, Dot %).
+    - *👥 Partnerships*: Visual proportional partnership stand bars with batter 1 & 2 contribution segments, run/ball shares, and active unbroken stand highlights.
+  - **Fan Spectator Studio Mode**:
+    - Updated `ROLE_PERMISSIONS.FAN` to include `'studio'` in `allowedTabs`.
+    - Configured Studio for Fan Spectator mode: scoring keypad (`#studioScoringControlsGroup`) is hidden/locked and replaced by a prominent Fan Spectator notice (`#fanTacticalNotice`), while the 8-zone wagon wheel and live shot telemetry remain interactive.
+  - **Mobile App Scorecard & Visualizations Parity**:
+    - Added header analytics buttons: `📈 Worm`, `📊 Bars`, `🎯 Wagon`, `📄 Card` to `LiveMatchScreen`.
+    - Integrated mobile SVG Wagon Wheel and inline Detailed Scorecard rendering with full batting & bowling tables.
+    - Upgraded standalone mobile webview (`apps/api/src/ui/mobile-view.ts`) and packaged `dist/mobile.html` & `dist/public/mobile.html`.
+  - **Verification & Governance**:
+    - Created `tests/34-fan-scorecard-and-visualizations.test.ts` with 18 automated tests covering web console, mobile app, RBAC, tooltips, and release packaging.
+    - Total test suite: 129 tests across 41 suites, 100% passing in low-token mode via `./pipeline.sh test --summary`.
+    - Rule 5: Every interactive button includes accessible `data-tooltip="..."`.
+    - Rule 6: Distribution packaging verified byte-for-byte identical (`index.html` == `dist/index.html`).
+- **Phase 2R Completed**: Comprehensive Mobile App Architecture & 8-Persona Journeys:
   - **Full 8-Persona Support on Mobile**:
     - *CAPTAIN*: Playing XI squad lineup (11 players), bench reserves (3 substitutes), tactical bench swap, team join code (`CRIC-BLR-4821`), official coin toss declaration, and tactical wagon wheel view.
     - *PLAYER*: Career stats calculations (batting average, strike rate, bowling economy, bowling average), squad inspection, instant 15-min GiST hold turf booking, and Apple App Store 5.1.1(v) compliant account deletion.

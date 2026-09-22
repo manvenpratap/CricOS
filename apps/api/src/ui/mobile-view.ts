@@ -237,6 +237,7 @@ export function getMobileAppHtml(): string {
         this.errorMessage = null;
         this.fanCheersCount = 1429;
         this.pollVotes = { BLR: 68, MUM: 32 };
+        this.activeChart = 'NONE';
         this.marketCategory = 'ALL';
 
         this.matchState = {
@@ -441,6 +442,10 @@ export function getMobileAppHtml(): string {
       }
 
       scoreBall(runs) {
+        if (this.profile.persona !== 'SCORER') {
+          alert('🔒 Only official Scorers can score deliveries.');
+          return;
+        }
         this.matchState.totalRuns += runs;
         this.matchState.legalBalls += 1;
         this.matchState.striker.runs += runs;
@@ -460,6 +465,10 @@ export function getMobileAppHtml(): string {
       }
 
       scoreExtra(type) {
+        if (this.profile.persona !== 'SCORER') {
+          alert('🔒 Only official Scorers can score extras.');
+          return;
+        }
         this.matchState.totalRuns += 1;
         this.matchState.bowler.runsConceded += 1;
         this.matchState.currentOverDeliveries.push(type === 'WIDE' ? '1wd' : '1nb');
@@ -467,6 +476,10 @@ export function getMobileAppHtml(): string {
       }
 
       promptWicketModal() {
+        if (this.profile.persona !== 'SCORER') {
+          alert('🔒 Only official Scorers can record wickets.');
+          return;
+        }
         const confirmed = confirm('Confirm Wicket: Dismiss striker Virat K.?');
         if (confirmed) {
           this.matchState.totalWickets += 1;
@@ -480,6 +493,10 @@ export function getMobileAppHtml(): string {
       }
 
       rotateStrike() {
+        if (this.profile.persona !== 'SCORER') {
+          alert('🔒 Only official Scorers can swap strike.');
+          return;
+        }
         const tmp = this.matchState.striker;
         this.matchState.striker = this.matchState.nonStriker;
         this.matchState.nonStriker = tmp;
@@ -488,6 +505,10 @@ export function getMobileAppHtml(): string {
       }
 
       undoBall() {
+        if (this.profile.persona !== 'SCORER') {
+          alert('🔒 Only official Scorers can undo deliveries.');
+          return;
+        }
         if (this.matchState.currentOverDeliveries.length > 0) {
           this.matchState.currentOverDeliveries.pop();
           if (this.matchState.legalBalls > 0) this.matchState.legalBalls--;
@@ -498,6 +519,11 @@ export function getMobileAppHtml(): string {
 
       selectWagonZone(zone) {
         alert('🎯 Tactical Wagon Wheel: ' + zone + ' trajectory logged for ' + this.matchState.striker.name);
+      }
+
+      toggleChart(type) {
+        this.activeChart = (this.activeChart === type) ? 'NONE' : type;
+        this.render();
       }
 
       sendCheer(text) {
@@ -683,10 +709,103 @@ export function getMobileAppHtml(): string {
         var persona = this.profile.persona;
 
         var h = '<div style="padding: 1rem;">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.4rem;">';
         h += '<span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px;">🔴 LIVE MATCH</span>';
-        h += '<span style="font-size: 0.75rem; color: #94a3b8;">Match #' + this.matchState.matchId + '</span>';
+        h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(\'WORM\')" style="background: ' + (this.activeChart === 'WORM' ? 'rgba(0, 229, 153, 0.25)' : 'rgba(0, 229, 153, 0.1)') + '; border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Worm progression curve">📈 Worm</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(\'MANHATTAN\')" style="background: ' + (this.activeChart === 'MANHATTAN' ? 'rgba(0, 210, 255, 0.25)' : 'rgba(0, 210, 255, 0.1)') + '; border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Manhattan over bars">📊 Bars</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(\'WAGON\')" style="background: ' + (this.activeChart === 'WAGON' ? 'rgba(192, 132, 252, 0.25)' : 'rgba(192, 132, 252, 0.1)') + '; border: 1px solid rgba(192, 132, 252, 0.3); color: #c084fc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View 8-zone Wagon Wheel">🎯 Wagon</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(\'SCORECARD\')" style="background: ' + (this.activeChart === 'SCORECARD' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.06)') + '; border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View full detailed scorecard">📄 Card</button>';
         h += '</div>';
+        h += '</div>';
+
+        // Render Active Analytics / Scorecard Panel
+        if (this.activeChart === 'WORM') {
+          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--turf-emerald); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">';
+          h += '<span>📈 Worm Progression (1st Inn vs Chase)</span><span style="color: #94a3b8; font-size: 0.7rem;">Target: 178</span>';
+          h += '</div>';
+          h += '<svg viewBox="0 0 340 140" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">';
+          h += '<line x1="30" y1="120" x2="320" y2="120" stroke="rgba(255,255,255,0.15)" />';
+          h += '<line x1="30" y1="20" x2="30" y2="120" stroke="rgba(255,255,255,0.15)" />';
+          h += '<path d="M 30 120 L 75 105 L 120 90 L 175 75 L 230 55 L 285 35 L 320 25" fill="none" stroke="#00E599" stroke-width="2.5" />';
+          h += '<path d="M 30 120 L 75 108 L 120 92 L 175 70 L 230 50 L 270 38" fill="none" stroke="#00D2FF" stroke-width="2.5" />';
+          h += '<circle cx="120" cy="90" r="3.5" fill="#FF3366" />';
+          h += '<circle cx="230" cy="55" r="3.5" fill="#FF3366" />';
+          h += '<text x="40" y="25" fill="#00E599" font-size="9" font-weight="700">DEL 178/10</text>';
+          h += '<text x="140" y="25" fill="#00D2FF" font-size="9" font-weight="700">MUM ' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</text>';
+          h += '</svg></div>';
+        } else if (this.activeChart === 'MANHATTAN') {
+          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--cyan); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">';
+          h += '<span>📊 Manhattan Over-by-Over Runs</span><span style="color: #94a3b8; font-size: 0.7rem;">Overs 1-16</span>';
+          h += '</div>';
+          h += '<svg viewBox="0 0 340 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">';
+          h += '<line x1="20" y1="105" x2="320" y2="105" stroke="rgba(255,255,255,0.15)" />';
+          h += '<rect x="25" y="75" width="14" height="30" fill="#00D2FF" rx="2" />';
+          h += '<rect x="45" y="45" width="14" height="60" fill="#00E599" rx="2" />';
+          h += '<rect x="65" y="85" width="14" height="20" fill="#64748b" rx="2" />';
+          h += '<rect x="85" y="55" width="14" height="50" fill="#00D2FF" rx="2" />';
+          h += '<rect x="105" y="30" width="14" height="75" fill="#00E599" rx="2" />';
+          h += '<rect x="125" y="90" width="14" height="15" fill="#64748b" rx="2" />';
+          h += '<rect x="145" y="65" width="14" height="40" fill="#00D2FF" rx="2" />';
+          h += '<rect x="165" y="50" width="14" height="55" fill="#00D2FF" rx="2" />';
+          h += '<rect x="185" y="35" width="14" height="70" fill="#00E599" rx="2" />';
+          h += '<rect x="205" y="70" width="14" height="35" fill="#00D2FF" rx="2" />';
+          h += '<rect x="225" y="55" width="14" height="50" fill="#00D2FF" rx="2" />';
+          h += '<rect x="245" y="40" width="14" height="65" fill="#00D2FF" rx="2" />';
+          h += '<rect x="265" y="65" width="14" height="40" fill="#00D2FF" rx="2" />';
+          h += '<rect x="285" y="30" width="14" height="75" fill="#00E599" rx="2" />';
+          h += '<rect x="305" y="25" width="14" height="80" fill="#00E599" rx="2" />';
+          h += '</svg></div>';
+        } else if (this.activeChart === 'WAGON') {
+          h += '<div id="mobileWagonPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid #c084fc; border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+          h += '<span style="font-size: 0.8rem; font-weight: 700; color: #c084fc;">🎯 Mobile Precision Wagon Wheel</span>';
+          h += '<span style="font-size: 0.65rem; color: #00E599; font-weight: 800; background: rgba(0,229,153,0.15); padding: 0.1rem 0.4rem; border-radius: 4px;">RHB • Virat (48*)</span>';
+          h += '</div>';
+          h += '<div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.5rem;">';
+          h += '<svg viewBox="0 0 300 300" width="260" height="260" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; background: #030C08;">';
+          h += '<circle cx="150" cy="150" r="140" fill="#092418" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" />';
+          h += '<circle cx="150" cy="150" r="75" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1" stroke-dasharray="3,3" />';
+          h += '<rect x="140" y="115" width="20" height="70" rx="2" fill="#8C6E3D" />';
+          h += '<circle cx="150" cy="130" r="4" fill="#00E599" />';
+          h += '<text x="35" y="145" fill="#00D2FF" font-size="7" font-weight="700">◀ OFF</text>';
+          h += '<text x="265" y="145" fill="#00E599" font-size="7" font-weight="700" text-anchor="end">ON ▶</text>';
+          h += '<line x1="150" y1="130" x2="65" y2="230" stroke="#00E599" stroke-width="2" />';
+          h += '<line x1="150" y1="130" x2="50" y2="190" stroke="#00E599" stroke-width="2" />';
+          h += '<line x1="150" y1="130" x2="230" y2="180" stroke="#00E599" stroke-width="2" />';
+          h += '<path d="M 150 130 Q 110 230 130 270" fill="none" stroke="#FFB800" stroke-width="2" />';
+          h += '<path d="M 150 130 Q 200 230 180 270" fill="none" stroke="#FFB800" stroke-width="2" />';
+          h += '<line x1="150" y1="130" x2="75" y2="85" stroke="#00D2FF" stroke-width="1.2" />';
+          h += '<line x1="150" y1="130" x2="225" y2="75" stroke="#00D2FF" stroke-width="1.2" />';
+          h += '</svg></div>';
+          h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem; font-size: 0.7rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem;">';
+          h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Off Runs</span><strong style="color: #00D2FF;">28</strong></div>';
+          h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">On Runs</span><strong style="color: #00E599;">20</strong></div>';
+          h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Boundaries</span><strong style="color: #c084fc;">32</strong></div>';
+          h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Dots</span><strong style="color: #ffb800;">12.5%</strong></div>';
+          h += '</div></div>';
+        } else if (this.activeChart === 'SCORECARD') {
+          h += '<div id="mobileScorecardPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+          h += '<span style="font-size: 0.8rem; font-weight: 700; color: #f8fafc;">📄 Detailed Scorecard</span>';
+          h += '<span style="font-size: 0.7rem; color: #00E599; font-weight: 700;">Innings 2: 142/3</span>';
+          h += '</div>';
+          h += '<table style="width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 0.6rem;">';
+          h += '<thead><tr style="color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">';
+          h += '<th style="padding: 0.25rem 0;">Batter</th><th style="padding: 0.25rem 0; text-align: right;">R</th><th style="padding: 0.25rem 0; text-align: right;">B</th><th style="padding: 0.25rem 0; text-align: right;">4s</th><th style="padding: 0.25rem 0; text-align: right;">6s</th><th style="padding: 0.25rem 0; text-align: right;">SR</th>';
+          h += '</tr></thead><tbody>';
+          h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700;">Rohit Verma <small style="color: #94a3b8; display: block;">c Pant b Bumrah</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">38</td><td style="padding: 0.25rem 0; text-align: right;">26</td><td style="padding: 0.25rem 0; text-align: right;">4</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">146.1</td></tr>';
+          h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700;">Ishan Kishan <small style="color: #94a3b8; display: block;">b Siraj</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">16</td><td style="padding: 0.25rem 0; text-align: right;">11</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">1</td><td style="padding: 0.25rem 0; text-align: right;">145.5</td></tr>';
+          h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700;">Suryakumar Yadav <small style="color: #94a3b8; display: block;">c sub b Kuldeep</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">42</td><td style="padding: 0.25rem 0; text-align: right;">28</td><td style="padding: 0.25rem 0; text-align: right;">5</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">150.0</td></tr>';
+          h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700; color: #00E599;">Virat Sharma * <small style="color: #94a3b8; display: block;">not out</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">48</td><td style="padding: 0.25rem 0; text-align: right;">32</td><td style="padding: 0.25rem 0; text-align: right;">4</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">150.0</td></tr>';
+          h += '<tr><td style="padding: 0.25rem 0; font-weight: 700; color: #00D2FF;">Hardik Patel <small style="color: #94a3b8; display: block;">not out</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">18</td><td style="padding: 0.25rem 0; text-align: right;">12</td><td style="padding: 0.25rem 0; text-align: right;">1</td><td style="padding: 0.25rem 0; text-align: right;">1</td><td style="padding: 0.25rem 0; text-align: right;">150.0</td></tr>';
+          h += '</tbody></table>';
+          h += '<div style="font-size: 0.7rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.3rem;">';
+          h += 'Extras: <strong style="color: #ffb800;">12</strong> (b 4, lb 2, w 5, nb 1) • Total: <strong style="color: #00E599;">142/3</strong> (16.4 ov)';
+          h += '</div></div>';
+        }
 
         // LED Scoreboard HUD
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">';
@@ -754,31 +873,38 @@ export function getMobileAppHtml(): string {
         }
         h += '</div></div>';
 
-        // Scorer Pad (for SCORER, CAPTAIN, ADMIN)
-        h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.85rem;">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
-        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">⚡ Scoring Controls</div>';
-        h += '<div style="display: flex; gap: 0.3rem;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.rotateStrike()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-size: 0.65rem;" data-tooltip="Swap Striker and Non-Striker">⇄ Swap</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.undoBall()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.1); color: #ffb800; font-size: 0.65rem;" data-tooltip="Undo last delivery">↺ Undo</button>';
-        h += '</div></div>';
+        // Scorer Pad (for SCORER ONLY)
+        if (this.profile.persona === 'SCORER') {
+          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.85rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+          h += '<div style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">⚡ Scoring Controls</div>';
+          h += '<div style="display: flex; gap: 0.3rem;">';
+          h += '<button type="button" onclick="window.cricosMobileApp.rotateStrike()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-size: 0.65rem;" data-tooltip="Swap Striker and Non-Striker">⇄ Swap</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.undoBall()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.1); color: #ffb800; font-size: 0.65rem;" data-tooltip="Undo last delivery">↺ Undo</button>';
+          h += '</div></div>';
 
-        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin-bottom: 0.5rem;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(0)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Dot Ball">0<span style="display: block; font-size: 8px; color: #94a3b8;">Dot</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(1)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Single (Strike Rotates)">1<span style="display: block; font-size: 8px; color: #94a3b8;">Single</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(2)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Two Runs">2<span style="display: block; font-size: 8px; color: #94a3b8;">Two</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(3)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Three Runs">3<span style="display: block; font-size: 8px; color: #94a3b8;">Three</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(4)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: #00E599; font-weight: 800; font-size: 15px;" data-tooltip="Boundary Four">4<span style="display: block; font-size: 8px; color: #00E599;">Four</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(6)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: #c084fc; font-weight: 800; font-size: 15px;" data-tooltip="Over Boundary Six">6<span style="display: block; font-size: 8px; color: #c084fc;">Six</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.promptWicketModal()" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-weight: 800; font-size: 15px;" data-tooltip="Wicket Dismissal">W<span style="display: block; font-size: 8px; color: #ff8099;">Out</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'WIDE\')" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.12); color: #ffb800; font-weight: 800; font-size: 15px;" data-tooltip="Wide Ball (+1 Run)">Wd<span style="display: block; font-size: 8px; color: #ffb800;">Wide</span></button>';
-        h += '</div>';
+          h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin-bottom: 0.5rem;">';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(0)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Dot Ball">0<span style="display: block; font-size: 8px; color: #94a3b8;">Dot</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(1)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Single (Strike Rotates)">1<span style="display: block; font-size: 8px; color: #94a3b8;">Single</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(2)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Two Runs">2<span style="display: block; font-size: 8px; color: #94a3b8;">Two</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(3)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Three Runs">3<span style="display: block; font-size: 8px; color: #94a3b8;">Three</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(4)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: #00E599; font-weight: 800; font-size: 15px;" data-tooltip="Boundary Four">4<span style="display: block; font-size: 8px; color: #00E599;">Four</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(6)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: #c084fc; font-weight: 800; font-size: 15px;" data-tooltip="Over Boundary Six">6<span style="display: block; font-size: 8px; color: #c084fc;">Six</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.promptWicketModal()" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-weight: 800; font-size: 15px;" data-tooltip="Wicket Dismissal">W<span style="display: block; font-size: 8px; color: #ff8099;">Out</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'WIDE\')" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.12); color: #ffb800; font-weight: 800; font-size: 15px;" data-tooltip="Wide Ball (+1 Run)">Wd<span style="display: block; font-size: 8px; color: #ffb800;">Wide</span></button>';
+          h += '</div>';
 
-        h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'NO_BALL\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.08); color: #ffb800; font-size: 0.7rem; font-weight: 600;" data-tooltip="No Ball (+1 Run & Free Hit)">+1 No Ball</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'BYE\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Bye (+1 Run)">+1 Bye</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'LEG_BYE\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Leg Bye (+1 Run)">+1 Leg Bye</button>';
-        h += '</div></div>';
+          h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem;">';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'NO_BALL\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.08); color: #ffb800; font-size: 0.7rem; font-weight: 600;" data-tooltip="No Ball (+1 Run & Free Hit)">+1 No Ball</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'BYE\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Bye (+1 Run)">+1 Bye</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(\'LEG_BYE\')" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Leg Bye (+1 Run)">+1 Leg Bye</button>';
+          h += '</div></div>';
+        } else if (this.profile.persona !== 'FAN' && this.profile.persona !== 'CAPTAIN') {
+          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; text-align: center;">';
+          h += '<div style="font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.3rem;">🔒 Live Scoring Console Locked</div>';
+          h += '<div style="font-size: 0.75rem; color: #64748b;">Live scoring is reserved exclusively for the assigned Official Scorer.</div>';
+          h += '</div>';
+        }
 
         h += '</div>';
         return h;

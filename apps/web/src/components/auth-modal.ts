@@ -25,7 +25,7 @@ export const ROLE_PERMISSIONS_MATRIX: Record<PersonaRole, RolePermissions> = {
   CAPTAIN: {
     allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace', 'studio'],
     defaultTab: 'teams',
-    canScore: true,
+    canScore: false,
     canManageLineup: true,
     canFileIncident: false,
     canManageTournaments: false,
@@ -125,7 +125,7 @@ export const ROLE_PERMISSIONS_MATRIX: Record<PersonaRole, RolePermissions> = {
   ADMIN: {
     allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace', 'studio', 'incidents', 'explorer'],
     defaultTab: 'explorer',
-    canScore: true,
+    canScore: false,
     canManageLineup: true,
     canFileIncident: true,
     canManageTournaments: true,

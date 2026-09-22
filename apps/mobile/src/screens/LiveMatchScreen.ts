@@ -55,8 +55,26 @@ export class LiveMatchScreenController {
   private state: LiveMatchScreenState;
   private history: LiveMatchScreenState[] = [];
 
-  constructor(initialState: LiveMatchScreenState) {
-    this.state = JSON.parse(JSON.stringify(initialState));
+  constructor(initialState?: LiveMatchScreenState) {
+    this.state = initialState ? JSON.parse(JSON.stringify(initialState)) : {
+      matchId: 'match-mobile-1',
+      battingTeam: 'Delhi Daredevils',
+      bowlingTeam: 'Mumbai Super Strikers',
+      totalRuns: 168,
+      totalWickets: 4,
+      legalBalls: 108,
+      striker: { playerId: 'p1', name: 'Rohit Sharma', runs: 64, balls: 42, fours: 6, sixes: 3, isStriker: true },
+      nonStriker: { playerId: 'p2', name: 'Virat Kohli', runs: 45, balls: 32, fours: 4, sixes: 1, isStriker: false },
+      bowler: { playerId: 'b1', name: 'Jasprit Bumrah', overs: 3, ballsThisOver: 0, maidens: 0, runsConceded: 22, wickets: 2 },
+      currentOverDeliveries: ['1', '4', '0', '2', '6', '1'],
+      fallOfWickets: [
+        { wicketNumber: 1, playerOut: 'Shikhar Dhawan', runsAtDismissal: 38, overNumber: '4.2' },
+        { wicketNumber: 2, playerOut: 'Shreyas Iyer', runsAtDismissal: 84, overNumber: '9.5' },
+        { wicketNumber: 3, playerOut: 'Rishabh Pant', runsAtDismissal: 122, overNumber: '13.1' },
+        { wicketNumber: 4, playerOut: 'KL Rahul', runsAtDismissal: 154, overNumber: '17.3' }
+      ],
+      isOverComplete: true
+    };
   }
 
   public getState(): LiveMatchScreenState {
@@ -207,7 +225,7 @@ export class LiveMatchScreenController {
     return null;
   }
 
-  public renderMobileHtml(userRole: string = 'SCORER'): string {
+  public renderMobileHtml(userRole: string = 'SCORER', activeChart: string = 'NONE'): string {
     const overs = Math.floor(this.state.legalBalls / 6);
     const balls = this.state.legalBalls % 6;
     const crr = this.state.legalBalls > 0
@@ -216,7 +234,157 @@ export class LiveMatchScreenController {
 
     const isFan = userRole === 'FAN';
     const isCaptain = userRole === 'CAPTAIN';
-    const isScorerOrAdmin = userRole === 'SCORER' || userRole === 'ADMIN';
+    const isScorer = userRole === 'SCORER';
+
+    // Conditional mobile analytics panel
+    let chartPanelHtml = '';
+    if (activeChart === 'WORM') {
+      chartPanelHtml = `
+        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--turf-emerald); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+            <span>📈 Worm Progression (1st Inn vs Chase)</span>
+            <span style="color: #94a3b8; font-size: 0.7rem;">Target: 178</span>
+          </div>
+          <svg viewBox="0 0 340 140" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">
+            <line x1="30" y1="120" x2="320" y2="120" stroke="rgba(255,255,255,0.15)" />
+            <line x1="30" y1="20" x2="30" y2="120" stroke="rgba(255,255,255,0.15)" />
+            <path d="M 30 120 L 75 105 L 120 90 L 175 75 L 230 55 L 285 35 L 320 25" fill="none" stroke="#00E599" stroke-width="2.5" />
+            <path d="M 30 120 L 75 108 L 120 92 L 175 70 L 230 50 L 270 38" fill="none" stroke="#00D2FF" stroke-width="2.5" />
+            <circle cx="120" cy="90" r="3.5" fill="#FF3366" />
+            <circle cx="230" cy="55" r="3.5" fill="#FF3366" />
+            <text x="40" y="25" fill="#00E599" font-size="9" font-weight="700">DEL 178/10</text>
+            <text x="140" y="25" fill="#00D2FF" font-size="9" font-weight="700">MUM ${this.state.totalRuns}/${this.state.totalWickets}</text>
+          </svg>
+        </div>
+      `;
+    } else if (activeChart === 'MANHATTAN') {
+      chartPanelHtml = `
+        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--cyan); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+            <span>📊 Manhattan Over-by-Over Runs</span>
+            <span style="color: #94a3b8; font-size: 0.7rem;">Overs 1-16</span>
+          </div>
+          <svg viewBox="0 0 340 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">
+            <line x1="20" y1="105" x2="320" y2="105" stroke="rgba(255,255,255,0.15)" />
+            <rect x="25" y="75" width="14" height="30" fill="#00D2FF" rx="2" />
+            <rect x="45" y="45" width="14" height="60" fill="#00E599" rx="2" />
+            <rect x="65" y="85" width="14" height="20" fill="#64748b" rx="2" />
+            <rect x="85" y="55" width="14" height="50" fill="#00D2FF" rx="2" />
+            <rect x="105" y="30" width="14" height="75" fill="#00E599" rx="2" />
+            <rect x="125" y="90" width="14" height="15" fill="#64748b" rx="2" />
+            <rect x="145" y="65" width="14" height="40" fill="#00D2FF" rx="2" />
+            <rect x="165" y="50" width="14" height="55" fill="#00D2FF" rx="2" />
+            <rect x="185" y="35" width="14" height="70" fill="#00E599" rx="2" />
+            <rect x="205" y="70" width="14" height="35" fill="#00D2FF" rx="2" />
+            <rect x="225" y="55" width="14" height="50" fill="#00D2FF" rx="2" />
+            <rect x="245" y="40" width="14" height="65" fill="#00D2FF" rx="2" />
+            <rect x="265" y="65" width="14" height="40" fill="#00D2FF" rx="2" />
+            <rect x="285" y="30" width="14" height="75" fill="#00E599" rx="2" />
+            <rect x="305" y="25" width="14" height="80" fill="#00E599" rx="2" />
+          </svg>
+        </div>
+      `;
+    } else if (activeChart === 'WAGON') {
+      chartPanelHtml = `
+        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid #c084fc; border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #c084fc;">🎯 Mobile Precision Wagon Wheel</span>
+            <span style="font-size: 0.65rem; color: #00E599; font-weight: 800; background: rgba(0,229,153,0.15); padding: 0.1rem 0.4rem; border-radius: 4px;">RHB • Virat (48*)</span>
+          </div>
+          <div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.5rem;">
+            <svg viewBox="0 0 300 300" width="260" height="260" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; background: #030C08;">
+              <circle cx="150" cy="150" r="140" fill="#092418" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" />
+              <circle cx="150" cy="150" r="75" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1" stroke-dasharray="3,3" />
+              <rect x="140" y="115" width="20" height="70" rx="2" fill="#8C6E3D" />
+              <circle cx="150" cy="130" r="4" fill="#00E599" />
+              <text x="35" y="145" fill="#00D2FF" font-size="7" font-weight="700">◀ OFF</text>
+              <text x="265" y="145" fill="#00E599" font-size="7" font-weight="700" text-anchor="end">ON ▶</text>
+              <!-- Shot rays -->
+              <line x1="150" y1="130" x2="65" y2="230" stroke="#00E599" stroke-width="2" />
+              <line x1="150" y1="130" x2="50" y2="190" stroke="#00E599" stroke-width="2" />
+              <line x1="150" y1="130" x2="230" y2="180" stroke="#00E599" stroke-width="2" />
+              <path d="M 150 130 Q 110 230 130 270" fill="none" stroke="#FFB800" stroke-width="2" />
+              <path d="M 150 130 Q 200 230 180 270" fill="none" stroke="#FFB800" stroke-width="2" />
+              <line x1="150" y1="130" x2="75" y2="85" stroke="#00D2FF" stroke-width="1.2" />
+              <line x1="150" y1="130" x2="225" y2="75" stroke="#00D2FF" stroke-width="1.2" />
+            </svg>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem; font-size: 0.7rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem;">
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Off Runs</span><strong style="color: #00D2FF;">28</strong></div>
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">On Runs</span><strong style="color: #00E599;">20</strong></div>
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Boundaries</span><strong style="color: #c084fc;">32</strong></div>
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Dots</span><strong style="color: #ffb800;">12.5%</strong></div>
+          </div>
+        </div>
+      `;
+    } else if (activeChart === 'SCORECARD') {
+      chartPanelHtml = `
+        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #f8fafc;">📄 Detailed Scorecard</span>
+            <span style="font-size: 0.7rem; color: #00E599; font-weight: 700;">Innings 2: 142/3</span>
+          </div>
+          <!-- Batting Table -->
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 0.6rem;">
+            <thead>
+              <tr style="color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
+                <th style="padding: 0.25rem 0;">Batter</th>
+                <th style="padding: 0.25rem 0; text-align: right;">R</th>
+                <th style="padding: 0.25rem 0; text-align: right;">B</th>
+                <th style="padding: 0.25rem 0; text-align: right;">4s</th>
+                <th style="padding: 0.25rem 0; text-align: right;">6s</th>
+                <th style="padding: 0.25rem 0; text-align: right;">SR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.25rem 0; font-weight: 700;">Rohit Verma <small style="color: #94a3b8; display: block;">c Pant b Bumrah</small></td>
+                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">38</td>
+                <td style="padding: 0.25rem 0; text-align: right;">26</td>
+                <td style="padding: 0.25rem 0; text-align: right;">4</td>
+                <td style="padding: 0.25rem 0; text-align: right;">2</td>
+                <td style="padding: 0.25rem 0; text-align: right;">146.1</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.25rem 0; font-weight: 700;">Ishan Kishan <small style="color: #94a3b8; display: block;">b Siraj</small></td>
+                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">16</td>
+                <td style="padding: 0.25rem 0; text-align: right;">11</td>
+                <td style="padding: 0.25rem 0; text-align: right;">2</td>
+                <td style="padding: 0.25rem 0; text-align: right;">1</td>
+                <td style="padding: 0.25rem 0; text-align: right;">145.5</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.25rem 0; font-weight: 700;">Suryakumar Yadav <small style="color: #94a3b8; display: block;">c sub b Kuldeep</small></td>
+                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">42</td>
+                <td style="padding: 0.25rem 0; text-align: right;">28</td>
+                <td style="padding: 0.25rem 0; text-align: right;">5</td>
+                <td style="padding: 0.25rem 0; text-align: right;">2</td>
+                <td style="padding: 0.25rem 0; text-align: right;">150.0</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.25rem 0; font-weight: 700; color: #00E599;">Virat Sharma * <small style="color: #94a3b8; display: block;">not out</small></td>
+                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">48</td>
+                <td style="padding: 0.25rem 0; text-align: right;">32</td>
+                <td style="padding: 0.25rem 0; text-align: right;">4</td>
+                <td style="padding: 0.25rem 0; text-align: right;">2</td>
+                <td style="padding: 0.25rem 0; text-align: right;">150.0</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.25rem 0; font-weight: 700; color: #00D2FF;">Hardik Patel <small style="color: #94a3b8; display: block;">not out</small></td>
+                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">18</td>
+                <td style="padding: 0.25rem 0; text-align: right;">12</td>
+                <td style="padding: 0.25rem 0; text-align: right;">1</td>
+                <td style="padding: 0.25rem 0; text-align: right;">1</td>
+                <td style="padding: 0.25rem 0; text-align: right;">150.0</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="font-size: 0.7rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.3rem;">
+            Extras: <strong style="color: #ffb800;">12</strong> (b 4, lb 2, w 5, nb 1) • Total: <strong style="color: #00E599;">142/3</strong> (16.4 ov)
+          </div>
+        </div>
+      `;
+    }
 
     return `
       <div class="mobile-live-screen" style="padding: 1rem; background: #04070D; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; max-width: 480px; margin: auto;">
@@ -226,12 +394,15 @@ export class LiveMatchScreenController {
             <span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 9999px;">🔴 LIVE</span>
             <span style="font-size: 0.75rem; color: #94a3b8;">Match #${this.state.matchId}</span>
           </div>
-          <div style="display: flex; gap: 0.4rem;">
-            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('WORM')" style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Worm progression curve">📈 Worm</button>
-            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('MANHATTAN')" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Manhattan over bars">📊 Bars</button>
-            <button type="button" onclick="window.cricosMobileApp.openScorecardModal()" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 6px; cursor: pointer;" data-tooltip="Export match scorecard">📄 Card</button>
+          <div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('WORM')" style="background: ${activeChart === 'WORM' ? 'rgba(0, 229, 153, 0.25)' : 'rgba(0, 229, 153, 0.1)'}; border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Worm progression curve">📈 Worm</button>
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('MANHATTAN')" style="background: ${activeChart === 'MANHATTAN' ? 'rgba(0, 210, 255, 0.25)' : 'rgba(0, 210, 255, 0.1)'}; border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Manhattan over bars">📊 Bars</button>
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('WAGON')" style="background: ${activeChart === 'WAGON' ? 'rgba(192, 132, 252, 0.25)' : 'rgba(192, 132, 252, 0.1)'}; border: 1px solid rgba(192, 132, 252, 0.3); color: #c084fc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View 8-zone Wagon Wheel">🎯 Wagon</button>
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('SCORECARD')" style="background: ${activeChart === 'SCORECARD' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.06)'}; border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View full detailed scorecard">📄 Card</button>
           </div>
         </div>
+
+        ${chartPanelHtml}
 
         <!-- Score Card Banner -->
         <div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
@@ -336,7 +507,7 @@ export class LiveMatchScreenController {
           </div>
         ` : ''}
 
-        ${isScorerOrAdmin ? `
+        ${isScorer ? `
           <!-- 3. OFFICIAL SCORER CONTROLS & WAGON WHEEL -->
           <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1rem; margin-bottom: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
@@ -382,7 +553,13 @@ export class LiveMatchScreenController {
               </div>
             </div>
           </div>
-        ` : ''}
+        ` : (!isFan && !isCaptain ? `
+          <!-- NON-SCORER LOCKED NOTICE -->
+          <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1rem; margin-bottom: 1rem; text-align: center;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.3rem;">🔒 Live Scoring Console Locked</div>
+            <div style="font-size: 0.75rem; color: #64748b;">Live scoring is reserved exclusively for the assigned Official Scorer.</div>
+          </div>
+        ` : '')}
       </div>
     `;
   }

@@ -38,6 +38,7 @@ Automated regression tests are executed via `./pipeline.sh test --summary` (rout
 | Root | `tests/31-sponsorship-auctions-and-p2-p3.test.ts` | Sponsorship Inventory & Pledges, Virtual Player Auction Bidding Engine, Weather-Triggered Rain Insurance, Academies, Dynamic Surge Pricing & Multi-Currency (P2-003, P2-004, P2-006, P2-008, P3-001, P3-002) |
 | Root | `tests/32-role-based-access-control.test.ts` | Role-Based Access Control (RBAC), 8-Persona Matrix (Scorer, Captain, Fan, Player, Umpire, Admin, Organiser, Provider), Tab & Feature Gating, Fan Cheering Console, JWT Role Guards |
 | Root | `tests/33-mobile-app-journeys.test.ts` | Multi-persona mobile app journeys (Captain, Player, Scorer, Fan, Umpire, Organiser, Turf Provider, Admin), interactive controls, tooltips & single-file release parity |
+| Root | `tests/34-fan-scorecard-and-visualizations.test.ts` | Fan & spectator detailed scorecards (Innings 1/2, batting, bowling, extras, FoW, DNB), Match Center visualizations (Worm, Manhattan, Wagon Wheel, Partnerships), Fan Spectator Studio mode, mobile parity, tooltips (Rule 5), release packaging (Rule 6) |
 
 ## Execution Protocol
 ```bash

@@ -105,7 +105,7 @@ describe('32. Role-Based Access Control (RBAC) & Feature Gating', () => {
       const adminPerms = getRolePermissions('ADMIN');
       assert.strictEqual(adminPerms.canAccessAdmin, true);
       assert.strictEqual(adminPerms.canAccessExplorer, true);
-      assert.strictEqual(adminPerms.canScore, true);
+      assert.strictEqual(adminPerms.canScore, false); // Only the scorer should be able to score
       assert.strictEqual(adminPerms.canManageTournaments, true);
       assert.strictEqual(adminPerms.canManageVenues, true);
 
@@ -113,6 +113,11 @@ describe('32. Role-Based Access Control (RBAC) & Feature Gating', () => {
       ['scoring', 'teams', 'tournaments', 'marketplace', 'studio', 'incidents', 'explorer'].forEach(tab => {
         assert.strictEqual(isTabAllowedForRole('ADMIN', tab), true, `Admin should have access to ${tab}`);
       });
+    });
+
+    it('enforces that only the SCORER persona can score across all 8 roles', () => {
+      const scoringRoles = allRoles.filter(role => getRolePermissions(role).canScore);
+      assert.deepStrictEqual(scoringRoles, ['SCORER']);
     });
   });
 

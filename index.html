@@ -247,6 +247,22 @@
       color: var(--turf-emerald);
     }
 
+    .btn-scorecard-inn {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-scorecard-inn.active {
+      background: var(--turf-emerald);
+      color: #04070D;
+    }
+
     .sidebar-cta-wrap {
       padding: 0.85rem 1rem 0.5rem 1rem;
       flex-shrink: 0;
@@ -2191,6 +2207,18 @@
       </div>
 
       <div class="grid-2">
+        <!-- Non-Scorer Match Center Notice -->
+        <div class="card" id="nonScorerMatchCenterNotice" style="display: none;">
+          <div class="card-title" style="color: var(--amber); display: flex; align-items: center; gap: 0.5rem;">
+            <span>🔒 Scoring Console Locked</span>
+          </div>
+          <div class="card-desc">Only certified Official Scorers can input deliveries, extras, and dismissals. Live match events, telemetry, and detailed scorecards remain fully accessible below.</div>
+          <div style="background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.25); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--text-main); margin-top: 0.75rem;">
+            <div style="font-weight: 700; color: var(--amber); margin-bottom: 0.25rem;">Official Scorer Governance Active:</div>
+            <div style="color: var(--text-muted); font-size: 0.78rem;">MCC Laws 2.1 &amp; BCCI Digital Scoring Protocol: Match scoring is certified exclusively by appointed scorers. Switch to the <strong>Official Scorer</strong> persona if you are managing live scoring.</div>
+          </div>
+        </div>
+
         <!-- Ball-by-Ball Scoring Pad -->
         <div class="card" id="cardMatchScoringPad">
           <div class="card-title">⚡ Interactive Ball-by-Ball Scoring Pad</div>
@@ -2231,16 +2259,110 @@
         </div>
       </div>
 
-      <!-- Match Analytics: Worm & Manhattan Charts -->
+      <!-- Detailed Match Scorecard Card -->
+      <div class="card" id="cardDetailedScorecard" style="margin-top: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <div class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+              <span>📋 Detailed Match Scorecard</span>
+              <span class="rate-badge" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3); font-size: 0.7rem;">BROADCAST SPEC</span>
+            </div>
+            <div class="card-desc">Comprehensive batting, bowling, extras, and fall-of-wickets breakdown</div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <div style="display: inline-flex; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 2px;">
+              <button type="button" class="btn-scorecard-inn active" id="btnScorecardInn2" onclick="switchScorecardInnings(2)" data-tooltip="View Mumbai Super Strikers Innings 2 (Current Chase: 142/3)">Innings 2 (MUM 142/3)</button>
+              <button type="button" class="btn-scorecard-inn" id="btnScorecardInn1" onclick="switchScorecardInnings(1)" data-tooltip="View Delhi Daredevils Innings 1 (178/10)">Innings 1 (DEL 178/10)</button>
+            </div>
+            <button class="btn btn-secondary" id="btnExportScorecardCsv" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="downloadScorecardCsv()" data-tooltip="Export official scorecard as RFC 4180 CSV">📥 CSV Export</button>
+            <button class="btn btn-secondary" id="btnPrintScorecard" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="printScorecardView()" data-tooltip="Open print-ready scorecard sheet">🖨️ Print</button>
+          </div>
+        </div>
+
+        <!-- Innings Header Banner -->
+        <div id="scorecardInningsBanner" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <span style="font-size: 1.1rem; font-weight: 800; color: #F8FAFC;" id="scorecardTeamName">Mumbai Super Strikers</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 0.5rem;" id="scorecardInningsLabel">Innings 2 (Target: 178)</span>
+          </div>
+          <div style="font-family: var(--font-score); font-size: 1.3rem; font-weight: 800; color: var(--turf-emerald);" id="scorecardInningsScore">
+            142/3 <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(16.4 ov • CRR: 8.52 • RRR: 10.80)</span>
+          </div>
+        </div>
+
+        <!-- Batting Scorecard Table -->
+        <div style="overflow-x: auto; margin-bottom: 1rem;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); text-align: left; font-size: 0.75rem; text-transform: uppercase;">
+                <th style="padding: 0.5rem 0.6rem;">Batter</th>
+                <th style="padding: 0.5rem 0.6rem;">Dismissal</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">R</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">B</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">4s</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">6s</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">SR</th>
+              </tr>
+            </thead>
+            <tbody id="detailedScorecardBattersBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Extras & Total Line -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.6rem; background: rgba(255,255,255,0.02); border-radius: 6px; margin-bottom: 0.75rem; font-size: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>Extras: <strong id="scorecardExtrasText" style="color: var(--amber);">12</strong> <span style="color: var(--text-muted); font-size: 0.75rem;" id="scorecardExtrasDetail">(b 4, lb 2, w 5, nb 1)</span></div>
+          <div>Total: <strong id="scorecardTotalText" style="color: var(--turf-emerald); font-family: var(--font-score); font-size: 1rem;">142/3</strong> <span style="color: var(--text-muted); font-size: 0.75rem;" id="scorecardTotalDetail">(3 wkts, 16.4 ov)</span></div>
+        </div>
+
+        <!-- Did Not Bat Strip -->
+        <div style="padding: 0.4rem 0.6rem; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;" id="scorecardDnbContainer">
+          Did Not Bat: <span style="color: #cbd5e1;" id="scorecardDnbText">Rishabh Pant (wk), Ravindra Jadeja, Axar Patel, Mohammed Shami, Jasprit Bumrah</span>
+        </div>
+
+        <!-- Fall of Wickets Timeline -->
+        <div style="margin-bottom: 1.25rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">Fall of Wickets</div>
+          <div id="scorecardFowContainer" style="display: flex; gap: 0.6rem; flex-wrap: wrap; font-size: 0.78rem;">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Bowling Scorecard Table -->
+        <div style="overflow-x: auto;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">Bowling Figures</div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); text-align: left; font-size: 0.75rem; text-transform: uppercase;">
+                <th style="padding: 0.5rem 0.6rem;">Bowler</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">O</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">M</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">R</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">W</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">Econ</th>
+                <th style="padding: 0.5rem 0.6rem; text-align: right;">Dots</th>
+              </tr>
+            </thead>
+            <tbody id="detailedScorecardBowlersBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Match Analytics: Worm, Manhattan, Wagon Wheel & Partnerships -->
       <div class="card" style="margin-top: 1.25rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
           <div>
-            <div class="card-title">📈 Live Match Run Analytics &amp; Trajectory</div>
-            <div class="card-desc">Zero-dependency responsive SVG comparative run trajectory and over bar analysis</div>
+            <div class="card-title">📈 Live Match Run Analytics &amp; Visualizations</div>
+            <div class="card-desc">Zero-dependency responsive SVG comparative run trajectory, over bars, wagon wheel and partnerships</div>
           </div>
-          <div style="display: flex; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
             <button class="btn btn-secondary active" id="btnChartWorm" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.78rem; background: rgba(0,229,153,0.15); border-color: var(--turf-emerald); color: var(--turf-emerald);" onclick="showMatchChart('WORM')" data-tooltip="Run Progression Worm Chart: Compares Delhi (1st Inn) vs Mumbai (Chase)">📈 Worm Chart</button>
             <button class="btn btn-secondary" id="btnChartManhattan" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.78rem;" onclick="showMatchChart('MANHATTAN')" data-tooltip="Manhattan Over Bars: Runs scored per over with boundary and wicket highlights">📊 Manhattan Bars</button>
+            <button class="btn btn-secondary" id="btnChartWagon" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.78rem;" onclick="showMatchChart('WAGON')" data-tooltip="8-Zone Precision Wagon Wheel: Outfield shot trajectories and zone distribution">🎯 Wagon Wheel</button>
+            <button class="btn btn-secondary" id="btnChartPartnerships" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.78rem;" onclick="showMatchChart('PARTNERSHIPS')" data-tooltip="Partnership Stand Breakdown: Visual stand contributions between batters">👥 Partnerships</button>
           </div>
         </div>
         <div id="matchChartContainer" style="width: 100%; min-height: 220px; display: flex; align-items: center; justify-content: center;">
@@ -2490,8 +2612,9 @@
           </div>
           <div class="card-desc">Select runs, trigger dismissals with fielders, or record extras with free hits</div>
           <div id="captainTacticalNotice" style="display: none; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700;">👑 Captain Tactical View: Wagon Wheel &amp; Shot Telemetry (Official ball scoring managed by Scorer)</div>
+          <div id="fanTacticalNotice" style="display: none; background: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--purple-light); font-weight: 700;">🎪 Fan Spectator View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Scoring Pad disabled in spectator mode)</div>
+          <div id="adminTacticalNotice" style="display: none; background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--rose); font-weight: 700;">⚡ Non-Scorer Observation View: Scoring keypad locked. Only certified Official Scorers can input deliveries.</div>
 
-          <!-- Active Batters on Field -->
           <!-- Active Batters on Field -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
             <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.3); border-radius: 10px; padding: 0.85rem;" data-tooltip="Striker currently facing delivery">
@@ -2500,7 +2623,7 @@
                   <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 800;">STRIKER ⚡</span>
                   <span id="studioStrikerStanceBadge" style="font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(0, 229, 153, 0.15); color: var(--turf-emerald); font-weight: 800;">RHB</span>
                 </div>
-                <button class="btn btn-secondary" style="width: auto; padding: 0.15rem 0.5rem; font-size: 0.68rem;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually: flips off/on side for opposite batting stance">Swap Strike</button>
+                <button class="btn btn-secondary" id="btnStudioSwapStrike" style="width: auto; padding: 0.15rem 0.5rem; font-size: 0.68rem;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually: flips off/on side for opposite batting stance">Swap Strike</button>
               </div>
               <div style="font-size: 1.05rem; font-weight: 800; color: #F8FAFC; margin-top: 0.35rem;" id="studioStrikerName">Virat Sharma</div>
               <div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 800; color: var(--turf-emerald);" id="studioStrikerStats">48* <span style="font-size: 0.8rem; color: var(--text-muted);">(32b, 4x4, 2x6)</span></div>
@@ -2518,24 +2641,26 @@
             </div>
           </div>
 
-          <!-- Studio Keypad -->
-          <div class="studio-pad-grid">
-            <button class="studio-btn" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery)">0<span class="studio-sublabel">Dot</span></button>
-            <button class="studio-btn" onclick="recordStudioBall(1)" data-tooltip="Single: 1 run and strike rotates">1<span class="studio-sublabel">Single</span></button>
-            <button class="studio-btn" onclick="recordStudioBall(2)" data-tooltip="Two runs (no strike rotation)">2<span class="studio-sublabel">Double</span></button>
-            <button class="studio-btn" onclick="recordStudioBall(3)" data-tooltip="Three runs (strike rotates)">3<span class="studio-sublabel">Triple</span></button>
-            <button class="studio-btn boundary-four" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
-            <button class="studio-btn maximum-six" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
-            <button class="studio-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (Bowled, Caught, LBW, Run out...)">W<span class="studio-sublabel">Wicket</span></button>
-            <button class="studio-btn" style="border-color: var(--amber); color: var(--amber);" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Record Wide (+1 run, extra)">EX<span class="studio-sublabel">Extras</span></button>
-          </div>
+          <div id="studioScoringControlsGroup">
+            <!-- Studio Keypad -->
+            <div class="studio-pad-grid">
+              <button class="studio-btn" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery)">0<span class="studio-sublabel">Dot</span></button>
+              <button class="studio-btn" onclick="recordStudioBall(1)" data-tooltip="Single: 1 run and strike rotates">1<span class="studio-sublabel">Single</span></button>
+              <button class="studio-btn" onclick="recordStudioBall(2)" data-tooltip="Two runs (no strike rotation)">2<span class="studio-sublabel">Double</span></button>
+              <button class="studio-btn" onclick="recordStudioBall(3)" data-tooltip="Three runs (strike rotates)">3<span class="studio-sublabel">Triple</span></button>
+              <button class="studio-btn boundary-four" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
+              <button class="studio-btn maximum-six" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
+              <button class="studio-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (Bowled, Caught, LBW, Run out...)">W<span class="studio-sublabel">Wicket</span></button>
+              <button class="studio-btn" style="border-color: var(--amber); color: var(--amber);" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Record Wide (+1 run, extra)">EX<span class="studio-sublabel">Extras</span></button>
+            </div>
 
-          <!-- Quick Extras Strip -->
-          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Wide ball (+1 run, ball does not count toward over)">+1 Wd</button>
-            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('NO_BALL', 1)" data-tooltip="No Ball (+1 run, triggers Free Hit on next delivery)">+1 Nb (Free Hit)</button>
-            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('LEG_BYE', 1)" data-tooltip="Leg Bye (+1 run, strike rotates)">+1 Lb</button>
-            <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('BYE', 1)" data-tooltip="Bye (+1 run, strike rotates)">+1 Bye</button>
+            <!-- Quick Extras Strip -->
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Wide ball (+1 run, ball does not count toward over)">+1 Wd</button>
+              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('NO_BALL', 1)" data-tooltip="No Ball (+1 run, triggers Free Hit on next delivery)">+1 Nb (Free Hit)</button>
+              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('LEG_BYE', 1)" data-tooltip="Leg Bye (+1 run, strike rotates)">+1 Lb</button>
+              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('BYE', 1)" data-tooltip="Bye (+1 run, strike rotates)">+1 Bye</button>
+            </div>
           </div>
         </div>
 
@@ -4869,7 +4994,7 @@ cricos_active_sse_connections 1</pre>
         fanCheerConsole: false
       },
       FAN: {
-        allowedTabs: ['scoring', 'teams', 'tournaments'],
+        allowedTabs: ['scoring', 'teams', 'tournaments', 'studio'],
         defaultTab: 'scoring',
         badgeColor: '#C084FC',
         badgeBg: 'rgba(192, 132, 252, 0.15)',
@@ -4907,7 +5032,7 @@ cricos_active_sse_connections 1</pre>
         label: 'Admin',
         canConductToss: true,
         canManageLineup: true,
-        canScore: true,
+        canScore: false,
         canFileIncident: true,
         canAccessAdmin: true,
         canAccessExplorer: true,
@@ -5052,64 +5177,55 @@ cricos_active_sse_connections 1</pre>
     function applyRolePermissions(role) {
       const perms = ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.FAN;
 
-      // 1. Update modal active pill
-      document.querySelectorAll('.persona-pill-btn').forEach(btn => {
-        if (btn.getAttribute('data-role') === role) {
-          btn.classList.add('active');
-          btn.style.borderColor = perms.badgeColor;
-          btn.style.color = perms.badgeColor;
-        } else {
-          btn.classList.remove('active');
-          btn.style.borderColor = '';
-          btn.style.color = '';
+      // 1. Update top bar active persona pill
+      const badge = document.getElementById('activePersonaBadge');
+      if (badge) {
+        badge.style.color = perms.badgeColor;
+        badge.style.background = perms.badgeBg;
+        badge.style.borderColor = perms.badgeColor;
+        badge.innerHTML = perms.icon + ' ' + perms.label.toUpperCase();
+        badge.setAttribute('data-tooltip', 'Active Persona: ' + perms.label + ' • ' + perms.description);
+      }
+
+      // 2. Tab Gating (show/hide sidebar nav tabs based on permissions)
+      const allTabs = ['scoring', 'teams', 'tournaments', 'marketplace', 'studio', 'incidents', 'officials', 'admin', 'explorer'];
+      allTabs.forEach(tabKey => {
+        const navItem = document.querySelector(`.sidebar-nav-item[data-tab="${tabKey}"]`);
+        if (navItem) {
+          const isAllowed = perms.allowedTabs.includes(tabKey);
+          navItem.style.display = isAllowed ? 'flex' : 'none';
         }
       });
 
-      // 2. Update header badge
-      const initials = currentUser.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() || 'VK';
-      const avatarEl = document.getElementById('headerUserAvatar');
-      const nameEl = document.getElementById('headerUserName');
-      const roleEl = document.getElementById('headerUserRoleBadge');
-
-      if (avatarEl) {
-        avatarEl.textContent = initials;
-        avatarEl.style.background = perms.badgeColor;
-      }
-      if (nameEl) nameEl.textContent = currentUser.name;
-      if (roleEl) {
-        roleEl.textContent = perms.icon + ' ' + role + ' #' + currentUser.jerseyNumber;
-        roleEl.style.color = perms.badgeColor;
-      }
-
-      // 3. Update tabs visibility
-      let activeTabAllowed = false;
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        const tabKey = b.getAttribute('data-tab');
-        if (tabKey && perms.allowedTabs.includes(tabKey)) {
-          b.style.display = 'flex';
-          if (b.classList.contains('active')) activeTabAllowed = true;
-        } else {
-          b.style.display = 'none';
-        }
-      });
+      // 3. Tab Redirection Safety
+      const currentActiveTabPane = document.querySelector('.tab-pane.active');
+      const currentTabKey = currentActiveTabPane ? currentActiveTabPane.id.replace('tab-', '') : 'scoring';
+      const activeTabAllowed = perms.allowedTabs.includes(currentTabKey);
 
       // If current active tab is forbidden, navigate to default tab
       if (!activeTabAllowed) {
         switchTab(perms.defaultTab);
       }
 
-      // 4. Update Match Center elements: Fan Cheering vs Scorer Pad
+      // 4. Update Match Center elements: Fan Cheering vs Scorer Pad vs Non-Scorer Locked Notice
       const cheerSection = document.getElementById('fanCheerSection');
       const matchScoringPad = document.getElementById('cardMatchScoringPad');
+      const nonScorerNotice = document.getElementById('nonScorerMatchCenterNotice');
       const tossBtn = document.getElementById('btnConductToss');
 
       if (cheerSection) cheerSection.style.display = perms.fanCheerConsole ? 'block' : 'none';
-      if (matchScoringPad) matchScoringPad.style.display = perms.fanCheerConsole ? 'none' : 'block';
+      if (matchScoringPad) matchScoringPad.style.display = (role === 'SCORER') ? 'block' : 'none';
+      if (nonScorerNotice) nonScorerNotice.style.display = (!perms.fanCheerConsole && role !== 'SCORER') ? 'block' : 'none';
       if (tossBtn) tossBtn.style.display = perms.canConductToss ? 'inline-block' : 'none';
 
       // 5. Update Studio Pad modes
       const studioModePill = document.getElementById('studioModePill');
       const captainNotice = document.getElementById('captainTacticalNotice');
+      const fanNotice = document.getElementById('fanTacticalNotice');
+      const adminNotice = document.getElementById('adminTacticalNotice');
+      const studioControls = document.getElementById('studioScoringControlsGroup');
+      const studioSwapBtn = document.getElementById('btnStudioSwapStrike');
+
       if (studioModePill) {
         if (role === 'CAPTAIN') {
           studioModePill.textContent = 'CAPTAIN TACTICAL MODE';
@@ -5120,15 +5236,31 @@ cricos_active_sse_connections 1</pre>
           studioModePill.style.color = 'var(--amber)';
           studioModePill.style.borderColor = 'rgba(255, 184, 0, 0.3)';
         } else if (role === 'ADMIN') {
-          studioModePill.textContent = 'ADMIN SCORING OVERRIDE';
+          studioModePill.textContent = 'ADMIN AUDIT & OBSERVATION MODE';
           studioModePill.style.color = 'var(--rose)';
           studioModePill.style.borderColor = 'rgba(255, 51, 102, 0.3)';
+        } else if (role === 'FAN') {
+          studioModePill.textContent = 'FAN SPECTATOR & WAGON WHEEL STUDIO';
+          studioModePill.style.color = 'var(--purple-light)';
+          studioModePill.style.borderColor = 'rgba(192, 132, 252, 0.3)';
         } else {
           studioModePill.textContent = perms.label.toUpperCase();
         }
       }
       if (captainNotice) {
         captainNotice.style.display = (role === 'CAPTAIN') ? 'block' : 'none';
+      }
+      if (fanNotice) {
+        fanNotice.style.display = (role === 'FAN') ? 'block' : 'none';
+      }
+      if (adminNotice) {
+        adminNotice.style.display = (role !== 'SCORER' && role !== 'CAPTAIN' && role !== 'FAN') ? 'block' : 'none';
+      }
+      if (studioControls) {
+        studioControls.style.display = (role === 'SCORER') ? 'block' : 'none';
+      }
+      if (studioSwapBtn) {
+        studioSwapBtn.style.display = (role === 'SCORER') ? 'inline-block' : 'none';
       }
 
       // 6. Admin Audit Desk Visibility
@@ -5678,6 +5810,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     function swapStudioStrike() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can swap strike.');
+        return;
+      }
       const temp = { ...studioStriker };
       studioStriker = { ...studioNonStriker };
       studioNonStriker = temp;
@@ -5761,6 +5897,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     function recordStudioBall(batRuns) {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can record deliveries.');
+        return;
+      }
       studioStriker.runs += batRuns;
       studioStriker.balls += 1;
       const isSix = batRuns === 6;
@@ -5800,6 +5940,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     function recordStudioExtra(extraType, extraRuns) {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can record extras.');
+        return;
+      }
       partnership.runs += extraRuns;
       scoreDelivery(0, extraRuns, extraType, extraType !== 'WIDE' && extraType !== 'NO_BALL', false);
       if (extraType === 'BYE' || extraType === 'LEG_BYE') {
@@ -5812,6 +5956,10 @@ cricos_active_sse_connections 1</pre>
     // Dismissal / Wicket Flow
     // ==========================================
     function openDismissalModal() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can record dismissals.');
+        return;
+      }
       const modal = document.getElementById('modalDismissal');
       if (modal) {
         modal.classList.add('active');
@@ -5842,6 +5990,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     function confirmDismissal() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can record dismissals.');
+        return;
+      }
       const kind = document.getElementById('dismissalKind').value;
       const fielder = document.getElementById('dismissalFielder').value.trim();
       const outRole = document.getElementById('dismissalOutBatter').value;
@@ -6175,14 +6327,116 @@ cricos_active_sse_connections 1</pre>
       currentActiveChart = type;
       const bWorm = document.getElementById('btnChartWorm');
       const bManhattan = document.getElementById('btnChartManhattan');
-      if (type === 'WORM') {
-        if (bWorm) { bWorm.style.background = 'rgba(0,229,153,0.15)'; bWorm.style.borderColor = 'var(--turf-emerald)'; bWorm.style.color = 'var(--turf-emerald)'; }
-        if (bManhattan) { bManhattan.style.background = 'rgba(255,255,255,0.08)'; bManhattan.style.borderColor = 'rgba(255,255,255,0.1)'; bManhattan.style.color = 'var(--text-main)'; }
-      } else {
-        if (bManhattan) { bManhattan.style.background = 'rgba(0,210,255,0.15)'; bManhattan.style.borderColor = 'var(--cyan)'; bManhattan.style.color = 'var(--cyan)'; }
-        if (bWorm) { bWorm.style.background = 'rgba(255,255,255,0.08)'; bWorm.style.borderColor = 'rgba(255,255,255,0.1)'; bWorm.style.color = 'var(--text-main)'; }
-      }
+      const bWagon = document.getElementById('btnChartWagon');
+      const bPartnerships = document.getElementById('btnChartPartnerships');
+
+      const allBtns = [
+        { el: bWorm, key: 'WORM', color: 'var(--turf-emerald)', bg: 'rgba(0,229,153,0.15)' },
+        { el: bManhattan, key: 'MANHATTAN', color: 'var(--cyan)', bg: 'rgba(0,210,255,0.15)' },
+        { el: bWagon, key: 'WAGON', color: 'var(--purple-light)', bg: 'rgba(192,132,252,0.15)' },
+        { el: bPartnerships, key: 'PARTNERSHIPS', color: 'var(--amber)', bg: 'rgba(255,184,0,0.15)' }
+      ];
+
+      allBtns.forEach(b => {
+        if (!b.el) return;
+        if (b.key === type) {
+          b.el.classList.add('active');
+          b.el.style.background = b.bg;
+          b.el.style.borderColor = b.color;
+          b.el.style.color = b.color;
+        } else {
+          b.el.classList.remove('active');
+          b.el.style.background = 'rgba(255,255,255,0.08)';
+          b.el.style.borderColor = 'rgba(255,255,255,0.1)';
+          b.el.style.color = 'var(--text-main)';
+        }
+      });
       renderMatchCharts();
+    }
+
+    let mcActiveWagonBatter = 'Virat Sharma';
+
+    function filterMcWagon(batterName, btnEl) {
+      mcActiveWagonBatter = batterName;
+      document.querySelectorAll('#btnMcWagon_Virat, #btnMcWagon_Hardik, #btnMcWagon_All').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderMcWagonRays(batterName);
+    }
+
+    function renderMcWagonRays(batterName) {
+      const g = document.getElementById('mcWagonRaysGroup');
+      const badge = document.getElementById('mcWagonStanceBadge');
+      const statOff = document.getElementById('mcWagonStatOff');
+      const statLeg = document.getElementById('mcWagonStatLeg');
+      const statBoundaries = document.getElementById('mcWagonStatBoundaries');
+      const statDots = document.getElementById('mcWagonStatDots');
+      const lblOff = document.getElementById('mcWagonLabelOff');
+      const lblLeg = document.getElementById('mcWagonLabelLeg');
+
+      if (!g) return;
+
+      const isLhb = batterName === 'Hardik Patel';
+      if (badge) {
+        badge.textContent = isLhb ? 'LHB' : (batterName === 'ALL' ? 'STAND' : 'RHB');
+        badge.style.color = isLhb ? 'var(--cyan)' : 'var(--turf-emerald)';
+      }
+      if (lblOff && lblLeg) {
+        if (isLhb) {
+          lblOff.setAttribute('x', '325');
+          lblOff.setAttribute('text-anchor', 'end');
+          lblOff.textContent = 'OFF SIDE ▶';
+          lblLeg.setAttribute('x', '35');
+          lblLeg.setAttribute('text-anchor', 'start');
+          lblLeg.textContent = '◀ ON SIDE';
+        } else {
+          lblOff.setAttribute('x', '35');
+          lblOff.setAttribute('text-anchor', 'start');
+          lblOff.textContent = '◀ OFF SIDE';
+          lblLeg.setAttribute('x', '325');
+          lblLeg.setAttribute('text-anchor', 'end');
+          lblLeg.textContent = 'ON SIDE ▶';
+        }
+      }
+
+      // Trajectories tailored to batter
+      let rays = '';
+      if (batterName === 'Virat Sharma' || batterName === 'ALL') {
+        rays += '<line x1="180" y1="156" x2="80" y2="280" stroke="#00E599" stroke-width="2" stroke-linecap="round"><title>Virat 4 to Cover</title></line>' +
+                '<line x1="180" y1="156" x2="60" y2="240" stroke="#00E599" stroke-width="2" stroke-linecap="round"><title>Virat 4 to Extra Cover</title></line>' +
+                '<path d="M 180 156 Q 120 280 150 330" fill="none" stroke="#FFB800" stroke-width="2.5" stroke-dasharray="3,3"><title>Virat 6 to Long Off</title></path>' +
+                '<path d="M 180 156 Q 240 280 210 330" fill="none" stroke="#FFB800" stroke-width="2.5"><title>Virat 6 to Long On</title></path>' +
+                '<line x1="180" y1="156" x2="280" y2="220" stroke="#00E599" stroke-width="2"><title>Virat 4 to Mid Wicket</title></line>' +
+                '<line x1="180" y1="156" x2="90" y2="100" stroke="#00D2FF" stroke-width="1.5"><title>Virat Single to Point</title></line>' +
+                '<line x1="180" y1="156" x2="260" y2="90" stroke="#00D2FF" stroke-width="1.5"><title>Virat Single to Fine Leg</title></line>' +
+                '<line x1="180" y1="156" x2="160" y2="175" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Virat Dot Ball</title></line>';
+      }
+      if (batterName === 'Hardik Patel' || batterName === 'ALL') {
+        rays += '<path d="M 180 156 Q 260 250 310 260" fill="none" stroke="#C084FC" stroke-width="2.5"><title>Hardik 6 to Deep Mid Wicket</title></path>' +
+                '<line x1="180" y1="156" x2="300" y2="220" stroke="#00E599" stroke-width="2"><title>Hardik 4 to Square Leg</title></line>' +
+                '<line x1="180" y1="156" x2="140" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long Off</title></line>' +
+                '<line x1="180" y1="156" x2="220" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long On</title></line>' +
+                '<line x1="180" y1="156" x2="110" y2="110" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Hardik Dot Ball</title></line>';
+      }
+      g.innerHTML = rays;
+
+      if (statOff && statLeg && statBoundaries && statDots) {
+        if (batterName === 'Virat Sharma') {
+          statOff.textContent = '28 (58%)';
+          statLeg.textContent = '20 (42%)';
+          statBoundaries.textContent = '32 (4x4, 2x6)';
+          statDots.textContent = '12.5% (4 dots)';
+        } else if (batterName === 'Hardik Patel') {
+          statOff.textContent = '4 (22%)';
+          statLeg.textContent = '14 (78%)';
+          statBoundaries.textContent = '10 (1x4, 1x6)';
+          statDots.textContent = '25.0% (3 dots)';
+        } else {
+          statOff.textContent = '32 (48%)';
+          statLeg.textContent = '34 (52%)';
+          statBoundaries.textContent = '42 (5x4, 3x6)';
+          statDots.textContent = '15.9% (7 dots)';
+        }
+      }
     }
 
     function renderMatchCharts() {
@@ -6247,7 +6501,7 @@ cricos_active_sse_connections 1</pre>
             '<text x="126" y="-4" fill="#00D2FF" font-size="11" font-weight="700">Mumbai ' + currentRunsNum + '/' + currentWicketsNum + ' (Chase)</text>' +
           '</g>' +
         '</svg>';
-      } else {
+      } else if (currentActiveChart === 'MANHATTAN') {
         const w = 620;
         const h = 220;
         const padL = 35;
@@ -6295,12 +6549,132 @@ cricos_active_sse_connections 1</pre>
           '<line x1="' + padL + '" y1="' + (h - padB) + '" x2="' + (w - padR) + '" y2="' + (h - padB) + '" stroke="rgba(255,255,255,0.15)" />' +
           bars + labels +
         '</svg>';
+      } else if (currentActiveChart === 'WAGON') {
+        container.innerHTML = `
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 0.5rem 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Batter:</span>
+                <button type="button" class="btn-scorecard-inn active" id="btnMcWagon_Virat" onclick="filterMcWagon('Virat Sharma', this)" data-tooltip="Wagon wheel for Virat Sharma: 48* (32b, 4x4, 2x6)">Virat Sharma 48* (32)</button>
+                <button type="button" class="btn-scorecard-inn" id="btnMcWagon_Hardik" onclick="filterMcWagon('Hardik Patel', this)" data-tooltip="Wagon wheel for Hardik Patel: 18 (12b, 1x4, 1x6)">Hardik Patel 18 (12)</button>
+                <button type="button" class="btn-scorecard-inn" id="btnMcWagon_All" onclick="filterMcWagon('ALL', this)" data-tooltip="Combined partnership stand wagon wheel (66 runs, 44 balls)">Partnership Stand 66 (44)</button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span id="mcWagonStanceBadge" style="font-size: 0.7rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 4px; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.3);">RHB</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted);" id="mcWagonZoneSelected">Zone: Extra Cover (Off-Side)</span>
+              </div>
+            </div>
+
+            <div style="position: relative; width: 340px; height: 340px; max-width: 100%;">
+              <svg id="mcWagonSvg" viewBox="0 0 360 360" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; box-shadow: 0 0 30px rgba(0,0,0,0.6);">
+                <defs>
+                  <radialGradient id="mcTurfGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#0E3324"/>
+                    <stop offset="60%" stop-color="#092418"/>
+                    <stop offset="100%" stop-color="#030C08"/>
+                  </radialGradient>
+                  <linearGradient id="mcPitchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#8C6E3D"/>
+                    <stop offset="50%" stop-color="#A38350"/>
+                    <stop offset="100%" stop-color="#8C6E3D"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="180" cy="180" r="168" fill="url(#mcTurfGrad)" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2"/>
+                <circle cx="180" cy="180" r="88" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.2" stroke-dasharray="4,4"/>
+                <text x="180" y="98" fill="rgba(0, 210, 255, 0.6)" font-size="6.5" font-family="var(--font-mono)" text-anchor="middle" letter-spacing="1">30 YD CIRCLE</text>
+                <circle cx="180" cy="180" r="162" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5"/>
+                <text x="180" y="26" fill="rgba(255, 255, 255, 0.45)" font-size="7" font-family="var(--font-mono)" text-anchor="middle">75m BOUNDARY ROPE</text>
+
+                <line x1="180" y1="18" x2="180" y2="342" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+                <line x1="18" y1="180" x2="342" y2="180" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+                <line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+                <line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+
+                <rect x="168" y="140" width="24" height="80" rx="3" fill="url(#mcPitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
+                <line x1="164" y1="156" x2="196" y2="156" stroke="#FFFFFF" stroke-width="1.2"/>
+                <line x1="164" y1="204" x2="196" y2="204" stroke="#FFFFFF" stroke-width="1.2"/>
+                <circle cx="180" cy="156" r="4.5" fill="var(--turf-emerald)" stroke="#FFFFFF" stroke-width="1.5"/>
+
+                <text x="35" y="174" fill="var(--cyan)" font-size="8" font-family="var(--font-mono)" font-weight="700" id="mcWagonLabelOff">◀ OFF SIDE</text>
+                <text x="325" y="174" fill="var(--turf-emerald)" font-size="8" font-family="var(--font-mono)" font-weight="700" text-anchor="end" id="mcWagonLabelLeg">ON SIDE ▶</text>
+
+                <g id="mcWagonRaysGroup"></g>
+              </svg>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; width: 100%; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.75rem; text-align: center; font-size: 0.78rem;">
+              <div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">Off-Side Runs</div>
+                <div style="font-size: 1.1rem; font-weight: 800; color: var(--cyan); font-family: var(--font-score);" id="mcWagonStatOff">28 (58%)</div>
+              </div>
+              <div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">On-Side Runs</div>
+                <div style="font-size: 1.1rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);" id="mcWagonStatLeg">20 (42%)</div>
+              </div>
+              <div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">Boundaries (4s/6s)</div>
+                <div style="font-size: 1.1rem; font-weight: 800; color: #C084FC; font-family: var(--font-score);" id="mcWagonStatBoundaries">32 (4x4, 2x6)</div>
+              </div>
+              <div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">Dot Ball %</div>
+                <div style="font-size: 1.1rem; font-weight: 800; color: var(--amber); font-family: var(--font-score);" id="mcWagonStatDots">12.5% (4 dots)</div>
+              </div>
+            </div>
+          </div>
+        `;
+        renderMcWagonRays('Virat Sharma');
+      } else if (currentActiveChart === 'PARTNERSHIPS') {
+        const stands = [
+          { wicket: '1st Wicket', runs: 14, balls: 13, batter1: 'Rohit Verma', r1: 8, b1: 8, batter2: 'Ishan Kishan', r2: 6, b2: 5, active: false },
+          { wicket: '2nd Wicket', runs: 34, balls: 21, batter1: 'Rohit Verma', r1: 30, b1: 18, batter2: 'Suryakumar Yadav', r2: 4, b2: 3, active: false },
+          { wicket: '3rd Wicket', runs: 56, balls: 41, batter1: 'Suryakumar Yadav', r1: 38, b1: 25, batter2: 'Virat Sharma', r2: 18, b2: 16, active: false },
+          { wicket: '4th Wicket (Current Stand)', runs: 38, balls: 26, batter1: 'Virat Sharma', r1: 30, b1: 16, batter2: 'Hardik Patel', r2: 8, b2: 10, active: true }
+        ];
+
+        let standsHtml = stands.map(s => {
+          const p1Pct = Math.round((s.r1 / s.runs) * 100);
+          const p2Pct = 100 - p1Pct;
+          const borderStyle = s.active ? 'border: 1px solid var(--turf-emerald); background: rgba(0, 229, 153, 0.05);' : 'border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.02);';
+          return `
+            <div style="border-radius: 8px; padding: 0.75rem 1rem; ${borderStyle}">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; font-size: 0.82rem;">
+                <div style="font-weight: 800; color: #F8FAFC;">
+                  ${s.wicket}
+                  ${s.active ? '<span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.4rem; font-weight: 800;">CURRENT UNBROKEN STAND ⚡</span>' : ''}
+                </div>
+                <div style="font-family: var(--font-score); font-weight: 800; color: var(--turf-emerald); font-size: 1rem;">
+                  ${s.runs} runs <small style="color: var(--text-muted); font-size: 0.75rem; font-family: var(--font-ui);">(${s.balls} balls)</small>
+                </div>
+              </div>
+              <div style="display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: rgba(255,255,255,0.08); margin-bottom: 0.35rem;">
+                <div style="width: ${p1Pct}%; background: var(--turf-emerald);" data-tooltip="${s.batter1}: ${s.r1} runs (${p1Pct}%)"></div>
+                <div style="width: ${p2Pct}%; background: var(--cyan);" data-tooltip="${s.batter2}: ${s.r2} runs (${p2Pct}%)"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+                <span><strong style="color: var(--turf-emerald);">${s.batter1}</strong>: ${s.r1} (${s.b1}b, ${p1Pct}%)</span>
+                <span><strong style="color: var(--cyan);">${s.batter2}</strong>: ${s.r2} (${s.b2}b, ${p2Pct}%)</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        container.innerHTML = `
+          <div style="width: 100%; display: flex; flex-direction: column; gap: 0.65rem; padding: 0.5rem 0;" id="mcPartnershipBars">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+              <span style="font-size: 0.85rem; font-weight: 700; color: #F8FAFC;">Mumbai Super Strikers • Partnership Breakdown (Chase: 142/3 in 16.4 ov)</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">4 Stands Total</span>
+            </div>
+            ${standsHtml}
+          </div>
+        `;
       }
     }
 
     // ==========================================
-    // Scorecard Export & Print Sheet
+    // Scorecard Export & Detailed Scorecard Logic
     // ==========================================
+    let currentScorecardInnings = 2;
+
     const matchScorecardData = {
       matchTitle: 'Delhi Daredevils vs Mumbai Super Strikers',
       matchId: 'match-pilot-1',
@@ -6315,12 +6689,133 @@ cricos_active_sse_connections 1</pre>
         { name: 'Hardik Patel', dismissal: 'not out', runs: 18, balls: 12, fours: 1, sixes: 1, sr: 150.00 }
       ],
       bowlers: [
-        { name: 'Jasprit Bumrah', overs: '3.4', maidens: 0, runs: 28, wickets: 1, econ: 7.64 },
-        { name: 'Mohammed Siraj', overs: '4.0', maidens: 0, runs: 36, wickets: 1, econ: 9.00 },
-        { name: 'Kuldeep Yadav', overs: '4.0', maidens: 0, runs: 32, wickets: 1, econ: 8.00 },
-        { name: 'Axar Patel', overs: '4.0', maidens: 0, runs: 38, wickets: 0, econ: 9.50 }
+        { name: 'Jasprit Bumrah', overs: '3.4', maidens: 0, runs: 28, wickets: 1, econ: 7.64, dots: 11 },
+        { name: 'Mohammed Siraj', overs: '4.0', maidens: 0, runs: 36, wickets: 1, econ: 9.00, dots: 8 },
+        { name: 'Kuldeep Yadav', overs: '4.0', maidens: 0, runs: 32, wickets: 1, econ: 8.00, dots: 9 },
+        { name: 'Axar Patel', overs: '4.0', maidens: 0, runs: 38, wickets: 0, econ: 9.50, dots: 7 },
+        { name: 'Hardik Pandya', overs: '1.0', maidens: 0, runs: 8, wickets: 0, econ: 8.00, dots: 2 }
+      ],
+      innings1Batters: [
+        { name: 'Prithvi Shaw', dismissal: 'c. Rohit b. Bumrah', runs: 24, balls: 14, fours: 3, sixes: 1, sr: 171.43 },
+        { name: 'David Warner', dismissal: 'b. Siraj', runs: 45, balls: 30, fours: 5, sixes: 2, sr: 150.00 },
+        { name: 'Mitchell Marsh', dismissal: 'c. Kishan b. Pandya', runs: 32, balls: 22, fours: 3, sixes: 2, sr: 145.45 },
+        { name: 'Rishabh Pant (c, wk)', dismissal: 'c. sub b. Kuldeep', runs: 36, balls: 24, fours: 3, sixes: 2, sr: 150.00 },
+        { name: 'Axar Patel', dismissal: 'run out (Kohli)', runs: 18, balls: 12, fours: 2, sixes: 0, sr: 150.00 },
+        { name: 'Lalit Yadav', dismissal: 'b. Bumrah', runs: 8, balls: 6, fours: 1, sixes: 0, sr: 133.33 },
+        { name: 'Anrich Nortje', dismissal: 'c. Hardik b. Bumrah', runs: 4, balls: 4, fours: 0, sixes: 0, sr: 100.00 },
+        { name: 'Kuldeep Yadav', dismissal: 'b. Siraj', runs: 2, balls: 3, fours: 0, sixes: 0, sr: 66.67 },
+        { name: 'Khaleel Ahmed', dismissal: 'not out', runs: 1, balls: 2, fours: 0, sixes: 0, sr: 50.00 },
+        { name: 'Ishant Sharma', dismissal: 'b. Bumrah', runs: 0, balls: 1, fours: 0, sixes: 0, sr: 0.00 }
+      ],
+      innings1Bowlers: [
+        { name: 'Jasprit Bumrah', overs: '4.0', maidens: 0, runs: 26, wickets: 4, econ: 6.50, dots: 14 },
+        { name: 'Mohammed Siraj', overs: '4.0', maidens: 0, runs: 34, wickets: 2, econ: 8.50, dots: 10 },
+        { name: 'Hardik Pandya', overs: '3.4', maidens: 0, runs: 38, wickets: 1, econ: 10.36, dots: 7 },
+        { name: 'Kuldeep Yadav', overs: '4.0', maidens: 0, runs: 35, wickets: 1, econ: 8.75, dots: 8 },
+        { name: 'Ravindra Jadeja', overs: '4.0', maidens: 0, runs: 39, wickets: 1, econ: 9.75, dots: 6 }
       ]
     };
+
+    function switchScorecardInnings(innNum) {
+      currentScorecardInnings = innNum;
+      const b1 = document.getElementById('btnScorecardInn1');
+      const b2 = document.getElementById('btnScorecardInn2');
+      if (b1 && b2) {
+        if (innNum === 1) {
+          b1.classList.add('active');
+          b2.classList.remove('active');
+        } else {
+          b2.classList.add('active');
+          b1.classList.remove('active');
+        }
+      }
+      renderDetailedScorecard();
+    }
+
+    function renderDetailedScorecard() {
+      const isInn2 = currentScorecardInnings === 2;
+      const batters = isInn2 ? matchScorecardData.batters : matchScorecardData.innings1Batters;
+      const bowlers = isInn2 ? matchScorecardData.bowlers : matchScorecardData.innings1Bowlers;
+
+      const teamName = document.getElementById('scorecardTeamName');
+      const label = document.getElementById('scorecardInningsLabel');
+      const scoreEl = document.getElementById('scorecardInningsScore');
+      const extrasText = document.getElementById('scorecardExtrasText');
+      const extrasDetail = document.getElementById('scorecardExtrasDetail');
+      const totalText = document.getElementById('scorecardTotalText');
+      const totalDetail = document.getElementById('scorecardTotalDetail');
+      const dnbText = document.getElementById('scorecardDnbText');
+      const fowContainer = document.getElementById('scorecardFowContainer');
+      const batterBody = document.getElementById('detailedScorecardBattersBody');
+      const bowlerBody = document.getElementById('detailedScorecardBowlersBody');
+
+      if (teamName) teamName.textContent = isInn2 ? 'Mumbai Super Strikers' : 'Delhi Daredevils';
+      if (label) label.textContent = isInn2 ? 'Innings 2 (Target: 178)' : 'Innings 1 (First Batting)';
+      if (scoreEl) {
+        scoreEl.innerHTML = isInn2
+          ? '142/3 <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(16.4 ov • CRR: 8.52 • RRR: 10.80)</span>'
+          : '178/10 <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(19.4 ov • RR: 9.05)</span>';
+      }
+      if (extrasText) extrasText.textContent = isInn2 ? '12' : '8';
+      if (extrasDetail) extrasDetail.textContent = isInn2 ? '(b 4, lb 2, w 5, nb 1)' : '(b 2, lb 1, w 4, nb 1)';
+      if (totalText) totalText.textContent = isInn2 ? '142/3' : '178/10';
+      if (totalDetail) totalDetail.textContent = isInn2 ? '(3 wkts, 16.4 ov)' : '(10 wkts, 19.4 ov)';
+      if (dnbText) {
+        dnbText.textContent = isInn2
+          ? 'Rishabh Pant (wk), Ravindra Jadeja, Axar Patel, Mohammed Shami, Jasprit Bumrah'
+          : 'None (All out)';
+      }
+
+      if (fowContainer) {
+        const fowList = isInn2 ? [
+          { wkt: '1-14', batter: 'Rohit Verma', ov: '2.1 ov' },
+          { wkt: '2-48', batter: 'Ishan Kishan', ov: '5.4 ov' },
+          { wkt: '3-104', batter: 'Suryakumar Yadav', ov: '12.2 ov' }
+        ] : [
+          { wkt: '1-28', batter: 'Prithvi Shaw', ov: '3.1 ov' },
+          { wkt: '2-74', batter: 'Mitchell Marsh', ov: '8.2 ov' },
+          { wkt: '3-98', batter: 'David Warner', ov: '11.5 ov' },
+          { wkt: '4-142', batter: 'Axar Patel', ov: '15.3 ov' },
+          { wkt: '5-155', batter: 'Rishabh Pant', ov: '17.1 ov' }
+        ];
+
+        fowContainer.innerHTML = fowList.map(f => `
+          <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.25rem 0.6rem; color: #F8FAFC;" data-tooltip="Wicket: ${f.batter} at ${f.ov}">
+            <strong style="color: var(--rose);">${f.wkt}</strong> <small style="color: var(--text-muted);">(${f.batter}, ${f.ov})</small>
+          </span>
+        `).join('');
+      }
+
+      if (batterBody && batters) {
+        batterBody.innerHTML = batters.map(b => `
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 0.5rem 0.6rem; font-weight: 700; color: #F8FAFC;">${b.name}</td>
+            <td style="padding: 0.5rem 0.6rem; color: var(--text-muted); font-size: 0.78rem;">${b.dismissal}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);">${b.runs}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right;">${b.balls}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right;">${b.fours}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right;">${b.sixes}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right; font-family: var(--font-score);">${b.sr.toFixed(1)}</td>
+          </tr>
+        `).join('');
+      }
+
+      if (bowlerBody && bowlers) {
+        bowlerBody.innerHTML = bowlers.map(bw => `
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 0.5rem 0.6rem; font-weight: 700; color: #F8FAFC;">${bw.name}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right;">${bw.overs}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right;">${bw.maidens}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right;">${bw.runs}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right; font-weight: 800; color: var(--rose); font-family: var(--font-score);">${bw.wickets}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right; font-family: var(--font-score);">${bw.econ.toFixed(2)}</td>
+            <td style="padding: 0.5rem 0.6rem; text-align: right;">${bw.dots || 0}</td>
+          </tr>
+        `).join('');
+      }
+    }
+    // Initialize detailed scorecard on load
+    setTimeout(renderDetailedScorecard, 100);
 
     function openScorecardModal() {
       const modal = document.getElementById('modalScorecardExport');
@@ -7489,6 +7984,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     async function scoreDelivery(batRuns, extraRuns, extraType, legalBall, isWicket = false, wicketOptions = null) {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can score deliveries.');
+        return;
+      }
       sequence++;
       const clientEventId = 'evt-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
       const payload = {
@@ -7547,6 +8046,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     async function undoLastDelivery() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can undo deliveries.');
+        return;
+      }
       try {
         const res = await fetch('/api/v1/scoring/matches/' + matchId + '/undo', {
           method: 'POST',
@@ -7587,6 +8090,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     async function swapMatchStrike() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can swap strike.');
+        return;
+      }
       try {
         const res = await fetch('/api/v1/scoring/matches/' + matchId + '/swap-strike', {
           method: 'POST',
@@ -7626,6 +8133,10 @@ cricos_active_sse_connections 1</pre>
     }
 
     async function confirmBowlerChange() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can change bowlers.');
+        return;
+      }
       const sel = document.getElementById('nextBowlerSelect');
       if (!sel) return;
       const bowlerId = sel.value;
@@ -7662,6 +8173,10 @@ cricos_active_sse_connections 1</pre>
     });
 
     function resetMatchScore() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can reset scores.');
+        return;
+      }
       runs = 0; wickets = 0; legalBalls = 0; sequence = 0;
       renderedDeliveryKeys.clear();
       feedDeliveryKeys.clear();
