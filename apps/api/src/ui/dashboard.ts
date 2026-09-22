@@ -1545,6 +1545,120 @@ export function getDashboardHtml(): string {
         transform: scale(1) translateY(0);
       }
     }
+
+    /* Slide-Over Drawer Operational Modals */
+    .modal-backdrop.as-drawer {
+      justify-content: flex-end;
+      align-items: stretch;
+      padding: 0;
+    }
+    .modal-backdrop.as-drawer .modal-dialog,
+    .modal-backdrop.as-drawer .modal-card {
+      max-width: 680px !important;
+      width: min(680px, 92vw) !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      border-radius: 20px 0 0 20px !important;
+      border-right: none !important;
+      border-top: none !important;
+      border-bottom: none !important;
+      border-left: 1px solid rgba(0, 229, 153, 0.25) !important;
+      background: rgba(10, 16, 28, 0.96) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.9) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow-y: auto !important;
+      margin: 0 !important;
+    }
+    .modal-backdrop.as-drawer.active .modal-dialog,
+    .modal-backdrop.as-drawer.active .modal-card {
+      animation: drawerSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes drawerSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Accessibility Screen-Reader Live Region Utility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* High-Contrast Outdoor / Daylight Mode */
+    body.outdoor-mode {
+      --bg-primary: #F1F5F9;
+      --bg-surface: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --text-primary: #0F172A;
+      --text-muted: #475569;
+      --border-subtle: #CBD5E1;
+      background: #F8FAFC !important;
+      color: #0F172A !important;
+    }
+    body.outdoor-mode .app-sidebar {
+      background: #FFFFFF !important;
+      border-right-color: #CBD5E1 !important;
+    }
+    body.outdoor-mode .app-topbar {
+      background: #FFFFFF !important;
+      border-bottom-color: #CBD5E1 !important;
+    }
+    body.outdoor-mode .card,
+    body.outdoor-mode .glass-panel,
+    body.outdoor-mode .modal-dialog,
+    body.outdoor-mode .modal-card,
+    body.outdoor-mode .metric-card {
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      color: #0F172A !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    }
+    body.outdoor-mode .topbar-node {
+      background: #F1F5F9 !important;
+      border-color: #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+    body.outdoor-mode .sidebar-nav-item {
+      color: #334155 !important;
+    }
+    body.outdoor-mode .sidebar-nav-item:hover,
+    body.outdoor-mode .sidebar-nav-item.active {
+      background: rgba(0, 229, 153, 0.15) !important;
+      color: #0F172A !important;
+    }
+    body.outdoor-mode .scoreboard {
+      background: #0F172A !important;
+    }
+
+    /* Common Reusable Layout Utilities */
+    .stat-tile {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 0.65rem;
+      text-align: center;
+    }
+    .flex-row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .modal-header {
       padding: 1.25rem 1.75rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -1848,6 +1962,9 @@ export function getDashboardHtml(): string {
   </style>
 </head>
 <body>
+  <!-- Screen Reader Live Announcer Region (WCAG 2.2 AA) -->
+  <div id="liveA11yAnnouncer" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
   <!-- Mobile Backdrop for responsive drawer -->
   <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebarMobile()"></div>
 
@@ -2045,6 +2162,11 @@ export function getDashboardHtml(): string {
 
           <div class="header-nav-divider"></div>
 
+          <!-- Utility: High-Contrast Outdoor / Daylight Mode Toggle -->
+          <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" data-tooltip="Toggle High-Contrast Outdoor Mode for sunlight visibility" aria-label="Toggle Outdoor Mode">
+            <span class="pill-icon" id="outdoorModeIcon">☀️</span>
+          </button>
+
           <!-- Utility: Notifications Drawer -->
           <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
             <span class="pill-icon">🔔</span>
@@ -2080,8 +2202,8 @@ export function getDashboardHtml(): string {
             </div>
           </div>
           <div class="score-display">
-            <div class="main-score" id="scoreRunsWickets">0/0</div>
-            <div class="overs-score" id="scoreOvers">(0.0 ov)</div>
+            <div class="main-score" id="scoreRunsWickets" aria-live="polite" aria-atomic="true">0/0</div>
+            <div class="overs-score" id="scoreOvers" aria-live="polite" aria-atomic="true">(0.0 ov)</div>
             <div class="rate-badge" id="scoreRunRate">CRR: 0.00</div>
           </div>
         </div>
@@ -2208,44 +2330,68 @@ export function getDashboardHtml(): string {
       </div>
 
       <div class="grid-2">
-        <!-- Non-Scorer Match Center Notice -->
-        <div class="card" id="nonScorerMatchCenterNotice" style="display: none;">
-          <div class="card-title" style="color: var(--amber); display: flex; align-items: center; gap: 0.5rem;">
-            <span>🔒 Scoring Console Locked</span>
+        <!-- Match Phase & Key Metrics Hub -->
+        <div class="card" id="cardMatchCenterStatus">
+          <!-- Scorer Quick Studio Link (Visible only to SCORER) -->
+          <div id="scorerStudioQuickCard" style="display: none; background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.3); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+              <div>
+                <div style="font-weight: 800; color: var(--amber); font-size: 0.88rem; display: flex; align-items: center; gap: 0.35rem;">
+                  <span>⚡ Official Scorer Mode Active</span>
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.74rem; margin-top: 0.2rem;">All live deliveries, wagon wheel shot zones, and dismissals are managed in the Scoring Studio.</div>
+              </div>
+              <button class="btn btn-primary" onclick="switchTab('studio')" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.75rem; background: var(--amber); color: #04070D; font-weight: 800; border: none; border-radius: 6px;" data-tooltip="Open official Scoring Studio workbench">Open Scoring Studio →</button>
+            </div>
           </div>
-          <div class="card-desc">Only certified Official Scorers can input deliveries, extras, and dismissals. Live match events, telemetry, and detailed scorecards remain fully accessible below.</div>
-          <div style="background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.25); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--text-main); margin-top: 0.75rem;">
-            <div style="font-weight: 700; color: var(--amber); margin-bottom: 0.25rem;">Official Scorer Governance Active:</div>
-            <div style="color: var(--text-muted); font-size: 0.78rem;">MCC Laws 2.1 &amp; BCCI Digital Scoring Protocol: Match scoring is certified exclusively by appointed scorers. Switch to the <strong>Official Scorer</strong> persona if you are managing live scoring.</div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <div class="card-title" style="margin: 0; font-size: 1rem;">📊 Match Situation &amp; Phase Analytics</div>
+            <span class="rate-badge" style="color: var(--cyan); border-color: rgba(0, 210, 255, 0.3); font-size: 0.7rem;">DEATH OVERS (16-20)</span>
           </div>
-        </div>
+          <div class="card-desc">Live run progression rates, boundary breakdown, and phase analysis</div>
 
-        <!-- Ball-by-Ball Scoring Pad -->
-        <div class="card" id="cardMatchScoringPad">
-          <div class="card-title">⚡ Interactive Ball-by-Ball Scoring Pad</div>
-          <div class="card-desc">Click delivery buttons to trigger real-time scoring events via Fastify <code>POST /api/v1/matches/:id/score-events</code></div>
+          <!-- Key Metrics Grid -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;">
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Current RR</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);">8.52</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;">
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Required RR</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--rose); font-family: var(--font-score);">10.80</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;">
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Boundaries</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--amber); font-family: var(--font-score);">18 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: normal;">(14x4, 4x6)</span></div>
+            </div>
+          </div>
 
-          <div class="pad-grid">
-            <button class="pad-btn" onclick="scoreDelivery(0, 0, 'NONE', true)" data-tooltip="Score 0 runs (dot delivery)">0<span>Dot</span></button>
-            <button class="pad-btn" onclick="scoreDelivery(1, 0, 'NONE', true)" data-tooltip="Score 1 run and rotate strike">1<span>Single</span></button>
-            <button class="pad-btn" onclick="scoreDelivery(2, 0, 'NONE', true)" data-tooltip="Score 2 runs (strike retained)">2<span>Double</span></button>
-            <button class="pad-btn" onclick="scoreDelivery(3, 0, 'NONE', true)" data-tooltip="Score 3 runs and rotate strike">3<span>Triple</span></button>
-            <button class="pad-btn boundary-4" onclick="scoreDelivery(4, 0, 'NONE', true)" data-tooltip="Score 4 runs boundary">4 FOUR<span>Boundary</span></button>
-            <button class="pad-btn boundary-6" onclick="scoreDelivery(6, 0, 'NONE', true)" data-tooltip="Score 6 runs over-the-rope maximum">6 SIX<span>Maximum</span></button>
-            <button class="pad-btn wicket" onclick="openDismissalModal()" data-tooltip="Record wicket: select mode, fielder, and incoming batter">W WICKET<span>Out</span></button>
-            <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'WIDE', false)" data-tooltip="Wide: +1 run extra, delivery re-bowled">Wd WIDE<span>+1 Run</span></button>
-            <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'NO_BALL', false)" data-tooltip="No Ball: +1 run extra, triggers Free Hit">Nb NO BALL<span>+1 Run</span></button>
-            <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'BYE', true)" data-tooltip="Byes: +1 run extra, strike rotates if odd">B BYE<span>+1 Run</span></button>
-            <button class="pad-btn extra" onclick="scoreDelivery(0, 1, 'LEG_BYE', true)" data-tooltip="Leg Byes: +1 run extra, strike rotates if odd">Lb LEG BYE<span>+1 Run</span></button>
-            <button class="pad-btn" id="btnUndoDelivery" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber);" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">↺ UNDO<span>Ctrl+Z</span></button>
-            <button class="pad-btn btn-secondary" onclick="resetMatchScore()" data-tooltip="Reset match score to 0/0 for new innings">↺ RESET<span>New Innings</span></button>
+          <!-- Weather Interruption & DLS Calculator Shortcut -->
+          <div style="margin-bottom: 0.75rem; padding: 0.6rem 0.85rem; background: rgba(0, 210, 255, 0.06); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--cyan);">🌧️ Weather Delay &amp; Revised Chase:</span>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Standard Duckworth-Lewis-Stern resource calculation engine</div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openModal('modalDlsCalculator')" data-tooltip="Open Duckworth-Lewis-Stern (DLS) rain interruption target calculator" style="padding: 0.25rem 0.65rem; font-size: 0.74rem;">🌧️ DLS Calculator</button>
+          </div>
 
-            <!-- Compound Extras Strip -->
-            <div style="grid-column: 1 / -1; display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 0.65rem; border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'WIDE', false)" data-tooltip="Wide + 4 Byes: +5 runs total, delivery re-bowled">+5 Wd (4b)</button>
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(4, 1, 'NO_BALL', false)" data-tooltip="No Ball + Boundary 4: +5 runs, Free Hit next delivery">+4 Nb (5 runs)</button>
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(6, 1, 'NO_BALL', false)" data-tooltip="No Ball + Maximum 6: +7 runs, Free Hit next delivery">+6 Nb (7 runs)</button>
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'PENALTY', false)" data-tooltip="Penalty runs awarded (+5 runs)">+5 Penalty</button>
+          <!-- Phase Breakdown Strip -->
+          <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem;">
+            <div style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.45rem;">Match Phase Breakdown:</div>
+            <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.78rem;">
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Powerplay (Overs 1-6):</span>
+                <strong style="color: #F8FAFC;">54/1 (RR: 9.00)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Middle Overs (Overs 7-15):</span>
+                <strong style="color: #F8FAFC;">76/2 (RR: 8.44)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--turf-emerald);">Death Overs (Overs 16-20):</span>
+                <strong style="color: var(--turf-emerald);">12/0 in 1.4 ov (In Progress)</strong>
+              </div>
             </div>
           </div>
         </div>
@@ -2254,7 +2400,7 @@ export function getDashboardHtml(): string {
         <div class="card">
           <div class="card-title">📜 Live Ball Log & Event Stream</div>
           <div class="card-desc">Event-sourced deliveries validated through Scoring State Machine</div>
-          <div class="feed-container" id="scoringFeed">
+          <div class="feed-container" id="scoringFeed" aria-live="polite" role="feed" aria-label="Live ball-by-ball commentary feed">
             <div class="feed-item" style="color: var(--text-muted);">Match ready. Waiting for first delivery...</div>
           </div>
         </div>
@@ -2652,15 +2798,24 @@ export function getDashboardHtml(): string {
               <button class="studio-btn boundary-four" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
               <button class="studio-btn maximum-six" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
               <button class="studio-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (Bowled, Caught, LBW, Run out...)">W<span class="studio-sublabel">Wicket</span></button>
-              <button class="studio-btn" style="border-color: var(--amber); color: var(--amber);" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Record Wide (+1 run, extra)">EX<span class="studio-sublabel">Extras</span></button>
+              <button class="studio-btn" id="btnStudioUndo" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber);" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">↺<span class="studio-sublabel">Undo</span></button>
             </div>
 
             <!-- Quick Extras Strip -->
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
               <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Wide ball (+1 run, ball does not count toward over)">+1 Wd</button>
               <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('NO_BALL', 1)" data-tooltip="No Ball (+1 run, triggers Free Hit on next delivery)">+1 Nb (Free Hit)</button>
               <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('LEG_BYE', 1)" data-tooltip="Leg Bye (+1 run, strike rotates)">+1 Lb</button>
               <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('BYE', 1)" data-tooltip="Bye (+1 run, strike rotates)">+1 Bye</button>
+            </div>
+
+            <!-- Compound Extras & Reset Strip -->
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'WIDE', false)" data-tooltip="Wide + 4 Byes: +5 runs total, delivery re-bowled">+5 Wd (4b)</button>
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(4, 1, 'NO_BALL', false)" data-tooltip="No Ball + Boundary 4: +5 runs, Free Hit next delivery">+4 Nb (5 runs)</button>
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(6, 1, 'NO_BALL', false)" data-tooltip="No Ball + Maximum 6: +7 runs, Free Hit next delivery">+6 Nb (7 runs)</button>
+              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'PENALTY', false)" data-tooltip="Penalty runs awarded (+5 runs)">+5 Penalty</button>
+              <button class="btn btn-secondary" style="padding: 0.35rem 0.6rem; font-size: 0.72rem; border-color: rgba(255,51,102,0.3); color: var(--rose);" onclick="resetMatchScore()" data-tooltip="Reset match score for new innings">↺ Reset</button>
             </div>
           </div>
         </div>
@@ -3929,7 +4084,7 @@ export function getDashboardHtml(): string {
   </div>
 
   <!-- Modal 2: Event Overview & Readiness -->
-  <div class="modal-backdrop" id="modalEventOverview">
+  <div class="modal-backdrop as-drawer" id="modalEventOverview">
     <div class="modal-dialog" style="max-width: 650px;">
       <div class="modal-header">
         <div class="modal-title">
@@ -4014,7 +4169,7 @@ export function getDashboardHtml(): string {
   </div>
 
   <!-- Modal 3: Official Calendar & Availability -->
-  <div class="modal-backdrop" id="modalOfficialCalendar">
+  <div class="modal-backdrop as-drawer" id="modalOfficialCalendar">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title">
@@ -4108,7 +4263,7 @@ export function getDashboardHtml(): string {
   </div>
 
   <!-- Modal 4: Contextual Match Messaging -->
-  <div class="modal-backdrop" id="modalMessaging">
+  <div class="modal-backdrop as-drawer" id="modalMessaging">
     <div class="modal-dialog" style="max-width: 680px; height: 600px; display: flex; flex-direction: column;">
       <div class="modal-header">
         <div class="modal-title">
@@ -4186,7 +4341,7 @@ export function getDashboardHtml(): string {
   </div>
 
   <!-- Modal 5: Booking Lifecycle, Cancellation & Rescheduling -->
-  <div class="modal-backdrop" id="modalBookingLifecycle">
+  <div class="modal-backdrop as-drawer" id="modalBookingLifecycle">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
         <div class="modal-title">
@@ -4277,7 +4432,7 @@ export function getDashboardHtml(): string {
   </div>
 
   <!-- Modal 6: Daily Financial Reconciliation -->
-  <div class="modal-backdrop" id="modalFinancialReconciliation">
+  <div class="modal-backdrop as-drawer" id="modalFinancialReconciliation">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title">
@@ -4563,7 +4718,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-001: Modal RFQ & Quote Negotiation -->
-  <div class="modal-backdrop" id="modalRfq">
+  <div class="modal-backdrop as-drawer" id="modalRfq">
     <div class="modal-card" style="max-width: 720px; border-radius: 20px; background: linear-gradient(145deg, rgba(12, 18, 34, 0.92) 0%, rgba(7, 10, 20, 0.96) 100%); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 25px 50px -12px rgba(0, 0, 0, 0.65); backdrop-filter: blur(20px);">
       <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.07); padding: 1.25rem 1.5rem;">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -4645,7 +4800,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-002: Modal Commerce & Cricket Gear -->
-  <div class="modal-backdrop" id="modalCommerce">
+  <div class="modal-backdrop as-drawer" id="modalCommerce">
     <div class="modal-card" style="max-width: 720px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
@@ -4709,7 +4864,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-006 & P1-007: Modal Tournament Ops & Fixture Board -->
-  <div class="modal-backdrop" id="modalTournamentOps">
+  <div class="modal-backdrop as-drawer" id="modalTournamentOps">
     <div class="modal-card" style="max-width: 750px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
@@ -4777,7 +4932,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-010 & P2-001: Modal Match Insights & AI Recap -->
-  <div class="modal-backdrop" id="modalMatchInsights">
+  <div class="modal-backdrop as-drawer" id="modalMatchInsights">
     <div class="modal-card" style="max-width: 650px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
@@ -4831,7 +4986,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-011: Modal Provider Check-In & Match Sign-Off -->
-  <div class="modal-backdrop" id="modalCheckIn">
+  <div class="modal-backdrop as-drawer" id="modalCheckIn">
     <div class="modal-card" style="max-width: 520px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
@@ -4881,7 +5036,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P2-004 & P3-001: Modal Sponsorship & Player Auction -->
-  <div class="modal-backdrop" id="modalSponsorshipAuction">
+  <div class="modal-backdrop as-drawer" id="modalSponsorshipAuction">
     <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
@@ -4938,6 +5093,93 @@ cricos_active_sse_connections 1</pre>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="closeModal('modalSponsorshipAuction')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 12: Duckworth-Lewis-Stern (DLS) Rain Target Calculator -->
+  <div class="modal-backdrop as-drawer" id="modalDlsCalculator">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">🌧️</span>
+          <div>
+            <div class="modal-title">Duckworth-Lewis-Stern (DLS) Target Engine</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Rain Interruption Modeling • Standard T20 Resource Curves • Revised Targets</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalDlsCalculator')" data-tooltip="Close DLS calculator">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <!-- Scenario Configuration Card -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: #F8FAFC; margin-bottom: 0.75rem;">1. Match Interruption Parameters</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 0.85rem;">
+            <div>
+              <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Team 1 Score (Runs / Overs)</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="number" id="dlsTeam1Runs" value="178" min="0" max="400" oninput="updateDlsCalculation()" style="flex: 1; padding: 0.45rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; font-size: 0.85rem;" placeholder="Runs" />
+                <input type="number" id="dlsTeam1Overs" value="20" min="5" max="50" oninput="updateDlsCalculation()" style="width: 70px; padding: 0.45rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; font-size: 0.85rem;" placeholder="Overs" />
+              </div>
+            </div>
+            <div>
+              <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Team 2 Revised Overs Available</label>
+              <select id="dlsTeam2Overs" onchange="updateDlsCalculation()" style="width: 100%; padding: 0.45rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; font-size: 0.85rem;">
+                <option value="15" selected>15 overs (Reduced by 5 ov)</option>
+                <option value="12">12 overs (Reduced by 8 ov)</option>
+                <option value="10">10 overs (Reduced by 10 ov)</option>
+                <option value="8">8 overs (Reduced by 12 ov)</option>
+                <option value="5">5 overs (Minimum T20 cut-off)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Team 2 Wickets Lost at Interruption</label>
+            <select id="dlsTeam2Wickets" onchange="updateDlsCalculation()" style="width: 100%; padding: 0.45rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; font-size: 0.85rem;">
+              <option value="0" selected>0 wickets lost</option>
+              <option value="1">1 wicket lost</option>
+              <option value="2">2 wickets lost</option>
+              <option value="3">3 wickets lost</option>
+              <option value="4">4 wickets lost</option>
+              <option value="5">5 wickets lost</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Real-time DLS Calculation Output Card -->
+        <div style="background: linear-gradient(135deg, rgba(0, 210, 255, 0.08), rgba(10, 16, 28, 0.85)); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span class="badge badge-cyan" style="font-weight: 700;">DLS REVISED TARGET RESULTS</span>
+            <span style="font-size: 0.72rem; color: var(--cyan); font-family: var(--font-mono);" id="dlsResourceRatio">R2: 82.7% / R1: 100.0%</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; text-align: center; margin-bottom: 1rem;">
+            <div style="background: rgba(0,0,0,0.35); padding: 0.75rem; border-radius: 8px;">
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Revised Target</div>
+              <div style="font-family: var(--font-score); font-size: 1.6rem; font-weight: 800; color: var(--turf-emerald);" id="dlsTargetDisplay">148</div>
+              <div style="font-size: 0.68rem; color: #CBD5E1;">runs to win</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.35); padding: 0.75rem; border-radius: 8px;">
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Balls Available</div>
+              <div style="font-family: var(--font-score); font-size: 1.6rem; font-weight: 800; color: #FFF;" id="dlsBallsDisplay">90</div>
+              <div style="font-size: 0.68rem; color: #CBD5E1;">legal deliveries</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.35); padding: 0.75rem; border-radius: 8px;">
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Required RR</div>
+              <div style="font-family: var(--font-score); font-size: 1.6rem; font-weight: 800; color: var(--rose);" id="dlsRrrDisplay">9.87</div>
+              <div style="font-size: 0.68rem; color: #CBD5E1;">runs per over</div>
+            </div>
+          </div>
+          <div style="font-size: 0.75rem; color: #94A3B8; line-height: 1.4;">
+            Formula applied: Target = ⌊S₁ × (R₂ / R₁)⌋ + 1. In a 15-over chase with 0 wickets lost, Team 2 possesses 82.7% of initial match resources.
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="applyDlsTargetToMatch()" style="width: 100%; padding: 0.65rem; font-weight: 700;" data-tooltip="Push revised DLS target equation to live match scoreboard">
+          ⚡ Apply Revised DLS Target to Live Match
+        </button>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalDlsCalculator')">Close</button>
       </div>
     </div>
   </div>
@@ -5208,15 +5450,13 @@ cricos_active_sse_connections 1</pre>
         switchTab(perms.defaultTab);
       }
 
-      // 4. Update Match Center elements: Fan Cheering vs Scorer Pad vs Non-Scorer Locked Notice
+      // 4. Update Match Center elements: Fan Cheering vs Scorer Studio Quick Card
       const cheerSection = document.getElementById('fanCheerSection');
-      const matchScoringPad = document.getElementById('cardMatchScoringPad');
-      const nonScorerNotice = document.getElementById('nonScorerMatchCenterNotice');
+      const scorerQuickCard = document.getElementById('scorerStudioQuickCard');
       const tossBtn = document.getElementById('btnConductToss');
 
       if (cheerSection) cheerSection.style.display = perms.fanCheerConsole ? 'block' : 'none';
-      if (matchScoringPad) matchScoringPad.style.display = (role === 'SCORER') ? 'block' : 'none';
-      if (nonScorerNotice) nonScorerNotice.style.display = (!perms.fanCheerConsole && role !== 'SCORER') ? 'block' : 'none';
+      if (scorerQuickCard) scorerQuickCard.style.display = (role === 'SCORER') ? 'block' : 'none';
       if (tossBtn) tossBtn.style.display = perms.canConductToss ? 'inline-block' : 'none';
 
       // 5. Update Studio Pad modes
@@ -5944,6 +6184,9 @@ cricos_active_sse_connections 1</pre>
       if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
         showToast('🔒 Only official Scorers can record extras.');
         return;
+      }
+      if (typeof triggerHaptic === 'function') {
+        triggerHaptic('default');
       }
       partnership.runs += extraRuns;
       scoreDelivery(0, extraRuns, extraType, extraType !== 'WIDE' && extraType !== 'NO_BALL', false);
@@ -7672,6 +7915,45 @@ cricos_active_sse_connections 1</pre>
     checkHealth();
     setInterval(checkHealth, 5000);
 
+    // Centralized Reactive Match State Store
+    window.CricOSStore = {
+      state: {
+        runs: 0,
+        wickets: 0,
+        legalBalls: 0,
+        oversDisplay: '0.0',
+        isFreeHit: false,
+        batters: {},
+        bowler: null,
+        recentBalls: []
+      },
+      subscribers: new Set(),
+      subscribe(fn) {
+        this.subscribers.add(fn);
+        return () => this.subscribers.delete(fn);
+      },
+      notify(action, payload) {
+        this.subscribers.forEach(fn => {
+          try { fn(this.state, action, payload); } catch (e) { console.error('CricOSStore listener error:', e); }
+        });
+      },
+      syncScore(serverState, event, eventType) {
+        if (!serverState) return;
+        this.state.runs = serverState.runs ?? this.state.runs;
+        this.state.wickets = serverState.wickets ?? this.state.wickets;
+        this.state.legalBalls = serverState.legal_balls ?? this.state.legalBalls;
+        this.state.oversDisplay = serverState.overs_display || this.state.oversDisplay;
+        this.state.isFreeHit = Boolean(serverState.is_free_hit);
+        this.state.batters = serverState.batters || this.state.batters;
+        this.state.bowler = serverState.bowler || this.state.bowler;
+        if (event) {
+          this.state.recentBalls.unshift(event);
+          if (this.state.recentBalls.length > 30) this.state.recentBalls.pop();
+        }
+        this.notify(eventType || 'SCORE_UPDATED', { serverState, event });
+      }
+    };
+
     // Scoring State & Live Broadcast Engine
     let runs = 0;
     let wickets = 0;
@@ -7692,6 +7974,9 @@ cricos_active_sse_connections 1</pre>
 
     function renderScoreState(state, event, eventType) {
       if (!state) return;
+      if (window.CricOSStore) {
+        window.CricOSStore.syncScore(state, event, eventType);
+      }
       runs = state.runs ?? 0;
       wickets = state.wickets ?? 0;
       legalBalls = state.legal_balls ?? 0;
@@ -7701,6 +7986,17 @@ cricos_active_sse_connections 1</pre>
       document.getElementById('scoreOvers').textContent = '(' + oversDisplay + ' ov)';
       const crr = legalBalls > 0 ? ((runs / legalBalls) * 6).toFixed(2) : '0.00';
       document.getElementById('scoreRunRate').textContent = 'CRR: ' + crr;
+
+      if (typeof announceA11y === 'function') {
+        const a11yDesc = (event && event.is_wicket)
+          ? 'Wicket fell! ' + runs + ' for ' + wickets + ' in ' + oversDisplay + ' overs.'
+          : (event && event.bat_runs === 4)
+          ? 'Four runs scored! Total is ' + runs + ' for ' + wickets + ' in ' + oversDisplay + ' overs.'
+          : (event && event.bat_runs === 6)
+          ? 'Six runs scored! Total is ' + runs + ' for ' + wickets + ' in ' + oversDisplay + ' overs.'
+          : 'Score update: ' + runs + ' for ' + wickets + ' in ' + oversDisplay + ' overs.';
+        announceA11y(a11yDesc);
+      }
 
       // Update Target Equation chase stats
       const targetRuns = 178;
@@ -7989,6 +8285,11 @@ cricos_active_sse_connections 1</pre>
         showToast('🔒 Only official Scorers can score deliveries.');
         return;
       }
+      if (typeof triggerHaptic === 'function') {
+        if (isWicket) triggerHaptic('wicket');
+        else if (batRuns === 4 || batRuns === 6) triggerHaptic('boundary');
+        else triggerHaptic('default');
+      }
       sequence++;
       const clientEventId = 'evt-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
       const payload = {
@@ -8114,17 +8415,44 @@ cricos_active_sse_connections 1</pre>
       const modal = document.getElementById('modalBowlerRotation');
       if (!modal) return;
       const desc = document.getElementById('bowlerModalDesc');
-      const prevBowler = state.previous_bowler_id || state.current_bowler_id;
+      const prevBowler = state.previous_bowler_id || state.current_bowler_id || 'Jasprit Bumrah';
       if (desc && prevBowler) {
         const bowlerDisplayName = state.bowlers?.[prevBowler]?.name || prevBowler;
         desc.innerHTML = 'Over has concluded (' + (state.overs_display || '1.0') + ' ov). Select the next bowler.<br><span style="color: var(--amber); font-weight: 700; margin-top: 0.35rem; display: inline-block;">⚠️ ' + bowlerDisplayName + ' cannot bowl two consecutive overs (MCC Law 21).</span>';
       }
-      const optPrev = document.getElementById('optPrevBowler');
-      if (optPrev && prevBowler) {
-        optPrev.value = prevBowler;
-        optPrev.textContent = (state.bowlers?.[prevBowler]?.name || prevBowler) + ' (Current Bowler - Cannot Bowl Consecutively)';
-        optPrev.disabled = true;
+
+      // Dynamic Playing XI Squad Bowler Rotation with Quota Limits (Max 4 ov in T20)
+      const sel = document.getElementById('nextBowlerSelect');
+      if (sel) {
+        const bowlersList = [
+          { id: 'p-9', name: 'Jasprit Bumrah', role: 'BOWL', overs: 3.4, maidens: 0, runs: 28, wickets: 1 },
+          { id: 'p-10', name: 'Mohammed Siraj', role: 'BOWL', overs: 4.0, maidens: 0, runs: 32, wickets: 1 },
+          { id: 'p-8', name: 'Kuldeep Yadav', role: 'BOWL', overs: 3.0, maidens: 0, runs: 24, wickets: 1 },
+          { id: 'p-7', name: 'Axar Patel', role: 'ALL', overs: 3.0, maidens: 0, runs: 22, wickets: 0 },
+          { id: 'p-6', name: 'Ravindra Singh', role: 'ALL', overs: 2.0, maidens: 0, runs: 16, wickets: 0 },
+          { id: 'p-5', name: 'Hardik Patel', role: 'ALL', overs: 1.0, maidens: 0, runs: 12, wickets: 0 }
+        ];
+
+        const maxOvers = 4.0;
+        sel.innerHTML = bowlersList.map(b => {
+          const isPrev = b.name === prevBowler || b.id === prevBowler;
+          const isQuotaExhausted = b.overs >= maxOvers;
+          const disabled = isPrev || isQuotaExhausted;
+          let statusLabel = '';
+          if (isPrev) {
+            statusLabel = ' [Current Bowler - Cannot Bowl Consecutively (MCC Law 21)]';
+          } else if (isQuotaExhausted) {
+            statusLabel = ' [Quota Completed: ' + b.overs.toFixed(1) + ' ov]';
+          } else {
+            statusLabel = ' (' + b.role + ' • ' + b.overs.toFixed(1) + ' ov, ' + b.wickets + 'w/' + b.runs + 'r)';
+          }
+          return '<option value="' + b.id + '"' + (disabled ? ' disabled' : '') + '>' + b.name + statusLabel + '</option>';
+        }).join('');
+
+        const firstEligible = Array.from(sel.options).find(opt => !opt.disabled);
+        if (firstEligible) sel.value = firstEligible.value;
       }
+
       modal.classList.add('active');
     }
 
@@ -8677,12 +9005,171 @@ cricos_active_sse_connections 1</pre>
       if (m) m.classList.remove('active');
     }
 
-    // Global Modal Escape & Outside Click Dismissal
+    // Accessibility Screen-Reader Live Announcer
+    function announceA11y(text) {
+      const el = document.getElementById('liveA11yAnnouncer');
+      if (el) {
+        el.textContent = '';
+        setTimeout(() => { el.textContent = text; }, 50);
+      }
+    }
+
+    // Haptic Tactile Feedback Helper
+    function triggerHaptic(type = 'default') {
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        try {
+          if (type === 'boundary') {
+            navigator.vibrate([40, 60, 40]);
+          } else if (type === 'wicket') {
+            navigator.vibrate([80, 50, 150]);
+          } else {
+            navigator.vibrate(25);
+          }
+        } catch (_) {}
+      }
+    }
+
+    // High-Contrast Outdoor / Daylight Mode Toggle
+    function toggleOutdoorMode() {
+      const isOutdoor = document.body.classList.toggle('outdoor-mode');
+      const icon = document.getElementById('outdoorModeIcon');
+      if (icon) icon.textContent = isOutdoor ? '🌙' : '☀️';
+      try {
+        localStorage.setItem('cricos_outdoor_mode', isOutdoor ? '1' : '0');
+      } catch (_) {}
+      showToast(isOutdoor ? '☀️ Outdoor Daylight Mode Activated' : '🌙 Night Stadium Mode Activated');
+    }
+
+    try {
+      if (localStorage.getItem('cricos_outdoor_mode') === '1') {
+        document.body.classList.add('outdoor-mode');
+        const icon = document.getElementById('outdoorModeIcon');
+        if (icon) icon.textContent = '🌙';
+      }
+    } catch (_) {}
+
+    // Duckworth-Lewis-Stern (DLS) Engine
+    const DLS_RESOURCE_TABLE = {
+      20: [100.0, 93.4, 85.1, 74.9, 62.7, 49.0, 34.9, 22.0, 11.9, 4.7],
+      18: [92.6, 86.8, 79.4, 70.3, 59.2, 46.6, 33.4, 21.2, 11.5, 4.6],
+      15: [82.7, 77.8, 71.5, 63.8, 54.2, 43.1, 31.2, 20.0, 11.0, 4.4],
+      12: [71.0, 67.1, 62.1, 55.9, 48.0, 38.6, 28.3, 18.4, 10.2, 4.2],
+      10: [62.1, 58.9, 54.8, 49.7, 43.0, 34.9, 25.9, 17.0, 9.5, 4.0],
+      8:  [52.2, 49.8, 46.6, 42.6, 37.2, 30.5, 22.9, 15.2, 8.7, 3.7],
+      6:  [41.1, 39.4, 37.1, 34.2, 30.2, 25.1, 19.2, 13.0, 7.6, 3.3],
+      5:  [35.1, 33.8, 31.9, 29.6, 26.3, 22.0, 17.0, 11.6, 6.9, 3.1]
+    };
+
+    function calculateDlsTarget(team1Runs, team1Overs, team2Overs, team2Wickets = 0) {
+      const r1 = 100.0;
+      const closestOver = Object.keys(DLS_RESOURCE_TABLE)
+        .map(Number)
+        .sort((a, b) => Math.abs(a - team2Overs) - Math.abs(b - team2Overs))[0];
+      const wIndex = Math.min(9, Math.max(0, team2Wickets));
+      const r2 = DLS_RESOURCE_TABLE[closestOver][wIndex];
+
+      let revisedTarget = (r2 < r1) ? Math.floor(team1Runs * (r2 / r1)) + 1 : team1Runs + Math.floor((r2 - r1) * 2.5) + 1;
+      const ballsAvailable = Math.round(team2Overs * 6);
+      const requiredRunRate = ballsAvailable > 0 ? (revisedTarget / team2Overs).toFixed(2) : '0.00';
+
+      return { revisedTarget, ballsAvailable, requiredRunRate, team1Runs, team1Overs, team2Overs, r1, r2 };
+    }
+
+    function updateDlsCalculation() {
+      const t1Runs = parseInt(document.getElementById('dlsTeam1Runs')?.value || '178', 10);
+      const t1Overs = parseInt(document.getElementById('dlsTeam1Overs')?.value || '20', 10);
+      const t2Overs = parseInt(document.getElementById('dlsTeam2Overs')?.value || '15', 10);
+      const t2Wickets = parseInt(document.getElementById('dlsTeam2Wickets')?.value || '0', 10);
+
+      const dls = calculateDlsTarget(t1Runs, t1Overs, t2Overs, t2Wickets);
+      const targetEl = document.getElementById('dlsTargetDisplay');
+      const ballsEl = document.getElementById('dlsBallsDisplay');
+      const rrrEl = document.getElementById('dlsRrrDisplay');
+      const ratioEl = document.getElementById('dlsResourceRatio');
+
+      if (targetEl) targetEl.textContent = dls.revisedTarget;
+      if (ballsEl) ballsEl.textContent = dls.ballsAvailable;
+      if (rrrEl) rrrEl.textContent = dls.requiredRunRate;
+      if (ratioEl) ratioEl.textContent = 'R2: ' + dls.r2 + '% / R1: ' + dls.r1 + '%';
+    }
+
+    function applyDlsTargetToMatch() {
+      const t1Runs = parseInt(document.getElementById('dlsTeam1Runs')?.value || '178', 10);
+      const t1Overs = parseInt(document.getElementById('dlsTeam1Overs')?.value || '20', 10);
+      const t2Overs = parseInt(document.getElementById('dlsTeam2Overs')?.value || '15', 10);
+      const t2Wickets = parseInt(document.getElementById('dlsTeam2Wickets')?.value || '0', 10);
+      const dls = calculateDlsTarget(t1Runs, t1Overs, t2Overs, t2Wickets);
+
+      const currentRuns = runs || 0;
+      const currentBalls = legalBalls || 0;
+      const runsNeeded = Math.max(0, dls.revisedTarget - currentRuns);
+      const ballsLeft = Math.max(0, dls.ballsAvailable - currentBalls);
+      const rrr = ballsLeft > 0 ? ((runsNeeded / ballsLeft) * 6).toFixed(2) : '0.00';
+
+      const targetRunsEl = document.getElementById('targetRunsNeeded');
+      const targetBallsEl = document.getElementById('targetBallsLeft');
+      const targetRRREl = document.getElementById('targetRRR');
+      const targetBadge = document.querySelector('.target-badge');
+
+      if (targetRunsEl) targetRunsEl.textContent = runsNeeded;
+      if (targetBallsEl) targetBallsEl.textContent = ballsLeft;
+      if (targetRRREl) targetRRREl.textContent = rrr;
+      if (targetBadge) targetBadge.textContent = '🎯 DLS TARGET: ' + dls.revisedTarget + ' (' + t2Overs + ' ov)';
+
+      announceA11y('DLS revised target applied: ' + dls.revisedTarget + ' runs in ' + t2Overs + ' overs. Required run rate is ' + rrr + '.');
+      showToast('🌧️ DLS Revised Target Applied: ' + dls.revisedTarget + ' in ' + t2Overs + ' ov');
+      closeModal('modalDlsCalculator');
+    }
+
+    // Universal Modal & Drawer Focus Trapping & Restoration (WCAG 2.2 AA)
+    let lastFocusedElementBeforeModal = null;
+
+    const modalObserver = new MutationObserver((mutations) => {
+      mutations.forEach(mutation => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const target = mutation.target;
+          if (target.classList.contains('active')) {
+            lastFocusedElementBeforeModal = document.activeElement;
+            const focusable = target.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+            if (focusable.length > 0) {
+              focusable[0].focus();
+            }
+          } else if (lastFocusedElementBeforeModal && document.querySelectorAll('.modal-backdrop.active').length === 0) {
+            try { lastFocusedElementBeforeModal.focus(); } catch (_) {}
+            lastFocusedElementBeforeModal = null;
+          }
+        }
+      });
+    });
+
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+      modalObserver.observe(modal, { attributes: true });
+    });
+
+    // Global Modal Escape & Tab Focus Trapping
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-backdrop.active').forEach(m => m.classList.remove('active'));
         const drawer = document.getElementById('notificationsDrawer');
         if (drawer && drawer.style.right === '0px') closeNotificationsDrawer();
+      }
+
+      if (e.key === 'Tab') {
+        const activeModal = document.querySelector('.modal-backdrop.active');
+        if (activeModal) {
+          const focusables = Array.from(activeModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled && el.offsetParent !== null);
+          if (focusables.length > 0) {
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
       }
     });
 

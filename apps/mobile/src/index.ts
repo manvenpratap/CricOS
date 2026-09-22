@@ -220,11 +220,31 @@ export class CricOSMobileApp {
     }
   }
 
+  // Haptic Tactile Feedback Helper
+  private triggerHaptic(type: 'default' | 'boundary' | 'wicket' = 'default'): void {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        if (type === 'boundary') {
+          navigator.vibrate([40, 60, 40]);
+        } else if (type === 'wicket') {
+          navigator.vibrate([80, 50, 150]);
+        } else {
+          navigator.vibrate(25);
+        }
+      } catch (_) {}
+    }
+  }
+
   // Live Match & Scoring Handlers
   public scoreBall(runs: number): void {
     if (this.getUserPersona() !== 'SCORER') {
       alert('🔒 Only official Scorers can score deliveries.');
       return;
+    }
+    if (runs === 4 || runs === 6) {
+      this.triggerHaptic('boundary');
+    } else {
+      this.triggerHaptic('default');
     }
     this.matchCtrl.recordDelivery({ runs });
     this.render();
@@ -235,6 +255,7 @@ export class CricOSMobileApp {
       alert('🔒 Only official Scorers can score extras.');
       return;
     }
+    this.triggerHaptic('default');
     this.matchCtrl.recordDelivery({ runs: 1, isExtra: true, extraType });
     this.render();
   }
@@ -246,6 +267,7 @@ export class CricOSMobileApp {
     }
     const confirmed = confirm('Confirm Wicket: Dismiss current striker and bring in new batter?');
     if (confirmed) {
+      this.triggerHaptic('wicket');
       this.matchCtrl.recordDelivery({
         runs: 0,
         isWicket: true,

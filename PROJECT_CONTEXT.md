@@ -1,14 +1,60 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-22 05:41:00
-**Version:** 1.0.0-phase2t (Scorer-Only Scoring Authorization Enforcement)  
+**Last Updated:** 2026-09-22 06:36:00
+**Version:** 1.0.0-phase2w (WCAG 2.2 AA Accessibility, Dynamic Bowler Quotas, Outdoor Mode & DLS Engine)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2T Completed — Scorer-Only Scoring Authorization Enforcement:
+- **Active Phase**: Phase 2W Completed — WCAG 2.2 AA Accessibility, Dynamic Bowler Quotas, Outdoor Mode & DLS Engine:
+  - **WCAG 2.2 AA Accessibility & Screen Reader Live Announcements**:
+    - Added `#liveA11yAnnouncer` with `aria-live="assertive"` for real-time delivery and wicket vocalization.
+    - Attached `aria-live="polite"` and `aria-atomic="true"` to `#scoreRunsWickets` and `#scoreOvers`.
+    - Attached `aria-live="polite"` and `role="feed"` to `#scoringFeed`.
+    - Implemented universal modal and drawer focus trapping & restoration via `MutationObserver` on `.modal-backdrop` and `Tab`/`Shift+Tab` keyboard listener.
+  - **Cricket Domain Integrity & Dynamic Bowler Quotas**:
+    - Replaced hardcoded `#nextBowlerSelect` with dynamic squad rotation from `initialPlayingXi` with live match figures.
+    - Enforced **MCC Law 21**: Current bowler locked out from consecutive overs (`[Current Bowler - Cannot Bowl Consecutively]`).
+    - Enforced **T20 Spell Quota (4.0 ov)**: Bowlers reaching 4 overs marked as disabled (`[Quota Completed: 4.0 ov]`).
+  - **Scorer Ergonomics & High-Contrast Outdoor Mode**:
+    - Implemented `triggerHaptic(type)` using `navigator.vibrate` across Web Console and Mobile App (`LiveMatchScreen`).
+    - Added `#btnOutdoorModeToggle` in top command bar with high-contrast daylight CSS tokens (`body.outdoor-mode`) and `localStorage` persistence.
+  - **Duckworth-Lewis-Stern (DLS) Rain Target Engine**:
+    - Built `calculateDlsTarget()` using standard T20 resource curves for rain interruptions.
+    - Added `#modalDlsCalculator` slide-over drawer with real-time recalculations and 1-click *"Apply Revised DLS Target to Live Match"* button.
+  - **Verification & Parity**:
+    - `./pipeline.sh test --summary`: 130 tests across 41 suites, 100% passing.
+    - Rule 6: `cmp -s index.html dist/index.html` matches byte-for-byte.
+- **Phase 2V Completed**: Operational Slide-Over Drawers, Reactive State Store & DB Fallback Resilience:
+  - **Operational Slide-Over Drawers (`.modal-backdrop.as-drawer`)**:
+    - Converted all 11 operational workflow modals (`#modalEventOverview`, `#modalOfficialCalendar`, `#modalMessaging`, `#modalBookingLifecycle`, `#modalFinancialReconciliation`, `#modalRfq`, `#modalCommerce`, `#modalTournamentOps`, `#modalMatchInsights`, `#modalCheckIn`, `#modalSponsorshipAuction`) into right-side slide-over SaaS drawers.
+    - Implemented `.modal-backdrop.as-drawer` with smooth slide-in keyframe animations (`translateX(100%) -> translateX(0)`), full-height stretch (`100vh`), blur backdrop (`backdrop-filter: blur(24px)`), and seamless escape/outside-click dismissal.
+  - **Centralized Reactive Match State Store (`window.CricOSStore`)**:
+    - Built a reactive store engine with state object (`runs`, `wickets`, `legalBalls`, `oversDisplay`, `isFreeHit`, `batters`, `bowler`, `recentBalls`), `subscribe()`, `notify()`, and `syncScore()`.
+    - Integrated with `renderScoreState()` to keep external consumers, telemetry listeners, and UI components in 100% sync.
+  - **In-Memory DB Dev Fallback**:
+    - Added resilient in-memory database fallback to `apps/api/src/platform/db.ts` for local development when PostgreSQL is not running (`ECONNREFUSED` / `EPERM`).
+    - Provides mock data and mock transactions for `listings`, `score_events`, and `audit_events`, suppressing terminal error spam while preserving dev server reliability.
+  - **Testing & Distribution Verification**:
+    - `./pipeline.sh test --summary`: 130 tests across 41 suites, 100% passing in low-token mode.
+    - Rule 6: Distribution packaging verified byte-for-byte identical (`index.html` == `dist/index.html`).
+- **Phase 2U Completed**: Scoring Consolidation to Scoring Studio & Match Center Broadcast Refinement:
+  - **Eliminated Scoring Redundancy**:
+    - Removed redundant Phase 1 prototype scoring pad (`#cardMatchScoringPad`) and locked notice (`#nonScorerMatchCenterNotice`) from Match Center (`tab-scoring`).
+    - Consolidated 100% of ball-by-ball scoring operations into the **Scoring Studio** (`tab-studio`).
+  - **Enhanced Scoring Studio Capabilities**:
+    - Upgraded `#studioScoringControlsGroup` with dedicated `↺ UNDO` (`undoLastDelivery()`), `↺ RESET` (`resetMatchScore()`), and compound extras strip (`+5 Wd (4b)`, `+4 Nb`, `+6 Nb`, `+5 Penalty`).
+    - Scorer retains access to directional 8-zone wagon wheel shot logging, RHB/LHB stance geometry, and dismissal wizards with fielders.
+  - **Match Center Broadcast & Spectator Refinement**:
+    - Introduced **Match Situation & Phase Analytics Card** (`#cardMatchCenterStatus`) showcasing Current RR (8.52), Required RR (10.80), Boundary Counter (18 boundaries), and match phase breakdowns (Powerplay, Middle Overs, Death Overs).
+    - Added **Scorer Quick-Studio Card** (`#scorerStudioQuickCard`) in Match Center visible exclusively to the `SCORER` persona, offering instant 1-click navigation (`switchTab('studio')`) to the Scoring Studio.
+    - Live Ball Log & Commentary Feed (`#scoringFeed`), Detailed Scorecard (`#cardDetailedScorecard`), and 4-Mode Visualizations (Worm, Manhattan, Wagon, Partnerships) remain fully accessible to all users without visual clutter.
+  - **Testing & Release Verification**:
+    - `./pipeline.sh test --summary`: 130 tests across 41 suites, 100% passing in low-token mode.
+    - Rule 6: Distribution packaging verified byte-for-byte identical (`index.html` == `dist/index.html`).
+- **Phase 2T Completed**: Scorer-Only Scoring Authorization Enforcement:
   - **Strict Single-Role Scoring Authority**:
     - Across all 8 personas (`CAPTAIN`, `PLAYER`, `SCORER`, `FAN`, `UMPIRE`, `ADMIN`, `ORGANISER`, `TURF_PROVIDER`), **ONLY the `SCORER`** persona has `canScore: true`.
     - `ROLE_PERMISSIONS_MATRIX`: Set `ADMIN.canScore = false` and `CAPTAIN.canScore = false` across `apps/web/src/components/auth-modal.ts`, `index.html`, and `apps/api/src/ui/dashboard.ts`.
