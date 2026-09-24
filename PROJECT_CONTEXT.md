@@ -1,14 +1,57 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-24 22:25:00
-**Version:** 1.0.0-phase2aa (Three.js Interaction & 3D WebGL Stadium Architecture)  
+**Last Updated:** 2026-09-24 22:52:00
+**Version:** 1.0.0-phase2ac (Complete 3D Web Experiences: POVs, Lighting, Fielders, DRS, Fusion, Trophy, Cards, Bat Configurator)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AA Completed — Three.js Interaction & 3D WebGL Stadium Architecture:
+- **Active Phase**: Phase 2AC Completed — Complete 3D Web Experiences (8 Experiences Suite):
+  - **1. Virtual Stadium Seat POVs**:
+    - Added 3 interactive camera vantage presets to `#threeCameraBar`: Grandstand (`#btnCamGrandstand`, elevation 18m, 32m deep behind bowler), Pavilion (`#btnCamPavilion`, members pavilion side-on angle `(24, 12, 0)`), and Umpire POV (`#btnCamUmpire`, standing directly behind the non-striker's stumps at `(0, 1.8, -12)` looking straight down pitch).
+  - **2. Dynamic Day/Night Stadium Lighting Engine**:
+    - Added lighting condition presets (`☀️ Day`, `🌅 Dusk`, `🌙 Night`) in the sub-bar toolbar.
+    - Modulates ambient light intensity and color (`0xFFFFFF` high-noon down to `0x1A2035` midnight blue), directional sun inclination and shadow warmth, and dynamic floodlight tower emissive intensity (`0x000000` off during day, `0x00E599` high-output floodlit beam at night).
+  - **3. Interactive 3D Field Placement Editor (`👥 Fielders`)**:
+    - Modeled 11 tactical fielder figurines (torso cylinders, head spheres, team caps) placed across canonical positions (Wicketkeeper, Slips, Gully, Point, Cover, Mid-off, Mid-on, Mid-wicket, Square Leg, Fine Leg, Third Man).
+    - Rendered dynamic catch probability cones and ground-patrol coverage circles with pulsating semi-transparent discs.
+    - Full raycast selection and hover integration: clicking or hovering any fielder displays real-time telemetry (name, fielding position, catch probability index, and reaction radius) in the floating 3D HUD tooltip.
+  - **4. Procedural LBW & Stumps Tracking (`⚖️ DRS Review`)**:
+    - Modeled authentic broadcast DRS review state machine with 3-stage delivery tube: Bowler Release $\to$ Pitch Bounce (in-line check) $\to$ Pad Impact $\to$ Wickets Projected Path.
+    - Procedural conical uncertainty volume widening past pad impact point.
+    - Glowing stumps collision impact sphere and broadcast verdict badge (`OUT - PITCHING: IN-LINE, IMPACT: IN-LINE, WICKETS: HITTING (MIDDLE STUMP)`).
+  - **5. Pitch Map & Wagon Wheel Fusion (`🔀 Fusion`)**:
+    - Simultaneous 3D trajectory view connecting delivery pitch bounce directly into a towering 92m maximum six landing over Long-On.
+    - Synchronized dual Catmull-Rom curves depicting incoming delivery velocity (146.4 kph) and resultant off-the-bat launch velocity (158.2 kph at 34° launch angle).
+  - **6. Interactive 3D Trophy Cabinet (`#modal3DTrophyCabinet`)**:
+    - Dedicated 3D inspectable showcase with auto-orbit controls, pedestals, and dynamic model switcher:
+      - *Premier League Trophy*: Multi-tiered pedestal, fluted cup body, flared rim, and dual curved handles.
+      - *Player of the Tournament Shield*: Heavy octagonal beveled shield with radiant center emblem.
+      - *Golden Bat Award*: Polished metallic golden blade with grip rings and mirror finish.
+  - **7. Holographic 3D Player Card Inspector (`#modal3DPlayerCard`)**:
+    - 3D card mesh with realistic pointer tilt physics (`rotX = -mouseY * 0.4`, `rotY = mouseX * 0.4`), specular sheen highlights, and role-based chromatic border accents (Emerald for All-Rounders, Cyan for Batsmen, Purple for Bowlers).
+    - Floating 3D holographic badges, depth-layered stat pedestals, and smooth reset-on-pointerleave.
+  - **8. 3D Cricket Bat & Gear Configurator (`#modal3DBatCustomizer`)**:
+    - Contoured 3D willow blade with curved sweet-spot spine, cane handle, and 5 distinct rubber grip texture rings.
+    - Interactive willow selector: Grade 1 English Willow (`#E8C896`), Kashmiri Willow (`#D4A76A`), and Carbon-Core Hybrid (`#27272A`).
+    - Interactive grip color switcher: Emerald (`0x00E599`), Cyan (`0x00D2FF`), Amber (`0xFFB800`), Purple (`0xA855F7`), Crimson (`0xFF3366`), and Stealth Carbon (`0x1E293B`).
+    - Direct integration with CricOS Event Basket commerce engine via 1-click "Add Custom Gear to Basket" action.
+  - **9. Testing & Distribution Hardening**:
+    - Expanded `tests/37-threejs-interaction.test.ts` to 45 assertions across 15 test suites.
+    - `./pipeline.sh test --summary`: 229 tests across 75 suites, 100% passing in low-token mode.
+    - `./pipeline.sh doctor`: Zero issues, verified byte-for-byte identity of `index.html` $\leftrightarrow$ `dist/index.html`.
+- **Preceding Phase**: Phase 2AB Completed — 3D Web Experience & Hawkeye Ball-Tracking Pitch Map:
+  - **1. Skill `3d-web-experience` (Broadcast Auto-Cam, Hawkeye Pitch Map & Ball Tracer)**:
+    - **360° Broadcast Auto-Orbit (`🛰 Auto-Cam`)**: Added continuous damped camera auto-rotation (`toggleAutoRotate()`, `autoRotateSpeed = 0.005`) that gracefully suspends during pointer drag and resumes when idle.
+    - **3D Hawkeye Ball-Tracking Pitch Map (`🎯 Hawkeye`)**: Implemented dual visual modes (`visualMode: 'WAGON' | 'HAWKEYE'`) toggled via `#btnThreeSubMode`. Renders 4 color-coded pitch length heatmap zones: Yorker (`#FF3366`, 0–1.2m from crease), Full (`#FFB800`, 1.5–3.0m), Good Length (`#00E599`, corridor of uncertainty), and Short Pitch (`#A855F7`, bouncer zone).
+    - **Delivery Trajectories & Bounce Telemetry**: Modeled 6 distinct deliveries (Mitchell Starc 19th over) with two-stage 3D Catmull-Rom tubes (bowler release -> pitch bounce -> stumps) and glowing bounce disks. Clicking or hovering any trajectory updates the 3D HUD tooltip with speed, line, length, and wicket telemetry.
+    - **Animated Ball Tracer & Landing Impact Flash**: Implemented `playBallAnimation(curve, color)` animating a 3D cricket ball traversing delivery curves in real time, accompanied by an expanding impact shockwave ring on pitch contact.
+    - **4 Corner Floodlight Stadium Towers**: Modeled 4 architectural floodlight towers at $(\pm 14.5, 0, \pm 14.5)$ with pylons, head crossbars, and emissive LED stadium floodlight banks.
+    - **WebGL Detection & Graceful Fallback**: Added `checkWebGLSupport()` verifying WebGL availability; displays `#threeJsFallbackNotice` if hardware acceleration is unavailable with 1-click return to the 2D schematic map.
+    - **Mobile DPR Guardrail**: Device-aware DPR limiting (`isMobile ? 1 : Math.min(devicePixelRatio, 2)`) preventing GPU thermal throttling on mobile devices.
+- **Preceding Phase**: Phase 2AA Completed — Three.js Interaction & 3D WebGL Stadium Architecture:
   - **1. Skill `threejs-interaction` (Raycasting, Damped Controls & InteractionManager)**:
     - Implemented canonical `CricOS3DInteractionManager` class providing complete raycasting object picking, pointer tracking with canvas bounding rect normalization (`updateMouse`), and throttled hover raycasting.
     - Implemented damped spherical orbit camera controls with rotation/zoom limits (`minPolarAngle: 0.12`, `maxPolarAngle: Math.PI / 2.08` rad) guaranteeing the camera stays strictly above the pitch surface.
@@ -23,7 +66,6 @@
   - **3. Resilient Math Fallback & Distribution Parity**:
     - Integrated Three.js r128 CDN script tag in `<head>` plus an offline math polyfill (`initThreeFallback()`) to allow unit tests and offline environments to execute without network dependency.
     - Added seamless 2D/3D switcher in Wagon Wheel card header (`#btnWagonMode2D` vs `#btnWagonMode3D`).
-    - Added 18 new test assertions in `tests/37-threejs-interaction.test.ts` (all 202 tests pass in low-token mode).
     - Rule 6 release parity: verified `index.html` and `dist/index.html` are byte-for-byte identical.
 - **Preceding Phase**: Phase 2Z Completed — Emil Kowalski 13-Skill Enhanced Nuances & Physics Architecture:
   - **1. Skill `animate` (Compositor-Only & Asymmetric Timing)**:
@@ -459,6 +501,9 @@
 - [x] Phase 2H: UI/UX Pro Max Deep Elevation & Accessibility Hardening (WCAG 2.2 AA Focus Visibility, Reduced Motion, Tabular Numerics, Tactile Micro-Interactions, Spring Modal Pop-Ins & Mobile Mockup Polish)
 - [x] Phase 2I: Scorer Overhaul & Tactical Engine Completion (Single-Ball Undo, Free Hit State Machine, MCC Law 21 Bowler Rotation, Compound Extras, Manual Strike Swap & 8-Zone Wagon Wheel Linkage)
 - [x] Phase 2J: Complete P0, P1, P2 & P3 Backlog Delivery (RFQ & Quotes, Physical Commerce & Gear, Bulk Fixtures & Conflict Detection, Provider Check-In & 3-Party Sign-Off, MVP Impact Points, AI Narrative, Sponsorship Inventory, Virtual Player Auctions, Rain Insurance)
+- [x] Phase 2AA: Three.js Interaction & 3D WebGL Stadium Architecture
+- [x] Phase 2AB: 3D Web Experience & Hawkeye Ball-Tracking Pitch Map
+- [x] Phase 2AC: Complete 3D Web Experiences (8 Experiences Suite: Virtual POVs, Dynamic Lighting, Field Placement Editor, Procedural LBW DRS Review, Fusion Trajectory, 3D Trophy Cabinet, Holographic Player Card, 3D Bat Configurator)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
 
 
