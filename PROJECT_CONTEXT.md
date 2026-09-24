@@ -1,14 +1,36 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-22 06:36:00
-**Version:** 1.0.0-phase2w (WCAG 2.2 AA Accessibility, Dynamic Bowler Quotas, Outdoor Mode & DLS Engine)  
+**Last Updated:** 2026-09-24 09:12:00
+**Version:** 1.0.0-phase2x (Real-Time Persona Switching, Command Bar Badge & Profile Synchronization)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2W Completed — WCAG 2.2 AA Accessibility, Dynamic Bowler Quotas, Outdoor Mode & DLS Engine:
+- **Active Phase**: Phase 2X Completed — Real-Time Persona Switching & Profile Synchronization:
+  - **Persona Pill Visual Active State Sync**:
+    - Fixed `.persona-pill-btn` stagnation by dynamically toggling `.active` across all persona pills in `selectPersona(role)`.
+    - Added state synchronization in `openUserModal()` so opening the modal always highlights the current active persona and populates matching profile values.
+  - **Top Command Bar Active Persona Badge (`#activePersonaBadge`)**:
+    - Added `#activePersonaBadge` to `app-topbar` with accessible `data-tooltip`, dynamic persona icon, role color badge, and 1-click modal opener.
+    - Updated `applyRolePermissions(role)` to dynamically sync badge color, background, border, icon, and label.
+  - **Sidebar Footer Profile Identity Synchronization**:
+    - Connected `applyRolePermissions(role)` to update `#headerUserName` (e.g. `Hardik Patel`), `#headerUserRoleBadge` (e.g. `PLAYER #33` in cyan `#00D2FF`), and `#headerUserAvatar` (initials `HP` with role theme background).
+    - Synchronized `saveUserProfile()` to reflect custom profile edits in the sidebar and topbar immediately.
+  - **Playing XI Roster `YOU` Badge**:
+    - Enhanced `renderRoster()` to display a highlighted `YOU` badge beside the active player row in the squad roster.
+  - **Mobile Webview Persona Synchronization**:
+    - Updated `switchUserPersona(role)` in `mobile-view.ts` with matching default profiles (`Hardik P.`, #33, `ALL_ROUNDER`), ensuring immediate updates to the mobile profile screen card.
+  - **Testing & Distribution Verification**:
+    - Added `tests/35-persona-switching-and-profile-sync.test.ts` (12 new assertions).
+    - `./pipeline.sh test --summary`: 142 tests across 46 suites, 100% passing in low-token mode.
+    - Rule 6: `cmp -s index.html dist/index.html` verified byte-for-byte identical.
+- **Phase 2W Completed**: WCAG 2.2 AA Accessibility, Dynamic Bowler Quotas, Outdoor Mode, DLS Engine & Mobile Runtime Fix:
+  - **Standalone Mobile Webview Runtime Fix**:
+    - Resolved `SyntaxError: Unexpected identifier 'WORM'` caused by unescaped single quotes inside inline `onclick` handler strings within `mobile-view.ts`.
+    - Refactored button handlers (`toggleChart`, `sendCheer`, `votePoll`, `selectWagonZone`, `scoreExtra`, `bookTurfInstant`, `switchUserPersona`, `navigateTo`) to standard `this.dataset.*` attributes, eliminating quote conflict and restoring mobile screen rendering.
+    - Added automated regression test in `tests/33-mobile-app-journeys.test.ts` verifying embedded mobile client script parses with zero syntax errors.
   - **WCAG 2.2 AA Accessibility & Screen Reader Live Announcements**:
     - Added `#liveA11yAnnouncer` with `aria-live="assertive"` for real-time delivery and wicket vocalization.
     - Attached `aria-live="polite"` and `aria-atomic="true"` to `#scoreRunsWickets` and `#scoreOvers`.

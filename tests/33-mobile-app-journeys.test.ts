@@ -466,6 +466,13 @@ describe('33. Mobile App User Journeys & Multi-Persona Architecture', () => {
       assert.ok(mobileHtml.includes('data-tooltip'));
       assert.ok(mobileHtml.includes('data-tooltip="Switch to Platform Console"'));
       assert.ok(mobileHtml.includes('data-tooltip="Inspect REST & WebSocket API Specs"'));
+
+      // Verify embedded mobile client script parses with zero syntax errors
+      const scriptMatch = mobileHtml.match(/<script type="module">([\s\S]*?)<\/script>/);
+      assert.ok(scriptMatch, 'Mobile HTML must contain a module script');
+      assert.doesNotThrow(() => {
+        new Function(scriptMatch[1]);
+      }, 'Embedded mobile client script must parse with zero syntax errors');
     });
 
     it('verifies distribution files and byte-for-byte single-file parity (Rule 6)', () => {

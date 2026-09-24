@@ -183,6 +183,7 @@ export function getDashboardHtml(): string {
       line-height: 1.1;
       background: linear-gradient(135deg, #FFFFFF 40%, var(--turf-emerald) 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -2162,6 +2163,9 @@ export function getDashboardHtml(): string {
 
           <div class="header-nav-divider"></div>
 
+          <!-- Utility: Active Persona Badge (Click to open Persona Switcher) -->
+          <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: all 0.2s;" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
+
           <!-- Utility: High-Contrast Outdoor / Daylight Mode Toggle -->
           <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" data-tooltip="Toggle High-Contrast Outdoor Mode for sunlight visibility" aria-label="Toggle Outdoor Mode">
             <span class="pill-icon" id="outdoorModeIcon">☀️</span>
@@ -3302,20 +3306,20 @@ export function getDashboardHtml(): string {
           <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Verified Career Figures</div>
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center;">
             <div>
-              <div style="font-size: 0.68rem; color: var(--text-muted);">Matches</div>
-              <div style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; font-family: var(--font-score);">48</div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);" id="lblCareerStat1">Matches</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; font-family: var(--font-score);" id="statCareerMatches">48</div>
             </div>
             <div>
-              <div style="font-size: 0.68rem; color: var(--text-muted);">Runs</div>
-              <div style="font-size: 1.15rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);">1,850</div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);" id="lblCareerStat2">Runs</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);" id="statCareerRuns">1,850</div>
             </div>
             <div>
-              <div style="font-size: 0.68rem; color: var(--text-muted);">Average</div>
-              <div style="font-size: 1.15rem; font-weight: 800; color: var(--cyan); font-family: var(--font-score);">46.25</div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);" id="lblCareerStat3">Average</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--cyan); font-family: var(--font-score);" id="statCareerAvg">46.25</div>
             </div>
             <div>
-              <div style="font-size: 0.68rem; color: var(--text-muted);">Strike Rate</div>
-              <div style="font-size: 1.15rem; font-weight: 800; color: var(--amber); font-family: var(--font-score);">144.5</div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);" id="lblCareerStat4">Strike Rate</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: var(--amber); font-family: var(--font-score);" id="statCareerSR">144.5</div>
             </div>
           </div>
         </div>
@@ -5198,6 +5202,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(0, 229, 153, 0.15)',
         icon: '👑',
         label: 'Captain',
+        description: 'Manage Playing XI, toss, declarations, and tactical pad',
         canConductToss: true,
         canManageLineup: true,
         canScore: false, // Tactical mode in studio
@@ -5213,6 +5218,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(0, 210, 255, 0.15)',
         icon: '🏏',
         label: 'Player',
+        description: 'Career stats, RSVP, squad roster, and match fixtures',
         canConductToss: false,
         canManageLineup: false,
         canScore: false,
@@ -5228,6 +5234,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(255, 184, 0, 0.15)',
         icon: '📋',
         label: 'Official Scorer',
+        description: 'Ball-by-ball scoring, dismissals, wagon wheel, and match sign-off',
         canConductToss: false,
         canManageLineup: false,
         canScore: true,
@@ -5243,6 +5250,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(192, 132, 252, 0.15)',
         icon: '🎪',
         label: 'Fan',
+        description: 'Live spectator broadcast, cheering console, polls, and MVP insights',
         canConductToss: false,
         canManageLineup: false,
         canScore: false,
@@ -5258,6 +5266,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(56, 189, 248, 0.15)',
         icon: '⚖️',
         label: 'Official Umpire',
+        description: 'Fair play reports, code of conduct breaches, DRS reviews, and sign-off',
         canConductToss: false,
         canManageLineup: false,
         canScore: false,
@@ -5273,6 +5282,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(255, 51, 102, 0.15)',
         icon: '⚡',
         label: 'Admin',
+        description: 'Unrestricted access across all consoles, ledgers, audit desk, and APIs',
         canConductToss: true,
         canManageLineup: true,
         canScore: false,
@@ -5288,6 +5298,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(168, 85, 247, 0.15)',
         icon: '🏆',
         label: 'Organiser',
+        description: 'Fixture brackets, round-robin scheduler, and venue RFQs',
         canConductToss: false,
         canManageLineup: true,
         canScore: false,
@@ -5303,6 +5314,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(52, 211, 153, 0.15)',
         icon: '🏟️',
         label: 'Provider',
+        description: 'Turf ground slots, surge pricing, and escrow payouts',
         canConductToss: false,
         canManageLineup: false,
         canScore: false,
@@ -5409,7 +5421,27 @@ cricos_active_sse_connections 1</pre>
 
     function openUserModal() {
       const modal = document.getElementById('modalUserProfile');
-      if (modal) modal.classList.add('active');
+      if (modal) {
+        modal.classList.add('active');
+        // Synchronize modal input fields with currentUser
+        const nameInput = document.getElementById('profileInputName');
+        const jerseyInput = document.getElementById('profileInputJersey');
+        const battingSelect = document.getElementById('profileInputBatting');
+        const bowlingSelect = document.getElementById('profileInputBowling');
+        if (nameInput) nameInput.value = currentUser.name || '';
+        if (jerseyInput) jerseyInput.value = currentUser.jerseyNumber || 18;
+        if (battingSelect) battingSelect.value = currentUser.battingStyle || 'RHB';
+        if (bowlingSelect) bowlingSelect.value = currentUser.bowlingStyle || 'Right-Arm Fast';
+
+        // Synchronize persona pill buttons visual active state
+        document.querySelectorAll('.persona-pill-btn').forEach(btn => {
+          if (btn.getAttribute('data-role') === currentUser.persona) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
     }
 
     function closeUserModal() {
@@ -5427,20 +5459,35 @@ cricos_active_sse_connections 1</pre>
         badge.style.background = perms.badgeBg;
         badge.style.borderColor = perms.badgeColor;
         badge.innerHTML = perms.icon + ' ' + perms.label.toUpperCase();
-        badge.setAttribute('data-tooltip', 'Active Persona: ' + perms.label + ' • ' + perms.description);
+        badge.setAttribute('data-tooltip', 'Active Persona: ' + perms.label + ' • ' + (perms.description || ''));
       }
 
-      // 2. Tab Gating (show/hide sidebar nav tabs based on permissions)
+      // 2. Update Sidebar footer profile identity
+      const headerAvatar = document.getElementById('headerUserAvatar');
+      const headerName = document.getElementById('headerUserName');
+      const headerRole = document.getElementById('headerUserRoleBadge');
+      if (headerName) headerName.textContent = currentUser.name;
+      if (headerRole) {
+        headerRole.textContent = perms.label.toUpperCase() + ' #' + currentUser.jerseyNumber;
+        headerRole.style.color = perms.badgeColor;
+      }
+      if (headerAvatar) {
+        const initials = currentUser.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'CR';
+        headerAvatar.textContent = initials;
+        headerAvatar.style.background = perms.badgeColor;
+      }
+
+      // 3. Tab Gating (show/hide sidebar nav tabs based on permissions)
       const allTabs = ['scoring', 'teams', 'tournaments', 'marketplace', 'studio', 'incidents', 'officials', 'admin', 'explorer'];
       allTabs.forEach(tabKey => {
-        const navItem = document.querySelector(\`.sidebar-nav-item[data-tab="\${tabKey}"]\`);
+        const navItem = document.querySelector('.sidebar-nav-item[data-tab="' + tabKey + '"]');
         if (navItem) {
           const isAllowed = perms.allowedTabs.includes(tabKey);
           navItem.style.display = isAllowed ? 'flex' : 'none';
         }
       });
 
-      // 3. Tab Redirection Safety
+      // 4. Tab Redirection Safety
       const currentActiveTabPane = document.querySelector('.tab-pane.active');
       const currentTabKey = currentActiveTabPane ? currentActiveTabPane.id.replace('tab-', '') : 'scoring';
       const activeTabAllowed = perms.allowedTabs.includes(currentTabKey);
@@ -5450,7 +5497,7 @@ cricos_active_sse_connections 1</pre>
         switchTab(perms.defaultTab);
       }
 
-      // 4. Update Match Center elements: Fan Cheering vs Scorer Studio Quick Card
+      // 5. Update Match Center elements: Fan Cheering vs Scorer Studio Quick Card
       const cheerSection = document.getElementById('fanCheerSection');
       const scorerQuickCard = document.getElementById('scorerStudioQuickCard');
       const tossBtn = document.getElementById('btnConductToss');
@@ -5459,7 +5506,7 @@ cricos_active_sse_connections 1</pre>
       if (scorerQuickCard) scorerQuickCard.style.display = (role === 'SCORER') ? 'block' : 'none';
       if (tossBtn) tossBtn.style.display = perms.canConductToss ? 'inline-block' : 'none';
 
-      // 5. Update Studio Pad modes
+      // 6. Update Studio Pad modes
       const studioModePill = document.getElementById('studioModePill');
       const captainNotice = document.getElementById('captainTacticalNotice');
       const fanNotice = document.getElementById('fanTacticalNotice');
@@ -5504,26 +5551,30 @@ cricos_active_sse_connections 1</pre>
         studioSwapBtn.style.display = (role === 'SCORER') ? 'inline-block' : 'none';
       }
 
-      // 6. Admin Audit Desk Visibility
+      // 7. Admin Audit Desk Visibility
       const auditDesk = document.getElementById('adminAuditDeskContainer');
       if (auditDesk) {
         auditDesk.style.display = perms.canAccessAdmin ? 'block' : 'none';
       }
 
-      showToast('Switched to ' + perms.label + ' persona: ' + perms.description);
+      if (typeof renderRoster === 'function') {
+        renderRoster();
+      }
+
+      showToast('Switched to ' + perms.label + ' persona: ' + (perms.description || ''));
     }
 
     function selectPersona(role) {
       currentUser.persona = role;
       const defaultProfiles = {
-        CAPTAIN: { name: 'Virat Sharma', jersey: 18, batting: 'RHB', bowling: 'Right-Arm Fast' },
-        PLAYER: { name: 'Hardik Patel', jersey: 33, batting: 'RHB', bowling: 'Right-Arm Medium' },
-        SCORER: { name: 'Sunil Gavaskar', jersey: 18, batting: 'RHB', bowling: 'None' },
-        FAN: { name: 'Aarav Mehta', jersey: 7, batting: 'RHB', bowling: 'None' },
-        UMPIRE: { name: 'Nitin Menon', jersey: 44, batting: 'RHB', bowling: 'None' },
-        ADMIN: { name: 'System Root', jersey: 99, batting: 'RHB', bowling: 'Right-Arm Fast' },
-        ORGANISER: { name: 'Jay Shah', jersey: 10, batting: 'RHB', bowling: 'None' },
-        TURF_PROVIDER: { name: 'Bengaluru Turf Ops', jersey: 12, batting: 'RHB', bowling: 'None' }
+        CAPTAIN: { name: 'Virat Sharma', jersey: 18, batting: 'RHB', bowling: 'Right-Arm Fast', stats: ['48', '1,850', '46.25', '144.5'] },
+        PLAYER: { name: 'Hardik Patel', jersey: 33, batting: 'RHB', bowling: 'Right-Arm Medium', stats: ['36', '1,220', '40.67', '152.0'] },
+        SCORER: { name: 'Sunil Gavaskar', jersey: 18, batting: 'RHB', bowling: 'None', stats: ['120', '450', '22.50', '112.5'] },
+        FAN: { name: 'Aarav Mehta', jersey: 7, batting: 'RHB', bowling: 'None', stats: ['250', '1,428', '42', '78%'] },
+        UMPIRE: { name: 'Nitin Menon', jersey: 44, batting: 'RHB', bowling: 'None', stats: ['84', '312', '88%', '9.4'] },
+        ADMIN: { name: 'System Root', jersey: 99, batting: 'RHB', bowling: 'Right-Arm Fast', stats: ['99.9%', '12 Nodes', '<10ms', '₹500k'] },
+        ORGANISER: { name: 'Jay Shah', jersey: 10, batting: 'RHB', bowling: 'None', stats: ['14', '64', '128', '8'] },
+        TURF_PROVIDER: { name: 'Bengaluru Turf Ops', jersey: 12, batting: 'RHB', bowling: 'None', stats: ['360', '92%', '₹1.2M', '4.9★'] }
       };
       const def = defaultProfiles[role];
       if (def) {
@@ -5539,7 +5590,26 @@ cricos_active_sse_connections 1</pre>
         if (jerseyInput) jerseyInput.value = def.jersey;
         if (battingSelect) battingSelect.value = def.batting;
         if (bowlingSelect) bowlingSelect.value = def.bowling;
+
+        const stat1 = document.getElementById('statCareerMatches');
+        const stat2 = document.getElementById('statCareerRuns');
+        const stat3 = document.getElementById('statCareerAvg');
+        const stat4 = document.getElementById('statCareerSR');
+        if (stat1 && def.stats) stat1.textContent = def.stats[0];
+        if (stat2 && def.stats) stat2.textContent = def.stats[1];
+        if (stat3 && def.stats) stat3.textContent = def.stats[2];
+        if (stat4 && def.stats) stat4.textContent = def.stats[3];
       }
+
+      // Update persona pill visual active state immediately
+      document.querySelectorAll('.persona-pill-btn').forEach(btn => {
+        if (btn.getAttribute('data-role') === role) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
       applyRolePermissions(role);
     }
 
@@ -6322,6 +6392,8 @@ cricos_active_sse_connections 1</pre>
         xiContainer.innerHTML = initialPlayingXi.map((p, idx) => {
           let roleColor = p.role === 'BAT' ? 'var(--turf-emerald)' : (p.role === 'BOWL' ? 'var(--cyan)' : (p.role === 'ALL' ? 'var(--amber)' : 'var(--rose)'));
           let badgeHtml = '';
+          let isYou = (typeof currentUser !== 'undefined' && currentUser.name === p.name);
+          if (isYou) badgeHtml += ' <span class="player-role-badge" style="background: rgba(0,210,255,0.25); color: var(--cyan); border: 1px solid var(--cyan);" data-tooltip="Your Current Active Profile">YOU</span>';
           if (p.isCaptain) badgeHtml += ' <span class="player-role-badge" style="background: rgba(0,229,153,0.2); color: var(--turf-emerald);" data-tooltip="Team Captain">C</span>';
           if (p.isViceCaptain) badgeHtml += ' <span class="player-role-badge" style="background: rgba(0,210,255,0.2); color: var(--cyan);" data-tooltip="Vice-Captain">VC</span>';
           if (p.isWicketKeeper) badgeHtml += ' <span class="player-role-badge" style="background: rgba(255,184,0,0.2); color: var(--amber);" data-tooltip="Designated Wicketkeeper">WK</span>';

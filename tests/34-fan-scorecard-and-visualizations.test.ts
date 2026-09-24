@@ -143,8 +143,9 @@ describe('34. Fan Detailed Scorecard & Match Center Visualizations (Wagon Wheel,
 
     it('serves mobile HTML with wagon wheel and scorecard in mobile-view endpoint', () => {
       const mobileHtml = getMobileAppHtml();
-      assert.ok(mobileHtml.includes('toggleChart(\'WAGON\')'));
-      assert.ok(mobileHtml.includes('toggleChart(\'SCORECARD\')'));
+      assert.ok(mobileHtml.includes('toggleChart(this.dataset.chart)'));
+      assert.ok(mobileHtml.includes('data-chart="WAGON"'));
+      assert.ok(mobileHtml.includes('data-chart="SCORECARD"'));
       assert.ok(mobileHtml.includes('mobileWagonPanel'));
       assert.ok(mobileHtml.includes('mobileScorecardPanel'));
     });
