@@ -1,14 +1,31 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-24 21:50:00
-**Version:** 1.0.0-phase2z (Emil Kowalski 13-Skill Enhanced Nuances & Physics Architecture)  
+**Last Updated:** 2026-09-24 22:25:00
+**Version:** 1.0.0-phase2aa (Three.js Interaction & 3D WebGL Stadium Architecture)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2Z Completed — Emil Kowalski 13-Skill Enhanced Nuances & Physics Architecture:
+- **Active Phase**: Phase 2AA Completed — Three.js Interaction & 3D WebGL Stadium Architecture:
+  - **1. Skill `threejs-interaction` (Raycasting, Damped Controls & InteractionManager)**:
+    - Implemented canonical `CricOS3DInteractionManager` class providing complete raycasting object picking, pointer tracking with canvas bounding rect normalization (`updateMouse`), and throttled hover raycasting.
+    - Implemented damped spherical orbit camera controls with rotation/zoom limits (`minPolarAngle: 0.12`, `maxPolarAngle: Math.PI / 2.08` rad) guaranteeing the camera stays strictly above the pitch surface.
+    - Added floating camera preset controls toolbar (`#threeCameraBar`): Orbit, Batsman POV, Elevation (35° broadcast angle), Top-Down, and Reset.
+    - Implemented click-to-select and hover highlighting with emissive glow (`0x00E599` on hover, `0x00D2FF` on selection).
+    - Implemented dynamic floating 3D HUD Tooltip (`#threeJsHudTooltip`) positioned directly above hovered/selected 3D objects using screen-space projection (`worldToScreen(position, camera)`).
+  - **2. 3D WebGL Stadium Pitch & 3D Shot Trajectory Telemetry**:
+    - Created `ThreeJsStadiumPitch` rendering a floodlit stadium turf disc, glowing boundary rope (75m), 30-yard infield circle, pitch strip, popping/bowling creases, and wooden stumps/bails.
+    - Created 8 radial outfield sector slices matching the 8 precision wagon wheel field zones (`THIRD_MAN`, `FINE_LEG`, `POINT`, `SQUARE_LEG`, `EXTRA_COVER`, `MID_WICKET`, `LONG_OFF`, `LONG_ON`).
+    - Rendered 3D parabolic shot arcs from `shotHistory`: sixes rising into the air via `CatmullRomCurve3` / `TubeGeometry` with gold impact markers; boundaries skimming the turf; singles and dots.
+    - Synchronized with 2D controls: filtering by batsman, shot type (boundaries/singles/dots), or stance (RHB/LHB) immediately re-renders 3D shot curves and updates telemetry.
+  - **3. Resilient Math Fallback & Distribution Parity**:
+    - Integrated Three.js r128 CDN script tag in `<head>` plus an offline math polyfill (`initThreeFallback()`) to allow unit tests and offline environments to execute without network dependency.
+    - Added seamless 2D/3D switcher in Wagon Wheel card header (`#btnWagonMode2D` vs `#btnWagonMode3D`).
+    - Added 18 new test assertions in `tests/37-threejs-interaction.test.ts` (all 202 tests pass in low-token mode).
+    - Rule 6 release parity: verified `index.html` and `dist/index.html` are byte-for-byte identical.
+- **Preceding Phase**: Phase 2Z Completed — Emil Kowalski 13-Skill Enhanced Nuances & Physics Architecture:
   - **1. Skill `animate` (Compositor-Only & Asymmetric Timing)**:
     - Zero `transition: all`, strictly animated compositor properties (`transform`, `opacity`, `clip-path`, `filter`).
     - Standardized cubic-bezier tokens: `--ease-out`, `--ease-in-out`, `--ease-drawer`, `--ease-spring`.

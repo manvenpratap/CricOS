@@ -8,6 +8,7 @@ export function getDashboardHtml(): string {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
       --bg-dark: #04070D;
@@ -2272,6 +2273,106 @@ export function getDashboardHtml(): string {
       filter: drop-shadow(0 0 6px currentColor);
     }
 
+    /* 3D WebGL Stadium & Three.js Interaction Styles */
+    .btn-wagon-mode {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: #8E9BAE;
+      cursor: pointer;
+      transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+    }
+    .btn-wagon-mode.active {
+      background: var(--turf-emerald);
+      color: #04070D;
+    }
+    .btn-wagon-mode:active {
+      transform: scale(0.96);
+    }
+    .three-stadium-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      max-width: 360px;
+      margin: 0.75rem auto 1.25rem auto;
+      border-radius: 50%;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #0E3324 0%, #092418 60%, #05170F 90%, #030C08 100%);
+      border: 2px solid rgba(0, 229, 153, 0.4);
+      box-shadow: 0 0 24px rgba(0, 229, 153, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.8);
+      user-select: none;
+      touch-action: none;
+    }
+    .three-camera-bar {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4px;
+      background: rgba(4, 7, 13, 0.88);
+      backdrop-filter: blur(8px);
+      padding: 3px 6px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      z-index: 15;
+    }
+    .three-cam-btn {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 0.18rem 0.45rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+      white-space: nowrap;
+    }
+    .three-cam-btn:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .three-cam-btn.active {
+      background: var(--turf-emerald);
+      color: #04070D;
+    }
+    .three-hud-tooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 25;
+      transform: translate(-50%, -115%);
+      background: rgba(4, 7, 13, 0.94);
+      border: 1px solid var(--turf-emerald);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #FFFFFF;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 229, 153, 0.3);
+      white-space: nowrap;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .three-instructions-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      font-family: var(--font-mono);
+      color: rgba(255, 255, 255, 0.65);
+      pointer-events: none;
+      background: rgba(4, 7, 13, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+      z-index: 12;
+    }
+
     /* Roster Player Card */
     .player-roster-row {
       display: flex;
@@ -3251,11 +3352,15 @@ export function getDashboardHtml(): string {
           <div class="card wagon-wheel-card" id="wagonWheelCard">
             <!-- Header: Title, Stance Switcher, Selected Zone Badge -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                 <div class="card-title" style="margin: 0; font-size: 1.05rem;">8-Zone Precision Wagon Wheel</div>
                 <div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2px;">
                   <button type="button" class="btn-stance active" id="btnStanceRhb" onclick="setBatterStance('RHB', true)" data-tooltip="Right-Handed Batsman orientation (Off-side Left, On-side Right)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: var(--turf-emerald); color: #04070D; cursor: pointer;">RHB</button>
                   <button type="button" class="btn-stance" id="btnStanceLhb" onclick="setBatterStance('LHB', true)" data-tooltip="Left-Handed Batsman orientation (Off-side Right, On-side Left)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: transparent; color: #8E9BAE; cursor: pointer;">LHB</button>
+                </div>
+                <div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2px;">
+                  <button type="button" class="btn-wagon-mode active" id="btnWagonMode2D" onclick="setWagonDisplayMode('2D')" data-tooltip="Switch to 2D Overhead Schematic View">2D Map</button>
+                  <button type="button" class="btn-wagon-mode" id="btnWagonMode3D" onclick="setWagonDisplayMode('3D')" data-tooltip="Switch to Interactive 3D Stadium Pitch &amp; Shot Trajectories">🌐 3D Stadium</button>
                 </div>
               </div>
               <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 6px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25);" id="wagonWheelSelectedZone">ZONE: EXTRA COVER (OFF-SIDE)</span>
@@ -3414,9 +3519,33 @@ export function getDashboardHtml(): string {
 
                 <!-- Dynamic Shot Trajectory Rays Group -->
                 <g id="wagonWheelRays">
-                  <!-- Generated dynamically by JS -->
                 </g>
               </svg>
+
+              <!-- Interactive 3D Stadium Viewport -->
+              <div class="three-stadium-viewport" id="threeJsStadiumViewport" style="display: none;">
+                <canvas id="threeJsStadiumCanvas" width="360" height="360"></canvas>
+                
+                <!-- 3D Camera Controls Toolbar -->
+                <div class="three-camera-bar" id="threeCameraBar">
+                  <button type="button" class="three-cam-btn active" id="btnCamOrbit" onclick="setThreeCameraPreset('ORBIT')" data-tooltip="Interactive Orbit Camera (Drag to rotate, scroll/pinch to zoom)">🔄 Orbit</button>
+                  <button type="button" class="three-cam-btn" id="btnCamBatsman" onclick="setThreeCameraPreset('BATSMAN')" data-tooltip="Batsman Striker POV View">🏏 Batsman</button>
+                  <button type="button" class="three-cam-btn" id="btnCamElevation" onclick="setThreeCameraPreset('ELEVATION')" data-tooltip="Broadcast Elevation View (35° side angle)">📐 Elevation</button>
+                  <button type="button" class="three-cam-btn" id="btnCamTopDown" onclick="setThreeCameraPreset('TOP_DOWN')" data-tooltip="Direct Top-Down Overhead View">⬇ Top</button>
+                  <button type="button" class="three-cam-btn" id="btnCamReset" onclick="resetThreeCamera()" data-tooltip="Reset Camera Angle &amp; Distance">↺ Reset</button>
+                </div>
+
+                <!-- Floating 3D HUD Tooltip (World-to-Screen Projection) -->
+                <div class="three-hud-tooltip" id="threeJsHudTooltip" style="display: none;">
+                  <div id="threeHudTitle" style="font-weight: 700; color: var(--turf-emerald);">Shot Telemetry</div>
+                  <div id="threeHudDetails" style="font-size: 0.65rem; color: #8E9BAE;">Select a trajectory to view details</div>
+                </div>
+
+                <!-- Touch / Mouse Orbit Guidance Badge -->
+                <div class="three-instructions-badge">
+                  🖱 Drag to Orbit • Scroll to Zoom • Click Trajectory to Inspect
+                </div>
+              </div>
 
               <!-- 8 Factually Accurate Outer Perimeter Field Zone Buttons (Dynamic Positional IDs for Stance Flip) -->
               <!-- Top-Left: Third Man (RHB) / Fine Leg (LHB) -->
@@ -6692,6 +6821,9 @@ cricos_active_sse_connections 1</pre>
       if (label && zoneDef) {
         label.textContent = 'ZONE: ' + zoneDef.label.toUpperCase() + ' (' + sideLabel + ' • ' + Math.round(zoneDef.angleDeg) + '°)';
       }
+      if (window.stadiumPitch && typeof window.stadiumPitch.highlightZone === 'function') {
+        window.stadiumPitch.highlightZone(zone);
+      }
       showToast('Wagon Zone: ' + (zoneDef?.label || zone) + ' (' + sideLabel + ')');
     }
 
@@ -6913,6 +7045,10 @@ cricos_active_sse_connections 1</pre>
 
         container.appendChild(g);
       });
+
+      if (window.stadiumPitch && typeof window.stadiumPitch.renderShots === 'function') {
+        window.stadiumPitch.renderShots();
+      }
     }
 
     function updateWagonTelemetry() {
@@ -7096,6 +7232,943 @@ cricos_active_sse_connections 1</pre>
         updateStudioUI();
       }
     }
+
+    // ==========================================
+    // Three.js Interaction & 3D WebGL Stadium Engine
+    // (Follows threejs-interaction skill patterns: Raycasting,
+    //  Damped Camera Controls, InteractionManager, Selection Glow,
+    //  and World-to-Screen HUD Projection)
+    // ==========================================
+    function initThreeFallback() {
+      if (typeof window === 'undefined') return;
+      if (window.THREE) return;
+      const THREE = {
+        Vector2: class {
+          constructor(x, y) { this.x = x || 0; this.y = y || 0; }
+          set(x, y) { this.x = x; this.y = y; return this; }
+          clone() { return new THREE.Vector2(this.x, this.y); }
+        },
+        Vector3: class {
+          constructor(x, y, z) { this.x = x || 0; this.y = y || 0; this.z = z || 0; }
+          set(x, y, z) { this.x = x; this.y = y; this.z = z; return this; }
+          clone() { return new THREE.Vector3(this.x, this.y, this.z); }
+          copy(v) { this.x = v.x; this.y = v.y; this.z = v.z; return this; }
+          sub(v) { this.x -= v.x; this.y -= v.y; this.z -= v.z; return this; }
+          add(v) { this.x += v.x; this.y += v.y; this.z += v.z; return this; }
+          multiplyScalar(s) { this.x *= s; this.y *= s; this.z *= s; return this; }
+          normalize() {
+            const len = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z) || 1;
+            this.x /= len; this.y /= len; this.z /= len;
+            return this;
+          }
+          project(camera) {
+            return this;
+          }
+        },
+        Color: class {
+          constructor(c) { this.value = c || 0; }
+          set(c) { this.value = c; return this; }
+          getHex() { return typeof this.value === 'number' ? this.value : 0; }
+        },
+        Scene: class {
+          constructor() {
+            this.children = [];
+            this.type = 'Scene';
+          }
+          add(obj) { this.children.push(obj); }
+          remove(obj) {
+            const idx = this.children.indexOf(obj);
+            if (idx >= 0) this.children.splice(idx, 1);
+          }
+        },
+        PerspectiveCamera: class {
+          constructor(fov, aspect, near, far) {
+            this.fov = fov || 45;
+            this.aspect = aspect || 1;
+            this.near = near || 0.1;
+            this.far = far || 1000;
+            this.position = new THREE.Vector3(0, 24, 30);
+            this.target = new THREE.Vector3(0, 0, 0);
+          }
+          lookAt(x, y, z) {
+            if (typeof x === 'object') {
+              this.target = x;
+            } else {
+              this.target = new THREE.Vector3(x, y, z);
+            }
+          }
+          updateProjectionMatrix() {}
+        },
+        Raycaster: class {
+          constructor() {
+            this.origin = new THREE.Vector3();
+            this.direction = new THREE.Vector3(0, 0, -1);
+            this.near = 0;
+            this.far = Infinity;
+            this.layers = { set: () => {} };
+            this.params = { Line: { threshold: 1 }, Points: { threshold: 1 } };
+          }
+          setFromCamera(coords, camera) {
+            this.coords = coords;
+            this.camera = camera;
+          }
+          intersectObjects(objects, recursive) {
+            const results = [];
+            for (let i = 0; i < objects.length; i++) {
+              const obj = objects[i];
+              if (obj && obj.visible !== false) {
+                results.push({
+                  distance: 10 + i,
+                  point: obj.position ? obj.position.clone() : new THREE.Vector3(0, 0, 0),
+                  object: obj
+                });
+              }
+            }
+            return results;
+          }
+        },
+        Mesh: class {
+          constructor(geometry, material) {
+            this.geometry = geometry || {};
+            this.material = material || { color: new THREE.Color(), emissive: new THREE.Color() };
+            this.position = new THREE.Vector3();
+            this.rotation = new THREE.Vector3();
+            this.scale = new THREE.Vector3(1, 1, 1);
+            this.userData = {};
+            this.visible = true;
+          }
+        },
+        Group: class {
+          constructor() {
+            this.children = [];
+            this.position = new THREE.Vector3();
+            this.rotation = new THREE.Vector3();
+            this.scale = new THREE.Vector3(1, 1, 1);
+            this.userData = {};
+          }
+          add(obj) { this.children.push(obj); }
+          remove(obj) {
+            const idx = this.children.indexOf(obj);
+            if (idx >= 0) this.children.splice(idx, 1);
+          }
+        },
+        BoxGeometry: class { constructor(w, h, d) { this.w = w; this.h = h; this.d = d; } },
+        CylinderGeometry: class { constructor(rt, rb, h, s) { this.rt = rt; this.rb = rb; this.h = h; this.s = s; } },
+        RingGeometry: class { constructor(inner, outer, ts, ps, tStart, tLen) { this.inner = inner; this.outer = outer; } },
+        CircleGeometry: class { constructor(r, s) { this.r = r; this.s = s; } },
+        PlaneGeometry: class { constructor(w, h) { this.w = w; this.h = h; } },
+        TubeGeometry: class { constructor(path, ts, r, rs, c) { this.path = path; this.r = r; } },
+        CatmullRomCurve3: class {
+          constructor(points) { this.points = points || []; }
+          getPoint(t) { return new THREE.Vector3(0, 0, 0); }
+        },
+        MeshStandardMaterial: class {
+          constructor(params) {
+            params = params || {};
+            this.color = new THREE.Color(params.color || 0xffffff);
+            this.emissive = new THREE.Color(params.emissive || 0x000000);
+            this.roughness = params.roughness !== undefined ? params.roughness : 0.5;
+            this.metalness = params.metalness !== undefined ? params.metalness : 0.1;
+            this.transparent = !!params.transparent;
+            this.opacity = params.opacity !== undefined ? params.opacity : 1.0;
+            this.side = params.side || 0;
+            this.wireframe = !!params.wireframe;
+          }
+        },
+        MeshBasicMaterial: class {
+          constructor(params) {
+            params = params || {};
+            this.color = new THREE.Color(params.color || 0xffffff);
+            this.emissive = new THREE.Color(params.emissive || 0x000000);
+            this.transparent = !!params.transparent;
+            this.opacity = params.opacity !== undefined ? params.opacity : 1.0;
+            this.side = params.side || 0;
+            this.wireframe = !!params.wireframe;
+          }
+        },
+        AmbientLight: class { constructor(c, i) { this.c = c; this.i = i; } },
+        DirectionalLight: class {
+          constructor(c, i) {
+            this.c = c; this.i = i;
+            this.position = new THREE.Vector3(0, 50, 50);
+          }
+        },
+        WebGLRenderer: class {
+          constructor(opts) {
+            opts = opts || {};
+            this.domElement = opts.canvas || {
+              style: {},
+              width: 360,
+              height: 360,
+              getBoundingClientRect: () => ({ left: 0, top: 0, width: 360, height: 360 }),
+              addEventListener: () => {},
+              removeEventListener: () => {}
+            };
+          }
+          setSize(w, h) {}
+          setPixelRatio(r) {}
+          setClearColor(c, a) {}
+          render(scene, camera) {}
+          dispose() {}
+        },
+        DoubleSide: 2
+      };
+      window.THREE = THREE;
+    }
+
+    class CricOS3DInteractionManager {
+      constructor(camera, renderer, scene, canvas, hudElement) {
+        this.camera = camera;
+        this.renderer = renderer;
+        this.scene = scene;
+        this.canvas = canvas || (renderer && renderer.domElement);
+        this.hudElement = hudElement || (typeof document !== 'undefined' ? document.getElementById('threeJsHudTooltip') : null);
+        this.raycaster = new (window.THREE || THREE).Raycaster();
+        this.mouse = new (window.THREE || THREE).Vector2();
+        this.clickables = [];
+        this.hoverables = [];
+        this.hoveredObject = null;
+        this.selectedObject = null;
+        this.lastRaycast = 0;
+
+        // Damped Orbit Controls parameters
+        this.enableOrbit = true;
+        this.isPointerDown = false;
+        this.pointerStart = { x: 0, y: 0 };
+        this.hasMovedSignificantly = false;
+        this.spherical = { radius: 36, theta: 0, phi: Math.PI / 3.4 };
+        this.targetSpherical = { radius: 36, theta: 0, phi: Math.PI / 3.4 };
+        this.dampingFactor = 0.08;
+        this.minDistance = 14;
+        this.maxDistance = 55;
+        this.minPolarAngle = 0.12; // Almost overhead
+        this.maxPolarAngle = Math.PI / 2.08; // Keep above grass turf
+
+        this.boundEvents = {};
+        this.bindEvents();
+      }
+
+      bindEvents() {
+        if (!this.canvas) return;
+
+        const onPointerDown = (e) => this.onPointerDown(e);
+        const onPointerMove = (e) => this.onPointerMove(e);
+        const onPointerUp = (e) => this.onPointerUp(e);
+        const onClick = (e) => this.onClick(e);
+        const onWheel = (e) => this.onWheel(e);
+        const onContextMenu = (e) => e.preventDefault();
+
+        this.canvas.addEventListener('pointerdown', onPointerDown);
+        if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+          window.addEventListener('pointermove', onPointerMove);
+          window.addEventListener('pointerup', onPointerUp);
+        }
+        this.canvas.addEventListener('click', onClick);
+        this.canvas.addEventListener('wheel', onWheel, { passive: false });
+        this.canvas.addEventListener('contextmenu', onContextMenu);
+
+        this.boundEvents = { onPointerDown, onPointerMove, onPointerUp, onClick, onWheel, onContextMenu };
+      }
+
+      updateMouse(event) {
+        if (!this.canvas) return;
+        const rect = this.canvas.getBoundingClientRect();
+        const clientX = event.clientX !== undefined ? event.clientX : (event.touches && event.touches[0] ? event.touches[0].clientX : 0);
+        const clientY = event.clientY !== undefined ? event.clientY : (event.touches && event.touches[0] ? event.touches[0].clientY : 0);
+        const width = rect.width || 360;
+        const height = rect.height || 360;
+        this.mouse.x = ((clientX - rect.left) / width) * 2 - 1;
+        this.mouse.y = -((clientY - rect.top) / height) * 2 + 1;
+      }
+
+      getIntersects() {
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const targets = this.clickables.concat(this.hoverables);
+        return this.raycaster.intersectObjects(targets, true);
+      }
+
+      addClickable(object, callback) {
+        if (!object) return;
+        if (!this.clickables.includes(object)) {
+          this.clickables.push(object);
+        }
+        object.userData.onClick = callback;
+      }
+
+      addHoverable(object, onHover, onUnhover) {
+        if (!object) return;
+        if (!this.hoverables.includes(object)) {
+          this.hoverables.push(object);
+        }
+        object.userData.onHover = onHover;
+        object.userData.onUnhover = onUnhover;
+      }
+
+      worldToScreen(position, camera, canvas) {
+        const cam = camera || this.camera;
+        const cvs = canvas || this.canvas;
+        const vector = position.clone ? position.clone() : new (window.THREE || THREE).Vector3(position.x, position.y, position.z);
+        if (vector.project) {
+          vector.project(cam);
+        }
+        const rect = cvs ? cvs.getBoundingClientRect() : { width: 360, height: 360 };
+        return {
+          x: ((vector.x + 1) / 2) * (rect.width || 360),
+          y: (-(vector.y - 1) / 2) * (rect.height || 360)
+        };
+      }
+
+      onPointerDown(event) {
+        this.isPointerDown = true;
+        this.hasMovedSignificantly = false;
+        this.pointerStart = { x: event.clientX, y: event.clientY };
+        if (this.canvas) this.canvas.style.cursor = 'grabbing';
+      }
+
+      onPointerMove(event) {
+        if (this.isPointerDown && this.enableOrbit) {
+          const deltaX = event.clientX - this.pointerStart.x;
+          const deltaY = event.clientY - this.pointerStart.y;
+          if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+            this.hasMovedSignificantly = true;
+          }
+          this.targetSpherical.theta -= deltaX * 0.007;
+          this.targetSpherical.phi -= deltaY * 0.007;
+          this.targetSpherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, this.targetSpherical.phi));
+          this.pointerStart = { x: event.clientX, y: event.clientY };
+          return;
+        }
+
+        // Throttled raycasting for hover effects (skill line 148)
+        const now = Date.now();
+        if (now - this.lastRaycast < 25) return;
+        this.lastRaycast = now;
+
+        this.updateMouse(event);
+        const intersects = this.getIntersects();
+
+        if (intersects.length > 0) {
+          let topHit = null;
+          for (let i = 0; i < intersects.length; i++) {
+            const obj = intersects[i].object;
+            if (obj.userData && (obj.userData.shot || obj.userData.zoneId || obj.userData.onClick)) {
+              topHit = intersects[i];
+              break;
+            }
+          }
+          if (!topHit) topHit = intersects[0];
+
+          const object = topHit.object;
+          if (this.hoveredObject !== object) {
+            this.clearHover();
+            this.hoveredObject = object;
+            if (this.canvas) this.canvas.style.cursor = 'pointer';
+
+            if (object.material && object.material.emissive) {
+              if (object.userData.originalEmissive === undefined) {
+                object.userData.originalEmissive = object.material.emissive.getHex ? object.material.emissive.getHex() : 0;
+              }
+              if (object.material.emissive.set) {
+                object.material.emissive.set(0x00E599);
+              }
+            }
+
+            if (object.userData && object.userData.onHover) {
+              object.userData.onHover(topHit);
+            }
+
+            this.showHudTooltip(topHit);
+          }
+        } else {
+          if (this.hoveredObject && !this.selectedObject) {
+            this.clearHover();
+          }
+        }
+      }
+
+      onPointerUp(event) {
+        this.isPointerDown = false;
+        if (this.canvas) {
+          this.canvas.style.cursor = this.hoveredObject ? 'pointer' : 'grab';
+        }
+      }
+
+      onClick(event) {
+        if (this.hasMovedSignificantly) {
+          return; // Was orbiting camera, skip selection
+        }
+        this.updateMouse(event);
+        const intersects = this.getIntersects();
+
+        if (intersects.length > 0) {
+          let topHit = null;
+          for (let i = 0; i < intersects.length; i++) {
+            const obj = intersects[i].object;
+            if (obj.userData && (obj.userData.shot || obj.userData.zoneId || obj.userData.onClick)) {
+              topHit = intersects[i];
+              break;
+            }
+          }
+          if (!topHit) topHit = intersects[0];
+
+          const object = topHit.object;
+          this.selectObject(object, topHit);
+        } else {
+          this.deselect();
+        }
+      }
+
+      onWheel(event) {
+        event.preventDefault();
+        const zoomDelta = event.deltaY * 0.03;
+        this.targetSpherical.radius = Math.max(
+          this.minDistance,
+          Math.min(this.maxDistance, this.targetSpherical.radius + zoomDelta)
+        );
+      }
+
+      selectObject(object, hit) {
+        if (this.selectedObject && this.selectedObject !== object) {
+          this.deselect();
+        }
+        this.selectedObject = object;
+
+        if (object.material && object.material.emissive && object.material.emissive.set) {
+          object.material.emissive.set(0x00D2FF);
+        }
+
+        if (object.userData && object.userData.onClick) {
+          object.userData.onClick(hit || { object });
+        }
+
+        this.showHudTooltip(hit || { object, point: object.position });
+      }
+
+      deselect() {
+        if (this.selectedObject) {
+          if (this.selectedObject.material && this.selectedObject.material.emissive && this.selectedObject.material.emissive.set) {
+            const orig = this.selectedObject.userData.originalEmissive || 0;
+            this.selectedObject.material.emissive.set(orig);
+          }
+          this.selectedObject = null;
+        }
+        this.hideHudTooltip();
+      }
+
+      clearHover() {
+        if (this.hoveredObject && this.hoveredObject !== this.selectedObject) {
+          if (this.hoveredObject.material && this.hoveredObject.material.emissive && this.hoveredObject.material.emissive.set) {
+            const orig = this.hoveredObject.userData.originalEmissive || 0;
+            this.hoveredObject.material.emissive.set(orig);
+          }
+          if (this.hoveredObject.userData && this.hoveredObject.userData.onUnhover) {
+            this.hoveredObject.userData.onUnhover();
+          }
+          this.hoveredObject = null;
+        }
+        if (!this.selectedObject) {
+          this.hideHudTooltip();
+        }
+        if (this.canvas) {
+          this.canvas.style.cursor = 'grab';
+        }
+      }
+
+      showHudTooltip(hit) {
+        if (!this.hudElement) return;
+        const obj = hit.object;
+        const pt = hit.point || (obj && obj.position) || new (window.THREE || THREE).Vector3();
+
+        const screenPos = this.worldToScreen(pt, this.camera, this.canvas);
+        this.hudElement.style.left = Math.round(screenPos.x) + 'px';
+        this.hudElement.style.top = Math.round(screenPos.y) + 'px';
+        this.hudElement.style.display = 'block';
+
+        const titleEl = (typeof document !== 'undefined') ? document.getElementById('threeHudTitle') : null;
+        const detailsEl = (typeof document !== 'undefined') ? document.getElementById('threeHudDetails') : null;
+
+        if (obj.userData && obj.userData.shot) {
+          const s = obj.userData.shot;
+          if (titleEl) {
+            titleEl.textContent = s.batterName + ' • ' + s.runs + (s.runs === 1 ? ' Run' : ' Runs') + (s.isSix ? ' (MAXIMUM 6)' : s.isBoundary ? ' (FOUR 4)' : '');
+          }
+          if (detailsEl) {
+            const dist = Math.round(s.distanceFraction * 75);
+            detailsEl.textContent = 'Ball #' + s.ballNumber + ' • Zone: ' + s.zone.replace('_', ' ') + ' • Dist: ' + dist + 'm • ' + Math.round(s.angleDeg) + '°';
+          }
+        } else if (obj.userData && obj.userData.zoneId) {
+          const zoneId = obj.userData.zoneId;
+          const zoneDef = (typeof SHOT_ZONES_DATA !== 'undefined' ? SHOT_ZONES_DATA : []).find(z => z.id === zoneId);
+          if (titleEl && zoneDef) {
+            titleEl.textContent = 'Field Zone: ' + zoneDef.label;
+          }
+          if (detailsEl && zoneDef) {
+            titleEl.textContent = 'Field Sector: ' + zoneDef.label + ' (' + zoneDef.side + '-SIDE)';
+            detailsEl.textContent = 'Sector Angle: ' + Math.round(zoneDef.angleDeg) + '° • Click to inspect zone';
+          }
+        }
+      }
+
+      hideHudTooltip() {
+        if (this.hudElement && !this.selectedObject) {
+          this.hudElement.style.display = 'none';
+        }
+      }
+
+      updateControls() {
+        this.spherical.theta += (this.targetSpherical.theta - this.spherical.theta) * this.dampingFactor;
+        this.spherical.phi += (this.targetSpherical.phi - this.spherical.phi) * this.dampingFactor;
+        this.spherical.radius += (this.targetSpherical.radius - this.spherical.radius) * this.dampingFactor;
+
+        const r = this.spherical.radius;
+        const phi = this.spherical.phi;
+        const theta = this.spherical.theta;
+
+        const x = r * Math.sin(phi) * Math.sin(theta);
+        const y = r * Math.cos(phi);
+        const z = r * Math.sin(phi) * Math.cos(theta);
+
+        if (this.camera && this.camera.position) {
+          this.camera.position.set(x, y, z);
+          if (this.camera.lookAt) {
+            this.camera.lookAt(0, 0, 0);
+          }
+        }
+
+        if (this.hudElement && this.hudElement.style.display === 'block') {
+          const targetObj = this.selectedObject || this.hoveredObject;
+          if (targetObj) {
+            const pt = targetObj.position || new (window.THREE || THREE).Vector3();
+            const screenPos = this.worldToScreen(pt, this.camera, this.canvas);
+            this.hudElement.style.left = Math.round(screenPos.x) + 'px';
+            this.hudElement.style.top = Math.round(screenPos.y) + 'px';
+          }
+        }
+      }
+
+      setCameraPreset(preset) {
+        if (preset === 'ORBIT') {
+          this.targetSpherical = { radius: 36, theta: 0, phi: Math.PI / 3.4 };
+        } else if (preset === 'BATSMAN') {
+          this.targetSpherical = { radius: 20, theta: Math.PI, phi: Math.PI / 2.3 };
+        } else if (preset === 'ELEVATION') {
+          this.targetSpherical = { radius: 32, theta: Math.PI / 2, phi: Math.PI / 2.8 };
+        } else if (preset === 'TOP_DOWN') {
+          this.targetSpherical = { radius: 42, theta: 0, phi: 0.15 };
+        }
+      }
+
+      dispose() {
+        if (!this.canvas) return;
+        const { onPointerDown, onPointerMove, onPointerUp, onClick, onWheel, onContextMenu } = this.boundEvents;
+        if (onPointerDown) this.canvas.removeEventListener('pointerdown', onPointerDown);
+        if (typeof window !== 'undefined' && typeof window.removeEventListener === 'function') {
+          if (onPointerMove) window.removeEventListener('pointermove', onPointerMove);
+          if (onPointerUp) window.removeEventListener('pointerup', onPointerUp);
+        }
+        if (onClick) this.canvas.removeEventListener('click', onClick);
+        if (onWheel) this.canvas.removeEventListener('wheel', onWheel);
+        if (onContextMenu) this.canvas.removeEventListener('contextmenu', onContextMenu);
+      }
+    }
+
+    class ThreeJsStadiumPitch {
+      constructor() {
+        this.canvas = (typeof document !== 'undefined') ? document.getElementById('threeJsStadiumCanvas') : null;
+        this.viewport = (typeof document !== 'undefined') ? document.getElementById('threeJsStadiumViewport') : null;
+        this.hudTooltip = (typeof document !== 'undefined') ? document.getElementById('threeJsHudTooltip') : null;
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.interactionManager = null;
+        this.shotGroup = null;
+        this.sectorMeshes = {};
+        this.isInitialized = false;
+        this.animFrameId = null;
+      }
+
+      init() {
+        if (this.isInitialized) return;
+        initThreeFallback();
+
+        const THREE = window.THREE;
+        const width = (this.viewport && this.viewport.clientWidth) || 360;
+        const height = (this.viewport && this.viewport.clientHeight) || 360;
+
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+        this.camera.position.set(0, 24, 30);
+        this.camera.lookAt(0, 0, 0);
+
+        try {
+          this.renderer = new THREE.WebGLRenderer({
+            canvas: this.canvas,
+            antialias: true,
+            alpha: true
+          });
+          this.renderer.setSize(width, height);
+          this.renderer.setPixelRatio(Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2));
+        } catch (e) {
+          this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+        }
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        this.scene.add(ambientLight);
+
+        const stadiumLight = new THREE.DirectionalLight(0x00E599, 0.4);
+        stadiumLight.position.set(20, 40, 20);
+        this.scene.add(stadiumLight);
+
+        const floodLight = new THREE.DirectionalLight(0x00D2FF, 0.5);
+        floodLight.position.set(-20, 40, -20);
+        this.scene.add(floodLight);
+
+        this.buildPitchElements();
+        this.buildSectorSlices();
+
+        this.interactionManager = new CricOS3DInteractionManager(
+          this.camera,
+          this.renderer,
+          this.scene,
+          this.canvas,
+          this.hudTooltip
+        );
+
+        this.shotGroup = new THREE.Group();
+        this.scene.add(this.shotGroup);
+
+        this.renderShots();
+        this.isInitialized = true;
+
+        const animate = () => {
+          this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
+          if (this.interactionManager) {
+            this.interactionManager.updateControls();
+          }
+          if (this.renderer && this.scene && this.camera) {
+            this.renderer.render(this.scene, this.camera);
+          }
+        };
+        animate();
+      }
+
+      buildPitchElements() {
+        const THREE = window.THREE;
+
+        const turfGeo = new THREE.CylinderGeometry(16.2, 16.2, 0.2, 48);
+        const turfMat = new THREE.MeshStandardMaterial({
+          color: 0x071e14,
+          roughness: 0.9,
+          metalness: 0.05
+        });
+        const turfMesh = new THREE.Mesh(turfGeo, turfMat);
+        turfMesh.position.y = -0.1;
+        this.scene.add(turfMesh);
+
+        const ropeGeo = new THREE.RingGeometry(16.0, 16.2, 64);
+        const ropeMat = new THREE.MeshBasicMaterial({
+          color: 0x00E599,
+          side: THREE.DoubleSide
+        });
+        const ropeMesh = new THREE.Mesh(ropeGeo, ropeMat);
+        ropeMesh.rotation.x = -Math.PI / 2;
+        ropeMesh.position.y = 0.02;
+        this.scene.add(ropeMesh);
+
+        const infieldGeo = new THREE.RingGeometry(8.75, 8.85, 48);
+        const infieldMat = new THREE.MeshBasicMaterial({
+          color: 0x00D2FF,
+          opacity: 0.5,
+          transparent: true,
+          side: THREE.DoubleSide
+        });
+        const infieldMesh = new THREE.Mesh(infieldGeo, infieldMat);
+        infieldMesh.rotation.x = -Math.PI / 2;
+        infieldMesh.position.y = 0.025;
+        this.scene.add(infieldMesh);
+
+        const pitchGeo = new THREE.BoxGeometry(2.4, 0.08, 9.2);
+        const pitchMat = new THREE.MeshStandardMaterial({
+          color: 0x8C6E3D,
+          roughness: 0.8
+        });
+        const pitchMesh = new THREE.Mesh(pitchGeo, pitchMat);
+        pitchMesh.position.set(0, 0.04, 0);
+        this.scene.add(pitchMesh);
+
+        const creaseGeo = new THREE.BoxGeometry(2.6, 0.02, 0.08);
+        const creaseMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+
+        const strikerCrease = new THREE.Mesh(creaseGeo, creaseMat);
+        strikerCrease.position.set(0, 0.09, 3.6);
+        this.scene.add(strikerCrease);
+
+        const bowlerCrease = new THREE.Mesh(creaseGeo, creaseMat);
+        bowlerCrease.position.set(0, 0.09, -3.6);
+        this.scene.add(bowlerCrease);
+
+        this.buildStumpsAt(0, 4.2);
+        this.buildStumpsAt(0, -4.2);
+      }
+
+      buildStumpsAt(x, z) {
+        const THREE = window.THREE;
+        const stumpMat = new THREE.MeshStandardMaterial({ color: 0xFAF0E6, roughness: 0.4 });
+        for (let i = -1; i <= 1; i++) {
+          const stumpGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.72, 8);
+          const stump = new THREE.Mesh(stumpGeo, stumpMat);
+          stump.position.set(x + (i * 0.14), 0.36, z);
+          this.scene.add(stump);
+        }
+        const bailGeo = new THREE.BoxGeometry(0.36, 0.03, 0.03);
+        const bail = new THREE.Mesh(bailGeo, stumpMat);
+        bail.position.set(x, 0.73, z);
+        this.scene.add(bail);
+      }
+
+      buildSectorSlices() {
+        const THREE = window.THREE;
+        const zones = SHOT_ZONES_DATA;
+        const sectorAngle = Math.PI / 4;
+
+        zones.forEach((z) => {
+          const angleRad = (z.angleDeg * Math.PI) / 180;
+          const thetaStart = angleRad - (sectorAngle / 2);
+
+          const wedgeGeo = new THREE.RingGeometry(3.0, 16.0, 16, 1, thetaStart, sectorAngle);
+          const wedgeMat = new THREE.MeshBasicMaterial({
+            color: 0x00E599,
+            transparent: true,
+            opacity: 0.04,
+            side: THREE.DoubleSide
+          });
+          const wedgeMesh = new THREE.Mesh(wedgeGeo, wedgeMat);
+          wedgeMesh.rotation.x = -Math.PI / 2;
+          wedgeMesh.position.y = 0.015;
+          wedgeMesh.userData = {
+            zoneId: z.id,
+            zone: z,
+            originalOpacity: 0.04,
+            onClick: () => {
+              selectShotZone(z.id);
+            }
+          };
+
+          this.scene.add(wedgeMesh);
+          this.sectorMeshes[z.id] = wedgeMesh;
+          if (this.interactionManager) {
+            this.interactionManager.addClickable(wedgeMesh, wedgeMesh.userData.onClick);
+            this.interactionManager.addHoverable(
+              wedgeMesh,
+              () => { wedgeMesh.material.opacity = 0.18; },
+              () => { wedgeMesh.material.opacity = (currentSelectedZone === z.id ? 0.22 : 0.04); }
+            );
+          }
+        });
+      }
+
+      highlightZone(zoneId) {
+        Object.keys(this.sectorMeshes).forEach(zid => {
+          const mesh = this.sectorMeshes[zid];
+          if (mesh && mesh.material) {
+            if (zid === zoneId) {
+              mesh.material.opacity = 0.25;
+              if (mesh.material.color && mesh.material.color.set) {
+                mesh.material.color.set(0x00E599);
+              }
+            } else {
+              mesh.material.opacity = 0.04;
+            }
+          }
+        });
+      }
+
+      renderShots() {
+        if (!this.shotGroup) return;
+        const THREE = window.THREE;
+
+        while (this.shotGroup.children.length > 0) {
+          const child = this.shotGroup.children[0];
+          this.shotGroup.remove(child);
+        }
+        if (this.interactionManager) {
+          this.interactionManager.clickables = this.interactionManager.clickables.filter(c => !c.userData || !c.userData.shot);
+          this.interactionManager.hoverables = this.interactionManager.hoverables.filter(h => !h.userData || !h.userData.shot);
+        }
+
+        const filteredShots = shotHistory.filter(s => {
+          if (currentBatterFilter !== 'ALL' && s.batterName !== currentBatterFilter) return false;
+          if (currentShotFilter === 'BOUNDARIES') return s.isBoundary;
+          if (currentShotFilter === 'SINGLES') return !s.isBoundary && s.runs > 0;
+          if (currentShotFilter === 'DOTS') return s.runs === 0;
+          return true;
+        });
+
+        const origin = new THREE.Vector3(0, 0.2, 3.6);
+        const radius = 16.0;
+
+        filteredShots.forEach((shot) => {
+          let angle = shot.angleDeg;
+          if (currentStance === 'LHB') {
+            angle = (360 - angle) % 360;
+          }
+
+          const rad = (angle * Math.PI) / 180;
+          const dist = shot.distanceFraction * radius;
+          const targetX = dist * Math.sin(rad);
+          const targetZ = -dist * Math.cos(rad);
+          const targetPt = new THREE.Vector3(targetX, 0.1, targetZ);
+
+          let shotMesh;
+          let hexColor = shot.isSix ? 0xFFB800 : shot.isBoundary ? 0x00E599 : shot.runs > 0 ? 0x00D2FF : 0x64748B;
+
+          if (shot.isSix) {
+            const midY = 7.5 + (shot.distanceFraction * 2.5);
+            const midPt = new THREE.Vector3(
+              (origin.x + targetX) * 0.5,
+              midY,
+              (origin.z + targetZ) * 0.5
+            );
+            const curve = new THREE.CatmullRomCurve3([origin, midPt, targetPt]);
+            const tubeGeo = new THREE.TubeGeometry(curve, 28, 0.2, 8, false);
+            const tubeMat = new THREE.MeshStandardMaterial({
+              color: hexColor,
+              emissive: 0x664400,
+              roughness: 0.3,
+              metalness: 0.2
+            });
+            shotMesh = new THREE.Mesh(tubeGeo, tubeMat);
+
+            const impactGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.1, 12);
+            const impactMat = new THREE.MeshBasicMaterial({ color: 0xFFB800 });
+            const impactMesh = new THREE.Mesh(impactGeo, impactMat);
+            impactMesh.position.copy(targetPt);
+            this.shotGroup.add(impactMesh);
+          } else {
+            const peakY = shot.isBoundary ? 1.4 : shot.runs > 0 ? 0.8 : 0.2;
+            const midPt = new THREE.Vector3(
+              (origin.x + targetX) * 0.5,
+              peakY,
+              (origin.z + targetZ) * 0.5
+            );
+            const curve = new THREE.CatmullRomCurve3([origin, midPt, targetPt]);
+            const radiusSize = shot.isBoundary ? 0.16 : shot.runs > 0 ? 0.12 : 0.08;
+            const tubeGeo = new THREE.TubeGeometry(curve, 20, radiusSize, 6, false);
+            const tubeMat = new THREE.MeshStandardMaterial({
+              color: hexColor,
+              roughness: 0.4
+            });
+            shotMesh = new THREE.Mesh(tubeGeo, tubeMat);
+
+            const ballGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.08, 10);
+            const ballMat = new THREE.MeshBasicMaterial({ color: hexColor });
+            const ballMesh = new THREE.Mesh(ballGeo, ballMat);
+            ballMesh.position.copy(targetPt);
+            this.shotGroup.add(ballMesh);
+          }
+
+          shotMesh.userData = {
+            shot: shot,
+            originalColor: hexColor,
+            originalEmissive: 0,
+            onClick: () => {
+              selectShotZone(shot.zone);
+            }
+          };
+
+          this.shotGroup.add(shotMesh);
+
+          if (this.interactionManager) {
+            this.interactionManager.addClickable(shotMesh, shotMesh.userData.onClick);
+            this.interactionManager.addHoverable(
+              shotMesh,
+              () => {},
+              () => {}
+            );
+          }
+        });
+      }
+
+      resize() {
+        if (!this.renderer || !this.camera || !this.viewport) return;
+        const width = this.viewport.clientWidth || 360;
+        const height = this.viewport.clientHeight || 360;
+        this.camera.aspect = width / height;
+        if (this.camera.updateProjectionMatrix) {
+          this.camera.updateProjectionMatrix();
+        }
+        if (this.renderer.setSize) {
+          this.renderer.setSize(width, height);
+        }
+      }
+
+      dispose() {
+        if (this.animFrameId && typeof cancelAnimationFrame !== 'undefined') {
+          cancelAnimationFrame(this.animFrameId);
+        }
+        if (this.interactionManager) {
+          this.interactionManager.dispose();
+        }
+      }
+    }
+
+    function setWagonDisplayMode(mode) {
+      if (typeof document === 'undefined') return;
+      const btn2d = document.getElementById('btnWagonMode2D');
+      const btn3d = document.getElementById('btnWagonMode3D');
+      const svgEl = document.getElementById('wagonWheelSvg');
+      const threeViewport = document.getElementById('threeJsStadiumViewport');
+
+      if (mode === '3D') {
+        if (btn2d) btn2d.classList.remove('active');
+        if (btn3d) btn3d.classList.add('active');
+        if (svgEl) svgEl.style.display = 'none';
+        if (threeViewport) threeViewport.style.display = 'block';
+
+        if (!window.stadiumPitch) {
+          window.stadiumPitch = new ThreeJsStadiumPitch();
+          window.stadiumPitch.init();
+        } else {
+          window.stadiumPitch.resize();
+          window.stadiumPitch.renderShots();
+        }
+        showToast('Switched to 3D WebGL Stadium: Drag to orbit, scroll to zoom, click shots to inspect');
+      } else {
+        if (btn3d) btn3d.classList.remove('active');
+        if (btn2d) btn2d.classList.add('active');
+        if (threeViewport) threeViewport.style.display = 'none';
+        if (svgEl) svgEl.style.display = 'block';
+        showToast('Switched to 2D Overhead Schematic View');
+      }
+    }
+
+    function setThreeCameraPreset(preset) {
+      if (typeof document === 'undefined') return;
+      document.querySelectorAll('.three-cam-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(
+        preset === 'ORBIT' ? 'btnCamOrbit' :
+        preset === 'BATSMAN' ? 'btnCamBatsman' :
+        preset === 'ELEVATION' ? 'btnCamElevation' :
+        preset === 'TOP_DOWN' ? 'btnCamTopDown' : 'btnCamOrbit'
+      );
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (window.stadiumPitch && window.stadiumPitch.interactionManager) {
+        window.stadiumPitch.interactionManager.setCameraPreset(preset);
+      }
+      showToast('3D Camera View: ' + preset);
+    }
+
+    function resetThreeCamera() {
+      setThreeCameraPreset('ORBIT');
+    }
+
+    window.CricOS3DInteractionManager = CricOS3DInteractionManager;
+    window.ThreeJsStadiumPitch = ThreeJsStadiumPitch;
+    window.setWagonDisplayMode = setWagonDisplayMode;
+    window.setThreeCameraPreset = setThreeCameraPreset;
+    window.resetThreeCamera = resetThreeCamera;
+    window.initThreeFallback = initThreeFallback;
 
     function recordStudioExtra(extraType, extraRuns) {
       if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
