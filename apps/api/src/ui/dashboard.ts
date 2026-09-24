@@ -2907,6 +2907,63 @@ export function getDashboardHtml(): string {
         </div>
       </div>
 
+      <!-- ===== 3D EXPERIENCES HUB BANNER ===== -->
+      <div id="threeDExperiencesHub" style="margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(0,229,153,0.07) 0%, rgba(0,210,255,0.07) 50%, rgba(168,85,247,0.07) 100%); border: 1px solid rgba(0,229,153,0.25); border-radius: 14px; padding: 1rem 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span style="font-size: 1.35rem;">🌐</span>
+            <div>
+              <div style="font-weight: 800; color: #F8FAFC; font-size: 0.95rem; letter-spacing: -0.01em;">3D Experiences</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">WebGL-powered interactive cricket visualisations</div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.3rem 0.75rem; font-size: 0.75rem; border-color: rgba(0,229,153,0.35); color: var(--turf-emerald);" onclick="switchTab('studio'); setTimeout(()=>setWagonDisplayMode('3D'),200);" data-tooltip="Open full 3D Stadium with Camera, Hawkeye, Fielders, DRS & Lighting controls">🏟 Open Full 3D Stadium →</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.55rem;">
+          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('WAGON'); }, 200);" data-tooltip="Interactive 3D Stadium with shot trajectory arcs and wagon wheel" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,229,153,0.1)';this.style.borderColor='rgba(0,229,153,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">🏟</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald);">3D Stadium</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">Wagon Wheel</span>
+          </button>
+          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('HAWKEYE'); }, 200);" data-tooltip="3D Hawkeye ball-tracking pitch length heatmap with delivery trajectories" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,210,255,0.1)';this.style.borderColor='rgba(0,210,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">🎯</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--cyan);">Hawkeye</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">Pitch Map</span>
+          </button>
+          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('DRS'); }, 200);" data-tooltip="Procedural LBW DRS review with 3-stage ball trajectory and MCC Law 36 stumps verdict" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,51,102,0.1)';this.style.borderColor='rgba(255,51,102,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">⚖️</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--rose);">DRS Review</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">LBW Tracker</span>
+          </button>
+          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FIELD'); }, 200);" data-tooltip="11 3D tactical fielder figurines with dynamic catch probability cones" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(168,85,247,0.1)';this.style.borderColor='rgba(168,85,247,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">👥</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--purple-light);">Fielders</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">Field Editor</span>
+          </button>
+          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FUSION'); }, 200);" data-tooltip="Simultaneous delivery pitch bounce fused with outfield six trajectory" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,184,0,0.1)';this.style.borderColor='rgba(255,184,0,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">🔀</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Fusion</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">Pitch + Shot</span>
+          </button>
+          <button type="button" onclick="open3DTrophyCabinetModal();" data-tooltip="Inspect 3D Championship Trophy Cabinet — Premier Cup, MVP Shield, Golden Bat" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,184,0,0.1)';this.style.borderColor='rgba(255,184,0,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">🏆</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Trophies</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">3D Cabinet</span>
+          </button>
+          <button type="button" onclick="open3DPlayerCardModal('Hardik Patel','#33','ALL_ROUNDER');" data-tooltip="Holographic 3D Player Card Inspector with pointer tilt physics and specular sheen" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,229,153,0.1)';this.style.borderColor='rgba(0,229,153,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">🃏</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald);">Player Card</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">Holographic</span>
+          </button>
+          <button type="button" onclick="open3DBatCustomizerModal();" data-tooltip="3D Cricket Bat configurator — willow grade selector and grip color switcher" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,210,255,0.1)';this.style.borderColor='rgba(0,210,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <span style="font-size: 1.4rem;">🏏</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--cyan);">Bat Config</span>
+            <span style="font-size: 0.63rem; color: var(--text-muted);">3D Gear</span>
+          </button>
+        </div>
+      </div>
+      <!-- ===== END 3D EXPERIENCES HUB ===== -->
+
       <div class="grid-2">
         <!-- Match Phase & Key Metrics Hub -->
         <div class="card" id="cardMatchCenterStatus">
