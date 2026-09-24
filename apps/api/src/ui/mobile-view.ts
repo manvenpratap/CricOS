@@ -3,7 +3,10 @@ export function getMobileAppHtml(): string {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#04070D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CricOS — Consumer Mobile App (iOS & Android)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,15 +19,43 @@ export function getMobileAppHtml(): string {
       --amber: #FFB800;
       --rose: #FF3366;
       --purple: #A855F7;
+
+      /* Emil Kowalski Animation, Physics & Native Mobile Tokens (Skills 1, 7, 9) */
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+      --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+      --duration-fast: 120ms;
+      --duration-normal: 200ms;
+      --duration-modal: 280ms;
     }
     * { box-sizing: border-box; }
+    html {
+      -webkit-tap-highlight-color: transparent;
+      height: 100%;
+      overscroll-behavior: none;
+    }
+    button, input, select, textarea {
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+    }
+    input, select, textarea {
+      font-size: 16px;
+    }
+    .sheet-drag-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.3);
+      margin: 8px auto 14px auto;
+    }
     body {
       margin: 0;
       padding: 0;
       background: radial-gradient(circle at 50% 10%, rgba(0, 229, 153, 0.08) 0%, #030509 70%);
       color: #f8fafc;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -93,11 +124,13 @@ export function getMobileAppHtml(): string {
       justify-content: space-between;
       padding: 0 12px;
       box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: width var(--duration-modal) var(--ease-spring), box-shadow var(--duration-modal) var(--ease-out);
     }
-    .device-notch:hover {
-      width: 170px;
-      box-shadow: 0 0 22px rgba(0, 229, 153, 0.45);
+    @media (hover: hover) and (pointer: fine) {
+      .device-notch:hover {
+        width: 170px;
+        box-shadow: 0 0 22px rgba(0, 229, 153, 0.45);
+      }
     }
     .notch-camera {
       width: 10px;

@@ -3,7 +3,7 @@ export function getDashboardHtml(): string {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>CricOS — Unified Cricket Operating System & Interactive Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,12 +30,40 @@ export function getDashboardHtml(): string {
       --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
       --font-score: 'Chakra Petch', monospace;
       --font-mono: 'JetBrains Mono', monospace;
+
+      /* Emil Kowalski Animation, Physics & Craft Tokens (Skills 1, 2, 4, 5) */
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+      --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+      --duration-fast: 120ms;
+      --duration-normal: 200ms;
+      --duration-modal: 280ms;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    /* Mobile Native Platform Standards (Skill 7) */
+    html {
+      -webkit-tap-highlight-color: transparent;
+      height: 100%;
+    }
+
+    button, input, select, textarea {
+      touch-action: manipulation;
+    }
+
+    button, .nav-pill, .pad-btn, .studio-btn, .tab-btn, .sidebar-nav-item, .fow-pill, .slot-chip, .stage-step {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    input, select, textarea {
+      font-size: 16px; /* Prevents auto-zoom in iOS Safari */
     }
 
     /* Accessible Focus Ring (WCAG 2.2 AA) */
@@ -98,7 +126,7 @@ export function getDashboardHtml(): string {
         radial-gradient(750px circle at 10% 75%, rgba(168, 85, 247, 0.07) 0%, transparent 50%);
       color: var(--text-main);
       font-family: var(--font-body);
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
     }
@@ -108,7 +136,7 @@ export function getDashboardHtml(): string {
        ========================================================================== */
     .app-layout {
       display: flex;
-      min-height: 100vh;
+      min-height: 100dvh;
       width: 100%;
       position: relative;
     }
@@ -239,14 +267,19 @@ export function getDashboardHtml(): string {
       justify-content: center;
       cursor: pointer;
       font-size: 0.75rem;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
       flex-shrink: 0;
     }
 
-    .sidebar-collapse-btn:hover {
-      background: rgba(0, 229, 153, 0.12);
-      border-color: rgba(0, 229, 153, 0.3);
-      color: var(--turf-emerald);
+    @media (hover: hover) and (pointer: fine) {
+      .sidebar-collapse-btn:hover {
+        background: rgba(0, 229, 153, 0.12);
+        border-color: rgba(0, 229, 153, 0.3);
+        color: var(--turf-emerald);
+      }
+    }
+    .sidebar-collapse-btn:active {
+      transform: scale(0.96);
     }
 
     .btn-scorecard-inn {
@@ -258,7 +291,7 @@ export function getDashboardHtml(): string {
       background: transparent;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
     }
     .btn-scorecard-inn.active {
       background: var(--turf-emerald);
@@ -286,15 +319,20 @@ export function getDashboardHtml(): string {
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 0 16px rgba(0, 229, 153, 0.28), 0 2px 4px rgba(0, 0, 0, 0.4);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
       white-space: nowrap;
       overflow: hidden;
     }
 
-    .sidebar-cta-btn:hover {
-      background: linear-gradient(135deg, #05f5a4, #00E599);
-      box-shadow: 0 0 24px rgba(0, 229, 153, 0.45);
-      transform: translateY(-1px);
+    @media (hover: hover) and (pointer: fine) {
+      .sidebar-cta-btn:hover {
+        background: linear-gradient(135deg, #05f5a4, #00E599);
+        box-shadow: 0 0 24px rgba(0, 229, 153, 0.45);
+        transform: translateY(-1px);
+      }
+    }
+    .sidebar-cta-btn:active {
+      transform: scale(0.97);
     }
 
     .sidebar-nav-scroll {
@@ -354,7 +392,7 @@ export function getDashboardHtml(): string {
       background: transparent;
       border: 1px solid transparent;
       cursor: pointer;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
       white-space: nowrap;
       text-align: left;
       width: 100%;
@@ -362,17 +400,19 @@ export function getDashboardHtml(): string {
       font-family: var(--font-body);
     }
 
-    .sidebar-nav-item:hover,
-    .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: #FFFFFF;
-      border-color: rgba(255, 255, 255, 0.08);
-      transform: translateX(2px);
+    @media (hover: hover) and (pointer: fine) {
+      .sidebar-nav-item:hover,
+      .tab-btn:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: #FFFFFF;
+        border-color: rgba(255, 255, 255, 0.08);
+        transform: translateX(2px);
+      }
     }
 
     .sidebar-nav-item:active,
     .tab-btn:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     .sidebar-nav-item.active,
@@ -623,16 +663,18 @@ export function getDashboardHtml(): string {
       font-weight: 600;
       color: var(--text-muted);
       text-decoration: none;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
       cursor: pointer;
       white-space: nowrap;
     }
 
-    .nav-pill:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(0, 229, 153, 0.35);
-      color: #FFFFFF;
-      transform: translateY(-1px);
+    @media (hover: hover) and (pointer: fine) {
+      .nav-pill:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(0, 229, 153, 0.35);
+        color: #FFFFFF;
+        transform: translateY(-1px);
+      }
     }
     .nav-pill:active {
       transform: scale(0.97);
@@ -668,14 +710,19 @@ export function getDashboardHtml(): string {
       font-size: 0.78rem;
       font-weight: 600;
       color: var(--primary);
-      transition: all 0.2s ease;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
       cursor: pointer;
       white-space: nowrap;
     }
-    .status-pill:hover {
-      background: rgba(0, 229, 153, 0.15);
-      border-color: rgba(0, 229, 153, 0.45);
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
+    @media (hover: hover) and (pointer: fine) {
+      .status-pill:hover {
+        background: rgba(0, 229, 153, 0.15);
+        border-color: rgba(0, 229, 153, 0.45);
+        box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
+      }
+    }
+    .status-pill:active {
+      transform: scale(0.97);
     }
 
     .pulse-dot {
@@ -816,13 +863,18 @@ export function getDashboardHtml(): string {
       padding: 0.2rem 0.65rem;
       border-radius: 6px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
     }
 
-    .fow-pill:hover {
-      transform: scale(1.05);
-      border-color: var(--rose);
-      box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+    @media (hover: hover) and (pointer: fine) {
+      .fow-pill:hover {
+        transform: scale(1.05);
+        border-color: var(--rose);
+        box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+      }
+    }
+    .fow-pill:active {
+      transform: scale(0.97);
     }
 
     .fow-pill small {
@@ -856,7 +908,7 @@ export function getDashboardHtml(): string {
       align-items: center;
       gap: 0.4rem;
       border: 1px solid transparent;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
     }
 
     .stage-step.completed {
@@ -889,7 +941,7 @@ export function getDashboardHtml(): string {
       border-radius: 4px;
       border: 1px solid var(--border-subtle);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
     }
 
     .slot-chip.available {
@@ -898,9 +950,14 @@ export function getDashboardHtml(): string {
       color: var(--turf-emerald);
     }
 
-    .slot-chip.available:hover {
-      background: rgba(0, 229, 153, 0.2);
-      transform: translateY(-1px);
+    @media (hover: hover) and (pointer: fine) {
+      .slot-chip.available:hover {
+        background: rgba(0, 229, 153, 0.2);
+        transform: translateY(-1px);
+      }
+    }
+    .slot-chip:active {
+      transform: scale(0.96);
     }
 
     .slot-chip.booked {
@@ -1111,16 +1168,20 @@ export function getDashboardHtml(): string {
       color: var(--text-main);
       border: 1px solid var(--border-subtle);
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      animation: popBall 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: popBall var(--duration-normal) var(--ease-out);
+      transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+      user-select: none;
+      -webkit-user-select: none;
     }
 
-    .ball-bubble:hover {
-      transform: scale(1.15);
+    @media (hover: hover) and (pointer: fine) {
+      .ball-bubble:hover {
+        transform: scale(1.12);
+      }
     }
 
     @keyframes popBall {
-      0% { transform: scale(0.5); opacity: 0; }
+      0% { transform: scale(0.88); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
 
@@ -1187,7 +1248,7 @@ export function getDashboardHtml(): string {
       font-weight: 700;
       padding: 0.9rem 0;
       cursor: pointer;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1196,6 +1257,7 @@ export function getDashboardHtml(): string {
       min-height: 52px;
       user-select: none;
       -webkit-user-select: none;
+      touch-action: manipulation;
     }
 
     .pad-btn span {
@@ -1207,14 +1269,16 @@ export function getDashboardHtml(): string {
       text-transform: uppercase;
     }
 
-    .pad-btn:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.4);
+    @media (hover: hover) and (pointer: fine) {
+      .pad-btn:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
     }
 
     .pad-btn:active {
-      transform: scale(0.96) translateY(1px);
+      transform: scale(0.97) translateY(1px);
       box-shadow: inset 0 0 16px var(--turf-glow);
     }
 
@@ -1262,6 +1326,19 @@ export function getDashboardHtml(): string {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      animation: feedItemEnter var(--duration-normal) var(--ease-out) forwards;
+      transform-origin: top center;
+    }
+
+    @keyframes feedItemEnter {
+      0% {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .feed-item:last-child {
@@ -1310,19 +1387,26 @@ export function getDashboardHtml(): string {
       font-size: 0.92rem;
       letter-spacing: -0.01em;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: transform var(--duration-fast) var(--ease-out), filter var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
       width: 100%;
       box-shadow: 0 4px 15px rgba(0, 229, 153, 0.3);
+      user-select: none;
+      touch-action: manipulation;
     }
 
-    .btn:hover {
-      filter: brightness(1.1);
-      box-shadow: 0 6px 20px rgba(0, 229, 153, 0.45);
-      transform: translateY(-1px);
+    @media (hover: hover) and (pointer: fine) {
+      .btn:hover {
+        filter: brightness(1.1);
+        box-shadow: 0 6px 20px rgba(0, 229, 153, 0.45);
+        transform: translateY(-1px);
+      }
+    }
+    .btn:active {
+      transform: scale(0.97);
     }
 
     .btn-secondary {
@@ -1381,32 +1465,150 @@ export function getDashboardHtml(): string {
       letter-spacing: 0.05em;
     }
 
-    /* Toast Notification */
-    #toast {
+    /* ==========================================================================
+       Sonner-Grade Stacked Toast Engine (Emil Kowalski Design Engineering - Skill 6)
+       ========================================================================== */
+    #sonnerToaster {
       position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--bg-card-solid);
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 100000;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 0.65rem;
+      pointer-events: none;
+      width: min(390px, calc(100vw - 2rem));
+      max-width: 100%;
+    }
+
+    .sonner-toast {
+      pointer-events: auto;
+      background: rgba(10, 16, 28, 0.95);
       border: 1px solid var(--border-accent);
-      padding: 0.85rem 1.25rem;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border-radius: 12px;
+      padding: 0.85rem 1.1rem;
+      box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.75), 0 0 24px rgba(0, 229, 153, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: var(--text-main);
+      font-size: 0.88rem;
+      line-height: 1.4;
+      animation: sonnerEnter var(--duration-modal) var(--ease-out) forwards;
+      transform-origin: top right;
+      transition: transform var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    .sonner-toast.dismissing {
+      animation: sonnerExit var(--duration-normal) var(--ease-out) forwards;
+    }
+
+    .sonner-toast-content {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 999;
-      font-size: 0.9rem;
+      flex: 1;
+      min-width: 0;
     }
 
-    #toast.show {
-      transform: translateY(0);
+    .sonner-icon {
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sonner-title {
+      font-weight: 600;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+
+    .sonner-description {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .sonner-action-btn {
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      color: var(--turf-emerald);
+      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+    }
+    .sonner-action-btn:active {
+      transform: scale(0.95);
+    }
+
+    .sonner-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      opacity: 0.7;
+      transition: opacity var(--duration-fast) var(--ease-out);
+    }
+    .sonner-close-btn:hover {
       opacity: 1;
     }
 
-    /* Universal Accessible Tooltips */
+    @keyframes sonnerEnter {
+      0% {
+        opacity: 0;
+        transform: translateY(-16px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes sonnerExit {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.95);
+      }
+    }
+
+    /* Sonner Stacked Hover Expansion (Skill 6 - ask-sonner) */
+    #sonnerToaster:hover .sonner-toast:nth-last-child(2) {
+      transform: translateY(-70px) scale(1) !important;
+      opacity: 1 !important;
+    }
+    #sonnerToaster:hover .sonner-toast:nth-last-child(3) {
+      transform: translateY(-140px) scale(1) !important;
+      opacity: 1 !important;
+    }
+
+    #toast {
+      display: none;
+    }
+
+    /* Universal Accessible Tooltips (Skill 2 & 5: emil-design-eng & animate recipes) */
     .uni-tooltip {
       position: absolute;
       z-index: 99999;
@@ -1418,17 +1620,169 @@ export function getDashboardHtml(): string {
       font-weight: 500;
       line-height: 1.4;
       letter-spacing: 0.01em;
-      border-radius: 6px;
+      border-radius: 8px;
       pointer-events: none;
       word-wrap: break-word;
       box-sizing: border-box;
-      background: #1e293b;
+      background: rgba(15, 23, 42, 0.94);
       color: #f8fafc;
       border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      transform-origin: var(--transform-origin, center bottom);
+      opacity: 0;
+      transform: scale(0.97);
+      transition: opacity 125ms var(--ease-out), transform 125ms var(--ease-out);
+    }
+    .uni-tooltip.visible {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .uni-tooltip[data-instant] {
+      transition-duration: 0ms !important;
+    }
+
+    /* Hold to Confirm Recipe (Skill 2 & 5: emil-design-eng & animate) */
+    .btn-hold-confirm {
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .btn-hold-confirm .hold-progress-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 51, 102, 0.35);
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 200ms var(--ease-out);
+      pointer-events: none;
+    }
+    .btn-hold-confirm.holding .hold-progress-overlay {
+      clip-path: inset(0 0 0 0);
+      transition: clip-path 2s linear;
+    }
+    .btn-hold-confirm:active {
+      transform: scale(0.97);
+    }
+
+    /* Blur-Masked Tab Transitions (Skill 6: emil-design-eng) */
+    .tab-pane {
+      transition: opacity 160ms var(--ease-out), filter 160ms var(--ease-out);
+    }
+    .tab-pane.transitioning {
+      filter: blur(2px);
+      opacity: 0.85;
+    }
+
+    /* Staggered Group Entrances (Skill 3 & 7: find-animation-opportunities) */
+    @keyframes rosterItemEnter {
+      0% { opacity: 0; transform: translateY(8px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .player-roster-row {
+      animation: rosterItemEnter var(--duration-normal) var(--ease-out) backwards;
+    }
+    .player-roster-row:nth-child(1) { animation-delay: 25ms; }
+    .player-roster-row:nth-child(2) { animation-delay: 50ms; }
+    .player-roster-row:nth-child(3) { animation-delay: 75ms; }
+    .player-roster-row:nth-child(4) { animation-delay: 100ms; }
+    .player-roster-row:nth-child(5) { animation-delay: 125ms; }
+    .player-roster-row:nth-child(6) { animation-delay: 150ms; }
+    .player-roster-row:nth-child(7) { animation-delay: 175ms; }
+    .player-roster-row:nth-child(8) { animation-delay: 200ms; }
+    .player-roster-row:nth-child(9) { animation-delay: 225ms; }
+    .player-roster-row:nth-child(10) { animation-delay: 250ms; }
+    .player-roster-row:nth-child(11) { animation-delay: 275ms; }
+
+    /* Emil Kowalski Canonical Floating Prototype Picker (Skill 11 - prototype) */
+    .proto-picker {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2147483647;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(10, 10, 10, 0.88);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      backdrop-filter: blur(16px) saturate(1.4);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 2px 6px rgba(0, 0, 0, 0.2);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .proto-picker[data-position="top"] {
+      bottom: auto;
+      top: 68px;
+    }
+    .proto-picker-highlight {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      will-change: transform, width;
+    }
+    .proto-picker[data-ready] .proto-picker-highlight {
+      transition:
+        transform 250ms cubic-bezier(0.23, 1, 0.32, 1),
+        width 250ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .proto-picker[data-ready] .proto-picker-highlight { transition: none; }
+    }
+    .proto-picker-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.65);
+      font: inherit;
+      cursor: pointer;
+      transition: color 150ms var(--ease-out);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .proto-picker-item:hover {
+        color: rgba(255, 255, 255, 0.95);
+      }
+    }
+    .proto-picker-item:active {
+      transform: scale(0.97);
+    }
+    .proto-picker-item:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.4);
+      outline-offset: 2px;
+    }
+    .proto-picker-item[data-active] {
+      color: #fff;
+      font-weight: 600;
+    }
+    .proto-picker-divider {
+      width: 1px;
+      height: 16px;
+      margin: 0 4px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .proto-picker-replay {
+      padding: 0 10px;
+      font-size: 14px;
     }
     [data-tooltip] {
       position: relative;
@@ -1467,11 +1821,16 @@ export function getDashboardHtml(): string {
       padding: 0.35rem 0.85rem;
       border-radius: 9999px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
     }
-    .user-profile-header-btn:hover {
-      background: rgba(0, 229, 153, 0.12);
-      border-color: rgba(0, 229, 153, 0.35);
+    @media (hover: hover) and (pointer: fine) {
+      .user-profile-header-btn:hover {
+        background: rgba(0, 229, 153, 0.12);
+        border-color: rgba(0, 229, 153, 0.35);
+      }
+    }
+    .user-profile-header-btn:active {
+      transform: scale(0.97);
     }
     .user-avatar-pill {
       width: 28px;
@@ -1509,7 +1868,7 @@ export function getDashboardHtml(): string {
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       background: rgba(4, 7, 13, 0.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -1518,6 +1877,7 @@ export function getDashboardHtml(): string {
       justify-content: center;
       z-index: 1000;
       padding: 1rem;
+      overscroll-behavior-y: none;
     }
     .modal-backdrop.active {
       display: flex;
@@ -1534,12 +1894,12 @@ export function getDashboardHtml(): string {
       transform-origin: center center;
     }
     .modal-backdrop.active .modal-dialog {
-      animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: modalPopIn var(--duration-modal) var(--ease-out) forwards;
     }
     @keyframes modalPopIn {
       0% {
         opacity: 0;
-        transform: scale(0.95) translateY(12px);
+        transform: scale(0.95) translateY(8px);
       }
       100% {
         opacity: 1;
@@ -1552,13 +1912,14 @@ export function getDashboardHtml(): string {
       justify-content: flex-end;
       align-items: stretch;
       padding: 0;
+      overscroll-behavior-y: none;
     }
     .modal-backdrop.as-drawer .modal-dialog,
     .modal-backdrop.as-drawer .modal-card {
       max-width: 680px !important;
       width: min(680px, 92vw) !important;
-      height: 100vh !important;
-      max-height: 100vh !important;
+      height: 100dvh !important;
+      max-height: 100dvh !important;
       border-radius: 20px 0 0 20px !important;
       border-right: none !important;
       border-top: none !important;
@@ -1575,7 +1936,7 @@ export function getDashboardHtml(): string {
     }
     .modal-backdrop.as-drawer.active .modal-dialog,
     .modal-backdrop.as-drawer.active .modal-card {
-      animation: drawerSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: drawerSlideIn var(--duration-modal) var(--ease-drawer) forwards;
     }
     @keyframes drawerSlideIn {
       0% {
@@ -1677,7 +2038,7 @@ export function getDashboardHtml(): string {
       gap: 0.6rem;
     }
     .modal-close-btn {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94A3B8;
       width: 32px;
@@ -1688,12 +2049,17 @@ export function getDashboardHtml(): string {
       justify-content: center;
       cursor: pointer;
       font-size: 1.1rem;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
     }
-    .modal-close-btn:hover {
-      background: rgba(255, 51, 102, 0.2);
-      color: #FF3366;
-      border-color: rgba(255, 51, 102, 0.4);
+    @media (hover: hover) and (pointer: fine) {
+      .modal-close-btn:hover {
+        background: rgba(255, 51, 102, 0.2);
+        color: #FF3366;
+        border-color: rgba(255, 51, 102, 0.4);
+      }
+    }
+    .modal-close-btn:active {
+      transform: scale(0.95);
     }
     .modal-body {
       padding: 1.5rem 1.75rem;
@@ -1725,13 +2091,18 @@ export function getDashboardHtml(): string {
       gap: 0.35rem;
       color: #94A3B8;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
       font-size: 0.75rem;
       font-weight: 700;
     }
-    .persona-pill-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #F8FAFC;
+    @media (hover: hover) and (pointer: fine) {
+      .persona-pill-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #F8FAFC;
+      }
+    }
+    .persona-pill-btn:active {
+      transform: scale(0.97);
     }
     .persona-pill-btn.active {
       background: rgba(0, 229, 153, 0.15);
@@ -1792,7 +2163,7 @@ export function getDashboardHtml(): string {
       font-size: 0.68rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
@@ -1800,10 +2171,15 @@ export function getDashboardHtml(): string {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       z-index: 10;
     }
-    .field-zone-btn:hover {
-      border-color: var(--cyan);
-      transform: scale(1.06);
-      background: rgba(15, 23, 42, 0.95);
+    @media (hover: hover) and (pointer: fine) {
+      .field-zone-btn:hover {
+        border-color: var(--cyan);
+        transform: scale(1.06);
+        background: rgba(15, 23, 42, 0.95);
+      }
+    }
+    .field-zone-btn:active {
+      transform: scale(0.96);
     }
     .field-zone-btn.active {
       background: var(--turf-emerald);
@@ -1831,13 +2207,18 @@ export function getDashboardHtml(): string {
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94A3B8;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
     }
-    .wagon-filter-pill:hover, .wagon-filter-pill.active {
-      background: rgba(0, 229, 153, 0.12);
-      border-color: var(--turf-emerald);
-      color: var(--turf-emerald);
-      font-weight: 600;
+    @media (hover: hover) and (pointer: fine) {
+      .wagon-filter-pill:hover, .wagon-filter-pill.active {
+        background: rgba(0, 229, 153, 0.12);
+        border-color: var(--turf-emerald);
+        color: var(--turf-emerald);
+        font-weight: 600;
+      }
+    }
+    .wagon-filter-pill:active {
+      transform: scale(0.96);
     }
     .wagon-batter-pill {
       display: inline-flex;
@@ -1850,13 +2231,18 @@ export function getDashboardHtml(): string {
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94A3B8;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
     }
-    .wagon-batter-pill:hover, .wagon-batter-pill.active {
-      background: rgba(0, 229, 153, 0.14);
-      border-color: var(--turf-emerald);
-      color: #FFFFFF;
-      font-weight: 600;
+    @media (hover: hover) and (pointer: fine) {
+      .wagon-batter-pill:hover, .wagon-batter-pill.active {
+        background: rgba(0, 229, 153, 0.14);
+        border-color: var(--turf-emerald);
+        color: #FFFFFF;
+        font-weight: 600;
+      }
+    }
+    .wagon-batter-pill:active {
+      transform: scale(0.96);
     }
     .wagon-batter-pill.active .batter-pill-badge {
       background: var(--turf-emerald);
@@ -1896,11 +2282,13 @@ export function getDashboardHtml(): string {
       border-radius: 8px;
       padding: 0.65rem 0.95rem;
       margin-bottom: 0.45rem;
-      transition: all 0.2s;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
     }
-    .player-roster-row:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.15);
+    @media (hover: hover) and (pointer: fine) {
+      .player-roster-row:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.15);
+      }
     }
     .player-role-badge {
       font-size: 0.65rem;
@@ -1932,11 +2320,19 @@ export function getDashboardHtml(): string {
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: #F8FAFC;
       cursor: pointer;
-      transition: all 0.15s ease-out;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
     }
-    .studio-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5);
+    @media (hover: hover) and (pointer: fine) {
+      .studio-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5);
+      }
+    }
+    .studio-btn:active {
+      transform: scale(0.97);
     }
     .studio-btn.boundary-four {
       background: rgba(0, 210, 255, 0.15);
@@ -1959,6 +2355,27 @@ export function getDashboardHtml(): string {
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
+    }
+
+    /* Tactile Prototype Variant Modifiers (Skill 11 - Prototyping) */
+    body[data-tactile-variant="BROADCAST_MINIMAL"] .pad-btn:active,
+    body[data-tactile-variant="BROADCAST_MINIMAL"] .studio-btn:active {
+      transform: scale(0.985) !important;
+      box-shadow: none !important;
+    }
+    body[data-tactile-variant="ATHLETIC_KINETIC"] .pad-btn:active,
+    body[data-tactile-variant="ATHLETIC_KINETIC"] .studio-btn:active {
+      transform: scale(0.94) !important;
+      transition: transform var(--duration-fast) var(--ease-spring) !important;
+    }
+
+    /* NumberFlow-Inspired Tabular Number Pulse (Skill 10 - Pick UI Library) */
+    .score-digit-pulse {
+      animation: digitPulse var(--duration-fast) var(--ease-out);
+    }
+    @keyframes digitPulse {
+      0% { transform: scale(1.06); color: var(--turf-emerald); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
@@ -2164,7 +2581,12 @@ export function getDashboardHtml(): string {
           <div class="header-nav-divider"></div>
 
           <!-- Utility: Active Persona Badge (Click to open Persona Switcher) -->
-          <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: all 0.2s;" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
+          <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
+
+          <!-- Utility: Tactile Prototype Switcher (Emil Kowalski Prototyping - Skill 11) -->
+          <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.12); color: var(--cyan); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);" data-tooltip="Tactile Prototype: Switch between Stadium, Minimal, and Kinetic variants (Keys Alt+1-3)">
+            <span id="tactilePrototypeLabel">⚡ HAPTIC STADIUM</span>
+          </button>
 
           <!-- Utility: High-Contrast Outdoor / Daylight Mode Toggle -->
           <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" data-tooltip="Toggle High-Contrast Outdoor Mode for sunlight visibility" aria-label="Toggle Outdoor Mode">
@@ -2819,7 +3241,7 @@ export function getDashboardHtml(): string {
               <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(4, 1, 'NO_BALL', false)" data-tooltip="No Ball + Boundary 4: +5 runs, Free Hit next delivery">+4 Nb (5 runs)</button>
               <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(6, 1, 'NO_BALL', false)" data-tooltip="No Ball + Maximum 6: +7 runs, Free Hit next delivery">+6 Nb (7 runs)</button>
               <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'PENALTY', false)" data-tooltip="Penalty runs awarded (+5 runs)">+5 Penalty</button>
-              <button class="btn btn-secondary" style="padding: 0.35rem 0.6rem; font-size: 0.72rem; border-color: rgba(255,51,102,0.3); color: var(--rose);" onclick="resetMatchScore()" data-tooltip="Reset match score for new innings">↺ Reset</button>
+              <button class="btn btn-secondary btn-hold-confirm" id="btnStudioReset" style="padding: 0.35rem 0.6rem; font-size: 0.72rem; border-color: rgba(255,51,102,0.3); color: var(--rose);" onclick="handleResetButtonClick()" data-tooltip="Hold 2s to reset match score for new innings"><span class="hold-progress-overlay"></span><span style="position: relative; z-index: 1;">↺ Hold to Reset</span></button>
             </div>
           </div>
         </div>
@@ -5188,7 +5610,19 @@ cricos_active_sse_connections 1</pre>
     </div>
   </div>
 
+  <!-- Emil Kowalski Sonner Stacked Toaster Container (Skill 6) & Legacy DOM Target -->
+  <div id="sonnerToaster" role="region" aria-label="Notifications"></div>
   <div id="toast">✓ Event completed</div>
+
+  <!-- Emil Kowalski Floating Prototype Picker (Skill 11 - prototype) -->
+  <nav class="proto-picker" id="protoPicker" aria-label="Tactile Prototype Selector" data-ready>
+    <div class="proto-picker-highlight" id="protoPickerHighlight"></div>
+    <button type="button" class="proto-picker-item" data-variant="STADIUM_HAPTIC" data-active onclick="selectTactileVariant('STADIUM_HAPTIC')">1 Stadium</button>
+    <button type="button" class="proto-picker-item" data-variant="BROADCAST_MINIMAL" onclick="selectTactileVariant('BROADCAST_MINIMAL')">2 Minimal</button>
+    <button type="button" class="proto-picker-item" data-variant="ATHLETIC_KINETIC" onclick="selectTactileVariant('ATHLETIC_KINETIC')">3 Kinetic</button>
+    <div class="proto-picker-divider" aria-hidden="true"></div>
+    <button type="button" class="proto-picker-item proto-picker-replay" aria-label="Replay tactile animation" data-tooltip="Replay animation (R)" onclick="replayTactileAnimation()">↻</button>
+  </nav>
 
   <script>
     // ==========================================
@@ -5345,7 +5779,13 @@ cricos_active_sse_connections 1</pre>
       });
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       const target = document.getElementById('tab-' + tabId);
-      if (target) target.classList.add('active');
+      if (target) {
+        target.classList.add('transitioning');
+        target.classList.add('active');
+        setTimeout(() => {
+          target.classList.remove('transitioning');
+        }, 180);
+      }
       if (tabId === 'studio') {
         renderWagonWheelRays();
         updateWagonTelemetry();
@@ -5400,13 +5840,420 @@ cricos_active_sse_connections 1</pre>
       if (backdrop) backdrop.classList.remove('active');
     }
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      if (!t) return;
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
+    // ==========================================================================
+    // Emil Kowalski Animation, Physics & Craft Tokens (Skill 1 - Vocabulary)
+    // ==========================================================================
+    window.ANIMATION_TOKENS = Object.freeze({
+      easeOut: 'cubic-bezier(0.23, 1, 0.32, 1)',
+      easeInOut: 'cubic-bezier(0.77, 0, 0.175, 1)',
+      easeDrawer: 'cubic-bezier(0.32, 0.72, 0, 1)',
+      easeSpring: 'cubic-bezier(0.175, 0.885, 0.32, 1.15)',
+      durationFast: 120,
+      durationNormal: 200,
+      durationModal: 280
+    });
+
+    // Canonical Reverse-Lookup Animation Vocabulary (Skill 1 & 3: animation-vocabulary)
+    window.ANIMATION_VOCABULARY = Object.freeze({
+      anticipation: 'Wind-up motion in reverse direction before the primary action to build momentum and signal intent',
+      damping: 'Friction coefficient in spring physics that halts oscillation; critical damping (1.0) prevents overshoot',
+      stiffness: 'Spring tension/rigidity defining how rapidly a system seeks its rest state',
+      mass: 'Inertia of the animated object affecting reaction time to spring forces',
+      stagger: 'Sequential delayed offset between multiple entering elements to guide optical flow (20-30ms per item)',
+      momentum: 'Physical inertia preserved when releasing a gesture, calculated via initial velocity and deceleration rate',
+      rubberband: 'Non-linear resistance curve applied when pulling past scroll boundaries to signal constraint',
+      layoutId: 'Shared element transition identifier matching geometry across divergent component trees',
+      holdToConfirm: 'Asymmetric timing interaction (long press to commit, instantaneous snap-back on abort) for destructive actions',
+      instantSkip: 'Eliminating enter delay when hovering consecutive interactive triggers within a warm temporal window'
+    });
+
+    window.lookupAnimationTerm = function(term) {
+      if (!term || typeof term !== 'string') return null;
+      const lower = term.toLowerCase().trim();
+      if (window.ANIMATION_VOCABULARY[lower]) return window.ANIMATION_VOCABULARY[lower];
+      for (const [key, desc] of Object.entries(window.ANIMATION_VOCABULARY)) {
+        if (key.includes(lower) || desc.toLowerCase().includes(lower)) {
+          return { term: key, definition: desc };
+        }
+      }
+      return null;
+    };
+
+    // Apple Design Fluid Interface Physics (Skill 8 - apple-design, WWDC 2018)
+    window.AppleDesignPhysics = Object.freeze({
+      project: (initialVelocity, decelerationRate = 0.998) => {
+        return (initialVelocity * decelerationRate) / (1 - decelerationRate);
+      },
+      rubberband: (offset, dimension, coefficient = 0.55) => {
+        return (offset * dimension * coefficient) / (dimension + coefficient * Math.abs(offset));
+      },
+      springConfig: (mass = 1, stiffness = 100, damping = 10) => {
+        const dampingRatio = damping / (2 * Math.sqrt(stiffness * mass));
+        return Object.freeze({
+          mass,
+          stiffness,
+          damping,
+          dampingRatio,
+          isOverdamped: dampingRatio > 1,
+          isCriticallyDamped: Math.abs(dampingRatio - 1) < 0.01
+        });
+      }
+    });
+
+    // ==========================================================================
+    // Swift-Inspired Architectural Models & Safe Value Types (Skill 13 - write-swift)
+    // Immutable states, exhaustive Enums, explicit Result types
+    // ==========================================================================
+    window.CricOSDomain = Object.freeze({
+      Roles: Object.freeze({
+        CAPTAIN: 'CAPTAIN',
+        PLAYER: 'PLAYER',
+        SCORER: 'SCORER',
+        FAN: 'FAN',
+        UMPIRE: 'UMPIRE',
+        ADMIN: 'ADMIN',
+        ORGANISER: 'ORGANISER',
+        TURF_PROVIDER: 'TURF_PROVIDER'
+      }),
+      MatchStatus: Object.freeze({
+        SCHEDULED: 'SCHEDULED',
+        LIVE: 'LIVE',
+        INNINGS_BREAK: 'INNINGS_BREAK',
+        COMPLETED: 'COMPLETED',
+        RAIN_DELAY: 'RAIN_DELAY'
+      }),
+      DismissalKind: Object.freeze({
+        BOWLED: 'BOWLED',
+        CAUGHT: 'CAUGHT',
+        LBW: 'LBW',
+        RUN_OUT: 'RUN_OUT',
+        STUMPED: 'STUMPED',
+        HIT_WICKET: 'HIT_WICKET'
+      }),
+      TactileVariant: Object.freeze({
+        STADIUM_HAPTIC: 'STADIUM_HAPTIC',
+        BROADCAST_MINIMAL: 'BROADCAST_MINIMAL',
+        ATHLETIC_KINETIC: 'ATHLETIC_KINETIC'
+      }),
+      resultOk: (data) => Object.freeze({
+        ok: true,
+        data,
+        error: null,
+        map: (fn) => window.CricOSDomain.resultOk(fn(data)),
+        match: (branches) => branches.ok(data)
+      }),
+      resultErr: (error) => Object.freeze({
+        ok: false,
+        data: null,
+        error,
+        map: () => window.CricOSDomain.resultErr(error),
+        match: (branches) => branches.err(error)
+      }),
+      copyOnWrite: (source, patch) => Object.freeze(Object.assign({}, source, patch))
+    });
+
+    // ==========================================================================
+    // Emil Kowalski Sonner Stacked Toast Engine (Skill 6 - ask-sonner)
+    // ==========================================================================
+    window.toast = (function() {
+      let toastCounter = 0;
+      const getContainer = () => {
+        let el = document.getElementById('sonnerToaster');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'sonnerToaster';
+          el.setAttribute('role', 'region');
+          el.setAttribute('aria-label', 'Notifications');
+          document.body.appendChild(el);
+        }
+        return el;
+      };
+
+      function createToast(title, opts = {}, type = 'default') {
+        const container = getContainer();
+        const id = opts.id || ('toast-' + (++toastCounter));
+        const duration = opts.duration !== undefined ? opts.duration : 3500;
+
+        const existing = document.getElementById(id);
+        if (existing) {
+          const titleEl = existing.querySelector('.sonner-title');
+          if (titleEl) titleEl.textContent = title;
+          return id;
+        }
+
+        const toastEl = document.createElement('div');
+        toastEl.className = 'sonner-toast sonner-type-' + type;
+        toastEl.id = id;
+        toastEl.setAttribute('role', 'status');
+
+        const icons = {
+          success: '✓',
+          error: '✕',
+          info: 'ℹ',
+          loading: '◌',
+          default: '⚡'
+        };
+
+        const iconStr = opts.icon || icons[type] || '⚡';
+        const descHtml = opts.description ? ('<div class="sonner-description">' + opts.description + '</div>') : '';
+        const actionHtml = opts.action ? ('<button type="button" class="sonner-action-btn" id="' + id + '-action">' + opts.action.label + '</button>') : '';
+
+        toastEl.innerHTML = 
+          '<div class="sonner-toast-content">' +
+            '<span class="sonner-icon">' + iconStr + '</span>' +
+            '<div>' +
+              '<div class="sonner-title">' + title + '</div>' +
+              descHtml +
+            '</div>' +
+          '</div>' +
+          actionHtml +
+          '<button type="button" class="sonner-close-btn" aria-label="Dismiss">×</button>';
+
+        if (opts.action && opts.action.onClick) {
+          const btn = toastEl.querySelector('#' + id + '-action');
+          if (btn) {
+            btn.onclick = (e) => {
+              opts.action.onClick(e);
+              dismissToast(id);
+            };
+          }
+        }
+
+        const closeBtn = toastEl.querySelector('.sonner-close-btn');
+        if (closeBtn) {
+          closeBtn.onclick = () => dismissToast(id);
+        }
+
+        toastEl.onclick = (e) => {
+          if (!e.target.closest('.sonner-action-btn') && !e.target.closest('.sonner-close-btn')) {
+            dismissToast(id);
+          }
+        };
+
+        container.appendChild(toastEl);
+
+        const legacyToast = document.getElementById('toast');
+        if (legacyToast) {
+          legacyToast.textContent = title;
+          legacyToast.classList.add('show');
+          setTimeout(() => legacyToast.classList.remove('show'), 3000);
+        }
+
+        if (duration !== Infinity) {
+          setTimeout(() => {
+            dismissToast(id);
+          }, duration);
+        }
+
+        return id;
+      }
+
+      function dismissToast(id) {
+        if (!id) {
+          const all = document.querySelectorAll('.sonner-toast');
+          all.forEach(t => dismissToast(t.id));
+          return;
+        }
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('dismissing');
+        setTimeout(() => {
+          if (el.parentNode) el.parentNode.removeChild(el);
+        }, 180);
+      }
+
+      const fn = (msg, opts) => createToast(msg, opts, 'default');
+      fn.success = (msg, opts) => createToast(msg, opts, 'success');
+      fn.error = (msg, opts) => createToast(msg, opts, 'error');
+      fn.info = (msg, opts) => createToast(msg, opts, 'info');
+      fn.loading = (msg, opts) => createToast(msg, Object.assign({}, opts, { duration: Infinity }), 'loading');
+      fn.promise = async (promise, { loading, success, error }) => {
+        const id = fn.loading(loading);
+        try {
+          const res = await promise;
+          const succMsg = typeof success === 'function' ? success(res) : success;
+          createToast(succMsg, { id, duration: 3500 }, 'success');
+          return res;
+        } catch (err) {
+          const errMsg = typeof error === 'function' ? error(err) : error;
+          createToast(errMsg, { id, duration: 4000 }, 'error');
+          throw err;
+        }
+      };
+      fn.dismiss = dismissToast;
+
+      return fn;
+    })();
+
+    // Backward-compatible showToast helper
+    function showToast(msg, type = 'info') {
+      if (window.toast) {
+        if (type === 'success' || msg.includes('✓') || msg.includes('Success')) {
+          window.toast.success(msg);
+        } else if (type === 'error' || msg.includes('✕') || msg.includes('Locked') || msg.includes('Error')) {
+          window.toast.error(msg);
+        } else {
+          window.toast.info(msg);
+        }
+      }
     }
+
+    // ==========================================================================
+    // Emil Kowalski Prototyping Variants Engine (Skill 11 - prototype)
+    // Divergent Axis: Feedback, Density & Motion Character
+    // ==========================================================================
+    const TACTILE_VARIANTS = {
+      STADIUM_HAPTIC: {
+        id: 'STADIUM_HAPTIC',
+        name: '⚡ HAPTIC STADIUM',
+        axis: 'Tactile Physicality & Stadium Vibrations',
+        description: 'Vigorous scale compression, glowing LED highlight, and dual-pulse vibration',
+        padScale: '0.96',
+        pressDuration: '100ms',
+        chipBounce: true,
+        vibrateMultiplier: 1.0
+      },
+      BROADCAST_MINIMAL: {
+        id: 'BROADCAST_MINIMAL',
+        name: '📺 BROADCAST MINIMAL',
+        axis: 'Restrained Broadcast Precision',
+        description: 'Subtle opacity shift, quiet border highlights, and zero layout displacement',
+        padScale: '0.985',
+        pressDuration: '70ms',
+        chipBounce: false,
+        vibrateMultiplier: 0.4
+      },
+      ATHLETIC_KINETIC: {
+        id: 'ATHLETIC_KINETIC',
+        name: '🏏 ATHLETIC KINETIC',
+        axis: 'High-Impact Snappy Physics',
+        description: 'Fast spring physics, crisp chip drop-in, and punchy boundary celebration',
+        padScale: '0.94',
+        pressDuration: '120ms',
+        chipBounce: true,
+        vibrateMultiplier: 1.5
+      }
+    };
+
+    let activeTactileVariant = 'STADIUM_HAPTIC';
+
+    function selectTactileVariant(variantKey, showNotification = true) {
+      if (!TACTILE_VARIANTS[variantKey]) return;
+      activeTactileVariant = variantKey;
+      const variant = TACTILE_VARIANTS[variantKey];
+      const label = document.getElementById('tactilePrototypeLabel');
+      if (label) label.textContent = variant.name;
+      document.body.setAttribute('data-tactile-variant', variantKey);
+
+      // Update prototype picker buttons & sliding highlight
+      const picker = document.getElementById('protoPicker');
+      if (picker) {
+        picker.querySelectorAll('.proto-picker-item[data-variant]').forEach(btn => {
+          if (btn.getAttribute('data-variant') === variantKey) {
+            btn.setAttribute('data-active', '');
+            updateProtoPickerHighlight(btn);
+          } else {
+            btn.removeAttribute('data-active');
+          }
+        });
+      }
+
+      // Sync URL parameter without page reload (?v=1/2/3)
+      try {
+        const url = new URL(window.location.href);
+        const vNum = variantKey === 'STADIUM_HAPTIC' ? '1' : (variantKey === 'BROADCAST_MINIMAL' ? '2' : '3');
+        if (url.searchParams.get('v') !== vNum) {
+          url.searchParams.set('v', vNum);
+          window.history.replaceState({}, '', url.toString());
+        }
+      } catch (e) {}
+
+      if (showNotification && window.toast) {
+        window.toast.info('Tactile Prototype: ' + variant.name, {
+          description: variant.axis + ' — ' + variant.description,
+          duration: 2500
+        });
+      }
+    }
+
+    function setScoringTactileVariant(variantKey) {
+      selectTactileVariant(variantKey, true);
+    }
+    window.setScoringTactileVariant = setScoringTactileVariant;
+    window.selectTactileVariant = selectTactileVariant;
+    window.TACTILE_VARIANTS = TACTILE_VARIANTS;
+
+    function updateProtoPickerHighlight(activeBtn) {
+      const picker = document.getElementById('protoPicker');
+      const highlight = document.getElementById('protoPickerHighlight');
+      if (!picker || !highlight) return;
+      if (!activeBtn) {
+        activeBtn = picker.querySelector('.proto-picker-item[data-active]');
+      }
+      if (activeBtn) {
+        const left = activeBtn.offsetLeft;
+        const width = activeBtn.offsetWidth;
+        highlight.style.transform = 'translateX(' + left + 'px)';
+        highlight.style.width = width + 'px';
+      }
+    }
+    window.updateProtoPickerHighlight = updateProtoPickerHighlight;
+
+    function replayTactileAnimation() {
+      const pad = document.querySelector('.scoring-tactile-pad') || document.querySelector('.pad-grid');
+      if (pad) {
+        pad.classList.remove('pulse-replay');
+        void pad.offsetWidth;
+        pad.classList.add('pulse-replay');
+      }
+      triggerHaptic('boundary');
+      if (window.toast) {
+        window.toast.info('Replaying tactile feedback: ' + activeTactileVariant, {
+          icon: '↻',
+          duration: 1800
+        });
+      }
+    }
+    window.replayTactileAnimation = replayTactileAnimation;
+
+    function cycleTactileVariant() {
+      const keys = Object.keys(TACTILE_VARIANTS);
+      const nextIdx = (keys.indexOf(activeTactileVariant) + 1) % keys.length;
+      setScoringTactileVariant(keys[nextIdx]);
+    }
+
+    // Keyboard shortcut handler for prototyping: Alt+1, Alt+2, Alt+3, 1-3, Arrows, and R
+    window.addEventListener('keydown', (e) => {
+      const inInput = e.target.matches && e.target.matches('input, textarea, select, [contenteditable="true"]');
+      if (inInput) return;
+
+      if (e.altKey && e.key === '1') {
+        e.preventDefault();
+        setScoringTactileVariant('STADIUM_HAPTIC');
+      } else if (e.altKey && e.key === '2') {
+        e.preventDefault();
+        setScoringTactileVariant('BROADCAST_MINIMAL');
+      } else if (e.altKey && e.key === '3') {
+        e.preventDefault();
+        setScoringTactileVariant('ATHLETIC_KINETIC');
+      } else if (e.key === '1' && !e.ctrlKey && !e.metaKey) {
+        setScoringTactileVariant('STADIUM_HAPTIC');
+      } else if (e.key === '2' && !e.ctrlKey && !e.metaKey) {
+        setScoringTactileVariant('BROADCAST_MINIMAL');
+      } else if (e.key === '3' && !e.ctrlKey && !e.metaKey) {
+        setScoringTactileVariant('ATHLETIC_KINETIC');
+      } else if (e.key === 'ArrowRight' && (e.altKey || (document.activeElement && document.activeElement.closest('.proto-picker')))) {
+        e.preventDefault();
+        cycleTactileVariant();
+      } else if (e.key === 'ArrowLeft' && (e.altKey || (document.activeElement && document.activeElement.closest('.proto-picker')))) {
+        e.preventDefault();
+        const keys = Object.keys(TACTILE_VARIANTS);
+        const prevIdx = (keys.indexOf(activeTactileVariant) - 1 + keys.length) % keys.length;
+        setScoringTactileVariant(keys[prevIdx]);
+      } else if ((e.key === 'r' || e.key === 'R') && !e.ctrlKey && !e.metaKey) {
+        replayTactileAnimation();
+      }
+    });
 
     // ==========================================
     // User Persona & Profile State
@@ -8054,10 +8901,20 @@ cricos_active_sse_connections 1</pre>
       legalBalls = state.legal_balls ?? 0;
 
       const oversDisplay = state.overs_display || '0.0';
-      document.getElementById('scoreRunsWickets').textContent = runs + '/' + wickets;
-      document.getElementById('scoreOvers').textContent = '(' + oversDisplay + ' ov)';
+      const runsEl = document.getElementById('scoreRunsWickets');
+      if (runsEl) {
+        runsEl.textContent = runs + '/' + wickets;
+        runsEl.classList.remove('score-digit-pulse');
+        void runsEl.offsetWidth;
+        runsEl.classList.add('score-digit-pulse');
+      }
+      const oversEl = document.getElementById('scoreOvers');
+      if (oversEl) {
+        oversEl.textContent = '(' + oversDisplay + ' ov)';
+      }
       const crr = legalBalls > 0 ? ((runs / legalBalls) * 6).toFixed(2) : '0.00';
-      document.getElementById('scoreRunRate').textContent = 'CRR: ' + crr;
+      const crrEl = document.getElementById('scoreRunRate');
+      if (crrEl) crrEl.textContent = 'CRR: ' + crr;
 
       if (typeof announceA11y === 'function') {
         const a11yDesc = (event && event.is_wicket)
@@ -8409,7 +9266,17 @@ cricos_active_sse_connections 1</pre>
           }
           renderMatchCharts();
           let desc = isWicket ? '🛑 WICKET!' : (batRuns === 4 ? '🏏 FOUR!' : (batRuns === 6 ? '🚀 SIX!' : (extraType !== 'NONE' ? extraType + ' (+' + (extraRuns || 1) + ')' : batRuns + ' run(s)')));
-          showToast('Delivered: ' + desc);
+          if (window.toast) {
+            window.toast.success('Delivered: ' + desc, {
+              description: 'Ball recorded to match timeline',
+              action: {
+                label: 'Undo Delivery',
+                onClick: () => undoLastDelivery()
+              }
+            });
+          } else {
+            showToast('Delivered: ' + desc);
+          }
         }
       } catch (err) {
         // Network drop during request: save to outbox
@@ -8572,6 +9439,59 @@ cricos_active_sse_connections 1</pre>
         }
       }
     });
+
+    let holdConfirmTimer = null;
+    let holdCompleted = false;
+
+    function handleResetButtonClick() {
+      if (!holdCompleted) {
+        if (window.toast) {
+          window.toast.info('Hold ↺ for 2 seconds to reset score', { icon: '↺', duration: 2500 });
+        }
+      }
+      holdCompleted = false;
+    }
+
+    function initHoldToConfirm() {
+      const resetBtn = document.getElementById('btnStudioReset');
+      if (!resetBtn) return;
+
+      const startHold = (e) => {
+        if (e.button !== undefined && e.button !== 0) return;
+        holdCompleted = false;
+        resetBtn.classList.add('holding');
+        clearTimeout(holdConfirmTimer);
+        holdConfirmTimer = setTimeout(() => {
+          holdCompleted = true;
+          resetBtn.classList.remove('holding');
+          resetMatchScore();
+          triggerHaptic('boundary');
+          if (window.toast) {
+            window.toast.success('Match scoreboard reset confirmed');
+          }
+        }, 2000);
+      };
+
+      const cancelHold = () => {
+        clearTimeout(holdConfirmTimer);
+        resetBtn.classList.remove('holding');
+      };
+
+      resetBtn.addEventListener('pointerdown', startHold);
+      resetBtn.addEventListener('pointerup', cancelHold);
+      resetBtn.addEventListener('pointerleave', cancelHold);
+      resetBtn.addEventListener('pointercancel', cancelHold);
+      resetBtn.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && !resetBtn.classList.contains('holding')) {
+          startHold(e);
+        }
+      });
+      resetBtn.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          cancelHold();
+        }
+      });
+    }
 
     function resetMatchScore() {
       if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
@@ -8902,10 +9822,13 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
-    // Accessible Universal Tooltip Component
+    // Accessible Universal Tooltip Component (Skill 2 & 6: emil-design-eng)
     (function () {
       let activeTooltip = null;
       let activeTrigger = null;
+      let isWarm = false;
+      let warmTimer = null;
+      let hideTimer = null;
 
       function createTooltipElement() {
         const el = document.createElement('div');
@@ -8930,35 +9853,71 @@ cricos_active_sse_connections 1</pre>
 
         let top = trigRect.top - ttRect.height - margin;
         let left = trigRect.left + (trigRect.width / 2) - (ttRect.width / 2);
+        let origin = 'center bottom';
 
         if (top < margin) {
           top = trigRect.bottom + margin;
+          origin = 'center top';
         }
 
         if (left < margin) left = margin;
         if (left + ttRect.width > vpW - margin) left = vpW - ttRect.width - margin;
 
+        tooltip.style.setProperty('--transform-origin', origin);
         tooltip.style.top = Math.round(top + window.scrollY) + 'px';
         tooltip.style.left = Math.round(left + window.scrollX) + 'px';
       }
 
       function show(trigger, text) {
         if (!text) return;
+        clearTimeout(warmTimer);
+        clearTimeout(hideTimer);
         const tooltip = getTooltipElement();
         tooltip.textContent = text;
         tooltip.style.display = 'block';
-        tooltip.setAttribute('aria-hidden', 'false');
+
+        if (isWarm) {
+          tooltip.setAttribute('data-instant', '');
+        } else {
+          tooltip.removeAttribute('data-instant');
+        }
+
         positionTooltip(trigger, tooltip);
+        tooltip.setAttribute('aria-hidden', 'false');
         trigger.setAttribute('aria-describedby', tooltip.id);
+
+        requestAnimationFrame(() => {
+          tooltip.classList.add('visible');
+        });
+
         activeTooltip = tooltip;
         activeTrigger = trigger;
       }
 
       function hide() {
         if (!activeTooltip) return;
-        activeTooltip.style.display = 'none';
-        activeTooltip.setAttribute('aria-hidden', 'true');
-        if (activeTrigger) activeTrigger.removeAttribute('aria-describedby');
+        const tooltip = activeTooltip;
+        const trigger = activeTrigger;
+        tooltip.classList.remove('visible');
+        tooltip.setAttribute('aria-hidden', 'true');
+        if (trigger) trigger.removeAttribute('aria-describedby');
+
+        // Warm temporal window: 300ms where subsequent tooltips open instantly
+        isWarm = true;
+        clearTimeout(warmTimer);
+        warmTimer = setTimeout(() => {
+          isWarm = false;
+        }, 300);
+
+        const duration = tooltip.hasAttribute('data-instant') ? 0 : 140;
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          if (!activeTooltip) {
+            tooltip.style.display = 'none';
+            tooltip.removeAttribute('data-instant');
+          }
+        }, duration);
+
         activeTooltip = null;
         activeTrigger = null;
       }
@@ -9086,16 +10045,22 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
-    // Haptic Tactile Feedback Helper
+    // Haptic Tactile Feedback Helper (Skill 8: apple-design & Skill 11: prototype)
     function triggerHaptic(type = 'default') {
       if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
         try {
-          if (type === 'boundary') {
-            navigator.vibrate([40, 60, 40]);
+          const mult = (typeof TACTILE_VARIANTS !== 'undefined' && typeof activeTactileVariant !== 'undefined' && TACTILE_VARIANTS[activeTactileVariant])
+            ? TACTILE_VARIANTS[activeTactileVariant].vibrateMultiplier
+            : 1.0;
+          if (mult <= 0) return;
+          if (type === 'light') {
+            navigator.vibrate(Math.round(15 * mult));
+          } else if (type === 'boundary') {
+            navigator.vibrate([Math.round(25 * mult), Math.round(40 * mult), Math.round(25 * mult)]);
           } else if (type === 'wicket') {
-            navigator.vibrate([80, 50, 150]);
+            navigator.vibrate([Math.round(30 * mult), Math.round(50 * mult), Math.round(80 * mult)]);
           } else {
-            navigator.vibrate(25);
+            navigator.vibrate(Math.round(20 * mult));
           }
         } catch (_) {}
       }
@@ -9297,6 +10262,17 @@ cricos_active_sse_connections 1</pre>
     initAdminDesk();
     renderWagonWheelRays();
     updateWagonTelemetry();
+    initHoldToConfirm();
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const v = urlParams.get('v');
+      if (v === '1') selectTactileVariant('STADIUM_HAPTIC', false);
+      else if (v === '2') selectTactileVariant('BROADCAST_MINIMAL', false);
+      else if (v === '3') selectTactileVariant('ATHLETIC_KINETIC', false);
+      else updateProtoPickerHighlight();
+    } catch (_) {
+      updateProtoPickerHighlight();
+    }
     applyRolePermissions(currentUser.persona);
   </script>
 </body>

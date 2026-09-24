@@ -1,14 +1,69 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-24 09:12:00
-**Version:** 1.0.0-phase2x (Real-Time Persona Switching, Command Bar Badge & Profile Synchronization)  
+**Last Updated:** 2026-09-24 21:50:00
+**Version:** 1.0.0-phase2z (Emil Kowalski 13-Skill Enhanced Nuances & Physics Architecture)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2X Completed — Real-Time Persona Switching & Profile Synchronization:
+- **Active Phase**: Phase 2Z Completed — Emil Kowalski 13-Skill Enhanced Nuances & Physics Architecture:
+  - **1. Skill `animate` (Compositor-Only & Asymmetric Timing)**:
+    - Zero `transition: all`, strictly animated compositor properties (`transform`, `opacity`, `clip-path`, `filter`).
+    - Standardized cubic-bezier tokens: `--ease-out`, `--ease-in-out`, `--ease-drawer`, `--ease-spring`.
+    - Hold-to-Confirm asymmetric timing recipe for destructive match score reset: 2s linear fill on press (`transition: clip-path 2s linear;`), instantaneous 200ms ease-out snap back on release (`clip-path: inset(0 100% 0 0)`).
+  - **2. Skill `animate-expo` (Mobile Dynamics & Bottom Sheets)**:
+    - Integrated native bottom-sheet drawer drag handles (`.sheet-drag-handle`) and dynamic viewport sizing (`100dvh`).
+  - **3. Skill `animation-vocabulary` (Reverse-Lookup Glossary & Search Helper)**:
+    - Standardized motion tokens in `:root` and `window.ANIMATION_TOKENS`.
+    - Exposed `window.ANIMATION_VOCABULARY` reverse-lookup dictionary covering anticipation, damping, stiffness, mass, stagger, momentum, rubberband, layoutId, holdToConfirm, and instantSkip.
+    - Added `window.lookupAnimationTerm(term)` search helper function.
+  - **4. Skill `apple-design` (WWDC 2018 Fluid Physics & Haptics Engine)**:
+    - Exposed `window.AppleDesignPhysics` containing momentum projection `project(initialVelocity, decelerationRate)` and scroll rubber-banding `rubberband(offset, dimension, coefficient)` formulas from WWDC 2018.
+    - Added spring parameter analysis helper `springConfig(mass, stiffness, damping)` calculating damping ratios.
+    - Enhanced `triggerHaptic(type)` engine with distinct vibration signatures for light taps, boundaries, and wickets.
+    - Applied ultra-clean `backdrop-filter: blur(24px)` floodlit stadium glassmorphism.
+  - **5. Skill `ask-sonner` (Stacked Notification Toaster & Hover Vertical Expansion)**:
+    - Full `window.toast` implementation with stacked `#sonnerToaster` container, actions, promises, and dismissals.
+    - Added stacked toast hover vertical expansion (`#sonnerToaster:hover`) where cards translate vertically (`translateY(-70px)` and `translateY(-140px)`) to make all stacked cards legible on hover.
+  - **6. Skill `emil-design-eng` (Craft Nuances & Micro-Interactions)**:
+    - Implemented Universal Tooltip consecutive hover instant skip (`data-instant`) with 300ms temporal warmup window and dynamic trigger-aligned `--transform-origin` (`center bottom` vs `center top`).
+    - Added blur-masked tab transitions (`.tab-pane.transitioning { filter: blur(2px); }`).
+    - Added staggered squad roster entrances with 25ms delay increments per player row.
+    - Enforced non-zero scale invariants (`scale(0.88)` and `scale(0.95)`).
+  - **7. Skill `find-animation-opportunities` (Live Data Feedback & Telemetry)**:
+    - NumberFlow-inspired live scoreboard digit pulse `@keyframes digitPulse` on runs and wicket updates.
+    - Commentary feed item drop-in animation `@keyframes feedItemEnter`.
+    - Interactive wagon wheel telemetry ray animations and tactile pad feedback.
+  - **8. Skill `improve-animations` (Compositor Audit & Touch Hover Gating)**:
+    - Zero `transition: all` across the entire codebase.
+    - Gated hover effects behind `@media (hover: hover) and (pointer: fine)` to eliminate sticky touch hovers.
+    - Integrated `@media (prefers-reduced-motion: reduce)` accessibility overrides.
+  - **9. Skill `mobile-native` (Webview Meta & Native Feel)**:
+    - Added `<meta name="theme-color" content="#04070D">`, `<meta name="apple-mobile-web-app-capable" content="yes">`, and `apple-mobile-web-app-status-bar-style`.
+    - Applied `overscroll-behavior: none;` and `-webkit-touch-callout: none;` across mobile layout and controls.
+    - Enforced 16px minimum font size on form inputs to prevent iOS Safari auto-zoom.
+  - **10. Skill `pick-ui-library` (Curated Minimal Architecture)**:
+    - Replaced heavy third-party runtime bloat with bespoke vanilla implementations of Sonner, accessible tooltips, and reactive store `window.CricOSStore`.
+  - **11. Skill `prototype` (Canonical Floating Prototype Picker & Divergent Variants)**:
+    - Added canonical floating pill `<nav class="proto-picker">` with sliding highlight (`.proto-picker-highlight`).
+    - Supported 3 divergent tactile prototypes: `STADIUM_HAPTIC`, `BROADCAST_MINIMAL`, `ATHLETIC_KINETIC`.
+    - Added keyboard shortcuts (`1-3`, `Alt+1-3`, `ArrowLeft/Right`, `R` to replay).
+    - Synchronized URL query parameters `?v=1/2/3` without page reload.
+    - Added `replayTactileAnimation()` trigger for instant tactile re-evaluation.
+  - **12. Skill `review-animations` (Motion Audit & Guardrails)**:
+    - Audited animations for 60fps compositor-only performance, layout-thrashing prevention, and duration guardrails (<300ms for UI actions, 2s for destructive actions).
+  - **13. Skill `write-swift` (Immutable Domain Models & Monadic Result Types)**:
+    - Exposed `window.CricOSDomain` with frozen enums (`Roles`, `MatchStatus`, `DismissalKind`, `TactileVariant`).
+    - Added monadic Result constructors (`resultOk`, `resultErr`) with functional `.map(fn)` and pattern-matching `.match({ ok, err })` methods.
+    - Added `copyOnWrite(source, patch)` helper for safe immutability.
+  - **14. Testing & Distribution Parity (Rules 2, 4, 6)**:
+    - Expanded `tests/36-emil-animation-engine.test.ts` (42 assertions across 12 suites).
+    - `./pipeline.sh test --summary`: 184 tests across 59 suites, 100% passing in low-token mode.
+    - Rule 6: `cmp -s index.html dist/index.html` verified byte-for-byte identical.
+- **Phase 2Y Completed**: Emil Kowalski 13-Skill Baseline Design & Animation Architecture.
+- **Phase 2X Completed**: Real-Time Persona Switching & Profile Synchronization.
   - **Persona Pill Visual Active State Sync**:
     - Fixed `.persona-pill-btn` stagnation by dynamically toggling `.active` across all persona pills in `selectPersona(role)`.
     - Added state synchronization in `openUserModal()` so opening the modal always highlights the current active persona and populates matching profile values.
