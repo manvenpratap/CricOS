@@ -298,6 +298,192 @@
       padding-top: max(env(safe-area-inset-top), 6px);
       padding-bottom: max(env(safe-area-inset-bottom), 10px);
     }
+
+    /* 21st.dev Athletic KPI & Career Stats Card in Mobile View */
+    .athletic-stats-card {
+      background: linear-gradient(145deg, rgba(13, 20, 36, 0.95), rgba(7, 11, 20, 0.98));
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      border-radius: 14px;
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      margin-bottom: 1rem;
+    }
+    .athletic-stats-card::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .athletic-hero-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .athletic-player-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .athletic-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 229, 153, 0.15);
+      border: 2px solid var(--turf-emerald);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--turf-emerald);
+      font-family: 'Chakra Petch', monospace;
+      flex-shrink: 0;
+    }
+    .athletic-hero-kpi {
+      text-align: right;
+    }
+    .athletic-rating-val {
+      font-family: 'Chakra Petch', monospace;
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .athletic-ranking-ribbon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255, 184, 0, 0.12);
+      border: 1px solid rgba(255, 184, 0, 0.35);
+      padding: 0.15rem 0.45rem;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #FFB800;
+      margin-top: 0.2rem;
+    }
+    .athletic-substats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.4rem;
+      margin-bottom: 0.85rem;
+    }
+    .athletic-stat-pill {
+      background: rgba(10, 16, 28, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.45rem 0.5rem;
+      text-align: center;
+    }
+    .athletic-stat-lbl {
+      font-size: 0.6rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.15rem;
+    }
+    .athletic-stat-num {
+      font-family: 'Chakra Petch', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+    .athletic-momentum-section {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 0.5rem 0.65rem;
+    }
+    .athletic-spectrum-track {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 24px;
+      margin-top: 0.35rem;
+    }
+    .athletic-spectrum-bar {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 1px;
+      min-height: 4px;
+      transition: height 0.3s ease, background 0.3s ease;
+    }
+
+    /* Bottom Persona Sheet Modal */
+    .mobile-sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .mobile-sheet-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-persona-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #090f1d;
+      border-top: 1px solid rgba(0, 229, 153, 0.3);
+      border-radius: 18px 18px 0 0;
+      padding: 1.25rem 1rem 1.75rem;
+      z-index: 101;
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .mobile-persona-sheet.active {
+      transform: translateY(0);
+    }
+    .persona-grid-picker {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .persona-picker-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 0.65rem;
+      text-align: left;
+      cursor: pointer;
+      color: #f8fafc;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .persona-picker-card:hover, .persona-picker-card.active {
+      background: rgba(0, 229, 153, 0.15);
+      border-color: #00E599;
+      transform: translateY(-1px);
+    }
+    .player-list-item {
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .player-list-item.active-player {
+      border-color: #00E599 !important;
+      background: rgba(0, 229, 153, 0.12) !important;
+    }
   </style>
 </head>
 <body class="is-native-app">
@@ -362,6 +548,103 @@
       }
     })();
 
+    // CricOS Synthesized Web Audio Engine
+    class CricOSAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      toggle() {
+        this.enabled = !this.enabled;
+        return this.enabled;
+      }
+      playBatHit(isBoundary) {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          const now = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(isBoundary ? 380 : 310, now);
+          osc.frequency.exponentialRampToValueAtTime(70, now + 0.14);
+          gain.gain.setValueAtTime(0.5, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        } catch (_) {}
+      }
+      playCheer() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.linearRampToValueAtTime(880, now + 0.2);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } catch (_) {}
+      }
+      playWicket() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.28);
+          gain.gain.setValueAtTime(0.6, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } catch (_) {}
+      }
+      playClick() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } catch (_) {}
+      }
+    }
+    window.CricOSSound = new CricOSAudioEngine();
+
     class StandaloneMobileClient {
       constructor() {
         this.session = null;
@@ -386,6 +669,27 @@
         this.pollVotes = { BLR: 68, MUM: 32 };
         this.activeChart = 'NONE';
         this.marketCategory = 'ALL';
+        this.soundEnabled = true;
+        this.personaSheetOpen = false;
+        this.selectedPlayerId = 'p1';
+
+        this.playerDatabase = {
+          'p1': { id: 'p1', name: 'Virat K.', role: 'CAPTAIN', jersey: 18, rating: 98.4, rank: '#1 WORLD ICC T20', runs: 4892, avg: 53.8, sr: 138.2, boundaryRate: 19.4, trueImpact: '+18.2', form: 'PEAK', momentum: [12, 14, 15, 18, 16, 20, 22, 19, 24, 21, 25, 27, 26, 28, 27, 29, 31, 30, 32, 34] },
+          'p2': { id: 'p2', name: 'Rohit S.', role: 'BATTER', jersey: 45, rating: 96.1, rank: '#3 ICC OPENER', runs: 4231, avg: 48.2, sr: 142.6, boundaryRate: 21.1, trueImpact: '+16.5', form: 'EXCELLENT', momentum: [10, 12, 16, 15, 18, 17, 22, 20, 23, 22, 25, 24, 26, 28, 25, 29, 30, 28, 31, 33] },
+          'p3': { id: 'p3', name: 'Shubman G.', role: 'BATTER', jersey: 77, rating: 92.5, rank: '#7 ICC ANCHOR', runs: 2840, avg: 44.5, sr: 134.1, boundaryRate: 17.8, trueImpact: '+12.4', form: 'SURGING', momentum: [8, 11, 13, 14, 16, 18, 17, 19, 21, 23, 22, 25, 24, 26, 28, 27, 29, 30, 28, 31] },
+          'p4': { id: 'p4', name: 'Shreyas I.', role: 'BATTER', jersey: 96, rating: 89.8, rank: '#12 ICC MIDDLE', runs: 2310, avg: 41.2, sr: 131.5, boundaryRate: 16.2, trueImpact: '+9.8', form: 'STABLE', momentum: [14, 15, 13, 16, 18, 17, 19, 18, 20, 21, 22, 20, 23, 24, 22, 25, 24, 26, 25, 27] },
+          'p5': { id: 'p5', name: 'KL Rahul', role: 'WICKETKEEPER', jersey: 1, rating: 91.2, rank: '#6 ICC KEEPER-BAT', runs: 3410, avg: 46.1, sr: 136.0, boundaryRate: 18.0, trueImpact: '+14.1', form: 'SOLID', momentum: [12, 14, 13, 15, 17, 19, 18, 20, 22, 21, 23, 25, 24, 26, 27, 25, 28, 29, 27, 30] },
+          'p6': { id: 'p6', name: 'Hardik P.', role: 'ALL_ROUNDER', jersey: 33, rating: 95.8, rank: '#2 ALL-ROUNDER', runs: 2680, avg: 37.8, sr: 154.2, boundaryRate: 24.3, trueImpact: '+22.4', form: 'EXPLOSIVE', momentum: [15, 18, 20, 22, 25, 24, 26, 28, 27, 30, 29, 32, 31, 33, 35, 34, 36, 38, 37, 40] },
+          'p7': { id: 'p7', name: 'Ravindra J.', role: 'ALL_ROUNDER', jersey: 8, rating: 94.0, rank: '#4 ALL-ROUNDER', runs: 2150, avg: 34.6, sr: 129.8, boundaryRate: 15.5, trueImpact: '+19.8', form: 'ELITE', momentum: [16, 17, 19, 18, 20, 22, 21, 23, 25, 24, 26, 27, 29, 28, 30, 31, 33, 32, 34, 35] },
+          'p8': { id: 'p8', name: 'Axar P.', role: 'ALL_ROUNDER', jersey: 20, rating: 88.6, rank: '#14 ALL-ROUNDER', runs: 1420, avg: 29.5, sr: 132.4, boundaryRate: 16.0, trueImpact: '+11.2', form: 'RELIABLE', momentum: [11, 13, 12, 14, 16, 17, 19, 18, 20, 22, 21, 23, 24, 22, 25, 26, 27, 28, 26, 29] },
+          'p9': { id: 'p9', name: 'Jasprit B.', role: 'BOWLER', jersey: 93, rating: 99.2, rank: '#1 WORLD BOWLER', runs: 120, avg: 8.5, sr: 85.0, boundaryRate: 5.2, trueImpact: '+31.5', form: 'UNSTOPPABLE', momentum: [20, 22, 25, 27, 29, 31, 30, 33, 35, 34, 36, 38, 37, 39, 41, 40, 42, 44, 43, 45] },
+          'p10': { id: 'p10', name: 'Kuldeep Y.', role: 'BOWLER', jersey: 23, rating: 93.4, rank: '#5 SPINNER', runs: 85, avg: 6.2, sr: 72.0, boundaryRate: 3.1, trueImpact: '+18.9', form: 'WIZARD', momentum: [14, 16, 18, 17, 19, 21, 20, 22, 24, 23, 25, 27, 26, 28, 30, 29, 31, 33, 32, 34] },
+          'p11': { id: 'p11', name: 'Mohammed S.', role: 'BOWLER', jersey: 11, rating: 92.8, rank: '#8 SEAMER', runs: 95, avg: 7.1, sr: 78.5, boundaryRate: 4.0, trueImpact: '+17.4', form: 'LETHAL', momentum: [13, 15, 17, 16, 18, 20, 19, 22, 23, 22, 24, 26, 25, 27, 29, 28, 30, 32, 31, 33] },
+          'b1': { id: 'b1', name: 'Rishabh P.', role: 'WICKETKEEPER', jersey: 17, rating: 93.1, rank: '#4 DYNAMIC KEEPER', runs: 2450, avg: 39.8, sr: 152.6, boundaryRate: 23.5, trueImpact: '+17.9', form: 'IMPACT', momentum: [12, 15, 17, 19, 22, 24, 23, 26, 28, 27, 30, 29, 32, 34, 33, 35, 37, 36, 38, 41] },
+          'b2': { id: 'b2', name: 'Surya Y.', role: 'BATTER', jersey: 63, rating: 97.9, rank: '#2 360-BATTER', runs: 3120, avg: 47.4, sr: 172.5, boundaryRate: 28.4, trueImpact: '+26.8', form: 'SUPERNOVA', momentum: [18, 21, 24, 26, 29, 31, 33, 35, 34, 37, 39, 38, 41, 43, 42, 44, 46, 45, 47, 49] },
+          'b3': { id: 'b3', name: 'Arshdeep S.', role: 'BOWLER', jersey: 2, rating: 89.5, rank: '#11 DEATH SEAMER', runs: 42, avg: 5.2, sr: 65.0, boundaryRate: 2.5, trueImpact: '+13.8', form: 'CLUTCH', momentum: [10, 12, 14, 13, 15, 17, 16, 18, 20, 22, 21, 23, 25, 24, 26, 28, 27, 29, 31, 32] },
+          'b4': { id: 'b4', name: 'Yuzvendra C.', role: 'BOWLER', jersey: 3, rating: 90.2, rank: '#9 LEGGIE', runs: 58, avg: 5.8, sr: 62.0, boundaryRate: 2.1, trueImpact: '+15.2', form: 'CRAFTY', momentum: [11, 13, 15, 14, 16, 18, 17, 19, 21, 23, 22, 24, 26, 25, 27, 28, 30, 29, 31, 33] }
+        };
 
         this.matchState = {
           matchId: 'match-pilot-1',
@@ -502,6 +806,80 @@
         ];
       }
 
+      toggleSound() {
+        this.soundEnabled = window.CricOSSound.toggle();
+        this.render();
+      }
+
+      openPersonaSheet() {
+        this.personaSheetOpen = true;
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.render();
+      }
+
+      closePersonaSheet() {
+        this.personaSheetOpen = false;
+        this.render();
+      }
+
+      selectPlayer(id) {
+        this.selectedPlayerId = id;
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.render();
+      }
+
+      renderAthleticCard(playerId) {
+        var p = (this.playerDatabase && this.playerDatabase[playerId]) || (this.playerDatabase ? this.playerDatabase['p1'] : null);
+        if (!p) return '';
+        var maxMomentum = Math.max.apply(null, p.momentum) || 50;
+        var barsHtml = '';
+        for (var i = 0; i < p.momentum.length; i++) {
+          var val = p.momentum[i];
+          var heightPct = Math.round((val / maxMomentum) * 100);
+          var isLatest = i >= p.momentum.length - 4;
+          var barBg = isLatest ? 'background: linear-gradient(180deg, #00E599 0%, #00D2FF 100%);' : 'background: rgba(255,255,255,0.18);';
+          barsHtml += '<div class="athletic-spectrum-bar" style="height: ' + heightPct + '%; ' + barBg + '" title="Match ' + (i+1) + ': ' + val + ' pts"></div>';
+        }
+
+        var h = '<div class="athletic-stats-card" id="mobileAthleticStatsCard">';
+        h += '<div class="athletic-hero-section">';
+        h += '<div class="athletic-player-meta">';
+        h += '<div class="athletic-avatar">#' + p.jersey + '</div>';
+        h += '<div>';
+        h += '<div style="font-size: 0.95rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">' + p.name + '</div>';
+        h += '<div style="font-size: 0.7rem; color: #94a3b8;">' + p.role + ' • ' + p.form + '</div>';
+        h += '<div class="athletic-ranking-ribbon">';
+        h += '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>';
+        h += '<span>' + p.rank + '</span>';
+        h += '</div>';
+        h += '</div></div>';
+
+        h += '<div class="athletic-hero-kpi">';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Overall Rating</div>';
+        h += '<div class="athletic-rating-val">' + p.rating + '</div>';
+        h += '<div style="font-size: 0.65rem; color: #00E599; font-weight: 700;">Impact ' + p.trueImpact + '</div>';
+        h += '</div></div>';
+
+        h += '<div class="athletic-substats-grid">';
+        h += '<div class="athletic-stat-pill" data-tooltip="Total Career Runs"><div class="athletic-stat-lbl">Runs</div><div class="athletic-stat-num" style="color: #00E599;">' + p.runs + '</div></div>';
+        h += '<div class="athletic-stat-pill" data-tooltip="Batting Average"><div class="athletic-stat-lbl">Average</div><div class="athletic-stat-num">' + p.avg + '</div></div>';
+        h += '<div class="athletic-stat-pill" data-tooltip="Strike Rate"><div class="athletic-stat-lbl">Strike Rate</div><div class="athletic-stat-num" style="color: #00D2FF;">' + p.sr + '</div></div>';
+        h += '<div class="athletic-stat-pill" data-tooltip="Boundary Frequency"><div class="athletic-stat-lbl">Boundary %</div><div class="athletic-stat-num">' + p.boundaryRate + '%</div></div>';
+        h += '<div class="athletic-stat-pill" data-tooltip="Calculated Win Impact"><div class="athletic-stat-lbl">True Impact</div><div class="athletic-stat-num" style="color: #FFB800;">' + p.trueImpact + '</div></div>';
+        h += '<div class="athletic-stat-pill" data-tooltip="Current Form Phase"><div class="athletic-stat-lbl">Form</div><div class="athletic-stat-num" style="color: #c084fc; font-size: 0.8rem;">' + p.form + '</div></div>';
+        h += '</div>';
+
+        h += '<div class="athletic-momentum-section">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem;">';
+        h += '<span style="font-weight: 700; color: #cbd5e1;">⚡ 20-Match Momentum Spectrum</span>';
+        h += '<span style="color: #00E599; font-weight: 800;">Surging +14%</span>';
+        h += '</div>';
+        h += '<div class="athletic-spectrum-track">' + barsHtml + '</div>';
+        h += '</div>';
+        h += '</div>';
+        return h;
+      }
+
       navigateTo(screen) {
         this.currentScreen = screen;
         this.render();
@@ -515,6 +893,7 @@
       switchUserPersona(role) {
         this.profile.persona = role;
         this.role = role;
+        this.personaSheetOpen = false;
         var defaultProfiles = {
           CAPTAIN: { name: 'Virat K.', jersey: 18, role: 'BATTER', teamName: 'Delhi Daredevils' },
           PLAYER: { name: 'Hardik P.', jersey: 33, role: 'ALL_ROUNDER', teamName: 'Delhi Daredevils' },
@@ -610,6 +989,14 @@
           alert('🔒 Only official Scorers can score deliveries.');
           return;
         }
+        if (window.CricOSSound) {
+          if (runs === 4 || runs === 6) {
+            window.CricOSSound.playBatHit(true);
+            window.CricOSSound.playCheer();
+          } else {
+            window.CricOSSound.playBatHit(false);
+          }
+        }
         this.matchState.totalRuns += runs;
         this.matchState.legalBalls += 1;
         this.matchState.striker.runs += runs;
@@ -646,6 +1033,7 @@
         }
         const confirmed = confirm('Confirm Wicket: Dismiss striker Virat K.?');
         if (confirmed) {
+          if (window.CricOSSound) window.CricOSSound.playWicket();
           this.matchState.totalWickets += 1;
           this.matchState.legalBalls += 1;
           this.matchState.bowler.wickets += 1;
@@ -696,6 +1084,7 @@
 
       sendCheer(text) {
         this.fanCheersCount++;
+        if (window.CricOSSound) window.CricOSSound.playCheer();
         alert('📢 Fan Cheer Sent: ' + text + '\nStadium Pulse: ' + this.fanCheersCount.toLocaleString() + ' cheers');
         this.render();
       }
@@ -1103,6 +1492,9 @@
         }
         h += '</div>';
 
+        // 21st.dev Athletic KPI & Career Stats Card (Selected Roster Player)
+        h += this.renderAthleticCard(this.selectedPlayerId || 'p1');
+
         // Playing XI List
         h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">';
         h += '<span>Playing XI (' + this.playingXI.length + ')</span>';
@@ -1112,7 +1504,8 @@
         h += '<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem;">';
         for (var i = 0; i < this.playingXI.length; i++) {
           var p = this.playingXI[i];
-          h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.6rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
+          var isSel = p.id === (this.selectedPlayerId || 'p1');
+          h += '<div class="player-list-item ' + (isSel ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + p.id + '" style="background: ' + (isSel ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.8)') + '; border: 1px solid ' + (isSel ? '#00E599' : 'rgba(255,255,255,0.08)') + '; border-radius: 8px; padding: 0.6rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
           h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
           h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.75rem; color: #94a3b8; width: 22px;">#' + p.jersey + '</span>';
           h += '<div>';
@@ -1120,7 +1513,7 @@
           h += '<div style="font-size: 0.65rem; color: #94a3b8;">' + p.role + '</div>';
           h += '</div></div>';
           if (isCaptain) {
-            h += '<button type="button" onclick="window.cricosMobileApp.benchPlayer(' + i + ')" style="padding: 0.3rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #cbd5e1; font-size: 0.65rem;" data-tooltip="Move player to bench">Bench ⇄</button>';
+            h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.benchPlayer(' + i + ')" style="padding: 0.3rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #cbd5e1; font-size: 0.65rem;" data-tooltip="Move player to bench">Bench ⇄</button>';
           }
           h += '</div>';
         }
@@ -1131,7 +1524,8 @@
         h += '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
         for (var b = 0; b < this.bench.length; b++) {
           var bp = this.bench[b];
-          h += '<div style="background: rgba(10, 16, 28, 0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
+          var isSelB = bp.id === (this.selectedPlayerId || 'p1');
+          h += '<div class="player-list-item ' + (isSelB ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + bp.id + '" style="background: ' + (isSelB ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.5)') + '; border: 1px solid ' + (isSelB ? '#00E599' : 'rgba(255,255,255,0.05)') + '; border-radius: 8px; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
           h += '<div style="font-size: 0.8rem; color: #94a3b8;">#' + bp.jersey + ' ' + bp.name + ' <small>(' + bp.role + ')</small></div>';
           h += '<span style="font-size: 0.65rem; color: #64748b;">Reserve</span>';
           h += '</div>';
@@ -1403,6 +1797,9 @@
         h += '<div style="font-size: 0.75rem; color: #94a3b8;"><span style="color: #00E599; font-weight: 600;">' + this.profile.persona + '</span> • ' + this.profile.role + ' • ' + this.profile.teamName + '</div>';
         h += '</div></div></div>';
 
+        // 21st.dev Athletic KPI & Career Stats Card (Player Profile Experience)
+        h += this.renderAthleticCard(this.selectedPlayerId || 'p1');
+
         // Career Figures
         h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">🏏 Career Batting Figures</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 1rem;">';
@@ -1453,8 +1850,9 @@
         h += '<span style="font-size: 1.1rem;">🏏</span>';
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
         h += '</div>';
-        h += '<div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="PROFILE" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Active persona. Tap to switch">' + this.profile.persona + '</button>';
+        h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+        h += '<button type="button" id="btnMobileSoundToggle" onclick="window.cricosMobileApp.toggleSound()" style="background: rgba(255,255,255,0.06); color: ' + (this.soundEnabled ? '#00E599' : '#64748b') + '; border: 1px solid rgba(255,255,255,0.12); padding: 0.2rem 0.45rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;" data-tooltip="Toggle Web Audio synthesized sound FX">' + (this.soundEnabled ? '🔊' : '🔇') + '</button>';
+        h += '<button type="button" id="btnMobilePersonaSwitch" onclick="window.cricosMobileApp.openPersonaSheet()" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch persona sheet">' + this.profile.persona + ' ▾</button>';
         h += '</div></div>';
 
         // Content
@@ -1520,6 +1918,36 @@
         }
         h += '</div>';
 
+        // Persona Sheet Modal & Backdrop
+        var isSheetActive = this.personaSheetOpen ? 'active' : '';
+        h += '<div class="mobile-sheet-backdrop ' + isSheetActive + '" id="mobileSheetBackdrop" onclick="window.cricosMobileApp.closePersonaSheet()"></div>';
+        h += '<div class="mobile-persona-sheet ' + isSheetActive + '" id="mobilePersonaSheet">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+        h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: Space Grotesk, sans-serif; color: #f8fafc;">Switch Persona Experience</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closePersonaSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer;" data-tooltip="Close persona switcher">&times;</button>';
+        h += '</div>';
+        h += '<div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.75rem;">Select any of the 8 dedicated personas to preview their unique workflow.</div>';
+        h += '<div class="persona-grid-picker">';
+        var personaOptions = [
+          ['CAPTAIN', '🏏 Captain', 'Squad selection & toss'],
+          ['PLAYER', '👤 Player', 'Player KPIs & career stats'],
+          ['SCORER', '⚡ Scorer', 'Over-by-over ball input'],
+          ['FAN', '🎪 Fan Pulse', 'Live cheers & win polls'],
+          ['UMPIRE', '⚖️ Umpire', 'MCC code & incident log'],
+          ['ORGANISER', '🏆 Director', 'Tournaments & schedules'],
+          ['TURF_PROVIDER', '🏟️ Turf Host', 'Slot management & fees'],
+          ['ADMIN', '🛡️ Admin Desk', 'Dispute ledger & audit']
+        ];
+        for (var pIdx = 0; pIdx < personaOptions.length; pIdx++) {
+          var pOpt = personaOptions[pIdx];
+          var isCur = this.profile.persona === pOpt[0];
+          h += '<div class="persona-picker-card ' + (isCur ? 'active' : '') + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.personaChoice)" data-persona-choice="' + pOpt[0] + '">';
+          h += '<div style="font-weight: 700; font-size: 0.8rem; color: ' + (isCur ? '#00E599' : '#f8fafc') + ';">' + pOpt[1] + '</div>';
+          h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.2rem;">' + pOpt[2] + '</div>';
+          h += '</div>';
+        }
+        h += '</div></div>';
+
         root.innerHTML = h;
       }
     }
@@ -1527,6 +1955,12 @@
     const app = new StandaloneMobileApp();
     window.cricosMobileApp = app;
     app.render();
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && window.cricosMobileApp && window.cricosMobileApp.personaSheetOpen) {
+        window.cricosMobileApp.closePersonaSheet();
+      }
+    });
   </script>
 </body>
 </html>

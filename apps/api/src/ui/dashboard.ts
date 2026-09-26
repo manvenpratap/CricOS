@@ -119,6 +119,11 @@ export function getDashboardHtml(): string {
       font-variant-numeric: tabular-nums;
     }
 
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
     body {
       background-color: var(--bg-dark);
       background-image: 
@@ -139,6 +144,8 @@ export function getDashboardHtml(): string {
       display: flex;
       min-height: 100dvh;
       width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
       position: relative;
     }
 
@@ -597,8 +604,15 @@ export function getDashboardHtml(): string {
     .topbar-right {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      flex-shrink: 0;
+      gap: 0.5rem;
+      min-width: 0;
+      flex-wrap: nowrap;
+    }
+
+    @media (max-width: 1550px) {
+      .topbar-telemetry-group {
+        display: none !important;
+      }
     }
 
     .topbar-telemetry-group {
@@ -2450,6 +2464,182 @@ export function getDashboardHtml(): string {
       text-transform: uppercase;
     }
 
+    /* 21st.dev Athletic KPI & Career Stats Card (Skill: ui-pattern / design-taste) */
+    .athletic-stats-card {
+      background: linear-gradient(145deg, rgba(16, 24, 39, 0.95), rgba(7, 11, 20, 0.98));
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 24px -4px rgba(0, 229, 153, 0.12);
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+    }
+    .athletic-stats-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--turf-emerald), var(--cyan), var(--amber));
+    }
+    .athletic-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .athletic-player-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .athletic-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0, 229, 153, 0.25), rgba(0, 210, 255, 0.25));
+      border: 2px solid rgba(0, 229, 153, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-score);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #FFF;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .athletic-status-dot {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--turf-emerald);
+      border: 2px solid #04070D;
+      box-shadow: 0 0 8px var(--turf-emerald);
+    }
+    .athletic-hero-section {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .athletic-hero-kpi {
+      font-family: var(--font-score);
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #FFF;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .athletic-hero-kpi-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--turf-emerald);
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+    }
+    .athletic-ranking-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: linear-gradient(90deg, rgba(255, 184, 0, 0.12), rgba(255, 215, 0, 0.22), rgba(255, 184, 0, 0.12));
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      border-radius: 8px;
+      padding: 0.4rem 0.75rem;
+      margin-bottom: 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #FFD700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .athletic-substats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+    .athletic-substat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 0.5rem 0.6rem;
+      text-align: center;
+      transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+    }
+    .athletic-substat-box:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .athletic-substat-value {
+      font-family: var(--font-score);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #F8FAFC;
+    }
+    .athletic-substat-label {
+      font-size: 0.66rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+    .athletic-momentum-section {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 0.75rem;
+    }
+    .athletic-momentum-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .athletic-momentum-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 44px;
+      padding-top: 4px;
+    }
+    .athletic-momentum-bar {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      transition: height 0.25s var(--ease-out), opacity 0.2s;
+      cursor: pointer;
+    }
+    .athletic-momentum-bar:hover {
+      opacity: 1 !important;
+      transform: scaleY(1.12);
+    }
+    .player-roster-row {
+      cursor: pointer;
+      transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+    }
+    .player-roster-row:hover {
+      background: rgba(255, 255, 255, 0.06) !important;
+      transform: translateX(2px);
+    }
+    .player-roster-row.active-player {
+      background: rgba(0, 229, 153, 0.12) !important;
+      border-color: rgba(0, 229, 153, 0.45) !important;
+    }
+
     /* Tactical Scoring Studio Pad */
     .studio-pad-grid {
       display: grid;
@@ -2730,7 +2920,10 @@ export function getDashboardHtml(): string {
             </div>
           </div>
 
-          <div class="header-nav-divider"></div>
+          <!-- Utility: Mobile App & APK Quick Launcher Modal Trigger -->
+          <button type="button" id="btnMobileQuickLauncher" onclick="openMobilePreviewModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: var(--purple); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Mobile App demo, scan live QR code, or download compiled Android APK">
+            <span>📱</span> MOBILE &amp; APK
+          </button>
 
           <!-- Utility: Active Persona Badge (Click to open Persona Switcher) -->
           <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
@@ -2945,17 +3138,17 @@ export function getDashboardHtml(): string {
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Fusion</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">Pitch + Shot</span>
           </button>
-          <button type="button" onclick="open3DTrophyCabinetModal();" data-tooltip="Inspect 3D Championship Trophy Cabinet — Premier Cup, MVP Shield, Golden Bat" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,184,0,0.1)';this.style.borderColor='rgba(255,184,0,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" id="btn3DTrophyCabinet" onclick="open3DTrophyCabinetModal();" data-tooltip="Inspect 3D Championship Trophy Cabinet — Premier Cup, MVP Shield, Golden Bat" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,184,0,0.1)';this.style.borderColor='rgba(255,184,0,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
             <span style="font-size: 1.4rem;">🏆</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Trophies</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">3D Cabinet</span>
           </button>
-          <button type="button" onclick="open3DPlayerCardModal('Hardik Patel','#33','ALL_ROUNDER');" data-tooltip="Holographic 3D Player Card Inspector with pointer tilt physics and specular sheen" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,229,153,0.1)';this.style.borderColor='rgba(0,229,153,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" id="btn3DPlayerCard" onclick="open3DPlayerCardModal('Hardik Patel','#33','ALL_ROUNDER');" data-tooltip="Holographic 3D Player Card Inspector with pointer tilt physics and specular sheen" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,229,153,0.1)';this.style.borderColor='rgba(0,229,153,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
             <span style="font-size: 1.4rem;">🃏</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald);">Player Card</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">Holographic</span>
           </button>
-          <button type="button" onclick="open3DBatCustomizerModal();" data-tooltip="3D Cricket Bat configurator — willow grade selector and grip color switcher" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,210,255,0.1)';this.style.borderColor='rgba(0,210,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" id="btn3DBatCustomizer" onclick="open3DBatCustomizerModal();" data-tooltip="3D Cricket Bat configurator — willow grade selector and grip color switcher" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,210,255,0.1)';this.style.borderColor='rgba(0,210,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
             <span style="font-size: 1.4rem;">🏏</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--cyan);">Bat Config</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">3D Gear</span>
@@ -3188,6 +3381,86 @@ export function getDashboardHtml(): string {
 
         <!-- Bench, Reserves & Team Stats -->
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <!-- 21st.dev Athletic KPI & Career Stats Card (Embedded) -->
+          <div class="athletic-stats-card" id="embeddedPlayerStatsCard">
+            <div class="athletic-card-header">
+              <div class="athletic-player-badge-wrap">
+                <div class="athletic-avatar" id="athleticAvatar">
+                  <span id="athleticAvatarInitials">HP</span>
+                  <span class="athletic-status-dot" data-tooltip="Match Ready • Passed Medical Clearance"></span>
+                </div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: #FFF; margin: 0;" id="athleticHeroName">Hardik Patel</h3>
+                    <span class="player-role-badge" id="athleticRoleBadge" style="background: rgba(255, 184, 0, 0.2); color: var(--amber); border: 1px solid rgba(255, 184, 0, 0.4);">ALL</span>
+                  </div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;" id="athleticPlayerMeta">
+                    #33 • Left-Hand Bat • Right-Arm Fast Medium
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary" id="btnOpenStatsDrawer" onclick="openPlayerStatsDrawer()" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem; border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald);" data-tooltip="Expand full 6-axis radar capability, game logs &amp; analytical splits">
+                Expand Analytics ↗
+              </button>
+            </div>
+
+            <!-- Laurel Wreath Ranking Ribbon -->
+            <div class="athletic-ranking-ribbon" id="athleticRankingRibbon" data-tooltip="Official Division A ranking based on ELO &amp; MVP impact points">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+              <span id="athleticRankText">★ RANK #1 ALL-ROUNDER (DIV A) ★</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            </div>
+
+            <!-- Hero KPI Section -->
+            <div class="athletic-hero-section">
+              <div>
+                <div style="font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.05em;">Tournament Impact Rating</div>
+                <div class="athletic-hero-kpi" id="athleticHeroKpi">95.8</div>
+              </div>
+              <div class="athletic-hero-kpi-trend" id="athleticHeroTrend" data-tooltip="Rolling 5-match tournament impact progression">
+                <span>▲</span> <span id="athleticHeroTrendVal">+8.4%</span> vs last tourney
+              </div>
+            </div>
+
+            <!-- 2x3 Substats Grid -->
+            <div class="athletic-substats-grid">
+              <div class="athletic-substat-box" data-tooltip="Total tournament fixtures played">
+                <div class="athletic-substat-value" id="statMatches">44</div>
+                <div class="athletic-substat-label">Matches</div>
+              </div>
+              <div class="athletic-substat-box" data-tooltip="Career aggregate tournament runs">
+                <div class="athletic-substat-value" style="color: var(--turf-emerald);" id="statRuns">1,280</div>
+                <div class="athletic-substat-label">Runs</div>
+              </div>
+              <div class="athletic-substat-box" data-tooltip="Total career wickets taken">
+                <div class="athletic-substat-value" style="color: var(--cyan);" id="statWickets">42</div>
+                <div class="athletic-substat-label">Wickets</div>
+              </div>
+              <div class="athletic-substat-box" data-tooltip="Economy rate across all overs bowled">
+                <div class="athletic-substat-value" id="statEconomy">7.64</div>
+                <div class="athletic-substat-label">Econ</div>
+              </div>
+              <div class="athletic-substat-box" data-tooltip="Total outfield &amp; close-in catches taken">
+                <div class="athletic-substat-value" id="statCatches">22</div>
+                <div class="athletic-substat-label">Catches</div>
+              </div>
+              <div class="athletic-substat-box" data-tooltip="Career batting strike rate (runs per 100 balls)">
+                <div class="athletic-substat-value" style="color: var(--amber);" id="statStrikeRate">162.4</div>
+                <div class="athletic-substat-label">Strike Rate</div>
+              </div>
+            </div>
+
+            <!-- 20-Bar Gradient Momentum / Form Spectrum -->
+            <div class="athletic-momentum-section">
+              <div class="athletic-momentum-header">
+                <span>20-Match Athletic Momentum Spectrum</span>
+                <span style="color: var(--turf-emerald); font-weight: 700;" id="momentumRecentForm">FORM: EXCELLENT (92%)</span>
+              </div>
+              <div class="athletic-momentum-bars" id="athleticMomentumBars">
+                <!-- Rendered by JS: 20 gradient bars -->
+              </div>
+            </div>
+          </div>
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
               <div class="card-title">🪑 Bench & Reserve Squad</div>
@@ -3433,14 +3706,14 @@ export function getDashboardHtml(): string {
           <div id="studioScoringControlsGroup">
             <!-- Studio Keypad -->
             <div class="studio-pad-grid">
-              <button class="studio-btn" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery)">0<span class="studio-sublabel">Dot</span></button>
-              <button class="studio-btn" onclick="recordStudioBall(1)" data-tooltip="Single: 1 run and strike rotates">1<span class="studio-sublabel">Single</span></button>
-              <button class="studio-btn" onclick="recordStudioBall(2)" data-tooltip="Two runs (no strike rotation)">2<span class="studio-sublabel">Double</span></button>
-              <button class="studio-btn" onclick="recordStudioBall(3)" data-tooltip="Three runs (strike rotates)">3<span class="studio-sublabel">Triple</span></button>
-              <button class="studio-btn boundary-four" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
-              <button class="studio-btn maximum-six" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
-              <button class="studio-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (Bowled, Caught, LBW, Run out...)">W<span class="studio-sublabel">Wicket</span></button>
-              <button class="studio-btn" id="btnStudioUndo" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber);" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">↺<span class="studio-sublabel">Undo</span></button>
+              <button class="studio-btn pad-btn dot" data-runs="0" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery)">0<span class="studio-sublabel">Dot</span></button>
+              <button class="studio-btn pad-btn" data-runs="1" onclick="recordStudioBall(1)" data-tooltip="Single: 1 run and strike rotates">1<span class="studio-sublabel">Single</span></button>
+              <button class="studio-btn pad-btn" data-runs="2" onclick="recordStudioBall(2)" data-tooltip="Two runs (no strike rotation)">2<span class="studio-sublabel">Double</span></button>
+              <button class="studio-btn pad-btn" data-runs="3" onclick="recordStudioBall(3)" data-tooltip="Three runs (strike rotates)">3<span class="studio-sublabel">Triple</span></button>
+              <button class="studio-btn pad-btn four boundary-four" data-runs="4" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
+              <button class="studio-btn pad-btn six maximum-six" data-runs="6" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
+              <button class="studio-btn pad-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (Bowled, Caught, LBW, Run out...)">W<span class="studio-sublabel">Wicket</span></button>
+              <button class="studio-btn pad-btn" id="btnStudioUndo" data-id="btnUndoBall" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber);" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">↺<span class="studio-sublabel">Undo</span></button>
             </div>
 
             <!-- Quick Extras Strip -->
@@ -4441,7 +4714,7 @@ export function getDashboardHtml(): string {
   </div>
   <!-- Notification Center Drawer -->
   <div id="notificationsDrawerOverlay" class="modal-backdrop" onclick="closeNotificationsDrawer()" style="display: none; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);"></div>
-  <div id="notificationsDrawer" style="position: fixed; top: 0; right: -400px; width: 380px; max-width: 92vw; height: 100vh; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6); z-index: 10000; transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;">
+  <div id="notificationsDrawer" style="position: fixed; top: 0; right: 0; transform: translateX(100%); width: 380px; max-width: 92vw; height: 100vh; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6); z-index: 10000; transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;">
     <div style="padding: 1.25rem 1rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
       <div style="display: flex; align-items: center; gap: 0.5rem;">
         <span style="font-size: 1.15rem;">🔔</span>
@@ -5220,31 +5493,79 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Modal: Mobile App Preview -->
+  <!-- Modal: Mobile App Preview & APK Demo Desk -->
   <div class="modal-backdrop" id="modalMobileAppPreview">
-    <div class="modal-card" style="max-width: 480px;">
+    <div class="modal-card" id="qrMobileDemoModal" style="max-width: 500px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="font-size: 1.4rem;">📱</span>
           <div>
-            <div class="modal-title">CricOS Mobile App Simulator</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Consumer iOS &amp; Android App (Expo EAS / Target SDK 34)</div>
+            <div class="modal-title">CricOS Mobile App &amp; Android APK</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Consumer iOS &amp; Native Android Experience (Target SDK 33 / AGP 8.1.4)</div>
           </div>
         </div>
-        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMobilePreviewModal()" data-tooltip="Close mobile preview">×</button>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMobilePreviewModal()" data-tooltip="Close mobile preview (Esc)">×</button>
       </div>
       <div class="modal-body" style="padding: 1rem; text-align: center;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px;">
-          <span style="font-size: 0.78rem; color: var(--turf-emerald); font-weight: 700;">✓ Apple 5.1.1(v) &bull; Google Play 34 Compliant</span>
-          <a href="/mobile" target="_blank" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);" data-tooltip="Open mobile simulator in standalone window">↗ Dedicated Tab</a>
+          <span style="font-size: 0.78rem; color: var(--turf-emerald); font-weight: 700;">✓ Edge-to-Edge Native Android &bull; WCAG 2.2 AA</span>
+          <div style="display: flex; gap: 0.4rem;">
+            <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: #FFF; background: rgba(168,85,247,0.25); border-color: var(--purple);" data-tooltip="Direct download standalone Android APK (3.0 MB)">🤖 APK (3.0MB)</a>
+            <a href="/mobile" target="_blank" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);" data-tooltip="Open mobile simulator in standalone browser window">↗ Fullscreen</a>
+          </div>
         </div>
-        <div style="display: inline-block; width: 340px; height: 520px; border: 8px solid #1E293B; border-radius: 32px; overflow: hidden; box-shadow: 0 16px 36px rgba(0,0,0,0.6); position: relative; background: #000;">
+
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 0.85rem; margin-bottom: 0.85rem; text-align: left;">
+          <!-- SVG QR Code representing CricOS Mobile URL -->
+          <div style="background: #FFF; padding: 6px; border-radius: 8px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+            <svg width="84" height="84" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="QR Code to launch CricOS mobile application">
+              <rect width="29" height="29" fill="#FFFFFF"/>
+              <!-- Position markers -->
+              <rect x="2" y="2" width="7" height="7" fill="#04070D"/>
+              <rect x="3" y="3" width="5" height="5" fill="#FFFFFF"/>
+              <rect x="4" y="4" width="3" height="3" fill="#00E599"/>
+              <rect x="20" y="2" width="7" height="7" fill="#04070D"/>
+              <rect x="21" y="3" width="5" height="5" fill="#FFFFFF"/>
+              <rect x="22" y="4" width="3" height="3" fill="#00E599"/>
+              <rect x="2" y="20" width="7" height="7" fill="#04070D"/>
+              <rect x="3" y="21" width="5" height="5" fill="#FFFFFF"/>
+              <rect x="4" y="22" width="3" height="3" fill="#00E599"/>
+              <!-- Data modules -->
+              <rect x="11" y="2" width="2" height="3" fill="#04070D"/><rect x="15" y="4" width="3" height="2" fill="#04070D"/>
+              <rect x="10" y="7" width="2" height="2" fill="#04070D"/><rect x="14" y="8" width="4" height="2" fill="#04070D"/>
+              <rect x="2" y="11" width="3" height="2" fill="#04070D"/><rect x="7" y="11" width="2" height="2" fill="#04070D"/>
+              <rect x="11" y="11" width="3" height="3" fill="#00E599"/><rect x="16" y="12" width="2" height="2" fill="#04070D"/>
+              <rect x="20" y="11" width="4" height="2" fill="#04070D"/><rect x="26" y="12" width="2" height="3" fill="#04070D"/>
+              <rect x="4" y="15" width="2" height="3" fill="#04070D"/><rect x="8" y="14" width="4" height="2" fill="#04070D"/>
+              <rect x="14" y="16" width="3" height="2" fill="#04070D"/><rect x="19" y="15" width="2" height="2" fill="#04070D"/>
+              <rect x="11" y="20" width="2" height="4" fill="#04070D"/><rect x="15" y="22" width="4" height="2" fill="#04070D"/>
+              <rect x="22" y="18" width="3" height="3" fill="#00E599"/><rect x="26" y="22" width="2" height="4" fill="#04070D"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-weight: 700; color: #FFF; font-size: 0.88rem; margin-bottom: 0.2rem;">Scan with Phone Camera</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">
+              Instantly preview the responsive mobile layout or transfer the debug APK to test on physical Android/iOS hardware.
+            </div>
+            <div style="margin-top: 0.4rem; display: flex; gap: 0.4rem;">
+              <span style="font-size: 0.68rem; color: var(--cyan); background: rgba(0,210,255,0.1); border: 1px solid rgba(0,210,255,0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">PWA Ready</span>
+              <span style="font-size: 0.68rem; color: var(--amber); background: rgba(255,184,0,0.1); border: 1px solid rgba(255,184,0,0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">Offline Queue</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: inline-block; width: 340px; height: 460px; border: 8px solid #1E293B; border-radius: 28px; overflow: hidden; box-shadow: 0 16px 36px rgba(0,0,0,0.6); position: relative; background: #000;">
           <iframe src="/mobile" style="width: 100%; height: 100%; border: none;" title="CricOS Mobile App Preview"></iframe>
         </div>
       </div>
-      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
         <button class="btn btn-secondary" onclick="closeMobilePreviewModal()" style="width: auto;">Close</button>
-        <button class="btn btn-primary" onclick="window.open('/mobile', '_blank')" style="width: auto;" data-tooltip="Launch full-screen mobile experience">🚀 Open Fullscreen</button>
+        <div style="display: flex; gap: 0.5rem;">
+          <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="btn btn-secondary" style="width: auto; padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Download compiled Android package">
+            <span>🤖</span> Save APK
+          </a>
+          <button class="btn btn-primary" onclick="window.open('/mobile', '_blank')" style="width: auto;" data-tooltip="Launch full-screen mobile experience">🚀 Launch Standalone</button>
+        </div>
       </div>
     </div>
   </div>
@@ -5881,6 +6202,8 @@ cricos_active_sse_connections 1</pre>
         <button class="btn btn-secondary" onclick="closeModal('modalDlsCalculator')">Close</button>
       </div>
     </div>
+  </div>
+
   <!-- Modal: 3D Championship Trophy Cabinet -->
   <div class="modal-backdrop" id="modal3DTrophyCabinet">
     <div class="modal-dialog" style="max-width: 640px;">
@@ -6022,6 +6345,105 @@ cricos_active_sse_connections 1</pre>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="closeModal('modal3DBatCustomizer')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: 21st.dev Athletic Career Stats Drawer -->
+  <div class="modal-backdrop as-drawer" id="modalPlayerStatsDrawer">
+    <div class="modal-dialog" style="max-width: 720px;">
+      <div class="modal-header">
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.6rem;">
+          <span>⚡ Athlete Analytical Dossier</span>
+          <span class="player-role-badge" id="drawerRoleBadge" style="background: rgba(0,229,153,0.18); color: var(--turf-emerald);">ALL</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closePlayerStatsDrawer()" data-tooltip="Close athlete dossier (Esc)">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <!-- Drawer Hero Identity -->
+        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="athletic-avatar" id="drawerAvatar" style="width: 58px; height: 58px; font-size: 1.35rem;">
+              <span id="drawerAvatarInitials">HP</span>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <h3 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: #FFF; margin: 0;" id="drawerPlayerName">Hardik Patel</h3>
+                <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 700;" id="drawerJerseyNum">#33</span>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;" id="drawerMetaDetails">
+                Bangalore Blasters • Division A Certified Athlete • KYC Verified
+              </div>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Overall ELO Score</div>
+            <div style="font-family: var(--font-score); font-size: 1.8rem; font-weight: 900; color: var(--turf-emerald);" id="drawerEloScore">2,410</div>
+          </div>
+        </div>
+
+        <!-- 6-Axis Radar Capability Polygon & Key Attributes -->
+        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 1.25rem; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">6-Axis Radar Capability</div>
+            <div id="drawerRadarContainer">
+              <!-- SVG Radar Rendered by JS -->
+            </div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--cyan); margin-bottom: 0.65rem;">Tactical Skill Breakdown</div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;" id="drawerSkillBreakdown">
+              <!-- Skill Bars rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tactical Splits Table -->
+        <div style="margin-bottom: 1.25rem;">
+          <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">Situational Splits</div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">
+                  <th style="padding: 0.5rem;">Split Condition</th>
+                  <th style="padding: 0.5rem;">Innings</th>
+                  <th style="padding: 0.5rem;">Runs (SR)</th>
+                  <th style="padding: 0.5rem;">Bat Avg</th>
+                  <th style="padding: 0.5rem;">Wkts</th>
+                  <th style="padding: 0.5rem;">Econ</th>
+                </tr>
+              </thead>
+              <tbody id="drawerSplitsTableBody">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent 5-Match Game Log -->
+        <div>
+          <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">Recent Match Performance Logs</div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">
+                  <th style="padding: 0.5rem;">Date</th>
+                  <th style="padding: 0.5rem;">Opponent</th>
+                  <th style="padding: 0.5rem;">Batting</th>
+                  <th style="padding: 0.5rem;">Bowling</th>
+                  <th style="padding: 0.5rem;">Match MVP</th>
+                </tr>
+              </thead>
+              <tbody id="drawerGameLogTableBody">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" class="btn btn-secondary" onclick="closePlayerStatsDrawer()" style="width: auto;">Dismiss</button>
+        <button type="button" class="btn btn-primary" onclick="showToast('✓ Athlete Dossier exported to PDF / CSV')" style="width: auto;" data-tooltip="Download certified player analytical report">📥 Export Athlete Report</button>
       </div>
     </div>
   </div>
@@ -6875,6 +7297,14 @@ cricos_active_sse_connections 1</pre>
 
       applyRolePermissions(role);
     }
+
+    // Expose authoritative CricOS Public Platform API
+    window.CricOS = {
+      switchPersona: selectPersona,
+      selectPersona: selectPersona,
+      getCurrentUser: function() { return currentUser; },
+      applyRolePermissions: applyRolePermissions
+    };
 
     // Fan Cheering & Pulse Handlers
     let fanTotalCheers = 1428;
@@ -10028,6 +10458,651 @@ cricos_active_sse_connections 1</pre>
       { id: 'b-4', name: 'Shivam Dube', role: 'ALL', jersey: 25, verified: true, battingStyle: 'LHB' }
     ];
 
+    // ==========================================
+    // 21st.dev Athletic Career Stats Engine & Roster
+    // ==========================================
+    let selectedPlayerId = 'p-5'; // Default to Hardik Patel (id: p-5, also handles alias 'p1'/'p5')
+
+    const PLAYER_CAREER_DATABASE = {
+      'p-1': {
+        id: 'p-1',
+        name: 'Virat Sharma',
+        role: 'BAT',
+        jersey: 18,
+        initials: 'VK',
+        meta: '#18 • Right-Hand Bat • Right-Arm Medium',
+        rankText: '★ RANK #1 TOP-ORDER BATTER (DIV A) ★',
+        kpi: '98.6',
+        trend: '+9.2%',
+        matches: 48,
+        runs: '2,140',
+        wickets: 4,
+        economy: '7.20',
+        catches: 32,
+        strikeRate: '148.6',
+        recentForm: 'FORM: PEAK (98%)',
+        elo: '2,580',
+        radar: [96, 98, 92, 45, 38, 94],
+        momentum: [85, 90, 78, 92, 95, 88, 99, 94, 91, 86, 95, 98, 92, 89, 96, 100, 94, 97, 95, 99],
+        splits: [
+          { cond: 'Home Pitch', inn: 24, runs: '1,180 (152.4)', avg: '53.6', wkts: 2, econ: '6.80' },
+          { cond: 'Away Turf', inn: 24, runs: '960 (144.8)', avg: '43.6', wkts: 2, econ: '7.50' },
+          { cond: '1st Innings (Setting)', inn: 26, runs: '1,240 (150.2)', avg: '51.7', wkts: 3, econ: '7.10' },
+          { cond: '2nd Innings (Chasing)', inn: 22, runs: '900 (146.3)', avg: '47.4', wkts: 1, econ: '7.30' },
+          { cond: 'Powerplay (Overs 1-6)', inn: 48, runs: '840 (142.0)', avg: '60.0', wkts: 0, econ: '0.00' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '68* (42)', bowl: '0/12 (1.0)', mvp: '★ 98.4 (POTM)' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '82 (51)', bowl: '1/18 (2.0)', mvp: '★ 95.0' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: '45 (28)', bowl: 'DNB', mvp: '82.5' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '74* (46)', bowl: 'DNB', mvp: '★ 96.2' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '54 (36)', bowl: '0/8 (1.0)', mvp: '88.0' }
+        ]
+      },
+      'p-2': {
+        id: 'p-2',
+        name: 'Rohit Verma',
+        role: 'BAT',
+        jersey: 45,
+        initials: 'RV',
+        meta: '#45 • Right-Hand Bat • Right-Arm Off-Break',
+        rankText: '★ RANK #2 POWERPLAY AGGRESSOR (DIV A) ★',
+        kpi: '96.4',
+        trend: '+6.8%',
+        matches: 46,
+        runs: '1,980',
+        wickets: 2,
+        economy: '8.10',
+        catches: 26,
+        strikeRate: '156.2',
+        recentForm: 'FORM: EXCELLENT (94%)',
+        elo: '2,490',
+        radar: [98, 88, 99, 40, 30, 88],
+        momentum: [70, 85, 92, 80, 88, 96, 75, 90, 85, 92, 94, 89, 95, 98, 86, 92, 94, 96, 92, 95],
+        splits: [
+          { cond: 'Home Pitch', inn: 23, runs: '1,060 (160.2)', avg: '48.2', wkts: 1, econ: '7.80' },
+          { cond: 'Away Turf', inn: 23, runs: '920 (152.0)', avg: '41.8', wkts: 1, econ: '8.40' },
+          { cond: 'Powerplay (Overs 1-6)', inn: 46, runs: '980 (164.5)', avg: '54.4', wkts: 0, econ: '0.00' },
+          { cond: '1st Innings', inn: 25, runs: '1,120 (158.0)', avg: '46.7', wkts: 1, econ: '8.00' },
+          { cond: '2nd Innings', inn: 21, runs: '860 (153.8)', avg: '43.0', wkts: 1, econ: '8.20' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '54 (32)', bowl: 'DNB', mvp: '89.2' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '68 (39)', bowl: 'DNB', mvp: '92.4' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: '88* (48)', bowl: '0/10 (1.0)', mvp: '★ 97.6 (POTM)' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '38 (21)', bowl: 'DNB', mvp: '78.5' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '61 (35)', bowl: 'DNB', mvp: '91.0' }
+        ]
+      },
+      'p-3': {
+        id: 'p-3',
+        name: 'KL Rahul',
+        role: 'WK',
+        jersey: 1,
+        initials: 'KL',
+        meta: '#1 • Right-Hand Bat • Wicketkeeper',
+        rankText: '★ RANK #3 ANCHOR WICKETKEEPER (DIV A) ★',
+        kpi: '91.8',
+        trend: '+4.5%',
+        matches: 42,
+        runs: '1,620',
+        wickets: 0,
+        economy: '0.00',
+        catches: 44,
+        strikeRate: '139.4',
+        recentForm: 'FORM: SOLID (88%)',
+        elo: '2,360',
+        radar: [90, 92, 86, 20, 15, 96],
+        momentum: [80, 82, 85, 76, 88, 90, 84, 86, 92, 88, 85, 89, 91, 86, 90, 88, 92, 89, 87, 91],
+        splits: [
+          { cond: 'Home Pitch', inn: 21, runs: '880 (142.1)', avg: '46.3', wkts: 0, econ: '0.00' },
+          { cond: 'Away Turf', inn: 21, runs: '740 (136.5)', avg: '38.9', wkts: 0, econ: '0.00' },
+          { cond: 'Death Overs (16-20)', inn: 25, runs: '420 (178.2)', avg: '35.0', wkts: 0, econ: '0.00' },
+          { cond: '1st Innings', inn: 22, runs: '860 (140.2)', avg: '43.0', wkts: 0, econ: '0.00' },
+          { cond: '2nd Innings', inn: 20, runs: '760 (138.5)', avg: '42.2', wkts: 0, econ: '0.00' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '42* (29)', bowl: '3 Catches', mvp: '87.0' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '56 (40)', bowl: '2 Catches, 1 Stumping', mvp: '91.5' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: '31 (24)', bowl: '1 Catch', mvp: '74.2' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '64* (44)', bowl: '2 Catches', mvp: '90.8' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '48 (33)', bowl: '1 Stumping', mvp: '82.0' }
+        ]
+      },
+      'p-4': {
+        id: 'p-4',
+        name: 'Suryakumar Rao',
+        role: 'BAT',
+        jersey: 63,
+        initials: 'SK',
+        meta: '#63 • Right-Hand Bat • 360° Innovation',
+        rankText: '★ RANK #1 360° MIDDLE OVERS BATTER ★',
+        kpi: '97.2',
+        trend: '+11.4%',
+        matches: 40,
+        runs: '1,740',
+        wickets: 0,
+        economy: '0.00',
+        catches: 28,
+        strikeRate: '174.8',
+        recentForm: 'FORM: SPECTACULAR (96%)',
+        elo: '2,540',
+        radar: [99, 90, 99, 25, 20, 92],
+        momentum: [78, 88, 95, 92, 100, 85, 94, 99, 86, 98, 92, 95, 99, 91, 97, 100, 96, 98, 94, 99],
+        splits: [
+          { cond: 'Middle Overs (7-15)', inn: 40, runs: '980 (168.4)', avg: '49.0', wkts: 0, econ: '0.00' },
+          { cond: 'Death Overs (16-20)', inn: 32, runs: '620 (212.5)', avg: '38.8', wkts: 0, econ: '0.00' },
+          { cond: 'Home Pitch', inn: 20, runs: '920 (178.6)', avg: '51.1', wkts: 0, econ: '0.00' },
+          { cond: 'Away Turf', inn: 20, runs: '820 (170.8)', avg: '45.6', wkts: 0, econ: '0.00' },
+          { cond: 'Chasing Targets', inn: 18, runs: '780 (182.0)', avg: '52.0', wkts: 0, econ: '0.00' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '72 (36)', bowl: 'DNB', mvp: '★ 96.8' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '46 (22)', bowl: 'DNB', mvp: '89.4' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: '84* (38)', bowl: 'DNB', mvp: '★ 99.2 (POTM)' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '28 (14)', bowl: 'DNB', mvp: '76.0' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '65 (31)', bowl: 'DNB', mvp: '93.5' }
+        ]
+      },
+      'p-5': {
+        id: 'p-5',
+        name: 'Hardik Patel',
+        role: 'ALL',
+        jersey: 33,
+        initials: 'HP',
+        meta: '#33 • Left-Hand Bat • Right-Arm Fast Medium',
+        rankText: '★ RANK #1 ALL-ROUNDER (DIV A) ★',
+        kpi: '95.8',
+        trend: '+8.4%',
+        matches: 44,
+        runs: '1,280',
+        wickets: 42,
+        economy: '7.64',
+        catches: 22,
+        strikeRate: '162.4',
+        recentForm: 'FORM: EXCELLENT (92%)',
+        elo: '2,410',
+        radar: [94, 86, 95, 84, 88, 91],
+        momentum: [82, 88, 76, 94, 85, 91, 98, 84, 90, 87, 95, 92, 89, 96, 91, 97, 88, 94, 90, 95],
+        splits: [
+          { cond: 'Home Pitch', inn: 22, runs: '680 (168.2)', avg: '37.8', wkts: 24, econ: '7.40' },
+          { cond: 'Away Turf', inn: 22, runs: '600 (156.4)', avg: '33.3', wkts: 18, econ: '7.90' },
+          { cond: 'Death Overs (16-20)', inn: 38, runs: '560 (188.0)', avg: '35.0', wkts: 19, econ: '8.80' },
+          { cond: '1st Innings', inn: 24, runs: '720 (164.0)', avg: '36.0', wkts: 22, econ: '7.55' },
+          { cond: '2nd Innings', inn: 20, runs: '560 (160.2)', avg: '35.0', wkts: 20, econ: '7.75' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '38* (18)', bowl: '2/24 (4.0)', mvp: '★ 94.2' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '45 (24)', bowl: '1/31 (3.0)', mvp: '86.8' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: '22 (11)', bowl: '3/18 (4.0)', mvp: '★ 95.6 (POTM)' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '51* (26)', bowl: '1/28 (4.0)', mvp: '91.0' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '19 (12)', bowl: '2/30 (3.4)', mvp: '82.4' }
+        ]
+      },
+      'p-6': {
+        id: 'p-6',
+        name: 'Ravindra Singh',
+        role: 'ALL',
+        jersey: 8,
+        initials: 'RS',
+        meta: '#8 • Left-Hand Bat • Slow Left-Arm Orthodox',
+        rankText: '★ RANK #2 DYNAMIC ALL-ROUNDER (DIV A) ★',
+        kpi: '94.6',
+        trend: '+7.1%',
+        matches: 45,
+        runs: '1,120',
+        wickets: 52,
+        economy: '6.42',
+        catches: 38,
+        strikeRate: '142.1',
+        recentForm: 'FORM: ELITE (95%)',
+        elo: '2,460',
+        radar: [86, 90, 84, 94, 89, 99],
+        momentum: [84, 86, 90, 92, 88, 94, 96, 90, 88, 95, 93, 91, 97, 89, 94, 96, 92, 95, 91, 96],
+        splits: [
+          { cond: 'Home Pitch', inn: 23, runs: '590 (146.0)', avg: '34.7', wkts: 31, econ: '6.15' },
+          { cond: 'Away Turf', inn: 22, runs: '530 (138.0)', avg: '31.2', wkts: 21, econ: '6.70' },
+          { cond: 'Middle Overs (7-15)', inn: 45, runs: '380 (135.0)', avg: '38.0', wkts: 38, econ: '6.20' },
+          { cond: '1st Innings', inn: 24, runs: '600 (144.0)', avg: '33.3', wkts: 28, econ: '6.35' },
+          { cond: '2nd Innings', inn: 21, runs: '520 (140.0)', avg: '32.5', wkts: 24, econ: '6.50' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '24* (14)', bowl: '2/19 (4.0)', mvp: '91.0' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '35 (19)', bowl: '3/22 (4.0)', mvp: '★ 96.4 (POTM)' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: '18 (12)', bowl: '1/26 (4.0)', mvp: '81.5' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '28* (15)', bowl: '2/21 (4.0)', mvp: '89.2' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '41 (22)', bowl: '1/24 (4.0)', mvp: '88.5' }
+        ]
+      },
+      'p-7': {
+        id: 'p-7',
+        name: 'Axar Patel',
+        role: 'ALL',
+        jersey: 20,
+        initials: 'AP',
+        meta: '#20 • Left-Hand Bat • Slow Left-Arm Orthodox',
+        rankText: '★ RANK #3 RESTRICTIVE ALL-ROUNDER (DIV A) ★',
+        kpi: '91.2',
+        trend: '+5.2%',
+        matches: 38,
+        runs: '780',
+        wickets: 46,
+        economy: '6.35',
+        catches: 19,
+        strikeRate: '138.0',
+        recentForm: 'FORM: SOLID (89%)',
+        elo: '2,320',
+        radar: [82, 85, 80, 95, 88, 89],
+        momentum: [80, 82, 85, 87, 84, 88, 91, 85, 89, 86, 90, 88, 92, 87, 91, 90, 89, 93, 88, 91],
+        splits: [
+          { cond: 'Home Pitch', inn: 19, runs: '420 (140.0)', avg: '28.0', wkts: 26, econ: '6.10' },
+          { cond: 'Away Turf', inn: 19, runs: '360 (135.8)', avg: '25.7', wkts: 20, econ: '6.60' },
+          { cond: 'Powerplay Overs', inn: 22, runs: '90 (120.0)', avg: '22.5', wkts: 12, econ: '5.90' },
+          { cond: '1st Innings', inn: 20, runs: '410 (139.0)', avg: '27.3', wkts: 24, econ: '6.25' },
+          { cond: '2nd Innings', inn: 18, runs: '370 (137.0)', avg: '26.4', wkts: 22, econ: '6.45' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '15* (8)', bowl: '1/22 (4.0)', mvp: '82.0' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '28 (16)', bowl: '2/18 (4.0)', mvp: '89.0' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: '12 (9)', bowl: '2/24 (4.0)', mvp: '84.2' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '34* (18)', bowl: '1/25 (4.0)', mvp: '88.0' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '8 (6)', bowl: '2/20 (4.0)', mvp: '85.4' }
+        ]
+      },
+      'p-8': {
+        id: 'p-8',
+        name: 'Kuldeep Yadav',
+        role: 'BOWL',
+        jersey: 23,
+        initials: 'KY',
+        meta: '#23 • Left-Hand Bat • Left-Arm Wrist Spin (Chinaman)',
+        rankText: '★ RANK #1 WRIST SPINNER (DIV A) ★',
+        kpi: '93.4',
+        trend: '+9.6%',
+        matches: 36,
+        runs: '120',
+        wickets: 58,
+        economy: '6.75',
+        catches: 12,
+        strikeRate: '92.0',
+        recentForm: 'FORM: EXCELLENT (93%)',
+        elo: '2,420',
+        radar: [30, 40, 25, 92, 98, 82],
+        momentum: [82, 85, 89, 94, 88, 92, 96, 85, 91, 89, 94, 96, 90, 93, 95, 98, 92, 95, 91, 96],
+        splits: [
+          { cond: 'Home Pitch', inn: 18, runs: '70 (95.0)', avg: '10.0', wkts: 34, econ: '6.45' },
+          { cond: 'Away Turf', inn: 18, runs: '50 (88.0)', avg: '8.3', wkts: 24, econ: '7.05' },
+          { cond: 'Middle Overs (7-15)', inn: 36, runs: '0', avg: '0', wkts: 48, econ: '6.50' },
+          { cond: '1st Innings', inn: 19, runs: '65', avg: '9.2', wkts: 31, econ: '6.65' },
+          { cond: '2nd Innings', inn: 17, runs: '55', avg: '9.1', wkts: 27, econ: '6.85' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: 'DNB', bowl: '3/21 (4.0)', mvp: '★ 94.8' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '4 (5)', bowl: '2/26 (4.0)', mvp: '87.5' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '4/16 (4.0)', mvp: '★ 99.0 (POTM)' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '2* (4)', bowl: '1/28 (4.0)', mvp: '81.2' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: 'DNB', bowl: '2/22 (4.0)', mvp: '88.0' }
+        ]
+      },
+      'p-9': {
+        id: 'p-9',
+        name: 'Jasprit Bumrah',
+        role: 'BOWL',
+        jersey: 93,
+        initials: 'JB',
+        meta: '#93 • Right-Hand Bat • Right-Arm Fast Yorker Specialist',
+        rankText: '★ RANK #1 DEATH PACER IN THE WORLD ★',
+        kpi: '99.2',
+        trend: '+12.0%',
+        matches: 50,
+        runs: '180',
+        wickets: 74,
+        economy: '5.82',
+        catches: 16,
+        strikeRate: '105.0',
+        recentForm: 'FORM: UNPLAYABLE (99%)',
+        elo: '2,620',
+        radar: [45, 50, 40, 99, 99, 88],
+        momentum: [92, 95, 98, 96, 100, 94, 98, 99, 95, 98, 97, 100, 96, 99, 98, 100, 97, 100, 99, 100],
+        splits: [
+          { cond: 'Powerplay (Overs 1-6)', inn: 50, runs: '0', avg: '0', wkts: 28, econ: '4.80' },
+          { cond: 'Death Overs (16-20)', inn: 48, runs: '0', avg: '0', wkts: 36, econ: '6.20' },
+          { cond: 'Home Pitch', inn: 25, runs: '95', avg: '11.8', wkts: 42, econ: '5.60' },
+          { cond: 'Away Turf', inn: 25, runs: '85', avg: '10.6', wkts: 32, econ: '6.04' },
+          { cond: 'Dot Ball Ratio', inn: 50, runs: '0', avg: '0', wkts: 74, econ: '56.4% Dots' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '8* (4)', bowl: '3/14 (4.0)', mvp: '★ 98.6 (POTM)' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: 'DNB', bowl: '2/18 (4.0)', mvp: '93.2' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '3/12 (4.0)', mvp: '★ 97.4' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: 'DNB', bowl: '1/19 (4.0)', mvp: '88.5' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '6 (5)', bowl: '4/15 (4.0)', mvp: '★ 99.4 (POTM)' }
+        ]
+      },
+      'p-10': {
+        id: 'p-10',
+        name: 'Mohammed Siraj',
+        role: 'BOWL',
+        jersey: 73,
+        initials: 'MS',
+        meta: '#73 • Right-Hand Bat • Right-Arm Fast Seam',
+        rankText: '★ RANK #4 OPENING SEAMER (DIV A) ★',
+        kpi: '90.5',
+        trend: '+4.8%',
+        matches: 39,
+        runs: '90',
+        wickets: 48,
+        economy: '7.45',
+        catches: 14,
+        strikeRate: '85.0',
+        recentForm: 'FORM: SOLID (87%)',
+        elo: '2,310',
+        radar: [25, 35, 20, 89, 93, 84],
+        momentum: [80, 82, 85, 88, 83, 86, 91, 84, 88, 86, 90, 88, 92, 86, 89, 91, 87, 90, 85, 89],
+        splits: [
+          { cond: 'Powerplay (Overs 1-6)', inn: 39, runs: '0', avg: '0', wkts: 26, econ: '6.90' },
+          { cond: 'Home Pitch', inn: 20, runs: '55', avg: '7.8', wkts: 28, econ: '7.20' },
+          { cond: 'Away Turf', inn: 19, runs: '35', avg: '7.0', wkts: 20, econ: '7.70' },
+          { cond: '1st Innings', inn: 20, runs: '50', avg: '7.1', wkts: 26, econ: '7.35' },
+          { cond: '2nd Innings', inn: 19, runs: '40', avg: '8.0', wkts: 22, econ: '7.55' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: 'DNB', bowl: '2/28 (4.0)', mvp: '85.0' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: 'DNB', bowl: '1/32 (4.0)', mvp: '78.2' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '3/24 (4.0)', mvp: '91.0' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: '2 (3)', bowl: '2/26 (4.0)', mvp: '86.4' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: 'DNB', bowl: '1/30 (4.0)', mvp: '79.0' }
+        ]
+      },
+      'p-11': {
+        id: 'p-11',
+        name: 'Arshdeep Singh',
+        role: 'BOWL',
+        jersey: 2,
+        initials: 'AS',
+        meta: '#2 • Left-Hand Bat • Left-Arm Fast Medium',
+        rankText: '★ RANK #2 LEFT-ARM SEAMER (DIV A) ★',
+        kpi: '91.0',
+        trend: '+6.3%',
+        matches: 35,
+        runs: '60',
+        wickets: 45,
+        economy: '7.55',
+        catches: 11,
+        strikeRate: '80.0',
+        recentForm: 'FORM: GOOD (88%)',
+        elo: '2,330',
+        radar: [20, 30, 18, 91, 94, 85],
+        momentum: [82, 84, 86, 88, 85, 89, 92, 84, 87, 89, 91, 88, 93, 86, 90, 92, 88, 91, 87, 90],
+        splits: [
+          { cond: 'Powerplay (Overs 1-6)', inn: 35, runs: '0', avg: '0', wkts: 22, econ: '7.10' },
+          { cond: 'Death Overs (16-20)', inn: 32, runs: '0', avg: '0', wkts: 18, econ: '8.10' },
+          { cond: 'Home Pitch', inn: 18, runs: '35', avg: '5.8', wkts: 25, econ: '7.30' },
+          { cond: 'Away Turf', inn: 17, runs: '25', avg: '5.0', wkts: 20, econ: '7.80' },
+          { cond: 'Left-Arm Angle Effect', inn: 35, runs: '0', avg: '0', wkts: 45, econ: '48.2% Dots' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: 'DNB', bowl: '2/26 (4.0)', mvp: '86.0' },
+          { date: 'Sep 20', opp: 'Chennai Super Kings', bat: 'DNB', bowl: '2/30 (4.0)', mvp: '84.0' },
+          { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '1/28 (4.0)', mvp: '80.5' },
+          { date: 'Sep 11', opp: 'Gujarat Titans', bat: 'DNB', bowl: '3/22 (4.0)', mvp: '★ 92.4' },
+          { date: 'Sep 06', opp: 'Rajasthan Royals', bat: 'DNB', bowl: '1/31 (4.0)', mvp: '78.0' }
+        ]
+      },
+      'b-1': {
+        id: 'b-1',
+        name: 'Rishabh Pant',
+        role: 'WK',
+        jersey: 17,
+        initials: 'RP',
+        meta: '#17 • Left-Hand Bat • Dynamic Wicketkeeper',
+        rankText: '★ RANK #1 EXPLOSIVE WICKETKEEPER ★',
+        kpi: '94.2',
+        trend: '+7.8%',
+        matches: 38,
+        runs: '1,420',
+        wickets: 0,
+        economy: '0.00',
+        catches: 36,
+        strikeRate: '154.6',
+        recentForm: 'FORM: EXCELLENT (92%)',
+        elo: '2,440',
+        radar: [95, 88, 94, 20, 15, 95],
+        momentum: [82, 85, 91, 88, 94, 96, 90, 88, 95, 92, 90, 94, 98, 91, 95, 96, 92, 94, 90, 95],
+        splits: [
+          { cond: 'Middle Overs (7-15)', inn: 38, runs: '780 (150.0)', avg: '41.0', wkts: 0, econ: '0.00' },
+          { cond: 'Death Overs (16-20)', inn: 28, runs: '510 (182.4)', avg: '34.0', wkts: 0, econ: '0.00' }
+        ],
+        gameLogs: [
+          { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '48* (24)', bowl: '2 Catches', mvp: '91.0' }
+        ]
+      }
+    };
+
+    function normalizePlayerId(id) {
+      if (!id) return 'p-5';
+      return id.replace(/^(p|b)(\\d+)$/, '$1-$2');
+    }
+
+    function updateAthleticStatsCard(playerId) {
+      const pid = normalizePlayerId(playerId);
+      const p = PLAYER_CAREER_DATABASE[pid] || PLAYER_CAREER_DATABASE['p-5'];
+      if (!p) return;
+
+      const heroName = document.getElementById('athleticHeroName');
+      const avatarInitials = document.getElementById('athleticAvatarInitials');
+      const roleBadge = document.getElementById('athleticRoleBadge');
+      const meta = document.getElementById('athleticPlayerMeta');
+      const rankText = document.getElementById('athleticRankText');
+      const heroKpi = document.getElementById('athleticHeroKpi');
+      const heroTrend = document.getElementById('athleticHeroTrendVal');
+      const matches = document.getElementById('statMatches');
+      const runs = document.getElementById('statRuns');
+      const wickets = document.getElementById('statWickets');
+      const economy = document.getElementById('statEconomy');
+      const catches = document.getElementById('statCatches');
+      const strikeRate = document.getElementById('statStrikeRate');
+      const recentForm = document.getElementById('momentumRecentForm');
+      const barsContainer = document.getElementById('athleticMomentumBars');
+
+      if (heroName) heroName.textContent = p.name;
+      if (avatarInitials) avatarInitials.textContent = p.initials;
+      if (roleBadge) {
+        roleBadge.textContent = p.role;
+        roleBadge.style.color = p.role === 'BAT' ? 'var(--turf-emerald)' : (p.role === 'BOWL' ? 'var(--cyan)' : (p.role === 'ALL' ? 'var(--amber)' : 'var(--rose)'));
+      }
+      if (meta) meta.textContent = p.meta;
+      if (rankText) rankText.textContent = p.rankText;
+      if (heroKpi) heroKpi.textContent = p.kpi;
+      if (heroTrend) heroTrend.textContent = p.trend;
+      if (matches) matches.textContent = p.matches;
+      if (runs) runs.textContent = p.runs;
+      if (wickets) wickets.textContent = p.wickets;
+      if (economy) economy.textContent = p.economy;
+      if (catches) catches.textContent = p.catches;
+      if (strikeRate) strikeRate.textContent = p.strikeRate;
+      if (recentForm) recentForm.textContent = p.recentForm;
+
+      if (barsContainer && p.momentum) {
+        barsContainer.innerHTML = p.momentum.map((val, i) => {
+          const heightPct = Math.max(20, Math.min(100, val));
+          const isPeak = val >= 95;
+          const bg = isPeak
+            ? 'linear-gradient(180deg, var(--turf-emerald) 0%, var(--cyan) 100%)'
+            : 'linear-gradient(180deg, rgba(0, 229, 153, 0.7) 0%, rgba(0, 210, 255, 0.4) 100%)';
+          const opacity = 0.5 + (val / 100) * 0.5;
+          return \`<div class="athletic-momentum-bar" style="height: \${heightPct}%; background: \${bg}; opacity: \${opacity};" data-tooltip="Inning \${i + 1}: \${val}% performance rating" title="Inning \${i + 1}: \${val}%"></div>\`;
+        }).join('');
+      }
+    }
+
+    function populatePlayerStatsDrawer(playerId) {
+      const pid = normalizePlayerId(playerId);
+      const p = PLAYER_CAREER_DATABASE[pid] || PLAYER_CAREER_DATABASE['p-5'];
+      if (!p) return;
+
+      const dName = document.getElementById('drawerPlayerName');
+      const dInitials = document.getElementById('drawerAvatarInitials');
+      const dRole = document.getElementById('drawerRoleBadge');
+      const dJersey = document.getElementById('drawerJerseyNum');
+      const dMeta = document.getElementById('drawerMetaDetails');
+      const dElo = document.getElementById('drawerEloScore');
+
+      if (dName) dName.textContent = p.name;
+      if (dInitials) dInitials.textContent = p.initials;
+      if (dRole) {
+        dRole.textContent = p.role;
+        dRole.style.color = p.role === 'BAT' ? 'var(--turf-emerald)' : (p.role === 'BOWL' ? 'var(--cyan)' : (p.role === 'ALL' ? 'var(--amber)' : 'var(--rose)'));
+      }
+      if (dJersey) dJersey.textContent = '#' + p.jersey;
+      if (dMeta) dMeta.textContent = 'Bangalore Blasters • ' + p.meta + ' • KYC Verified';
+      if (dElo) dElo.textContent = p.elo;
+
+      // Render 6-Axis Radar SVG
+      const radarEl = document.getElementById('drawerRadarContainer');
+      if (radarEl) {
+        const cx = 130, cy = 125, r = 75;
+        const labels = ['Bat Power', 'Strike Rot', 'Boundary %', 'Bowl Control', 'Wicket Threat', 'Fielding'];
+        const values = p.radar || [80, 80, 80, 80, 80, 80];
+
+        let gridSvg = '';
+        for (let ring = 1; ring <= 5; ring++) {
+          const ringR = r * (ring / 5);
+          const ringPts = [];
+          for (let a = 0; a < 6; a++) {
+            const ang = -Math.PI / 2 + a * (2 * Math.PI / 6);
+            ringPts.push((cx + ringR * Math.cos(ang)).toFixed(1) + ',' + (cy + ringR * Math.sin(ang)).toFixed(1));
+          }
+          gridSvg += \`<polygon points="\${ringPts.join(' ')}" fill="none" stroke="rgba(255,255,255,\${ring === 5 ? '0.15' : '0.06'})" stroke-width="1" />\`;
+        }
+
+        let spokesSvg = '';
+        let labelsSvg = '';
+        for (let a = 0; a < 6; a++) {
+          const ang = -Math.PI / 2 + a * (2 * Math.PI / 6);
+          const x2 = cx + r * Math.cos(ang);
+          const y2 = cy + r * Math.sin(ang);
+          spokesSvg += \`<line x1="\${cx}" y1="\${cy}" x2="\${x2.toFixed(1)}" y2="\${y2.toFixed(1)}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="2 2" />\`;
+          const lx = cx + (r + 18) * Math.cos(ang);
+          const ly = cy + (r + 14) * Math.sin(ang) + 4;
+          labelsSvg += \`<text x="\${lx.toFixed(1)}" y="\${ly.toFixed(1)}" font-size="9" fill="#94A3B8" font-family="'Space Grotesk', sans-serif" text-anchor="middle">\${labels[a]}</text>\`;
+        }
+
+        const polyPts = [];
+        let dotsSvg = '';
+        for (let a = 0; a < 6; a++) {
+          const ang = -Math.PI / 2 + a * (2 * Math.PI / 6);
+          const val = values[a] || 50;
+          const px = cx + r * (val / 100) * Math.cos(ang);
+          const py = cy + r * (val / 100) * Math.sin(ang);
+          polyPts.push(px.toFixed(1) + ',' + py.toFixed(1));
+          dotsSvg += \`<circle cx="\${px.toFixed(1)}" cy="\${py.toFixed(1)}" r="3.5" fill="var(--cyan)" stroke="#FFFFFF" stroke-width="1.5" />\`;
+        }
+
+        radarEl.innerHTML = \`
+          <svg width="260" height="250" viewBox="0 0 260 250" aria-label="6-Axis Capability Radar">
+            \${gridSvg}
+            \${spokesSvg}
+            <polygon points="\${polyPts.join(' ')}" fill="rgba(0, 229, 153, 0.22)" stroke="var(--turf-emerald)" stroke-width="2.2" style="filter: drop-shadow(0 0 8px rgba(0,229,153,0.35));" />
+            \${dotsSvg}
+            \${labelsSvg}
+          </svg>
+        \`;
+      }
+
+      // Render Tactical Skill Breakdown bars
+      const skillsEl = document.getElementById('drawerSkillBreakdown');
+      if (skillsEl) {
+        const labels = ['Batting Power', 'Strike Rotation', 'Boundary Impact', 'Bowling Control', 'Wicket Threat', 'Athletic Fielding'];
+        const values = p.radar || [80, 80, 80, 80, 80, 80];
+        skillsEl.innerHTML = labels.map((lbl, idx) => {
+          const val = values[idx] || 50;
+          const barColor = val >= 90 ? 'var(--turf-emerald)' : (val >= 75 ? 'var(--cyan)' : 'var(--amber)');
+          return \`
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 0.2rem;">
+                <span style="color: #F8FAFC;">\${lbl}</span>
+                <span style="font-weight: 700; color: \${barColor};">\${val}/100</span>
+              </div>
+              <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
+                <div style="height: 100%; width: \${val}%; background: \${barColor}; border-radius: 999px; transition: width 0.3s var(--ease-out);"></div>
+              </div>
+            </div>
+          \`;
+        }).join('');
+      }
+
+      // Render Situational Splits
+      const splitsEl = document.getElementById('drawerSplitsTableBody');
+      if (splitsEl && p.splits) {
+        splitsEl.innerHTML = p.splits.map(s => \`
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.76rem;">
+            <td style="padding: 0.45rem 0.5rem; font-weight: 700; color: #FFF;">\${s.cond}</td>
+            <td style="padding: 0.45rem 0.5rem; color: var(--text-muted);">\${s.inn}</td>
+            <td style="padding: 0.45rem 0.5rem; color: var(--turf-emerald); font-weight: 700;">\${s.runs}</td>
+            <td style="padding: 0.45rem 0.5rem; color: #FFF;">\${s.avg}</td>
+            <td style="padding: 0.45rem 0.5rem; color: var(--cyan);">\${s.wkts}</td>
+            <td style="padding: 0.45rem 0.5rem; color: var(--amber);">\${s.econ}</td>
+          </tr>
+        \`).join('');
+      }
+
+      // Render 5-Match Game Logs
+      const logsEl = document.getElementById('drawerGameLogTableBody');
+      if (logsEl && p.gameLogs) {
+        logsEl.innerHTML = p.gameLogs.map(l => \`
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.76rem;">
+            <td style="padding: 0.45rem 0.5rem; color: var(--text-muted);">\${l.date}</td>
+            <td style="padding: 0.45rem 0.5rem; font-weight: 700; color: #FFF;">\${l.opp}</td>
+            <td style="padding: 0.45rem 0.5rem; color: var(--turf-emerald); font-weight: 700;">\${l.bat}</td>
+            <td style="padding: 0.45rem 0.5rem; color: var(--cyan);">\${l.bowl}</td>
+            <td style="padding: 0.45rem 0.5rem; color: var(--amber); font-weight: 700;">\${l.mvp}</td>
+          </tr>
+        \`).join('');
+      }
+    }
+
+    function selectRosterPlayer(playerId) {
+      if (!playerId) return;
+      selectedPlayerId = playerId;
+      const pid = normalizePlayerId(playerId);
+
+      // Highlight active row in roster lists
+      document.querySelectorAll('.player-roster-row').forEach(row => {
+        const rowId = row.getAttribute('data-player-id');
+        if (rowId === playerId || rowId === pid || rowId === pid.replace('-', '')) {
+          row.classList.add('active-player');
+        } else {
+          row.classList.remove('active-player');
+        }
+      });
+
+      updateAthleticStatsCard(pid);
+
+      const drawer = document.getElementById('modalPlayerStatsDrawer');
+      if (drawer && drawer.classList.contains('active')) {
+        populatePlayerStatsDrawer(pid);
+      }
+    }
+
+    function openPlayerStatsDrawer(playerId) {
+      const pid = normalizePlayerId(playerId || selectedPlayerId || 'p-5');
+      populatePlayerStatsDrawer(pid);
+      const drawer = document.getElementById('modalPlayerStatsDrawer');
+      if (drawer) {
+        drawer.classList.add('active');
+        drawer.setAttribute('aria-hidden', 'false');
+      }
+    }
+
+    function closePlayerStatsDrawer() {
+      const drawer = document.getElementById('modalPlayerStatsDrawer');
+      if (drawer) {
+        drawer.classList.remove('active');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+    }
+
     function renderRoster() {
       const xiContainer = document.getElementById('playingXiContainer');
       const benchContainer = document.getElementById('benchContainer');
@@ -10042,7 +11117,8 @@ cricos_active_sse_connections 1</pre>
           if (p.isViceCaptain) badgeHtml += ' <span class="player-role-badge" style="background: rgba(0,210,255,0.2); color: var(--cyan);" data-tooltip="Vice-Captain">VC</span>';
           if (p.isWicketKeeper) badgeHtml += ' <span class="player-role-badge" style="background: rgba(255,184,0,0.2); color: var(--amber);" data-tooltip="Designated Wicketkeeper">WK</span>';
 
-          return '<div class="player-roster-row">' +
+          const isAct = (p.id === selectedPlayerId || p.id.replace('-', '') === selectedPlayerId);
+          return '<div class="player-roster-row player-list-item' + (isAct ? ' active-player' : '') + '" data-player-id="' + p.id + '" onclick="selectRosterPlayer(\\'' + p.id + '\\')" data-tooltip="Select ' + p.name + ' to inspect athletic KPIs & career stats">' +
             '<div style="display: flex; align-items: center; gap: 0.65rem;">' +
               '<span style="font-family: var(--font-score); font-size: 0.85rem; color: var(--text-muted); width: 20px;">' + (idx + 1) + '</span>' +
               '<div>' +
@@ -10057,7 +11133,8 @@ cricos_active_sse_connections 1</pre>
 
       if (benchContainer) {
         benchContainer.innerHTML = initialBench.map((p) => {
-          return '<div class="player-roster-row">' +
+          const isAct = (p.id === selectedPlayerId || p.id.replace('-', '') === selectedPlayerId);
+          return '<div class="player-roster-row player-list-item' + (isAct ? ' active-player' : '') + '" data-player-id="' + p.id + '" onclick="selectRosterPlayer(\\'' + p.id + '\\')" data-tooltip="Select ' + p.name + ' to inspect athletic KPIs & career stats">' +
             '<div>' +
               '<div style="font-weight: 700; color: #F8FAFC; font-size: 0.85rem;">' + p.name + '</div>' +
               '<div style="font-size: 0.72rem; color: var(--text-muted);">#' + p.jersey + ' • ' + (p.battingStyle || 'RHB') + ' • Reserve Squad</div>' +
@@ -10066,7 +11143,22 @@ cricos_active_sse_connections 1</pre>
           '</div>';
         }).join('');
       }
+
+      updateAthleticStatsCard(selectedPlayerId);
     }
+
+    // Expose Public API
+    window.CricOSPlayerStats = {
+      selectPlayer: selectRosterPlayer,
+      openDrawer: openPlayerStatsDrawer,
+      closeDrawer: closePlayerStatsDrawer,
+      getPlayerData: function(id) { return PLAYER_CAREER_DATABASE[normalizePlayerId(id)]; },
+      getAllPlayers: function() { return Object.values(PLAYER_CAREER_DATABASE); },
+      updateCard: updateAthleticStatsCard
+    };
+    window.selectRosterPlayer = selectRosterPlayer;
+    window.openPlayerStatsDrawer = openPlayerStatsDrawer;
+    window.closePlayerStatsDrawer = closePlayerStatsDrawer;
 
     function copyJoinCode() {
       const codeBadge = document.getElementById('teamJoinCodeBadge');
@@ -11188,13 +12280,13 @@ cricos_active_sse_connections 1</pre>
       const drawer = document.getElementById('notificationsDrawer');
       const overlay = document.getElementById('notificationsDrawerOverlay');
       if (!drawer || !overlay) return;
-      const isOpen = drawer.style.right === '0px';
+      const isOpen = drawer.style.transform === 'translateX(0px)' || drawer.style.transform === 'translateX(0%)';
       if (isOpen) {
-        drawer.style.right = '-400px';
+        drawer.style.transform = 'translateX(100%)';
         overlay.style.display = 'none';
       } else {
         renderDrawerNotifications('ALL');
-        drawer.style.right = '0px';
+        drawer.style.transform = 'translateX(0%)';
         overlay.style.display = 'block';
       }
     }
@@ -11202,7 +12294,7 @@ cricos_active_sse_connections 1</pre>
     function closeNotificationsDrawer() {
       const drawer = document.getElementById('notificationsDrawer');
       const overlay = document.getElementById('notificationsDrawerOverlay');
-      if (drawer) drawer.style.right = '-400px';
+      if (drawer) drawer.style.transform = 'translateX(100%)';
       if (overlay) overlay.style.display = 'none';
     }
 
