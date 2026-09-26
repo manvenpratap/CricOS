@@ -1,14 +1,37 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 23:05:00
-**Version:** 1.0.0-phase2ao (Modular Architecture, Officials Services Marketplace, Player Career Longitudinal Stats & Pipeline Automation)  
+**Last Updated:** 2026-09-26 23:25:00
+**Version:** 1.0.0-phase2ap (Digital Umpire Match Day Desk, Cricsheet Federation Export, Multi-Division Promotion Ladders & Verified Release)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AO Completed — Modular Architecture, Match Officials Marketplace & Player Career Stats:
+- **Active Phase**: Phase 2AP Completed — Digital Umpire Match Day Desk, Cricsheet Federation Export & Multi-Division League Ladders:
+  - **1. Modular Digital Umpire Match Day Desk & DRS Incident Review (`apps/web/src/components/umpire-match-desk.ts`)**:
+    - Created `UmpireMatchDeskComponent` implementing MCC Laws 41/42 player conduct sanctions (Level 1–4) with penalty run accounting (+5 runs) and temporary/permanent suspensions (4 overs or match dismissal).
+    - Implemented ICC Playing Conditions DRS LBW trajectory rules (`resolveDrsVerdict`) evaluating pitching, impact, and wickets (Hitting, Missing, Umpire's Call) with automated review retention logic.
+    - Deterministic cryptographic match sign-off card generator `generateMatchDigest` outputting tamper-evident hash `CRICOS-CERT-...` for umpire certification.
+  - **2. Live Digital Scorer Studio & Audio Telemetry Export (`apps/web/src/components/cricsheet-export.ts`)**:
+    - Built `CricsheetExportEngine` generating Cricsheet v1.0.0 compliant JSON exports with full team rosters, innings, balls, runs, extras, and dismissals.
+    - Implemented international Federation XML export for federation governance and sports analytics syndication.
+    - Built `parseSpeechToScore` natural-language audio commentary interpreter for hands-free voice-to-score logging (e.g. "boundary four through cover", "clean bowled middle stump").
+  - **3. Multi-Division League Brackets & Promotion/Relegation Ladders (`apps/web/src/components/league-divisions.ts`)**:
+    - Built `LeagueDivisionsManager` handling multi-tier tournaments (Tier 1 Premier League & Tier 2 Division 1 Championship).
+    - High-precision ICC Net Run Rate (NRR) calculator (`calculateNetRunRate`, `formatNrrString`) accounting for all-out completed over rules.
+    - Automated season transition simulator (`simulateSeasonTransition`) with automatic promotion for champions and relegation for bottom-placed squads, plus playoff qualification seeding (Qualifier 1, Eliminator, Grand Final).
+  - **4. Web Console & Mobile Application Parity**:
+    - Integrated Web Console Modals: `#modalUmpireDesk`, `#modalCricsheetExport`, `#modalLeagueDivisions`, along with top scoreboard quick pills (`#btnExportCricsheet`, `#btnUmpireDeskQuick`, `#btnDivisionsQuick`) and sidebar navigation links.
+    - Enhanced mobile controllers `TournamentsScreenController` and `IncidentsScreenController` with multi-division standings, NRR calculations, season rollover emulation, and digital sign-off.
+    - Added mobile UI division tier switcher tabs (`#btnMobileDivisionPremier`, `#btnMobileDivision1`) with promotion/relegation badges.
+  - **5. Governance, Invariants & Verification**:
+    - 100% Rule 5 `data-tooltip` coverage on all interactive buttons, modals, and telemetry badges.
+    - Preserved zero `transition: all` invariant across all HTML and CSS.
+    - Created sequential Test Suite 45 (`tests/45-umpire-desk-cricsheet-export-and-divisions.test.ts`) with 16 assertions across 7 suites.
+    - `./pipeline.sh test --summary`: 376 tests passing across 117 suites with 0 failures in 832ms.
+    - Synced `dist/index.html` (byte-for-byte with root `index.html`), `dist/mobile.html`, and `dist/release-manifest.json`.
+- **Preceding Phase**: Phase 2AO Completed — Modular Architecture, Match Officials Marketplace & Player Career Stats:
   - **1. Modular Frontend Component Refactoring (`apps/web`)**:
     - Created `OfficialsMarketplaceComponent` (`apps/web/src/components/officials-marketplace.ts`) with `MarketplaceOfficialRole` (`UMPIRE`, `SCORER`, `MATCH_REFEREE`), `CertificationLevel` (`BCCI_LEVEL_1/2`, `STATE_CERTIFIED`, `DISTRICT_ACCREDITED`), and rate card models.
     - Created `PlayerCareerComponent` (`apps/web/src/components/player-career.ts`) with longitudinal multi-tournament season logs and milestone achievement badges.

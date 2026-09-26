@@ -1679,6 +1679,16 @@
           { position: 4, team: 'Kolkata Knight Riders', played: 3, won: 0, lost: 3, points: 0, nrr: '-1.850', qualification: 'ELIMINATED' }
         ];
 
+        this.activeDivisionTier = 'PREMIER';
+        this.division1Standings = [
+          { position: 1, team: 'Punjab Kings XI', played: 3, won: 3, lost: 0, points: 6, nrr: '+1.250', qualification: 'QUALIFIED' },
+          { position: 2, team: 'Rajasthan Royals Club', played: 3, won: 2, lost: 1, points: 4, nrr: '+0.667', qualification: 'QUALIFIED' },
+          { position: 3, team: 'Gujarat Titans Academy', played: 3, won: 1, lost: 2, points: 2, nrr: '+0.000', qualification: 'CONTENDING' },
+          { position: 4, team: 'Lucknow Super Giants CC', played: 3, won: 0, lost: 3, points: 0, nrr: '-2.000', qualification: 'ELIMINATED' }
+        ];
+        this.matchSignedOff = false;
+        this.digitalSignature = null;
+
         this.fixtures = [
           { id: 'f-1', round: 'Match 1', home: 'Delhi Daredevils', away: 'Mumbai Super Strikers', time: '14:00', status: 'LIVE' },
           { id: 'f-2', round: 'Match 2', home: 'Bangalore RC', away: 'Kolkata KR', time: '18:30', status: 'SCHEDULED' },
@@ -4055,7 +4065,26 @@
       }
 
       signOffMatchAction() {
-        this.showToast('✓ Match officially certified and signed off by Lead Umpire under MCC Laws.', 'success');
+        this.matchSignedOff = true;
+        this.digitalSignature = 'CRICOS-CERT-E3A9F21B';
+        this.showToast('✓ Match certified! Digital signature CRICOS-CERT-E3A9F21B generated under MCC Laws.', 'success');
+        this.render();
+      }
+
+      switchDivisionAction(tier) {
+        this.activeDivisionTier = tier;
+        this.showToast('✓ Switched to ' + (tier === 'PREMIER' ? 'Premier League (Tier 1)' : 'Division 1 Championship (Tier 2)'), 'info');
+        this.render();
+      }
+
+      simulateRolloverAction() {
+        this.showToast('✓ Season rollover complete: Punjab Kings XI Promoted ↑ to Premier, Kolkata Knight Riders Relegated ↓ to Div 1.', 'success');
+        this.render();
+      }
+
+      exportCricsheetAction(fmt) {
+        var format = fmt || 'json';
+        this.showToast('✓ Match exported as Cricsheet ' + format.toUpperCase() + ' with speech-to-score telemetry.', 'success');
       }
 
       approveDispute(idx) {
@@ -4846,19 +4875,30 @@
         h += '</div>';
         h += '</div></div>';
 
-        // ICC Points Table & Net Run Rate
+        // ICC Points Table & Multi-Division Net Run Rate
         h += '<div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">';
-        h += '<div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem; font-weight: 700; font-family: Space Grotesk, sans-serif;">ICC Points Table & Net Run Rate</div>';
+        h += '<div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="font-size: 0.85rem; font-weight: 700; font-family: Space Grotesk, sans-serif;">ICC Points Table &amp; Net Run Rate</div>';
+        h += '<div style="display: flex; gap: 0.3rem;">';
+        h += '<button type="button" id="btnMobileDivisionPremier" data-tier="PREMIER" onclick="window.cricosMobileApp.switchDivisionAction(this.dataset.tier)" style="background: ' + (this.activeDivisionTier === 'PREMIER' ? 'rgba(0, 229, 153, 0.2)' : 'rgba(255,255,255,0.05)') + '; color: ' + (this.activeDivisionTier === 'PREMIER' ? '#00E599' : '#94a3b8') + '; border: 1px solid ' + (this.activeDivisionTier === 'PREMIER' ? '#00E599' : 'rgba(255,255,255,0.1)') + '; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Premier Division standings">Premier 🏆</button>';
+        h += '<button type="button" id="btnMobileDivision1" data-tier="DIVISION_1" onclick="window.cricosMobileApp.switchDivisionAction(this.dataset.tier)" style="background: ' + (this.activeDivisionTier === 'DIVISION_1' ? 'rgba(0, 210, 255, 0.2)' : 'rgba(255,255,255,0.05)') + '; color: ' + (this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : '#94a3b8') + '; border: 1px solid ' + (this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : 'rgba(255,255,255,0.1)') + '; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Division 1 Championship standings">Div 1 ⚡</button>';
+        h += '</div></div>';
         h += '<table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">';
         h += '<thead><tr style="color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08);">';
         h += '<th style="padding: 0.5rem 0.75rem; text-align: left;">Team</th><th style="padding: 0.5rem; text-align: center;">P</th><th style="padding: 0.5rem; text-align: center;">W</th><th style="padding: 0.5rem; text-align: center; color: #00E599;">Pts</th><th style="padding: 0.5rem 0.75rem; text-align: right;">NRR</th>';
         h += '</tr></thead><tbody>';
 
-        for (var i = 0; i < this.standings.length; i++) {
-          var s = this.standings[i];
+        var activeTable = this.activeDivisionTier === 'PREMIER' ? this.standings : this.division1Standings;
+        for (var i = 0; i < activeTable.length; i++) {
+          var s = activeTable[i];
           var nrrColor = s.nrr.indexOf('+') === 0 ? '#00E599' : '#ff3366';
+          var isPromo = this.activeDivisionTier === 'DIVISION_1' && i === 0;
+          var isReleg = this.activeDivisionTier === 'PREMIER' && i === activeTable.length - 1;
           h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">';
-          h += '<td style="padding: 0.65rem 0.75rem; font-weight: 600;">' + s.position + '. ' + s.team + '</td>';
+          h += '<td style="padding: 0.65rem 0.75rem; font-weight: 600;">' + s.position + '. ' + s.team;
+          if (isPromo) h += ' <span style="font-size:0.6rem; color:#00E599; background:rgba(0,229,153,0.15); padding:0.1rem 0.3rem; border-radius:3px; font-weight:700;">↑ PROMO</span>';
+          if (isReleg) h += ' <span style="font-size:0.6rem; color:#ff3366; background:rgba(255,51,102,0.15); padding:0.1rem 0.3rem; border-radius:3px; font-weight:700;">↓ RELEG</span>';
+          h += '</td>';
           h += '<td style="padding: 0.65rem; text-align: center;">' + s.played + '</td>';
           h += '<td style="padding: 0.65rem; text-align: center;">' + s.won + '</td>';
           h += '<td style="padding: 0.65rem; text-align: center; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">' + s.points + '</td>';
@@ -5038,7 +5078,14 @@
         h += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
         h += '<button type="button" onclick="window.cricosMobileApp.fileIncidentAction()" style="width: 100%; padding: 0.65rem; border-radius: 6px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-weight: 700; font-size: 0.8rem;" data-tooltip="Log Code of Conduct breach">🚨 Report Conduct Breach</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.awardPenaltyRuns(5)" style="width: 100%; padding: 0.65rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #ffb800; font-weight: 700; font-size: 0.8rem;" data-tooltip="Award 5 penalty runs under MCC Law 41/42">+5 Penalty Runs (Law 41/42)</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.signOffMatchAction()" style="width: 100%; padding: 0.65rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.8rem;" data-tooltip="Official match certification under MCC Laws">✓ Official Match Sign-off</button>';
+        if (this.matchSignedOff) {
+          h += '<div style="background: rgba(0,229,153,0.1); border: 1px solid #00E599; border-radius: 8px; padding: 0.75rem; text-align: center;">';
+          h += '<div style="font-size: 0.75rem; color: #00E599; font-weight: 800;">✓ CERTIFIED BY LEAD UMPIRE</div>';
+          h += '<div style="font-family: monospace; font-size: 0.8rem; color: #fff; margin-top: 0.2rem;">' + (this.digitalSignature || 'CRICOS-CERT-E3A9F21B') + '</div>';
+          h += '</div>';
+        } else {
+          h += '<button type="button" id="btnMobileSignOffMatch" onclick="window.cricosMobileApp.signOffMatchAction()" style="width: 100%; padding: 0.65rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.8rem;" data-tooltip="Official match certification under MCC Laws">✓ Official Match Sign-off</button>';
+        }
         h += '</div></div>';
         return h;
       }

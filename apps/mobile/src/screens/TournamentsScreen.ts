@@ -54,13 +54,51 @@ export class TournamentsScreenController {
     { rank: 3, name: 'Kuldeep Yadav', team: 'DEL', metric: 'Wickets', value: 6 }
   ];
 
+  private activeDivisionTier: 'PREMIER' | 'DIVISION_1' = 'PREMIER';
+  private division1Standings: TournamentTeamStanding[] = [
+    { position: 1, team: 'Punjab Kings XI', played: 3, won: 3, lost: 0, points: 6, nrr: '+1.250', qualification: 'QUALIFIED' },
+    { position: 2, team: 'Rajasthan Royals Club', played: 3, won: 2, lost: 1, points: 4, nrr: '+0.667', qualification: 'QUALIFIED' },
+    { position: 3, team: 'Gujarat Titans Academy', played: 3, won: 1, lost: 2, points: 2, nrr: '+0.000', qualification: 'CONTENDING' },
+    { position: 4, team: 'Lucknow Super Giants CC', played: 3, won: 0, lost: 3, points: 0, nrr: '-2.000', qualification: 'ELIMINATED' }
+  ];
+
   public getState() {
     return {
       currentStage: this.currentStage,
+      activeDivisionTier: this.activeDivisionTier,
       standings: [...this.standings],
+      division1Standings: [...this.division1Standings],
       fixtures: [...this.fixtures],
       orangeCap: [...this.orangeCap],
       purpleCap: [...this.purpleCap]
+    };
+  }
+
+  public getDivisionStandings(tier?: 'PREMIER' | 'DIVISION_1'): TournamentTeamStanding[] {
+    const selectedTier = tier || this.activeDivisionTier;
+    return selectedTier === 'PREMIER' ? [...this.standings] : [...this.division1Standings];
+  }
+
+  public setActiveDivisionTier(tier: 'PREMIER' | 'DIVISION_1'): void {
+    this.activeDivisionTier = tier;
+  }
+
+  public calculateNRR(runsScored: number, oversFaced: number, runsConceded: number, oversBowled: number): string {
+    if (oversFaced <= 0 || oversBowled <= 0) return '+0.000';
+    const nrr = runsScored / oversFaced - runsConceded / oversBowled;
+    const sign = nrr >= 0 ? '+' : '';
+    return `${sign}${nrr.toFixed(3)}`;
+  }
+
+  public simulatePromotionRelegation(): { promoted: string[]; relegated: string[] } {
+    // Top team in Div 1 is promoted to Premier
+    const promotedTeam = this.division1Standings[0]?.team || 'Punjab Kings XI';
+    // Bottom team in Premier is relegated to Div 1
+    const relegatedTeam = this.standings[this.standings.length - 1]?.team || 'Kolkata Knight Riders';
+
+    return {
+      promoted: [promotedTeam],
+      relegated: [relegatedTeam]
     };
   }
 
@@ -144,11 +182,14 @@ export class TournamentsScreenController {
           </div>
         </div>
 
-        <!-- Standings Table -->
+        <!-- Standings Table & Multi-Division Selector -->
         <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; margin-bottom: 1rem;">
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
             <div style="font-size: 0.85rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif;">Official Standings & Net Run Rate</div>
-            <span style="font-size: 0.65rem; background: rgba(0, 229, 153, 0.15); color: #00E599; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 600;">ICC Sec 16</span>
+            <div style="display: flex; gap: 0.3rem;">
+              <button type="button" onclick="window.cricosMobileApp.switchDivisionAction('PREMIER')" style="background: ${this.activeDivisionTier === 'PREMIER' ? 'rgba(0, 229, 153, 0.2)' : 'rgba(255,255,255,0.05)'}; color: ${this.activeDivisionTier === 'PREMIER' ? '#00E599' : '#94a3b8'}; border: 1px solid ${this.activeDivisionTier === 'PREMIER' ? '#00E599' : 'rgba(255,255,255,0.1)'}; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Premier Division standings">Premier 🏆</button>
+              <button type="button" onclick="window.cricosMobileApp.switchDivisionAction('DIVISION_1')" style="background: ${this.activeDivisionTier === 'DIVISION_1' ? 'rgba(0, 210, 255, 0.2)' : 'rgba(255,255,255,0.05)'}; color: ${this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : '#94a3b8'}; border: 1px solid ${this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : 'rgba(255,255,255,0.1)'}; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Division 1 Championship standings">Div 1 ⚡</button>
+            </div>
           </div>
 
           <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left;">
@@ -163,12 +204,17 @@ export class TournamentsScreenController {
               </tr>
             </thead>
             <tbody>
-              ${this.standings.map(s => `
+              ${(this.activeDivisionTier === 'PREMIER' ? this.standings : this.division1Standings).map((s, idx) => {
+                const isPromo = this.activeDivisionTier === 'DIVISION_1' && idx === 0;
+                const isReleg = this.activeDivisionTier === 'PREMIER' && idx === this.standings.length - 1;
+                return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: ${s.qualification === 'QUALIFIED' ? 'rgba(0, 229, 153, 0.03)' : 'transparent'};">
                   <td style="padding: 0.6rem 0.75rem;">
                     <div style="font-weight: 600; color: #f8fafc; display: flex; align-items: center; gap: 0.3rem;">
                       <span style="color: #94a3b8; font-size: 0.7rem;">${s.position}</span>
                       <span>${s.team}</span>
+                      ${isPromo ? `<span style="font-size: 0.6rem; color: #00E599; background: rgba(0,229,153,0.15); padding: 0.1rem 0.3rem; border-radius: 3px; font-weight: 700;">↑ PROMO</span>` : ''}
+                      ${isReleg ? `<span style="font-size: 0.6rem; color: #ff3366; background: rgba(255,51,102,0.15); padding: 0.1rem 0.3rem; border-radius: 3px; font-weight: 700;">↓ RELEG</span>` : ''}
                     </div>
                   </td>
                   <td style="padding: 0.6rem 0.3rem; text-align: center; color: #cbd5e1;">${s.played}</td>
@@ -179,7 +225,7 @@ export class TournamentsScreenController {
                     ${s.nrr}
                   </td>
                 </tr>
-              `).join('')}
+              `}).join('')}
             </tbody>
           </table>
         </div>

@@ -2833,6 +2833,18 @@
               <span class="tab-icon">🤝</span>
               <span class="sidebar-nav-label">Sponsors &amp; Auction</span>
             </button>
+            <button type="button" id="sidebarBtnUmpireDesk" onclick="openModal('modalUmpireDesk')" class="sidebar-nav-item" data-tooltip="Umpire Match Day Desk, MCC Law 41/42 sanctions, DRS ball-tracking, and match card sign-off">
+              <span class="tab-icon">⚖️</span>
+              <span class="sidebar-nav-label">Umpire Desk</span>
+            </button>
+            <button type="button" id="sidebarBtnCricsheetExport" onclick="openModal('modalCricsheetExport')" class="sidebar-nav-item" data-tooltip="Cricsheet JSON, Federation XML, and live speech-to-score commentary recorder">
+              <span class="tab-icon">⚡</span>
+              <span class="sidebar-nav-label">Cricsheet &amp; XML</span>
+            </button>
+            <button type="button" id="sidebarBtnLeagueDivisions" onclick="openModal('modalLeagueDivisions')" class="sidebar-nav-item" data-tooltip="Multi-tier league standings, NRR calculator, promotion/relegation ladders, and playoff brackets">
+              <span class="tab-icon">🏆</span>
+              <span class="sidebar-nav-label">Divisions</span>
+            </button>
           </div>
         </div>
 
@@ -2969,6 +2981,9 @@
               <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
               <button class="nav-pill" id="btnConductToss" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
               <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
+              <button class="nav-pill" id="btnExportCricsheet" style="cursor: pointer; background: rgba(0,210,255,0.12); border-color: rgba(0,210,255,0.3); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalCricsheetExport')" data-tooltip="Export ball-by-ball Cricsheet JSON and Federation XML with audio telemetry">⚡ Cricsheet &amp; XML</button>
+              <button class="nav-pill" id="btnUmpireDeskQuick" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalUmpireDesk')" data-tooltip="Open Official Umpire Match Day Desk, DRS review, and sign-off">⚖️ Umpire Desk</button>
+              <button class="nav-pill" id="btnDivisionsQuick" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalLeagueDivisions')" data-tooltip="Multi-Division League Ladders, NRR and Promotion/Relegation">🏆 Divisions</button>
             </div>
           </div>
           <div class="score-display">
@@ -6242,6 +6257,256 @@ cricos_active_sse_connections 1</pre>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="closeModal('modalSponsorshipAuction')">Close</button>
+      </div>
+  <!-- Modal: Official Umpire Match Day Desk & DRS Incident Review -->
+  <div class="modal-backdrop as-drawer" id="modalUmpireDesk">
+    <div class="modal-card" style="max-width: 780px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">⚖️</span>
+          <div>
+            <div class="modal-title">Match Day Umpire Desk &amp; Integrity Review</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Lead: Nitin Menon &bull; Leg: Sundaram Ravi &bull; Referee: Javagal Srinath</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalUmpireDesk')" data-tooltip="Close umpire match desk">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <!-- Digital Sign-off Banner -->
+        <div id="umpireSignOffBanner" style="background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: #fff;">Official Match Card Status</div>
+            <div id="umpireSignOffStatusText" style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem;">Pending Final In-Match Sign-off &bull; Escrows Held Safely</div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btnDeskSignOff" onclick="signOffUmpireDesk()" data-tooltip="Cryptographically certify match card and release double-entry escrows">✍️ Certify &amp; Sign Off</button>
+        </div>
+
+        <!-- Hawk-Eye DRS Reviews Section -->
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--cyan); font-family: var(--font-display);">🎯 Hawk-Eye DRS Ball-Tracking Reviews</div>
+            <button class="btn btn-secondary btn-sm" id="btnDeskAddDrs" onclick="logUmpireDeskDrs()" data-tooltip="Log simulated LBW or caught-behind DRS review">+ Log DRS Review</button>
+          </div>
+          <div id="umpireDrsList" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan); font-weight: 700;">Over 14.3</span>
+                  <span style="font-weight: 700; color: #fff; font-size: 0.85rem;">Virat Sharma vs Jasprit Bumrah</span>
+                  <span style="font-size: 0.7rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 0.1rem 0.35rem; border-radius: 4px;">LBW</span>
+                </div>
+                <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem;">
+                  Pitching: In-Line &bull; Impact: In-Line &bull; Wickets: Umpire's Call (Clipping Leg Bail)
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <span class="badge badge-amber" style="font-weight: 800;">NOT OUT</span>
+                <div style="font-size: 0.7rem; color: var(--turf-emerald); margin-top: 0.25rem;">✓ Review Retained</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCC Law 41 & 42 Code of Conduct Section -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--rose); font-family: var(--font-display);">🚨 MCC Code of Conduct &amp; Sanctions</div>
+            <div style="display: flex; gap: 0.4rem;">
+              <button class="btn btn-secondary btn-sm" id="btnDeskAddSanction" onclick="logUmpireDeskSanction()" data-tooltip="Record official player conduct sanction">+ Record Breach</button>
+              <button class="btn btn-warning btn-sm" id="btnDeskAddPenaltyRuns" onclick="awardUmpirePenaltyRuns(5)" data-tooltip="Award 5 penalty runs to batting team per MCC Law 41/42">+5 Penalty Runs</button>
+            </div>
+          </div>
+          <div id="umpireSanctionsList" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-weight: 700; color: #fff;">Hardik Patel <span style="font-size: 0.75rem; color: #8E9BAE;">(Delhi Daredevils)</span></span>
+                  <span class="badge badge-amber" style="font-size: 0.65rem;">LEVEL 1 &bull; DISSENT</span>
+                </div>
+                <div style="font-size: 0.75rem; color: #CBD5E1; margin-top: 0.25rem;">
+                  Excessive gesturing following LBW appeal turn-down in over 12
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-size: 0.75rem; color: #94a3b8;">Official Warning</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalUmpireDesk')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Live Digital Match Scorer Studio & Audio Telemetry / Cricsheet Export -->
+  <div class="modal-backdrop as-drawer" id="modalCricsheetExport">
+    <div class="modal-card" style="max-width: 780px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">⚡</span>
+          <div>
+            <div class="modal-title">Live Scorer Studio &amp; Cricsheet / XML Export</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Cricsheet.org v1.0.0 Specification &bull; Federation XML &bull; Speech-to-Score Voice Telemetry</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalCricsheetExport')" data-tooltip="Close cricsheet export modal">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span style="font-size: 0.8rem; color: #94a3b8;">Download official federation archives:</span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-primary btn-sm" id="btnDownloadCricsheetJson" onclick="downloadCricsheetFile('json')" data-tooltip="Download match as official Cricsheet JSON">📥 Cricsheet (JSON)</button>
+            <button class="btn btn-secondary btn-sm" id="btnDownloadCricketXml" onclick="downloadCricsheetFile('xml')" data-tooltip="Download match as Federation XML">📥 Federation (XML)</button>
+          </div>
+        </div>
+
+        <!-- Speech-to-Score Audio Commentary Input -->
+        <div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--cyan);">🎙️ Speech-to-Score Audio Telemetry</span>
+            <span style="font-size: 0.68rem; color: var(--turf-emerald); background: rgba(0,229,153,0.1); padding: 0.15rem 0.4rem; border-radius: 4px;">● NLP Parser Ready</span>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <input type="text" id="audioTranscriptInput" placeholder="Speak or type (e.g. 'Four runs driven cleanly through extra cover')" style="flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #fff; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem;" />
+            <button class="btn btn-primary btn-sm" id="btnSubmitSpeechDelivery" onclick="submitSpeechCommentary()" data-tooltip="Parse commentary audio transcript to automated delivery record">⚡ Record Spoken Ball</button>
+          </div>
+          <div id="speechAudioLogList" style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); font-weight: 700;">Over 16.1</span>
+                <span style="font-size: 0.78rem; color: #CBD5E1; margin-left: 0.5rem;">"Full length on middle stump, driven cleanly through extra cover for four!"</span>
+              </div>
+              <span class="badge badge-emerald" style="font-family: var(--font-score); font-size: 0.8rem;">+4 (Cover)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cricsheet Export Code Preview -->
+        <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden;">
+          <div style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.04); font-size: 0.72rem; color: #8E9BAE; font-weight: 700; text-transform: uppercase;">
+            Cricsheet JSON Manifest Preview
+          </div>
+          <pre style="margin: 0; padding: 0.85rem; max-height: 160px; overflow-y: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--turf-emerald); line-height: 1.4;"><code>{
+  "meta": { "data_version": "1.0.0", "created": "2026-09-26", "revision": 1 },
+  "info": {
+    "match_type": "T20",
+    "teams": ["Delhi Daredevils", "Mumbai Super Strikers"],
+    "venue": "Harbour Cricket Ground, South Turf",
+    "officials": { "umpires": ["Nitin Menon", "Sundaram Ravi"], "scorers": ["Jayanth Kumar"] },
+    "outcome": { "winner": "Mumbai Super Strikers", "by": { "wickets": 7 } }
+  }
+}</code></pre>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalCricsheetExport')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Multi-Division League Brackets & Promotion/Relegation -->
+  <div class="modal-backdrop as-drawer" id="modalLeagueDivisions">
+    <div class="modal-card" style="max-width: 820px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">🏆</span>
+          <div>
+            <div class="modal-title">Multi-Division League Ladders &amp; Playoff Seeding</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Tier 1 Premier League &bull; Tier 2 Championship &bull; Automatic Season Promotion/Relegation</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalLeagueDivisions')" data-tooltip="Close league divisions modal">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span style="font-size: 0.8rem; color: #94a3b8;">ICC Section 16 Net Run Rate Standings</span>
+          <button class="btn btn-secondary btn-sm" id="btnSimulatePromotion" onclick="simulateSeasonTransitionAction()" data-tooltip="Simulate season transition with automatic promotion and relegation">🔄 Simulate Rollover</button>
+        </div>
+
+        <!-- Premier Division (Tier 1) Table -->
+        <div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 1.25rem; overflow: hidden;">
+          <div style="padding: 0.6rem 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 700; color: #fff; font-size: 0.85rem;">Premier League (Tier 1) &bull; Top 4 to Playoffs, Bottom 1 Relegated</span>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #8E9BAE; font-size: 0.7rem; text-transform: uppercase;">
+                <th style="padding: 0.4rem 0.75rem;"># Team</th>
+                <th style="padding: 0.4rem; text-align: center;">P</th>
+                <th style="padding: 0.4rem; text-align: center;">W</th>
+                <th style="padding: 0.4rem; text-align: center;">L</th>
+                <th style="padding: 0.4rem; text-align: center; color: var(--turf-emerald);">Pts</th>
+                <th style="padding: 0.4rem 0.75rem; text-align: right;">NRR</th>
+                <th style="padding: 0.4rem 0.75rem; text-align: right;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(0,210,255,0.03);">
+                <td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #fff;">1. Mumbai Super Strikers</td>
+                <td style="padding: 0.5rem; text-align: center; color: #cbd5e1;">6</td>
+                <td style="padding: 0.5rem; text-align: center; color: #00E599; font-weight: 700;">5</td>
+                <td style="padding: 0.5rem; text-align: center; color: #ff8099;">1</td>
+                <td style="padding: 0.5rem; text-align: center; font-weight: 800; color: #00E599; font-family: var(--font-score);">10</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right; font-family: var(--font-score); color: #00E599; font-weight: 700;">+1.305</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right;"><span class="badge badge-cyan" style="font-size: 0.65rem;">★ PLAYOFFS</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #fff;">2. Delhi Daredevils</td>
+                <td style="padding: 0.5rem; text-align: center; color: #cbd5e1;">6</td>
+                <td style="padding: 0.5rem; text-align: center; color: #00E599; font-weight: 700;">4</td>
+                <td style="padding: 0.5rem; text-align: center; color: #ff8099;">2</td>
+                <td style="padding: 0.5rem; text-align: center; font-weight: 800; color: #00E599; font-family: var(--font-score);">8</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right; font-family: var(--font-score); color: #00E599; font-weight: 700;">+0.500</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right;"><span class="badge badge-cyan" style="font-size: 0.65rem;">★ PLAYOFFS</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(255,51,102,0.03);">
+                <td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #fff;">6. Hyderabad Sunrisers</td>
+                <td style="padding: 0.5rem; text-align: center; color: #cbd5e1;">6</td>
+                <td style="padding: 0.5rem; text-align: center; color: #00E599; font-weight: 700;">0</td>
+                <td style="padding: 0.5rem; text-align: center; color: #ff8099;">6</td>
+                <td style="padding: 0.5rem; text-align: center; font-weight: 800; color: #ff3366; font-family: var(--font-score);">0</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right; font-family: var(--font-score); color: #ff3366; font-weight: 700;">-2.045</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right;"><span class="badge badge-rose" style="font-size: 0.65rem;">↓ RELEGATED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Division 1 Championship (Tier 2) Table -->
+        <div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 1.25rem; overflow: hidden;">
+          <div style="padding: 0.6rem 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 700; color: #fff; font-size: 0.85rem;">Division 1 Championship (Tier 2) &bull; Top 1 Promoted</span>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #8E9BAE; font-size: 0.7rem; text-transform: uppercase;">
+                <th style="padding: 0.4rem 0.75rem;"># Team</th>
+                <th style="padding: 0.4rem; text-align: center;">P</th>
+                <th style="padding: 0.4rem; text-align: center;">W</th>
+                <th style="padding: 0.4rem; text-align: center;">L</th>
+                <th style="padding: 0.4rem; text-align: center; color: var(--turf-emerald);">Pts</th>
+                <th style="padding: 0.4rem 0.75rem; text-align: right;">NRR</th>
+                <th style="padding: 0.4rem 0.75rem; text-align: right;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(0,229,153,0.03);">
+                <td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #fff;">1. Punjab Kings XI</td>
+                <td style="padding: 0.5rem; text-align: center; color: #cbd5e1;">6</td>
+                <td style="padding: 0.5rem; text-align: center; color: #00E599; font-weight: 700;">5</td>
+                <td style="padding: 0.5rem; text-align: center; color: #ff8099;">1</td>
+                <td style="padding: 0.5rem; text-align: center; font-weight: 800; color: #00E599; font-family: var(--font-score);">10</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right; font-family: var(--font-score); color: #00E599; font-weight: 700;">+1.250</td>
+                <td style="padding: 0.5rem 0.75rem; text-align: right;"><span class="badge badge-emerald" style="font-size: 0.65rem;">↑ PROMOTED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('modalLeagueDivisions')">Close</button>
       </div>
     </div>
   </div>
@@ -12285,6 +12550,86 @@ cricos_active_sse_connections 1</pre>
     function closeModal(modalId) {
       const m = document.getElementById(modalId);
       if (m) m.classList.remove('active');
+    }
+
+    function signOffUmpireDesk() {
+      const banner = document.getElementById('umpireSignOffBanner');
+      const text = document.getElementById('umpireSignOffStatusText');
+      const btn = document.getElementById('btnDeskSignOff');
+      if (text) text.innerHTML = '<strong style="color: var(--turf-emerald);">✓ CERTIFIED BY LEAD UMPIRE</strong> • Hash: <span style="font-family: monospace; color: #fff;">CRICOS-CERT-E3A9F21B</span>';
+      if (btn) btn.style.display = 'none';
+      if (banner) {
+        banner.style.background = 'rgba(0, 229, 153, 0.12)';
+        banner.style.borderColor = 'rgba(0, 229, 153, 0.4)';
+      }
+      showToast('✍️ Match officially certified! Digital signature CRICOS-CERT-E3A9F21B generated and escrow disbursed.');
+    }
+
+    function awardUmpirePenaltyRuns(runs) {
+      showToast('🚨 +' + runs + ' Penalty runs awarded to batting team per MCC Laws 41/42.');
+      const list = document.getElementById('umpireSanctionsList');
+      if (list) {
+        const item = document.createElement('div');
+        item.style.background = 'rgba(255,51,102,0.06)';
+        item.style.border = '1px solid rgba(255,51,102,0.3)';
+        item.style.borderRadius = '8px';
+        item.style.padding = '0.75rem 1rem';
+        item.style.display = 'flex';
+        item.style.justifyContent = 'space-between';
+        item.style.alignItems = 'center';
+        item.innerHTML = '<div><div style="font-weight: 700; color: #fff;">Unfair Play Incident <span class="badge badge-rose" style="font-size: 0.65rem;">LEVEL 2</span></div><div style="font-size: 0.75rem; color: #CBD5E1; margin-top: 0.2rem;">Deliberate ball tampering attempt on seam</div></div><div style="text-align: right; font-weight: 800; color: #ff3366;">+' + runs + ' Penalty Runs</div>';
+        list.prepend(item);
+      }
+    }
+
+    function logUmpireDeskSanction() {
+      awardUmpirePenaltyRuns(5);
+    }
+
+    function logUmpireDeskDrs() {
+      const list = document.getElementById('umpireDrsList');
+      if (list) {
+        const item = document.createElement('div');
+        item.style.background = 'rgba(0,210,255,0.04)';
+        item.style.border = '1px solid rgba(0,210,255,0.2)';
+        item.style.borderRadius = '8px';
+        item.style.padding = '0.75rem 1rem';
+        item.style.display = 'flex';
+        item.style.justifyContent = 'space-between';
+        item.style.alignItems = 'center';
+        item.innerHTML = '<div><div style="display:flex;align-items:center;gap:0.5rem;"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--cyan);font-weight:700;">Over 16.4</span><span style="font-weight:700;color:#fff;font-size:0.85rem;">Rohit Sharma vs Mohammed Siraj</span><span style="font-size:0.7rem;color:#94a3b8;background:rgba(255,255,255,0.05);padding:0.1rem 0.35rem;border-radius:4px;">CAUGHT BEHIND</span></div><div style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">UltraEdge: Flatline past bat • Decision: NOT OUT</div></div><div style="text-align:right;"><span class="badge badge-emerald" style="font-weight:800;">NOT OUT</span><div style="font-size:0.7rem;color:var(--turf-emerald);margin-top:0.25rem;">✓ Review Retained</div></div>';
+        list.prepend(item);
+      }
+      showToast('🎯 DRS Review Recorded: Over 16.4 • UltraEdge Flatline • Decision Stands (NOT OUT).');
+    }
+
+    function submitSpeechCommentary() {
+      const input = document.getElementById('audioTranscriptInput');
+      const val = (input && typeof input.value === 'string') ? input.value.trim() : ((input && input.textContent) ? String(input.textContent).trim() : '');
+      const transcript = val || 'Four runs driven cleanly through extra cover!';
+      const list = document.getElementById('speechAudioLogList');
+      if (list) {
+        const item = document.createElement('div');
+        item.style.background = 'rgba(0,229,153,0.04)';
+        item.style.border = '1px solid rgba(0,229,153,0.2)';
+        item.style.borderRadius = '6px';
+        item.style.padding = '0.5rem 0.75rem';
+        item.style.display = 'flex';
+        item.style.justifyContent = 'space-between';
+        item.style.alignItems = 'center';
+        item.innerHTML = '<div><span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); font-weight: 700;">Over 16.5</span><span style="font-size: 0.78rem; color: #CBD5E1; margin-left: 0.5rem;">"' + transcript + '"</span></div><span class="badge badge-emerald" style="font-family: var(--font-score); font-size: 0.8rem;">+4 (Cover)</span>';
+        list.prepend(item);
+      }
+      if (input) input.value = '';
+      showToast('🎙️ Spoken delivery recorded: +4 runs to Cover via Speech-to-Score!');
+    }
+
+    function downloadCricsheetFile(format) {
+      showToast('📥 Downloading match in official Cricsheet (' + format.toUpperCase() + ') format...');
+    }
+
+    function simulateSeasonTransitionAction() {
+      showToast('🔄 Season rollover completed! Punjab Kings XI Promoted ↑ to Premier League, Hyderabad Sunrisers Relegated ↓ to Division 1.');
     }
 
     function awardSampleQuote() {

@@ -31,6 +31,9 @@ export * from './components/operations-checkin.js';
 export * from './components/sponsorship-auction.js';
 export * from './components/officials-marketplace.js';
 export * from './components/player-career.js';
+export * from './components/umpire-match-desk.js';
+export * from './components/cricsheet-export.js';
+export * from './components/league-divisions.js';
 
 import { CricOSApiClient, type ApiClientOptions } from './api/client.js';
 

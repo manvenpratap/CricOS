@@ -25,6 +25,7 @@ export interface DrsReviewRecord {
 export interface IncidentsScreenState {
   matchId: string;
   matchSignedOff: boolean;
+  digitalSignature?: string | null;
   incidents: IncidentRecord[];
   drsReviews: DrsReviewRecord[];
   isSubmitting: boolean;
@@ -37,6 +38,7 @@ export class IncidentsScreenController {
     this.state = {
       matchId: initialState?.matchId || 'match-pilot-1',
       matchSignedOff: initialState?.matchSignedOff || false,
+      digitalSignature: initialState?.digitalSignature || null,
       incidents: initialState?.incidents || [
         {
           id: 'inc-101',
@@ -87,8 +89,18 @@ export class IncidentsScreenController {
     return newReview;
   }
 
-  public signOffMatch(): void {
+  public signOffMatch(umpirePin: string = '1234'): string {
+    const raw = `${this.state.matchId}|CERTIFIED|PIN_${umpirePin}|${this.state.incidents.length}|${this.state.drsReviews.length}`;
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < raw.length; i++) {
+      hash ^= raw.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    const hex = (hash >>> 0).toString(16).toUpperCase().padStart(8, '0');
+    const stamp = `CRICOS-CERT-${hex}`;
     this.state.matchSignedOff = true;
+    this.state.digitalSignature = stamp;
+    return stamp;
   }
 
   public renderMobileHtml(isUmpire: boolean = true): string {
@@ -111,6 +123,11 @@ export class IncidentsScreenController {
               <strong style="color: ${this.state.matchSignedOff ? '#00E599' : '#FFB800'}; font-size: 0.85rem;">
                 ${this.state.matchSignedOff ? '✓ CERTIFIED BY UMPIRE' : '⏳ PENDING MATCH CLOSE'}
               </strong>
+              ${this.state.digitalSignature ? `
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: #38BDF8; margin-top: 0.15rem;">
+                  ${this.state.digitalSignature}
+                </div>
+              ` : ''}
             </div>
             ${isUmpire && !this.state.matchSignedOff ? `
               <button type="button" onclick="window.cricosMobileApp.signOffMatchAction()" style="padding: 0.4rem 0.8rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #38BDF8, #00E599); color: #04070D; font-weight: 700; font-size: 0.75rem; cursor: pointer;" data-tooltip="Certify match results under MCC Laws">
