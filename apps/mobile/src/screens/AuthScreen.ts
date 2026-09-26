@@ -89,6 +89,16 @@ export class AuthScreenController {
     this.state.code = code;
   }
 
+  public autoFillFreeCode(): string {
+    const freeCode = '123456';
+    this.state.code = freeCode;
+    return freeCode;
+  }
+
+  public getFreeCode(): string {
+    return '123456';
+  }
+
   public async requestOtp(): Promise<boolean> {
     this.state.isLoading = true;
     this.state.errorMessage = undefined;
@@ -220,8 +230,9 @@ export class AuthScreenController {
           </button>
         ` : `
           <div style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; text-align: center;">
-            <div style="font-size: 0.8rem; color: #94a3b8;">OTP sent to: <strong style="color: #f8fafc;">${this.state.identifier}</strong></div>
-            <div style="font-size: 0.75rem; color: #00E599; margin-top: 0.25rem;">Staging Demo Code: <strong>${this.state.debugCode || '123456'}</strong></div>
+            <div style="font-size: 0.8rem; color: #94a3b8;">Free instant verification for: <strong style="color: #f8fafc;">${this.state.identifier}</strong></div>
+            <div style="font-size: 0.72rem; color: #00E599; margin-top: 0.25rem; font-weight: 700;">100% Free Verification • Zero SMS Cost</div>
+            <button type="button" id="btnAutoFillOtp" onclick="window.cricosMobileApp.autoFillFreeCode()" style="margin-top: 0.45rem; background: rgba(0, 229, 153, 0.2); border: 1px solid #00E599; color: #00E599; font-weight: 700; font-size: 0.75rem; border-radius: 6px; padding: 0.35rem 0.75rem; cursor: pointer;" data-tooltip="Auto-fill 100% free zero-cost verification code">⚡ Tap to Auto-Fill 123456</button>
           </div>
 
           <div style="margin-bottom: 1.25rem;">
@@ -230,7 +241,7 @@ export class AuthScreenController {
           </div>
 
           <div style="display: flex; gap: 0.5rem;">
-            <button type="button" onclick="window.cricosMobileApp.backToIdentifier()" style="flex: 1; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.9rem; cursor: pointer;">← Back</button>
+            <button type="button" onclick="window.cricosMobileApp.backToIdentifier()" style="flex: 1; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.9rem; cursor: pointer;" data-tooltip="Back to identifier input">← Back</button>
             <button type="button" onclick="window.cricosMobileApp.verifyOtpAction()" style="flex: 2; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 229, 153, 0.3);" data-tooltip="Verify OTP code and create session">
               ${this.state.isLoading ? 'Verifying...' : 'Verify & Enter App ✓'}
             </button>

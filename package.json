@@ -37,6 +37,11 @@
     "package:dist": "node scripts/package-distribution.mjs",
     "verify:dist": "node scripts/verify-distribution.mjs",
     "build:android": "bash apps/mobile/android/build-apk.sh",
+    "apk": "bash ./pipeline.sh apk",
+    "pipeline": "bash ./pipeline.sh",
+    "ship": "bash ./pipeline.sh ship",
+    "commit": "bash ./pipeline.sh commit",
+    "push": "bash ./pipeline.sh push",
     "dev": "pnpm --filter @cricket-platform/api dev",
     "start": "pnpm --filter @cricket-platform/api start"
   },

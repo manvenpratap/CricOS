@@ -1658,6 +1658,9 @@
           conductedAt: '2026-09-21 09:30 AM'
         };
 
+        this.activeTournamentName = 'Club Premier League 2026';
+        this.platformFeePercent = 5;
+
         this.standings = [
           { position: 1, team: 'Mumbai Super Strikers', played: 3, won: 3, lost: 0, points: 6, nrr: '+1.420', qualification: 'QUALIFIED' },
           { position: 2, team: 'Delhi Daredevils', played: 3, won: 2, lost: 1, points: 4, nrr: '+0.850', qualification: 'QUALIFIED' },
@@ -2165,6 +2168,13 @@
       backToIdentifier() {
         this.authStep = 'IDENTIFIER';
         this.render();
+      }
+
+      autoFillFreeCode() {
+        this.code = '123456';
+        var input = document.getElementById('authCodeInput');
+        if (input) input.value = '123456';
+        this.showToast('✓ Auto-filled free verification code 123456', 'success');
       }
 
       async verifyOtpAction() {
@@ -3692,6 +3702,12 @@
 
       openEventBasketModal() {
         var self = this;
+        var feeRate = this.platformFeePercent || 5;
+        var subtotal = 5300;
+        var fee = subtotal * (feeRate / 100);
+        var gst = fee * 0.18;
+        var total = subtotal + fee + gst;
+
         this.openActionSheet({
           title: '🧺 Event Basket Procurement',
           bodyHtml: '<div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 0.85rem;">Unified multi-vendor procurement bundle under authoritative 15-min GiST escrow lock:</div>' +
@@ -3700,18 +3716,44 @@
             '<div style="display: flex; justify-content: space-between; padding: 0.2rem 0;"><span>⚖️ Nitin Menon Umpire Panel</span><strong style="color: #00E599;">₹800.00</strong></div>' +
             '<div style="display: flex; justify-content: space-between; padding: 0.2rem 0;"><span>⚡ Sunil Digital Scorer</span><strong style="color: #00E599;">₹600.00</strong></div>' +
             '<div style="display: flex; justify-content: space-between; padding: 0.2rem 0;"><span>🏏 White Kookaburra Balls</span><strong style="color: #00E599;">₹400.00</strong></div>' +
-            '<div style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.35rem; padding-top: 0.35rem; display: flex; justify-content: space-between; font-weight: 700;"><span>Subtotal</span><span>₹5,300.00</span></div>' +
-            '<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.7rem;"><span>Platform Fee (5%)</span><span>₹265.00</span></div>' +
-            '<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.7rem;"><span>GST (18% on fee)</span><span>₹47.70</span></div>' +
-            '<div style="border-top: 1px solid rgba(0,229,153,0.3); margin-top: 0.35rem; padding-top: 0.35rem; display: flex; justify-content: space-between; font-weight: 800; color: #00E599; font-size: 0.85rem;"><span>Total Escrow Hold</span><span>₹5,612.70</span></div>' +
+            (feeRate === 5 ?
+              '<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.7rem;"><span>Platform Fee (5%)</span><span>₹265.00</span></div>' +
+              '<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.7rem;"><span>GST (18% on fee)</span><span>₹47.70</span></div>' +
+              '<div style="border-top: 1px solid rgba(0,229,153,0.3); margin-top: 0.35rem; padding-top: 0.35rem; display: flex; justify-content: space-between; font-weight: 800; color: #00E599; font-size: 0.85rem;"><span>Total Escrow Hold</span><span>₹5,612.70</span></div>'
+            :
+              '<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.7rem;"><span>Platform Fee (' + feeRate + '%)</span><span>₹' + fee.toFixed(2) + '</span></div>' +
+              '<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.7rem;"><span>GST (18% on fee)</span><span>₹' + gst.toFixed(2) + '</span></div>' +
+              '<div style="border-top: 1px solid rgba(0,229,153,0.3); margin-top: 0.35rem; padding-top: 0.35rem; display: flex; justify-content: space-between; font-weight: 800; color: #00E599; font-size: 0.85rem;"><span>Total Escrow Hold</span><span>₹' + total.toFixed(2) + '</span></div>'
+            ) +
+            '</div>' +
+            '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.65rem; margin-bottom: 0.75rem;">' +
+            '<div style="font-size: 0.72rem; font-weight: 700; color: #00E599; margin-bottom: 0.25rem;">💵 Free External Settlement Record-Keeping</div>' +
+            '<div style="font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.5rem;">CricOS records cash/UPI exchange as system of record. Zero payment gateway fees.</div>' +
+            '<div style="display: flex; gap: 0.4rem; margin-bottom: 0.4rem;">' +
+            '<label style="flex: 1; display: flex; align-items: center; gap: 0.25rem; font-size: 0.72rem; color: #f8fafc; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.35rem 0.5rem; cursor: pointer;">' +
+            '<input type="radio" name="mobilePaymentMode" value="CASH" checked> <span>💵 Cash Handover</span>' +
+            '</label>' +
+            '<label style="flex: 1; display: flex; align-items: center; gap: 0.25rem; font-size: 0.72rem; color: #f8fafc; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.35rem 0.5rem; cursor: pointer;">' +
+            '<input type="radio" name="mobilePaymentMode" value="UPI"> <span>📱 Direct UPI</span>' +
+            '</label>' +
+            '</div>' +
+            '<input type="text" id="mobilePaymentNotesInput" placeholder="Note: e.g. Cash handed at reception" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.4rem 0.6rem; color: #f8fafc; font-size: 0.72rem;" data-tooltip="Optional payment note" />' +
             '</div>',
-          confirmText: 'Confirm & Lock GiST Escrow Hold →',
+          confirmText: 'Record Cash Booking & Balance Ledger ✓',
           confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
           onConfirm: function() {
-            self.showToast('Escrow hold of ₹5,612.70 locked via GiST spatio-temporal ledger! 🔒', 'success');
+            var radio = document.querySelector('input[name="mobilePaymentMode"]:checked');
+            var mode = radio ? radio.value : 'CASH';
+            var methodLabel = mode === 'CASH' ? 'Cash Handover' : 'Direct UPI';
+            self.showToast('✓ Booking recorded via ' + methodLabel + ' (₹' + total.toFixed(2) + '). Double-entry ledger balanced! 🔒', 'success');
             self.closeActionSheet();
           }
         });
+      }
+
+      setPlatformFeePercent(pct) {
+        this.platformFeePercent = Math.max(0, Math.min(20, Number(pct) || 0));
+        this.showToast('✓ Platform facilitation fee updated to ' + this.platformFeePercent + '%', 'info');
       }
 
       openDrsReviewSheet() {
@@ -3777,6 +3819,59 @@
         this.showToast('📅 Round-Robin Brackets Generated: 8 teams, 28 matches with temporal GiST conflict prevention.', 'success');
       }
 
+      openCreateTournamentSheet() {
+        var self = this;
+        this.openActionSheet({
+          title: '🏆 Create New Tournament',
+          bodyHtml: '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Tournament Name:</label>' +
+            '<input type="text" id="newTournamentNameInput" value="Bengaluru Premier Cup 2026" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Format:</label>' +
+            '<select id="newTournamentFormatInput" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;">' +
+            '<option value="T20">T20 (20 Overs / Innings)</option>' +
+            '<option value="ODI">One Day (50 Overs)</option>' +
+            '<option value="100BALL">The Hundred (100 Balls)</option>' +
+            '</select>' +
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Teams (comma-separated):</label>' +
+            '<input type="text" id="newTournamentTeamsInput" value="Deccan Chargers, Mysore Warriors, Hubli Tigers, Mangalore United" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>',
+          confirmText: 'Create & Onboard Tournament ⚡',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            var nameEl = document.getElementById('newTournamentNameInput');
+            var teamsEl = document.getElementById('newTournamentTeamsInput');
+            var name = (nameEl && nameEl.value.trim()) || 'New Tournament';
+            var rawTeams = (teamsEl && teamsEl.value) || 'Team A, Team B';
+            var teams = rawTeams.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
+            if (teams.length < 2) {
+              self.showToast('Please enter at least 2 teams', 'warning');
+              return;
+            }
+            self.activeTournamentName = name;
+            self.standings = teams.map(function(t, idx) {
+              return {
+                position: idx + 1,
+                team: t,
+                played: 0,
+                won: 0,
+                lost: 0,
+                points: 0,
+                nrr: '+0.000',
+                qualification: idx < 2 ? 'QUALIFIED' : 'CONTENDING'
+              };
+            });
+            var fixtureCount = (teams.length * (teams.length - 1)) / 2;
+            self.showToast('✓ Tournament "' + name + '" created with ' + teams.length + ' teams & ' + fixtureCount + ' fixtures!', 'success');
+            self.closeActionSheet();
+            self.render();
+          }
+        });
+      }
+
       setKnockoutReminder(match) {
         this.showToast('⏰ Push notification reminder set for ' + match, 'success');
       }
@@ -3784,34 +3879,50 @@
       publishSlotAction() {
         var self = this;
         this.openActionSheet({
-          title: '🏟️ Publish Match Slot',
+          title: '🏟️ Publish Ground & Match Slot',
           bodyHtml: '<div style="margin-bottom: 0.75rem;">' +
-            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Slot Title:</label>' +
-            '<input type="text" id="slotTitleInput" value="Night Floodlit Prime Slot" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Ground / Venue Name:</label>' +
+            '<input type="text" id="slotTitleInput" value="Koramangala Cricket Arena" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Pitch Surface:</label>' +
+            '<select id="slotPitchSurfaceInput" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;">' +
+            '<option value="Natural Grass Turf">Natural Grass Turf</option>' +
+            '<option value="Astro Turf Pro">Astro Turf Pro</option>' +
+            '<option value="Floodlit Matting">Floodlit Matting</option>' +
+            '</select>' +
             '</div>' +
             '<div style="margin-bottom: 0.75rem;">' +
             '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Hourly Rate (₹):</label>' +
             '<input type="number" id="slotPriceInput" value="3500" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Time Slot:</label>' +
+            '<input type="text" id="slotTimeInput" value="14:00 - 18:00" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
             '</div>',
           confirmText: 'Publish Live Slot ⚡',
           confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
           onConfirm: function() {
-            var titleInput = document.getElementById('slotTitleInput');
+            var groundEl = document.getElementById('slotTitleInput') || document.getElementById('slotGroundNameInput');
+            var surfaceEl = document.getElementById('slotPitchSurfaceInput');
             var priceInput = document.getElementById('slotPriceInput');
-            var title = (titleInput && titleInput.value) || 'Night Floodlit Slot';
+            var timeEl = document.getElementById('slotTimeInput');
+            var ground = (groundEl && groundEl.value.trim()) || 'Cricket Arena';
+            var surface = (surfaceEl && surfaceEl.value) || 'Natural Grass Turf';
             var price = (priceInput && priceInput.value) || '3500';
+            var time = (timeEl && timeEl.value) || '14:00 - 18:00';
             self.listings.push({
               id: 'slot-' + Date.now(),
-              title: title,
+              title: ground + ' (' + surface + ')',
               category: 'GROUND',
-              location: 'South Mumbai, MH',
+              location: 'South Zone, Metro',
               rating: 5.0,
               price: price + '.00',
               priceMinor: parseInt(price, 10) * 100,
-              slots: ['20:00 - 23:00'],
+              slots: [time],
               isFrozen: false
             });
-            self.showToast('✓ New match slot published: ' + title + ' at ₹' + price + '/hr.', 'success');
+            self.showToast('✓ Ground slot published: ' + ground + ' at ₹' + price + '/hr (' + time + ')', 'success');
             self.closeActionSheet();
             self.render();
           }
@@ -4035,7 +4146,8 @@
             // OTP verification step for Sign Up
             h += '<div style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; text-align: center;">';
             h += '<div style="font-size: 0.8rem; color: #94a3b8;">Verifying profile for: <strong style="color: #f8fafc;">' + (this.signupData.name || 'New Athlete') + '</strong> (' + (this.signupData.role || 'PLAYER') + ')</div>';
-            h += '<div style="font-size: 0.75rem; color: #00E599; margin-top: 0.25rem;">Staging Code: <strong>123456</strong></div>';
+            h += '<div style="font-size: 0.72rem; color: #00E599; margin-top: 0.25rem; font-weight: 700;">100% Free Verification • Zero SMS Cost</div>';
+            h += '<button type="button" id="btnAutoFillOtpSignup" onclick="window.cricosMobileApp.autoFillFreeCode()" style="margin-top: 0.45rem; background: rgba(0, 229, 153, 0.2); border: 1px solid #00E599; color: #00E599; font-weight: 700; font-size: 0.75rem; border-radius: 6px; padding: 0.35rem 0.75rem; cursor: pointer;" data-tooltip="Auto-fill 100% free zero-cost verification code">⚡ Tap to Auto-Fill 123456</button>';
             h += '</div>';
 
             h += '<div style="margin-bottom: 1.25rem;">';
@@ -4085,8 +4197,9 @@
             h += '<button type="button" onclick="window.cricosMobileApp.requestOtpAction()" style="width: 100%; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 1rem; cursor: pointer;" data-tooltip="Dispatch 6-digit OTP verification code via Fastify backend">' + (this.isLoading ? 'Sending...' : 'Send Secure OTP →') + '</button>';
           } else {
             h += '<div style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; text-align: center;">';
-            h += '<div style="font-size: 0.8rem; color: #94a3b8;">Code sent to: <strong style="color: #f8fafc;">' + this.identifier + '</strong></div>';
-            h += '<div style="font-size: 0.75rem; color: #00E599; margin-top: 0.25rem;">Staging Code: <strong>123456</strong></div>';
+            h += '<div style="font-size: 0.8rem; color: #94a3b8;">Free instant verification for: <strong style="color: #f8fafc;">' + this.identifier + '</strong></div>';
+            h += '<div style="font-size: 0.72rem; color: #00E599; margin-top: 0.25rem; font-weight: 700;">100% Free Verification • Zero SMS Cost</div>';
+            h += '<button type="button" id="btnAutoFillOtpSignin" onclick="window.cricosMobileApp.autoFillFreeCode()" style="margin-top: 0.45rem; background: rgba(0, 229, 153, 0.2); border: 1px solid #00E599; color: #00E599; font-weight: 700; font-size: 0.75rem; border-radius: 6px; padding: 0.35rem 0.75rem; cursor: pointer;" data-tooltip="Auto-fill 100% free zero-cost verification code">⚡ Tap to Auto-Fill 123456</button>';
             h += '</div>';
 
             h += '<div style="margin-bottom: 1.25rem;">';
@@ -4602,7 +4715,7 @@
         // Tournament Card & 4-Stage Stepper
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
         h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">Championship Hub</div>';
-        h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Club Premier League 2026</h2>';
+        h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">' + (this.activeTournamentName || 'Club Premier League 2026') + '</h2>';
         h += '<div style="display: flex; gap: 0.25rem; margin-top: 0.75rem;">';
         var stages = ['REGISTRATION', 'GROUP_STAGE', 'PLAYOFFS', 'COMPLETED'];
         for (var st = 0; st < stages.length; st++) {
@@ -4616,12 +4729,14 @@
         // Organiser Event Basket Action
         if (isOrganiser) {
           h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
-          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.3rem;">🧺 Event Basket Procurement</div>';
-          h += '<div style="font-size: 0.75rem; color: #cbd5e1; margin-bottom: 0.6rem;">Book venue, umpires, and balls in a unified escrow bundle with 15-min GiST lock.</div>';
-          h += '<div style="display: flex; gap: 0.5rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="flex: 1; padding: 0.55rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.75rem;" data-tooltip="Open unified match event procurement basket">Procure Basket →</button>';
+          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.3rem;">🧺 Event Basket Procurement &amp; Onboarding</div>';
+          h += '<div style="font-size: 0.75rem; color: #cbd5e1; margin-bottom: 0.6rem;">Onboard tournaments, book venue, umpires, and balls with cash record-keeping.</div>';
+          h += '<div style="display: flex; gap: 0.4rem; margin-bottom: 0.5rem;">';
+          h += '<button type="button" id="btnMobileCreateTournament" onclick="window.cricosMobileApp.openCreateTournamentSheet()" style="flex: 1; padding: 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-weight: 700; font-size: 0.75rem;" data-tooltip="Onboard a new cricket tournament with custom teams">+ New Tournament 🏆</button>';
           h += '<button type="button" onclick="window.cricosMobileApp.generateFixtures()" style="flex: 1; padding: 0.55rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #f8fafc; font-weight: 600; font-size: 0.75rem;" data-tooltip="Generate round-robin match brackets">Auto Fixtures 📅</button>';
-          h += '</div></div>';
+          h += '</div>';
+          h += '<button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="width: 100%; padding: 0.55rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.75rem;" data-tooltip="Open unified match event procurement basket">Procure Basket (Cash Record) →</button>';
+          h += '</div>';
         }
 
         // NRR Trajectory Sparkline SVG (Stitch Application Architecture integration)

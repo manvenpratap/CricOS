@@ -63,9 +63,9 @@ export class MarketplaceScreenController {
     return this.slots.filter(s => s.category === this.selectedCategory);
   }
 
-  public calculateBreakdown(basePriceMinor: number): MobileCommercialBreakdown {
-    // 5% Platform Fee, 18% GST on (base + platform fee)
-    const platformFeeMinor = Math.round(basePriceMinor * 0.05);
+  public calculateBreakdown(basePriceMinor: number, platformFeePercent: number = 5): MobileCommercialBreakdown {
+    const feePct = Math.max(0, Math.min(20, platformFeePercent));
+    const platformFeeMinor = Math.round(basePriceMinor * (feePct / 100));
     const taxableAmountMinor = basePriceMinor + platformFeeMinor;
     const gstMinor = Math.round(taxableAmountMinor * 0.18);
     const totalMinor = taxableAmountMinor + gstMinor;
@@ -76,6 +76,25 @@ export class MarketplaceScreenController {
       gstMinor,
       totalMinor
     };
+  }
+
+  public onboardGroundSlot(facility: { groundName: string; surfaceType: string; hourlyRate: number; timeSlot: string }): MobileMarketplaceSlot {
+    const times = facility.timeSlot.split('-');
+    const newSlot: MobileMarketplaceSlot = {
+      id: `slot-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      providerId: 'prov-turf-custom',
+      providerName: facility.groundName,
+      category: 'GROUND',
+      title: `${facility.groundName} (${facility.surfaceType})`,
+      location: 'South Zone, Metro',
+      startTime: times[0]?.trim() || '14:00',
+      endTime: times[1]?.trim() || '18:00',
+      priceMinor: Math.round(facility.hourlyRate * 100),
+      rating: 5.0,
+      isAvailable: true
+    };
+    this.slots.unshift(newSlot);
+    return newSlot;
   }
 
   public bookSlot(slotId: string): MobileBookingReceipt {

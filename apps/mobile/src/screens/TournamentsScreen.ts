@@ -68,16 +68,33 @@ export class TournamentsScreenController {
     this.currentStage = stage;
   }
 
-  public calculateEventBasket(baseMinor: number) {
-    const platformFeeMinor = Math.round(baseMinor * 0.05);
+  public calculateEventBasket(baseMinor: number, platformFeePercent: number = 5) {
+    const feePct = Math.max(0, Math.min(20, platformFeePercent));
+    const platformFeeMinor = Math.round(baseMinor * (feePct / 100));
     const gstMinor = Math.round(platformFeeMinor * 0.18);
     const totalMinor = baseMinor + platformFeeMinor + gstMinor;
     return {
       baseMinor,
+      platformFeePercent: feePct,
       platformFeeMinor,
       gstMinor,
       totalMinor
     };
+  }
+
+  public onboardTournament(name: string, teams: string[]): { name: string; teams: string[]; fixtureCount: number } {
+    this.standings = teams.map((team, idx) => ({
+      position: idx + 1,
+      team,
+      played: 0,
+      won: 0,
+      lost: 0,
+      points: 0,
+      nrr: '+0.000',
+      qualification: idx < 2 ? 'QUALIFIED' : 'CONTENDING'
+    }));
+    const fixtureCount = (teams.length * (teams.length - 1)) / 2;
+    return { name, teams, fixtureCount };
   }
 
   public renderMobileHtml(isOrganiser: boolean = false): string {
@@ -92,9 +109,14 @@ export class TournamentsScreenController {
               <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem;">8 Teams • 28 Matches • Double Round-Robin</div>
             </div>
             ${isOrganiser ? `
-              <button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="padding: 0.35rem 0.7rem; border-radius: 6px; border: 1px solid #00E599; background: rgba(0, 229, 153, 0.15); color: #00E599; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="Manage Event Basket & Procurement">
-                🧺 Basket
-              </button>
+              <div style="display: flex; gap: 0.35rem;">
+                <button type="button" id="btnMobileCreateTournament" onclick="window.cricosMobileApp.openCreateTournamentSheet()" style="padding: 0.35rem 0.6rem; border-radius: 6px; border: 1px solid #00D2FF; background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="Onboard new tournament with custom teams">
+                  + New 🏆
+                </button>
+                <button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="padding: 0.35rem 0.6rem; border-radius: 6px; border: 1px solid #00E599; background: rgba(0, 229, 153, 0.15); color: #00E599; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="Manage Event Basket & Procurement">
+                  🧺 Basket
+                </button>
+              </div>
             ` : ''}
           </div>
 

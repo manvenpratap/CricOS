@@ -31,4 +31,7 @@
 - Never push raw source code without verifying distribution artifacts.
 - For single-file web apps: ensure `dist/index.html` is byte-for-byte identical to root app.
 - For Java/Node/Rust apps: run `./pipeline.sh package` before committing.
-- Use `./pipeline.sh ship "<conventional commit message>"` to automate the complete verified release.
+- Build Android native artifacts automatically via `./pipeline.sh apk`.
+- Stage and commit with `./pipeline.sh commit "<msg>"` or stage with `./pipeline.sh add`.
+- Push to remote with `./pipeline.sh push`.
+- Use `./pipeline.sh ship ["<conventional commit message>"]` (or `./pipeline.sh auto`) to automate the complete verified release (test -> package -> apk -> commit -> push).

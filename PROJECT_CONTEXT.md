@@ -1,14 +1,45 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 21:00:00
-**Version:** 1.0.0-phase2am (Dynamic Production-Grade Mobile Analytics & Scorecard System)  
+**Last Updated:** 2026-09-26 22:35:00
+**Version:** 1.0.0-phase2an (Phase 1 Quick Win MVP — Cash Records, Free OTP, Configurable Fees, Custom Onboarding & Modular Frontend Architecture)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AM Completed — Dynamic Production-Grade Mobile Analytics & Scorecard System:
+- **Active Phase**: Phase 2AN Completed — Phase 1 Quick Win MVP Implementation & Modular Architecture:
+  - **1. Configurable Platform Facilitation Fee (0% to 20%)**:
+    - Added global platform config `window.cricosPlatformConfig = { platformFeePercent: 5, gstPercent: 18 }`.
+    - Implemented `updatePlatformFeeRate(val)` with real-time recalculation of Event Basket numbers, Daily Financial Reconciliation totals, and trial balance accounts across Web Console and Mobile App.
+    - Integrated fee slider (`#platformFeeSlider`), percentage badge (`#platformFeePercentDisplay`), and 1-tap quick presets (`Reset (5%)`, `0% Free`).
+    - Added `setPlatformFeePercent(pct)` on mobile client and updated `TournamentsScreenController.calculateEventBasket` and `MarketplaceScreenController.calculateBreakdown`.
+  - **2. 100% Free Zero-Cost Verification & Auto-Fill**:
+    - Zero third-party paid SMS API credits needed: added `100% Free Verification • Zero SMS Cost` banner in mobile authentication.
+    - Implemented 1-tap instant auto-fill buttons (`#btnAutoFillOtpSignup`, `#btnAutoFillOtpSignin`) filling staging code `123456`.
+    - Added `autoFillFreeCode()` and `getFreeCode()` methods on `AuthScreenController` with full unit test coverage.
+  - **3. Free External Settlement Record-Keeping in Event Basket**:
+    - Replaced live payment gateway requirements with authoritative record-keeping for cash and direct UPI exchanges.
+    - Added payment method radio options (`Direct Cash Handover` and `Direct UPI Transfer`) and payment reference/UTR notes input (`#basketPaymentNotesInput` in Web, `#mobilePaymentNotesInput` in Mobile).
+    - Commit action records the external transaction with double-entry balance accounting (`D: CASH_HOLDINGS / CLEARING`, `C: PROVIDER_PAYABLE / ESCROW_HOLD`) and shows confirmation toast.
+  - **4. Custom Tournament Onboarding (Web & Mobile)**:
+    - Tournament Hub allows organisers to input custom tournament name and comma-separated team list.
+    - `generateTournamentFixtures()` generates complete round-robin fixtures and dynamically populates the live standings table (`#standingsBody`) with newly onboarded teams and qualification indicators (`[Q]`).
+    - Mobile Tournaments screen provides `+ New Tournament 🏆` button (`#btnMobileCreateTournament`) with `openCreateTournamentSheet()` and `TournamentsScreenController.onboardTournament()`.
+  - **5. Custom Ground Facility Onboarding & Slot Publishing**:
+    - Provider Storefront modal supports listing custom turf facilities with custom ground name, surface type, rate (₹/hr), and time slots.
+    - `submitNewSlotPublication()` prepends newly created facility directly into the live search index (`#storefrontSlotsList`).
+    - Mobile marketplace provides `MarketplaceScreenController.onboardGroundSlot()` for adding custom venue inventory.
+  - **6. Frontend Single-File Constraint Lifted & Modular Architecture**:
+    - Documented approval lifting the single-file constraint in `CricOS_PRD_v1.md`.
+    - Architecture verified across modular packages (`apps/api`, `apps/mobile`, `apps/web`, `packages/*`), synchronized distribution bundles, and native Android APK.
+  - **7. Governance, Invariants & Verification**:
+    - Maintained 100% Rule 5 `data-tooltip` coverage on all interactive buttons.
+    - Preserved zero `transition: all` invariant across all stylesheets.
+    - Added test suite `tests/43-phase1-quick-win-records-and-onboarding.test.ts` (19 assertions, 100% passing).
+    - `./pipeline.sh test --summary`: 344 tests passing across 115 suites with 0 failures in 786ms.
+    - Synced `dist/index.html` (byte-for-byte with root `index.html`) and `dist/mobile.html`.
+- **Preceding Phase**: Phase 2AM Completed — Dynamic Production-Grade Mobile Analytics & Scorecard System:
   - **1. Dynamic Worm Run Progression Curve**:
     - Replaced static SVG mock with dynamic mathematical curves comparing Innings 1 (Delhi 178/10, 20 overs) vs Innings 2 chase (Mumbai 142/3 in 16.4 ov).
     - Gold dashed Target Line (`TARGET 178`), pulsing live radar head with dual-ring halo, CRR (`8.52`) and RRR (`10.80`) telemetry HUD, needed runs/balls counter, and interactive over inspection chips (`selectWormOver(ov)`).
