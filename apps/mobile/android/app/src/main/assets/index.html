@@ -455,6 +455,127 @@
       font-weight: 700;
     }
 
+    /* Tactical Scoring Studio Pad & Hold Button */
+    .mobile-studio-pad-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .mobile-studio-btn {
+      padding: 0.85rem 0.25rem;
+      font-size: 1.35rem;
+      font-family: 'Chakra Petch', monospace;
+      font-weight: 800;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #F8FAFC;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .mobile-studio-btn:active {
+      transform: scale(0.95);
+    }
+    .mobile-studio-btn.boundary-four {
+      background: rgba(0, 210, 255, 0.15);
+      border-color: #00D2FF;
+      color: #00D2FF;
+    }
+    .mobile-studio-btn.maximum-six {
+      background: rgba(0, 229, 153, 0.18);
+      border-color: #00E599;
+      color: #00E599;
+    }
+    .mobile-studio-btn.wicket-out {
+      background: rgba(255, 51, 102, 0.18);
+      border-color: #ff3366;
+      color: #ff3366;
+    }
+    .mobile-studio-btn.undo-btn {
+      background: rgba(255, 184, 0, 0.12);
+      border-color: #ffb800;
+      color: #ffb800;
+    }
+    .mobile-studio-sublabel {
+      font-size: 0.62rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* Hold to Confirm Reset Button */
+    .btn-hold-confirm {
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .btn-hold-confirm .hold-progress-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 51, 102, 0.35);
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 200ms ease-out;
+      pointer-events: none;
+    }
+    .btn-hold-confirm.holding .hold-progress-overlay {
+      clip-path: inset(0 0 0 0);
+      transition: clip-path 2s linear;
+    }
+    .btn-hold-confirm:active {
+      transform: scale(0.97);
+    }
+
+    /* Wagon Wheel Sector Wedges & Glow */
+    .wagon-sector-wedge {
+      fill: rgba(0, 229, 153, 0.04);
+      stroke: rgba(255, 255, 255, 0.1);
+      stroke-width: 1px;
+      cursor: pointer;
+      transition: fill 0.18s ease, stroke 0.18s ease, stroke-width 0.18s ease;
+    }
+    .wagon-sector-wedge:hover, .wagon-sector-wedge.active {
+      fill: rgba(0, 229, 153, 0.28) !important;
+      stroke: #00E599 !important;
+      stroke-width: 2px !important;
+    }
+    .wagon-pill-btn {
+      flex: 0 0 auto;
+      padding: 0.25rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #94a3b8;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .wagon-pill-btn.active {
+      background: rgba(0, 229, 153, 0.18);
+      border-color: #00E599;
+      color: #00E599;
+      font-weight: 700;
+    }
+    .score-pulse {
+      animation: scorePulseAnim 0.3s ease-out;
+    }
+    @keyframes scorePulseAnim {
+      0% { transform: scale(1.08); color: #00E599; }
+      100% { transform: scale(1); }
+    }
+
     /* 21st.dev Athletic KPI & Career Stats Card in Mobile View */
     .athletic-stats-card {
       background: linear-gradient(145deg, rgba(13, 20, 36, 0.95), rgba(7, 11, 20, 0.98));
@@ -896,6 +1017,48 @@
           'b4': { id: 'b4', name: 'Yuzvendra C.', role: 'BOWLER', jersey: 3, rating: 90.2, rank: '#9 LEGGIE', runs: 58, avg: 5.8, sr: 62.0, boundaryRate: 2.1, trueImpact: '+15.2', form: 'CRAFTY', momentum: [11, 13, 15, 14, 16, 18, 17, 19, 21, 23, 22, 24, 26, 25, 27, 28, 30, 29, 31, 33] }
         };
 
+        this.currentSelectedZone = 'EXTRA_COVER';
+        this.currentStance = 'RHB';
+        this.currentShotFilter = 'ALL';
+        this.currentBatterFilter = 'Virat K.';
+        this.freeHitActive = false;
+        this.partnership = { runs: 122, balls: 82 };
+        this.holdConfirmTimer = null;
+        this.holdCompleted = false;
+
+        this.SHOT_ZONES_DATA = [
+          { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 22.5, side: 'LEG' },
+          { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', angleDeg: 67.5, side: 'LEG' },
+          { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', angleDeg: 112.5, side: 'LEG' },
+          { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', angleDeg: 157.5, side: 'LEG' },
+          { id: 'LONG_OFF', label: 'Long Off', shortLabel: 'Long Off', angleDeg: 202.5, side: 'OFF' },
+          { id: 'EXTRA_COVER', label: 'Cover / Extra Cover', shortLabel: 'Cover', angleDeg: 247.5, side: 'OFF' },
+          { id: 'POINT', label: 'Point', shortLabel: 'Point', angleDeg: 292.5, side: 'OFF' },
+          { id: 'THIRD_MAN', label: 'Third Man', shortLabel: 'Third Man', angleDeg: 337.5, side: 'OFF' }
+        ];
+
+        this.shotHistory = [
+          { id: 's1', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat K.', ballNumber: 4, angleDeg: 248, distanceFraction: 0.98 },
+          { id: 's2', zone: 'EXTRA_COVER', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat K.', ballNumber: 9, angleDeg: 255, distanceFraction: 0.99 },
+          { id: 's3', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat K.', ballNumber: 14, angleDeg: 115, distanceFraction: 1.15 },
+          { id: 's4', zone: 'LONG_ON', runs: 6, isBoundary: true, isSix: true, batterName: 'Virat K.', ballNumber: 21, angleDeg: 160, distanceFraction: 1.18 },
+          { id: 's5', zone: 'POINT', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat K.', ballNumber: 26, angleDeg: 290, distanceFraction: 0.97 },
+          { id: 's6', zone: 'LONG_OFF', runs: 4, isBoundary: true, isSix: false, batterName: 'Virat K.', ballNumber: 30, angleDeg: 200, distanceFraction: 0.98 },
+          { id: 's7', zone: 'SQUARE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat K.', ballNumber: 2, angleDeg: 75, distanceFraction: 0.65 },
+          { id: 's8', zone: 'FINE_LEG', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat K.', ballNumber: 7, angleDeg: 25, distanceFraction: 0.72 },
+          { id: 's9', zone: 'THIRD_MAN', runs: 1, isBoundary: false, isSix: false, batterName: 'Virat K.', ballNumber: 11, angleDeg: 335, distanceFraction: 0.68 },
+          { id: 's10', zone: 'MID_WICKET', runs: 2, isBoundary: false, isSix: false, batterName: 'Virat K.', ballNumber: 17, angleDeg: 110, distanceFraction: 0.75 },
+          { id: 's11', zone: 'EXTRA_COVER', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat K.', ballNumber: 1, angleDeg: 250, distanceFraction: 0.35 },
+          { id: 's12', zone: 'POINT', runs: 0, isBoundary: false, isSix: false, batterName: 'Virat K.', ballNumber: 6, angleDeg: 295, distanceFraction: 0.38 },
+
+          { id: 's13', zone: 'MID_WICKET', runs: 6, isBoundary: true, isSix: true, batterName: 'Rohit S.', ballNumber: 16, angleDeg: 112, distanceFraction: 1.14 },
+          { id: 's14', zone: 'SQUARE_LEG', runs: 4, isBoundary: true, isSix: false, batterName: 'Rohit S.', ballNumber: 23, angleDeg: 70, distanceFraction: 0.98 },
+          { id: 's15', zone: 'LONG_ON', runs: 2, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 18, angleDeg: 162, distanceFraction: 0.78 },
+          { id: 's16', zone: 'FINE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 20, angleDeg: 22, distanceFraction: 0.62 },
+          { id: 's17', zone: 'EXTRA_COVER', runs: 1, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 27, angleDeg: 245, distanceFraction: 0.58 },
+          { id: 's18', zone: 'MID_WICKET', runs: 0, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 15, angleDeg: 118, distanceFraction: 0.4 }
+        ];
+
         this.matchState = {
           matchId: 'match-pilot-1',
           battingTeam: 'Delhi Daredevils',
@@ -905,8 +1068,8 @@
           legalBalls: 100,
           targetRuns: 178,
           currentOverDeliveries: ['1', '4', '•', '2'],
-          striker: { name: 'Virat K.', runs: 68, balls: 44, isStriker: true },
-          nonStriker: { name: 'Rohit S.', runs: 54, balls: 38, isStriker: false },
+          striker: { name: 'Virat K.', runs: 68, balls: 44, fours: 6, sixes: 2, isStriker: true, stance: 'RHB' },
+          nonStriker: { name: 'Rohit S.', runs: 54, balls: 38, fours: 4, sixes: 1, isStriker: false, stance: 'LHB' },
           bowler: { name: 'Jasprit B.', overs: 3, ballsThisOver: 4, maidens: 0, runsConceded: 24, wickets: 2 },
           commentary: [
             { ball: '16.4', badge: 'TWO', badgeColor: '#00D2FF', text: 'Pushed into the deep cover corridor, brisk sprint turns 1 into 2. Superb running!' },
@@ -1300,11 +1463,36 @@
         this.matchState.legalBalls += 1;
         this.matchState.striker.runs += runs;
         this.matchState.striker.balls += 1;
+        if (runs === 4) this.matchState.striker.fours = (this.matchState.striker.fours || 0) + 1;
+        if (runs === 6) this.matchState.striker.sixes = (this.matchState.striker.sixes || 0) + 1;
+
+        this.partnership.runs = (this.partnership.runs || 0) + runs;
+        this.partnership.balls = (this.partnership.balls || 0) + 1;
+
         this.matchState.bowler.ballsThisOver += 1;
         this.matchState.bowler.runsConceded += runs;
 
         var dTag = runs === 0 ? '•' : runs.toString();
         this.matchState.currentOverDeliveries.push(dTag);
+
+        var isSix = runs === 6;
+        var isBoundary = runs === 4 || isSix;
+        var self = this;
+        var zoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === self.currentSelectedZone; });
+        var angle = zoneDef ? zoneDef.angleDeg + (Math.random() * 16 - 8) : 247.5;
+        var dist = isSix ? 1.16 : (isBoundary ? 0.98 : (runs === 0 ? 0.36 : 0.72));
+
+        this.shotHistory.push({
+          id: 's' + Date.now(),
+          zone: this.currentSelectedZone,
+          runs: runs,
+          isBoundary: isBoundary,
+          isSix: isSix,
+          batterName: this.matchState.striker.name,
+          ballNumber: this.matchState.striker.balls,
+          angleDeg: angle,
+          distanceFraction: dist
+        });
 
         var commBadge = runs === 0 ? 'DOT' : (runs === 4 ? 'FOUR' : (runs === 6 ? 'SIX' : 'RUNS'));
         var commColor = runs === 4 ? '#00E599' : (runs === 6 ? '#c084fc' : (runs === 0 ? '#94a3b8' : '#00D2FF'));
@@ -1313,8 +1501,13 @@
           ball: ballNum,
           badge: commBadge,
           badgeColor: commColor,
-          text: runs === 4 ? 'CRACKING BOUNDARY! Slashed cleanly through the gap.' : (runs === 6 ? 'MASSIVE SIX! Launched straight into the stands!' : (runs === 0 ? 'No run. Defended solidly right back to the bowler.' : runs + ' run(s) scored with prompt running.'))
+          text: runs === 4 ? 'CRACKING BOUNDARY! Slashed cleanly to ' + (zoneDef ? zoneDef.label : 'outfield') + '.' : (runs === 6 ? 'MASSIVE MAXIMUM SIX! Cleared the boundary into the crowd!' : (runs === 0 ? 'Dot ball. Solid forward defence.' : runs + ' run(s) taken briskly between wickets.'))
         });
+
+        if (this.freeHitActive) {
+          this.freeHitActive = false;
+          this.showToast('Free Hit delivery completed', 'info');
+        }
 
         if (runs % 2 !== 0) {
           const tmp = this.matchState.striker;
@@ -1331,21 +1524,87 @@
           this.matchState.nonStriker = tmp;
           this.showToast('Over completed! Strike rotated.', 'info');
         } else {
-          this.showToast('+' + runs + (runs === 1 ? ' run' : ' runs') + ' scored', 'success', 1200);
+          this.showToast('+' + runs + (runs === 1 ? ' run' : ' runs') + ' scored (' + (zoneDef ? zoneDef.shortLabel : 'Field') + ')', 'success', 1200);
         }
         this.render();
       }
 
-      scoreExtra(type) {
+      scoreExtra(type, runs) {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can score extras.', 'warning');
           return;
         }
         if (window.CricOSSound) window.CricOSSound.playClick();
-        this.matchState.totalRuns += 1;
-        this.matchState.bowler.runsConceded += 1;
-        this.matchState.currentOverDeliveries.push(type === 'WIDE' ? '1wd' : '1nb');
-        this.showToast('+1 Extra (' + type + ') recorded', 'warning');
+        runs = runs || 1;
+        this.matchState.totalRuns += runs;
+        this.partnership.runs = (this.partnership.runs || 0) + runs;
+        this.matchState.bowler.runsConceded += (type === 'WIDE' || type === 'NO_BALL') ? runs : 0;
+
+        if (type === 'WIDE') {
+          this.matchState.currentOverDeliveries.push('1wd');
+          this.showToast('+1 Wide recorded (re-bowl)', 'warning');
+        } else if (type === 'NO_BALL') {
+          this.freeHitActive = true;
+          this.matchState.currentOverDeliveries.push('1nb');
+          this.showToast('⚠️ NO BALL! Free Hit awarded for next delivery! ⚡', 'warning', 3000);
+        } else if (type === 'LEG_BYE') {
+          this.matchState.legalBalls += 1;
+          this.partnership.balls = (this.partnership.balls || 0) + 1;
+          this.matchState.bowler.ballsThisOver += 1;
+          this.matchState.currentOverDeliveries.push('1lb');
+          var tmp = this.matchState.striker;
+          this.matchState.striker = this.matchState.nonStriker;
+          this.matchState.nonStriker = tmp;
+          this.showToast('+1 Leg Bye (Strike rotated)', 'info');
+        } else if (type === 'BYE') {
+          this.matchState.legalBalls += 1;
+          this.partnership.balls = (this.partnership.balls || 0) + 1;
+          this.matchState.bowler.ballsThisOver += 1;
+          this.matchState.currentOverDeliveries.push('1b');
+          var tmp2 = this.matchState.striker;
+          this.matchState.striker = this.matchState.nonStriker;
+          this.matchState.nonStriker = tmp2;
+          this.showToast('+1 Bye (Strike rotated)', 'info');
+        }
+
+        if (this.matchState.bowler.ballsThisOver >= 6) {
+          this.matchState.bowler.overs += 1;
+          this.matchState.bowler.ballsThisOver = 0;
+          this.matchState.currentOverDeliveries = [];
+          var tmp3 = this.matchState.striker;
+          this.matchState.striker = this.matchState.nonStriker;
+          this.matchState.nonStriker = tmp3;
+        }
+
+        this.render();
+      }
+
+      scoreCompoundExtra(batRuns, extraRuns, extraType) {
+        if (this.profile.persona !== 'SCORER') {
+          this.showToast('🔒 Only official Scorers can score compound extras.', 'warning');
+          return;
+        }
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        var total = batRuns + extraRuns;
+        this.matchState.totalRuns += total;
+        this.partnership.runs = (this.partnership.runs || 0) + total;
+        this.matchState.bowler.runsConceded += total;
+
+        if (extraType === 'WIDE') {
+          this.matchState.currentOverDeliveries.push('5wd');
+          this.showToast('Wide + 4 Byes (+5 runs total, re-bowl)', 'warning');
+        } else if (extraType === 'NO_BALL') {
+          this.freeHitActive = true;
+          this.matchState.striker.runs += batRuns;
+          this.matchState.striker.balls += 1;
+          if (batRuns === 4) this.matchState.striker.fours = (this.matchState.striker.fours || 0) + 1;
+          if (batRuns === 6) this.matchState.striker.sixes = (this.matchState.striker.sixes || 0) + 1;
+          this.matchState.currentOverDeliveries.push(batRuns === 4 ? '4nb' : '6nb');
+          this.showToast('No Ball + Boundary (+' + total + ' runs, Free Hit active!) ⚡', 'warning', 3000);
+        } else if (extraType === 'PENALTY') {
+          this.matchState.currentOverDeliveries.push('+5Pen');
+          this.showToast('Penalty Awarded (+5 runs to batting team)', 'warning');
+        }
         this.render();
       }
 
@@ -1384,7 +1643,7 @@
             self.matchState.bowler.wickets += 1;
             self.matchState.bowler.ballsThisOver += 1;
             self.matchState.currentOverDeliveries.push('W');
-            self.matchState.striker = { name: nextBatter, runs: 0, balls: 0, isStriker: true };
+            self.matchState.striker = { name: nextBatter, runs: 0, balls: 0, fours: 0, sixes: 0, isStriker: true, stance: 'LHB' };
             self.matchState.commentary.unshift({
               ball: Math.floor(self.matchState.legalBalls / 6) + '.' + (self.matchState.legalBalls % 6),
               badge: 'WICKET',
@@ -1405,45 +1664,194 @@
         const tmp = this.matchState.striker;
         this.matchState.striker = this.matchState.nonStriker;
         this.matchState.nonStriker = tmp;
+        this.currentStance = this.matchState.striker.stance || (this.currentStance === 'RHB' ? 'LHB' : 'RHB');
         this.showToast('Strike swapped between batsmen', 'info', 1500);
         this.render();
       }
 
       undoBall() {
+        this.undoLastDelivery();
+      }
+
+      undoLastDelivery() {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can undo deliveries.', 'warning');
           return;
         }
         if (this.matchState.currentOverDeliveries.length > 0) {
           var last = this.matchState.currentOverDeliveries.pop();
+          if (this.shotHistory.length > 0) {
+            this.shotHistory.pop();
+          }
           if (last === 'W') {
             this.matchState.totalWickets = Math.max(0, this.matchState.totalWickets - 1);
             this.matchState.bowler.wickets = Math.max(0, this.matchState.bowler.wickets - 1);
-          } else if (last.indexOf('wd') === -1 && last.indexOf('nb') === -1) {
+            this.matchState.legalBalls = Math.max(0, this.matchState.legalBalls - 1);
+            this.matchState.bowler.ballsThisOver = Math.max(0, this.matchState.bowler.ballsThisOver - 1);
+          } else if (last.indexOf('wd') !== -1) {
+            var rWd = parseInt(last, 10) || 1;
+            this.matchState.totalRuns = Math.max(0, this.matchState.totalRuns - rWd);
+            this.matchState.bowler.runsConceded = Math.max(0, this.matchState.bowler.runsConceded - rWd);
+            this.partnership.runs = Math.max(0, (this.partnership.runs || 0) - rWd);
+          } else if (last.indexOf('nb') !== -1) {
+            var rNb = parseInt(last, 10) || 1;
+            this.matchState.totalRuns = Math.max(0, this.matchState.totalRuns - rNb);
+            this.matchState.bowler.runsConceded = Math.max(0, this.matchState.bowler.runsConceded - rNb);
+            this.partnership.runs = Math.max(0, (this.partnership.runs || 0) - rNb);
+            this.freeHitActive = false;
+          } else {
             var r = parseInt(last, 10) || 0;
             this.matchState.totalRuns = Math.max(0, this.matchState.totalRuns - r);
             this.matchState.striker.runs = Math.max(0, this.matchState.striker.runs - r);
             this.matchState.striker.balls = Math.max(0, this.matchState.striker.balls - 1);
+            this.partnership.runs = Math.max(0, (this.partnership.runs || 0) - r);
+            this.partnership.balls = Math.max(0, (this.partnership.balls || 0) - 1);
             this.matchState.bowler.runsConceded = Math.max(0, this.matchState.bowler.runsConceded - r);
+            this.matchState.legalBalls = Math.max(0, this.matchState.legalBalls - 1);
+            this.matchState.bowler.ballsThisOver = Math.max(0, this.matchState.bowler.ballsThisOver - 1);
+            if (r % 2 !== 0) {
+              var tmp = this.matchState.striker;
+              this.matchState.striker = this.matchState.nonStriker;
+              this.matchState.nonStriker = tmp;
+            }
           }
-          this.matchState.legalBalls = Math.max(0, this.matchState.legalBalls - 1);
-          this.matchState.bowler.ballsThisOver = Math.max(0, this.matchState.bowler.ballsThisOver - 1);
-          this.showToast('Last delivery undone per Scorer protocol', 'info');
+          this.showToast('Last delivery undone per Scorer protocol ↺', 'info');
           this.render();
         } else {
           this.showToast('No deliveries in current over to undo', 'warning');
         }
       }
 
-      copyJoinCode() {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText('CRIC-BLR-4821');
-        }
-        this.showToast('Team Join Code (CRIC-BLR-4821) copied to clipboard! 📋', 'success');
+      setBatterStance(stance) {
+        this.currentStance = stance;
+        this.showToast('Stance: ' + stance + (stance === 'LHB' ? ' (Field Mirrored)' : ' (Standard)'), 'info', 1200);
+        this.render();
       }
 
-      selectWagonZone(zone) {
-        this.showToast('🎯 Wagon Wheel: ' + zone + ' trajectory recorded for ' + this.matchState.striker.name, 'info');
+      selectWagonZone(zoneId) {
+        this.currentSelectedZone = zoneId;
+        var self = this;
+        var zoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === zoneId; });
+        if (navigator.vibrate) navigator.vibrate([15, 25, 20]);
+        this.showToast('🎯 Target zone: ' + (zoneDef ? zoneDef.label : zoneId), 'info', 1200);
+        this.render();
+      }
+
+      filterWagonBatter(name) {
+        this.currentBatterFilter = name;
+        this.render();
+      }
+
+      filterWagonShots(filter) {
+        this.currentShotFilter = filter;
+        this.render();
+      }
+
+      renderMobileWagonRays() {
+        var centerX = 180;
+        var centerY = 156;
+        var radius = 162;
+        var self = this;
+        var filteredShots = this.shotHistory.filter(function(s) {
+          if (self.currentBatterFilter !== 'ALL' && s.batterName !== self.currentBatterFilter) return false;
+          if (self.currentShotFilter === 'BOUNDARIES') return s.isBoundary;
+          if (self.currentShotFilter === 'SINGLES') return !s.isBoundary && s.runs > 0;
+          if (self.currentShotFilter === 'DOTS') return s.runs === 0;
+          return true;
+        });
+
+        var raysHtml = '';
+        for (var i = 0; i < filteredShots.length; i++) {
+          var shot = filteredShots[i];
+          var angle = shot.angleDeg;
+          if (this.currentStance === 'LHB') {
+            angle = (360 - angle) % 360;
+          }
+          var rad = ((angle - 90) * Math.PI) / 180;
+          var dist = shot.distanceFraction * radius;
+          var targetX = Math.round(centerX + dist * Math.cos(rad));
+          var targetY = Math.round(centerY + dist * Math.sin(rad));
+
+          if (shot.isSix) {
+            var midX = (centerX + targetX) / 2 + (i % 2 === 0 ? 3 : -3);
+            var midY = (centerY + targetY) / 2 - 16;
+            raysHtml += '<path d="M ' + centerX + ',' + centerY + ' Q ' + midX + ',' + midY + ' ' + targetX + ',' + targetY + '" fill="none" stroke="#FFB800" stroke-width="2.8" stroke-linecap="round" style="filter: drop-shadow(0 0 4px rgba(255, 184, 0, 0.7));"/>';
+            raysHtml += '<polygon points="' + targetX + ',' + (targetY - 5) + ' ' + (targetX + 2) + ',' + (targetY - 1) + ' ' + (targetX + 6) + ',' + targetY + ' ' + (targetX + 2) + ',' + (targetY + 1) + ' ' + targetX + ',' + (targetY + 5) + ' ' + (targetX - 2) + ',' + (targetY + 1) + ' ' + (targetX - 6) + ',' + targetY + ' ' + (targetX - 2) + ',' + (targetY - 1) + '" fill="#FFB800"/>';
+          } else if (shot.isBoundary) {
+            raysHtml += '<line x1="' + centerX + '" y1="' + centerY + '" x2="' + targetX + '" y2="' + targetY + '" stroke="#00E599" stroke-width="2.4" stroke-linecap="round" style="filter: drop-shadow(0 0 3px rgba(0, 229, 153, 0.6));"/>';
+            raysHtml += '<circle cx="' + targetX + '" cy="' + targetY + '" r="3.5" fill="#00E599" stroke="#04070D" stroke-width="1"/>';
+          } else if (shot.runs > 0) {
+            raysHtml += '<line x1="' + centerX + '" y1="' + centerY + '" x2="' + targetX + '" y2="' + targetY + '" stroke="#00D2FF" stroke-width="' + (shot.runs >= 2 ? '1.8' : '1.3') + '" stroke-linecap="round"/>';
+            raysHtml += '<circle cx="' + targetX + '" cy="' + targetY + '" r="2" fill="#00D2FF"/>';
+          } else {
+            raysHtml += '<line x1="' + centerX + '" y1="' + centerY + '" x2="' + targetX + '" y2="' + targetY + '" stroke="#64748B" stroke-width="1.1" stroke-dasharray="3,3" stroke-linecap="round"/>';
+            raysHtml += '<circle cx="' + targetX + '" cy="' + targetY + '" r="1.5" fill="#64748B"/>';
+          }
+        }
+        return raysHtml;
+      }
+
+      handleResetButtonClick() {
+        if (!this.holdCompleted) {
+          this.showToast('Hold ↺ for 2 seconds to reset score', 'warning', 2500);
+        }
+        this.holdCompleted = false;
+      }
+
+      bindHoldToReset() {
+        var resetBtn = document.getElementById('btnMobileStudioReset');
+        if (!resetBtn) return;
+        var self = this;
+
+        var startHold = function(e) {
+          if (e.button !== undefined && e.button !== 0) return;
+          self.holdCompleted = false;
+          resetBtn.classList.add('holding');
+          clearTimeout(self.holdConfirmTimer);
+          self.holdConfirmTimer = setTimeout(function() {
+            self.holdCompleted = true;
+            resetBtn.classList.remove('holding');
+            self.resetInningsScore();
+            if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+          }, 2000);
+        };
+
+        var cancelHold = function() {
+          clearTimeout(self.holdConfirmTimer);
+          resetBtn.classList.remove('holding');
+        };
+
+        resetBtn.addEventListener('mousedown', startHold);
+        resetBtn.addEventListener('mouseup', cancelHold);
+        resetBtn.addEventListener('mouseleave', cancelHold);
+        resetBtn.addEventListener('touchstart', startHold, { passive: true });
+        resetBtn.addEventListener('touchend', cancelHold, { passive: true });
+        resetBtn.addEventListener('touchcancel', cancelHold, { passive: true });
+      }
+
+      resetInningsScore() {
+        this.matchState.totalRuns = 0;
+        this.matchState.totalWickets = 0;
+        this.matchState.legalBalls = 0;
+        this.matchState.currentOverDeliveries = [];
+        this.matchState.striker.runs = 0;
+        this.matchState.striker.balls = 0;
+        this.matchState.striker.fours = 0;
+        this.matchState.striker.sixes = 0;
+        this.matchState.nonStriker.runs = 0;
+        this.matchState.nonStriker.balls = 0;
+        this.matchState.nonStriker.fours = 0;
+        this.matchState.nonStriker.sixes = 0;
+        this.matchState.bowler.overs = 0;
+        this.matchState.bowler.ballsThisOver = 0;
+        this.matchState.bowler.maidens = 0;
+        this.matchState.bowler.runsConceded = 0;
+        this.matchState.bowler.wickets = 0;
+        this.freeHitActive = false;
+        this.partnership = { runs: 0, balls: 0 };
+        this.shotHistory = [];
+        this.showToast('Scoreboard reset for new innings ↺', 'success');
+        this.render();
       }
 
       toggleChart(chart) {
@@ -1854,67 +2262,294 @@
         h += '</div>';
         h += '</div>';
 
-        // SUB-VIEW 1: SCORE & SCORER PAD
+        // SUB-VIEW 1: SCORE & TACTICAL SCORER STUDIO
         if (this.matchSubTab === 'SCORE') {
-          // Over Ball Strip
-          h += '<div style="margin-bottom: 0.85rem;">';
-          h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.35rem; font-weight: 600;">This Over Deliveries:</div>';
+          // 1. Free Hit In-Play Banner (if active)
+          if (this.freeHitActive) {
+            h += '<div style="background: rgba(255, 184, 0, 0.15); border: 1px solid #ffb800; border-radius: 10px; padding: 0.55rem 0.75rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem; color: #ffb800; font-size: 0.75rem; font-weight: 700; animation: scorePulseAnim 1.5s infinite;"><span style="font-size: 1rem;">⚡</span> FREE HIT IN PLAY — Next delivery: Batter cannot be dismissed except Run Out!</div>';
+          }
+
+          // 2. Active Batters on Field (Striker + Non-Striker)
+          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.65rem;">';
+          
+          // Striker Card
+          h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 12px; padding: 0.75rem; position: relative;" data-tooltip="Striker facing delivery">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">';
+          h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
+          h += '<span style="font-size: 0.7rem; color: #00E599; font-weight: 800;">STRIKER ⚡</span>';
+          h += '<span style="font-size: 0.6rem; padding: 0.1rem 0.35rem; border-radius: 4px; background: rgba(0, 229, 153, 0.2); color: #00E599; font-weight: 800;">' + this.currentStance + '</span>';
+          h += '</div>';
+          h += '<button type="button" onclick="window.cricosMobileApp.rotateStrike()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #f8fafc; font-size: 0.62rem; padding: 0.15rem 0.45rem; border-radius: 4px;" data-tooltip="Swap strike manually">⇄ Swap</button>';
+          h += '</div>';
+          h += '<div style="font-size: 1rem; font-weight: 800; color: #f8fafc;">' + this.matchState.striker.name + '</div>';
+          h += '<div style="font-family: Chakra Petch, monospace; font-size: 1.25rem; font-weight: 800; color: #00E599; margin-top: 0.15rem;">';
+          h += this.matchState.striker.runs + '* <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">(' + this.matchState.striker.balls + 'b, ' + (this.matchState.striker.fours || 0) + 'x4, ' + (this.matchState.striker.sixes || 0) + 'x6)</span>';
+          h += '</div>';
+          var strikerSr = this.matchState.striker.balls > 0 ? ((this.matchState.striker.runs / this.matchState.striker.balls) * 100).toFixed(1) : '0.0';
+          h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.2rem;">SR: <strong style="color: #f8fafc;">' + strikerSr + '</strong></div>';
+          h += '</div>';
+
+          // Non-Striker Card
+          h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem;" data-tooltip="Non-striker crease">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">';
+          h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
+          h += '<span style="font-size: 0.7rem; color: #94a3b8; font-weight: 700;">NON-STRIKER</span>';
+          h += '<span style="font-size: 0.6rem; padding: 0.1rem 0.35rem; border-radius: 4px; background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-weight: 800;">' + (this.currentStance === 'RHB' ? 'LHB' : 'RHB') + '</span>';
+          h += '</div>';
+          h += '</div>';
+          h += '<div style="font-size: 1rem; font-weight: 800; color: #f8fafc;">' + this.matchState.nonStriker.name + '</div>';
+          h += '<div style="font-family: Chakra Petch, monospace; font-size: 1.25rem; font-weight: 800; color: #00D2FF; margin-top: 0.15rem;">';
+          h += this.matchState.nonStriker.runs + ' <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">(' + this.matchState.nonStriker.balls + 'b, ' + (this.matchState.nonStriker.fours || 0) + 'x4, ' + (this.matchState.nonStriker.sixes || 0) + 'x6)</span>';
+          h += '</div>';
+          var nonStrikerSr = this.matchState.nonStriker.balls > 0 ? ((this.matchState.nonStriker.runs / this.matchState.nonStriker.balls) * 100).toFixed(1) : '0.0';
+          h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.2rem;">SR: <strong style="color: #f8fafc;">' + nonStrikerSr + '</strong></div>';
+          h += '</div>';
+          h += '</div>';
+
+          // 3. Partnership & Bowler Figures Card
+          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem; margin-bottom: 0.65rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">';
+          h += '<span style="font-size: 0.7rem; color: #94a3b8; font-weight: 700;">🤝 CURRENT PARTNERSHIP</span>';
+          h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.8rem; font-weight: 700; color: #00E599;">' + this.partnership.runs + ' runs (' + this.partnership.balls + 'b)</span>';
+          h += '</div>';
+          h += '<div style="height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-bottom: 0.55rem;">';
+          h += '<div style="width: ' + Math.min(100, (this.partnership.runs / 75) * 100) + '%; height: 100%; background: linear-gradient(90deg, #00E599, #00D2FF); border-radius: 2px;"></div>';
+          h += '</div>';
+          var bowlerOversExact = this.matchState.bowler.overs + (this.matchState.bowler.ballsThisOver / 6);
+          var bowlerEcon = bowlerOversExact > 0 ? (this.matchState.bowler.runsConceded / bowlerOversExact).toFixed(2) : '0.00';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.45rem;">';
+          h += '<span style="font-weight: 600;">🎳 ' + this.matchState.bowler.name + '</span>';
+          h += '<span style="font-family: Chakra Petch, monospace; font-weight: 700; color: #00D2FF;">' + this.matchState.bowler.overs + '.' + this.matchState.bowler.ballsThisOver + '-' + this.matchState.bowler.maidens + '-' + this.matchState.bowler.runsConceded + '-' + this.matchState.bowler.wickets + ' <small style="color: #94a3b8; font-size: 0.68rem;">(Econ: ' + bowlerEcon + ')</small></span>';
+          h += '</div>';
+          h += '</div>';
+
+          // 4. Over Deliveries Strip
+          h += '<div style="margin-bottom: 0.75rem;">';
+          h += '<div style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 0.3rem; font-weight: 600;">This Over Deliveries:</div>';
           h += '<div style="display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.25rem;">';
           for (var i = 0; i < this.matchState.currentOverDeliveries.length; i++) {
             var d = this.matchState.currentOverDeliveries[i];
             var bg = 'rgba(255,255,255,0.06)';
             var color = '#f8fafc';
-            if (d === '4') { bg = 'rgba(0, 229, 153, 0.25)'; color = '#00E599'; }
-            if (d === '6') { bg = 'rgba(168, 85, 247, 0.25)'; color = '#c084fc'; }
+            if (d === '4' || d === '4nb') { bg = 'rgba(0, 210, 255, 0.25)'; color = '#00D2FF'; }
+            if (d === '6' || d === '6nb') { bg = 'rgba(0, 229, 153, 0.25)'; color = '#00E599'; }
             if (d === 'W') { bg = 'rgba(255, 51, 102, 0.25)'; color = '#ff3366'; }
+            if (d.indexOf('wd') !== -1 || d.indexOf('nb') !== -1) { bg = 'rgba(255, 184, 0, 0.2)'; color = '#ffb800'; }
             h += '<span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background:' + bg + '; color:' + color + '; font-weight: 800; font-size: 0.85rem; font-family: Chakra Petch, monospace; border: 1px solid rgba(255,255,255,0.1);">' + d + '</span>';
+          }
+          if (this.matchState.currentOverDeliveries.length === 0) {
+            h += '<span style="font-size: 0.7rem; color: #64748b; font-style: italic;">Awaiting first delivery of the over...</span>';
           }
           h += '</div></div>';
 
-          // Batters & Bowler
-          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.6rem;">';
-          h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.6rem;" data-tooltip="Striker">';
-          h += '<div style="font-size: 0.72rem; font-weight: 700; color: #00E599;">' + this.matchState.striker.name + ' *</div>';
-          h += '<div style="font-size: 0.85rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + this.matchState.striker.runs + ' <small style="font-size: 0.68rem; color: #94a3b8;">(' + this.matchState.striker.balls + 'b)</small></div>';
+          // 5. Tactical Scorer Studio Pad & Keypad
+          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 14px; padding: 0.85rem; margin-bottom: 0.85rem; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">';
+          h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+          h += '<span style="font-size: 0.85rem;">🎯</span>';
+          h += '<span style="font-size: 0.8rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">Scorer Studio & Tactical Pad</span>';
           h += '</div>';
-          h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.6rem;" data-tooltip="Non-Striker">';
-          h += '<div style="font-size: 0.72rem; font-weight: 600; color: #cbd5e1;">' + this.matchState.nonStriker.name + '</div>';
-          h += '<div style="font-size: 0.85rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + this.matchState.nonStriker.runs + ' <small style="font-size: 0.68rem; color: #94a3b8;">(' + this.matchState.nonStriker.balls + 'b)</small></div>';
+          h += '<span style="font-size: 0.62rem; color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.15rem 0.45rem; border-radius: 9999px; font-weight: 800;">TACTICAL SCORER</span>';
+          h += '</div>';
+
+          // 4-Column Keypad Grid
+          h += '<div class="mobile-studio-pad-grid">';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(0)" data-tooltip="Dot ball (0 runs, legal delivery)">0<span class="mobile-studio-sublabel">Dot</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(1)" data-tooltip="Single (+1 run, strike rotates)">1<span class="mobile-studio-sublabel">Single</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(2)" data-tooltip="Two runs (+2 runs)">2<span class="mobile-studio-sublabel">Double</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(3)" data-tooltip="Three runs (+3 runs, strike rotates)">3<span class="mobile-studio-sublabel">Triple</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn boundary-four" onclick="window.cricosMobileApp.scoreBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="mobile-studio-sublabel" style="color: #00D2FF;">Four</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn maximum-six" onclick="window.cricosMobileApp.scoreBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="mobile-studio-sublabel" style="color: #00E599;">Six</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn wicket-out" onclick="window.cricosMobileApp.promptWicketModal()" data-tooltip="Wicket Dismissal Dialog">W<span class="mobile-studio-sublabel" style="color: #ff3366;">Wicket</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn undo-btn" onclick="window.cricosMobileApp.undoLastDelivery()" data-tooltip="Undo last delivery">↺<span class="mobile-studio-sublabel" style="color: #ffb800;">Undo</span></button>';
+          h += '</div>';
+
+          // Quick Extras Strip
+          h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem;">';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="WIDE" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="Wide (+1 run, ball re-bowled)">+1 Wd</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1.2; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="NO_BALL" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="No Ball (+1 run, Free Hit next delivery)">+1 Nb (Free Hit)</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="LEG_BYE" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="Leg Bye (+1 run)">+1 Lb</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="BYE" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="Bye (+1 run)">+1 Bye</button>';
+          h += '</div>';
+
+          // Compound Extras & 2-Second Hold-to-Reset Strip
+          h += '<div style="display: flex; gap: 0.3rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.6rem; flex-wrap: wrap;">';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; min-width: 60px; padding: 0.3rem 0.2rem; font-size: 0.65rem;" data-bat="0" data-extra-runs="5" data-extra-type="WIDE" onclick="window.cricosMobileApp.scoreCompoundExtra(Number(this.dataset.bat), Number(this.dataset.extraRuns), this.dataset.extraType)" data-tooltip="Wide + 4 Byes (+5 runs)">+5 Wd (4b)</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; min-width: 60px; padding: 0.3rem 0.2rem; font-size: 0.65rem;" data-bat="4" data-extra-runs="1" data-extra-type="NO_BALL" onclick="window.cricosMobileApp.scoreCompoundExtra(Number(this.dataset.bat), Number(this.dataset.extraRuns), this.dataset.extraType)" data-tooltip="No Ball + Four (+5 runs, Free Hit)">+4 Nb (5r)</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; min-width: 60px; padding: 0.3rem 0.2rem; font-size: 0.65rem;" data-bat="6" data-extra-runs="1" data-extra-type="NO_BALL" onclick="window.cricosMobileApp.scoreCompoundExtra(Number(this.dataset.bat), Number(this.dataset.extraRuns), this.dataset.extraType)" data-tooltip="No Ball + Six (+7 runs, Free Hit)">+6 Nb (7r)</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; min-width: 60px; padding: 0.3rem 0.2rem; font-size: 0.65rem;" data-bat="0" data-extra-runs="5" data-extra-type="PENALTY" onclick="window.cricosMobileApp.scoreCompoundExtra(Number(this.dataset.bat), Number(this.dataset.extraRuns), this.dataset.extraType)" data-tooltip="Penalty Award (+5 runs)">+5 Penalty</button>';
+          h += '<button type="button" class="btn btn-secondary btn-hold-confirm" id="btnMobileStudioReset" onclick="window.cricosMobileApp.handleResetButtonClick()" style="flex: 1.2; min-width: 80px; padding: 0.3rem 0.4rem; font-size: 0.68rem; border-color: rgba(255,51,102,0.3); color: #ff3366;" data-tooltip="Hold 2s to reset match score for new innings"><span class="hold-progress-overlay"></span><span style="position: relative; z-index: 1;">↺ Hold to Reset</span></button>';
           h += '</div>';
           h += '</div>';
 
-          h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.6rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; font-size: 0.78rem;" data-tooltip="Bowler Figures">';
-          h += '<span style="font-weight: 600;">🎳 ' + this.matchState.bowler.name + '</span>';
-          h += '<span style="color: #00D2FF; font-family: Chakra Petch, monospace; font-weight: 700;">' + this.matchState.bowler.overs + '.' + this.matchState.bowler.ballsThisOver + '-' + this.matchState.bowler.maidens + '-' + this.matchState.bowler.runsConceded + '-' + this.matchState.bowler.wickets + '</span>';
-          h += '</div>';
+          // 6. Full Interactive Precision 8-Zone Wagon Wheel
+          var self = this;
+          var activeZoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === self.currentSelectedZone; });
+          var activeZoneLabel = activeZoneDef ? activeZoneDef.label : 'Cover / Extra Cover';
+          var activeZoneSide = activeZoneDef ? activeZoneDef.side : 'OFF';
 
-          // Scorer Pad
-          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.85rem; margin-bottom: 0.85rem;">';
-          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
-          h += '<div style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">⚡ Live Scoring Pad ' + (persona === 'SCORER' ? '<span style="color:#00E599;">(Active)</span>' : '<span style="color:#94a3b8;">(Scorer Role)</span>') + '</div>';
-          h += '<div style="display: flex; gap: 0.3rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.rotateStrike()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-size: 0.65rem;" data-tooltip="Swap Striker and Non-Striker">⇄ Swap</button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.undoBall()" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.1); color: #ffb800; font-size: 0.65rem;" data-tooltip="Undo last delivery">↺ Undo</button>';
+          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 0.85rem; margin-bottom: 0.85rem;">';
+          
+          // Header: Title, Stance Switcher, Selected Zone Badge
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem;">';
+          h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+          h += '<span style="font-size: 0.8rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">8-Zone Precision Wagon Wheel</span>';
+          h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px;">';
+          h += '<button type="button" data-stance="RHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'RHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'RHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Right-handed batter stance">RHB</button>';
+          h += '<button type="button" data-stance="LHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'LHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'LHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Left-handed batter stance">LHB</button>';
           h += '</div></div>';
-
-          h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin-bottom: 0.5rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(0)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Dot Ball">0<span style="display: block; font-size: 8px; color: #94a3b8;">Dot</span></button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(1)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Single (Strike Rotates)">1<span style="display: block; font-size: 8px; color: #94a3b8;">Single</span></button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(2)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Two Runs">2<span style="display: block; font-size: 8px; color: #94a3b8;">Two</span></button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(3)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 800; font-size: 15px;" data-tooltip="Three Runs">3<span style="display: block; font-size: 8px; color: #94a3b8;">Three</span></button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(4)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: #00E599; font-weight: 800; font-size: 15px;" data-tooltip="Boundary Four">4<span style="display: block; font-size: 8px; color: #00E599;">Four</span></button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreBall(6)" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: #c084fc; font-weight: 800; font-size: 15px;" data-tooltip="Over Boundary Six">6<span style="display: block; font-size: 8px; color: #c084fc;">Six</span></button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.promptWicketModal()" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.15); color: #ff3366; font-weight: 800; font-size: 15px;" data-tooltip="Wicket Dismissal">W<span style="display: block; font-size: 8px; color: #ff8099;">Out</span></button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra)" data-extra="WIDE" style="padding: 8px 4px; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.12); color: #ffb800; font-weight: 800; font-size: 15px;" data-tooltip="Wide Ball (+1 Run)">Wd<span style="display: block; font-size: 8px; color: #ffb800;">Wide</span></button>';
+          h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.68rem; color: #00E599; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 6px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25);" id="mobileWagonSelectedZone">ZONE: ' + activeZoneLabel.toUpperCase() + ' (' + activeZoneSide + '-SIDE)</span>';
           h += '</div>';
 
-          h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra)" data-extra="NO_BALL" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.08); color: #ffb800; font-size: 0.7rem; font-weight: 600;" data-tooltip="No Ball (+1 Run & Free Hit)">+1 No Ball</button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra)" data-extra="BYE" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Bye (+1 Run)">+1 Bye</button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra)" data-extra="LEG_BYE" style="padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.7rem; font-weight: 600;" data-tooltip="Leg Bye (+1 Run)">+1 Leg Bye</button>';
-          h += '</div></div>';
+          // Batter Filter Row
+          h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.5rem; overflow-x: auto; padding-bottom: 0.2rem;">';
+          h += '<button type="button" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Virat K.' ? 'active' : '') + '" data-batter="Virat K." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Virat K.">Virat K. (' + this.matchState.striker.runs + '*)</button>';
+          h += '<button type="button" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Rohit S.' ? 'active' : '') + '" data-batter="Rohit S." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Rohit S.">Rohit S. (' + this.matchState.nonStriker.runs + ')</button>';
+          h += '<button type="button" class="wagon-pill-btn ' + (this.currentBatterFilter === 'ALL' ? 'active' : '') + '" data-batter="ALL" onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Partnership">🤝 Partnership (' + this.partnership.runs + ')</button>';
+          h += '</div>';
 
-          // Fan Stadium Pulse
+          // Shot Filter Row
+          h += '<div style="display: flex; gap: 0.3rem; margin-bottom: 0.75rem; overflow-x: auto; padding-bottom: 0.2rem;">';
+          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'ALL' ? 'active' : '') + '" data-filter="ALL" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show all shots">All Shots</button>';
+          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'BOUNDARIES' ? 'active' : '') + '" data-filter="BOUNDARIES" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show boundaries only">4s & 6s</button>';
+          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'SINGLES' ? 'active' : '') + '" data-filter="SINGLES" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show singles only">Singles</button>';
+          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'DOTS' ? 'active' : '') + '" data-filter="DOTS" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show dot balls only">Dots</button>';
+          h += '</div>';
+
+          // 8 Sector Wedges definition
+          var wedges = [
+            { id: 'THIRD_MAN', d: 'M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z', name: 'Third Man' },
+            { id: 'FINE_LEG', d: 'M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z', name: 'Fine Leg' },
+            { id: 'POINT', d: 'M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z', name: 'Point' },
+            { id: 'SQUARE_LEG', d: 'M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z', name: 'Deep Square Leg' },
+            { id: 'EXTRA_COVER', d: 'M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z', name: 'Extra Cover' },
+            { id: 'MID_WICKET', d: 'M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z', name: 'Deep Mid Wicket' },
+            { id: 'LONG_OFF', d: 'M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z', name: 'Long Off' },
+            { id: 'LONG_ON', d: 'M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z', name: 'Long On' }
+          ];
+
+          var wedgesSvg = '';
+          for (var w = 0; w < wedges.length; w++) {
+            var isSel = this.currentSelectedZone === wedges[w].id;
+            wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" onclick="window.cricosMobileApp.selectWagonZone(this.dataset.zone)" data-tooltip="Select ' + wedges[w].name + ' Zone"/>';
+          }
+
+          // SVG Stadium Outfield
+          h += '<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 0.6rem;">';
+          h += '<svg viewBox="0 0 360 360" style="width: 100%; max-width: 330px; height: auto;" xmlns="http://www.w3.org/2000/svg">';
+          h += '<defs>';
+          h += '<radialGradient id="mobileTurfGrad" cx="50%" cy="50%" r="50%">';
+          h += '<stop offset="0%" stop-color="#0E3324"/>';
+          h += '<stop offset="60%" stop-color="#092418"/>';
+          h += '<stop offset="90%" stop-color="#05170F"/>';
+          h += '<stop offset="100%" stop-color="#030C08"/>';
+          h += '</radialGradient>';
+          h += '<linearGradient id="mobilePitchGrad" x1="0%" y1="0%" x2="100%" y2="0%">';
+          h += '<stop offset="0%" stop-color="#8C6E3D"/>';
+          h += '<stop offset="50%" stop-color="#A38350"/>';
+          h += '<stop offset="100%" stop-color="#8C6E3D"/>';
+          h += '</linearGradient>';
+          h += '<filter id="mobileBoundaryGlow" x="-20%" y="-20%" width="140%" height="140%">';
+          h += '<feGaussianBlur stdDeviation="3" result="blur"/>';
+          h += '<feComposite in="SourceGraphic" in2="blur" operator="over"/>';
+          h += '</filter>';
+          h += '</defs>';
+
+          // Ground Circle & Mower Rings
+          h += '<circle cx="180" cy="180" r="168" fill="url(#mobileTurfGrad)" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" filter="url(#mobileBoundaryGlow)"/>';
+          h += '<circle cx="180" cy="180" r="140" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+          h += '<circle cx="180" cy="180" r="110" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+          h += '<circle cx="180" cy="180" r="80" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+          h += '<circle cx="180" cy="180" r="50" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+
+          // 30-Yard Circle
+          h += '<circle cx="180" cy="180" r="88" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.2" stroke-dasharray="4,4"/>';
+          h += '<text x="180" y="98" fill="rgba(0, 210, 255, 0.6)" font-size="6.5" font-family="Chakra Petch, monospace" text-anchor="middle" letter-spacing="1">30 YD CIRCLE</text>';
+
+          // 75m Boundary Rope
+          h += '<circle cx="180" cy="180" r="162" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5"/>';
+          h += '<text x="180" y="26" fill="rgba(255, 255, 255, 0.45)" font-size="7" font-family="Chakra Petch, monospace" text-anchor="middle">75m BOUNDARY ROPE</text>';
+
+          // Radial sector lines
+          h += '<line x1="180" y1="18" x2="180" y2="342" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+          h += '<line x1="18" y1="180" x2="342" y2="180" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+          h += '<line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+          h += '<line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+
+          // Sector Wedges
+          h += wedgesSvg;
+
+          // Pitch Strip in Center
+          h += '<rect x="168" y="140" width="24" height="80" rx="3" fill="url(#mobilePitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>';
+          h += '<line x1="164" y1="150" x2="196" y2="150" stroke="#FFFFFF" stroke-width="1.2"/>';
+          h += '<line x1="168" y1="156" x2="192" y2="156" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
+          h += '<circle cx="177" cy="148" r="1" fill="#FFFFFF"/>';
+          h += '<circle cx="180" cy="148" r="1" fill="#FFFFFF"/>';
+          h += '<circle cx="183" cy="148" r="1" fill="#FFFFFF"/>';
+
+          h += '<line x1="164" y1="210" x2="196" y2="210" stroke="#FFFFFF" stroke-width="1.2"/>';
+          h += '<line x1="168" y1="204" x2="192" y2="204" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
+          h += '<circle cx="177" cy="212" r="1" fill="#FFFFFF"/>';
+          h += '<circle cx="180" cy="212" r="1" fill="#FFFFFF"/>';
+          h += '<circle cx="183" cy="212" r="1" fill="#FFFFFF"/>';
+
+          // Striker Crease Indicator
+          h += '<circle cx="180" cy="156" r="4.5" fill="#00E599" stroke="#FFFFFF" stroke-width="1.5"/>';
+          h += '<g transform="translate(180, 134)">';
+          h += '<rect x="-56" y="-8" width="112" height="16" rx="8" fill="rgba(4, 7, 13, 0.92)" stroke="rgba(0, 229, 153, 0.5)" stroke-width="1.2"/>';
+          h += '<text x="-46" y="2.5" fill="#00E599" font-size="6" font-family="Chakra Petch, monospace" font-weight="800">VK</text>';
+          h += '<text x="-34" y="2.5" fill="#FFFFFF" font-size="6" font-family="Space Grotesk, sans-serif" font-weight="700">Virat K.</text>';
+          h += '<text x="50" y="2.5" fill="#00E599" font-size="6" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end">' + this.matchState.striker.runs + '*</text>';
+          h += '</g>';
+
+          // Non-Striker Crease Indicator
+          h += '<g transform="translate(180, 226)">';
+          h += '<circle cx="0" cy="-22" r="3" fill="#64748B" stroke="#FFFFFF" stroke-width="1"/>';
+          h += '<rect x="-44" y="-7" width="88" height="14" rx="7" fill="rgba(4, 7, 13, 0.85)" stroke="rgba(255, 255, 255, 0.18)" stroke-width="0.8"/>';
+          h += '<text x="0" y="2.5" fill="#94A3B8" font-size="5.5" font-family="Space Grotesk, sans-serif" font-weight="600" text-anchor="middle">Rohit S. ' + this.matchState.nonStriker.runs + '</text>';
+          h += '</g>';
+
+          // Off-Side / On-Side Direction Labels
+          var offLabel = this.currentStance === 'RHB' ? '◀ OFF' : '◀ ON';
+          var legLabel = this.currentStance === 'RHB' ? 'ON ▶' : 'OFF ▶';
+          var offColor = this.currentStance === 'RHB' ? '#00D2FF' : '#00E599';
+          var legColor = this.currentStance === 'RHB' ? '#00E599' : '#00D2FF';
+          h += '<text x="35" y="174" fill="' + offColor + '" font-size="8" font-family="Chakra Petch, monospace" font-weight="700" letter-spacing="0.5">' + offLabel + '</text>';
+          h += '<text x="325" y="174" fill="' + legColor + '" font-size="8" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end" letter-spacing="0.5">' + legLabel + '</text>';
+
+          // Dynamic Shot Rays
+          h += '<g id="mobileWagonRays">';
+          h += this.renderMobileWagonRays();
+          h += '</g>';
+          h += '</svg></div>';
+
+          // Shot Distribution Ratio Bar (Off-Side vs On-Side)
+          var offRuns = 0;
+          var legRuns = 0;
+          for (var sh = 0; sh < this.shotHistory.length; sh++) {
+            var sItem = this.shotHistory[sh];
+            var zMatch = this.SHOT_ZONES_DATA.find(function(z) { return z.id === sItem.zone; });
+            if (zMatch) {
+              if (zMatch.side === 'OFF') offRuns += sItem.runs;
+              else legRuns += sItem.runs;
+            }
+          }
+          var totalShotRuns = Math.max(1, offRuns + legRuns);
+          var offPct = Math.round((offRuns / totalShotRuns) * 100);
+          var legPct = 100 - offPct;
+
+          h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.45rem 0.65rem; margin-bottom: 0.75rem;">';
+          h += '<div style="display: flex; justify-content: space-between; font-size: 0.68rem; margin-bottom: 0.25rem;">';
+          h += '<span style="color: #00D2FF; font-weight: 700;">Off-Side: ' + offRuns + 'r (' + offPct + '%)</span>';
+          h += '<span style="color: #00E599; font-weight: 700;">On-Side: ' + legRuns + 'r (' + legPct + '%)</span>';
+          h += '</div>';
+          h += '<div style="height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; display: flex; overflow: hidden;">';
+          h += '<div style="width: ' + offPct + '%; background: #00D2FF;"></div>';
+          h += '<div style="width: ' + legPct + '%; background: #00E599;"></div>';
+          h += '</div></div>';
+          h += '</div>';
+
+          // 7. Fan Stadium Pulse
           h += '<div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 12px; padding: 0.75rem; margin-bottom: 0.85rem;">';
           h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
           h += '<div style="font-size: 0.75rem; font-weight: 700; color: #c084fc;">🎪 Fan Stadium Pulse</div>';
@@ -1929,16 +2564,6 @@
           h += '<div style="display: flex; gap: 0.4rem;">';
           h += '<button type="button" onclick="window.cricosMobileApp.votePoll(this.dataset.team)" data-team="BLR" style="flex: 1; padding: 0.35rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.3); background: rgba(0, 229, 153, 0.1); color: #00E599; font-size: 0.7rem; font-weight: 600;" data-tooltip="Vote for Bangalore">Vote BLR</button>';
           h += '<button type="button" onclick="window.cricosMobileApp.votePoll(this.dataset.team)" data-team="MUM" style="flex: 1; padding: 0.35rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.3); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-size: 0.7rem; font-weight: 600;" data-tooltip="Vote for Mumbai">Vote MUM</button>';
-          h += '</div></div>';
-
-          // 8-Zone Wagon Wheel Quick Selector
-          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.85rem;">';
-          h += '<div style="font-size: 0.75rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.4rem;">🎯 8-Zone Tactical Wagon Wheel</div>';
-          h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;">';
-          var zones = ['Third Man', 'Point', 'Cover', 'Long Off', 'Long On', 'Mid Wkt', 'Sq Leg', 'Fine Leg'];
-          for (var z = 0; z < zones.length; z++) {
-            h += '<button type="button" onclick="window.cricosMobileApp.selectWagonZone(this.dataset.zone)" data-zone="' + zones[z] + '" style="padding: 0.35rem 0.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-size: 0.65rem;" data-tooltip="Record shot to ' + zones[z] + '">' + zones[z] + '</button>';
-          }
           h += '</div></div>';
         }
 
@@ -2696,6 +3321,7 @@
         }
 
         this.renderToasts();
+        this.bindHoldToReset();
 
         var newScroll = document.getElementById('mobileScrollBody');
         if (newScroll && prevScrollTop > 0) {

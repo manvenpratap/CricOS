@@ -1,14 +1,39 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 12:05:00
-**Version:** 1.0.0-phase2ah (Mobile Native Redesign, 100% In-App Dialog Elimination, Feature Parity & Ergonomics)  
+**Last Updated:** 2026-09-26 12:45:00
+**Version:** 1.0.0-phase2ai (Mobile Tactical Scoring Studio & Precision Wagon Wheel Parity)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AH Completed — Mobile Native Redesign, 100% In-App Dialog Elimination, Feature Parity & Ergonomics:
+- **Active Phase**: Phase 2AI Completed — Mobile Tactical Scoring Studio & Precision Wagon Wheel Parity:
+  - **1. Tactical Scoring Pad & Controls Replicated on Mobile**:
+    - Replicated desktop Scoring Studio layout (`tab-studio`) into mobile app view (`apps/api/src/ui/mobile-view.ts`).
+    - Implemented 4-column studio keypad grid (`.mobile-studio-pad-grid`, `.mobile-studio-btn`) with sublabels (`Dot`, `Single`, `Double`, `Triple`, `Four`, `Six`, `Wicket`, `Undo`), distinct color glows (`boundary-four`, `maximum-six`, `wicket-out`, `undo-btn`), and Web Audio sound engine integration.
+    - Added Quick Extras strip (`+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye`) with strike rotation and ball re-bowl handling.
+    - Added Compound Extras strip (`+5 Wd (4b)`, `+4 Nb (5r)`, `+6 Nb (7r)`, `+5 Penalty`) with proper split of batsman runs vs extra runs and penalty awards.
+    - Implemented 2-second Hold-to-Reset button (`↺ Hold to Reset`) with asymmetric timing (2s linear fill overlay, 200ms ease-out snap back) for new innings reset with haptic confirmation.
+  - **2. Active Batters & Live Telemetry Parity**:
+    - Striker card with live `⇄ Swap` strike header button, RHB/LHB stance badge, score, balls, 4s, 6s, and Strike Rate.
+    - Non-striker card with mirrored stance badge and live career stats.
+    - Live Current Partnership progress bar with dynamic gradient width track.
+    - Bowler Figures card with exact overs (`overs.balls`), maidens, runs conceded, wickets, and calculated economy rate.
+    - Pulsing Free Hit In-Play banner during No Ball situations with MCC Law dismissal rules.
+  - **3. Precision 8-Zone Wagon Wheel Stadium Visualizer**:
+    - Full interactive SVG cricket stadium with turf radial gradient, concentric mower stripes, 30-yd ring, and 75m boundary rope.
+    - 8 clickable sector wedges (`THIRD_MAN`, `FINE_LEG`, `POINT`, `SQUARE_LEG`, `EXTRA_COVER`, `MID_WICKET`, `LONG_OFF`, `LONG_ON`) with emerald selection glow and dynamic zone badge (`mobileWagonSelectedZone`).
+    - Stance switcher (`RHB` / `LHB`) dynamically mirroring shot angles `(360 - angle) % 360` and flipping off/on side directional indicators.
+    - Batter filter pills (`Virat K.`, `Rohit S.`, `Partnership`) and shot type filter pills (`All Shots`, `4s & 6s`, `Singles`, `Dots`).
+    - Dynamic SVG shot trajectory rays rendered on the outfield (curved golden arcs with star markers for sixes, emerald rays with boundary circles for fours, cyan lines for singles, dashed slate for dots).
+    - Off-Side vs On-Side shot distribution ratio bar.
+  - **4. Test Suite 40 & Verification**:
+    - Created `tests/40-mobile-scoring-studio-parity.test.ts` (14 assertions across 4 suites, 100% passing).
+    - `./pipeline.sh test --summary`: 282 tests passing across 94 suites with 0 failures in 755ms.
+    - `./pipeline.sh doctor`: Clean project diagnostics and verified Rule 6 byte-for-byte distribution parity.
+    - Compiled native Android APK (`apps/mobile/android/build-apk.sh`) with all updated assets (`cricos-debug.apk`).
+- **Preceding Phase**: Phase 2AH Completed — Mobile Native Redesign, 100% In-App Dialog Elimination, Feature Parity & Ergonomics:
   - **1. Zero Browser Dialogs & Native In-App Feedback System**:
     - Completely audited and purged all 24 `alert()`, 2 `confirm()`, and 4 `prompt()` browser dialogs from `apps/api/src/ui/mobile-view.ts`.
     - Implemented high-performance, non-blocking stacked in-app Toast Notification engine (`#mobileToastContainer`, `showToast(msg, type)`) with status colors, Web Audio tactile cues, and automatic slide/fade dismissal.
