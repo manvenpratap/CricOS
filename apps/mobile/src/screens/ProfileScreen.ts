@@ -29,6 +29,9 @@ export interface PlayerProfileData {
   teamName: string;
   jerseyNumber: number;
   persona: MobileUserRole;
+  bio?: string;
+  stance?: 'RHB' | 'LHB';
+  bowlingStyle?: string;
   batting: CareerBattingStats;
   bowling: CareerBowlingStats;
 }
@@ -44,6 +47,9 @@ export class ProfileScreenController {
       teamName: profile?.teamName || 'Bangalore Royal Challengers',
       jerseyNumber: profile?.jerseyNumber || 18,
       persona: (profile?.persona as MobileUserRole) || 'CAPTAIN',
+      bio: profile?.bio || 'Relentless run-machine, tactical captain, and high-intensity leader on and off the 22 yards.',
+      stance: profile?.stance || 'RHB',
+      bowlingStyle: profile?.bowlingStyle || 'Right-arm medium',
       batting: profile?.batting || {
         matches: 124,
         innings: 118,

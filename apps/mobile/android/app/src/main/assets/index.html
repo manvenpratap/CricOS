@@ -846,8 +846,184 @@
       display: flex !important;
       flex-direction: column !important;
     }
-    body.is-native-app .mobile-bottom-nav {
-      padding-bottom: max(env(safe-area-inset-bottom), 12px) !important;
+    /* Sign In vs Sign Up Tabs */
+    .auth-mode-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 1.25rem;
+      gap: 4px;
+    }
+    .auth-mode-tab {
+      flex: 1;
+      padding: 0.65rem 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .auth-mode-tab.active {
+      background: rgba(0, 229, 153, 0.18);
+      color: #00E599;
+      box-shadow: 0 2px 8px rgba(0, 229, 153, 0.15);
+    }
+
+    /* Sign Up Persona Selection Grid Cards */
+    .signup-roles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .signup-role-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 0.65rem 0.6rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+    .signup-role-card:active {
+      transform: scale(0.98);
+    }
+    .signup-role-card.selected {
+      background: rgba(0, 229, 153, 0.12);
+      border-color: #00E599;
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
+    }
+    .signup-role-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+    .signup-role-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .signup-role-card.selected .signup-role-title {
+      color: #00E599;
+    }
+    .signup-role-desc {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      line-height: 1.3;
+    }
+    .signup-role-exp-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      margin-top: 0.35rem;
+      display: inline-block;
+      background: rgba(0, 210, 255, 0.1);
+      color: #00D2FF;
+      border: 1px solid rgba(0, 210, 255, 0.2);
+    }
+
+    /* Role Experience HUD Banner */
+    .role-exp-hud-banner {
+      background: linear-gradient(135deg, rgba(10, 25, 47, 0.95), rgba(4, 7, 13, 0.95));
+      border: 1px solid rgba(0, 229, 153, 0.25);
+      border-radius: 12px;
+      padding: 0.75rem 0.85rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+    .role-exp-hud-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .role-exp-hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      margin-bottom: 0.25rem;
+    }
+    .role-exp-hud-desc {
+      font-size: 0.72rem;
+      color: #cbd5e1;
+      line-height: 1.35;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .role-exp-hud-btn {
+      padding: 0.45rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .role-exp-hud-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Profile Bio Card */
+    .profile-bio-card {
+      background: rgba(10, 16, 28, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 1rem 1.15rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .profile-bio-quote-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      color: #00E599;
+      opacity: 0.4;
+      margin-bottom: 0.35rem;
+    }
+    .profile-bio-text {
+      font-size: 0.85rem;
+      color: #f1f5f9;
+      line-height: 1.5;
+      font-style: italic;
+      margin-bottom: 0.65rem;
+    }
+    .profile-bio-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .profile-bio-tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
     }
   </style>
 </head>
@@ -1026,9 +1202,113 @@
         this.currentScreen = 'MATCHES';
         this.matchSubTab = 'SCORE'; // 'SCORE' | 'TELEMETRY' | 'COMMENTARY' | 'ANALYTICS'
         this.authStep = 'IDENTIFIER';
+        this.authMode = 'SIGN_IN'; // 'SIGN_IN' | 'SIGN_UP'
         this.identifier = '+91 98765 43210';
         this.code = '';
         this.role = 'CAPTAIN';
+        this.signupData = {
+          name: 'Rohit Sharma',
+          identifier: '+91 98765 43210',
+          role: 'CAPTAIN',
+          playingRole: 'BATTER',
+          stance: 'RHB',
+          bowlingStyle: 'Right-Arm Fast',
+          jerseyNumber: 45,
+          teamName: 'Mumbai Super Strikers',
+          bio: 'Opening batsman and attacking team leader with clean hitting mechanics and passion for strategic play.'
+        };
+        this.roleExperienceConfig = {
+          CAPTAIN: {
+            title: 'Captain Tactical Command',
+            tagline: 'Squad Roster • Playing XI Strategy • Match Toss',
+            defaultScreen: 'TEAMS',
+            badgeColor: '#00D2FF',
+            badgeBg: 'rgba(0, 210, 255, 0.15)',
+            icon: '🏏',
+            quickAction: 'Manage Lineup',
+            quickActionScreen: 'TEAMS',
+            experienceNote: 'Lineup editor, tactical bench swap, and coin toss certified.'
+          },
+          PLAYER: {
+            title: 'Player Athletic Headquarters',
+            tagline: 'Athletic KPI Radar • Career Figures • Form Momentum',
+            defaultScreen: 'PROFILE',
+            badgeColor: '#a78bfa',
+            badgeBg: 'rgba(167, 139, 250, 0.15)',
+            icon: '👤',
+            quickAction: 'Inspect Athletic Radar',
+            quickActionScreen: 'PROFILE',
+            experienceNote: '6-axis performance radar, 20-match momentum, and career figures active.'
+          },
+          SCORER: {
+            title: 'Scorer Studio Workspace',
+            tagline: 'Ball-by-Ball Live Scoring • Wagon Wheel • Extras Logging',
+            defaultScreen: 'MATCHES',
+            defaultSubTab: 'SCORE',
+            badgeColor: '#00E599',
+            badgeBg: 'rgba(0, 229, 153, 0.15)',
+            icon: '⚡',
+            quickAction: 'Open Scoring Pad',
+            quickActionScreen: 'MATCHES',
+            experienceNote: 'Tactical scoring pad, slide-in wagon wheel, and extras picker unlocked.'
+          },
+          FAN: {
+            title: 'Stadium Fan Pulse Arena',
+            tagline: 'Live Stadium Broadcast • Cheering Console • Win Probability Poll',
+            defaultScreen: 'MATCHES',
+            defaultSubTab: 'SCORE',
+            badgeColor: '#f97316',
+            badgeBg: 'rgba(249, 115, 22, 0.15)',
+            icon: '🎪',
+            quickAction: 'Cheer In Stadium',
+            quickActionScreen: 'MATCHES',
+            experienceNote: 'Broadcast telemetry, live fan cheer counter, and prediction polls ready.'
+          },
+          UMPIRE: {
+            title: 'Match Officials Desk',
+            tagline: 'Code of Conduct Invariants • +5 Penalty • DRS Hawk-Eye',
+            defaultScreen: 'INCIDENTS',
+            badgeColor: '#ffb800',
+            badgeBg: 'rgba(255, 184, 0, 0.15)',
+            icon: '⚖️',
+            quickAction: 'Report Incident',
+            quickActionScreen: 'INCIDENTS',
+            experienceNote: 'MCC Law 41/42 +5 penalty sanctions and Hawk-Eye 3D review authorized.'
+          },
+          ORGANISER: {
+            title: 'Tournament Director Hub',
+            tagline: 'Fixtures • Playoff Tree • GiST Conflict Resolution',
+            defaultScreen: 'TOURNAMENTS',
+            badgeColor: '#f43f5e',
+            badgeBg: 'rgba(244, 63, 94, 0.15)',
+            icon: '🏆',
+            quickAction: 'View Playoff Tree',
+            quickActionScreen: 'TOURNAMENTS',
+            experienceNote: 'Round-robin schedule, NRR trajectory sparkline, and knockout brackets active.'
+          },
+          TURF_PROVIDER: {
+            title: 'Venue Operations Hub',
+            tagline: 'Ground Slot Management • 15m Locks • Escrow Ledgers',
+            defaultScreen: 'MARKETPLACE',
+            badgeColor: '#38bdf8',
+            badgeBg: 'rgba(56, 189, 248, 0.15)',
+            icon: '🏟️',
+            quickAction: 'Manage Turf Slots',
+            quickActionScreen: 'MARKETPLACE',
+            experienceNote: 'Venue storefront, 15-minute GiST slot holds, and rate card active.'
+          },
+          ADMIN: {
+            title: 'Platform Governance & Audit Desk',
+            tagline: 'Double-Entry Settlement • Dispute Arbitration • System Root',
+            defaultScreen: 'ADMIN',
+            badgeColor: '#ec4899',
+            badgeBg: 'rgba(236, 72, 153, 0.15)',
+            icon: '🛡️',
+            quickAction: 'Audit Dispute Desk',
+            quickActionScreen: 'ADMIN',
+            experienceNote: 'Double-entry refund journals, dispute arbitration, and circuit breakers active.'
+          }
+        };
         this.isLoading = false;
         this.errorMessage = null;
         this.fanCheersCount = 1429;
@@ -1192,6 +1472,9 @@
           role: 'BATTER',
           teamName: 'Delhi Daredevils',
           persona: 'CAPTAIN',
+          bio: 'Relentless run-machine, tactical captain, and high-intensity leader on and off the 22 yards.',
+          stance: 'RHB',
+          bowlingStyle: 'Right-arm medium',
           batting: { runs: 4892, innings: 118, notOuts: 19, ballsFaced: 3624 },
           bowling: { wickets: 8, overs: 48, runsConceded: 384, bestBowling: '2/18' }
         };
@@ -1452,20 +1735,195 @@
         this.render();
       }
 
+      setAuthMode(mode) {
+        this.authMode = mode;
+        this.authStep = 'IDENTIFIER';
+        this.render();
+      }
+
+      setSignupRole(role) {
+        this.signupData.role = role;
+        if (role === 'SCORER') this.signupData.playingRole = 'OFFICIAL_SCORER';
+        else if (role === 'UMPIRE') this.signupData.playingRole = 'ELITE_UMPIRE';
+        else if (role === 'FAN') this.signupData.playingRole = 'SUPER_FAN';
+        else if (role === 'ORGANISER') this.signupData.playingRole = 'TOURNAMENT_DIRECTOR';
+        else if (role === 'TURF_PROVIDER') this.signupData.playingRole = 'VENUE_OPERATOR';
+        else if (role === 'ADMIN') this.signupData.playingRole = 'PLATFORM_SUPERUSER';
+        this.render();
+      }
+
+      applyRoleExperience(role, isSignup) {
+        this.role = role;
+        this.profile.persona = role;
+        var cfg = this.roleExperienceConfig[role] || this.roleExperienceConfig.FAN;
+
+        if (isSignup && this.signupData) {
+          if (this.signupData.name) this.profile.name = this.signupData.name;
+          if (this.signupData.bio) this.profile.bio = this.signupData.bio;
+          if (this.signupData.jerseyNumber) this.profile.jerseyNumber = Number(this.signupData.jerseyNumber);
+          if (this.signupData.playingRole) this.profile.role = this.signupData.playingRole;
+          if (this.signupData.teamName) this.profile.teamName = this.signupData.teamName;
+          if (this.signupData.stance) {
+            this.profile.stance = this.signupData.stance;
+            this.currentStance = this.signupData.stance;
+          }
+          if (this.signupData.bowlingStyle) this.profile.bowlingStyle = this.signupData.bowlingStyle;
+        }
+
+        this._screenChanged = true;
+        this.currentScreen = cfg.defaultScreen;
+        if (cfg.defaultSubTab) {
+          this.matchSubTab = cfg.defaultSubTab;
+        }
+
+        var welcomeMsg = isSignup
+          ? "🎉 Profile created! System defined " + cfg.title + " experience"
+          : "👋 Welcome back! System activated " + cfg.title;
+        this.showToast(welcomeMsg, "success");
+        this.render();
+      }
+
+      finalizeAuthAndApplyRole(isSignup) {
+        var chosenRole = isSignup ? (this.signupData.role || 'PLAYER') : (this.role || 'CAPTAIN');
+        this.client.setSession({ token: 'mock-jwt-token', role: chosenRole });
+        this.applyRoleExperience(chosenRole, isSignup);
+      }
+
+      triggerRoleQuickAction() {
+        var role = this.profile.persona;
+        var cfg = this.roleExperienceConfig[role] || this.roleExperienceConfig.FAN;
+        if (role === 'SCORER') {
+          this.currentScreen = 'MATCHES';
+          this.matchSubTab = 'SCORE';
+          this.showToast('Scorer Studio ready: record deliveries on tactical pad', 'info');
+        } else if (role === 'CAPTAIN') {
+          this.currentScreen = 'TEAMS';
+          this.showToast('Captain Command: Playing XI and toss controls active', 'info');
+        } else if (role === 'UMPIRE') {
+          this.currentScreen = 'INCIDENTS';
+          this.showToast('Officials Desk: Review DRS or report incidents', 'info');
+        } else if (role === 'ORGANISER') {
+          this.currentScreen = 'TOURNAMENTS';
+          this.showToast('Tournament Director: Standings and brackets active', 'info');
+        } else if (role === 'TURF_PROVIDER') {
+          this.currentScreen = 'MARKETPLACE';
+          this.showToast('Venue Hub: Manage slots and equipment packages', 'info');
+        } else if (role === 'ADMIN') {
+          this.currentScreen = 'ADMIN';
+          this.showToast('Admin Desk: Audit ledger and resolve disputes', 'info');
+        } else if (role === 'PLAYER') {
+          this.currentScreen = 'PROFILE';
+          this.showToast('Athletic Radar & 20-match momentum loaded', 'info');
+        } else if (role === 'FAN') {
+          this.currentScreen = 'MATCHES';
+          this.matchSubTab = 'SCORE';
+          this.fanCheer();
+        }
+        this._screenChanged = true;
+        this.render();
+      }
+
+      openEditProfileSheet() {
+        var self = this;
+        var p = this.profile;
+        var bodyHtml = '<div style="display: flex; flex-direction: column; gap: 0.85rem;">' +
+          '<div>' +
+            '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Full Name</label>' +
+            '<input type="text" id="editProfileNameInput" value="' + (p.name || '') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.9rem;" />' +
+          '</div>' +
+          '<div>' +
+            '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Cricket Bio / About You</label>' +
+            '<textarea id="editProfileBioInput" rows="3" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem; line-height: 1.4; resize: none;">' + (p.bio || '') + '</textarea>' +
+          '</div>' +
+          '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">' +
+            '<div>' +
+              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Jersey Number</label>' +
+              '<input type="number" id="editProfileJerseyInput" value="' + (p.jerseyNumber || 18) + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #00E599; font-weight: 700; font-size: 0.9rem;" />' +
+            '</div>' +
+            '<div>' +
+              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Batting Stance</label>' +
+              '<select id="editProfileStanceInput" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem;">' +
+                '<option value="RHB"' + (p.stance === 'RHB' ? ' selected' : '') + '>RHB (Right-Hand)</option>' +
+                '<option value="LHB"' + (p.stance === 'LHB' ? ' selected' : '') + '>LHB (Left-Hand)</option>' +
+              '</select>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">' +
+            '<div>' +
+              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Bowling Style</label>' +
+              '<input type="text" id="editProfileBowlingInput" value="' + (p.bowlingStyle || 'Right-Arm Fast') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>' +
+            '<div>' +
+              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Team / Club</label>' +
+              '<input type="text" id="editProfileTeamInput" value="' + (p.teamName || 'Delhi Daredevils') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+        this.openActionSheet({
+          title: '✏️ Edit Profile & Bio',
+          subtitle: 'Update your athlete details and cricket summary',
+          bodyHtml: bodyHtml,
+          confirmText: 'Save Profile & Bio ✓',
+          confirmTooltip: 'Persist updated bio and profile specifications',
+          onConfirm: function() {
+            var nEl = document.getElementById('editProfileNameInput');
+            var bEl = document.getElementById('editProfileBioInput');
+            var jEl = document.getElementById('editProfileJerseyInput');
+            var sEl = document.getElementById('editProfileStanceInput');
+            var bwEl = document.getElementById('editProfileBowlingInput');
+            var tEl = document.getElementById('editProfileTeamInput');
+
+            if (nEl && nEl.value.trim()) self.profile.name = nEl.value.trim();
+            if (bEl && bEl.value.trim()) self.profile.bio = bEl.value.trim();
+            if (jEl && jEl.value) self.profile.jerseyNumber = Number(jEl.value);
+            if (sEl && sEl.value) {
+              self.profile.stance = sEl.value;
+              self.currentStance = sEl.value;
+            }
+            if (bwEl && bwEl.value.trim()) self.profile.bowlingStyle = bwEl.value.trim();
+            if (tEl && tEl.value.trim()) self.profile.teamName = tEl.value.trim();
+
+            self.closeActionSheet();
+            self.showToast('Profile and bio updated successfully!', 'success');
+            self.render();
+          }
+        });
+      }
+
+      renderRoleExperienceBanner() {
+        var role = this.profile.persona || 'PLAYER';
+        var cfg = this.roleExperienceConfig[role] || this.roleExperienceConfig.FAN;
+        var h = '<div class="role-exp-hud-banner" id="roleExperienceBanner">';
+        h += '<div class="role-exp-hud-info">';
+        h += '<div class="role-exp-hud-badge" style="background: ' + cfg.badgeBg + '; color: ' + cfg.badgeColor + '; border: 1px solid ' + cfg.badgeColor + ';">';
+        h += '<span>' + cfg.icon + '</span><span>' + cfg.title + '</span>';
+        h += '</div>';
+        h += '<div class="role-exp-hud-desc" title="' + cfg.tagline + '">';
+        h += '<span style="color: #00E599; font-weight: 600;">System Defined:</span> ' + cfg.tagline;
+        h += '</div>';
+        h += '</div>';
+        h += '<button type="button" class="role-exp-hud-btn" onclick="window.cricosMobileApp.triggerRoleQuickAction()" style="background: ' + cfg.badgeColor + '; color: #04070D;" data-tooltip="' + cfg.experienceNote + '">';
+        h += cfg.quickAction + ' →';
+        h += '</button>';
+        h += '</div>';
+        return h;
+      }
+
       switchUserPersona(role) {
         this._screenChanged = true;
         this.profile.persona = role;
         this.role = role;
         this.personaSheetOpen = false;
         var defaultProfiles = {
-          CAPTAIN: { name: 'Virat K.', jersey: 18, role: 'BATTER', teamName: 'Delhi Daredevils' },
-          PLAYER: { name: 'Hardik P.', jersey: 33, role: 'ALL_ROUNDER', teamName: 'Delhi Daredevils' },
-          SCORER: { name: 'Sunil G.', jersey: 18, role: 'OFFICIAL_SCORER', teamName: 'BCCI Panel' },
-          FAN: { name: 'Aarav M.', jersey: 7, role: 'SUPER_FAN', teamName: 'Spectator Club' },
-          UMPIRE: { name: 'Nitin M.', jersey: 44, role: 'ELITE_UMPIRE', teamName: 'ICC Elite Panel' },
-          ORGANISER: { name: 'Jay S.', jersey: 10, role: 'TOURNAMENT_DIRECTOR', teamName: 'CricOS League' },
-          TURF_PROVIDER: { name: 'Turf Ops', jersey: 12, role: 'VENUE_OPERATOR', teamName: 'Chinnaswamy Annexe' },
-          ADMIN: { name: 'System Root', jersey: 99, role: 'PLATFORM_SUPERUSER', teamName: 'CricOS Cloud' }
+          CAPTAIN: { name: 'Virat K.', jersey: 18, role: 'BATTER', teamName: 'Delhi Daredevils', bio: 'Relentless run-machine, tactical captain, and high-intensity leader on and off the 22 yards.' },
+          PLAYER: { name: 'Hardik P.', jersey: 33, role: 'ALL_ROUNDER', teamName: 'Delhi Daredevils', bio: 'High-impact power hitter and seam bowling all-rounder thriving in clutch death-overs.' },
+          SCORER: { name: 'Sunil G.', jersey: 18, role: 'OFFICIAL_SCORER', teamName: 'BCCI Panel', bio: 'Certified BCCI Grade-A scorer maintaining sub-second delivery accuracy and MCC Law integrity.' },
+          FAN: { name: 'Aarav M.', jersey: 7, role: 'SUPER_FAN', teamName: 'Spectator Club', bio: 'Passionate cricket enthusiast backing team momentum with live stadium cheer energy.' },
+          UMPIRE: { name: 'Nitin M.', jersey: 44, role: 'ELITE_UMPIRE', teamName: 'ICC Elite Panel', bio: 'ICC Elite Panel official upholding Code of Conduct invariants and DRS Hawk-Eye reviews.' },
+          ORGANISER: { name: 'Jay S.', jersey: 10, role: 'TOURNAMENT_DIRECTOR', teamName: 'CricOS League', bio: 'Tournament director orchestrating round-robin brackets, GiST conflict prevention, and prize pools.' },
+          TURF_PROVIDER: { name: 'Turf Ops', jersey: 12, role: 'VENUE_OPERATOR', teamName: 'Chinnaswamy Annexe', bio: 'Turf arena operator managing pitch preparation, floodlight bookings, and escrow slot reservations.' },
+          ADMIN: { name: 'System Root', jersey: 99, role: 'PLATFORM_SUPERUSER', teamName: 'CricOS Cloud', bio: 'Platform superuser guarding double-entry settlement ledgers and multi-tier system security.' }
         };
         var def = defaultProfiles[role];
         if (def) {
@@ -1473,6 +1931,7 @@
           this.profile.jerseyNumber = def.jersey;
           this.profile.role = def.role;
           this.profile.teamName = def.teamName;
+          if (def.bio) this.profile.bio = def.bio;
         }
         if (role === 'UMPIRE' && this.currentScreen !== 'INCIDENTS') {
           this.currentScreen = 'INCIDENTS';
@@ -1518,6 +1977,39 @@
         this.render();
       }
 
+      submitSignUpAction() {
+        var nameEl = document.getElementById('signupNameInput');
+        var idEl = document.getElementById('signupIdentifierInput');
+        var bioEl = document.getElementById('signupBioInput');
+        var jerseyEl = document.getElementById('signupJerseyNumber');
+        var teamEl = document.getElementById('signupTeamName');
+        var roleEl = document.getElementById('signupPlayingRole');
+        var stanceEl = document.getElementById('signupBattingStance');
+        var bowlEl = document.getElementById('signupBowlingStyle');
+
+        if (nameEl && nameEl.value.trim()) this.signupData.name = nameEl.value.trim();
+        if (idEl && idEl.value.trim()) {
+          this.signupData.identifier = idEl.value.trim();
+          this.identifier = idEl.value.trim();
+        }
+        if (bioEl && bioEl.value.trim()) this.signupData.bio = bioEl.value.trim();
+        if (jerseyEl && jerseyEl.value) this.signupData.jerseyNumber = Number(jerseyEl.value);
+        if (teamEl && teamEl.value.trim()) this.signupData.teamName = teamEl.value.trim();
+        if (roleEl && roleEl.value) this.signupData.playingRole = roleEl.value;
+        if (stanceEl && stanceEl.value) this.signupData.stance = stanceEl.value;
+        if (bowlEl && bowlEl.value) this.signupData.bowlingStyle = bowlEl.value;
+
+        if (!this.signupData.name) {
+          this.showToast('Please enter your full name', 'warning');
+          return;
+        }
+
+        this.authStep = 'OTP_INPUT';
+        this.code = '123456';
+        this.showToast('Verification code dispatched for ' + this.signupData.name, 'success');
+        this.render();
+      }
+
       backToIdentifier() {
         this.authStep = 'IDENTIFIER';
         this.render();
@@ -1529,28 +2021,26 @@
         this.isLoading = true;
         this.render();
 
+        var isSignup = this.authMode === 'SIGN_UP';
+        var activeRole = isSignup ? (this.signupData.role || 'PLAYER') : (this.role || 'CAPTAIN');
+
         try {
           const res = await fetch('/api/v1/auth/otp/verify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ identifier: this.identifier, code: this.code, role: this.role })
+            body: JSON.stringify({ identifier: this.identifier, code: this.code, role: activeRole })
           });
           const data = await res.json();
           this.isLoading = false;
           if (res.ok && data.token) {
-            this.client.setSession({ token: data.token, role: this.role });
-            this.profile.persona = this.role;
-            this.showToast('Signed in successfully as ' + this.role, 'success');
-            this.navigateTo('MATCHES');
+            this.client.setSession({ token: data.token, role: activeRole });
+            this.finalizeAuthAndApplyRole(isSignup);
             return;
           }
         } catch {}
 
         this.isLoading = false;
-        this.client.setSession({ token: 'mock-jwt-token', role: this.role });
-        this.profile.persona = this.role;
-        this.showToast('Signed in as ' + this.role, 'success');
-        this.navigateTo('MATCHES');
+        this.finalizeAuthAndApplyRole(isSignup);
       }
 
       onPadNumberSelect(runs) {
@@ -2652,55 +3142,184 @@
       }
 
       renderAuth() {
-        var h = '<div style="padding: 1.5rem 1.25rem;">';
-        h += '<div style="text-align: center; margin-bottom: 1.5rem;">';
-        h += '<div style="font-size: 2.75rem; margin-bottom: 0.5rem;">🏏</div>';
-        h += '<h2 style="margin: 0; font-family: Space Grotesk, sans-serif; font-size: 1.5rem; color: #f8fafc;">Sign In to CricOS</h2>';
-        h += '<p style="margin: 0.35rem 0 0; color: #94a3b8; font-size: 0.85rem;">Tournament & Match Hub (8 User Personas)</p>';
+        var isSignup = this.authMode === 'SIGN_UP';
+        var h = '<div style="padding: 1.25rem 1rem;">';
+
+        // Auth Mode Switcher (Sign In vs Create Account)
+        h += '<div class="auth-mode-tabs">';
+        h += '<button type="button" class="auth-mode-tab ' + (!isSignup ? 'active' : '') + '" onclick="window.cricosMobileApp.setAuthMode(this.dataset.mode)" data-mode="SIGN_IN" data-tooltip="Sign in to your existing CricOS account">🔑 Sign In</button>';
+        h += '<button type="button" class="auth-mode-tab ' + (isSignup ? 'active' : '') + '" onclick="window.cricosMobileApp.setAuthMode(this.dataset.mode)" data-mode="SIGN_UP" data-tooltip="Create a new cricket profile, custom bio, and role experience">✨ Create Account</button>';
         h += '</div>';
 
-        if (this.authStep === 'IDENTIFIER') {
-          h += '<div style="margin-bottom: 1rem;">';
-          h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Mobile Phone or Email</label>';
-          h += '<input type="text" id="authIdentifierInput" value="' + this.identifier + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.75rem; color: #f8fafc; font-size: 0.95rem;" />';
+        if (isSignup) {
+          // --- SIGN UP WORKFLOW ---
+          h += '<div style="text-align: center; margin-bottom: 1.25rem;">';
+          h += '<div style="font-size: 2.25rem; margin-bottom: 0.25rem;">🏏</div>';
+          h += '<h2 style="margin: 0; font-family: Space Grotesk, sans-serif; font-size: 1.35rem; color: #f8fafc;">Create Your Cricket Profile</h2>';
+          h += '<p style="margin: 0.25rem 0 0; color: #94a3b8; font-size: 0.78rem;">Choose your persona & bio — system auto-configures your tailored workspace</p>';
           h += '</div>';
 
-          h += '<div style="margin-bottom: 1.25rem;">';
-          h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Choose Persona Journey</label>';
-          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">';
-          var roles = [
-            ['CAPTAIN', '🏏 Captain'],
-            ['PLAYER', '👤 Player'],
-            ['SCORER', '⚡ Scorer'],
-            ['FAN', '🎪 Fan Pulse'],
-            ['UMPIRE', '⚖️ Umpire'],
-            ['ORGANISER', '🏆 Director'],
-            ['TURF_PROVIDER', '🏟️ Turf Host'],
-            ['ADMIN', '🛡️ Admin Desk']
-          ];
-          for (var i = 0; i < roles.length; i++) {
-            var r = roles[i];
-            var active = this.role === r[0] ? 'background: rgba(0, 229, 153, 0.2); border-color: #00E599; color: #00E599;' : 'background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: #f8fafc;';
-            h += '<button type="button" onclick="window.cricosMobileApp.setAuthRole(this.dataset.role)" data-role="' + r[0] + '" style="padding: 0.5rem; font-size: 0.75rem; border-radius: 6px; border: 1px solid; cursor: pointer; ' + active + '" data-tooltip="Sign in as ' + r[1] + '">' + r[1] + '</button>';
+          if (this.authStep === 'IDENTIFIER') {
+            // Full Name
+            h += '<div style="margin-bottom: 0.85rem;">';
+            h += '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Full Name *</label>';
+            h += '<input type="text" id="signupNameInput" value="' + (this.signupData.name || '') + '" placeholder="e.g. Virat Sharma" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.9rem;" />';
+            h += '</div>';
+
+            // Identifier (Mobile or Email)
+            h += '<div style="margin-bottom: 0.85rem;">';
+            h += '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Mobile Phone or Email *</label>';
+            h += '<input type="text" id="signupIdentifierInput" value="' + (this.signupData.identifier || this.identifier) + '" placeholder="+91 98765 43210" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.9rem;" />';
+            h += '</div>';
+
+            // Primary Persona / Role Selection (8 personas)
+            h += '<div style="margin-bottom: 1rem;">';
+            h += '<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">';
+            h += '<label style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">Select Primary Role & System Experience</label>';
+            h += '<span style="font-size: 0.65rem; color: #00E599; font-weight: 600;">8 Automated Personas</span>';
+            h += '</div>';
+            h += '<div class="signup-roles-grid" id="signupRolesGrid">';
+
+            var roleCards = [
+              ['CAPTAIN', '🏏 Captain', 'Tactical squad lineup, coin toss, declaration'],
+              ['PLAYER', '👤 Player', 'Athletic KPI radar, 20-match form & stats'],
+              ['SCORER', '⚡ Scorer', 'Ball-by-ball studio, wagon wheel & extras'],
+              ['FAN', '🎪 Fan Pulse', 'Stadium broadcast HUD, cheering & live poll'],
+              ['UMPIRE', '⚖️ Umpire', 'MCC Law 41/42 +5 penalty, Hawk-Eye DRS'],
+              ['ORGANISER', '🏆 Director', 'Tournament brackets, NRR sparklines & GiST'],
+              ['TURF_PROVIDER', '🏟️ Turf Host', 'Venue storefront, 15m slot locks & ledger'],
+              ['ADMIN', '🛡️ Admin Desk', 'Double-entry settlement & dispute ledger']
+            ];
+
+            for (var rIdx = 0; rIdx < roleCards.length; rIdx++) {
+              var rc = roleCards[rIdx];
+              var isSelected = this.signupData.role === rc[0];
+              var cardClass = 'signup-role-card' + (isSelected ? ' selected' : '');
+              h += '<div class="' + cardClass + '" onclick="window.cricosMobileApp.setSignupRole(this.dataset.role)" data-role="' + rc[0] + '" data-tooltip="Select ' + rc[1] + ' to define automated app experience">';
+              h += '<div class="signup-role-header">';
+              h += '<span class="signup-role-title">' + rc[1] + '</span>';
+              if (isSelected) {
+                h += '<span style="color: #00E599; font-size: 0.75rem; font-weight: 800;">✓</span>';
+              }
+              h += '</div>';
+              h += '<div class="signup-role-desc">' + rc[2] + '</div>';
+              h += '<div class="signup-role-exp-badge">Auto: ' + (this.roleExperienceConfig[rc[0]]?.defaultScreen || 'MATCHES') + '</div>';
+              h += '</div>';
+            }
+            h += '</div></div>';
+
+            // Custom Cricket Bio / Mission Statement
+            h += '<div style="margin-bottom: 0.85rem;">';
+            h += '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Personal Cricket Bio / Mission Statement</label>';
+            h += '<textarea id="signupBioInput" rows="3" placeholder="Tell the team about your playing philosophy, clutch strengths, or officiating experience..." style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.82rem; line-height: 1.4; resize: none;">' + (this.signupData.bio || '') + '</textarea>';
+            h += '</div>';
+
+            // Technical Specs & Specialization Grid
+            h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; margin-bottom: 1.15rem;">';
+            h += '<div style="font-size: 0.72rem; font-weight: 700; color: #00D2FF; text-transform: uppercase; margin-bottom: 0.5rem;">Player & Club Specifications</div>';
+            h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">';
+            h += '<div>';
+            h += '<label style="display: block; font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.2rem;">Specialization</label>';
+            h += '<select id="signupPlayingRole" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.45rem; color: #f8fafc; font-size: 0.78rem;">';
+            var pRoles = ['BATTER', 'BOWLER', 'ALL_ROUNDER', 'WICKETKEEPER', 'OFFICIAL_SCORER', 'ELITE_UMPIRE', 'TOURNAMENT_DIRECTOR', 'VENUE_OPERATOR', 'PLATFORM_SUPERUSER'];
+            for (var pr = 0; pr < pRoles.length; pr++) {
+              var pSel = this.signupData.playingRole === pRoles[pr] ? ' selected' : '';
+              h += '<option value="' + pRoles[pr] + '"' + pSel + '>' + pRoles[pr].replace('_', ' ') + '</option>';
+            }
+            h += '</select></div>';
+            h += '<div>';
+            h += '<label style="display: block; font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.2rem;">Batting Stance</label>';
+            h += '<select id="signupBattingStance" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.45rem; color: #f8fafc; font-size: 0.78rem;">';
+            h += '<option value="RHB"' + (this.signupData.stance === 'RHB' ? ' selected' : '') + '>RHB (Right Hand)</option>';
+            h += '<option value="LHB"' + (this.signupData.stance === 'LHB' ? ' selected' : '') + '>LHB (Left Hand)</option>';
+            h += '</select></div>';
+            h += '</div>';
+
+            h += '<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem;">';
+            h += '<div>';
+            h += '<label style="display: block; font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.2rem;">Bowling Style</label>';
+            h += '<input type="text" id="signupBowlingStyle" value="' + (this.signupData.bowlingStyle || 'Right-Arm Fast') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.45rem; color: #f8fafc; font-size: 0.75rem;" />';
+            h += '</div>';
+            h += '<div>';
+            h += '<label style="display: block; font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.2rem;">Jersey #</label>';
+            h += '<input type="number" id="signupJerseyNumber" value="' + (this.signupData.jerseyNumber || 18) + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.45rem; color: #00E599; font-weight: 700; font-size: 0.75rem;" />';
+            h += '</div>';
+            h += '<div>';
+            h += '<label style="display: block; font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.2rem;">Club / Team</label>';
+            h += '<input type="text" id="signupTeamName" value="' + (this.signupData.teamName || 'CricOS Warriors') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.45rem; color: #f8fafc; font-size: 0.75rem;" />';
+            h += '</div>';
+            h += '</div></div>';
+
+            // Submit Button
+            h += '<button type="button" onclick="window.cricosMobileApp.submitSignUpAction()" style="width: 100%; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 1rem; cursor: pointer;" data-tooltip="Create cricket profile and continue to verification">Create Profile & Verify →</button>';
+          } else {
+            // OTP verification step for Sign Up
+            h += '<div style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; text-align: center;">';
+            h += '<div style="font-size: 0.8rem; color: #94a3b8;">Verifying profile for: <strong style="color: #f8fafc;">' + (this.signupData.name || 'New Athlete') + '</strong> (' + (this.signupData.role || 'PLAYER') + ')</div>';
+            h += '<div style="font-size: 0.75rem; color: #00E599; margin-top: 0.25rem;">Staging Code: <strong>123456</strong></div>';
+            h += '</div>';
+
+            h += '<div style="margin-bottom: 1.25rem;">';
+            h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Enter 6-Digit OTP</label>';
+            h += '<input type="text" id="authCodeInput" value="' + this.code + '" maxlength="6" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.75rem; color: #00E599; font-size: 1.5rem; text-align: center; letter-spacing: 0.4rem; font-family: Chakra Petch, monospace;" />';
+            h += '</div>';
+
+            h += '<div style="display: flex; gap: 0.5rem;">';
+            h += '<button type="button" onclick="window.cricosMobileApp.backToIdentifier()" style="flex: 1; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; cursor: pointer;" data-tooltip="Back to profile details">← Back</button>';
+            h += '<button type="button" onclick="window.cricosMobileApp.verifyOtpAction()" style="flex: 2; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.95rem; cursor: pointer;" data-tooltip="Complete profile creation and initialize automated role workspace">Confirm & Launch App 🚀</button>';
+            h += '</div>';
           }
-          h += '</div></div>';
-
-          h += '<button type="button" onclick="window.cricosMobileApp.requestOtpAction()" style="width: 100%; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 1rem; cursor: pointer;" data-tooltip="Dispatch 6-digit OTP verification code via Fastify backend">' + (this.isLoading ? 'Sending...' : 'Send Secure OTP →') + '</button>';
         } else {
-          h += '<div style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; text-align: center;">';
-          h += '<div style="font-size: 0.8rem; color: #94a3b8;">Code sent to: <strong style="color: #f8fafc;">' + this.identifier + '</strong></div>';
-          h += '<div style="font-size: 0.75rem; color: #00E599; margin-top: 0.25rem;">Staging Code: <strong>123456</strong></div>';
+          // --- SIGN IN WORKFLOW ---
+          h += '<div style="text-align: center; margin-bottom: 1.5rem;">';
+          h += '<div style="font-size: 2.75rem; margin-bottom: 0.5rem;">🏏</div>';
+          h += '<h2 style="margin: 0; font-family: Space Grotesk, sans-serif; font-size: 1.5rem; color: #f8fafc;">Sign In to CricOS</h2>';
+          h += '<p style="margin: 0.35rem 0 0; color: #94a3b8; font-size: 0.85rem;">Tournament & Match Hub (8 User Personas)</p>';
           h += '</div>';
 
-          h += '<div style="margin-bottom: 1.25rem;">';
-          h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Enter 6-Digit OTP</label>';
-          h += '<input type="text" id="authCodeInput" value="' + this.code + '" maxlength="6" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.75rem; color: #00E599; font-size: 1.5rem; text-align: center; letter-spacing: 0.4rem; font-family: Chakra Petch, monospace;" />';
-          h += '</div>';
+          if (this.authStep === 'IDENTIFIER') {
+            h += '<div style="margin-bottom: 1rem;">';
+            h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Mobile Phone or Email</label>';
+            h += '<input type="text" id="authIdentifierInput" value="' + this.identifier + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.75rem; color: #f8fafc; font-size: 0.95rem;" />';
+            h += '</div>';
 
-          h += '<div style="display: flex; gap: 0.5rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.backToIdentifier()" style="flex: 1; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; cursor: pointer;" data-tooltip="Back to identifier input">← Back</button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.verifyOtpAction()" style="flex: 2; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.95rem; cursor: pointer;" data-tooltip="Verify OTP code and create JWT mobile session">Verify & Enter ✓</button>';
-          h += '</div>';
+            h += '<div style="margin-bottom: 1.25rem;">';
+            h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Choose Persona Journey</label>';
+            h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">';
+            var roles = [
+              ['CAPTAIN', '🏏 Captain'],
+              ['PLAYER', '👤 Player'],
+              ['SCORER', '⚡ Scorer'],
+              ['FAN', '🎪 Fan Pulse'],
+              ['UMPIRE', '⚖️ Umpire'],
+              ['ORGANISER', '🏆 Director'],
+              ['TURF_PROVIDER', '🏟️ Turf Host'],
+              ['ADMIN', '🛡️ Admin Desk']
+            ];
+            for (var i = 0; i < roles.length; i++) {
+              var r = roles[i];
+              var active = this.role === r[0] ? 'background: rgba(0, 229, 153, 0.2); border-color: #00E599; color: #00E599;' : 'background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: #f8fafc;';
+              h += '<button type="button" onclick="window.cricosMobileApp.setAuthRole(this.dataset.role)" data-role="' + r[0] + '" style="padding: 0.5rem; font-size: 0.75rem; border-radius: 6px; border: 1px solid; cursor: pointer; ' + active + '" data-tooltip="Sign in as ' + r[1] + '">' + r[1] + '</button>';
+            }
+            h += '</div></div>';
+
+            h += '<button type="button" onclick="window.cricosMobileApp.requestOtpAction()" style="width: 100%; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 1rem; cursor: pointer;" data-tooltip="Dispatch 6-digit OTP verification code via Fastify backend">' + (this.isLoading ? 'Sending...' : 'Send Secure OTP →') + '</button>';
+          } else {
+            h += '<div style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; text-align: center;">';
+            h += '<div style="font-size: 0.8rem; color: #94a3b8;">Code sent to: <strong style="color: #f8fafc;">' + this.identifier + '</strong></div>';
+            h += '<div style="font-size: 0.75rem; color: #00E599; margin-top: 0.25rem;">Staging Code: <strong>123456</strong></div>';
+            h += '</div>';
+
+            h += '<div style="margin-bottom: 1.25rem;">';
+            h += '<label style="display: block; font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem;">Enter 6-Digit OTP</label>';
+            h += '<input type="text" id="authCodeInput" value="' + this.code + '" maxlength="6" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.75rem; color: #00E599; font-size: 1.5rem; text-align: center; letter-spacing: 0.4rem; font-family: Chakra Petch, monospace;" />';
+            h += '</div>';
+
+            h += '<div style="display: flex; gap: 0.5rem;">';
+            h += '<button type="button" onclick="window.cricosMobileApp.backToIdentifier()" style="flex: 1; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; cursor: pointer;" data-tooltip="Back to identifier input">← Back</button>';
+            h += '<button type="button" onclick="window.cricosMobileApp.verifyOtpAction()" style="flex: 2; padding: 0.85rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.95rem; cursor: pointer;" data-tooltip="Verify OTP code and create JWT mobile session">Verify & Enter ✓</button>';
+            h += '</div>';
+          }
         }
         h += '</div>';
         return h;
@@ -2731,6 +3350,7 @@
         h += '</div>';
 
         h += '<div style="padding: 1rem;">';
+        h += this.renderRoleExperienceBanner();
 
         // Match Top Badges
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.4rem;">';
@@ -3212,6 +3832,7 @@
       renderTeams() {
         var isCaptain = this.profile.persona === 'CAPTAIN';
         var h = '<div style="padding: 1rem;">';
+        h += this.renderRoleExperienceBanner();
 
         // Team Header & Join Code
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
@@ -3284,6 +3905,7 @@
       renderTournaments() {
         var isOrganiser = this.profile.persona === 'ORGANISER';
         var h = '<div style="padding: 1rem;">';
+        h += this.renderRoleExperienceBanner();
 
         // Tournament Card & 4-Stage Stepper
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
@@ -3403,6 +4025,7 @@
       renderMarketplace() {
         var isProvider = this.profile.persona === 'TURF_PROVIDER';
         var h = '<div style="padding: 1rem;">';
+        h += this.renderRoleExperienceBanner();
 
         // Marketplace Header
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
@@ -3483,6 +4106,7 @@
 
       renderIncidents() {
         var h = '<div style="padding: 1rem;">';
+        h += this.renderRoleExperienceBanner();
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
         h += '<div style="font-size: 0.7rem; font-weight: 700; color: #ff3366; text-transform: uppercase;">MCC Laws & Trust Desk</div>';
         h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Lead Umpire Desk</h2>';
@@ -3526,6 +4150,7 @@
 
       renderAdmin() {
         var h = '<div style="padding: 1rem;">';
+        h += this.renderRoleExperienceBanner();
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;">';
         h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">Governance & Ledger</div>';
         h += '<h2 style="margin: 0.25rem 0 0; font-size: 1.25rem; font-family: Space Grotesk, sans-serif;">Platform Admin Desk</h2>';
@@ -3624,6 +4249,20 @@
         h += '<div style="font-size: 1.15rem; font-weight: 700;">' + this.profile.name + '</div>';
         h += '<div style="font-size: 0.75rem; color: #94a3b8;"><span style="color: #00E599; font-weight: 600;">' + this.profile.persona + '</span> • ' + this.profile.role + ' • ' + this.profile.teamName + '</div>';
         h += '</div></div></div>';
+
+        // Custom Cricket Bio & Profile Specifications Card
+        var expCfg = this.roleExperienceConfig[this.profile.persona] || this.roleExperienceConfig.FAN;
+        h += '<div class="profile-bio-card" id="profileBioCard">';
+        h += '<div class="profile-bio-quote-icon">❝</div>';
+        h += '<div class="profile-bio-text" id="profileBioText">"' + (this.profile.bio || 'Passionate cricketer striving for peak performance.') + '"</div>';
+        h += '<div class="profile-bio-tags">';
+        h += '<span class="profile-bio-tag">🏏 ' + (this.profile.stance || 'RHB') + '</span>';
+        h += '<span class="profile-bio-tag">⚾ ' + (this.profile.bowlingStyle || 'Right-Arm Fast') + '</span>';
+        h += '<span class="profile-bio-tag">🛡️ ' + this.profile.teamName + '</span>';
+        h += '<span class="profile-bio-tag" style="background: ' + expCfg.badgeBg + '; color: ' + expCfg.badgeColor + '; border-color: ' + expCfg.badgeColor + ';">' + expCfg.icon + ' ' + expCfg.title + '</span>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.openEditProfileSheet()" id="btnEditProfileBio" style="width: 100%; margin-top: 0.75rem; padding: 0.55rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: #00E599; font-weight: 700; font-size: 0.75rem; cursor: pointer;" data-tooltip="Edit your cricket bio, jersey number, batting stance, and club specs">✏️ Edit Profile & Bio</button>';
+        h += '</div>';
 
         // 21st.dev Athletic KPI & Career Stats Card (Player Profile Experience)
         h += this.renderAthleticCard(this.selectedPlayerId || 'p1');

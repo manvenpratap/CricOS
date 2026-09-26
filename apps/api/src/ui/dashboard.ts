@@ -4269,6 +4269,12 @@ export function getDashboardHtml(): string {
           </div>
         </div>
 
+        <!-- Cricket Bio & Mission Statement -->
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Cricket Bio & Mission</label>
+          <textarea id="profileInputBio" rows="2" style="width: 100%; border-radius: 8px; background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); color: #F8FAFC; padding: 0.5rem; font-family: inherit; font-size: 0.85rem; resize: vertical;" placeholder="Tell the cricket world about your style, ethos, and milestones...">Aggressive top-order batsman & tactical captain. Focused on clinical chases and building unshakeable team culture.</textarea>
+        </div>
+
         <!-- Career Figures Card -->
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
           <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Verified Career Figures</div>
@@ -7211,7 +7217,8 @@ cricos_active_sse_connections 1</pre>
       persona: 'CAPTAIN',
       jerseyNumber: 18,
       battingStyle: 'RHB',
-      bowlingStyle: 'Right-Arm Fast'
+      bowlingStyle: 'Right-Arm Fast',
+      bio: 'Aggressive top-order batsman & tactical captain. Focused on clinical chases and building unshakeable team culture.'
     };
 
     function openUserModal() {
@@ -7223,10 +7230,12 @@ cricos_active_sse_connections 1</pre>
         const jerseyInput = document.getElementById('profileInputJersey');
         const battingSelect = document.getElementById('profileInputBatting');
         const bowlingSelect = document.getElementById('profileInputBowling');
+        const bioInput = document.getElementById('profileInputBio');
         if (nameInput) nameInput.value = currentUser.name || '';
         if (jerseyInput) jerseyInput.value = currentUser.jerseyNumber || 18;
         if (battingSelect) battingSelect.value = currentUser.battingStyle || 'RHB';
         if (bowlingSelect) bowlingSelect.value = currentUser.bowlingStyle || 'Right-Arm Fast';
+        if (bioInput) bioInput.value = currentUser.bio || '';
 
         // Synchronize persona pill buttons visual active state
         document.querySelectorAll('.persona-pill-btn').forEach(btn => {
@@ -7362,14 +7371,14 @@ cricos_active_sse_connections 1</pre>
     function selectPersona(role) {
       currentUser.persona = role;
       const defaultProfiles = {
-        CAPTAIN: { name: 'Virat Sharma', jersey: 18, batting: 'RHB', bowling: 'Right-Arm Fast', stats: ['48', '1,850', '46.25', '144.5'] },
-        PLAYER: { name: 'Hardik Patel', jersey: 33, batting: 'RHB', bowling: 'Right-Arm Medium', stats: ['36', '1,220', '40.67', '152.0'] },
-        SCORER: { name: 'Sunil Gavaskar', jersey: 18, batting: 'RHB', bowling: 'None', stats: ['120', '450', '22.50', '112.5'] },
-        FAN: { name: 'Aarav Mehta', jersey: 7, batting: 'RHB', bowling: 'None', stats: ['250', '1,428', '42', '78%'] },
-        UMPIRE: { name: 'Nitin Menon', jersey: 44, batting: 'RHB', bowling: 'None', stats: ['84', '312', '88%', '9.4'] },
-        ADMIN: { name: 'System Root', jersey: 99, batting: 'RHB', bowling: 'Right-Arm Fast', stats: ['99.9%', '12 Nodes', '<10ms', '₹500k'] },
-        ORGANISER: { name: 'Jay Shah', jersey: 10, batting: 'RHB', bowling: 'None', stats: ['14', '64', '128', '8'] },
-        TURF_PROVIDER: { name: 'Bengaluru Turf Ops', jersey: 12, batting: 'RHB', bowling: 'None', stats: ['360', '92%', '₹1.2M', '4.9★'] }
+        CAPTAIN: { name: 'Virat Sharma', jersey: 18, batting: 'RHB', bowling: 'Right-Arm Fast', bio: 'Aggressive top-order batsman & tactical captain. Focused on clinical chases and building unshakeable team culture.', stats: ['48', '1,850', '46.25', '144.5'] },
+        PLAYER: { name: 'Hardik Patel', jersey: 33, batting: 'RHB', bowling: 'Right-Arm Medium', bio: 'High-impact dynamic all-rounder delivering lethal yorkers and boundary blitzes under pressure.', stats: ['36', '1,220', '40.67', '152.0'] },
+        SCORER: { name: 'Sunil Gavaskar', jersey: 18, batting: 'RHB', bowling: 'None', bio: 'Official digital scorer dedicated to zero-dispute audit trails, ball-by-ball precision, and wagon wheels.', stats: ['120', '450', '22.50', '112.5'] },
+        FAN: { name: 'Aarav Mehta', jersey: 7, batting: 'RHB', bowling: 'None', bio: 'Cricket devotee and stadium pulse leader. Backing my squad through every over and thrilling finish.', stats: ['250', '1,428', '42', '78%'] },
+        UMPIRE: { name: 'Nitin Menon', jersey: 44, batting: 'RHB', bowling: 'None', bio: 'Certified elite match official upholding the Spirit of Cricket, Code of Conduct, and precision decisions.', stats: ['84', '312', '88%', '9.4'] },
+        ADMIN: { name: 'System Root', jersey: 99, batting: 'RHB', bowling: 'Right-Arm Fast', bio: 'Platform governance director overseeing double-entry settlements, dispute resolutions, and circuit integrity.', stats: ['99.9%', '12 Nodes', '<10ms', '₹500k'] },
+        ORGANISER: { name: 'Jay Shah', jersey: 10, batting: 'RHB', bowling: 'None', bio: 'Tournament director orchestrating high-stakes tournaments, round-robin brackets, and venue logistics.', stats: ['14', '64', '128', '8'] },
+        TURF_PROVIDER: { name: 'Bengaluru Turf Ops', jersey: 12, batting: 'RHB', bowling: 'None', bio: 'Premier box-cricket and floodlit turf venue host providing competition-grade playing facilities.', stats: ['360', '92%', '₹1.2M', '4.9★'] }
       };
       const def = defaultProfiles[role];
       if (def) {
@@ -7377,14 +7386,17 @@ cricos_active_sse_connections 1</pre>
         currentUser.jerseyNumber = def.jersey;
         currentUser.battingStyle = def.batting;
         currentUser.bowlingStyle = def.bowling;
+        if (def.bio) currentUser.bio = def.bio;
         const nameInput = document.getElementById('profileInputName');
         const jerseyInput = document.getElementById('profileInputJersey');
         const battingSelect = document.getElementById('profileInputBatting');
         const bowlingSelect = document.getElementById('profileInputBowling');
+        const bioInput = document.getElementById('profileInputBio');
         if (nameInput) nameInput.value = def.name;
         if (jerseyInput) jerseyInput.value = def.jersey;
         if (battingSelect) battingSelect.value = def.batting;
         if (bowlingSelect) bowlingSelect.value = def.bowling;
+        if (bioInput && def.bio) bioInput.value = def.bio;
 
         const stat1 = document.getElementById('statCareerMatches');
         const stat2 = document.getElementById('statCareerRuns');
@@ -7457,11 +7469,13 @@ cricos_active_sse_connections 1</pre>
       const jerseyInput = document.getElementById('profileInputJersey');
       const battingSelect = document.getElementById('profileInputBatting');
       const bowlingSelect = document.getElementById('profileInputBowling');
+      const bioInput = document.getElementById('profileInputBio');
 
       if (nameInput && nameInput.value.trim()) currentUser.name = nameInput.value.trim();
       if (jerseyInput && jerseyInput.value) currentUser.jerseyNumber = parseInt(jerseyInput.value, 10) || 18;
       if (battingSelect) currentUser.battingStyle = battingSelect.value;
       if (bowlingSelect) currentUser.bowlingStyle = bowlingSelect.value;
+      if (bioInput) currentUser.bio = bioInput.value.trim();
 
       closeUserModal();
       applyRolePermissions(currentUser.persona);

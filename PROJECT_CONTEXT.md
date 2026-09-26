@@ -1,14 +1,39 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 20:10:00
-**Version:** 1.0.0-phase2ak (Mobile Slide-In Scorer Extras Runs Picker Sheet)  
+**Last Updated:** 2026-09-26 20:35:00
+**Version:** 1.0.0-phase2al (Mobile User Sign Up, Custom Bio & Automated Role Experience Definition)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AK Completed — Mobile Slide-In Scorer Extras Runs Picker Sheet:
+- **Active Phase**: Phase 2AL Completed — Mobile User Sign Up, Custom Bio & Automated Role Experience Definition:
+  - **1. Sign Up & Profile Creation Flow**:
+    - Implemented segmented mode switcher between Sign In (`🔑 Sign In`) and Create Account (`✨ Create Account`) in `apps/api/src/ui/mobile-view.ts` and `apps/mobile/src/screens/AuthScreen.ts`.
+    - Comprehensive registration form collecting Full Name (`#signupNameInput`), Mobile/Email Identifier (`#signupIdentifierInput`), Primary Role (8 interactive cards), Custom Cricket Bio / Mission Statement (`#signupBioInput`), and Athletic Specialization specs (Playing Role dropdown, Batting Stance RHB/LHB, Bowling Style, Jersey Number, Club/Team).
+    - OTP verification flow (`authStep === 'OTP_INPUT'`) with demo staging code `123456` and launch action.
+  - **2. Automated 8-Persona Role Experience Definition**:
+    - `applyRoleExperience(role, isSignup)` automatically defines and routes users to their system-defined primary workspace:
+      - `SCORER` $\rightarrow$ `MATCHES` (`SCORE` subtab with tactical scoring pad, kinetic deliveries, extras picker, and wagon wheel active)
+      - `CAPTAIN` $\rightarrow$ `TEAMS` (Squad management, playing XI lineup, tactical bench swap, coin toss)
+      - `PLAYER` $\rightarrow$ `PROFILE` (Personal 6-axis athletic KPI radar, 20-match momentum spectrum, career figures)
+      - `UMPIRE` $\rightarrow$ `INCIDENTS` (Officials desk, MCC Law 41/42 Code of Conduct +5 penalty, Hawk-Eye DRS review)
+      - `ORGANISER` $\rightarrow$ `TOURNAMENTS` (Tournament director hub, round-robin brackets, GiST conflict prevention)
+      - `TURF_PROVIDER` $\rightarrow$ `MARKETPLACE` (Venue storefront, 15-min GiST slot locks, ₹/hr rate cards)
+      - `ADMIN` $\rightarrow$ `ADMIN` (Double-entry balanced settlement ledger, dispute auto-refunds, circuit breakers)
+      - `FAN` $\rightarrow$ `MATCHES` (`SCORE` subtab with stadium broadcast HUD, live cheer console, win probability poll)
+  - **3. Dynamic Role Experience HUD Banner**:
+    - `.role-exp-hud-banner` rendered at the top of active screen consoles (`MATCHES`, `TEAMS`, `TOURNAMENTS`, `MARKETPLACE`, `INCIDENTS`, `ADMIN`) displaying role badge, user's bio/tagline, and 1-tap quick action into that role's primary workflow.
+  - **4. Bio & Profile Display & Action Sheet Editing**:
+    - `renderProfile()` displays quote card (`#profileBioCard`, `#profileBioText`), athletic tags, and an accessible "✏️ Edit Profile & Bio" Action Sheet drawer allowing users to edit and persist their bio, stance, jersey, and team.
+  - **5. Web Console Parity & Native Android Packaging**:
+    - Synchronized custom bio in web console `modalUserProfile` (`#profileInputBio`), state persistence in `currentUser.bio`, and sync across `selectPersona()` and `saveUserProfile()`.
+    - Maintained 100% Rule 5 `data-tooltip` coverage, zero `transition: all` (Emil Kowalski invariant).
+    - Added test suite `tests/41-mobile-signup-and-role-experience.test.ts` (14 assertions across 5 suites, 100% passing).
+    - `./pipeline.sh test --summary`: 305 tests passing across 101 suites with 0 failures in 860ms.
+    - Synced `dist/index.html`, `dist/mobile.html`, and rebuilt native Android APK (`cricos-debug.apk`).
+- **Preceding Phase**: Phase 2AK Completed — Mobile Slide-In Scorer Extras Runs Picker Sheet:
   - **1. Scoring Pad Extras Workflow**:
     - Quick extras buttons (`+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye`) now trigger `openExtraPickerSheet(type)` (`WIDE`, `NO_BALL`, `LEG_BYE`, `BYE`).
     - Automatically slides in the dedicated `.mobile-extra-picker-sheet` bottom drawer (`#extraRunsPickerSheet`) with blurred backdrop (`#extraPickerBackdrop`).

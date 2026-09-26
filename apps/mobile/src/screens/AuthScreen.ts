@@ -2,11 +2,25 @@ import { CricOSMobileClient, MobileSession } from '../api/mobile-client.js';
 
 export type MobileUserRole = 'CAPTAIN' | 'PLAYER' | 'SCORER' | 'FAN' | 'UMPIRE' | 'ORGANISER' | 'TURF_PROVIDER' | 'ADMIN';
 
+export interface SignupProfileData {
+  name: string;
+  identifier: string;
+  role: MobileUserRole;
+  bio: string;
+  playingRole: string;
+  stance: 'RHB' | 'LHB';
+  bowlingStyle: string;
+  jerseyNumber: number;
+  teamName: string;
+}
+
 export interface AuthState {
   identifier: string;
   code: string;
   role: MobileUserRole;
   step: 'IDENTIFIER' | 'OTP_INPUT' | 'AUTHENTICATED';
+  mode: 'SIGN_IN' | 'SIGN_UP';
+  signupData: SignupProfileData;
   isLoading: boolean;
   errorMessage?: string;
   debugCode?: string;
@@ -25,12 +39,42 @@ export class AuthScreenController {
       code: '',
       role: 'CAPTAIN',
       step: 'IDENTIFIER',
+      mode: 'SIGN_IN',
+      signupData: {
+        name: 'Rohit Sharma',
+        identifier: '+91 98765 43210',
+        role: 'CAPTAIN',
+        bio: 'Opening batsman and attacking team leader with clean hitting mechanics and passion for strategic play.',
+        playingRole: 'BATTER',
+        stance: 'RHB',
+        bowlingStyle: 'Right-Arm Fast',
+        jerseyNumber: 45,
+        teamName: 'Mumbai Super Strikers'
+      },
       isLoading: false
     };
   }
 
   public getState(): AuthState {
     return { ...this.state };
+  }
+
+  public setMode(mode: 'SIGN_IN' | 'SIGN_UP'): void {
+    this.state.mode = mode;
+  }
+
+  public getMode(): 'SIGN_IN' | 'SIGN_UP' {
+    return this.state.mode;
+  }
+
+  public setSignupData(data: Partial<SignupProfileData>): void {
+    this.state.signupData = { ...this.state.signupData, ...data };
+    if (data.role) this.state.role = data.role;
+    if (data.identifier) this.state.identifier = data.identifier;
+  }
+
+  public getSignupData(): SignupProfileData {
+    return { ...this.state.signupData };
   }
 
   public setIdentifier(identifier: string): void {
