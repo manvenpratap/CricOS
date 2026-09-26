@@ -620,6 +620,86 @@ export function getMobileAppHtml(): string {
       100% { transform: scale(1); }
     }
 
+    /* Production-Grade Match Analytics & Card Visuals */
+    .analytics-tab-btn {
+      flex: 1;
+      min-width: 72px;
+      padding: 0.4rem 0.55rem;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: #94a3b8;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+    .analytics-tab-btn:active {
+      transform: scale(0.97);
+    }
+    .analytics-tab-btn.active-worm {
+      background: rgba(0, 229, 153, 0.18);
+      border-color: #00E599;
+      color: #00E599;
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.25);
+    }
+    .analytics-tab-btn.active-bars {
+      background: rgba(0, 210, 255, 0.18);
+      border-color: #00D2FF;
+      color: #00D2FF;
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.25);
+    }
+    .analytics-tab-btn.active-wagon {
+      background: rgba(192, 132, 252, 0.18);
+      border-color: #c084fc;
+      color: #c084fc;
+      box-shadow: 0 0 10px rgba(192, 132, 252, 0.25);
+    }
+    .analytics-tab-btn.active-card {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #f8fafc;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    .analytics-panel-card {
+      background: rgba(10, 16, 28, 0.96);
+      border-radius: 14px;
+      padding: 0.9rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+    .analytics-hud-metric {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.45rem 0.55rem;
+      text-align: center;
+    }
+    .analytics-interactive-bar {
+      cursor: pointer;
+      transition: fill 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
+    }
+    .analytics-interactive-bar:hover, .analytics-interactive-bar.selected {
+      filter: brightness(1.25) drop-shadow(0 0 5px currentColor);
+    }
+    .analytics-over-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 800;
+      font-family: Chakra Petch, monospace;
+    }
+
     /* 21st.dev Athletic KPI & Career Stats Card in Mobile View */
     .athletic-stats-card {
       background: linear-gradient(145deg, rgba(13, 20, 36, 0.95), rgba(7, 11, 20, 0.98));
@@ -1314,7 +1394,14 @@ export function getMobileAppHtml(): string {
         this.errorMessage = null;
         this.fanCheersCount = 1429;
         this.pollVotes = { BLR: 68, MUM: 32 };
-        this.activeChart = 'NONE';
+        this.activeChart = 'WORM';
+        this.selectedWormOver = null;
+        this.selectedManhattanOver = null;
+        this.manhattanViewMode = 'CHASE';
+        this.analyticsWagonBatter = 'ALL';
+        this.analyticsWagonShotType = 'ALL';
+        this.analyticsWagonZone = 'ALL';
+        this.analyticsWagonStance = 'RHB';
         this.marketCategory = 'ALL';
         this.soundEnabled = true;
         this.personaSheetOpen = false;
@@ -1444,7 +1531,72 @@ export function getMobileAppHtml(): string {
           { id: 's15', zone: 'LONG_ON', runs: 2, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 18, angleDeg: 162, distanceFraction: 0.78 },
           { id: 's16', zone: 'FINE_LEG', runs: 1, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 20, angleDeg: 22, distanceFraction: 0.62 },
           { id: 's17', zone: 'EXTRA_COVER', runs: 1, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 27, angleDeg: 245, distanceFraction: 0.58 },
-          { id: 's18', zone: 'MID_WICKET', runs: 0, isBoundary: false, isSix: false, batterName: 'Rohit S.', ballNumber: 15, angleDeg: 118, distanceFraction: 0.4 }
+        ];
+
+        this.innings1Progression = [
+          { over: 0, runs: 0, wickets: 0 },
+          { over: 1, runs: 6, wickets: 0 },
+          { over: 2, runs: 18, wickets: 0 },
+          { over: 3, runs: 24, wickets: 0 },
+          { over: 4, runs: 34, wickets: 1 },
+          { over: 5, runs: 42, wickets: 1 },
+          { over: 6, runs: 53, wickets: 1 },
+          { over: 7, runs: 61, wickets: 1 },
+          { over: 8, runs: 68, wickets: 1 },
+          { over: 9, runs: 77, wickets: 1 },
+          { over: 10, runs: 85, wickets: 2 },
+          { over: 11, runs: 96, wickets: 2 },
+          { over: 12, runs: 104, wickets: 2 },
+          { over: 13, runs: 113, wickets: 2 },
+          { over: 14, runs: 122, wickets: 3 },
+          { over: 15, runs: 133, wickets: 4 },
+          { over: 16, runs: 141, wickets: 4 },
+          { over: 17, runs: 150, wickets: 6 },
+          { over: 18, runs: 162, wickets: 7 },
+          { over: 19, runs: 171, wickets: 9 },
+          { over: 20, runs: 178, wickets: 10 }
+        ];
+
+        this.innings1OverRuns = [
+          { over: 1, runs: 6, wickets: 0 },
+          { over: 2, runs: 12, wickets: 0 },
+          { over: 3, runs: 6, wickets: 0 },
+          { over: 4, runs: 10, wickets: 1 },
+          { over: 5, runs: 8, wickets: 0 },
+          { over: 6, runs: 11, wickets: 0 },
+          { over: 7, runs: 8, wickets: 0 },
+          { over: 8, runs: 7, wickets: 0 },
+          { over: 9, runs: 9, wickets: 0 },
+          { over: 10, runs: 8, wickets: 1 },
+          { over: 11, runs: 11, wickets: 0 },
+          { over: 12, runs: 8, wickets: 0 },
+          { over: 13, runs: 9, wickets: 0 },
+          { over: 14, runs: 9, wickets: 1 },
+          { over: 15, runs: 11, wickets: 1 },
+          { over: 16, runs: 8, wickets: 0 },
+          { over: 17, runs: 9, wickets: 2 },
+          { over: 18, runs: 12, wickets: 1 },
+          { over: 19, runs: 9, wickets: 2 },
+          { over: 20, runs: 7, wickets: 1 }
+        ];
+
+        this.overHistory = [
+          { overNumber: 1, runs: 8, wickets: 0, bowler: 'Mohammed Siraj', balls: ['1', '0', '4', '1', '2', '0'] },
+          { overNumber: 2, runs: 12, wickets: 1, bowler: 'Jasprit Bumrah', balls: ['4', 'W', '1', '2', '4', '1'] },
+          { overNumber: 3, runs: 6, wickets: 0, bowler: 'Mohammed Siraj', balls: ['1', '1', '1', '1', '1', '1'] },
+          { overNumber: 4, runs: 9, wickets: 0, bowler: 'Kuldeep Yadav', balls: ['1', '4', '0', '2', '2', '0'] },
+          { overNumber: 5, runs: 14, wickets: 0, bowler: 'Jasprit Bumrah', balls: ['4', '4', '1', '1', '2', '2'] },
+          { overNumber: 6, runs: 4, wickets: 1, bowler: 'Kuldeep Yadav', balls: ['0', '1', 'W', '1', '1', '1'] },
+          { overNumber: 7, runs: 7, wickets: 0, bowler: 'Axar Patel', balls: ['1', '1', '2', '1', '2', '0'] },
+          { overNumber: 8, runs: 10, wickets: 0, bowler: 'Mohammed Shami', balls: ['1', '4', '1', '2', '1', '1'] },
+          { overNumber: 9, runs: 12, wickets: 0, bowler: 'Axar Patel', balls: ['4', '1', '4', '1', '1', '1'] },
+          { overNumber: 10, runs: 6, wickets: 1, bowler: 'Kuldeep Yadav', balls: ['1', 'W', '1', '1', '2', '1'] },
+          { overNumber: 11, runs: 8, wickets: 0, bowler: 'Axar Patel', balls: ['1', '2', '1', '2', '1', '1'] },
+          { overNumber: 12, runs: 11, wickets: 0, bowler: 'Mohammed Shami', balls: ['2', '4', '1', '2', '1', '1'] },
+          { overNumber: 13, runs: 7, wickets: 0, bowler: 'Kuldeep Yadav', balls: ['1', '1', '1', '2', '1', '1'] },
+          { overNumber: 14, runs: 10, wickets: 0, bowler: 'Mohammed Siraj', balls: ['4', '2', '1', '1', '2', '0'] },
+          { overNumber: 15, runs: 6, wickets: 0, bowler: 'Axar Patel', balls: ['1', '1', '1', '1', '1', '1'] },
+          { overNumber: 16, runs: 5, wickets: 0, bowler: 'Mohammed Shami', balls: ['1', '1', '1', '0', '2', '0'] }
         ];
 
         this.matchState = {
@@ -2844,6 +2996,633 @@ export function getMobileAppHtml(): string {
         this.render();
       }
 
+      selectWormOver(overNum) {
+        var ov = parseInt(overNum, 10);
+        if (this.selectedWormOver === ov) {
+          this.selectedWormOver = null;
+        } else {
+          this.selectedWormOver = ov;
+        }
+        this.render();
+      }
+
+      selectManhattanOver(overNum) {
+        var ov = parseInt(overNum, 10);
+        if (this.selectedManhattanOver === ov) {
+          this.selectedManhattanOver = null;
+        } else {
+          this.selectedManhattanOver = ov;
+        }
+        this.render();
+      }
+
+      setManhattanViewMode(mode) {
+        this.manhattanViewMode = mode;
+        this.render();
+      }
+
+      filterAnalyticsWagonBatter(batter) {
+        this.analyticsWagonBatter = batter;
+        this.render();
+      }
+
+      filterAnalyticsWagonShotType(shotType) {
+        this.analyticsWagonShotType = shotType;
+        this.render();
+      }
+
+      selectAnalyticsWagonZone(zoneId) {
+        if (this.analyticsWagonZone === zoneId) {
+          this.analyticsWagonZone = 'ALL';
+        } else {
+          this.analyticsWagonZone = zoneId;
+        }
+        this.render();
+      }
+
+      setAnalyticsWagonStance(stance) {
+        this.analyticsWagonStance = stance;
+        this.render();
+      }
+
+      renderDynamicWormChart() {
+        var maxRuns = 200;
+        var totalOvers = 20;
+        var xStart = 35;
+        var xEnd = 335;
+        var yTop = 25;
+        var yBottom = 165;
+        var width = xEnd - xStart;
+        var height = yBottom - yTop;
+
+        function getX(ov) {
+          return xStart + (ov / totalOvers) * width;
+        }
+        function getY(r) {
+          return yBottom - (r / maxRuns) * height;
+        }
+
+        var inn1Points = [];
+        var inn1WicketMarkers = [];
+        for (var i = 0; i < this.innings1Progression.length; i++) {
+          var p1 = this.innings1Progression[i];
+          var px = getX(p1.over);
+          var py = getY(p1.runs);
+          inn1Points.push(px.toFixed(1) + ',' + py.toFixed(1));
+          if (p1.wickets > 0 && (i === 0 || p1.wickets > this.innings1Progression[i - 1].wickets)) {
+            inn1WicketMarkers.push({ x: px, y: py, over: p1.over, wickets: p1.wickets, runs: p1.runs });
+          }
+        }
+
+        var inn2Progression = [{ over: 0, runs: 0, wickets: 0 }];
+        var cumRuns = 0;
+        var cumWkts = 0;
+        var inn2WicketMarkers = [];
+        for (var j = 0; j < this.overHistory.length; j++) {
+          var ovItem = this.overHistory[j];
+          cumRuns += ovItem.runs;
+          cumWkts += ovItem.wickets;
+          inn2Progression.push({ over: ovItem.overNumber, runs: cumRuns, wickets: cumWkts });
+          if (ovItem.wickets > 0) {
+            inn2WicketMarkers.push({
+              x: getX(ovItem.overNumber),
+              y: getY(cumRuns),
+              over: ovItem.overNumber,
+              wickets: cumWkts,
+              runs: cumRuns
+            });
+          }
+        }
+
+        var currentLegalBalls = this.matchState.legalBalls % 6;
+        var liveOverFrac = 16 + (currentLegalBalls / 6);
+        var liveRuns = this.matchState.totalRuns;
+        var liveX = getX(liveOverFrac);
+        var liveY = getY(liveRuns);
+
+        var inn2Points = [];
+        for (var k = 0; k < inn2Progression.length; k++) {
+          var p2 = inn2Progression[k];
+          inn2Points.push(getX(p2.over).toFixed(1) + ',' + getY(p2.runs).toFixed(1));
+        }
+        inn2Points.push(liveX.toFixed(1) + ',' + liveY.toFixed(1));
+
+        var targetY = getY(this.matchState.targetRuns);
+        var currentOversElapsed = (this.matchState.legalBalls / 6);
+        var crr = (this.matchState.totalRuns / currentOversElapsed).toFixed(2);
+        var ballsRemaining = 120 - this.matchState.legalBalls;
+        var runsNeeded = this.matchState.targetRuns - this.matchState.totalRuns;
+        var rrr = ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : '0.00';
+
+        var h = '<div class="analytics-panel-card" style="border-color: rgba(0, 229, 153, 0.35);">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.85rem; font-weight: 800; color: #00E599; font-family: Space Grotesk, sans-serif;">📈 Precision Worm Progression</div>';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8;">Cumulative 1st Innings (DEL) vs Chase (MUM)</div>';
+        h += '</div>';
+        h += '<div style="display: flex; gap: 0.35rem; align-items: center;">';
+        h += '<span style="font-size: 0.65rem; background: rgba(0, 229, 153, 0.15); border: 1px solid rgba(0, 229, 153, 0.4); color: #00E599; padding: 0.15rem 0.45rem; border-radius: 9999px; font-weight: 700;">DEL 178/10</span>';
+        h += '<span style="font-size: 0.65rem; background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.4); color: #00D2FF; padding: 0.15rem 0.45rem; border-radius: 9999px; font-weight: 700;">MUM ' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</span>';
+        h += '</div>';
+        h += '</div>';
+
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin-bottom: 0.75rem;">';
+        h += '<div class="analytics-hud-metric"><span class="label">CRR</span><span class="value" style="color: #00D2FF;">' + crr + '</span></div>';
+        h += '<div class="analytics-hud-metric"><span class="label">RRR</span><span class="value" style="color: #FFB800;">' + rrr + '</span></div>';
+        h += '<div class="analytics-hud-metric"><span class="label">Needed</span><span class="value" style="color: #00E599;">' + runsNeeded + ' <small style="font-size: 0.6rem; color: #94a3b8;">off ' + ballsRemaining + 'b</small></span></div>';
+        h += '<div class="analytics-hud-metric"><span class="label">Target</span><span class="value" style="color: #cbd5e1;">' + this.matchState.targetRuns + '</span></div>';
+        h += '</div>';
+
+        h += '<div style="position: relative; width: 100%;">';
+        h += '<svg viewBox="0 0 360 195" width="100%" height="195" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0, 0, 0, 0.35); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06);">';
+        
+        var runLevels = [50, 100, 150, 200];
+        for (var rl = 0; rl < runLevels.length; rl++) {
+          var yPos = getY(runLevels[rl]);
+          h += '<line x1="' + xStart + '" y1="' + yPos + '" x2="' + xEnd + '" y2="' + yPos + '" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="2,3" />';
+          h += '<text x="' + (xStart - 6) + '" y="' + (yPos + 3) + '" fill="#64748b" font-size="7.5" font-family="Chakra Petch, monospace" text-anchor="end">' + runLevels[rl] + '</text>';
+        }
+
+        var overLevels = [0, 5, 10, 15, 20];
+        for (var ol = 0; ol < overLevels.length; ol++) {
+          var xPos = getX(overLevels[ol]);
+          h += '<line x1="' + xPos + '" y1="' + yTop + '" x2="' + xPos + '" y2="' + yBottom + '" stroke="rgba(255, 255, 255, 0.06)" />';
+          h += '<text x="' + xPos + '" y="' + (yBottom + 12) + '" fill="#64748b" font-size="7.5" font-family="Chakra Petch, monospace" text-anchor="middle">Ov ' + overLevels[ol] + '</text>';
+        }
+
+        h += '<line x1="' + xStart + '" y1="' + targetY + '" x2="' + xEnd + '" y2="' + targetY + '" stroke="rgba(255, 184, 0, 0.7)" stroke-dasharray="4,3" stroke-width="1.5" />';
+        h += '<text x="' + (xEnd - 4) + '" y="' + (targetY - 4) + '" fill="#FFB800" font-size="7" font-weight="700" text-anchor="end">TARGET ' + this.matchState.targetRuns + '</text>';
+
+        var ppX = getX(6);
+        var midX = getX(15);
+        h += '<rect x="' + xStart + '" y="' + yTop + '" width="' + (ppX - xStart) + '" height="' + height + '" fill="rgba(0, 229, 153, 0.02)" />';
+        h += '<text x="' + (xStart + (ppX - xStart) / 2) + '" y="' + (yTop + 10) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" text-anchor="middle">POWERPLAY</text>';
+        h += '<text x="' + (ppX + (midX - ppX) / 2) + '" y="' + (yTop + 10) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" text-anchor="middle">MIDDLE</text>';
+        h += '<text x="' + (midX + (xEnd - midX) / 2) + '" y="' + (yTop + 10) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" text-anchor="middle">DEATH</text>';
+
+        h += '<polyline points="' + inn1Points.join(' ') + '" fill="none" stroke="#00E599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />';
+
+        for (var wm1 = 0; wm1 < inn1WicketMarkers.length; wm1++) {
+          var m1 = inn1WicketMarkers[wm1];
+          h += '<circle cx="' + m1.x + '" cy="' + m1.y + '" r="2.8" fill="#FF3366" stroke="#ffffff" stroke-width="1" data-tooltip="DEL Wicket at Ov ' + m1.over + ' (' + m1.runs + '/' + m1.wickets + ')" />';
+        }
+
+        h += '<polyline points="' + inn2Points.join(' ') + '" fill="none" stroke="#00D2FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />';
+
+        for (var wm2 = 0; wm2 < inn2WicketMarkers.length; wm2++) {
+          var m2 = inn2WicketMarkers[wm2];
+          h += '<circle cx="' + m2.x + '" cy="' + m2.y + '" r="3.5" fill="#FF3366" stroke="#00D2FF" stroke-width="1.5" data-tooltip="MUM Wicket at Ov ' + m2.over + ' (' + m2.runs + '/' + m2.wickets + ')" />';
+          h += '<text x="' + m2.x + '" y="' + (m2.y - 5) + '" fill="#FF3366" font-size="6.5" font-weight="800" text-anchor="middle">W</text>';
+        }
+
+        h += '<circle cx="' + liveX + '" cy="' + liveY + '" r="7" fill="none" stroke="#00D2FF" stroke-width="1.5" opacity="0.6"><animate attributeName="r" values="4;10;4" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.8;0.1;0.8" dur="2s" repeatCount="indefinite"/></circle>';
+        h += '<circle cx="' + liveX + '" cy="' + liveY + '" r="3.5" fill="#00D2FF" stroke="#ffffff" stroke-width="1.5" data-tooltip="Live Chase: 142/3 in 16.4 ov" />';
+
+        if (this.selectedWormOver !== null && this.selectedWormOver >= 1 && this.selectedWormOver <= 16) {
+          var selOv = this.selectedWormOver;
+          var selX = getX(selOv);
+          var inn1RunsAtSel = this.innings1Progression[selOv].runs;
+          var inn2RunsAtSel = inn2Progression[selOv].runs;
+          var selY1 = getY(inn1RunsAtSel);
+          var selY2 = getY(inn2RunsAtSel);
+
+          h += '<line x1="' + selX + '" y1="' + yTop + '" x2="' + selX + '" y2="' + yBottom + '" stroke="#FFB800" stroke-width="1.5" stroke-dasharray="3,2" />';
+          h += '<circle cx="' + selX + '" cy="' + selY1 + '" r="4.5" fill="#00E599" stroke="#ffffff" stroke-width="1.5" />';
+          h += '<circle cx="' + selX + '" cy="' + selY2 + '" r="4.5" fill="#00D2FF" stroke="#ffffff" stroke-width="1.5" />';
+        }
+
+        for (var ovTap = 1; ovTap <= 16; ovTap++) {
+          var tapX = getX(ovTap);
+          var inn2R = inn2Progression[ovTap].runs;
+          var tapY = getY(inn2R);
+          h += '<circle cx="' + tapX + '" cy="' + tapY + '" r="10" fill="transparent" style="cursor: pointer;" onclick="window.cricosMobileApp.selectWormOver(this.dataset.over)" data-over="' + ovTap + '" data-tooltip="Inspect Over ' + ovTap + ': MUM ' + inn2R + ' runs" />';
+        }
+
+        h += '</svg>';
+        h += '</div>';
+
+        if (this.selectedWormOver !== null) {
+          var sOv = this.selectedWormOver;
+          var s1 = this.innings1Progression[sOv];
+          var s2 = inn2Progression[sOv];
+          var runDiff = s2.runs - s1.runs;
+          var diffColor = runDiff >= 0 ? '#00E599' : '#FF3366';
+          var diffSign = runDiff >= 0 ? '+' : '';
+
+          h += '<div style="margin-top: 0.65rem; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 8px; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<div>';
+          h += '<div style="font-size: 0.72rem; font-weight: 700; color: #FFB800;">📍 Over ' + sOv + ' Differential Inspection</div>';
+          h += '<div style="font-size: 0.68rem; color: #cbd5e1;">DEL: <strong style="color: #00E599;">' + s1.runs + '/' + s1.wickets + '</strong> • MUM: <strong style="color: #00D2FF;">' + s2.runs + '/' + s2.wickets + '</strong></div>';
+          h += '</div>';
+          h += '<div style="text-align: right;">';
+          h += '<span style="font-size: 0.78rem; font-weight: 800; color: ' + diffColor + ';">' + diffSign + runDiff + ' runs</span>';
+          h += '<span style="display: block; font-size: 0.6rem; color: #94a3b8;">vs 1st Innings</span>';
+          h += '</div>';
+          h += '</div>';
+        }
+
+        h += '<div style="margin-top: 0.65rem;">';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.35rem; display: flex; justify-content: space-between;"><span>Jump to Over:</span><span>' + (this.selectedWormOver ? 'Inspecting Ov ' + this.selectedWormOver : 'Tap any over below') + '</span></div>';
+        h += '<div style="display: flex; gap: 0.3rem; overflow-x: auto; padding-bottom: 0.25rem;">';
+        for (var chipOv = 1; chipOv <= 16; chipOv++) {
+          var isChipActive = this.selectedWormOver === chipOv;
+          var chipBg = isChipActive ? 'rgba(255, 184, 0, 0.3)' : 'rgba(255, 255, 255, 0.05)';
+          var chipBorder = isChipActive ? '#FFB800' : 'rgba(255, 255, 255, 0.12)';
+          var chipColor = isChipActive ? '#FFB800' : '#cbd5e1';
+          h += '<button type="button" class="analytics-over-chip" style="background: ' + chipBg + '; border: 1px solid ' + chipBorder + '; color: ' + chipColor + '; padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; cursor: pointer; flex-shrink: 0;" onclick="window.cricosMobileApp.selectWormOver(this.dataset.over)" data-over="' + chipOv + '" data-tooltip="Inspect Over ' + chipOv + ' comparison">Ov ' + chipOv + '</button>';
+        }
+        h += '</div>';
+        h += '</div>';
+
+        h += '</div>';
+        return h;
+      }
+
+      renderDynamicManhattanChart() {
+        var isDual = this.manhattanViewMode === 'DUAL';
+        var maxRuns = 20;
+        var xStart = 25;
+        var xEnd = 345;
+        var yTop = 25;
+        var yBottom = 125;
+        var height = yBottom - yTop;
+        var availableWidth = xEnd - xStart;
+        var totalOvers = 16;
+        var slotWidth = availableWidth / totalOvers;
+
+        var h = '<div class="analytics-panel-card" style="border-color: rgba(0, 210, 255, 0.35);">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.85rem; font-weight: 800; color: #00D2FF; font-family: Space Grotesk, sans-serif;">📊 Precision Manhattan Over Velocity</div>';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8;">Over-by-over runs scored & phase breakdown</div>';
+        h += '</div>';
+        h += '<div style="display: flex; gap: 0.25rem; background: rgba(0,0,0,0.5); padding: 0.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">';
+        h += '<button type="button" class="mobile-chip' + (!isDual ? ' active' : '') + '" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" onclick="window.cricosMobileApp.setManhattanViewMode(this.dataset.mode)" data-mode="CHASE" data-tooltip="Show Chase over-by-over runs only">⚡ Chase</button>';
+        h += '<button type="button" class="mobile-chip' + (isDual ? ' active' : '') + '" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" onclick="window.cricosMobileApp.setManhattanViewMode(this.dataset.mode)" data-mode="DUAL" data-tooltip="Compare 1st Innings and Chase over-by-over">⚔️ Dual</button>';
+        h += '</div>';
+        h += '</div>';
+
+        h += '<svg viewBox="0 0 360 160" width="100%" height="160" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0, 0, 0, 0.35); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06);">';
+        
+        var gridLevels = [5, 10, 15, 20];
+        for (var gl = 0; gl < gridLevels.length; gl++) {
+          var yG = yBottom - (gridLevels[gl] / maxRuns) * height;
+          h += '<line x1="' + xStart + '" y1="' + yG + '" x2="' + xEnd + '" y2="' + yG + '" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="2,3" />';
+          h += '<text x="' + (xStart - 4) + '" y="' + (yG + 3) + '" fill="#64748b" font-size="7" font-family="Chakra Petch, monospace" text-anchor="end">' + gridLevels[gl] + '</text>';
+        }
+        h += '<line x1="' + xStart + '" y1="' + yBottom + '" x2="' + xEnd + '" y2="' + yBottom + '" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1" />';
+
+        for (var ov = 1; ov <= totalOvers; ov++) {
+          var ovData = this.overHistory[ov - 1];
+          var inn1OvData = this.innings1OverRuns[ov - 1];
+          var slotX = xStart + (ov - 1) * slotWidth;
+          var isSelected = this.selectedManhattanOver === ov;
+
+          if (!isDual) {
+            var barW = 12;
+            var barX = slotX + (slotWidth - barW) / 2;
+            var barH = Math.min((ovData.runs / maxRuns) * height, height);
+            var barY = yBottom - barH;
+            var barFill = isSelected ? '#FFB800' : '#00D2FF';
+            var strokeCol = isSelected ? '#ffffff' : (ovData.wickets > 0 ? '#FF3366' : 'transparent');
+            var strokeW = isSelected ? 1.5 : (ovData.wickets > 0 ? 1.5 : 0);
+
+            h += '<rect x="' + barX + '" y="' + barY + '" width="' + barW + '" height="' + barH + '" rx="2" fill="' + barFill + '" stroke="' + strokeCol + '" stroke-width="' + strokeW + '" style="cursor: pointer;" onclick="window.cricosMobileApp.selectManhattanOver(this.dataset.over)" data-over="' + ov + '" data-tooltip="Over ' + ov + ': ' + ovData.runs + ' runs, ' + ovData.wickets + ' wkts (' + ovData.bowler + ')" />';
+            
+            h += '<text x="' + (barX + barW / 2) + '" y="' + (barY - 3) + '" fill="#f8fafc" font-size="7.5" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + ovData.runs + '</text>';
+
+            if (ovData.wickets > 0) {
+              h += '<circle cx="' + (barX + barW / 2) + '" cy="' + (barY - 11) + '" r="3" fill="#FF3366" />';
+              h += '<text x="' + (barX + barW / 2) + '" y="' + (barY - 9) + '" fill="#ffffff" font-size="5.5" font-weight="900" text-anchor="middle">W</text>';
+            }
+          } else {
+            var dualBarW = 6;
+            var gap = 2;
+            var startPairX = slotX + (slotWidth - (dualBarW * 2 + gap)) / 2;
+
+            var bar1H = Math.min((inn1OvData.runs / maxRuns) * height, height);
+            var bar1Y = yBottom - bar1H;
+            h += '<rect x="' + startPairX + '" y="' + bar1Y + '" width="' + dualBarW + '" height="' + bar1H + '" rx="1" fill="#00E599" opacity="0.85" style="cursor: pointer;" onclick="window.cricosMobileApp.selectManhattanOver(this.dataset.over)" data-over="' + ov + '" data-tooltip="DEL Over ' + ov + ': ' + inn1OvData.runs + ' runs" />';
+
+            var bar2X = startPairX + dualBarW + gap;
+            var bar2H = Math.min((ovData.runs / maxRuns) * height, height);
+            var bar2Y = yBottom - bar2H;
+            var bar2Fill = isSelected ? '#FFB800' : '#00D2FF';
+            h += '<rect x="' + bar2X + '" y="' + bar2Y + '" width="' + dualBarW + '" height="' + bar2H + '" rx="1" fill="' + bar2Fill + '" style="cursor: pointer;" onclick="window.cricosMobileApp.selectManhattanOver(this.dataset.over)" data-over="' + ov + '" data-tooltip="MUM Over ' + ov + ': ' + ovData.runs + ' runs (' + ovData.wickets + 'w)" />';
+
+            h += '<text x="' + (startPairX + dualBarW + gap / 2) + '" y="' + (Math.min(bar1Y, bar2Y) - 3) + '" fill="#cbd5e1" font-size="6.5" font-family="Chakra Petch, monospace" text-anchor="middle">' + ovData.runs + '</text>';
+          }
+
+          h += '<text x="' + (slotX + slotWidth / 2) + '" y="' + (yBottom + 12) + '" fill="' + (isSelected ? '#FFB800' : '#64748b') + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="' + (isSelected ? '800' : '400') + '" text-anchor="middle">' + ov + '</text>';
+        }
+
+        h += '</svg>';
+
+        if (this.selectedManhattanOver !== null) {
+          var selData = this.overHistory[this.selectedManhattanOver - 1];
+          var inn1Sel = this.innings1OverRuns[this.selectedManhattanOver - 1];
+          var phaseLabel = this.selectedManhattanOver <= 6 ? 'Powerplay' : (this.selectedManhattanOver <= 15 ? 'Middle Overs' : 'Death Overs');
+
+          h += '<div style="margin-top: 0.65rem; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(0, 210, 255, 0.35); border-radius: 8px; padding: 0.65rem 0.85rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">';
+          h += '<span style="font-size: 0.75rem; font-weight: 800; color: #00D2FF;">Over ' + this.selectedManhattanOver + ' Breakdown • Bowler: ' + selData.bowler + '</span>';
+          h += '<span style="font-size: 0.62rem; color: #94a3b8; background: rgba(255,255,255,0.06); padding: 0.15rem 0.4rem; border-radius: 4px;">' + phaseLabel + '</span>';
+          h += '</div>';
+
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+          h += '<div style="font-size: 0.7rem; color: #cbd5e1;">Runs Conceded: <strong style="color: #00E599;">' + selData.runs + '</strong> • Wickets: <strong style="color: ' + (selData.wickets > 0 ? '#FF3366' : '#94a3b8') + ';">' + selData.wickets + '</strong></div>';
+          if (isDual) {
+            h += '<div style="font-size: 0.7rem; color: #cbd5e1;">1st Inn DEL: <strong style="color: #00E599;">' + inn1Sel.runs + ' runs</strong></div>';
+          }
+          h += '</div>';
+
+          h += '<div style="display: flex; gap: 0.35rem; align-items: center;">';
+          h += '<span style="font-size: 0.65rem; color: #94a3b8;">Balls:</span>';
+          for (var b = 0; b < selData.balls.length; b++) {
+            var ballVal = selData.balls[b];
+            var ballBg = ballVal === 'W' ? '#FF3366' : (ballVal === '4' ? '#00E599' : (ballVal === '6' ? '#FFB800' : (ballVal === '0' || ballVal === '•' ? 'rgba(255,255,255,0.1)' : '#00D2FF')));
+            var ballColor = (ballVal === '0' || ballVal === '•') ? '#94a3b8' : '#04070D';
+            h += '<span style="width: 20px; height: 20px; border-radius: 50%; background: ' + ballBg + '; color: ' + ballColor + '; font-size: 0.65rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-family: Chakra Petch, monospace;" data-tooltip="Ball ' + (b + 1) + ': ' + ballVal + '">' + ballVal + '</span>';
+          }
+          h += '</div>';
+          h += '</div>';
+        }
+
+        h += '</div>';
+        return h;
+      }
+
+      renderDynamicAnalyticsWagon() {
+        var self = this;
+        var isLhb = this.analyticsWagonStance === 'LHB';
+        var cx = 160;
+        var cy = 155;
+        var R = 135;
+
+        function polarToXY(radius, angleDeg) {
+          var rad = angleDeg * Math.PI / 180.0;
+          var sinVal = Math.sin(rad);
+          if (isLhb) sinVal = -sinVal;
+          return {
+            x: cx + (radius * sinVal),
+            y: cy + (radius * Math.cos(rad))
+          };
+        }
+
+        var filteredShots = this.shotHistory.filter(function(s) {
+          if (self.analyticsWagonBatter !== 'ALL' && s.batterName !== self.analyticsWagonBatter) return false;
+          if (self.analyticsWagonShotType === 'BOUNDARIES' && !s.isBoundary) return false;
+          if (self.analyticsWagonShotType === 'SINGLES' && (s.isBoundary || s.runs === 0)) return false;
+          if (self.analyticsWagonShotType === 'DOTS' && s.runs > 0) return false;
+          if (self.analyticsWagonZone !== 'ALL' && s.zone !== self.analyticsWagonZone) return false;
+          return true;
+        });
+
+        var totalShots = filteredShots.length;
+        var totalRuns = 0;
+        var offRuns = 0;
+        var onRuns = 0;
+        var boundaryCount = 0;
+        var dotCount = 0;
+
+        for (var si = 0; si < filteredShots.length; si++) {
+          var sh = filteredShots[si];
+          totalRuns += sh.runs;
+          if (sh.isBoundary) boundaryCount++;
+          if (sh.runs === 0) dotCount++;
+          var zoneDef = this.SHOT_ZONES_DATA.find(function(zd) { return zd.id === sh.zone; });
+          if (zoneDef) {
+            if (zoneDef.side === 'OFF') offRuns += sh.runs;
+            else onRuns += sh.runs;
+          }
+        }
+
+        var dotPct = totalShots > 0 ? ((dotCount / totalShots) * 100).toFixed(0) : '0';
+        var offRatio = totalRuns > 0 ? Math.round((offRuns / totalRuns) * 100) : 50;
+        var onRatio = totalRuns > 0 ? (100 - offRatio) : 50;
+
+        var h = '<div id="mobileWagonPanel" class="analytics-panel-card" style="border-color: rgba(192, 132, 252, 0.35);">';
+        
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.85rem; font-weight: 800; color: #c084fc; font-family: Space Grotesk, sans-serif;">🎯 360° Precision Wagon Wheel</div>';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8;">Interactive 8-zone radial distribution & trajectory rays</div>';
+        h += '</div>';
+        h += '<div style="display: flex; gap: 0.25rem; background: rgba(0,0,0,0.5); padding: 0.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">';
+        h += '<button type="button" class="mobile-chip' + (!isLhb ? ' active' : '') + '" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" onclick="window.cricosMobileApp.setAnalyticsWagonStance(this.dataset.stance)" data-stance="RHB" data-tooltip="Switch Wagon to Right-Hand Batter stance">RHB</button>';
+        h += '<button type="button" class="mobile-chip' + (isLhb ? ' active' : '') + '" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" onclick="window.cricosMobileApp.setAnalyticsWagonStance(this.dataset.stance)" data-stance="LHB" data-tooltip="Switch Wagon to Left-Hand Batter stance">LHB</button>';
+        h += '</div>';
+        h += '</div>';
+
+        h += '<div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.65rem; align-items: center;">';
+        
+        var batters = ['ALL', 'Virat K.', 'Rohit S.'];
+        for (var bi = 0; bi < batters.length; bi++) {
+          var bName = batters[bi];
+          var isBActive = this.analyticsWagonBatter === bName;
+          h += '<button type="button" class="mobile-chip' + (isBActive ? ' active' : '') + '" style="font-size: 0.68rem; padding: 0.25rem 0.55rem;" onclick="window.cricosMobileApp.filterAnalyticsWagonBatter(this.dataset.batter)" data-batter="' + bName + '" data-tooltip="Filter shots for ' + bName + '">' + (bName === 'ALL' ? 'All Batters' : bName) + '</button>';
+        }
+
+        var shotTypes = [
+          { id: 'ALL', label: 'All Shots' },
+          { id: 'BOUNDARIES', label: 'Boundaries (4s/6s)' },
+          { id: 'SINGLES', label: '1s & 2s' },
+          { id: 'DOTS', label: 'Dots' }
+        ];
+        for (var sti = 0; sti < shotTypes.length; sti++) {
+          var st = shotTypes[sti];
+          var isStActive = this.analyticsWagonShotType === st.id;
+          h += '<button type="button" class="mobile-chip' + (isStActive ? ' active' : '') + '" style="font-size: 0.68rem; padding: 0.25rem 0.55rem;" onclick="window.cricosMobileApp.filterAnalyticsWagonShotType(this.dataset.shottype)" data-shottype="' + st.id + '" data-tooltip="Filter shots by ' + st.label + '">' + st.label + '</button>';
+        }
+        h += '</div>';
+
+        h += '<div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.75rem;">';
+        h += '<svg viewBox="0 0 320 310" width="280" height="280" xmlns="http://www.w3.org/2000/svg" style="background: #030C08; border-radius: 50%; border: 2px solid rgba(0, 229, 153, 0.4); box-shadow: 0 0 20px rgba(0, 229, 153, 0.15);">';
+        
+        for (var zi = 0; zi < this.SHOT_ZONES_DATA.length; zi++) {
+          var zoneDef = this.SHOT_ZONES_DATA[zi];
+          var startAngle = zi * 45;
+          var endAngle = (zi + 1) * 45;
+          var pStart = polarToXY(R, startAngle);
+          var pEnd = polarToXY(R, endAngle);
+          var sweepFlag = isLhb ? 0 : 1;
+          var isZoneSelected = this.analyticsWagonZone === zoneDef.id;
+          var wedgeFill = isZoneSelected ? 'rgba(192, 132, 252, 0.35)' : 'rgba(0, 229, 153, 0.04)';
+          var wedgeStroke = isZoneSelected ? '#c084fc' : 'rgba(255, 255, 255, 0.1)';
+          var wedgeStrokeW = isZoneSelected ? '2' : '0.75';
+
+          var pathD = 'M ' + cx + ' ' + cy + ' L ' + pStart.x.toFixed(1) + ' ' + pStart.y.toFixed(1) + ' A ' + R + ' ' + R + ' 0 0 ' + sweepFlag + ' ' + pEnd.x.toFixed(1) + ' ' + pEnd.y.toFixed(1) + ' Z';
+          h += '<path d="' + pathD + '" fill="' + wedgeFill + '" stroke="' + wedgeStroke + '" stroke-width="' + wedgeStrokeW + '" style="cursor: pointer;" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="' + zoneDef.id + '" data-tooltip="Filter ' + zoneDef.label + ' zone" />';
+          
+          var labelP = polarToXY(R * 0.78, zoneDef.angleDeg);
+          h += '<text x="' + labelP.x.toFixed(1) + '" y="' + labelP.y.toFixed(1) + '" fill="' + (isZoneSelected ? '#c084fc' : 'rgba(255,255,255,0.45)') + '" font-size="7" font-weight="700" font-family="Space Grotesk, sans-serif" text-anchor="middle">' + zoneDef.shortLabel + '</text>';
+        }
+
+        h += '<circle cx="' + cx + '" cy="' + cy + '" r="65" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.2" stroke-dasharray="3,3" />';
+
+        h += '<rect x="' + (cx - 7) + '" y="' + (cy - 30) + '" width="14" height="60" rx="2" fill="#8C6E3D" stroke="#ffffff" stroke-width="0.5" />';
+        h += '<line x1="' + (cx - 8) + '" y1="' + (cy - 20) + '" x2="' + (cx + 8) + '" y2="' + (cy - 20) + '" stroke="#ffffff" stroke-width="0.8" />';
+        h += '<line x1="' + (cx - 8) + '" y1="' + (cy + 20) + '" x2="' + (cx + 8) + '" y2="' + (cy + 20) + '" stroke="#ffffff" stroke-width="0.8" />';
+        h += '<circle cx="' + cx + '" cy="' + cy + '" r="3.5" fill="#00E599" stroke="#04070D" stroke-width="1" />';
+
+        for (var sj = 0; sj < filteredShots.length; sj++) {
+          var shot = filteredShots[sj];
+          var dist = Math.min(R * shot.distanceFraction, R - 6);
+          var endP = polarToXY(dist, shot.angleDeg);
+
+          if (shot.isSix) {
+            var curveOffset = isLhb ? -10 : 10;
+            var ctrlP = polarToXY(dist * 0.6, shot.angleDeg + curveOffset);
+            h += '<path d="M ' + cx + ' ' + cy + ' Q ' + ctrlP.x.toFixed(1) + ' ' + ctrlP.y.toFixed(1) + ' ' + endP.x.toFixed(1) + ' ' + endP.y.toFixed(1) + '" fill="none" stroke="#FFB800" stroke-width="2.5" stroke-linecap="round" />';
+            h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="4" fill="#FFB800" stroke="#ffffff" stroke-width="1.2" data-tooltip="' + shot.batterName + ': 6 RUNS (' + shot.zone + ')" />';
+          } else if (shot.isBoundary) {
+            h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + endP.x.toFixed(1) + '" y2="' + endP.y.toFixed(1) + '" stroke="#00E599" stroke-width="2" stroke-linecap="round" />';
+            h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="3" fill="#00E599" stroke="#ffffff" stroke-width="1" data-tooltip="' + shot.batterName + ': 4 RUNS (' + shot.zone + ')" />';
+          } else if (shot.runs > 0) {
+            h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + endP.x.toFixed(1) + '" y2="' + endP.y.toFixed(1) + '" stroke="#00D2FF" stroke-width="1.5" stroke-linecap="round" />';
+            h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="2.5" fill="#00D2FF" data-tooltip="' + shot.batterName + ': ' + shot.runs + ' run(s)" />';
+          } else {
+            h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + endP.x.toFixed(1) + '" y2="' + endP.y.toFixed(1) + '" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2" />';
+            h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="2" fill="#64748b" data-tooltip="' + shot.batterName + ': Dot Ball" />';
+          }
+        }
+
+        var offX = isLhb ? (cx + R - 25) : (cx - R + 25);
+        var onX = isLhb ? (cx - R + 25) : (cx + R - 25);
+        h += '<text x="' + offX + '" y="' + (cy + 4) + '" fill="#00D2FF" font-size="7.5" font-weight="800" text-anchor="middle">OFF</text>';
+        h += '<text x="' + onX + '" y="' + (cy + 4) + '" fill="#00E599" font-size="7.5" font-weight="800" text-anchor="middle">LEG / ON</text>';
+
+        h += '</svg>';
+        h += '</div>';
+
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem; margin-bottom: 0.65rem;">';
+        h += '<div class="analytics-hud-metric"><span class="label">Off Runs</span><span class="value" style="color: #00D2FF;">' + offRuns + '</span></div>';
+        h += '<div class="analytics-hud-metric"><span class="label">On Runs</span><span class="value" style="color: #00E599;">' + onRuns + '</span></div>';
+        h += '<div class="analytics-hud-metric"><span class="label">Boundaries</span><span class="value" style="color: #FFB800;">' + boundaryCount + '</span></div>';
+        h += '<div class="analytics-hud-metric"><span class="label">Dot %</span><span class="value" style="color: #94a3b8;">' + dotPct + '%</span></div>';
+        h += '</div>';
+
+        h += '<div style="margin-bottom: 0.65rem;">';
+        h += '<div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.25rem;">';
+        h += '<span>Off Side (' + offRatio + '%)</span><span>On Side (' + onRatio + '%)</span>';
+        h += '</div>';
+        h += '<div style="height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.08); overflow: hidden; display: flex;">';
+        h += '<div style="width: ' + offRatio + '%; background: #00D2FF; height: 100%;"></div>';
+        h += '<div style="width: ' + onRatio + '%; background: #00E599; height: 100%;"></div>';
+        h += '</div>';
+        h += '</div>';
+
+        h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.35rem;">Filter Specific Sector:</div>';
+        h += '<div style="display: flex; gap: 0.25rem; overflow-x: auto; padding-bottom: 0.25rem;">';
+        var isAllZoneActive = this.analyticsWagonZone === 'ALL';
+        h += '<button type="button" class="analytics-over-chip" style="background: ' + (isAllZoneActive ? 'rgba(192, 132, 252, 0.3)' : 'rgba(255,255,255,0.05)') + '; border: 1px solid ' + (isAllZoneActive ? '#c084fc' : 'rgba(255,255,255,0.12)') + '; color: ' + (isAllZoneActive ? '#c084fc' : '#cbd5e1') + '; padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; cursor: pointer; flex-shrink: 0;" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="ALL" data-tooltip="Show all 8 sectors">All Sectors</button>';
+        for (var zk = 0; zk < this.SHOT_ZONES_DATA.length; zk++) {
+          var zdItem = this.SHOT_ZONES_DATA[zk];
+          var isZdActive = this.analyticsWagonZone === zdItem.id;
+          h += '<button type="button" class="analytics-over-chip" style="background: ' + (isZdActive ? 'rgba(192, 132, 252, 0.3)' : 'rgba(255,255,255,0.05)') + '; border: 1px solid ' + (isZdActive ? '#c084fc' : 'rgba(255,255,255,0.12)') + '; color: ' + (isZdActive ? '#c084fc' : '#cbd5e1') + '; padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; cursor: pointer; flex-shrink: 0;" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="' + zdItem.id + '" data-tooltip="Filter ' + zdItem.label + '">' + zdItem.shortLabel + '</button>';
+        }
+        h += '</div>';
+
+        h += '</div>';
+        return h;
+      }
+
+      renderDynamicScorecard() {
+        var h = '<div id="mobileScorecardPanel" class="analytics-panel-card" style="border-color: rgba(255, 255, 255, 0.2);">';
+        
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.85rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">📄 Official Match Scorecard</div>';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8;">Innings 2 Chase: Mumbai Super Strikers</div>';
+        h += '</div>';
+        h += '<span style="font-size: 0.75rem; color: #00E599; font-weight: 800; font-family: Chakra Petch, monospace; background: rgba(0,229,153,0.12); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.3);">' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + ' (16.4 ov)</span>';
+        h += '</div>';
+
+        var battersList = [
+          { name: 'Ishan Kishan', status: 'b Siraj', runs: 8, balls: 6, fours: 1, sixes: 0, isCurrent: false },
+          { name: 'Suryakumar Yadav', status: 'c & b Kuldeep', runs: 0, balls: 2, fours: 0, sixes: 0, isCurrent: false },
+          { name: 'Shreyas Iyer', status: 'b Siraj', runs: 0, balls: 1, fours: 0, sixes: 0, isCurrent: false },
+          { name: this.matchState.striker.name + ' *', status: 'not out (striker)', runs: this.matchState.striker.runs, balls: this.matchState.striker.balls, fours: this.matchState.striker.fours, sixes: this.matchState.striker.sixes, isCurrent: true, color: '#00E599' },
+          { name: this.matchState.nonStriker.name, status: 'not out (non-striker)', runs: this.matchState.nonStriker.runs, balls: this.matchState.nonStriker.balls, fours: this.matchState.nonStriker.fours, sixes: this.matchState.nonStriker.sixes, isCurrent: true, color: '#00D2FF' }
+        ];
+
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.5px;">Batting Figures</div>';
+        h += '<table style="width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 0.75rem;">';
+        h += '<thead><tr style="color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">';
+        h += '<th style="padding: 0.3rem 0;">Batter</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">R</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">B</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">4s</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">6s</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">SR</th>';
+        h += '</tr></thead><tbody>';
+
+        for (var bIdx = 0; bIdx < battersList.length; bIdx++) {
+          var bt = battersList[bIdx];
+          var sr = bt.balls > 0 ? ((bt.runs / bt.balls) * 100).toFixed(1) : '0.0';
+          var nameColor = bt.color || '#f8fafc';
+          h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">';
+          h += '<td style="padding: 0.35rem 0; font-weight: 700; color: ' + nameColor + ';">' + bt.name + '<small style="color: #94a3b8; display: block; font-size: 0.62rem; font-weight: 400;">' + bt.status + '</small></td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; font-weight: 800; color: ' + nameColor + '; font-family: Chakra Petch, monospace;">' + bt.runs + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #cbd5e1; font-family: Chakra Petch, monospace;">' + bt.balls + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #cbd5e1; font-family: Chakra Petch, monospace;">' + bt.fours + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #cbd5e1; font-family: Chakra Petch, monospace;">' + bt.sixes + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #94a3b8; font-family: Chakra Petch, monospace;">' + sr + '</td>';
+          h += '</tr>';
+        }
+        h += '</tbody></table>';
+
+        h += '<div style="background: rgba(0,0,0,0.35); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; border: 1px solid rgba(255,255,255,0.06); font-size: 0.68rem; color: #94a3b8; display: flex; justify-content: space-between;">';
+        h += '<span>Extras: <strong style="color: #FFB800;">12</strong> (w 5, nb 1, b 4, lb 2)</span>';
+        h += '<span>Total: <strong style="color: #00E599;">' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</strong> (16.4 ov, RR 8.52)</span>';
+        h += '</div>';
+
+        h += '<div style="margin-bottom: 0.75rem;">';
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #FF3366; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.5px;">Fall of Wickets</div>';
+        h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; font-size: 0.65rem; text-align: center;">';
+        h += '<div style="background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.25); border-radius: 6px; padding: 0.35rem;"><span style="color: #FF3366; font-weight: 800; display: block;">12/1</span><span style="color: #cbd5e1; font-size: 0.6rem;">Ishan (1.4 ov)</span></div>';
+        h += '<div style="background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.25); border-radius: 6px; padding: 0.35rem;"><span style="color: #FF3366; font-weight: 800; display: block;">12/2</span><span style="color: #cbd5e1; font-size: 0.6rem;">Surya (1.6 ov)</span></div>';
+        h += '<div style="background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.25); border-radius: 6px; padding: 0.35rem;"><span style="color: #FF3366; font-weight: 800; display: block;">20/3</span><span style="color: #cbd5e1; font-size: 0.6rem;">Shreyas (2.3 ov)</span></div>';
+        h += '</div>';
+        h += '</div>';
+
+        var bowlersList = [
+          { name: 'Mohammed Siraj', overs: '4.0', maidens: 0, runs: 31, wickets: 1, econ: '7.75' },
+          { name: 'Jasprit Bumrah *', overs: '3.4', maidens: 0, runs: 32, wickets: 1, econ: '8.73', isCurrent: true },
+          { name: 'Kuldeep Yadav', overs: '4.0', maidens: 0, runs: 33, wickets: 1, econ: '8.25' },
+          { name: 'Axar Patel', overs: '4.0', maidens: 0, runs: 33, wickets: 0, econ: '8.25' },
+          { name: 'Mohammed Shami', overs: '1.0', maidens: 0, runs: 13, wickets: 0, econ: '13.00' }
+        ];
+
+        h += '<div style="font-size: 0.7rem; font-weight: 700; color: #00E599; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.5px;">Bowling Figures (DEL)</div>';
+        h += '<table style="width: 100%; border-collapse: collapse; font-size: 0.72rem;">';
+        h += '<thead><tr style="color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">';
+        h += '<th style="padding: 0.3rem 0;">Bowler</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">O</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">M</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">R</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">W</th>';
+        h += '<th style="padding: 0.3rem 0; text-align: right;">ECON</th>';
+        h += '</tr></thead><tbody>';
+
+        for (var bwIdx = 0; bwIdx < bowlersList.length; bwIdx++) {
+          var bw = bowlersList[bwIdx];
+          var isBwCurrent = bw.isCurrent;
+          h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">';
+          h += '<td style="padding: 0.35rem 0; font-weight: 700; color: ' + (isBwCurrent ? '#FFB800' : '#f8fafc') + ';">' + bw.name + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #cbd5e1; font-family: Chakra Petch, monospace;">' + bw.overs + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #cbd5e1; font-family: Chakra Petch, monospace;">' + bw.maidens + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #cbd5e1; font-family: Chakra Petch, monospace;">' + bw.runs + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; font-weight: 800; color: ' + (bw.wickets > 0 ? '#FF3366' : '#cbd5e1') + '; font-family: Chakra Petch, monospace;">' + bw.wickets + '</td>';
+          h += '<td style="padding: 0.35rem 0; text-align: right; color: #94a3b8; font-family: Chakra Petch, monospace;">' + bw.econ + '</td>';
+          h += '</tr>';
+        }
+        h += '</tbody></table>';
+
+        h += '</div>';
+        return h;
+      }
+
       sendCheer(text) {
         this.fanCheersCount++;
         if (window.CricOSSound) {
@@ -3721,108 +4500,21 @@ export function getMobileAppHtml(): string {
 
         // SUB-VIEW 4: ANALYTICS & SCORECARD
         else if (this.matchSubTab === 'ANALYTICS') {
-          h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.85rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="WORM" style="background: ' + (this.activeChart === 'WORM' ? 'rgba(0, 229, 153, 0.25)' : 'rgba(0, 229, 153, 0.1)') + '; border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-size: 0.7rem; padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Worm progression curve">📈 Worm</button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="MANHATTAN" style="background: ' + (this.activeChart === 'MANHATTAN' ? 'rgba(0, 210, 255, 0.25)' : 'rgba(0, 210, 255, 0.1)') + '; border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-size: 0.7rem; padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Manhattan over bars">📊 Bars</button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="WAGON" style="background: ' + (this.activeChart === 'WAGON' ? 'rgba(192, 132, 252, 0.25)' : 'rgba(192, 132, 252, 0.1)') + '; border: 1px solid rgba(192, 132, 252, 0.3); color: #c084fc; font-size: 0.7rem; padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;" data-tooltip="View 8-zone Wagon Wheel">🎯 Wagon</button>';
-          h += '<button type="button" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="SCORECARD" style="background: ' + (this.activeChart === 'SCORECARD' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.06)') + '; border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; font-size: 0.7rem; padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;" data-tooltip="View full detailed scorecard">📄 Card</button>';
+          h += '<div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.85rem;">';
+          h += '<button type="button" class="analytics-tab-btn' + (this.activeChart === 'WORM' ? ' active-worm' : '') + '" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="WORM" data-tooltip="Toggle Worm cumulative run progression curve">📈 Worm</button>';
+          h += '<button type="button" class="analytics-tab-btn' + (this.activeChart === 'MANHATTAN' ? ' active-bars' : '') + '" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="MANHATTAN" data-tooltip="Toggle Manhattan over-by-over run velocity bars">📊 Bars</button>';
+          h += '<button type="button" class="analytics-tab-btn' + (this.activeChart === 'WAGON' ? ' active-wagon' : '') + '" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="WAGON" data-tooltip="Toggle 8-zone 360° precision wagon wheel">🎯 Wagon</button>';
+          h += '<button type="button" class="analytics-tab-btn' + (this.activeChart === 'SCORECARD' ? ' active-card' : '') + '" onclick="window.cricosMobileApp.toggleChart(this.dataset.chart)" data-chart="SCORECARD" data-tooltip="Toggle official detailed match scorecard">📄 Card</button>';
           h += '</div>';
 
-          // Worm Chart
           if (this.activeChart === 'WORM') {
-            h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--turf-emerald); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
-            h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">';
-            h += '<span>📈 Worm Progression (1st Inn vs Chase)</span><span style="color: #94a3b8; font-size: 0.7rem;">Target: 178</span>';
-            h += '</div>';
-            h += '<svg viewBox="0 0 340 140" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">';
-            h += '<line x1="30" y1="120" x2="320" y2="120" stroke="rgba(255,255,255,0.15)" />';
-            h += '<line x1="30" y1="20" x2="30" y2="120" stroke="rgba(255,255,255,0.15)" />';
-            h += '<path d="M 30 120 L 75 105 L 120 90 L 175 75 L 230 55 L 285 35 L 320 25" fill="none" stroke="#00E599" stroke-width="2.5" />';
-            h += '<path d="M 30 120 L 75 108 L 120 92 L 175 70 L 230 50 L 270 38" fill="none" stroke="#00D2FF" stroke-width="2.5" />';
-            h += '<circle cx="120" cy="90" r="3.5" fill="#FF3366" />';
-            h += '<circle cx="230" cy="55" r="3.5" fill="#FF3366" />';
-            h += '<text x="40" y="25" fill="#00E599" font-size="9" font-weight="700">DEL 178/10</text>';
-            h += '<text x="140" y="25" fill="#00D2FF" font-size="9" font-weight="700">MUM ' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</text>';
-            h += '</svg></div>';
-          }
-
-          // Manhattan Chart
-          else if (this.activeChart === 'MANHATTAN') {
-            h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--cyan); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
-            h += '<div style="font-size: 0.8rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">';
-            h += '<span>📊 Manhattan Over-by-Over Runs</span><span style="color: #94a3b8; font-size: 0.7rem;">Overs 1-16</span>';
-            h += '</div>';
-            h += '<svg viewBox="0 0 340 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">';
-            h += '<line x1="20" y1="105" x2="320" y2="105" stroke="rgba(255,255,255,0.15)" />';
-            h += '<rect x="25" y="75" width="14" height="30" fill="#00D2FF" rx="2" />';
-            h += '<rect x="45" y="45" width="14" height="60" fill="#00E599" rx="2" />';
-            h += '<rect x="65" y="85" width="14" height="20" fill="#64748b" rx="2" />';
-            h += '<rect x="85" y="55" width="14" height="50" fill="#00D2FF" rx="2" />';
-            h += '<rect x="105" y="30" width="14" height="75" fill="#00E599" rx="2" />';
-            h += '<rect x="125" y="90" width="14" height="15" fill="#64748b" rx="2" />';
-            h += '<rect x="145" y="65" width="14" height="40" fill="#00D2FF" rx="2" />';
-            h += '<rect x="165" y="50" width="14" height="55" fill="#00D2FF" rx="2" />';
-            h += '<rect x="185" y="35" width="14" height="70" fill="#00E599" rx="2" />';
-            h += '<rect x="205" y="70" width="14" height="35" fill="#00D2FF" rx="2" />';
-            h += '<rect x="225" y="55" width="14" height="50" fill="#00D2FF" rx="2" />';
-            h += '<rect x="245" y="40" width="14" height="65" fill="#00D2FF" rx="2" />';
-            h += '<rect x="265" y="65" width="14" height="40" fill="#00D2FF" rx="2" />';
-            h += '<rect x="285" y="30" width="14" height="75" fill="#00E599" rx="2" />';
-            h += '<rect x="305" y="25" width="14" height="80" fill="#00E599" rx="2" />';
-            h += '</svg></div>';
-          }
-
-          // Wagon Wheel
-          else if (this.activeChart === 'WAGON') {
-            h += '<div id="mobileWagonPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid #c084fc; border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
-            h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
-            h += '<span style="font-size: 0.8rem; font-weight: 700; color: #c084fc;">🎯 Mobile Precision Wagon Wheel</span>';
-            h += '<span style="font-size: 0.65rem; color: #00E599; font-weight: 800; background: rgba(0,229,153,0.15); padding: 0.1rem 0.4rem; border-radius: 4px;">RHB • Virat (48*)</span>';
-            h += '</div>';
-            h += '<div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.5rem;">';
-            h += '<svg viewBox="0 0 300 300" width="260" height="260" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; background: #030C08;">';
-            h += '<circle cx="150" cy="150" r="140" fill="#092418" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" />';
-            h += '<circle cx="150" cy="150" r="75" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1" stroke-dasharray="3,3" />';
-            h += '<rect x="140" y="115" width="20" height="70" rx="2" fill="#8C6E3D" />';
-            h += '<circle cx="150" cy="130" r="4" fill="#00E599" />';
-            h += '<text x="35" y="145" fill="#00D2FF" font-size="7" font-weight="700">◀ OFF</text>';
-            h += '<text x="265" y="145" fill="#00E599" font-size="7" font-weight="700" text-anchor="end">ON ▶</text>';
-            h += '<line x1="150" y1="130" x2="65" y2="230" stroke="#00E599" stroke-width="2" />';
-            h += '<line x1="150" y1="130" x2="50" y2="190" stroke="#00E599" stroke-width="2" />';
-            h += '<line x1="150" y1="130" x2="230" y2="180" stroke="#00E599" stroke-width="2" />';
-            h += '<path d="M 150 130 Q 110 230 130 270" fill="none" stroke="#FFB800" stroke-width="2" />';
-            h += '<path d="M 150 130 Q 200 230 180 270" fill="none" stroke="#FFB800" stroke-width="2" />';
-            h += '<line x1="150" y1="130" x2="75" y2="85" stroke="#00D2FF" stroke-width="1.2" />';
-            h += '<line x1="150" y1="130" x2="225" y2="75" stroke="#00D2FF" stroke-width="1.2" />';
-            h += '</svg></div>';
-            h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem; font-size: 0.7rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem;">';
-            h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Off Runs</span><strong style="color: #00D2FF;">28</strong></div>';
-            h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">On Runs</span><strong style="color: #00E599;">20</strong></div>';
-            h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Boundaries</span><strong style="color: #c084fc;">32</strong></div>';
-            h += '<div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Dots</span><strong style="color: #ffb800;">12.5%</strong></div>';
-            h += '</div></div>';
-          }
-
-          // Full Scorecard
-          else if (this.activeChart === 'SCORECARD') {
-            h += '<div id="mobileScorecardPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
-            h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
-            h += '<span style="font-size: 0.8rem; font-weight: 700; color: #f8fafc;">📄 Detailed Scorecard</span>';
-            h += '<span style="font-size: 0.7rem; color: #00E599; font-weight: 700;">Innings 2: 142/3</span>';
-            h += '</div>';
-            h += '<table style="width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 0.6rem;">';
-            h += '<thead><tr style="color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">';
-            h += '<th style="padding: 0.25rem 0;">Batter</th><th style="padding: 0.25rem 0; text-align: right;">R</th><th style="padding: 0.25rem 0; text-align: right;">B</th><th style="padding: 0.25rem 0; text-align: right;">4s</th><th style="padding: 0.25rem 0; text-align: right;">6s</th><th style="padding: 0.25rem 0; text-align: right;">SR</th>';
-            h += '</tr></thead><tbody>';
-            h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700;">Rohit Verma <small style="color: #94a3b8; display: block;">c Pant b Bumrah</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">38</td><td style="padding: 0.25rem 0; text-align: right;">26</td><td style="padding: 0.25rem 0; text-align: right;">4</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">146.1</td></tr>';
-            h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700;">Ishan Kishan <small style="color: #94a3b8; display: block;">b Siraj</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">16</td><td style="padding: 0.25rem 0; text-align: right;">11</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">1</td><td style="padding: 0.25rem 0; text-align: right;">145.5</td></tr>';
-            h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700;">Suryakumar Yadav <small style="color: #94a3b8; display: block;">c sub b Kuldeep</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">42</td><td style="padding: 0.25rem 0; text-align: right;">28</td><td style="padding: 0.25rem 0; text-align: right;">5</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">150.0</td></tr>';
-            h += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);"><td style="padding: 0.25rem 0; font-weight: 700; color: #00E599;">Virat Sharma * <small style="color: #94a3b8; display: block;">not out</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">48</td><td style="padding: 0.25rem 0; text-align: right;">32</td><td style="padding: 0.25rem 0; text-align: right;">4</td><td style="padding: 0.25rem 0; text-align: right;">2</td><td style="padding: 0.25rem 0; text-align: right;">150.0</td></tr>';
-            h += '<tr><td style="padding: 0.25rem 0; font-weight: 700; color: #00D2FF;">Hardik Patel <small style="color: #94a3b8; display: block;">not out</small></td><td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">18</td><td style="padding: 0.25rem 0; text-align: right;">12</td><td style="padding: 0.25rem 0; text-align: right;">1</td><td style="padding: 0.25rem 0; text-align: right;">1</td><td style="padding: 0.25rem 0; text-align: right;">150.0</td></tr>';
-            h += '</tbody></table>';
-            h += '<div style="font-size: 0.7rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.3rem;">';
-            h += 'Extras: <strong style="color: #ffb800;">12</strong> (b 4, lb 2, w 5, nb 1) • Total: <strong style="color: #00E599;">142/3</strong> (16.4 ov)';
-            h += '</div></div>';
+            h += this.renderDynamicWormChart();
+          } else if (this.activeChart === 'MANHATTAN') {
+            h += this.renderDynamicManhattanChart();
+          } else if (this.activeChart === 'WAGON') {
+            h += this.renderDynamicAnalyticsWagon();
+          } else if (this.activeChart === 'SCORECARD') {
+            h += this.renderDynamicScorecard();
           }
         }
 

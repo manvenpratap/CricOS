@@ -239,149 +239,271 @@ export class LiveMatchScreenController {
     // Conditional mobile analytics panel
     let chartPanelHtml = '';
     if (activeChart === 'WORM') {
+      const crr = (this.state.totalRuns / (this.state.legalBalls / 6)).toFixed(2);
+      const targetRuns = 178;
+      const runsNeeded = Math.max(0, targetRuns - this.state.totalRuns);
+      const ballsRem = Math.max(0, 120 - this.state.legalBalls);
+      const rrr = ballsRem > 0 ? ((runsNeeded / ballsRem) * 6).toFixed(2) : '0.00';
+
       chartPanelHtml = `
-        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--turf-emerald); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
-          <div style="font-size: 0.8rem; font-weight: 700; color: #00E599; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
-            <span>📈 Worm Progression (1st Inn vs Chase)</span>
-            <span style="color: #94a3b8; font-size: 0.7rem;">Target: 178</span>
+        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.85rem; font-weight: 800; color: #00E599; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; font-family: 'Space Grotesk', sans-serif;">
+            <span>📈 Precision Worm Progression</span>
+            <span style="color: #94a3b8; font-size: 0.68rem;">Target: ${targetRuns}</span>
           </div>
-          <svg viewBox="0 0 340 140" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">
-            <line x1="30" y1="120" x2="320" y2="120" stroke="rgba(255,255,255,0.15)" />
-            <line x1="30" y1="20" x2="30" y2="120" stroke="rgba(255,255,255,0.15)" />
-            <path d="M 30 120 L 75 105 L 120 90 L 175 75 L 230 55 L 285 35 L 320 25" fill="none" stroke="#00E599" stroke-width="2.5" />
-            <path d="M 30 120 L 75 108 L 120 92 L 175 70 L 230 50 L 270 38" fill="none" stroke="#00D2FF" stroke-width="2.5" />
-            <circle cx="120" cy="90" r="3.5" fill="#FF3366" />
-            <circle cx="230" cy="55" r="3.5" fill="#FF3366" />
-            <text x="40" y="25" fill="#00E599" font-size="9" font-weight="700">DEL 178/10</text>
-            <text x="140" y="25" fill="#00D2FF" font-size="9" font-weight="700">MUM ${this.state.totalRuns}/${this.state.totalWickets}</text>
+
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem; margin-bottom: 0.65rem;">
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 0.3rem; text-align: center;"><span style="display: block; font-size: 0.58rem; color: #94a3b8;">CRR</span><strong style="color: #00D2FF; font-family: monospace;">${crr}</strong></div>
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 0.3rem; text-align: center;"><span style="display: block; font-size: 0.58rem; color: #94a3b8;">RRR</span><strong style="color: #FFB800; font-family: monospace;">${rrr}</strong></div>
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 0.3rem; text-align: center;"><span style="display: block; font-size: 0.58rem; color: #94a3b8;">Needed</span><strong style="color: #00E599; font-family: monospace;">${runsNeeded} (${ballsRem}b)</strong></div>
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 0.3rem; text-align: center;"><span style="display: block; font-size: 0.58rem; color: #94a3b8;">Score</span><strong style="color: #f8fafc; font-family: monospace;">${this.state.totalRuns}/${this.state.totalWickets}</strong></div>
+          </div>
+
+          <svg viewBox="0 0 340 150" width="100%" height="150" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.35); border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+            <line x1="30" y1="130" x2="320" y2="130" stroke="rgba(255,255,255,0.15)" />
+            <line x1="30" y1="20" x2="30" y2="130" stroke="rgba(255,255,255,0.15)" />
+            
+            <line x1="30" y1="102" x2="320" y2="102" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+            <text x="24" y="105" fill="#64748b" font-size="7" font-family="monospace" text-anchor="end">50</text>
+            <line x1="30" y1="75" x2="320" y2="75" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+            <text x="24" y="78" fill="#64748b" font-size="7" font-family="monospace" text-anchor="end">100</text>
+            <line x1="30" y1="47" x2="320" y2="47" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+            <text x="24" y="50" fill="#64748b" font-size="7" font-family="monospace" text-anchor="end">150</text>
+
+            <line x1="30" y1="32" x2="320" y2="32" stroke="rgba(255,184,0,0.7)" stroke-dasharray="4,3" stroke-width="1.2" />
+            <text x="315" y="28" fill="#FFB800" font-size="7" font-weight="700" text-anchor="end">TARGET 178</text>
+
+            <polyline points="30,130 59,121 88,105 117,96 146,83 175,71 204,59 233,48 262,37 291,28 320,20" fill="none" stroke="#00E599" stroke-width="2" opacity="0.85" />
+            <polyline points="30,130 59,118 88,101 117,89 146,73 175,61 204,49 233,39 262,31" fill="none" stroke="#00D2FF" stroke-width="2.5" />
+            
+            <circle cx="59" cy="118" r="3.2" fill="#FF3366" stroke="#00D2FF" stroke-width="1" data-tooltip="Wicket at Ov 2: 12/1" />
+            <circle cx="117" cy="89" r="3.2" fill="#FF3366" stroke="#00D2FF" stroke-width="1" data-tooltip="Wicket at Ov 6: 53/2" />
+            <circle cx="175" cy="61" r="3.2" fill="#FF3366" stroke="#00D2FF" stroke-width="1" data-tooltip="Wicket at Ov 10: 88/3" />
+
+            <circle cx="262" cy="31" r="6" fill="none" stroke="#00D2FF" stroke-width="1.2" opacity="0.7" />
+            <circle cx="262" cy="31" r="3" fill="#00D2FF" stroke="#ffffff" stroke-width="1" data-tooltip="Live Point: ${this.state.totalRuns}/${this.state.totalWickets} (16.4 ov)" />
           </svg>
         </div>
       `;
     } else if (activeChart === 'MANHATTAN') {
+      const overRuns = [8, 12, 6, 9, 14, 4, 7, 10, 12, 6, 8, 11, 7, 10, 6, 5];
+      const maxPerOver = 18;
+      const chartH = 90;
+      const baseLineY = 110;
+      let barsSvg = '';
+
+      for (let i = 0; i < overRuns.length; i++) {
+        const r = overRuns[i] ?? 0;
+        const barH = Math.min((r / maxPerOver) * chartH, chartH);
+        const barX = 32 + i * 18;
+        const barY = baseLineY - barH;
+        const isWicketOver = (i === 1 || i === 5 || i === 9);
+        const fillCol = isWicketOver ? '#00D2FF' : '#00D2FF';
+        const strokeCol = isWicketOver ? '#FF3366' : 'transparent';
+        
+        barsSvg += `
+          <rect x="${barX}" y="${barY}" width="12" height="${barH}" rx="2" fill="${fillCol}" stroke="${strokeCol}" stroke-width="${isWicketOver ? 1.5 : 0}" data-tooltip="Over ${i + 1}: ${r} runs" />
+          <text x="${barX + 6}" y="${barY - 3}" fill="#cbd5e1" font-size="7" font-family="monospace" text-anchor="middle">${r}</text>
+          ${isWicketOver ? `<circle cx="${barX + 6}" cy="${barY - 9}" r="2.8" fill="#FF3366" /><text x="${barX + 6}" y="${barY - 7}" fill="#ffffff" font-size="5" font-weight="900" text-anchor="middle">W</text>` : ''}
+          <text x="${barX + 6}" y="${baseLineY + 11}" fill="#64748b" font-size="6.5" font-family="monospace" text-anchor="middle">${i + 1}</text>
+        `;
+      }
+
       chartPanelHtml = `
-        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid var(--cyan); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
-          <div style="font-size: 0.8rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
-            <span>📊 Manhattan Over-by-Over Runs</span>
-            <span style="color: #94a3b8; font-size: 0.7rem;">Overs 1-16</span>
+        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 210, 255, 0.35); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.85rem; font-weight: 800; color: #00D2FF; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; font-family: 'Space Grotesk', sans-serif;">
+            <span>📊 Precision Manhattan Velocity</span>
+            <span style="color: #94a3b8; font-size: 0.68rem;">Overs 1-16 (135 runs)</span>
           </div>
-          <svg viewBox="0 0 340 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.3); border-radius: 8px;">
-            <line x1="20" y1="105" x2="320" y2="105" stroke="rgba(255,255,255,0.15)" />
-            <rect x="25" y="75" width="14" height="30" fill="#00D2FF" rx="2" />
-            <rect x="45" y="45" width="14" height="60" fill="#00E599" rx="2" />
-            <rect x="65" y="85" width="14" height="20" fill="#64748b" rx="2" />
-            <rect x="85" y="55" width="14" height="50" fill="#00D2FF" rx="2" />
-            <rect x="105" y="30" width="14" height="75" fill="#00E599" rx="2" />
-            <rect x="125" y="90" width="14" height="15" fill="#64748b" rx="2" />
-            <rect x="145" y="65" width="14" height="40" fill="#00D2FF" rx="2" />
-            <rect x="165" y="50" width="14" height="55" fill="#00D2FF" rx="2" />
-            <rect x="185" y="35" width="14" height="70" fill="#00E599" rx="2" />
-            <rect x="205" y="70" width="14" height="35" fill="#00D2FF" rx="2" />
-            <rect x="225" y="55" width="14" height="50" fill="#00D2FF" rx="2" />
-            <rect x="245" y="40" width="14" height="65" fill="#00D2FF" rx="2" />
-            <rect x="265" y="65" width="14" height="40" fill="#00D2FF" rx="2" />
-            <rect x="285" y="30" width="14" height="75" fill="#00E599" rx="2" />
-            <rect x="305" y="25" width="14" height="80" fill="#00E599" rx="2" />
+          <svg viewBox="0 0 340 135" width="100%" height="135" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.35); border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+            <line x1="25" y1="${baseLineY}" x2="325" y2="${baseLineY}" stroke="rgba(255,255,255,0.15)" />
+            <line x1="25" y1="35" x2="325" y2="35" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+            <text x="22" y="38" fill="#64748b" font-size="6.5" font-family="monospace" text-anchor="end">15</text>
+            <line x1="25" y1="60" x2="325" y2="60" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+            <text x="22" y="63" fill="#64748b" font-size="6.5" font-family="monospace" text-anchor="end">10</text>
+            <line x1="25" y1="85" x2="325" y2="85" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+            <text x="22" y="88" fill="#64748b" font-size="6.5" font-family="monospace" text-anchor="end">5</text>
+            ${barsSvg}
           </svg>
         </div>
       `;
     } else if (activeChart === 'WAGON') {
       chartPanelHtml = `
-        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid #c084fc; border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+        <div id="mobileWagonPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(192, 132, 252, 0.35); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: #c084fc;">🎯 Mobile Precision Wagon Wheel</span>
-            <span style="font-size: 0.65rem; color: #00E599; font-weight: 800; background: rgba(0,229,153,0.15); padding: 0.1rem 0.4rem; border-radius: 4px;">RHB • Virat (48*)</span>
+            <span style="font-size: 0.85rem; font-weight: 800; color: #c084fc; font-family: 'Space Grotesk', sans-serif;">🎯 Mobile Precision Wagon Wheel (360° Precision Wagon Wheel)</span>
+            <span style="font-size: 0.65rem; color: #00E599; font-weight: 800; background: rgba(0,229,153,0.15); padding: 0.15rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0,229,153,0.3);">RHB • Striker (${this.state.striker.runs}*)</span>
           </div>
-          <div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.5rem;">
-            <svg viewBox="0 0 300 300" width="260" height="260" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; background: #030C08;">
-              <circle cx="150" cy="150" r="140" fill="#092418" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" />
-              <circle cx="150" cy="150" r="75" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1" stroke-dasharray="3,3" />
-              <rect x="140" y="115" width="20" height="70" rx="2" fill="#8C6E3D" />
-              <circle cx="150" cy="130" r="4" fill="#00E599" />
-              <text x="35" y="145" fill="#00D2FF" font-size="7" font-weight="700">◀ OFF</text>
-              <text x="265" y="145" fill="#00E599" font-size="7" font-weight="700" text-anchor="end">ON ▶</text>
-              <!-- Shot rays -->
-              <line x1="150" y1="130" x2="65" y2="230" stroke="#00E599" stroke-width="2" />
-              <line x1="150" y1="130" x2="50" y2="190" stroke="#00E599" stroke-width="2" />
-              <line x1="150" y1="130" x2="230" y2="180" stroke="#00E599" stroke-width="2" />
-              <path d="M 150 130 Q 110 230 130 270" fill="none" stroke="#FFB800" stroke-width="2" />
-              <path d="M 150 130 Q 200 230 180 270" fill="none" stroke="#FFB800" stroke-width="2" />
-              <line x1="150" y1="130" x2="75" y2="85" stroke="#00D2FF" stroke-width="1.2" />
-              <line x1="150" y1="130" x2="225" y2="75" stroke="#00D2FF" stroke-width="1.2" />
+          <div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.65rem;">
+            <svg viewBox="0 0 300 300" width="260" height="260" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; background: #030C08; border: 2px solid rgba(0,229,153,0.4); box-shadow: 0 0 15px rgba(0,229,153,0.15);">
+              <circle cx="150" cy="150" r="135" fill="#092418" stroke="rgba(0, 229, 153, 0.3)" stroke-width="1.5" />
+              <circle cx="150" cy="150" r="65" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1" stroke-dasharray="3,3" />
+              
+              <line x1="150" y1="15" x2="150" y2="285" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2,2" />
+              <line x1="15" y1="150" x2="285" y2="150" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2,2" />
+              <line x1="55" y1="55" x2="245" y2="245" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,2" />
+              <line x1="55" y1="245" x2="245" y2="55" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,2" />
+
+              <rect x="143" y="120" width="14" height="60" rx="2" fill="#8C6E3D" stroke="#ffffff" stroke-width="0.5" />
+              <circle cx="150" cy="150" r="3.5" fill="#00E599" stroke="#04070D" stroke-width="1" />
+
+              <text x="35" y="153" fill="#00D2FF" font-size="7.5" font-weight="800">OFF</text>
+              <text x="265" y="153" fill="#00E599" font-size="7.5" font-weight="800" text-anchor="end">ON</text>
+
+              <line x1="150" y1="150" x2="60" y2="225" stroke="#00E599" stroke-width="2" stroke-linecap="round" data-tooltip="4 Runs through Square Leg" />
+              <circle cx="60" cy="225" r="3" fill="#00E599" stroke="#ffffff" stroke-width="0.8" />
+              <line x1="150" y1="150" x2="45" y2="180" stroke="#00E599" stroke-width="2" stroke-linecap="round" data-tooltip="4 Runs through Mid Wicket" />
+              <circle cx="45" cy="180" r="3" fill="#00E599" stroke="#ffffff" stroke-width="0.8" />
+              <line x1="150" y1="150" x2="240" y2="195" stroke="#00E599" stroke-width="2" stroke-linecap="round" data-tooltip="4 Runs through Extra Cover" />
+              <circle cx="240" cy="195" r="3" fill="#00E599" stroke="#ffffff" stroke-width="0.8" />
+
+              <path d="M 150 150 Q 110 240 125 278" fill="none" stroke="#FFB800" stroke-width="2.5" stroke-linecap="round" data-tooltip="6 RUNS over Deep Mid Wicket" />
+              <circle cx="125" cy="278" r="4" fill="#FFB800" stroke="#ffffff" stroke-width="1" />
+              <path d="M 150 150 Q 210 240 185 278" fill="none" stroke="#FFB800" stroke-width="2.5" stroke-linecap="round" data-tooltip="6 RUNS over Long Off" />
+              <circle cx="185" cy="278" r="4" fill="#FFB800" stroke="#ffffff" stroke-width="1" />
+
+              <line x1="150" y1="150" x2="80" y2="85" stroke="#00D2FF" stroke-width="1.5" stroke-linecap="round" data-tooltip="1 Run" />
+              <circle cx="80" cy="85" r="2.5" fill="#00D2FF" />
+              <line x1="150" y1="150" x2="220" y2="75" stroke="#00D2FF" stroke-width="1.5" stroke-linecap="round" data-tooltip="2 Runs" />
+              <circle cx="220" cy="75" r="2.5" fill="#00D2FF" />
+              <line x1="150" y1="150" x2="190" y2="140" stroke="#64748b" stroke-width="1" stroke-dasharray="2,2" data-tooltip="Dot Ball" />
+              <circle cx="190" cy="140" r="2" fill="#64748b" />
             </svg>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem; font-size: 0.7rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem;">
-            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Off Runs</span><strong style="color: #00D2FF;">28</strong></div>
-            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">On Runs</span><strong style="color: #00E599;">20</strong></div>
-            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Boundaries</span><strong style="color: #c084fc;">32</strong></div>
-            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Dots</span><strong style="color: #ffb800;">12.5%</strong></div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem; font-size: 0.7rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.5rem;">
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Off Runs</span><strong style="color: #00D2FF;">74</strong></div>
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">On Runs</span><strong style="color: #00E599;">68</strong></div>
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Boundaries</span><strong style="color: #FFB800;">18</strong></div>
+            <div><span style="color: #94a3b8; display: block; font-size: 0.6rem;">Dot %</span><strong style="color: #cbd5e1;">24%</strong></div>
           </div>
         </div>
       `;
     } else if (activeChart === 'SCORECARD') {
       chartPanelHtml = `
-        <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: #f8fafc;">📄 Detailed Scorecard</span>
-            <span style="font-size: 0.7rem; color: #00E599; font-weight: 700;">Innings 2: 142/3</span>
+        <div id="mobileScorecardPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+            <div>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">📄 Detailed Scorecard (Official Match Scorecard)</span>
+              <div style="font-size: 0.65rem; color: #94a3b8;">Innings 2: 142/3</div>
+            </div>
+            <span style="font-size: 0.75rem; color: #00E599; font-weight: 800; font-family: monospace; background: rgba(0,229,153,0.12); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.3);">${this.state.totalRuns}/${this.state.totalWickets} (16.4 ov)</span>
           </div>
-          <!-- Batting Table -->
-          <table style="width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 0.6rem;">
+
+          <div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.35rem; text-transform: uppercase;">Batting Figures</div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 0.65rem;">
             <thead>
-              <tr style="color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
-                <th style="padding: 0.25rem 0;">Batter</th>
-                <th style="padding: 0.25rem 0; text-align: right;">R</th>
-                <th style="padding: 0.25rem 0; text-align: right;">B</th>
-                <th style="padding: 0.25rem 0; text-align: right;">4s</th>
-                <th style="padding: 0.25rem 0; text-align: right;">6s</th>
-                <th style="padding: 0.25rem 0; text-align: right;">SR</th>
+              <tr style="color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
+                <th style="padding: 0.3rem 0;">Batter</th>
+                <th style="padding: 0.3rem 0; text-align: right;">R</th>
+                <th style="padding: 0.3rem 0; text-align: right;">B</th>
+                <th style="padding: 0.3rem 0; text-align: right;">4s</th>
+                <th style="padding: 0.3rem 0; text-align: right;">6s</th>
+                <th style="padding: 0.3rem 0; text-align: right;">SR</th>
               </tr>
             </thead>
             <tbody>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                <td style="padding: 0.25rem 0; font-weight: 700;">Rohit Verma <small style="color: #94a3b8; display: block;">c Pant b Bumrah</small></td>
-                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">38</td>
-                <td style="padding: 0.25rem 0; text-align: right;">26</td>
-                <td style="padding: 0.25rem 0; text-align: right;">4</td>
-                <td style="padding: 0.25rem 0; text-align: right;">2</td>
-                <td style="padding: 0.25rem 0; text-align: right;">146.1</td>
+                <td style="padding: 0.3rem 0; font-weight: 700;">Rohit Verma <small style="color: #94a3b8; display: block; font-size: 0.62rem;">c Pant b Bumrah</small></td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">8</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">6</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">1</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">133.3</td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                <td style="padding: 0.25rem 0; font-weight: 700;">Ishan Kishan <small style="color: #94a3b8; display: block;">b Siraj</small></td>
-                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">16</td>
-                <td style="padding: 0.25rem 0; text-align: right;">11</td>
-                <td style="padding: 0.25rem 0; text-align: right;">2</td>
-                <td style="padding: 0.25rem 0; text-align: right;">1</td>
-                <td style="padding: 0.25rem 0; text-align: right;">145.5</td>
+                <td style="padding: 0.3rem 0; font-weight: 700;">Suryakumar Yadav <small style="color: #94a3b8; display: block; font-size: 0.62rem;">c & b Kuldeep</small></td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">2</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">0.0</td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                <td style="padding: 0.25rem 0; font-weight: 700;">Suryakumar Yadav <small style="color: #94a3b8; display: block;">c sub b Kuldeep</small></td>
-                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">42</td>
-                <td style="padding: 0.25rem 0; text-align: right;">28</td>
-                <td style="padding: 0.25rem 0; text-align: right;">5</td>
-                <td style="padding: 0.25rem 0; text-align: right;">2</td>
-                <td style="padding: 0.25rem 0; text-align: right;">150.0</td>
+                <td style="padding: 0.3rem 0; font-weight: 700;">Shreyas Iyer <small style="color: #94a3b8; display: block; font-size: 0.62rem;">b Siraj</small></td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">1</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">0.0</td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                <td style="padding: 0.25rem 0; font-weight: 700; color: #00E599;">Virat Sharma * <small style="color: #94a3b8; display: block;">not out</small></td>
-                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">48</td>
-                <td style="padding: 0.25rem 0; text-align: right;">32</td>
-                <td style="padding: 0.25rem 0; text-align: right;">4</td>
-                <td style="padding: 0.25rem 0; text-align: right;">2</td>
-                <td style="padding: 0.25rem 0; text-align: right;">150.0</td>
+                <td style="padding: 0.3rem 0; font-weight: 700; color: #00E599;">${this.state.striker.name} * <small style="color: #94a3b8; display: block; font-size: 0.62rem;">not out (striker)</small></td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #00E599; font-weight: 800; font-family: monospace;">${this.state.striker.runs}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.striker.balls}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.striker.fours}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.striker.sixes}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">${((this.state.striker.runs / this.state.striker.balls) * 100).toFixed(1)}</td>
               </tr>
               <tr>
-                <td style="padding: 0.25rem 0; font-weight: 700; color: #00D2FF;">Hardik Patel <small style="color: #94a3b8; display: block;">not out</small></td>
-                <td style="padding: 0.25rem 0; text-align: right; color: #00E599; font-weight: 700;">18</td>
-                <td style="padding: 0.25rem 0; text-align: right;">12</td>
-                <td style="padding: 0.25rem 0; text-align: right;">1</td>
-                <td style="padding: 0.25rem 0; text-align: right;">1</td>
-                <td style="padding: 0.25rem 0; text-align: right;">150.0</td>
+                <td style="padding: 0.3rem 0; font-weight: 700; color: #00D2FF;">${this.state.nonStriker.name} <small style="color: #94a3b8; display: block; font-size: 0.62rem;">not out (non-striker)</small></td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #00D2FF; font-weight: 800; font-family: monospace;">${this.state.nonStriker.runs}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.nonStriker.balls}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.nonStriker.fours}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.nonStriker.sixes}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">${((this.state.nonStriker.runs / this.state.nonStriker.balls) * 100).toFixed(1)}</td>
               </tr>
             </tbody>
           </table>
-          <div style="font-size: 0.7rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.3rem;">
-            Extras: <strong style="color: #ffb800;">12</strong> (b 4, lb 2, w 5, nb 1) • Total: <strong style="color: #00E599;">142/3</strong> (16.4 ov)
+
+          <div style="font-size: 0.68rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem; margin-bottom: 0.65rem; display: flex; justify-content: space-between;">
+            <span>Extras: <strong style="color: #FFB800;">12</strong> (b 4, lb 2, w 5, nb 1)</span>
+            <span>Total: <strong style="color: #00E599;">${this.state.totalRuns}/${this.state.totalWickets}</strong> (16.4 ov)</span>
           </div>
+
+          <div style="font-size: 0.7rem; font-weight: 700; color: #FF3366; margin-bottom: 0.35rem; text-transform: uppercase;">Fall of Wickets</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; font-size: 0.65rem; text-align: center; margin-bottom: 0.65rem;">
+            <div style="background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.25); border-radius: 6px; padding: 0.3rem;"><span style="color: #FF3366; font-weight: 800; display: block;">12/1</span><span style="color: #cbd5e1; font-size: 0.6rem;">Ishan (1.4)</span></div>
+            <div style="background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.25); border-radius: 6px; padding: 0.3rem;"><span style="color: #FF3366; font-weight: 800; display: block;">12/2</span><span style="color: #cbd5e1; font-size: 0.6rem;">Surya (1.6)</span></div>
+            <div style="background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.25); border-radius: 6px; padding: 0.3rem;"><span style="color: #FF3366; font-weight: 800; display: block;">20/3</span><span style="color: #cbd5e1; font-size: 0.6rem;">Shreyas (2.3)</span></div>
+          </div>
+
+          <div style="font-size: 0.7rem; font-weight: 700; color: #00E599; margin-bottom: 0.35rem; text-transform: uppercase;">Bowling Figures (DEL)</div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.72rem;">
+            <thead>
+              <tr style="color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
+                <th style="padding: 0.3rem 0;">Bowler</th>
+                <th style="padding: 0.3rem 0; text-align: right;">O</th>
+                <th style="padding: 0.3rem 0; text-align: right;">M</th>
+                <th style="padding: 0.3rem 0; text-align: right;">R</th>
+                <th style="padding: 0.3rem 0; text-align: right;">W</th>
+                <th style="padding: 0.3rem 0; text-align: right;">ECON</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.3rem 0; font-weight: 700;">Mohammed Siraj</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">4.0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">31</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #FF3366; font-weight: 800; font-family: monospace;">1</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">7.75</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.3rem 0; font-weight: 700; color: #FFB800;">Jasprit Bumrah *</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">3.4</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">32</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #FF3366; font-weight: 800; font-family: monospace;">1</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">8.73</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.3rem 0; font-weight: 700;">Kuldeep Yadav</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">4.0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">33</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #FF3366; font-weight: 800; font-family: monospace;">1</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">8.25</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.3rem 0; font-weight: 700;">Axar Patel</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">4.0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">33</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">8.25</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       `;
     }

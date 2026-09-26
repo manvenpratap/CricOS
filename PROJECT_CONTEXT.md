@@ -1,14 +1,37 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 20:35:00
-**Version:** 1.0.0-phase2al (Mobile User Sign Up, Custom Bio & Automated Role Experience Definition)  
+**Last Updated:** 2026-09-26 21:00:00
+**Version:** 1.0.0-phase2am (Dynamic Production-Grade Mobile Analytics & Scorecard System)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AL Completed — Mobile User Sign Up, Custom Bio & Automated Role Experience Definition:
+- **Active Phase**: Phase 2AM Completed — Dynamic Production-Grade Mobile Analytics & Scorecard System:
+  - **1. Dynamic Worm Run Progression Curve**:
+    - Replaced static SVG mock with dynamic mathematical curves comparing Innings 1 (Delhi 178/10, 20 overs) vs Innings 2 chase (Mumbai 142/3 in 16.4 ov).
+    - Gold dashed Target Line (`TARGET 178`), pulsing live radar head with dual-ring halo, CRR (`8.52`) and RRR (`10.80`) telemetry HUD, needed runs/balls counter, and interactive over inspection chips (`selectWormOver(ov)`).
+  - **2. Dynamic Manhattan Over Velocity Bars**:
+    - Real-time over-by-over velocity calculated from `this.overHistory` (16 completed overs = 135 runs, +7 in over 17 = 142/3).
+    - Wicket badges (`W` red markers), run count labels, phase breakdown chips (Powerplay 53/2 @ 8.83, Middle 70/1 @ 7.78, Death 19/0 @ 11.40).
+    - Segmented comparison mode toggle (`CHASE` vs `DUAL`), and interactive over breakdown card (`selectManhattanOver(ov)`).
+  - **3. Interactive 360° Precision Wagon Wheel**:
+    - Full 8-zone radial stadium visualizer linked to `this.shotHistory` and `this.SHOT_ZONES_DATA`.
+    - Batter filter (`ALL`, `Virat K.`, `Rohit S.`), shot type filter (`ALL`, `BOUNDARIES`, `SINGLES`, `DOTS`).
+    - Stance toggle (`RHB` / `LHB` with horizontal coordinate mirroring).
+    - Dynamic trajectory rays (quadratic Bezier curves for 6s, solid lines for 4s/1s, dashed lines for dots) with glowing end markers, and Off vs On side split ratio bar (52% Off / 48% On).
+  - **4. Dynamic Official Match Scorecard**:
+    - Complete batting figures with active strikers (`*` not out) and strike rates.
+    - Fall of Wickets milestone cards (`12/1`, `12/2`, `20/3`), Extras tally (12: b 4, lb 2, w 5, nb 1).
+    - Complete bowling figures (Siraj 4-0-31-1, Bumrah 3.4-0-32-1, Kuldeep 4-0-33-1, Axar 4-0-33-0) mathematically summing to 142/3 in 16.4 overs.
+  - **5. Parity, Quality & Governance Invariants**:
+    - 100% Rule 5 `data-tooltip` coverage, zero `transition: all` (Emil Kowalski invariant).
+    - Native controller parity in `LiveMatchScreen.ts` and `CricOSMobileApp`.
+    - Added test suite `tests/42-mobile-analytics-and-card-charts.test.ts` (20 assertions across 6 suites, 100% passing).
+    - `./pipeline.sh test --summary`: 325 tests passing across 108 suites with 0 failures in 798ms.
+    - Synced `dist/index.html`, `dist/mobile.html`.
+- **Preceding Phase**: Phase 2AL Completed — Mobile User Sign Up, Custom Bio & Automated Role Experience Definition:
   - **1. Sign Up & Profile Creation Flow**:
     - Implemented segmented mode switcher between Sign In (`🔑 Sign In`) and Create Account (`✨ Create Account`) in `apps/api/src/ui/mobile-view.ts` and `apps/mobile/src/screens/AuthScreen.ts`.
     - Comprehensive registration form collecting Full Name (`#signupNameInput`), Mobile/Email Identifier (`#signupIdentifierInput`), Primary Role (8 interactive cards), Custom Cricket Bio / Mission Statement (`#signupBioInput`), and Athletic Specialization specs (Playing Role dropdown, Batting Stance RHB/LHB, Bowling Style, Jersey Number, Club/Team).
