@@ -1,15 +1,48 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 09:50:00
-**Version:** 1.0.0-phase2af (Mobile Viewport Scrolling Architecture Hardening, Dedicated Momentum Scroll Container, Permanently Locked Bottom Navigation Bar & Fresh APK Release)  
+**Last Updated:** 2026-09-26 12:05:00
+**Version:** 1.0.0-phase2ah (Mobile Native Redesign, 100% In-App Dialog Elimination, Feature Parity & Ergonomics)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AF Completed — Mobile Viewport Scrolling Architecture Hardening & Fixed Bottom Navigation Lock:
-  - **1. Root Cause Eradication (`apps/api/src/ui/mobile-view.ts`, `apps/mobile/src/index.ts`)**:
+- **Active Phase**: Phase 2AH Completed — Mobile Native Redesign, 100% In-App Dialog Elimination, Feature Parity & Ergonomics:
+  - **1. Zero Browser Dialogs & Native In-App Feedback System**:
+    - Completely audited and purged all 24 `alert()`, 2 `confirm()`, and 4 `prompt()` browser dialogs from `apps/api/src/ui/mobile-view.ts`.
+    - Implemented high-performance, non-blocking stacked in-app Toast Notification engine (`#mobileToastContainer`, `showToast(msg, type)`) with status colors, Web Audio tactile cues, and automatic slide/fade dismissal.
+    - Implemented native Action Sheet / Bottom Drawer modal system (`#actionSheetModal`, `openActionSheet(config)`, `closeActionSheet()`) with drag indicators, smooth bottom-up slide physics, backdrop dismissal, and `Escape` key trapping.
+  - **2. Full Match Center Features & Pitch Telemetry**:
+    - Integrated segmented sub-navigation pill bar: `⚡ Live Score`, `📡 Pitch & DRS`, `🎙️ Commentary`, and `📊 Analytics & Card`.
+    - Added Live Pitch Telemetry widget: Moisture (11.2%), Pace (142.4 km/h), Bounce (8.8/10), and Turn (3.2°).
+    - Added Ball-by-ball Live Commentary Stream with relative timestamps and color-coded event badges.
+    - Added Interactive DRS Hawk-Eye sheet modal with 3D Catmull-Rom delivery trajectory, pitch impact shockwave ring, stumps collision marker, and MCC Law 36 broadcast verdict.
+    - Replaced wicket prompt with interactive Wicket Dismissal action sheet (dismissal method selector + incoming batter picker).
+  - **3. Cricket Operations & Customization**:
+    - Interactive Coin Toss certification action sheet with 3D coin flip animation and Bat/Bowl decision radio group.
+    - 3D Cricket Bat & Gear Configurator action sheet with willow grade selection (Grade 1 English Willow, Kashmir Willow, Carbon-Core Hybrid) and grip color customizer integrated directly into the Event Basket.
+  - **4. Tournaments & Standings Parity**:
+    - Embedded SVG NRR Trajectory Sparkline chart with team legend and zero-NRR baseline.
+    - Embedded Playoff Knockout Tree Bracket with Qualifier 1, Eliminator, and Grand Final cards featuring ₹300k purse badges and interactive calendar reminder toasts.
+  - **5. Marketplace & Event Basket Procurement**:
+    - Added horizontal scrollable category filter chips (`ALL`, `GROUND`, `UMPIRE`, `SCORER`, `GEAR`, `MEDICAL`).
+    - Added full Event Basket Procurement Drawer modal with line items, 5% platform fee, 18% GST on platform fee, escrow balance holds, and instant booking confirmation.
+  - **6. Governance & Compliance**:
+    - Added Umpire Code of Conduct incident filing sheet with MCC Law 41/42 +5 penalty runs award.
+    - Added Dispute Arbitration ledger with double-entry refund journals in Admin tab.
+    - Added Apple App Store Guideline 5.1.1(v) compliant in-app Account Deletion sheet modal with confirmation safety check.
+  - **7. Test Suite 39 & Release Parity**:
+    - Created `tests/39-mobile-native-redesign-and-feature-parity.test.ts` (asserting zero browser dialogs, in-app toasts/sheets, feature parity, tooltips, zero `transition: all`, and script compilation).
+    - `./pipeline.sh test --summary`: 268 tests passing across 89 suites with 0 failures in 751ms.
+    - `./pipeline.sh doctor`: Verified Rule 6 byte-for-byte distribution parity (`root index.html` $\leftrightarrow$ `dist/index.html`).
+    - Synced `apps/mobile/android/app/src/main/assets/index.html` with latest repackaged bundle.
+- **Preceding Phase**: Phase 2AG Completed — Stitch Application Screen Architecture 100% Verification Audit:
+  - **1. Architecture Audit**: Verified all 10 `stitch_application_screen_architecture/` sub-folders against `index.html` — confirmed 100% coverage.
+  - **2. NRR Trajectory Sparkline** (from `tournament_hub_standings`): Integrated SVG sparkline chart with 3 team NRR paths (emerald ascent, cyan dash, crimson decline), zero NRR baseline, and team legend into `tab-tournaments`.
+  - **3. Playoff Knockout Tree Bracket** (from `tournament_hub_standings`): Integrated 3-card responsive grid — Qualifier 1 (emerald), Eliminator (cyan), Grand Final (amber ambient glow) with team rank badges, venue metadata, ₹300k purse badge, and "Set Reminder" toast action.
+  - **4. Pre-existing Integrations Verified**: DRS Hub modal (Hawk-Eye telemetry), Live Pitch Telemetry bar, Marketplace filter chips/officials bundle, Premier Super League banner, Stage Stepper, Standings/Orange Cap/Purple Cap sub-tabs, Cluster Operational Pulse, all confirmed present.
+- **Preceding Phase**: Phase 2AF Completed — Mobile Viewport Scrolling Architecture Hardening & Fixed Bottom Navigation Lock:
     - Identified that `#mobile-app-root` (`.screen-viewport`) had `overflow-y: auto` while the bottom navigation bar had `position: absolute; bottom: 0; left: 0; right: 0;`.
     - Inside an `overflow: auto` container, absolute positioning binds elements to the scroll canvas, causing the bottom bar to scroll UP into view and float over cards whenever the user scrolled.
     - Intra-screen DOM re-renders also wiped out `scrollTop`, jumping the user to the top during scoring or player selection.

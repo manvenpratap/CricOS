@@ -6461,6 +6461,116 @@ cricos_active_sse_connections 1</pre>
     <button type="button" class="proto-picker-item proto-picker-replay" aria-label="Replay tactile animation" data-tooltip="Replay animation (R)" onclick="replayTactileAnimation()">↻</button>
   </nav>
 
+  <!-- Reusable In-App Dialog (replaces native alert/confirm/prompt) -->
+  <div class="modal-backdrop" id="modalAppDialog">
+    <div class="modal-dialog" style="max-width: 420px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span id="appDialogTitle">Confirm Action</span>
+        </div>
+        <button class="modal-close" onclick="dismissAppDialog()" aria-label="Close" data-tooltip="Dismiss dialog">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <p id="appDialogMessage" style="font-size: 0.88rem; color: var(--text-main); line-height: 1.5; margin: 0 0 1rem;"></p>
+        <div id="appDialogInputGroup" style="display: none;" class="form-group">
+          <label id="appDialogInputLabel" for="appDialogInput" style="font-size: 0.78rem;">Enter value</label>
+          <input type="text" id="appDialogInput" style="width: 100%;" placeholder="">
+        </div>
+        <div style="display: flex; gap: 0.65rem; justify-content: flex-end; margin-top: 0.75rem;">
+          <button type="button" id="appDialogCancelBtn" class="btn btn-secondary" style="width: auto; padding: 0.45rem 1rem; font-size: 0.82rem;" onclick="dismissAppDialog()">Cancel</button>
+          <button type="button" id="appDialogConfirmBtn" class="btn" style="width: auto; padding: 0.45rem 1.15rem; font-size: 0.82rem;" onclick="resolveAppDialog()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // In-App Dialog System (replaces alert/confirm/prompt)
+    // ==========================================
+    let _appDialogResolve = null;
+    let _appDialogMode = 'alert'; // 'alert' | 'confirm' | 'prompt'
+
+    function showAppDialog(opts) {
+      const modal = document.getElementById('modalAppDialog');
+      const titleEl = document.getElementById('appDialogTitle');
+      const msgEl = document.getElementById('appDialogMessage');
+      const inputGroup = document.getElementById('appDialogInputGroup');
+      const inputEl = document.getElementById('appDialogInput');
+      const inputLabel = document.getElementById('appDialogInputLabel');
+      const cancelBtn = document.getElementById('appDialogCancelBtn');
+      const confirmBtn = document.getElementById('appDialogConfirmBtn');
+
+      _appDialogMode = opts.mode || 'alert';
+      titleEl.textContent = opts.title || 'Notice';
+      msgEl.textContent = opts.message || '';
+      confirmBtn.textContent = opts.confirmText || 'Confirm';
+
+      if (opts.destructive) {
+        confirmBtn.style.background = 'var(--rose)';
+        confirmBtn.style.borderColor = 'var(--rose)';
+      } else {
+        confirmBtn.style.background = '';
+        confirmBtn.style.borderColor = '';
+      }
+
+      if (_appDialogMode === 'prompt') {
+        inputGroup.style.display = 'block';
+        inputLabel.textContent = opts.inputLabel || 'Enter value';
+        inputEl.placeholder = opts.placeholder || '';
+        inputEl.value = opts.defaultValue || '';
+      } else {
+        inputGroup.style.display = 'none';
+        inputEl.value = '';
+      }
+
+      cancelBtn.style.display = _appDialogMode === 'alert' ? 'none' : '';
+
+      modal.classList.add('active');
+
+      if (_appDialogMode === 'prompt') {
+        setTimeout(() => inputEl.focus(), 120);
+      }
+
+      return new Promise(resolve => { _appDialogResolve = resolve; });
+    }
+
+    function resolveAppDialog() {
+      const modal = document.getElementById('modalAppDialog');
+      const inputEl = document.getElementById('appDialogInput');
+      modal.classList.remove('active');
+
+      if (_appDialogResolve) {
+        if (_appDialogMode === 'prompt') {
+          _appDialogResolve(inputEl.value.trim() || null);
+        } else {
+          _appDialogResolve(true);
+        }
+        _appDialogResolve = null;
+      }
+    }
+
+    function dismissAppDialog() {
+      const modal = document.getElementById('modalAppDialog');
+      modal.classList.remove('active');
+
+      if (_appDialogResolve) {
+        _appDialogResolve(_appDialogMode === 'prompt' ? null : false);
+        _appDialogResolve = null;
+      }
+    }
+
+    // Handle Enter key inside the dialog input
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputEl = document.getElementById('appDialogInput');
+      if (inputEl) {
+        inputEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); resolveAppDialog(); }
+        });
+      }
+    });
+  </script>
+
   <script>
     // ==========================================
     // Role-Based Access Control (RBAC) & Feature Gating
@@ -7357,8 +7467,15 @@ cricos_active_sse_connections 1</pre>
       showToast('Profile updated! Active Persona: ' + currentUser.persona);
     }
 
-    function confirmAccountDeletion() {
-      if (window.confirm('Are you sure you want to delete your account? All personal match records will be scrubbed per Apple App Store Guideline 5.1.1(v).')) {
+    async function confirmAccountDeletion() {
+      const confirmed = await showAppDialog({
+        mode: 'confirm',
+        title: '⚠️ Delete Account',
+        message: 'Are you sure you want to delete your account? All personal match records will be scrubbed per Apple App Store Guideline 5.1.1(v). This action cannot be undone.',
+        confirmText: 'Delete Account',
+        destructive: true
+      });
+      if (confirmed) {
         currentUser.name = 'Anonymous Player';
         currentUser.persona = 'PLAYER';
         currentUser.jerseyNumber = 0;
@@ -11173,10 +11290,17 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
-    function openJoinTeamPrompt() {
-      const code = window.prompt('Enter 8-character Team Join Code (e.g. CRIC-BLR-4821):');
-      if (code && code.trim()) {
-        showToast('✓ Request sent to join team ' + code.trim().toUpperCase());
+    async function openJoinTeamPrompt() {
+      const code = await showAppDialog({
+        mode: 'prompt',
+        title: '🤝 Join a Team',
+        message: 'Enter the invite code shared by your team captain to request membership.',
+        inputLabel: 'Team Join Code',
+        placeholder: 'e.g. CRIC-BLR-4821',
+        confirmText: 'Send Request'
+      });
+      if (code) {
+        showToast('✓ Request sent to join team ' + code.toUpperCase());
       }
     }
 
@@ -11197,7 +11321,8 @@ cricos_active_sse_connections 1</pre>
       const code = codeInput ? codeInput.value.trim().toUpperCase() : 'SQUAD';
 
       if (!name) {
-        alert('Please enter a team name');
+        showToast('⚠️ Please enter a team name');
+        if (nameInput) nameInput.focus();
         return;
       }
 
