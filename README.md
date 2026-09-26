@@ -11,7 +11,7 @@
 
 **A high-performance, modular operating system powering cricket tournaments, certified official & venue marketplaces, MCC Laws ball-by-ball scoring, real-time live match broadcasting, and double-entry financial settlements.**
 
-[Interactive Console](http://localhost:3000/) • [Architecture](#-architecture--monorepo-structure) • [Core Subsystems](#-core-subsystems) • [API Modules](#-api-modules-reference) • [Getting Started](#-getting-started) • [Pipeline & Testing](#-pipeline--self-healing-workflow)
+[Interactive Console](http://localhost:3000/) • [Architecture](#-architecture--monorepo-structure) • [Core Subsystems](#-core-subsystems) • [API Modules](#-api-modules-reference) • [Android APK](#-native-android-mobile-app--apk-generation) • [Getting Started](#-getting-started) • [Pipeline & Testing](#-pipeline--self-healing-workflow)
 
 </div>
 
@@ -216,6 +216,166 @@ All API routes are served under the `/api/v1` namespace:
 | **Replacements**| `/api/v1/replacements` | `POST /propose`, `POST /:id/accept` | Automated emergency certified provider replacement. |
 | **Reputation** | `/api/v1/reputation` | `GET /providers/:id`, `POST /events` | Event-sourced reliability score updates. |
 | **Operations** | `/api/v1/operations` | `GET /dashboard`, `GET /metrics` | Platform-wide operational health and SLA metrics. |
+
+---
+
+## 📱 Native Android Mobile App & APK Generation
+
+CricOS includes a standalone, production-ready native Android project located at [`apps/mobile/android/`](apps/mobile/android/), packaging the complete consumer and match official mobile experience into an edge-to-edge hardware-accelerated Android APK (2.9 MB).
+
+### Architecture Highlights
+- **Edge-to-Edge True Native Presentation**: Eliminates desktop browser mockup shells, simulated notches, and fake status bars. Uses dynamic `100vw × 100dvh` viewport scaling with native dark system bars (`#04070D`) matching the stadium glassmorphic UI.
+- **Hardware-Accelerated WebView**: Single-activity (`MainActivity.java`) with `WebSettings.LOAD_DEFAULT`, DOM storage, hardware canvas acceleration, and native back navigation.
+- **Embedded Web Audio Synthesizer**: `CricOSAudioEngine` generating real-time acoustic cricket sound effects (willow bat cracks, boundary cheers, wicket oscillations, tactile clicks) with topbar toggle (`#btnMobileSoundToggle`).
+- **Multi-Persona Bottom Sheet Switcher**: Rapid role switching covering all 8 personas (`CAPTAIN`, `PLAYER`, `SCORER`, `FAN`, `UMPIRE`, `ORGANISER`, `TURF_PROVIDER`, `ADMIN`) with `Escape` key and backdrop dismissals.
+- **21st.dev Athletic KPI Cards**: Inline career stats, Olympic laurel wreath badges, and 20-match momentum form sparklines embedded in Profile and Squad screens.
+
+---
+
+### Prerequisites
+Ensure your local development environment has the following tools installed and configured:
+
+1. **Java Development Kit (JDK 17)**:
+   ```bash
+   # Verify Java 17 installation
+   java -version
+   # Expected: openjdk version "17.0.x"
+   export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
+   ```
+
+2. **Android SDK & Platform Tools**:
+   ```bash
+   # Android SDK API Level 33 (Tiramisu) and Build Tools 33.0.2
+   export ANDROID_HOME="$HOME/Library/Android/sdk"
+   export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+   ```
+
+3. **Node.js & pnpm**:
+   ```bash
+   node -v  # v22.0.0+ or v24.0.0+
+   pnpm -v  # v9.15.0+
+   ```
+
+---
+
+### One-Command APK Generation
+
+To compile the latest distribution bundle, synchronize assets, and assemble the debug APK:
+
+```bash
+# Via pnpm script (from repository root)
+pnpm run build:android
+
+# Or directly via the build script
+bash apps/mobile/android/build-apk.sh
+```
+
+#### What the build script executes automatically:
+1. **Compiles TypeScript & Packages Distribution**: Runs `package-distribution.mjs` to generate verified distribution bundles (`dist/mobile.html`, `dist/index.html`, `dist/openapi.json`) with cryptographic SHA-256 hashes.
+2. **Synchronizes Android Assets**: Injects `.is-native-app` viewport scaling classes and copies `dist/mobile.html` into `apps/mobile/android/app/src/main/assets/index.html`.
+3. **Compiles Native APK with Gradle**: Invokes Gradle `assembleDebug` targeting Android SDK 33 using AGP 8.1.4 and Java 17.
+4. **Deploys Distribution Artifact**: Copies the compiled binary to `dist/cricos-debug.apk`.
+
+#### Primary Build Artifacts:
+- **Root Release Artifact**: [`dist/cricos-debug.apk`](dist/cricos-debug.apk) (2.9 MB)
+- **Gradle Build Output**: [`apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk`](apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk)
+
+---
+
+### Manual Clean Build (Gradle CLI)
+
+If you prefer building directly with Gradle:
+
+```bash
+# 1. Compile API and distribution assets
+node scripts/sync-dashboard.mjs
+./node_modules/.bin/tsc -p apps/api/tsconfig.json
+node scripts/package-distribution.mjs
+
+# 2. Sync to Android assets
+mkdir -p apps/mobile/android/app/src/main/assets
+sed -e 's/<html lang="en">/<html lang="en" class="is-native-app">/' \
+    -e 's/<body>/<body class="is-native-app">/' \
+    -e 's/<script type="module">/<script>/' \
+    dist/mobile.html > apps/mobile/android/app/src/main/assets/index.html
+
+# 3. Clean and assemble with Gradle
+cd apps/mobile/android
+./gradlew clean assembleDebug --no-daemon --console=plain
+
+# 4. Copy to distribution folder
+cp app/build/outputs/apk/debug/app-debug.apk ../../../dist/cricos-debug.apk
+```
+
+---
+
+### Installation & Device Usage via ADB
+
+#### 1. Install onto a Connected Android Device or Emulator
+Connect your Android phone via USB with **USB Debugging** enabled, or start an Android Virtual Device (AVD):
+
+```bash
+# Verify connected devices
+adb devices
+
+# Install APK (or re-install replacing existing version)
+adb install -r dist/cricos-debug.apk
+```
+
+#### 2. Launch the Application
+```bash
+# Start the CricOS main activity
+adb shell am start -S -n com.cricos.app.debug/com.cricos.app.MainActivity
+```
+
+#### 3. Force-Stop the Application
+```bash
+adb shell am force-stop com.cricos.app.debug
+```
+
+#### 4. Live Inspection & Remote Chrome DevTools
+Because `WebView.setWebContentsDebuggingEnabled(true)` is activated in `MainActivity.java`:
+1. Connect device and open CricOS.
+2. In Google Chrome on your computer, navigate to: `chrome://inspect/#devices`.
+3. Locate **CricOS** under remote targets and click **inspect** for live DOM debugging, console logging, network tracking, and storage inspection.
+
+#### 5. Real-Time Logcat Filtering
+Filter application and WebView logs in your terminal:
+```bash
+adb logcat -s CricOSWebView:* Chromium:*
+```
+
+#### 6. Capturing On-Device Screenshots
+```bash
+adb shell screencap -p /sdcard/cricos_screen.png
+adb pull /sdcard/cricos_screen.png ./tests/screenshots/
+```
+
+---
+
+### Automated Emulator Launch Script
+
+For rapid local testing on an Android Virtual Device, run the bundled automation script:
+
+```bash
+bash apps/mobile/android/run-emulator.sh
+```
+
+This script:
+1. Detects whether an emulator is running; if not, launches the `Medium_Phone_API_36` AVD.
+2. Polls `adb shell getprop sys.boot_completed` until the Android OS completes boot.
+3. Automatically installs `dist/cricos-debug.apk`.
+4. Starts `com.cricos.app.MainActivity`.
+5. Captures an on-screen verification screenshot and pulls it to the local workspace.
+
+---
+
+### In-App QR Code & Browser Download
+
+When running the CricOS Desktop Operations Console (`index.html` or `http://localhost:3000/`):
+- Click the **📱 Mobile App** launcher button in the top navigation bar (`#btnMobileQuickLauncher`).
+- An interactive modal displays a scannable **SVG QR code** pointing to the fullscreen mobile view (`/mobile`).
+- Includes a direct **🤖 APK (3.0MB)** button linking directly to [`dist/cricos-debug.apk`](dist/cricos-debug.apk).
 
 ---
 
