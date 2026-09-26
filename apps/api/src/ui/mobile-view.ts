@@ -316,7 +316,8 @@ export function getMobileAppHtml(): string {
     }
     .mobile-persona-sheet,
     .mobile-action-sheet,
-    .mobile-wagon-picker-sheet {
+    .mobile-wagon-picker-sheet,
+    .mobile-extra-picker-sheet {
       position: absolute;
       bottom: 0;
       left: 0;
@@ -335,8 +336,30 @@ export function getMobileAppHtml(): string {
     }
     .mobile-persona-sheet.active,
     .mobile-action-sheet.active,
-    .mobile-wagon-picker-sheet.active {
+    .mobile-wagon-picker-sheet.active,
+    .mobile-extra-picker-sheet.active {
       transform: translateY(0);
+    }
+    .extra-run-option-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 0.65rem 0.8rem;
+      margin-bottom: 0.45rem;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+    .extra-run-option-card:hover,
+    .extra-run-option-card:active {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .extra-run-option-card.active {
+      background: rgba(0, 229, 153, 0.12);
+      border-color: #00E599;
     }
     .wagon-picker-zone-btn {
       background: rgba(255, 255, 255, 0.05);
@@ -1049,6 +1072,67 @@ export function getMobileAppHtml(): string {
         this.wagonPickerOpen = false;
         this.pendingWagonRuns = 0;
         this.pendingSelectedZone = 'EXTRA_COVER';
+        this.extraPickerOpen = false;
+        this.pendingExtraType = 'WIDE';
+        this.pendingExtraOption = 0;
+
+        this.EXTRA_DELIVERY_TYPES = {
+          'WIDE': {
+            name: 'Wide Delivery',
+            symbol: 'Wd',
+            themeColor: '#ffb800',
+            badgeText: '+1 PENALTY • RE-BOWL',
+            ruleDesc: 'Bowler concedes 1 penalty run + additional byes. Ball is re-bowled (over not incremented). Strike rotates on odd additional byes.',
+            options: [
+              { id: 'wd_0', runs: 1, batRuns: 0, byes: 0, label: 'Wide Only', sublabel: '0 extra byes', desc: '1 penalty run, ball re-bowled', rotatesStrike: false, isBoundary: false },
+              { id: 'wd_1', runs: 2, batRuns: 0, byes: 1, label: '+1 Bye Run', sublabel: '2 runs total', desc: 'Batters run 1 bye, strike rotates', rotatesStrike: true, isBoundary: false },
+              { id: 'wd_2', runs: 3, batRuns: 0, byes: 2, label: '+2 Bye Runs', sublabel: '3 runs total', desc: 'Batters run 2 byes', rotatesStrike: false, isBoundary: false },
+              { id: 'wd_3', runs: 4, batRuns: 0, byes: 3, label: '+3 Bye Runs', sublabel: '4 runs total', desc: 'Batters run 3 byes, strike rotates', rotatesStrike: true, isBoundary: false },
+              { id: 'wd_4', runs: 5, batRuns: 0, byes: 4, label: '+4 Boundary Byes', sublabel: '5 runs total (4b)', desc: 'Ball beats keeper to boundary rope', rotatesStrike: false, isBoundary: true }
+            ]
+          },
+          'NO_BALL': {
+            name: 'No Ball',
+            symbol: 'Nb',
+            themeColor: '#ff3366',
+            badgeText: 'FREE HIT NEXT • RE-BOWL',
+            ruleDesc: '1 penalty run conceded by bowler + runs off bat credited to striker. Ball is re-bowled. Free Hit awarded for next delivery.',
+            options: [
+              { id: 'nb_0', runs: 1, batRuns: 0, byes: 0, label: 'No Bat Runs (Dot)', sublabel: '1 run total', desc: 'Penalty only, Free Hit awarded', rotatesStrike: false, isBoundary: false },
+              { id: 'nb_1', runs: 2, batRuns: 1, byes: 0, label: '1 Run Off Bat', sublabel: '2 runs total (1 bat)', desc: '1 run to batter, strike rotates, Free Hit', rotatesStrike: true, isBoundary: false },
+              { id: 'nb_2', runs: 3, batRuns: 2, byes: 0, label: '2 Runs Off Bat', sublabel: '3 runs total (2 bat)', desc: '2 runs to batter, Free Hit', rotatesStrike: false, isBoundary: false },
+              { id: 'nb_3', runs: 4, batRuns: 3, byes: 0, label: '3 Runs Off Bat', sublabel: '4 runs total (3 bat)', desc: '3 runs to batter, strike rotates, Free Hit', rotatesStrike: true, isBoundary: false },
+              { id: 'nb_4', runs: 5, batRuns: 4, byes: 0, label: 'Four Off Bat ⚡', sublabel: '5 runs total (4 bat)', desc: 'Boundary four to batter, Free Hit', rotatesStrike: false, isBoundary: true, isFour: true },
+              { id: 'nb_6', runs: 7, batRuns: 6, byes: 0, label: 'Six Off Bat 🚀', sublabel: '7 runs total (6 bat)', desc: 'Maximum six to batter, Free Hit', rotatesStrike: false, isBoundary: true, isSix: true }
+            ]
+          },
+          'LEG_BYE': {
+            name: 'Leg Bye',
+            symbol: 'Lb',
+            themeColor: '#00D2FF',
+            badgeText: 'LEGAL BALL • NOT TO BOWLER',
+            ruleDesc: 'Deflected off batter pads or body without bat contact. Counts as a legal ball in the over. Not charged to bowler.',
+            options: [
+              { id: 'lb_1', runs: 1, batRuns: 0, byes: 1, label: '1 Leg Bye', sublabel: '1 run total', desc: '1 run taken, strike rotates', rotatesStrike: true, isBoundary: false },
+              { id: 'lb_2', runs: 2, batRuns: 0, byes: 2, label: '2 Leg Byes', sublabel: '2 runs total', desc: '2 runs taken', rotatesStrike: false, isBoundary: false },
+              { id: 'lb_3', runs: 3, batRuns: 0, byes: 3, label: '3 Leg Byes', sublabel: '3 runs total', desc: '3 runs taken, strike rotates', rotatesStrike: true, isBoundary: false },
+              { id: 'lb_4', runs: 4, batRuns: 0, byes: 4, label: '4 Leg Byes ⚡', sublabel: '4 runs total', desc: 'Deflected to boundary rope', rotatesStrike: false, isBoundary: true }
+            ]
+          },
+          'BYE': {
+            name: 'Bye',
+            symbol: 'B',
+            themeColor: '#a78bfa',
+            badgeText: 'LEGAL BALL • NOT TO BOWLER',
+            ruleDesc: 'Ball passes batter without touching bat or body. Counts as a legal ball in the over. Not charged to bowler.',
+            options: [
+              { id: 'b_1', runs: 1, batRuns: 0, byes: 1, label: '1 Bye', sublabel: '1 run total', desc: '1 run taken, strike rotates', rotatesStrike: true, isBoundary: false },
+              { id: 'b_2', runs: 2, batRuns: 0, byes: 2, label: '2 Byes', sublabel: '2 runs total', desc: '2 runs taken', rotatesStrike: false, isBoundary: false },
+              { id: 'b_3', runs: 3, batRuns: 0, byes: 3, label: '3 Byes', sublabel: '3 runs total', desc: '3 runs taken, strike rotates', rotatesStrike: true, isBoundary: false },
+              { id: 'b_4', runs: 4, batRuns: 0, byes: 4, label: '4 Byes ⚡', sublabel: '4 runs total', desc: 'Ball beats keeper to boundary rope', rotatesStrike: false, isBoundary: true }
+            ]
+          }
+        };
 
         this.SHOT_ZONES_DATA = [
           { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 22.5, side: 'LEG' },
@@ -1591,54 +1675,142 @@ export function getMobileAppHtml(): string {
         this.render();
       }
 
-      scoreExtra(type, runs) {
+      openExtraPickerSheet(type) {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can score extras.', 'warning');
           return;
         }
         if (window.CricOSSound) window.CricOSSound.playClick();
-        runs = runs || 1;
-        this.matchState.totalRuns += runs;
-        this.partnership.runs = (this.partnership.runs || 0) + runs;
-        this.matchState.bowler.runsConceded += (type === 'WIDE' || type === 'NO_BALL') ? runs : 0;
+        this.pendingExtraType = type || 'WIDE';
+        this.pendingExtraOption = 0;
+        this.extraPickerOpen = true;
+        this.render();
+      }
+
+      closeExtraRunsPickerSheet() {
+        this.extraPickerOpen = false;
+        this.render();
+      }
+
+      switchExtraTypeInPicker(type) {
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.pendingExtraType = type;
+        this.pendingExtraOption = 0;
+        this.render();
+      }
+
+      selectExtraOption(idx) {
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.pendingExtraOption = Number(idx);
+        this.render();
+      }
+
+      confirmExtraRuns() {
+        var type = this.pendingExtraType || 'WIDE';
+        var extraDef = this.EXTRA_DELIVERY_TYPES[type] || this.EXTRA_DELIVERY_TYPES['WIDE'];
+        var opt = extraDef.options[this.pendingExtraOption] || extraDef.options[0];
+        this.extraPickerOpen = false;
+        this.applyExtraDelivery(type, opt);
+      }
+
+      applyExtraDelivery(type, opt) {
+        if (this.profile.persona !== 'SCORER') {
+          this.showToast('🔒 Only official Scorers can score extras.', 'warning');
+          return;
+        }
+        var totalRuns = opt.runs;
+        var batRuns = opt.batRuns || 0;
+        var rotatesStrike = opt.rotatesStrike;
+        var isBoundary = opt.isBoundary;
+
+        if (window.CricOSSound) {
+          if (isBoundary || opt.isFour || opt.isSix) {
+            window.CricOSSound.playBatHit(true);
+            window.CricOSSound.playCheer();
+          } else {
+            window.CricOSSound.playClick();
+          }
+        }
+
+        this.matchState.totalRuns += totalRuns;
+        this.partnership.runs = (this.partnership.runs || 0) + totalRuns;
 
         if (type === 'WIDE') {
-          this.matchState.currentOverDeliveries.push('1wd');
-          this.showToast('+1 Wide recorded (re-bowl)', 'warning');
+          this.matchState.bowler.runsConceded += totalRuns;
+          var tagWd = totalRuns === 1 ? '1wd' : (totalRuns + 'wd');
+          this.matchState.currentOverDeliveries.push(tagWd);
+          this.showToast('+' + totalRuns + ' Wide recorded (re-bowl)', 'warning');
         } else if (type === 'NO_BALL') {
           this.freeHitActive = true;
-          this.matchState.currentOverDeliveries.push('1nb');
-          this.showToast('⚠️ NO BALL! Free Hit awarded for next delivery! ⚡', 'warning', 3000);
+          this.matchState.bowler.runsConceded += totalRuns;
+          if (batRuns > 0) {
+            this.matchState.striker.runs += batRuns;
+            this.matchState.striker.balls += 1;
+            if (opt.isFour) this.matchState.striker.fours = (this.matchState.striker.fours || 0) + 1;
+            if (opt.isSix) this.matchState.striker.sixes = (this.matchState.striker.sixes || 0) + 1;
+          }
+          var tagNb = batRuns === 0 ? '1nb' : (batRuns + 'nb');
+          this.matchState.currentOverDeliveries.push(tagNb);
+          this.showToast('⚠️ NO BALL! (+' + totalRuns + ' runs) Free Hit awarded! ⚡', 'warning', 3000);
         } else if (type === 'LEG_BYE') {
           this.matchState.legalBalls += 1;
           this.partnership.balls = (this.partnership.balls || 0) + 1;
           this.matchState.bowler.ballsThisOver += 1;
-          this.matchState.currentOverDeliveries.push('1lb');
-          var tmp = this.matchState.striker;
-          this.matchState.striker = this.matchState.nonStriker;
-          this.matchState.nonStriker = tmp;
-          this.showToast('+1 Leg Bye (Strike rotated)', 'info');
+          var tagLb = totalRuns === 1 ? '1lb' : (totalRuns + 'lb');
+          this.matchState.currentOverDeliveries.push(tagLb);
+          this.showToast('+' + totalRuns + ' Leg Bye' + (rotatesStrike ? ' (Strike rotated)' : ''), 'info');
         } else if (type === 'BYE') {
           this.matchState.legalBalls += 1;
           this.partnership.balls = (this.partnership.balls || 0) + 1;
           this.matchState.bowler.ballsThisOver += 1;
-          this.matchState.currentOverDeliveries.push('1b');
-          var tmp2 = this.matchState.striker;
-          this.matchState.striker = this.matchState.nonStriker;
-          this.matchState.nonStriker = tmp2;
-          this.showToast('+1 Bye (Strike rotated)', 'info');
+          var tagB = totalRuns === 1 ? '1b' : (totalRuns + 'b');
+          this.matchState.currentOverDeliveries.push(tagB);
+          this.showToast('+' + totalRuns + ' Bye' + (rotatesStrike ? ' (Strike rotated)' : ''), 'info');
         }
 
+        var commBadge = type === 'WIDE' ? 'WIDE' : (type === 'NO_BALL' ? 'NO BALL' : (type === 'LEG_BYE' ? 'LEG BYE' : 'BYE'));
+        var commColor = type === 'WIDE' ? '#ffb800' : (type === 'NO_BALL' ? '#ff3366' : (type === 'LEG_BYE' ? '#00D2FF' : '#a78bfa'));
+        var ballNum = Math.floor(this.matchState.legalBalls / 6) + '.' + (this.matchState.legalBalls % 6);
+        this.matchState.commentary.unshift({
+          ball: ballNum,
+          badge: commBadge,
+          badgeColor: commColor,
+          text: opt.desc + (opt.batRuns > 0 ? ' (' + opt.batRuns + ' run(s) off bat to ' + this.matchState.striker.name + ')' : '')
+        });
+
+        if (rotatesStrike) {
+          var tmp = this.matchState.striker;
+          this.matchState.striker = this.matchState.nonStriker;
+          this.matchState.nonStriker = tmp;
+        }
+
+        // Over completion check for legal balls (Byes / Leg Byes)
         if (this.matchState.bowler.ballsThisOver >= 6) {
           this.matchState.bowler.overs += 1;
           this.matchState.bowler.ballsThisOver = 0;
           this.matchState.currentOverDeliveries = [];
-          var tmp3 = this.matchState.striker;
+          var tmpOver = this.matchState.striker;
           this.matchState.striker = this.matchState.nonStriker;
-          this.matchState.nonStriker = tmp3;
+          this.matchState.nonStriker = tmpOver;
+          this.showToast('Over completed! Strike rotated.', 'info');
         }
 
         this.render();
+      }
+
+      scoreExtra(type, runs) {
+        if (!runs) {
+          this.openExtraPickerSheet(type);
+          return;
+        }
+        var opt = {
+          runs: runs,
+          batRuns: 0,
+          rotatesStrike: runs % 2 !== 0,
+          isBoundary: runs >= 4,
+          desc: '+' + runs + ' ' + (type === 'WIDE' ? 'Wide' : (type === 'NO_BALL' ? 'No Ball' : (type === 'LEG_BYE' ? 'Leg Bye' : 'Bye')))
+        };
+        this.applyExtraDelivery(type, opt);
       }
 
       scoreCompoundExtra(batRuns, extraRuns, extraType) {
@@ -2025,6 +2197,85 @@ export function getMobileAppHtml(): string {
         h += '<div style="display: flex; gap: 0.5rem;">';
         h += '<button type="button" onclick="window.cricosMobileApp.confirmWagonShot(true)" style="flex: 1; padding: 0.65rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; font-weight: 600; font-size: 0.8rem;" data-tooltip="Record +' + runs + ' runs without direction">Skip</button>';
         h += '<button type="button" id="btnConfirmWagonShot" onclick="window.cricosMobileApp.confirmWagonShot(false)" style="flex: 2; padding: 0.65rem; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; box-shadow: 0 4px 15px rgba(0, 229, 153, 0.3);" data-tooltip="Confirm shot direction and score ball">Record +' + runs + ' to ' + activeZoneShort + ' ✓</button>';
+        h += '</div>';
+
+        h += '</div>';
+        return h;
+      }
+
+      renderExtraRunsPickerSheet() {
+        if (!this.extraPickerOpen) return '';
+        var type = this.pendingExtraType || 'WIDE';
+        var extraDef = this.EXTRA_DELIVERY_TYPES[type] || this.EXTRA_DELIVERY_TYPES['WIDE'];
+        var selectedIdx = this.pendingExtraOption;
+        var selectedOption = extraDef.options[selectedIdx] || extraDef.options[0];
+        var themeColor = extraDef.themeColor;
+        var totalRuns = selectedOption.runs;
+
+        var h = '';
+        h += '<div class="mobile-sheet-backdrop active" id="extraPickerBackdrop" onclick="window.cricosMobileApp.closeExtraRunsPickerSheet()"></div>';
+        h += '<div class="mobile-extra-picker-sheet active" id="extraRunsPickerSheet" style="border-top-color: ' + themeColor + ';">';
+        h += '<div class="sheet-drag-handle"></div>';
+
+        // Header
+        h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: Space Grotesk, sans-serif; color: #f8fafc; display: flex; align-items: center; gap: 0.4rem;">';
+        h += '<span>⚡ ' + extraDef.name + '</span>';
+        h += '<span style="font-size: 0.65rem; font-family: Chakra Petch, monospace; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px; background: ' + themeColor + '20; color: ' + themeColor + '; border: 1px solid ' + themeColor + '50;">' + extraDef.badgeText + '</span>';
+        h += '</div>';
+        h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.15rem;">Choose total runs scored off this delivery</div>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeExtraRunsPickerSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; padding: 0 0.3rem;" data-tooltip="Dismiss extra runs picker">&times;</button>';
+        h += '</div>';
+
+        // Segmented Switcher for Extra Type (Wide, No Ball, Leg Bye, Bye)
+        h += '<div style="display: flex; gap: 0.25rem; background: rgba(255, 255, 255, 0.05); padding: 3px; border-radius: 8px; margin-bottom: 0.65rem;">';
+        var typesList = [
+          { id: 'WIDE', label: 'Wd', full: 'Wide' },
+          { id: 'NO_BALL', label: 'Nb', full: 'No Ball' },
+          { id: 'LEG_BYE', label: 'Lb', full: 'Leg Bye' },
+          { id: 'BYE', label: 'Bye', full: 'Bye' }
+        ];
+        for (var t = 0; t < typesList.length; t++) {
+          var tObj = typesList[t];
+          var isTypeActive = tObj.id === type;
+          var tColor = this.EXTRA_DELIVERY_TYPES[tObj.id].themeColor;
+          h += '<button type="button" data-extra-type="' + tObj.id + '" onclick="window.cricosMobileApp.switchExtraTypeInPicker(this.dataset.extraType)" style="flex: 1; padding: 0.35rem 0.2rem; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease; background: ' + (isTypeActive ? tColor : 'transparent') + '; color: ' + (isTypeActive ? '#04070D' : '#94a3b8') + ';" data-tooltip="Switch to ' + tObj.full + ' delivery">' + tObj.label + '</button>';
+        }
+        h += '</div>';
+
+        // Rule Explanation Card
+        h += '<div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 0.5rem 0.65rem; margin-bottom: 0.75rem; font-size: 0.68rem; color: #cbd5e1; line-height: 1.4; display: flex; align-items: flex-start; gap: 0.4rem;">';
+        h += '<span style="font-size: 0.85rem;">ℹ️</span>';
+        h += '<div>' + extraDef.ruleDesc + '</div>';
+        h += '</div>';
+
+        // Options List / Cards
+        h += '<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.85rem;" id="extraRunOptionsContainer">';
+        for (var i = 0; i < extraDef.options.length; i++) {
+          var opt = extraDef.options[i];
+          var isSelected = i === selectedIdx;
+          h += '<div class="extra-run-option-card ' + (isSelected ? 'active' : '') + '" style="' + (isSelected ? 'border-color: ' + themeColor + '; background: ' + themeColor + '18;' : '') + '" data-option-index="' + i + '" onclick="window.cricosMobileApp.selectExtraOption(Number(this.dataset.optionIndex))" data-tooltip="Select ' + opt.label + ' (+' + opt.runs + ' runs)">';
+          h += '<div style="display: flex; align-items: center; gap: 0.65rem;">';
+          h += '<div style="font-family: Chakra Petch, monospace; font-size: 1.15rem; font-weight: 800; min-width: 44px; text-align: center; color: ' + (isSelected ? themeColor : '#f8fafc') + '; background: rgba(255, 255, 255, 0.05); padding: 0.25rem 0.4rem; border-radius: 6px; border: 1px solid ' + (isSelected ? themeColor : 'rgba(255,255,255,0.1)') + ';">+' + opt.runs + '</div>';
+          h += '<div>';
+          h += '<div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc;">' + opt.label + '</div>';
+          h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.1rem;">' + opt.desc + '</div>';
+          h += '</div>';
+          h += '</div>';
+          h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+          h += '<span style="font-size: 0.62rem; font-family: Chakra Petch, monospace; padding: 0.15rem 0.4rem; border-radius: 4px; background: rgba(255, 255, 255, 0.06); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1);">' + opt.sublabel + '</span>';
+          h += '<div style="width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; background: ' + (isSelected ? themeColor : 'rgba(255, 255, 255, 0.1)') + '; color: ' + (isSelected ? '#04070D' : 'transparent') + ';">✓</div>';
+          h += '</div>';
+          h += '</div>';
+        }
+        h += '</div>';
+
+        // Footer Actions
+        h += '<div style="display: flex; gap: 0.5rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeExtraRunsPickerSheet()" style="flex: 1; padding: 0.65rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; font-weight: 600; font-size: 0.8rem;" data-tooltip="Cancel and dismiss extra runs picker">Cancel</button>';
+        h += '<button type="button" id="btnConfirmExtraRuns" onclick="window.cricosMobileApp.confirmExtraRuns()" style="flex: 2; padding: 0.65rem; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; background: ' + (type === 'NO_BALL' ? 'linear-gradient(135deg, #ff3366, #ffb800)' : (type === 'WIDE' ? 'linear-gradient(135deg, #ffb800, #ff8c00)' : (type === 'LEG_BYE' ? 'linear-gradient(135deg, #00D2FF, #00E599)' : 'linear-gradient(135deg, #a78bfa, #00D2FF)'))) + '; color: #04070D; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);" data-tooltip="Record +' + totalRuns + ' ' + extraDef.name + '">Record ' + extraDef.symbol + ' (+' + totalRuns + (totalRuns === 1 ? ' Run' : ' Runs') + ') ✓</button>';
         h += '</div>';
 
         h += '</div>';
@@ -2606,10 +2857,10 @@ export function getMobileAppHtml(): string {
 
           // Quick Extras Strip
           h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem;">';
-          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="WIDE" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="Wide (+1 run, ball re-bowled)">+1 Wd</button>';
-          h += '<button type="button" class="btn btn-secondary" style="flex: 1.2; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="NO_BALL" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="No Ball (+1 run, Free Hit next delivery)">+1 Nb (Free Hit)</button>';
-          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="LEG_BYE" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="Leg Bye (+1 run)">+1 Lb</button>';
-          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="BYE" data-runs="1" onclick="window.cricosMobileApp.scoreExtra(this.dataset.extra, Number(this.dataset.runs))" data-tooltip="Bye (+1 run)">+1 Bye</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="WIDE" data-runs="1" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Wide (+1 run, ball re-bowled)">+1 Wd</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1.2; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="NO_BALL" data-runs="1" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="No Ball (+1 run, Free Hit next delivery)">+1 Nb (Free Hit)</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="LEG_BYE" data-runs="1" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Leg Bye (+1 run)">+1 Lb</button>';
+          h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.4rem 0.2rem; font-size: 0.72rem; text-align: center;" data-extra="BYE" data-runs="1" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Bye (+1 run)">+1 Bye</button>';
           h += '</div>';
 
           // Compound Extras & 2-Second Hold-to-Reset Strip
@@ -3551,6 +3802,11 @@ export function getMobileAppHtml(): string {
           h += '</div></div>';
         }
 
+        // Extras Runs Picker Sheet (slides in from bottom when Wide, No Ball, Leg Bye, or Bye is chosen)
+        if (this.extraPickerOpen) {
+          h += this.renderExtraRunsPickerSheet();
+        }
+
         // Wagon Wheel Shot Direction Picker Sheet (slides in from bottom when pad number is chosen)
         if (this.wagonPickerOpen) {
           h += this.renderWagonPickerSheet();
@@ -3581,7 +3837,9 @@ export function getMobileAppHtml(): string {
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && window.cricosMobileApp) {
-        if (window.cricosMobileApp.wagonPickerOpen) {
+        if (window.cricosMobileApp.extraPickerOpen) {
+          window.cricosMobileApp.closeExtraRunsPickerSheet();
+        } else if (window.cricosMobileApp.wagonPickerOpen) {
           window.cricosMobileApp.closeWagonPickerSheet();
         } else if (window.cricosMobileApp.activeActionSheet) {
           window.cricosMobileApp.closeActionSheet();

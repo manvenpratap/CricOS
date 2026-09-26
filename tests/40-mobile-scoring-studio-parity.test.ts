@@ -162,4 +162,52 @@ describe('40. Mobile Scoring Studio & Precision Wagon Wheel Parity', () => {
       assert.ok(mobileHtml.includes('wagonPickerOpen'), 'Must track wagonPickerOpen state');
     });
   });
+
+  describe('6. Slide-In Scorer Extras Runs Picker Sheet (Wide, No Ball, Leg Bye, Bye)', () => {
+    it('triggers extra runs picker sheet when extras buttons are tapped on scoring pad', () => {
+      assert.ok(mobileHtml.includes('data-extra="WIDE"'), 'Must have WIDE extra button');
+      assert.ok(mobileHtml.includes('data-extra="NO_BALL"'), 'Must have NO_BALL extra button');
+      assert.ok(mobileHtml.includes('data-extra="LEG_BYE"'), 'Must have LEG_BYE extra button');
+      assert.ok(mobileHtml.includes('data-extra="BYE"'), 'Must have BYE extra button');
+      assert.ok(mobileHtml.includes('openExtraPickerSheet(this.dataset.extra)'), 'Extras buttons must open extra picker sheet');
+    });
+
+    it('declares mobile-extra-picker-sheet and extra-run-option-card styling without transition: all', () => {
+      assert.ok(mobileHtml.includes('.mobile-extra-picker-sheet'), 'Must declare .mobile-extra-picker-sheet');
+      assert.ok(mobileHtml.includes('.extra-run-option-card'), 'Must declare .extra-run-option-card');
+      assert.ok(mobileHtml.includes('.extra-run-option-card.active'), 'Must declare active state');
+      assert.strictEqual(mobileHtml.includes('transition: all'), false, 'Must strictly forbid transition: all');
+    });
+
+    it('renders extra runs picker sheet markup with backdrop, header, and confirmation controls', () => {
+      assert.ok(mobileHtml.includes('extraPickerBackdrop'), 'Must include extraPickerBackdrop');
+      assert.ok(mobileHtml.includes('extraRunsPickerSheet'), 'Must include extraRunsPickerSheet container');
+      assert.ok(mobileHtml.includes('btnConfirmExtraRuns'), 'Must include btnConfirmExtraRuns');
+      assert.ok(mobileHtml.includes('openExtraPickerSheet'), 'Must declare openExtraPickerSheet method');
+      assert.ok(mobileHtml.includes('closeExtraRunsPickerSheet'), 'Must declare closeExtraRunsPickerSheet method');
+      assert.ok(mobileHtml.includes('switchExtraTypeInPicker'), 'Must declare switchExtraTypeInPicker method');
+      assert.ok(mobileHtml.includes('selectExtraOption'), 'Must declare selectExtraOption method');
+      assert.ok(mobileHtml.includes('confirmExtraRuns'), 'Must declare confirmExtraRuns method');
+      assert.ok(mobileHtml.includes('applyExtraDelivery'), 'Must declare applyExtraDelivery method');
+    });
+
+    it('provides MCC Laws delivery configuration for Wide, No Ball, Leg Bye, and Bye', () => {
+      assert.ok(mobileHtml.includes('EXTRA_DELIVERY_TYPES'), 'Must define EXTRA_DELIVERY_TYPES');
+      assert.ok(mobileHtml.includes('+1 PENALTY • RE-BOWL'), 'Must include Wide badge');
+      assert.ok(mobileHtml.includes('FREE HIT NEXT • RE-BOWL'), 'Must include No Ball Free Hit badge');
+      assert.ok(mobileHtml.includes('LEGAL BALL • NOT TO BOWLER'), 'Must include Byes / Leg Byes legal ball badge');
+      assert.ok(mobileHtml.includes('Wide Only'), 'Must include Wide Only option');
+      assert.ok(mobileHtml.includes('+4 Boundary Byes'), 'Must include Boundary Byes option');
+      assert.ok(mobileHtml.includes('Four Off Bat ⚡'), 'Must include Four off bat option');
+      assert.ok(mobileHtml.includes('Six Off Bat 🚀'), 'Must include Six off bat option');
+      assert.ok(mobileHtml.includes('1 Leg Bye'), 'Must include 1 Leg Bye option');
+      assert.ok(mobileHtml.includes('1 Bye'), 'Must include 1 Bye option');
+    });
+
+    it('supports Escape key trapping and backdrop tap to dismiss extra picker sheet', () => {
+      assert.ok(mobileHtml.includes('extraPickerOpen'), 'Must track extraPickerOpen state');
+      assert.ok(mobileHtml.includes('closeExtraRunsPickerSheet()'), 'Escape key must trigger closeExtraRunsPickerSheet');
+    });
+  });
 });
+

@@ -1,14 +1,36 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 19:55:00
-**Version:** 1.0.0-phase2aj (Mobile Slide-In Scorer Wagon Wheel Shot Direction Picker)  
+**Last Updated:** 2026-09-26 20:10:00
+**Version:** 1.0.0-phase2ak (Mobile Slide-In Scorer Extras Runs Picker Sheet)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AJ Completed — Mobile Slide-In Scorer Wagon Wheel Shot Direction Picker:
+- **Active Phase**: Phase 2AK Completed — Mobile Slide-In Scorer Extras Runs Picker Sheet:
+  - **1. Scoring Pad Extras Workflow**:
+    - Quick extras buttons (`+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye`) now trigger `openExtraPickerSheet(type)` (`WIDE`, `NO_BALL`, `LEG_BYE`, `BYE`).
+    - Automatically slides in the dedicated `.mobile-extra-picker-sheet` bottom drawer (`#extraRunsPickerSheet`) with blurred backdrop (`#extraPickerBackdrop`).
+    - Header displays delivery type, theme badge (e.g. `+1 PENALTY • RE-BOWL`, `FREE HIT NEXT • RE-BOWL`, `LEGAL BALL • NOT TO BOWLER`), and dismiss button.
+  - **2. Segmented Extra Type Switcher & MCC Laws Guidance**:
+    - Top pill tab switcher allows instant one-tap switching between `[Wd] [Nb] [Lb] [Bye]` with dynamic theme color morphing (`#ffb800` amber for Wide, `#ff3366` rose for No Ball, `#00D2FF` cyan for Leg Bye, `#a78bfa` purple for Bye).
+    - Rule description banner explains MCC Laws delivery accounting (re-bowl vs legal ball, bowler conceded runs, strike rotation rules).
+  - **3. Dynamic Extra Runs Options Grid**:
+    - **Wide (`WIDE`)**: +1 Wd (0 byes), +2 Wd (1 bye, strike rotates), +3 Wd (2 byes), +4 Wd (3 byes, strike rotates), +5 Wd (4 boundary byes).
+    - **No Ball (`NO_BALL`)**: +1 Nb (0 bat runs, Free Hit), +2 Nb (1 run off bat, strike rotates, Free Hit), +3 Nb (2 runs off bat, Free Hit), +4 Nb (3 runs off bat, strike rotates, Free Hit), +5 Nb (4 boundary runs off bat, Free Hit), +7 Nb (6 maximum runs off bat, Free Hit).
+    - **Leg Bye (`LEG_BYE`)**: +1 Lb (1 run, strike rotates, legal ball), +2 Lb (2 runs), +3 Lb (3 runs, strike rotates), +4 Lb (4 boundary runs).
+    - **Bye (`BYE`)**: +1 Bye (1 run, strike rotates, legal ball), +2 Bye (2 runs), +3 Bye (3 runs, strike rotates), +4 Bye (4 boundary runs).
+  - **4. Score Confirmation & Ergonomics**:
+    - Tactile option cards with big monospace run badges (`+1`, `+2`, `+5`, `+7`), breakdown descriptions, and radio checks.
+    - Footer button `Record {symbol} (+{runs} Runs) ✓` (`#btnConfirmExtraRuns`) with theme gradient glow commits delivery, triggers audio/haptic feedback, updates bowler figures, striker stats, partnership, ball-by-ball commentary, and slides sheet down.
+    - Supports backdrop tap, close button, and `Escape` key dismissal.
+    - 100% Rule 5 `data-tooltip` coverage and zero `transition: all`.
+  - **5. Verification & Native Release**:
+    - Added test suite 6 in `tests/40-mobile-scoring-studio-parity.test.ts` (23 assertions across 6 suites, 100% passing).
+    - `./pipeline.sh test --summary`: 291 tests passing across 96 suites with 0 failures in 774ms.
+    - Synced `dist/mobile.html` and recompiled native Android APK (`apps/mobile/android/build-apk.sh`) with verified assets (`cricos-debug.apk`).
+- **Preceding Phase**: Phase 2AJ Completed — Mobile Slide-In Scorer Wagon Wheel Shot Direction Picker:
   - **1. Scoring Pad Slide-In Workflow**:
     - Pad numbers (`0, 1, 2, 3, 4, 6`) now trigger `onPadNumberSelect(runs)` / `openWagonPickerSheet(runs)`.
     - Automatically slides in the dedicated `.mobile-wagon-picker-sheet` bottom drawer (`#wagonPickerSheet`) with blurred backdrop (`#wagonPickerBackdrop`).
