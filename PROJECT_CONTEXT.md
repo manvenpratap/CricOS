@@ -1,14 +1,28 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-24 22:52:00
-**Version:** 1.0.0-phase2ac (Complete 3D Web Experiences: POVs, Lighting, Fielders, DRS, Fusion, Trophy, Cards, Bat Configurator)  
-**Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces)  
+**Last Updated:** 2026-09-25 22:20:00
+**Version:** 1.0.0-phase2ad (Native Android Project & APK Generation, 21st.dev Athletic KPI & Career Stats)  
+**Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AC Completed — Complete 3D Web Experiences (8 Experiences Suite):
+- **Active Phase**: Phase 2AD Completed — Native Android Project Generation & 21st.dev Athletic KPI Cards:
+  - **1. Native Android Project (`apps/mobile/android/`)**:
+    - Created production-ready Android Gradle structure with AGP 8.1.4, Java 17, and Android SDK 33 (`apps/mobile/android/`).
+    - Configured single-activity WebView (`MainActivity.java`) optimized for hardware-accelerated rendering, localStorage persistence, viewport scaling, and native back navigation.
+    - Fixed Android presentation: removed desktop mockup/emulator shell (`.preview-header`, simulated iPhone notch, fake "09:41" status bar, rounded bezel frame), enabling true 100vw × 100dvh edge-to-edge native Android scaling with matching pitch dark (#04070D) system bars.
+    - Integrated self-contained CricOS mobile distribution assets (`assets/index.html`) loaded from `dist/mobile.html` with pre-seeded `.is-native-app` class.
+    - Automated APK build script (`apps/mobile/android/build-apk.sh`) and added `pnpm run build:android`.
+    - Successfully compiled standalone debug APK: `apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk` and `dist/cricos-debug.apk` (3.0 MB).
+  - **2. 21st.dev Athletic KPI & Career Stats Cards**:
+    - Implemented dual-mode athletic player stats integration: embedded within squad roster (`#embeddedPlayerStatsCard`) and expandable into full slide-over drawer modal (`#modalPlayerStatsDrawer`).
+    - Features Olympic/laurel wreath ranking badges, dynamic radar capability charts, 20-match momentum form sparklines, split analysis (Home/Away/First/Second Innings), and comprehensive 5-match game logs.
+    - Full programmatic API exposed at `window.CricOSPlayerStats`.
+  - **3. Verification & Governance**:
+    - Ran `./pipeline.sh test --summary`: 229 tests passing across 75 suites with 0 failures in low-token mode.
+    - Maintained Rule 6 distribution parity across `index.html` $\leftrightarrow$ `dist/index.html`.
   - **1. Virtual Stadium Seat POVs**:
     - Added 3 interactive camera vantage presets to `#threeCameraBar`: Grandstand (`#btnCamGrandstand`, elevation 18m, 32m deep behind bowler), Pavilion (`#btnCamPavilion`, members pavilion side-on angle `(24, 12, 0)`), and Umpire POV (`#btnCamUmpire`, standing directly behind the non-striker's stumps at `(0, 1.8, -12)` looking straight down pitch).
   - **2. Dynamic Day/Night Stadium Lighting Engine**:

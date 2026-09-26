@@ -36,6 +36,7 @@
     "benchmark:profile": "node scripts/benchmark-performance.mjs",
     "package:dist": "node scripts/package-distribution.mjs",
     "verify:dist": "node scripts/verify-distribution.mjs",
+    "build:android": "bash apps/mobile/android/build-apk.sh",
     "dev": "pnpm --filter @cricket-platform/api dev",
     "start": "pnpm --filter @cricket-platform/api start"
   },

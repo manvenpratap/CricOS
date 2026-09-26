@@ -11,3 +11,10 @@ tests/screenshots/
 e2e-tests/screenshots/
 __pycache__/
 .pytest_cache/
+
+# Android build outputs & local properties
+apps/mobile/android/.gradle/
+apps/mobile/android/build/
+apps/mobile/android/app/build/
+apps/mobile/android/local.properties
+

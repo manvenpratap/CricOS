@@ -1,6 +1,5 @@
-export function getMobileAppHtml(): string {
-  return `<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="is-native-app">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -301,7 +300,7 @@ export function getMobileAppHtml(): string {
     }
   </style>
 </head>
-<body>
+<body class="is-native-app">
 
   <div class="preview-header">
     <div class="preview-badge">
@@ -342,7 +341,7 @@ export function getMobileAppHtml(): string {
     <div class="home-indicator"></div>
   </div>
 
-  <script type="module">
+  <script>
     // Auto-detect native mobile app / standalone mode to strip emulator framing
     (function initNativePlatformMode() {
       const isNative = window.location.protocol === 'file:' ||
@@ -697,7 +696,7 @@ export function getMobileAppHtml(): string {
 
       sendCheer(text) {
         this.fanCheersCount++;
-        alert('📢 Fan Cheer Sent: ' + text + '\\nStadium Pulse: ' + this.fanCheersCount.toLocaleString() + ' cheers');
+        alert('📢 Fan Cheer Sent: ' + text + '\nStadium Pulse: ' + this.fanCheersCount.toLocaleString() + ' cheers');
         this.render();
       }
 
@@ -730,11 +729,11 @@ export function getMobileAppHtml(): string {
       }
 
       bookTurfInstant(title, price) {
-        alert('✓ Authoritative 15-Min GiST Lock Activated!\\nVenue: ' + title + '\\nSecured in Escrow: ₹' + price);
+        alert('✓ Authoritative 15-Min GiST Lock Activated!\nVenue: ' + title + '\nSecured in Escrow: ₹' + price);
       }
 
       openEventBasketModal() {
-        alert('🧺 CricOS Event Basket Procurement:\\n• Venue: Wankhede Arena (₹3,500.00)\\n• Umpire: Nitin Menon Panel (₹800.00)\\n• Digital Scorer (₹600.00)\\n\\nSubtotal: ₹4,900.00\\nPlatform Fee (5%): ₹245.00\\nGST (18% on fee): ₹44.10\\nTotal Escrow Hold: ₹5,189.10\\n\\n🔒 Authoritative 15-Min GiST Lock Active');
+        alert('🧺 CricOS Event Basket Procurement:\n• Venue: Wankhede Arena (₹3,500.00)\n• Umpire: Nitin Menon Panel (₹800.00)\n• Digital Scorer (₹600.00)\n\nSubtotal: ₹4,900.00\nPlatform Fee (5%): ₹245.00\nGST (18% on fee): ₹44.10\nTotal Escrow Hold: ₹5,189.10\n\n🔒 Authoritative 15-Min GiST Lock Active');
       }
 
       generateFixtures() {
@@ -776,7 +775,7 @@ export function getMobileAppHtml(): string {
           description: desc,
           penalty: 0
         });
-        alert('🚨 Code of Conduct Incident Logged: ' + player + '\\nForwarded to Match Referee.');
+        alert('🚨 Code of Conduct Incident Logged: ' + player + '\nForwarded to Match Referee.');
         this.render();
       }
 
@@ -792,7 +791,7 @@ export function getMobileAppHtml(): string {
 
       approveDispute(idx) {
         this.disputes[idx].status = 'REFUNDED';
-        alert('✓ Dispute Approved! Balanced double-entry refund journal entry executed:\\nDebit: REFUND_CLEARING\\nCredit: ESCROW_HOLD\\nZero ledger imbalance maintained.');
+        alert('✓ Dispute Approved! Balanced double-entry refund journal entry executed:\nDebit: REFUND_CLEARING\nCredit: ESCROW_HOLD\nZero ledger imbalance maintained.');
         this.render();
       }
 
@@ -808,7 +807,7 @@ export function getMobileAppHtml(): string {
       }
 
       promptDeleteAccount() {
-        const confirmed = confirm('App Store Safety Notice:\\nAre you sure you want to permanently delete your CricOS account and personal stats? This action cannot be reversed.');
+        const confirmed = confirm('App Store Safety Notice:\nAre you sure you want to permanently delete your CricOS account and personal stats? This action cannot be reversed.');
         if (confirmed) {
           this.client.clearSession();
           alert('✓ Account successfully scheduled for deletion per Apple App Store Guideline 5.1.1(v).');
@@ -1531,5 +1530,3 @@ export function getMobileAppHtml(): string {
   </script>
 </body>
 </html>
-`;
-}
