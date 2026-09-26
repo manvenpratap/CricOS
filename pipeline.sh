@@ -59,6 +59,8 @@ case "$CMD" in
         [ -f go.mod ] && echo "  • Detected Go project" || true
         [ -d src-tauri ] && echo "  • Detected Tauri desktop project" || true
         compgen -G "*.html" >/dev/null 2>&1 && echo "  • Detected Single-File Web project" || true
+        [ -d apps/mobile/android ] && echo "  • Detected Android native project" || true
+        [ -d apps/mobile/ios ] && echo "  • Detected iOS native project (SwiftUI/WebKit)" || true
         
         # Invariant checks
         if [ ! -f PROJECT_CONTEXT.md ]; then
@@ -168,6 +170,16 @@ EOF
             exit 1
         fi
         ;;
+    ios|apple|build:ios)
+        echo "==> Building and Verifying iOS Native Project..."
+        if [ -f apps/mobile/ios/build-ios.sh ]; then
+            bash apps/mobile/ios/build-ios.sh
+            echo "✓ iOS Native Project compiled and verified at apps/mobile/ios"
+        else
+            echo "❌ Error: apps/mobile/ios/build-ios.sh not found."
+            exit 1
+        fi
+        ;;
     add|stage)
         echo "==> Staging all changed and untracked files..."
         git add -A
@@ -208,21 +220,26 @@ EOF
         echo "========================================================"
         echo "🚀 CricOS Automated Pipeline: Full Release & Ship"
         echo "========================================================"
-        echo "--> Step 1/5: Running Test Suite (Rule 2 Compact Mode)..."
+        echo "--> Step 1/6: Running Test Suite (Rule 2 Compact Mode)..."
         "$0" test --summary
 
-        echo "--> Step 2/5: Packaging Distribution Artifacts (Rule 6)..."
+        echo "--> Step 2/6: Packaging Distribution Artifacts (Rule 6)..."
         "$0" package
 
-        echo "--> Step 3/5: Building Android Native APK..."
+        echo "--> Step 3/6: Building Android Native APK..."
         if [ -f apps/mobile/android/build-apk.sh ]; then
             "$0" apk
         fi
 
-        echo "--> Step 4/5: Staging & Committing Changes..."
+        echo "--> Step 4/6: Packaging iOS Native Distribution..."
+        if [ -f apps/mobile/ios/build-ios.sh ]; then
+            "$0" ios
+        fi
+
+        echo "--> Step 5/6: Staging & Committing Changes..."
         "$0" commit "$MSG"
 
-        echo "--> Step 5/5: Pushing to Remote Repository..."
+        echo "--> Step 6/6: Pushing to Remote Repository..."
         "$0" push
 
         echo "========================================================"
@@ -231,7 +248,7 @@ EOF
         ;;
     *)
         echo "Unknown command: $CMD"
-        echo "Usage: ./pipeline.sh {doctor|heal|test|visual|package|apk|commit|push|doc|ship|auto}"
+        echo "Usage: ./pipeline.sh {doctor|heal|test|visual|package|apk|ios|commit|push|doc|ship|auto}"
         exit 1
         ;;
 esac

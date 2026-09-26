@@ -38,6 +38,8 @@
     "verify:dist": "node scripts/verify-distribution.mjs",
     "build:android": "bash apps/mobile/android/build-apk.sh",
     "apk": "bash ./pipeline.sh apk",
+    "build:ios:native": "bash apps/mobile/ios/build-ios.sh",
+    "ios": "bash ./pipeline.sh ios",
     "pipeline": "bash ./pipeline.sh",
     "ship": "bash ./pipeline.sh ship",
     "commit": "bash ./pipeline.sh commit",

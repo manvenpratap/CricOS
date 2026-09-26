@@ -1,14 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 23:25:00
-**Version:** 1.0.0-phase2ap (Digital Umpire Match Day Desk, Cricsheet Federation Export, Multi-Division Promotion Ladders & Verified Release)  
-**Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
+**Last Updated:** 2026-09-26 23:45:00
+**Version:** 1.0.0-phase2aq (iOS Native Application, SwiftUI/WebKit Architecture, Apple App Store Readiness & Verified Release)  
+**Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AP Completed — Digital Umpire Match Day Desk, Cricsheet Federation Export & Multi-Division League Ladders:
+- **Active Phase**: Phase 2AQ Completed — iOS Native Application, SwiftUI/WebKit Architecture & App Store Readiness:
+  - **1. Native SwiftUI Application Entrypoint & Window Scene (`apps/mobile/ios/CricOS/App/CricOSApp.swift`)**:
+    - Implemented `@main` SwiftUI App struct with `AppDelegate` lifecycle adapter, light-content status bar styling, and pitch dark `#04070D` background.
+  - **2. Edge-to-Edge WebKit Architecture & Local Asset Loading (`apps/mobile/ios/CricOS/App/CricOSWebView.swift`)**:
+    - Implemented `UIViewRepresentable` wrapping `WKWebView` with inline media playback, disabled elastic overscroll bounce, safe area edge-to-edge support (`contentInsetAdjustmentBehavior = .never`), custom user-agent (`CricOS-iOS/1.0.0`), and offline fallback bundle loader from `Resources/www/index.html`.
+  - **3. Native Taptic Engine & JavaScript Bridge (`apps/mobile/ios/CricOS/App/NativeBridge.swift`, `HapticsManager.swift`)**:
+    - Full `WKScriptMessageHandler` bridging `cricosNative` commands: `HAPTIC` (`UIImpactFeedbackGenerator`, `UINotificationFeedbackGenerator`, `UISelectionFeedbackGenerator`), `SHARE` (`UIActivityViewController`), `COPY` (`UIPasteboard`), and Apple Guideline 5.1.1(v) permanent account deletion alert.
+  - **4. Apple Info.plist & Privacy Manifest (`PrivacyInfo.xcprivacy`)**:
+    - Configured bundle ID `com.cricos.app`, version `1.0.0`, light status bar, camera/photo usage descriptions, encryption exemption, and WWDC 2024 Privacy Manifest declaring zero tracking domains (`NSPrivacyTracking = false`) and strictly functional sporting data types.
+  - **5. Xcode Project & Pipeline Tooling (`CricOS.xcodeproj`, `build-ios.sh`, `pipeline.sh ios`)**:
+    - Standard PBX project format targeting iOS 16.0+, Swift 5.0, universal 1024x1024 App Store icon, Turf Emerald `#00E599` accent color, automated packaging script `build-ios.sh`, and pipeline commands (`./pipeline.sh ios`, `./pipeline.sh doctor`).
+  - **6. Automated Test Suite 46 & Release Invariants**:
+    - Created sequential Test Suite 46 (`tests/46-ios-native-application-and-store-readiness.test.ts`) with 12 assertions across 7 suites.
+    - `./pipeline.sh test --summary`: 388 tests passing across 118 suites with 0 failures in 913ms.
+    - Synced `dist/index.html` (byte-for-byte with root `index.html`), `dist/mobile.html`, `dist/release-manifest.json`, and `apps/mobile/ios/CricOS/Resources/www/index.html`.
+- **Preceding Phase**: Phase 2AP Completed — Digital Umpire Match Day Desk, Cricsheet Federation Export & Multi-Division League Ladders:
   - **1. Modular Digital Umpire Match Day Desk & DRS Incident Review (`apps/web/src/components/umpire-match-desk.ts`)**:
     - Created `UmpireMatchDeskComponent` implementing MCC Laws 41/42 player conduct sanctions (Level 1–4) with penalty run accounting (+5 runs) and temporary/permanent suspensions (4 overs or match dismissal).
     - Implemented ICC Playing Conditions DRS LBW trajectory rules (`resolveDrsVerdict`) evaluating pitching, impact, and wickets (Hitting, Missing, Umpire's Call) with automated review retention logic.
