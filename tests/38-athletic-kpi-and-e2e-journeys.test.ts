@@ -137,6 +137,17 @@ describe('38. Athletic KPI & Career Stats, 3D Modals & E2E Mobile Journeys', () 
       assert.ok(!distMobileHtml.includes('selectPlayer(\'\''), 'Found broken string escape in selectPlayer');
       assert.ok(!distMobileHtml.includes('switchUserPersona(\'\''), 'Found broken string escape in switchUserPersona');
     });
+
+    it('enforces 3-tier flex column layout with locked header, scroll container, and pinned bottom nav', () => {
+      assert.ok(mobileHtml.includes('.mobile-scroll-body'), 'mobile-scroll-body CSS class missing');
+      assert.ok(mobileHtml.includes('id="mobileScrollBody"'), 'mobileScrollBody element ID missing');
+      assert.ok(mobileHtml.includes('.mobile-bottom-nav'), 'mobile-bottom-nav CSS class missing');
+      assert.ok(mobileHtml.includes('id="mobileBottomNav"'), 'mobileBottomNav element ID missing');
+      assert.ok(mobileHtml.includes('.mobile-header'), 'mobile-header CSS class missing');
+      assert.ok(mobileHtml.includes('overscroll-behavior-y: contain'), 'overscroll-behavior-y missing on scroll body');
+      assert.ok(mobileHtml.includes('-webkit-overflow-scrolling: touch'), 'webkit momentum touch scrolling missing');
+      assert.ok(!mobileHtml.includes('position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10, 16, 28, 0.96)'), 'Erratic absolute bottom nav anti-pattern must be completely removed');
+    });
   });
 
   // ---------------------------------------------------------------------------

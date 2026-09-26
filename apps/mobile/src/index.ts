@@ -566,9 +566,9 @@ export class CricOSMobileApp {
     }
 
     this.container.innerHTML = `
-      <div class="cricos-mobile-shell" style="max-width: 480px; margin: 0 auto; min-height: 100vh; background: #04070D; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8);">
-        <!-- Mobile Top App Bar -->
-        <header style="padding: 0.85rem 1rem; background: rgba(10, 16, 28, 0.95); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);">
+      <div class="cricos-mobile-shell" style="max-width: 480px; margin: 0 auto; height: 100vh; max-height: 100dvh; background: #04070D; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8); overflow: hidden;">
+        <!-- Mobile Top App Bar (Locked at top) -->
+        <header class="mobile-header" style="flex: 0 0 auto; padding: 0.85rem 1rem; background: rgba(10, 16, 28, 0.95); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 50; backdrop-filter: blur(12px);">
           <div style="display: flex; align-items: center; gap: 0.5rem;">
             <span style="font-size: 1.25rem;">🏏</span>
             <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.15rem; color: #f8fafc;">CricOS Mobile</span>
@@ -580,13 +580,13 @@ export class CricOSMobileApp {
           </div>
         </header>
 
-        <!-- Main Screen Body -->
-        <main style="flex: 1; overflow-y: auto; padding-bottom: 75px;">
+        <!-- Main Screen Body (Dedicated Scroll Container) -->
+        <main class="mobile-scroll-body" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; padding-bottom: 1.5rem;">
           ${contentHtml}
         </main>
 
-        <!-- Consumer Bottom Navigation Bar -->
-        <nav style="position: sticky; bottom: 0; left: 0; right: 0; background: rgba(10, 16, 28, 0.96); border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-around; padding: 0.5rem 0.25rem 0.75rem; z-index: 50; backdrop-filter: blur(12px);">
+        <!-- Consumer Bottom Navigation Bar (Permanently pinned at bottom) -->
+        <nav class="mobile-bottom-nav" style="flex: 0 0 auto; position: relative; background: rgba(10, 16, 28, 0.96); border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-around; align-items: center; padding: 0.5rem 0.25rem max(env(safe-area-inset-bottom, 0px), 0.75rem); z-index: 50; backdrop-filter: blur(12px);">
           ${navItems.map(item => {
             const active = (this.currentScreen === item.id) || (item.id === 'MATCHES' && this.currentScreen === 'LIVE_MATCH');
             const color = active ? '#00E599' : '#94a3b8';

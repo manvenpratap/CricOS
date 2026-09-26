@@ -1,14 +1,31 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 08:40:00
-**Version:** 1.0.0-phase2ae (Full E2E Journey Verification, Multi-Persona Auditing, 3D Web Modal Hardening, Web Audio Synthesizer & Zero-Defect Distribution Release)  
+**Last Updated:** 2026-09-26 09:50:00
+**Version:** 1.0.0-phase2af (Mobile Viewport Scrolling Architecture Hardening, Dedicated Momentum Scroll Container, Permanently Locked Bottom Navigation Bar & Fresh APK Release)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AE Completed — Full E2E Journey Verification, Multi-Persona Auditing, 3D Web Modal Hardening, Web Audio Synthesizer & Zero-Defect Distribution Release:
+- **Active Phase**: Phase 2AF Completed — Mobile Viewport Scrolling Architecture Hardening & Fixed Bottom Navigation Lock:
+  - **1. Root Cause Eradication (`apps/api/src/ui/mobile-view.ts`, `apps/mobile/src/index.ts`)**:
+    - Identified that `#mobile-app-root` (`.screen-viewport`) had `overflow-y: auto` while the bottom navigation bar had `position: absolute; bottom: 0; left: 0; right: 0;`.
+    - Inside an `overflow: auto` container, absolute positioning binds elements to the scroll canvas, causing the bottom bar to scroll UP into view and float over cards whenever the user scrolled.
+    - Intra-screen DOM re-renders also wiped out `scrollTop`, jumping the user to the top during scoring or player selection.
+  - **2. Strict 3-Tier Flex Column Layout Implementation**:
+    - **Tier 1 (Fixed Header)**: `.mobile-header` styled with `flex: 0 0 auto; z-index: 50;` permanently locked at the top of the viewport.
+    - **Tier 2 (Dedicated Scroll Body)**: `main.mobile-scroll-body` (`#mobileScrollBody`) styled with `flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; padding-bottom: 1rem;`. Viewport itself has `overflow: hidden; display: flex; flex-direction: column;` and NEVER scrolls.
+    - **Tier 3 (Locked Bottom Navigation Bar)**: `nav.mobile-bottom-nav` (`#mobileBottomNav`) styled with `flex: 0 0 auto; position: relative; z-index: 50; padding: 0.5rem 0.25rem max(env(safe-area-inset-bottom, 0px), 12px);`. Pinned permanently to the bottom of the device screen, physically outside the scroll canvas so it cannot scroll up under any circumstances.
+    - **Scroll Position Intelligence**: Added `this._screenChanged` state machine to `StandaloneMobileApp` — cleanly resets `scrollTop = 0` on tab navigation (`navigateTo`), while preserving `scrollTop` during intra-screen updates (scoring balls, toggling charts, selecting roster players).
+  - **3. Android Native Edge-to-Edge Parity & Standalone APK**:
+    - Synchronized assets into `apps/mobile/android/app/src/main/assets/index.html`.
+    - Recompiled native Android debug APK via Gradle 8.5: `dist/cricos-debug.apk` (3.0 MB).
+  - **4. Automated Browser & Regression Verification**:
+    - Expanded `tests/38-athletic-kpi-and-e2e-journeys.test.ts` to assert 3-tier flex architecture and absolute bottom nav removal (245 tests passing across 81 suites in 768ms).
+    - Added Playwright scrolling telemetry check in `scripts/audit_app_journeys.py`: verified that during a 350px scroll of `#mobileScrollBody`, bottom nav `bottom` coordinate stays strictly invariant at 844.0px and header stays at 6.0px (53/53 E2E checks passed).
+    - `./pipeline.sh doctor`: Passed, verifying Rule 6 byte-for-byte distribution parity.
+- **Preceding Phase**: Phase 2AE Completed — Full E2E Journey Verification, Multi-Persona Auditing, 3D Web Modal Hardening, Web Audio Synthesizer & Zero-Defect Distribution Release:
   - **1. Full E2E Journey & Experience Verification (`scripts/audit_app_journeys.py`)**:
     - Executed complete 49-assertion automated Playwright browser audit spanning both Desktop Web Console (1400×900) and Consumer Mobile Viewport (390×844).
     - Verified zero unwanted horizontal layout overflow (`document.body.scrollWidth == window.innerWidth == 1400`).

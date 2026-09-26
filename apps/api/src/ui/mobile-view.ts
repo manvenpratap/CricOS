@@ -167,15 +167,70 @@ export function getMobileAppHtml(): string {
       font-size: 0.75rem;
     }
 
-    /* Screen Viewport */
+    /* Screen Viewport (Strict 3-Tier Flex Column: Viewport Frame NEVER Scrolls) */
     .screen-viewport {
-      flex: 1;
-      overflow-y: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      height: 100%;
       background: #04070D;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       transition: opacity 0.15s ease-out;
     }
-    .screen-viewport::-webkit-scrollbar { width: 0px; }
+    .screen-viewport::-webkit-scrollbar { display: none; width: 0px; }
+
+    /* Fixed Mobile Header Inside Viewport */
+    .mobile-header {
+      flex: 0 0 auto;
+      padding: 0.75rem 1rem;
+      background: rgba(10, 16, 28, 0.95);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* Dedicated Scrollable Content Container (Only this element scrolls) */
+    .mobile-scroll-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+      padding-bottom: 1rem;
+    }
+    .mobile-scroll-body::-webkit-scrollbar {
+      width: 4px;
+    }
+    .mobile-scroll-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .mobile-scroll-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    /* Fixed Bottom Navigation Bar (Permanently pinned at bottom, never scrolls with content) */
+    .mobile-bottom-nav {
+      flex: 0 0 auto;
+      position: relative;
+      background: rgba(10, 16, 28, 0.96);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0.5rem 0.25rem 1.25rem;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
 
     /* Home Indicator bar at bottom of modern phone */
     .home-indicator {
@@ -249,9 +304,16 @@ export function getMobileAppHtml(): string {
         width: 100% !important;
         height: 100% !important;
         flex: 1 1 auto !important;
+        min-height: 0 !important;
         border-radius: 0 !important;
-        padding-top: max(env(safe-area-inset-top), 6px);
-        padding-bottom: max(env(safe-area-inset-bottom), 10px);
+        padding-top: max(env(safe-area-inset-top), 6px) !important;
+        padding-bottom: 0 !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+      .mobile-bottom-nav {
+        padding-bottom: max(env(safe-area-inset-bottom), 12px) !important;
       }
     }
 
@@ -295,9 +357,16 @@ export function getMobileAppHtml(): string {
       width: 100% !important;
       height: 100% !important;
       flex: 1 1 auto !important;
+      min-height: 0 !important;
       border-radius: 0 !important;
-      padding-top: max(env(safe-area-inset-top), 6px);
-      padding-bottom: max(env(safe-area-inset-bottom), 10px);
+      padding-top: max(env(safe-area-inset-top), 6px) !important;
+      padding-bottom: 0 !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    body.is-native-app .mobile-bottom-nav {
+      padding-bottom: max(env(safe-area-inset-bottom), 12px) !important;
     }
 
     /* 21st.dev Athletic KPI & Career Stats Card in Mobile View */
@@ -424,10 +493,11 @@ export function getMobileAppHtml(): string {
 
     /* Bottom Persona Sheet Modal */
     .mobile-sheet-backdrop {
-      position: fixed;
+      position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       z-index: 100;
       opacity: 0;
       pointer-events: none;
@@ -438,20 +508,21 @@ export function getMobileAppHtml(): string {
       pointer-events: auto;
     }
     .mobile-persona-sheet {
-      position: fixed;
+      position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       background: #090f1d;
-      border-top: 1px solid rgba(0, 229, 153, 0.3);
+      border-top: 1px solid rgba(0, 229, 153, 0.35);
       border-radius: 18px 18px 0 0;
-      padding: 1.25rem 1rem 1.75rem;
+      padding: 1.25rem 1rem max(env(safe-area-inset-bottom, 0px), 1.5rem);
       z-index: 101;
       transform: translateY(100%);
       transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
-      max-height: 80vh;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.7);
+      max-height: 80%;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .mobile-persona-sheet.active {
       transform: translateY(0);
@@ -673,6 +744,7 @@ export function getMobileAppHtml(): string {
         this.soundEnabled = true;
         this.personaSheetOpen = false;
         this.selectedPlayerId = 'p1';
+        this._screenChanged = false;
 
         this.playerDatabase = {
           'p1': { id: 'p1', name: 'Virat K.', role: 'CAPTAIN', jersey: 18, rating: 98.4, rank: '#1 WORLD ICC T20', runs: 4892, avg: 53.8, sr: 138.2, boundaryRate: 19.4, trueImpact: '+18.2', form: 'PEAK', momentum: [12, 14, 15, 18, 16, 20, 22, 19, 24, 21, 25, 27, 26, 28, 27, 29, 31, 30, 32, 34] },
@@ -882,7 +954,10 @@ export function getMobileAppHtml(): string {
       }
 
       navigateTo(screen) {
-        this.currentScreen = screen;
+        if (this.currentScreen !== screen) {
+          this._screenChanged = true;
+          this.currentScreen = screen;
+        }
         this.render();
       }
 
@@ -892,6 +967,7 @@ export function getMobileAppHtml(): string {
       }
 
       switchUserPersona(role) {
+        this._screenChanged = true;
         this.profile.persona = role;
         this.role = role;
         this.personaSheetOpen = false;
@@ -1822,6 +1898,10 @@ export function getMobileAppHtml(): string {
         var root = document.getElementById('mobile-app-root');
         if (!root) return;
 
+        var existingScroll = document.getElementById('mobileScrollBody');
+        var prevScrollTop = (!this._screenChanged && existingScroll) ? existingScroll.scrollTop : 0;
+        this._screenChanged = false;
+
         var session = this.client.getSession();
         var isAuth = !!session;
 
@@ -1845,8 +1925,8 @@ export function getMobileAppHtml(): string {
         }
 
         var h = '';
-        // Header Inside Phone
-        h += '<div style="padding: 0.75rem 1rem; background: rgba(10, 16, 28, 0.95); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px);">';
+        // Fixed Top Header Inside Viewport (Locked at top, never scrolls)
+        h += '<header class="mobile-header">';
         h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
         h += '<span style="font-size: 1.1rem;">🏏</span>';
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
@@ -1854,13 +1934,13 @@ export function getMobileAppHtml(): string {
         h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
         h += '<button type="button" id="btnMobileSoundToggle" onclick="window.cricosMobileApp.toggleSound()" style="background: rgba(255,255,255,0.06); color: ' + (this.soundEnabled ? '#00E599' : '#64748b') + '; border: 1px solid rgba(255,255,255,0.12); padding: 0.2rem 0.45rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;" data-tooltip="Toggle Web Audio synthesized sound FX">' + (this.soundEnabled ? '🔊' : '🔇') + '</button>';
         h += '<button type="button" id="btnMobilePersonaSwitch" onclick="window.cricosMobileApp.openPersonaSheet()" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch persona sheet">' + this.profile.persona + ' ▾</button>';
-        h += '</div></div>';
+        h += '</div></header>';
 
-        // Content
-        h += '<div style="padding-bottom: 70px;">' + content + '</div>';
+        // Dedicated Scrollable Content Container (Only this element scrolls with momentum touch)
+        h += '<main class="mobile-scroll-body" id="mobileScrollBody">' + content + '</main>';
 
-        // Bottom Navigation Bar tailored to Persona
-        h += '<div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10, 16, 28, 0.96); border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-around; padding: 0.5rem 0.25rem 1.25rem; z-index: 50; backdrop-filter: blur(12px);">';
+        // Fixed Bottom Navigation Bar tailored to Persona (Permanently pinned at bottom, never scrolls)
+        h += '<nav class="mobile-bottom-nav" id="mobileBottomNav">';
 
         var navItems = [];
         var persona = this.profile.persona;
@@ -1917,7 +1997,7 @@ export function getMobileAppHtml(): string {
           h += '<span>' + item[2] + '</span>';
           h += '</button>';
         }
-        h += '</div>';
+        h += '</nav>';
 
         // Persona Sheet Modal & Backdrop
         var isSheetActive = this.personaSheetOpen ? 'active' : '';
@@ -1950,6 +2030,11 @@ export function getMobileAppHtml(): string {
         h += '</div></div>';
 
         root.innerHTML = h;
+
+        var newScroll = document.getElementById('mobileScrollBody');
+        if (newScroll && prevScrollTop > 0) {
+          newScroll.scrollTop = prevScrollTop;
+        }
       }
     }
 

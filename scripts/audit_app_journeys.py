@@ -393,6 +393,71 @@ def run_audit():
                 m_page.screenshot(path=str(SCREENSHOT_DIR / "12_mobile_squad_player_selected.png"))
 
         # ---------------------------------------------------------------------
+        # 8b. Mobile Viewport Scrolling & Pinned Bottom Navigation Verification
+        # ---------------------------------------------------------------------
+        print("\n--- 8b. Testing Mobile Viewport Scrolling & Fixed Bottom Bar ---")
+        scroll_result = m_page.evaluate("""() => {
+            const viewport = document.getElementById('mobile-app-root');
+            const scrollBody = document.getElementById('mobileScrollBody');
+            const header = document.querySelector('.mobile-header');
+            const bottomNav = document.getElementById('mobileBottomNav');
+            if (!scrollBody || !bottomNav || !header || !viewport) {
+                return { error: 'Required mobile elements missing' };
+            }
+
+            const initialNavRect = bottomNav.getBoundingClientRect();
+            const initialHeaderRect = header.getBoundingClientRect();
+            const viewportRect = viewport.getBoundingClientRect();
+
+            // Perform scroll inside dedicated scroll container
+            scrollBody.scrollTop = 350;
+
+            const scrolledNavRect = bottomNav.getBoundingClientRect();
+            const scrolledHeaderRect = header.getBoundingClientRect();
+            const currentScrollTop = scrollBody.scrollTop;
+
+            return {
+                initialBottom: initialNavRect.bottom,
+                scrolledBottom: scrolledNavRect.bottom,
+                viewportBottom: viewportRect.bottom,
+                initialHeaderTop: initialHeaderRect.top,
+                scrolledHeaderTop: scrolledHeaderRect.top,
+                currentScrollTop: currentScrollTop,
+                isNavPinned: Math.abs(scrolledNavRect.bottom - initialNavRect.bottom) < 1.0,
+                isHeaderPinned: Math.abs(scrolledHeaderRect.top - initialHeaderRect.top) < 1.0
+            };
+        }""")
+
+        if "error" in scroll_result:
+            log_fail("Mobile scroll architecture", scroll_result["error"])
+        else:
+            if scroll_result["isNavPinned"]:
+                log_pass(f"Bottom navigation bar remains permanently locked during 350px scroll (bottom={scroll_result['scrolledBottom']:.1f}px)")
+            else:
+                log_fail("Bottom nav stability", f"Bottom nav moved! Initial={scroll_result['initialBottom']}, Scrolled={scroll_result['scrolledBottom']}")
+
+            if scroll_result["isHeaderPinned"]:
+                log_pass(f"Mobile header remains locked at top during scroll (top={scroll_result['scrolledHeaderTop']:.1f}px)")
+            else:
+                log_fail("Header stability", f"Header moved during scroll! Initial={scroll_result['initialHeaderTop']}, Scrolled={scroll_result['scrolledHeaderTop']}")
+
+            if scroll_result["currentScrollTop"] > 0:
+                log_pass(f"Dedicated scroll body smoothly scrolls content (scrollTop={scroll_result['currentScrollTop']}px)")
+            else:
+                log_fail("Scroll body execution", "scrollTop did not register scroll movement")
+
+        # Test interscreen navigation scroll reset
+        nav_matches = m_page.query_selector("[data-screen='MATCHES']")
+        if nav_matches:
+            nav_matches.click()
+            m_page.wait_for_timeout(200)
+            reset_scrollTop = m_page.evaluate("() => document.getElementById('mobileScrollBody') ? document.getElementById('mobileScrollBody').scrollTop : -1")
+            if reset_scrollTop == 0:
+                log_pass("Switching screens cleanly resets scrollTop to 0")
+            else:
+                log_fail("Scroll reset on navigation", f"Expected scrollTop 0, got {reset_scrollTop}")
+
+        # ---------------------------------------------------------------------
         # 9. Verify Enhanced UX & UI Features
         # ---------------------------------------------------------------------
         print("\n--- 9. Verified UX & UI Enhancements ---")
@@ -401,6 +466,7 @@ def run_audit():
         log_ux("Mobile quick-switch bottom sheet drawer covering all 8 user personas with Escape dismissal.")
         log_ux("Web Audio synthesized cricket sound engine integrated across both web console and mobile.")
         log_ux("Topbar quick launcher with SVG QR code for mobile demo and direct APK download.")
+        log_ux("3-Tier Mobile Flex Column layout: fixed header, momentum scroll container, and permanently pinned bottom navigation bar.")
 
         m_context.close()
         browser.close()
