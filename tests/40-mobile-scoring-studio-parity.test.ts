@@ -130,4 +130,36 @@ describe('40. Mobile Scoring Studio & Precision Wagon Wheel Parity', () => {
       }, 'Embedded mobile client script must parse with zero syntax errors');
     });
   });
+
+  describe('5. Slide-In Scorer Wagon Wheel Direction Picker Sheet', () => {
+    it('triggers wagon wheel slide-in sheet when pad numbers (0, 1, 2, 3, 4, 6) are chosen', () => {
+      assert.ok(mobileHtml.includes('onPadNumberSelect(0)'), 'Pad 0 must call onPadNumberSelect');
+      assert.ok(mobileHtml.includes('onPadNumberSelect(1)'), 'Pad 1 must call onPadNumberSelect');
+      assert.ok(mobileHtml.includes('onPadNumberSelect(2)'), 'Pad 2 must call onPadNumberSelect');
+      assert.ok(mobileHtml.includes('onPadNumberSelect(3)'), 'Pad 3 must call onPadNumberSelect');
+      assert.ok(mobileHtml.includes('onPadNumberSelect(4)'), 'Pad 4 must call onPadNumberSelect');
+      assert.ok(mobileHtml.includes('onPadNumberSelect(6)'), 'Pad 6 must call onPadNumberSelect');
+    });
+
+    it('renders slide-in wagon wheel picker sheet markup with backdrop and native sheet physics', () => {
+      assert.ok(mobileHtml.includes('mobile-wagon-picker-sheet'), 'Must declare mobile-wagon-picker-sheet CSS & markup');
+      assert.ok(mobileHtml.includes('wagonPickerBackdrop'), 'Must include wagonPickerBackdrop');
+      assert.ok(mobileHtml.includes('wagonPickerSheet'), 'Must include wagonPickerSheet container');
+      assert.ok(mobileHtml.includes('Select Shot Direction'), 'Must include Select Shot Direction title');
+      assert.ok(mobileHtml.includes('wagonPickerActiveZoneLabel'), 'Must include dynamic active zone label');
+    });
+
+    it('provides 8 interactive sector wedges and 8 tactile grid buttons for shot placement', () => {
+      assert.ok(mobileHtml.includes('selectPickerZone'), 'Must include selectPickerZone handler');
+      assert.ok(mobileHtml.includes('wagon-picker-zone-btn'), 'Must include wagon-picker-zone-btn CSS & elements');
+      assert.ok(mobileHtml.includes('Record +'), 'Must include dynamic confirmation button text');
+      assert.ok(mobileHtml.includes('btnConfirmWagonShot'), 'Must include confirmation button ID');
+      assert.ok(mobileHtml.includes('confirmWagonShot'), 'Must include confirmWagonShot method');
+    });
+
+    it('supports Escape key and backdrop dismissal for wagon picker sheet', () => {
+      assert.ok(mobileHtml.includes('closeWagonPickerSheet()'), 'Must provide closeWagonPickerSheet method');
+      assert.ok(mobileHtml.includes('wagonPickerOpen'), 'Must track wagonPickerOpen state');
+    });
+  });
 });

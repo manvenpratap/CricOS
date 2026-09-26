@@ -1,14 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 12:45:00
-**Version:** 1.0.0-phase2ai (Mobile Tactical Scoring Studio & Precision Wagon Wheel Parity)  
+**Last Updated:** 2026-09-26 19:55:00
+**Version:** 1.0.0-phase2aj (Mobile Slide-In Scorer Wagon Wheel Shot Direction Picker)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AI Completed — Mobile Tactical Scoring Studio & Precision Wagon Wheel Parity:
+- **Active Phase**: Phase 2AJ Completed — Mobile Slide-In Scorer Wagon Wheel Shot Direction Picker:
+  - **1. Scoring Pad Slide-In Workflow**:
+    - Pad numbers (`0, 1, 2, 3, 4, 6`) now trigger `onPadNumberSelect(runs)` / `openWagonPickerSheet(runs)`.
+    - Automatically slides in the dedicated `.mobile-wagon-picker-sheet` bottom drawer (`#wagonPickerSheet`) with blurred backdrop (`#wagonPickerBackdrop`).
+    - Header displays dynamic run count badges (e.g. `+4 FOUR ⚡`, `+6 MAXIMUM 🚀`, `DOT`, `+1 SINGLE`), striker name, stance, inline RHB/LHB stance switcher, and dismiss button.
+  - **2. Interactive Stadium & Trajectory Preview**:
+    - Embedded SVG stadium showing pitch, creases, 75m boundary rope, and the 8 sector wedges.
+    - Live trajectory ray dynamically drawn from popping crease to the target zone (golden curve + star for 6s, emerald ray + circle for 4s, cyan line for singles/doubles, dashed slate for dots).
+    - 8 tactile zone grid buttons below stadium (`Point`, `Cover`, `Long Off`, `Third Man`, `Sq Leg`, `Mid Wkt`, `Long On`, `Fine Leg`) with Off/Leg side tags for instant tap-selection.
+  - **3. Dual Confirmation Flow & Accessibility**:
+    - Primary button: `Record +{runs} to {shortZone} ✓` (e.g. `Record +4 to Cover ✓`) commits the score, plays audio, emits haptic/toast feedback, and slides the sheet down.
+    - Secondary `Skip` button allows instant recording without forcing direction.
+    - Dismissible via backdrop tap, `&times;`, or `Escape` key.
+    - 100% Rule 5 `data-tooltip` coverage and zero `transition: all`.
+  - **4. Verification & Release**:
+    - Expanded `tests/40-mobile-scoring-studio-parity.test.ts` to 18 assertions across 6 suites (100% passing).
+    - `./pipeline.sh test --summary`: 286 tests passing across 95 suites with 0 failures in 889ms.
+    - Recompiled native Android APK (`apps/mobile/android/build-apk.sh`) with verified assets.
+- **Preceding Phase**: Phase 2AI Completed — Mobile Tactical Scoring Studio & Precision Wagon Wheel Parity:
   - **1. Tactical Scoring Pad & Controls Replicated on Mobile**:
     - Replicated desktop Scoring Studio layout (`tab-studio`) into mobile app view (`apps/api/src/ui/mobile-view.ts`).
     - Implemented 4-column studio keypad grid (`.mobile-studio-pad-grid`, `.mobile-studio-btn`) with sublabels (`Dot`, `Single`, `Double`, `Triple`, `Four`, `Six`, `Wicket`, `Undo`), distinct color glows (`boundary-four`, `maximum-six`, `wicket-out`, `undo-btn`), and Web Audio sound engine integration.

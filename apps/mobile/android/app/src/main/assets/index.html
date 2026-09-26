@@ -314,7 +314,8 @@
       pointer-events: auto;
     }
     .mobile-persona-sheet,
-    .mobile-action-sheet {
+    .mobile-action-sheet,
+    .mobile-wagon-picker-sheet {
       position: absolute;
       bottom: 0;
       left: 0;
@@ -327,13 +328,32 @@
       transform: translateY(100%);
       transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
       box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
-      max-height: 85%;
+      max-height: 88%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
     .mobile-persona-sheet.active,
-    .mobile-action-sheet.active {
+    .mobile-action-sheet.active,
+    .mobile-wagon-picker-sheet.active {
       transform: translateY(0);
+    }
+    .wagon-picker-zone-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 0.35rem 0.2rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #94a3b8;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .wagon-picker-zone-btn.active {
+      background: rgba(0, 229, 153, 0.2);
+      border-color: #00E599;
+      color: #00E599;
+      font-weight: 800;
     }
     .persona-grid-picker {
       display: grid;
@@ -1025,6 +1045,9 @@
         this.partnership = { runs: 122, balls: 82 };
         this.holdConfirmTimer = null;
         this.holdCompleted = false;
+        this.wagonPickerOpen = false;
+        this.pendingWagonRuns = 0;
+        this.pendingSelectedZone = 'EXTRA_COVER';
 
         this.SHOT_ZONES_DATA = [
           { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 22.5, side: 'LEG' },
@@ -1446,10 +1469,48 @@
         this.navigateTo('MATCHES');
       }
 
-      scoreBall(runs) {
+      onPadNumberSelect(runs) {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can score deliveries.', 'warning');
           return;
+        }
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.pendingWagonRuns = Number(runs);
+        this.pendingSelectedZone = this.currentSelectedZone || 'EXTRA_COVER';
+        this.wagonPickerOpen = true;
+        this.render();
+      }
+
+      openWagonPickerSheet(runs) {
+        this.onPadNumberSelect(runs);
+      }
+
+      closeWagonPickerSheet() {
+        this.wagonPickerOpen = false;
+        this.render();
+      }
+
+      selectPickerZone(zoneId) {
+        this.pendingSelectedZone = zoneId;
+        this.currentSelectedZone = zoneId;
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.render();
+      }
+
+      confirmWagonShot(skipDirection) {
+        var runs = this.pendingWagonRuns;
+        var zone = skipDirection ? (this.currentSelectedZone || 'EXTRA_COVER') : (this.pendingSelectedZone || this.currentSelectedZone || 'EXTRA_COVER');
+        this.wagonPickerOpen = false;
+        this.scoreBall(runs, zone);
+      }
+
+      scoreBall(runs, chosenZone) {
+        if (this.profile.persona !== 'SCORER') {
+          this.showToast('🔒 Only official Scorers can score deliveries.', 'warning');
+          return;
+        }
+        if (chosenZone) {
+          this.currentSelectedZone = chosenZone;
         }
         if (window.CricOSSound) {
           if (runs === 4 || runs === 6) {
@@ -1789,6 +1850,184 @@
           }
         }
         return raysHtml;
+      }
+
+      renderWagonPickerSheet() {
+        if (!this.wagonPickerOpen) return '';
+        var runs = this.pendingWagonRuns;
+        var striker = this.matchState.striker;
+        var self = this;
+        var activeZoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === self.pendingSelectedZone; }) || this.SHOT_ZONES_DATA[4];
+        var activeZoneLabel = activeZoneDef.label;
+        var activeZoneSide = activeZoneDef.side;
+        var activeZoneShort = activeZoneDef.shortLabel;
+
+        var runsLabel = 'DOT (0 RUNS)';
+        var runsColor = '#94a3b8';
+        if (runs === 1) { runsLabel = '+1 SINGLE'; runsColor = '#00D2FF'; }
+        else if (runs === 2) { runsLabel = '+2 DOUBLE'; runsColor = '#00D2FF'; }
+        else if (runs === 3) { runsLabel = '+3 TRIPLE'; runsColor = '#00D2FF'; }
+        else if (runs === 4) { runsLabel = '+4 FOUR ⚡'; runsColor = '#00D2FF'; }
+        else if (runs === 6) { runsLabel = '+6 MAXIMUM 🚀'; runsColor = '#00E599'; }
+
+        var h = '';
+        h += '<div class="mobile-sheet-backdrop active" id="wagonPickerBackdrop" onclick="window.cricosMobileApp.closeWagonPickerSheet()"></div>';
+        h += '<div class="mobile-wagon-picker-sheet active" id="wagonPickerSheet">';
+        h += '<div class="sheet-drag-handle"></div>';
+
+        // Header
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: Space Grotesk, sans-serif; color: #f8fafc; display: flex; align-items: center; gap: 0.4rem;">';
+        h += '<span>🎯 Select Shot Direction</span>';
+        h += '<span style="font-size: 0.65rem; font-family: Chakra Petch, monospace; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.15); color: ' + runsColor + '; border: 1px solid ' + runsColor + '40;">' + runsLabel + '</span>';
+        h += '</div>';
+        h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.15rem;">Batter: <strong style="color: #f8fafc;">' + striker.name + '</strong> (' + this.currentStance + ')</div>';
+        h += '</div>';
+
+        h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+        h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px;">';
+        h += '<button type="button" data-stance="RHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'RHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'RHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Right-handed batter stance">RHB</button>';
+        h += '<button type="button" data-stance="LHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'LHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'LHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Left-handed batter stance">LHB</button>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeWagonPickerSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; padding: 0 0.3rem;" data-tooltip="Dismiss wagon wheel">&times;</button>';
+        h += '</div>';
+        h += '</div>';
+
+        // Zone Status Readout
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.4rem 0.6rem; margin-bottom: 0.6rem;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+        h += '<span style="font-size: 0.8rem;">📍</span>';
+        h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.72rem; font-weight: 800; color: #00E599;" id="wagonPickerActiveZoneLabel">' + activeZoneLabel.toUpperCase() + ' (' + activeZoneSide + '-SIDE)</span>';
+        h += '</div>';
+        h += '<span style="font-size: 0.65rem; color: #94a3b8;">Tap sector or quick button</span>';
+        h += '</div>';
+
+        // Sector Wedges
+        var wedges = [
+          { id: 'THIRD_MAN', d: 'M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z', name: 'Third Man' },
+          { id: 'FINE_LEG', d: 'M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z', name: 'Fine Leg' },
+          { id: 'POINT', d: 'M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z', name: 'Point' },
+          { id: 'SQUARE_LEG', d: 'M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z', name: 'Deep Square Leg' },
+          { id: 'EXTRA_COVER', d: 'M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z', name: 'Extra Cover' },
+          { id: 'MID_WICKET', d: 'M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z', name: 'Deep Mid Wicket' },
+          { id: 'LONG_OFF', d: 'M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z', name: 'Long Off' },
+          { id: 'LONG_ON', d: 'M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z', name: 'Long On' }
+        ];
+
+        var wedgesSvg = '';
+        for (var w = 0; w < wedges.length; w++) {
+          var isSel = this.pendingSelectedZone === wedges[w].id;
+          wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" onclick="window.cricosMobileApp.selectPickerZone(this.dataset.zone)" data-tooltip="Aim at ' + wedges[w].name + '"/>';
+        }
+
+        // SVG Outfield Preview
+        h += '<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 0.6rem;">';
+        h += '<svg viewBox="0 0 360 360" style="width: 100%; max-width: 250px; height: auto;" xmlns="http://www.w3.org/2000/svg">';
+        h += '<defs>';
+        h += '<radialGradient id="pickerTurfGrad" cx="50%" cy="50%" r="50%">';
+        h += '<stop offset="0%" stop-color="#0e3d2a"/>';
+        h += '<stop offset="60%" stop-color="#0a2a1d"/>';
+        h += '<stop offset="100%" stop-color="#051710"/>';
+        h += '</radialGradient>';
+        h += '<linearGradient id="pickerPitchGrad" x1="0%" y1="0%" x2="0%" y2="100%">';
+        h += '<stop offset="0%" stop-color="#947c59"/>';
+        h += '<stop offset="50%" stop-color="#bda073"/>';
+        h += '<stop offset="100%" stop-color="#947c59"/>';
+        h += '</linearGradient>';
+        h += '<filter id="pickerRopeGlow" x="-20%" y="-20%" width="140%" height="140%">';
+        h += '<feGaussianBlur stdDeviation="3" result="blur"/>';
+        h += '<feComposite in="SourceGraphic" in2="blur" operator="over"/>';
+        h += '</filter>';
+        h += '</defs>';
+
+        h += '<circle cx="180" cy="180" r="162" fill="url(#pickerTurfGrad)"/>';
+        h += '<circle cx="180" cy="180" r="162" fill="none" stroke="#00E599" stroke-opacity="0.35" stroke-width="2" filter="url(#pickerRopeGlow)"/>';
+
+        for (var ring = 135; ring >= 45; ring -= 30) {
+          h += '<circle cx="180" cy="180" r="' + ring + '" fill="none" stroke="rgba(255, 255, 255, 0.03)" stroke-width="15"/>';
+        }
+        h += '<circle cx="180" cy="180" r="90" fill="none" stroke="rgba(255, 255, 255, 0.2)" stroke-dasharray="3,3" stroke-width="1.2"/>';
+        h += '<circle cx="180" cy="180" r="162" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5"/>';
+        h += '<text x="180" y="26" fill="rgba(255, 255, 255, 0.45)" font-size="7" font-family="Chakra Petch, monospace" text-anchor="middle">75m BOUNDARY ROPE</text>';
+
+        h += '<line x1="180" y1="18" x2="180" y2="342" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+        h += '<line x1="18" y1="180" x2="342" y2="180" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+        h += '<line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+        h += '<line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+
+        h += wedgesSvg;
+
+        // Pitch Strip
+        h += '<rect x="168" y="140" width="24" height="80" rx="3" fill="url(#pickerPitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>';
+        h += '<line x1="164" y1="150" x2="196" y2="150" stroke="#FFFFFF" stroke-width="1.2"/>';
+        h += '<line x1="168" y1="156" x2="192" y2="156" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
+        h += '<circle cx="177" cy="148" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="180" cy="148" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="183" cy="148" r="1" fill="#FFFFFF"/>';
+
+        h += '<line x1="164" y1="210" x2="196" y2="210" stroke="#FFFFFF" stroke-width="1.2"/>';
+        h += '<line x1="168" y1="204" x2="192" y2="204" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
+        h += '<circle cx="177" cy="212" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="180" cy="212" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="183" cy="212" r="1" fill="#FFFFFF"/>';
+
+        // Striker Point
+        h += '<circle cx="180" cy="156" r="4.5" fill="#00E599" stroke="#FFFFFF" stroke-width="1.5"/>';
+
+        // Dynamic Shot Preview Ray to the Selected Zone
+        var previewAngle = activeZoneDef.angleDeg;
+        if (this.currentStance === 'LHB') {
+          previewAngle = (360 - previewAngle) % 360;
+        }
+        var rad = ((previewAngle - 90) * Math.PI) / 180;
+        var pDistFraction = runs === 6 ? 1.15 : (runs === 4 ? 0.98 : (runs === 0 ? 0.35 : 0.7));
+        var targetDist = 162 * pDistFraction;
+        var endX = 180 + Math.cos(rad) * targetDist;
+        var endY = 156 + Math.sin(rad) * targetDist;
+
+        if (runs === 6) {
+          var cpX = 180 + Math.cos(rad) * (targetDist * 0.5) - Math.sin(rad) * 16;
+          var cpY = 156 + Math.sin(rad) * (targetDist * 0.5) + Math.cos(rad) * 16;
+          h += '<path d="M180,156 Q' + cpX.toFixed(1) + ',' + cpY.toFixed(1) + ' ' + endX.toFixed(1) + ',' + endY.toFixed(1) + '" fill="none" stroke="#FFB800" stroke-width="2.8" stroke-linecap="round"/>';
+          h += '<polygon points="' + endX.toFixed(1) + ',' + (endY - 6).toFixed(1) + ' ' + (endX + 4).toFixed(1) + ',' + (endY + 3).toFixed(1) + ' ' + (endX - 5).toFixed(1) + ',' + (endY - 2).toFixed(1) + ' ' + (endX + 5).toFixed(1) + ',' + (endY - 2).toFixed(1) + ' ' + (endX - 4).toFixed(1) + ',' + (endY + 3).toFixed(1) + '" fill="#FFB800"/>';
+        } else if (runs === 4) {
+          h += '<line x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#00D2FF" stroke-width="2.6" stroke-linecap="round"/>';
+          h += '<circle cx="' + endX.toFixed(1) + '" cy="' + endY.toFixed(1) + '" r="4.5" fill="#00D2FF" stroke="#FFFFFF" stroke-width="1.5"/>';
+        } else if (runs === 0) {
+          h += '<line x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="3,3" stroke-linecap="round"/>';
+          h += '<circle cx="' + endX.toFixed(1) + '" cy="' + endY.toFixed(1) + '" r="2.5" fill="#94a3b8"/>';
+        } else {
+          h += '<line x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#00E599" stroke-width="2" stroke-linecap="round"/>';
+          h += '<circle cx="' + endX.toFixed(1) + '" cy="' + endY.toFixed(1) + '" r="3.5" fill="#00E599"/>';
+        }
+
+        var offText = this.currentStance === 'RHB' ? '◀ OFF' : '◀ ON';
+        var legText = this.currentStance === 'RHB' ? 'ON ▶' : 'OFF ▶';
+        h += '<text x="35" y="174" fill="#00D2FF" font-size="8" font-family="Chakra Petch, monospace" font-weight="700">' + offText + '</text>';
+        h += '<text x="325" y="174" fill="#00E599" font-size="8" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end">' + legText + '</text>';
+        h += '</svg></div>';
+
+        // 8 Tactile Zone Grid Buttons
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem; margin-bottom: 0.75rem;">';
+        for (var zi = 0; zi < this.SHOT_ZONES_DATA.length; zi++) {
+          var zd = this.SHOT_ZONES_DATA[zi];
+          var isZoneSel = this.pendingSelectedZone === zd.id;
+          h += '<button type="button" class="wagon-picker-zone-btn ' + (isZoneSel ? 'active' : '') + '" data-zone="' + zd.id + '" onclick="window.cricosMobileApp.selectPickerZone(this.dataset.zone)" data-tooltip="Aim at ' + zd.label + ' (' + zd.side + ')">';
+          h += zd.shortLabel;
+          h += '<div style="font-size: 0.58rem; color: ' + (zd.side === 'OFF' ? '#00D2FF' : '#00E599') + '; font-weight: 700;">' + zd.side + '</div>';
+          h += '</button>';
+        }
+        h += '</div>';
+
+        // Footer Actions
+        h += '<div style="display: flex; gap: 0.5rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.confirmWagonShot(true)" style="flex: 1; padding: 0.65rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; font-weight: 600; font-size: 0.8rem;" data-tooltip="Record +' + runs + ' runs without direction">Skip</button>';
+        h += '<button type="button" id="btnConfirmWagonShot" onclick="window.cricosMobileApp.confirmWagonShot(false)" style="flex: 2; padding: 0.65rem; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; box-shadow: 0 4px 15px rgba(0, 229, 153, 0.3);" data-tooltip="Confirm shot direction and score ball">Record +' + runs + ' to ' + activeZoneShort + ' ✓</button>';
+        h += '</div>';
+
+        h += '</div>';
+        return h;
       }
 
       handleResetButtonClick() {
@@ -2354,12 +2593,12 @@
 
           // 4-Column Keypad Grid
           h += '<div class="mobile-studio-pad-grid">';
-          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(0)" data-tooltip="Dot ball (0 runs, legal delivery)">0<span class="mobile-studio-sublabel">Dot</span></button>';
-          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(1)" data-tooltip="Single (+1 run, strike rotates)">1<span class="mobile-studio-sublabel">Single</span></button>';
-          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(2)" data-tooltip="Two runs (+2 runs)">2<span class="mobile-studio-sublabel">Double</span></button>';
-          h += '<button type="button" class="mobile-studio-btn pad-btn" onclick="window.cricosMobileApp.scoreBall(3)" data-tooltip="Three runs (+3 runs, strike rotates)">3<span class="mobile-studio-sublabel">Triple</span></button>';
-          h += '<button type="button" class="mobile-studio-btn pad-btn boundary-four" onclick="window.cricosMobileApp.scoreBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="mobile-studio-sublabel" style="color: #00D2FF;">Four</span></button>';
-          h += '<button type="button" class="mobile-studio-btn pad-btn maximum-six" onclick="window.cricosMobileApp.scoreBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="mobile-studio-sublabel" style="color: #00E599;">Six</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="0" onclick="window.cricosMobileApp.onPadNumberSelect(0)" data-tooltip="Dot ball (0 runs, choose direction)">0<span class="mobile-studio-sublabel">Dot</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="1" onclick="window.cricosMobileApp.onPadNumberSelect(1)" data-tooltip="Single (+1 run, choose direction)">1<span class="mobile-studio-sublabel">Single</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="2" onclick="window.cricosMobileApp.onPadNumberSelect(2)" data-tooltip="Two runs (+2 runs, choose direction)">2<span class="mobile-studio-sublabel">Double</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="3" onclick="window.cricosMobileApp.onPadNumberSelect(3)" data-tooltip="Three runs (+3 runs, choose direction)">3<span class="mobile-studio-sublabel">Triple</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn boundary-four" data-runs="4" onclick="window.cricosMobileApp.onPadNumberSelect(4)" data-tooltip="Boundary Four (+4 runs, choose direction)">4<span class="mobile-studio-sublabel" style="color: #00D2FF;">Four</span></button>';
+          h += '<button type="button" class="mobile-studio-btn pad-btn maximum-six" data-runs="6" onclick="window.cricosMobileApp.onPadNumberSelect(6)" data-tooltip="Maximum Six (+6 runs, choose direction)">6<span class="mobile-studio-sublabel" style="color: #00E599;">Six</span></button>';
           h += '<button type="button" class="mobile-studio-btn pad-btn wicket-out" onclick="window.cricosMobileApp.promptWicketModal()" data-tooltip="Wicket Dismissal Dialog">W<span class="mobile-studio-sublabel" style="color: #ff3366;">Wicket</span></button>';
           h += '<button type="button" class="mobile-studio-btn pad-btn undo-btn" onclick="window.cricosMobileApp.undoLastDelivery()" data-tooltip="Undo last delivery">↺<span class="mobile-studio-sublabel" style="color: #ffb800;">Undo</span></button>';
           h += '</div>';
@@ -3311,6 +3550,11 @@
           h += '</div></div>';
         }
 
+        // Wagon Wheel Shot Direction Picker Sheet (slides in from bottom when pad number is chosen)
+        if (this.wagonPickerOpen) {
+          h += this.renderWagonPickerSheet();
+        }
+
         root.innerHTML = h;
 
         if (this.activeActionSheet && typeof this.activeActionSheet.onConfirm === 'function') {
@@ -3336,7 +3580,9 @@
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && window.cricosMobileApp) {
-        if (window.cricosMobileApp.activeActionSheet) {
+        if (window.cricosMobileApp.wagonPickerOpen) {
+          window.cricosMobileApp.closeWagonPickerSheet();
+        } else if (window.cricosMobileApp.activeActionSheet) {
           window.cricosMobileApp.closeActionSheet();
         } else if (window.cricosMobileApp.personaSheetOpen) {
           window.cricosMobileApp.closePersonaSheet();
