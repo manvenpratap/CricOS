@@ -1629,7 +1629,18 @@ export function getMobileAppHtml(): string {
           stance: 'RHB',
           bowlingStyle: 'Right-arm medium',
           batting: { runs: 4892, innings: 118, notOuts: 19, ballsFaced: 3624 },
-          bowling: { wickets: 8, overs: 48, runsConceded: 384, bestBowling: '2/18' }
+          bowling: { wickets: 8, overs: 48, runsConceded: 384, bestBowling: '2/18' },
+          tournaments: [
+            { tournamentName: 'Bangalore Premier League', year: 2026, matches: 14, runs: 642, average: 58.36, strikeRate: 154.2, wickets: 2 },
+            { tournamentName: 'Karnataka Corporate Trophy', year: 2025, matches: 10, runs: 480, average: 53.33, strikeRate: 142.85, wickets: 3 },
+            { tournamentName: 'Inter-Club Championship', year: 2025, matches: 12, runs: 512, average: 46.54, strikeRate: 138.9, wickets: 1 }
+          ],
+          badges: [
+            { id: 'bdg-1', title: 'Century Master 💯', icon: '💯', rarity: 'LEGENDARY', description: '5 match-winning competitive centuries' },
+            { id: 'bdg-2', title: 'Boundary Monarch 🚀', icon: '🚀', rarity: 'RARE', description: '450+ boundaries and 118 maximum sixes' },
+            { id: 'bdg-3', title: 'Tactical Captain 👑', icon: '👑', rarity: 'RARE', description: '50+ matches captained with >65% win rate' },
+            { id: 'bdg-4', title: 'The Finisher ⚡', icon: '⚡', rarity: 'COMMON', description: '19 unbeaten chases leading team home' }
+          ]
         };
 
         this.playingXI = [
@@ -3930,6 +3941,60 @@ export function getMobileAppHtml(): string {
         });
       }
 
+      publishOfficialSlotAction() {
+        var self = this;
+        var defaultRole = (this.profile && this.profile.persona === 'SCORER') ? 'SCORER' : 'UMPIRE';
+        var defaultTitle = defaultRole === 'SCORER' ? 'M. Jayanth (State Board Scorer)' : 'K. S. Sundaram (BCCI Level 2 Umpire)';
+        this.openActionSheet({
+          title: '⚖️ List Official Officiating Slot',
+          bodyHtml: '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Official Role:</label>' +
+            '<select id="officialRoleSelect" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;">' +
+            '<option value="UMPIRE"' + (defaultRole === 'UMPIRE' ? ' selected' : '') + '>Match Umpire ⚖️</option>' +
+            '<option value="SCORER"' + (defaultRole === 'SCORER' ? ' selected' : '') + '>Digital Scorer ⚡</option>' +
+            '</select>' +
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Official Name & Title:</label>' +
+            '<input type="text" id="officialTitleInput" value="' + defaultTitle + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Match Officiating Fee (₹):</label>' +
+            '<input type="number" id="officialFeeInput" value="1800" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Availability Slot Window:</label>' +
+            '<input type="text" id="officialSlotTimeInput" value="16:00 - 21:00" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
+            '</div>',
+          confirmText: 'List Official Slot ⚖️',
+          confirmStyle: 'background: linear-gradient(135deg, #FFB800, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            var roleEl = document.getElementById('officialRoleSelect');
+            var titleEl = document.getElementById('officialTitleInput');
+            var feeEl = document.getElementById('officialFeeInput');
+            var timeEl = document.getElementById('officialSlotTimeInput');
+            var role = (roleEl && roleEl.value) || defaultRole;
+            var title = (titleEl && titleEl.value.trim()) || defaultTitle;
+            var fee = (feeEl && feeEl.value) || '1800';
+            var time = (timeEl && timeEl.value) || '16:00 - 21:00';
+            self.listings.unshift({
+              id: 'slot-off-' + Date.now(),
+              title: title,
+              category: role,
+              location: 'Bangalore Metro Region',
+              rating: 4.95,
+              price: fee + '.00',
+              priceMinor: parseInt(fee, 10) * 100,
+              slots: [time],
+              isFrozen: false
+            });
+            self.showToast('✓ Official slot listed: ' + title + ' at ₹' + fee + ' (' + role + ')', 'success');
+            self.closeActionSheet();
+            self.render();
+          }
+        });
+      }
+
       toggleSlotFreeze(idx) {
         this.listings[idx].isFrozen = !this.listings[idx].isFrozen;
         var st = this.listings[idx].isFrozen ? 'FROZEN / BLOCKED' : 'ACTIVE & BOOKABLE';
@@ -4857,6 +4922,29 @@ export function getMobileAppHtml(): string {
         }
         h += '</div>';
 
+        // Official Officiating / Scorer Storefront Tools
+        var isOfficial = this.profile.persona === 'UMPIRE' || this.profile.persona === 'SCORER';
+        if (isOfficial) {
+          var grossOff = this.profile.persona === 'UMPIRE' ? 36000 : 24000;
+          var feeOff = grossOff * 0.05;
+          var gstOff = feeOff * 0.18;
+          var netOff = grossOff - feeOff - gstOff;
+
+          h += '<div style="background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.3); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">';
+          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #FFB800; margin-bottom: 0.4rem;">⚖️ Match Officiating Earnings & Payout</div>';
+          h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem; margin-bottom: 0.6rem; text-align: center;">';
+          h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 0.65rem; color: #94a3b8;">Gross</div><div style="font-weight: 800; font-size: 0.85rem; font-family: Chakra Petch, monospace;">₹' + grossOff.toLocaleString() + '</div></div>';
+          h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 0.65rem; color: #94a3b8;">Fee & GST</div><div style="font-weight: 800; font-size: 0.85rem; color: #ff3366; font-family: Chakra Petch, monospace;">-₹' + (feeOff + gstOff).toFixed(0) + '</div></div>';
+          h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 0.65rem; color: #94a3b8;">Net Payout</div><div style="font-weight: 800; font-size: 0.85rem; color: #00E599; font-family: Chakra Petch, monospace;">₹' + netOff.toFixed(0) + '</div></div>';
+          h += '</div>';
+          h += '<button type="button" id="btnPublishOfficialSlot" onclick="window.cricosMobileApp.publishOfficialSlotAction()" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #FFB800, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.8rem;" data-tooltip="Publish match officiating availability slot">+ List Official Slot ⚖️</button>';
+          h += '</div>';
+        } else if (!isProvider) {
+          h += '<div style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem;">';
+          h += '<button type="button" id="btnListOfficialSlotQuick" onclick="window.cricosMobileApp.publishOfficialSlotAction()" style="flex: 1; padding: 0.5rem 0.65rem; border-radius: 8px; border: 1px dashed rgba(255,184,0,0.4); background: rgba(255,184,0,0.08); color: #FFB800; font-weight: 700; font-size: 0.72rem; cursor: pointer;" data-tooltip="List match officiating availability as Umpire or Scorer">+ List Official Slot ⚖️</button>';
+          h += '</div>';
+        }
+
         // Turf Provider Storefront Tools
         if (isProvider) {
           var gross = 45000;
@@ -5082,6 +5170,48 @@ export function getMobileAppHtml(): string {
         h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;" data-tooltip="Batting Average"><div style="font-size: 1.1rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + avg + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Average</div></div>';
         h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;" data-tooltip="Batting Strike Rate"><div style="font-size: 1.1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">' + sr + '</div><div style="font-size: 0.65rem; color: #94a3b8;">Strike Rate</div></div>';
         h += '</div>';
+
+        // Career Milestone Badges
+        if (this.profile.badges && this.profile.badges.length > 0) {
+          h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; color: #f8fafc; font-family: Space Grotesk, sans-serif;">🏆 Milestone Achievement Badges</div>';
+          h += '<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem;">';
+          for (var b = 0; b < this.profile.badges.length; b++) {
+            var bg = this.profile.badges[b];
+            var borderClr = bg.rarity === 'LEGENDARY' ? '#FFB800' : (bg.rarity === 'RARE' ? '#00D2FF' : 'rgba(255,255,255,0.08)');
+            var badgeClr = bg.rarity === 'LEGENDARY' ? '#FFB800' : (bg.rarity === 'RARE' ? '#00D2FF' : '#00E599');
+            h += '<div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(10, 16, 28, 0.7); border: 1px solid ' + borderClr + '; border-radius: 10px; padding: 0.65rem 0.85rem;" data-tooltip="' + bg.description + '">';
+            h += '<div style="font-size: 1.35rem;">' + bg.icon + '</div>';
+            h += '<div style="flex: 1;">';
+            h += '<div style="font-size: 0.85rem; font-weight: 700; color: #f8fafc;">' + bg.title + '</div>';
+            h += '<div style="font-size: 0.7rem; color: #94a3b8;">' + bg.description + '</div>';
+            h += '</div>';
+            h += '<span style="font-size: 0.65rem; color: ' + badgeClr + '; font-weight: 700;">' + bg.rarity + '</span>';
+            h += '</div>';
+          }
+          h += '</div>';
+        }
+
+        // Multi-Tournament Longitudinal Performance Logs
+        if (this.profile.tournaments && this.profile.tournaments.length > 0) {
+          h += '<div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; color: #f8fafc; font-family: Space Grotesk, sans-serif;">📊 Tournament Performance Logs</div>';
+          h += '<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem;">';
+          for (var t = 0; t < this.profile.tournaments.length; t++) {
+            var tr = this.profile.tournaments[t];
+            h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem;" data-tooltip="' + tr.tournamentName + ': ' + tr.runs + ' runs @ avg ' + tr.average + '">';
+            h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">';
+            h += '<span style="font-size: 0.82rem; font-weight: 700; color: #f8fafc;">' + tr.tournamentName + '</span>';
+            h += '<span style="font-size: 0.7rem; color: #00D2FF; font-weight: 600;">' + tr.year + '</span>';
+            h += '</div>';
+            h += '<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8;">';
+            h += '<span>Mat: <strong style="color: #FFF;">' + tr.matches + '</strong></span>';
+            h += '<span>Runs: <strong style="color: #00E599;">' + tr.runs + '</strong></span>';
+            h += '<span>Avg: <strong style="color: #FFF;">' + tr.average + '</strong></span>';
+            h += '<span>SR: <strong style="color: #00D2FF;">' + tr.strikeRate + '</strong></span>';
+            h += '<span>Wkts: <strong style="color: #FFB800;">' + tr.wickets + '</strong></span>';
+            h += '</div></div>';
+          }
+          h += '</div>';
+        }
 
         // Compliance & App Store Safety
         h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.85rem;">';

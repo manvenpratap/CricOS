@@ -22,6 +22,24 @@ export interface CareerBowlingStats {
   bestBowling: string;
 }
 
+export interface PlayerTournamentLog {
+  tournamentName: string;
+  year: number;
+  matches: number;
+  runs: number;
+  average: number;
+  strikeRate: number;
+  wickets: number;
+}
+
+export interface PlayerAchievementBadge {
+  id: string;
+  title: string;
+  icon: string;
+  rarity: 'COMMON' | 'RARE' | 'LEGENDARY';
+  description: string;
+}
+
 export interface PlayerProfileData {
   id: string;
   name: string;
@@ -34,6 +52,8 @@ export interface PlayerProfileData {
   bowlingStyle?: string;
   batting: CareerBattingStats;
   bowling: CareerBowlingStats;
+  tournaments: PlayerTournamentLog[];
+  badges: PlayerAchievementBadge[];
 }
 
 export class ProfileScreenController {
@@ -69,8 +89,34 @@ export class ProfileScreenController {
         runsConceded: 384,
         wickets: 8,
         bestBowling: '2/18'
-      }
+      },
+      tournaments: profile?.tournaments || [
+        { tournamentName: 'Bangalore Premier League 2026', year: 2026, matches: 14, runs: 642, average: 58.36, strikeRate: 154.2, wickets: 2 },
+        { tournamentName: 'Karnataka Corporate Trophy 2025', year: 2025, matches: 10, runs: 480, average: 53.33, strikeRate: 142.85, wickets: 3 },
+        { tournamentName: 'Inter-Club Championship 2025', year: 2025, matches: 12, runs: 512, average: 46.54, strikeRate: 138.9, wickets: 1 }
+      ],
+      badges: profile?.badges || [
+        { id: 'bdg-1', title: 'Century Master 💯', icon: '💯', rarity: 'LEGENDARY', description: '5 competitive match-winning centuries' },
+        { id: 'bdg-2', title: 'Boundary King 🚀', icon: '🚀', rarity: 'RARE', description: '450+ boundaries and 100+ maximum sixes' },
+        { id: 'bdg-3', title: 'Tactical Captain 👑', icon: '👑', rarity: 'RARE', description: '50+ matches captained with >65% win rate' }
+      ]
     };
+  }
+
+  public getTournaments(): PlayerTournamentLog[] {
+    return [...this.profile.tournaments];
+  }
+
+  public getBadges(): PlayerAchievementBadge[] {
+    return [...this.profile.badges];
+  }
+
+  public addBadge(badge: PlayerAchievementBadge): void {
+    this.profile.badges.push(badge);
+  }
+
+  public addTournamentLog(log: PlayerTournamentLog): void {
+    this.profile.tournaments.unshift(log);
   }
 
   public getProfile(): PlayerProfileData {
@@ -189,6 +235,41 @@ export class ProfileScreenController {
             <div style="font-size: 1.15rem; font-weight: 800; color: #FFB800; font-family: 'Chakra Petch', monospace;">${this.profile.bowling.bestBowling}</div>
             <div style="font-size: 0.7rem; color: #94a3b8;">Best</div>
           </div>
+        </div>
+
+        <!-- Career Milestone Badges -->
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">🏆 Milestone Achievement Badges</div>
+        <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem;">
+          ${this.profile.badges.map(b => `
+            <div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(10, 16, 28, 0.7); border: 1px solid ${b.rarity === 'LEGENDARY' ? '#FFB800' : 'rgba(255,255,255,0.08)'}; border-radius: 10px; padding: 0.65rem 0.85rem;" data-tooltip="${b.description}">
+              <div style="font-size: 1.35rem;">${b.icon}</div>
+              <div style="flex: 1;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: #f8fafc;">${b.title}</div>
+                <div style="font-size: 0.7rem; color: #94a3b8;">${b.description}</div>
+              </div>
+              <span style="font-size: 0.65rem; color: ${b.rarity === 'LEGENDARY' ? '#FFB800' : '#00E599'}; font-weight: 700;">${b.rarity}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Multi-Tournament Longitudinal Form -->
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">📊 Tournament Performance Logs</div>
+        <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem;">
+          ${this.profile.tournaments.map(t => `
+            <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem;" data-tooltip="${t.tournamentName}: ${t.runs} runs @ avg ${t.average}">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: #f8fafc;">${t.tournamentName}</span>
+                <span style="font-size: 0.7rem; color: #00D2FF; font-weight: 600;">${t.year}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8;">
+                <span>Mat: <strong style="color: #FFF;">${t.matches}</strong></span>
+                <span>Runs: <strong style="color: #00E599;">${t.runs}</strong></span>
+                <span>Avg: <strong style="color: #FFF;">${t.average}</strong></span>
+                <span>SR: <strong style="color: #00D2FF;">${t.strikeRate}</strong></span>
+                <span>Wkts: <strong style="color: #FFB800;">${t.wickets}</strong></span>
+              </div>
+            </div>
+          `).join('')}
         </div>
 
         <!-- Account Actions & Compliance -->

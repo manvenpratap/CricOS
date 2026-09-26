@@ -16,7 +16,7 @@ export async function marketplaceRoutes(app: FastifyInstance) {
       return reply.status(200).send(res.rows);
     } catch {}
 
-    return reply.status(200).send([
+    const defaultListings = [
       {
         id: '00000000-0000-0000-0000-000000000001',
         title: 'Harbour Cricket Ground - Pitch 1',
@@ -32,8 +32,21 @@ export async function marketplaceRoutes(app: FastifyInstance) {
         pricing_model: 'FIXED',
         base_price_minor: 250000,
         currency: 'INR'
+      },
+      {
+        id: '00000000-0000-0000-0000-000000000003',
+        title: 'BCCI State Panel Scorer',
+        category: 'SCORER',
+        pricing_model: 'FIXED',
+        base_price_minor: 150000,
+        currency: 'INR'
       }
-    ]);
+    ];
+
+    if (category) {
+      return reply.status(200).send(defaultListings.filter(l => l.category === category || (category === 'GROUND' && l.category === 'VENUE')));
+    }
+    return reply.status(200).send(defaultListings);
   });
 
   app.get('/marketplace/listings/:id', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {

@@ -1,14 +1,42 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 22:35:00
-**Version:** 1.0.0-phase2an (Phase 1 Quick Win MVP — Cash Records, Free OTP, Configurable Fees, Custom Onboarding & Modular Frontend Architecture)  
+**Last Updated:** 2026-09-26 23:05:00
+**Version:** 1.0.0-phase2ao (Modular Architecture, Officials Services Marketplace, Player Career Longitudinal Stats & Pipeline Automation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AN Completed — Phase 1 Quick Win MVP Implementation & Modular Architecture:
+- **Active Phase**: Phase 2AO Completed — Modular Architecture, Match Officials Marketplace & Player Career Stats:
+  - **1. Modular Frontend Component Refactoring (`apps/web`)**:
+    - Created `OfficialsMarketplaceComponent` (`apps/web/src/components/officials-marketplace.ts`) with `MarketplaceOfficialRole` (`UMPIRE`, `SCORER`, `MATCH_REFEREE`), `CertificationLevel` (`BCCI_LEVEL_1/2`, `STATE_CERTIFIED`, `DISTRICT_ACCREDITED`), and rate card models.
+    - Created `PlayerCareerComponent` (`apps/web/src/components/player-career.ts`) with longitudinal multi-tournament season logs and milestone achievement badges.
+    - Re-exported modular components cleanly from `apps/web/src/index.ts`.
+  - **2. Scorer & Umpire Official Services Marketplace**:
+    - Expanded marketplace beyond grounds to allow verified umpires and digital scorers to publish rate cards (₹/match, ₹/hr) and availability windows.
+    - Added category filter buttons in Web Console (`#btnFilterAll`, `#btnFilterGround`, `#btnFilterUmpire`, `#btnFilterScorer`) with dynamic filter handler `filterMarketplaceListings()`.
+    - Added fallback official listings for BCCI Level 2 Umpire and State Board Scorer in `/api/v1/marketplace/listings`.
+  - **3. Mobile Marketplace Official Slot Integration**:
+    - Enhanced `MarketplaceScreenController` with `onboardOfficialSlot()`, `seedDefaultSlots()`, commercial breakdown calculations, and booking receipts.
+    - Added `publishOfficialSlotAction()` in Mobile View with native action sheet for listing officiating slots.
+    - Added Official Services Earnings dashboard for `UMPIRE` and `SCORER` personas, and quick `+ List Official Slot ⚖️` action button.
+  - **4. Player Career Profiles & Longitudinal Multi-Tournament Stats**:
+    - Aggregated longitudinal player stats across tournaments (averages, strike rates, centuries, fifties, wickets, best bowling).
+    - Added milestone achievement badges (Century Master 💯, Boundary Monarch 🚀, Tactical Maestro 👑, The Finisher ⚡).
+    - Integrated multi-tournament performance records into Web Console User Profile modal (`#modalUserProfile`) and Mobile Profile Screen.
+    - Enhanced mobile `ProfileScreenController` with `getTournaments()`, `getBadges()`, `addBadge()`, `addTournamentLog()`.
+  - **5. Automated Release Pipeline & Native Android Packaging**:
+    - Universal pipeline commands (`./pipeline.sh apk`, `./pipeline.sh add`, `./pipeline.sh commit`, `./pipeline.sh push`, `./pipeline.sh ship`).
+    - Convenience npm scripts added to `package.json` (`pnpm apk`, `pnpm ship`, `pnpm commit`, `pnpm push`).
+    - Verified native Android Gradle build producing valid signed debug APK.
+  - **6. Governance, Invariants & Verification**:
+    - Maintained 100% Rule 5 `data-tooltip` coverage on all interactive buttons and milestone badges.
+    - Preserved zero `transition: all` invariant across all stylesheets.
+    - Added test suite `tests/44-modular-architecture-officials-and-career-stats.test.ts` (16 assertions, 100% passing).
+    - `./pipeline.sh test --summary`: 360 tests passing across 116 suites with 0 failures in 764ms.
+    - Synced `dist/index.html` (byte-for-byte with root `index.html`), `dist/mobile.html`, and `dist/release-manifest.json`.
+- **Preceding Phase**: Phase 2AN Completed — Phase 1 Quick Win MVP Implementation & Modular Architecture:
   - **1. Configurable Platform Facilitation Fee (0% to 20%)**:
     - Added global platform config `window.cricosPlatformConfig = { platformFeePercent: 5, gstPercent: 18 }`.
     - Implemented `updatePlatformFeeRate(val)` with real-time recalculation of Event Basket numbers, Daily Financial Reconciliation totals, and trial balance accounts across Web Console and Mobile App.

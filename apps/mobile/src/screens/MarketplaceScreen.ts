@@ -97,6 +97,93 @@ export class MarketplaceScreenController {
     return newSlot;
   }
 
+  public onboardOfficialSlot(official: {
+    name: string;
+    category?: 'UMPIRE' | 'SCORER';
+    role?: 'UMPIRE' | 'SCORER';
+    certification?: string;
+    matchRate?: number;
+    priceMinor?: number;
+    timeSlot?: string;
+    startTime?: string;
+    endTime?: string;
+    location?: string;
+    providerId?: string;
+    providerName?: string;
+    rating?: number;
+  }): MobileMarketplaceSlot {
+    const category = official.category || official.role || 'UMPIRE';
+    let startTime = official.startTime || '14:00';
+    let endTime = official.endTime || '20:00';
+    if (official.timeSlot) {
+      const times = official.timeSlot.split('-');
+      startTime = times[0]?.trim() || startTime;
+      endTime = times[1]?.trim() || endTime;
+    }
+    const priceMinor = official.priceMinor ?? Math.round((official.matchRate || 1500) * 100);
+    const newSlot: MobileMarketplaceSlot = {
+      id: `slot-off-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      providerId: official.providerId || `prov-off-${category.toLowerCase()}`,
+      providerName: official.providerName || official.name,
+      category,
+      title: official.certification ? `${official.name} (${official.certification})` : official.name,
+      location: official.location || 'Match Venue Assigned',
+      startTime,
+      endTime,
+      priceMinor,
+      rating: official.rating || 4.9,
+      isAvailable: true
+    };
+    this.slots.unshift(newSlot);
+    return newSlot;
+  }
+
+  public seedDefaultSlots(): void {
+    if (this.slots.length === 0) {
+      this.slots = [
+        {
+          id: 'slot-g-1',
+          providerId: 'prov-turf-1',
+          providerName: 'Chinnaswamy Stadium B Turf',
+          category: 'GROUND',
+          title: 'Chinnaswamy Ground B (Natural Turf Pitch)',
+          location: 'Central District, Bangalore',
+          startTime: '18:00',
+          endTime: '22:00',
+          priceMinor: 250000,
+          rating: 4.9,
+          isAvailable: true
+        },
+        {
+          id: 'slot-u-1',
+          providerId: 'prov-ump-1',
+          providerName: 'K. S. Sundaram',
+          category: 'UMPIRE',
+          title: 'K. S. Sundaram (BCCI Level 2 Certified)',
+          location: 'Bangalore Metro Region',
+          startTime: '16:00',
+          endTime: '21:00',
+          priceMinor: 180000,
+          rating: 4.95,
+          isAvailable: true
+        },
+        {
+          id: 'slot-s-1',
+          providerId: 'prov-scr-1',
+          providerName: 'M. Jayanth',
+          category: 'SCORER',
+          title: 'M. Jayanth (State Board Scorer)',
+          location: 'Match Venue',
+          startTime: '14:00',
+          endTime: '22:00',
+          priceMinor: 120000,
+          rating: 4.98,
+          isAvailable: true
+        }
+      ];
+    }
+  }
+
   public bookSlot(slotId: string): MobileBookingReceipt {
     const slotIndex = this.slots.findIndex(s => s.id === slotId);
     if (slotIndex === -1) {

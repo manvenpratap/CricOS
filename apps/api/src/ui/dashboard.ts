@@ -3512,8 +3512,14 @@ export function getDashboardHtml(): string {
       </div>
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">🏪 Available Venue & Official Listings</div>
+          <div class="card-title">🏪 Available Venue &amp; Official Listings</div>
           <div class="card-desc">Browse certified listings from <code>GET /api/v1/marketplace/listings</code></div>
+          <div style="display: flex; gap: 0.35rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary active" id="btnFilterAll" onclick="filterMarketplaceListings('ALL')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Show all available grounds and officials">All</button>
+            <button class="btn btn-secondary" id="btnFilterGround" onclick="filterMarketplaceListings('GROUND')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Filter turf cricket grounds">Grounds 🏟️</button>
+            <button class="btn btn-secondary" id="btnFilterUmpire" onclick="filterMarketplaceListings('UMPIRE')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Filter certified match umpires">Umpires ⚖️</button>
+            <button class="btn btn-secondary" id="btnFilterScorer" onclick="filterMarketplaceListings('SCORER')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Filter digital match scorers">Scorers ⚡</button>
+          </div>
           <div id="listingsContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
             Loading listings...
           </div>
@@ -4296,6 +4302,84 @@ export function getDashboardHtml(): string {
               <div style="font-size: 1.15rem; font-weight: 800; color: var(--amber); font-family: var(--font-score);" id="statCareerSR">144.5</div>
             </div>
           </div>
+        </div>
+
+        <!-- Career Milestone Badges -->
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">🏆 Career Milestone Badges</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem;">
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 6px; padding: 0.45rem 0.65rem; display: flex; align-items: center; gap: 0.5rem;" data-tooltip="5 match-winning competitive centuries">
+              <span style="font-size: 1.1rem;">💯</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.75rem; color: #FFF;">Century Master</div>
+                <div style="font-size: 0.65rem; color: #FFB800;">LEGENDARY • 5 Tons</div>
+              </div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 6px; padding: 0.45rem 0.65rem; display: flex; align-items: center; gap: 0.5rem;" data-tooltip="450+ boundaries and 118 maximum sixes">
+              <span style="font-size: 1.1rem;">🚀</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.75rem; color: #FFF;">Boundary Monarch</div>
+                <div style="font-size: 0.65rem; color: var(--cyan);">RARE • 568 Boundaries</div>
+              </div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(0, 229, 153, 0.4); border-radius: 6px; padding: 0.45rem 0.65rem; display: flex; align-items: center; gap: 0.5rem;" data-tooltip="50+ matches captained with >65% win rate">
+              <span style="font-size: 1.1rem;">👑</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.75rem; color: #FFF;">Tactical Captain</div>
+                <div style="font-size: 0.65rem; color: var(--turf-emerald);">RARE • 68% Win Rate</div>
+              </div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.45rem 0.65rem; display: flex; align-items: center; gap: 0.5rem;" data-tooltip="19 unbeaten chases leading team home">
+              <span style="font-size: 1.1rem;">⚡</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.75rem; color: #FFF;">The Finisher</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted);">COMMON • 19 Not Outs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-Tournament Longitudinal Performance Logs -->
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.85rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">📊 Multi-Tournament Season Records</div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-muted);">
+                <th style="padding: 0.35rem 0.5rem;">Tournament</th>
+                <th style="padding: 0.35rem 0.5rem;">Year</th>
+                <th style="padding: 0.35rem 0.5rem;">Mat</th>
+                <th style="padding: 0.35rem 0.5rem;">Runs</th>
+                <th style="padding: 0.35rem 0.5rem;">Avg</th>
+                <th style="padding: 0.35rem 0.5rem;">SR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.35rem 0.5rem; font-weight: 600; color: #FFF;">Bangalore Premier League</td>
+                <td style="padding: 0.35rem 0.5rem; color: var(--cyan);">2026</td>
+                <td style="padding: 0.35rem 0.5rem;">14</td>
+                <td style="padding: 0.35rem 0.5rem; font-weight: 700; color: var(--turf-emerald);">642</td>
+                <td style="padding: 0.35rem 0.5rem;">58.36</td>
+                <td style="padding: 0.35rem 0.5rem; color: var(--amber);">154.2</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <td style="padding: 0.35rem 0.5rem; font-weight: 600; color: #FFF;">Karnataka Corporate Trophy</td>
+                <td style="padding: 0.35rem 0.5rem; color: var(--cyan);">2025</td>
+                <td style="padding: 0.35rem 0.5rem;">10</td>
+                <td style="padding: 0.35rem 0.5rem; font-weight: 700; color: var(--turf-emerald);">480</td>
+                <td style="padding: 0.35rem 0.5rem;">53.33</td>
+                <td style="padding: 0.35rem 0.5rem; color: var(--amber);">142.8</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.35rem 0.5rem; font-weight: 600; color: #FFF;">Inter-Club Championship</td>
+                <td style="padding: 0.35rem 0.5rem; color: var(--cyan);">2025</td>
+                <td style="padding: 0.35rem 0.5rem;">12</td>
+                <td style="padding: 0.35rem 0.5rem; font-weight: 700; color: var(--turf-emerald);">512</td>
+                <td style="padding: 0.35rem 0.5rem;">46.54</td>
+                <td style="padding: 0.35rem 0.5rem; color: var(--amber);">138.9</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- Privacy & Danger Zone (Apple 5.1.1(v)) -->
@@ -13660,35 +13744,107 @@ cricos_active_sse_connections 1</pre>
       showToast('Match scoreboard reset');
     }
 
-    // Marketplace load
-    async function loadListings() {
+    // Marketplace load & category filtering
+    var allMarketplaceListings = [
+      {
+        id: '00000000-0000-0000-0000-000000000001',
+        title: 'Harbour Cricket Ground - Pitch 1',
+        category: 'GROUND',
+        pricing_model: 'HOURLY',
+        base_price_minor: 350000
+      },
+      {
+        id: '00000000-0000-0000-0000-000000000002',
+        title: 'K. S. Sundaram (BCCI Level 2 Umpire)',
+        category: 'UMPIRE',
+        pricing_model: 'MATCH',
+        base_price_minor: 250000
+      },
+      {
+        id: '00000000-0000-0000-0000-000000000003',
+        title: 'M. Jayanth (State Digital Scorer)',
+        category: 'SCORER',
+        pricing_model: 'MATCH',
+        base_price_minor: 150000
+      }
+    ];
+    var currentMarketplaceCategory = 'ALL';
+    if (typeof window !== 'undefined') {
+      window.allMarketplaceListings = allMarketplaceListings;
+      window.currentMarketplaceCategory = currentMarketplaceCategory;
+    }
+
+    function renderFilteredListings() {
       const container = document.getElementById('listingsContainer');
-      try {
-        const res = await fetch('/api/v1/marketplace/listings');
-        const listings = await res.json();
-        container.innerHTML = listings.map(l => \`
-          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-weight: 600;">\${l.title}</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Category: \${l.category} • \${l.pricing_model || 'FIXED'}</div>
-              </div>
-              <div style="text-align: right;">
-                <div style="font-weight: 700; color: var(--primary);">₹\${(l.base_price_minor / 100).toLocaleString('en-IN', {minimumFractionDigits: 2})}</div>
-                <button class="btn btn-secondary" style="width: auto; padding: 0.25rem 0.65rem; font-size: 0.75rem; margin-top: 0.35rem;" onclick="selectListing('\${l.title}', \${l.base_price_minor})" data-tooltip="Select this service listing for checkout calculation">Select</button>
-              </div>
+      if (!container) return;
+      const list = (window.allMarketplaceListings && Array.isArray(window.allMarketplaceListings)) ? window.allMarketplaceListings : (typeof allMarketplaceListings !== 'undefined' && Array.isArray(allMarketplaceListings) ? allMarketplaceListings : []);
+      const currentCat = window.currentMarketplaceCategory || currentMarketplaceCategory || 'ALL';
+      const filtered = list.filter(l => {
+        if (currentCat === 'ALL') return true;
+        if (currentCat === 'GROUND') return l.category === 'GROUND' || l.category === 'VENUE';
+        return l.category === currentCat;
+      });
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem; text-align: center;">No listings found for category ' + currentCat + '</div>';
+        return;
+      }
+      container.innerHTML = filtered.map(l => \`
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 600;">\${l.title}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Category: <span style="color: var(--primary); font-weight: 600;">\${l.category}</span> • \${l.pricing_model || 'FIXED'}</div>
             </div>
-            <div class="slot-matrix">
-              <span class="slot-chip available" data-tooltip="Morning match slot: 08:00 - 12:00 (Available)">08:00 Avail</span>
-              <span class="slot-chip available" data-tooltip="Afternoon practice slot: 13:00 - 17:00 (Available)">13:00 Avail</span>
-              <span class="slot-chip booked" data-tooltip="Peak night fixture: 18:00 - 22:00 (Match Confirmed &amp; Reserved)">18:00 Booked</span>
+            <div style="text-align: right;">
+              <div style="font-weight: 700; color: var(--primary);">₹\${(l.base_price_minor / 100).toLocaleString('en-IN', {minimumFractionDigits: 2})}</div>
+              <button class="btn btn-secondary" style="width: auto; padding: 0.25rem 0.65rem; font-size: 0.75rem; margin-top: 0.35rem;" onclick="selectListing('\${l.title}', \${l.base_price_minor})" data-tooltip="Select this service listing for checkout calculation">Select</button>
             </div>
           </div>
-        \`).join('');
-      } catch (e) {
-        container.textContent = 'Error loading listings';
-      }
+          <div class="slot-matrix">
+            <span class="slot-chip available" data-tooltip="Morning match slot: 08:00 - 12:00 (Available)">08:00 Avail</span>
+            <span class="slot-chip available" data-tooltip="Afternoon practice slot: 13:00 - 17:00 (Available)">13:00 Avail</span>
+            <span class="slot-chip booked" data-tooltip="Peak night fixture: 18:00 - 22:00 (Match Confirmed &amp; Reserved)">18:00 Booked</span>
+          </div>
+        </div>
+      \`).join('');
     }
+
+    function filterMarketplaceListings(cat) {
+      currentMarketplaceCategory = cat;
+      window.currentMarketplaceCategory = cat;
+      ['btnFilterAll', 'btnFilterGround', 'btnFilterUmpire', 'btnFilterScorer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      const targetMap = {
+        'ALL': 'btnFilterAll',
+        'GROUND': 'btnFilterGround',
+        'UMPIRE': 'btnFilterUmpire',
+        'SCORER': 'btnFilterScorer'
+      };
+      const activeBtn = document.getElementById(targetMap[cat]);
+      if (activeBtn) activeBtn.classList.add('active');
+      renderFilteredListings();
+      showToast('Filtered by ' + cat);
+    }
+    window.filterMarketplaceListings = filterMarketplaceListings;
+
+    async function loadListings() {
+      try {
+        const res = await fetch('/api/v1/marketplace/listings');
+        if (res.ok) {
+          const listings = await res.json();
+          if (Array.isArray(listings) && listings.length > 0) {
+            allMarketplaceListings = listings;
+            window.allMarketplaceListings = listings;
+          }
+        }
+      } catch (e) {
+        // preserve defaults
+      }
+      renderFilteredListings();
+    }
+    window.loadListings = loadListings;
     loadListings();
 
     function selectListing(title, priceMinor) {
