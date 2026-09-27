@@ -765,11 +765,42 @@ export function getMobileAppHtml(): string {
       position: relative;
     }
     .analytics-hud-metric {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
-      padding: 0.45rem 0.55rem;
+      padding: 0.4rem 0.3rem;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .analytics-hud-metric .label {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      line-height: 1.1;
+      margin-bottom: 0.15rem;
+    }
+    .analytics-hud-metric .value {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: 'Chakra Petch', monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      line-height: 1.15;
     }
     .analytics-interactive-bar {
       cursor: pointer;
@@ -3296,8 +3327,8 @@ export function getMobileAppHtml(): string {
 
         var offText = this.currentStance === 'RHB' ? '◀ OFF' : '◀ ON';
         var legText = this.currentStance === 'RHB' ? 'ON ▶' : 'OFF ▶';
-        h += '<text x="35" y="174" fill="#00D2FF" font-size="8" font-family="Chakra Petch, monospace" font-weight="700">' + offText + '</text>';
-        h += '<text x="325" y="174" fill="#00E599" font-size="8" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end">' + legText + '</text>';
+        h += '<g transform="translate(42, 174)"><rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="rgba(0,210,255,0.4)" stroke-width="0.8"/><text x="0" y="3" fill="#00D2FF" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + offText + '</text></g>';
+        h += '<g transform="translate(318, 174)"><rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="rgba(0,229,153,0.4)" stroke-width="0.8"/><text x="0" y="3" fill="#00E599" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + legText + '</text></g>';
         h += '</svg></div>';
 
         // 8 Tactile Zone Grid Buttons
@@ -3525,10 +3556,10 @@ export function getMobileAppHtml(): string {
       renderDynamicWormChart() {
         var maxRuns = 200;
         var totalOvers = 20;
-        var xStart = 35;
-        var xEnd = 335;
-        var yTop = 25;
-        var yBottom = 165;
+        var xStart = 38;
+        var xEnd = 336;
+        var yTop = 24;
+        var yBottom = 160;
         var width = xEnd - xStart;
         var height = yBottom - yTop;
 
@@ -3592,12 +3623,12 @@ export function getMobileAppHtml(): string {
         var rrr = ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : '0.00';
 
         var h = '<div class="analytics-panel-card" style="border-color: rgba(0, 229, 153, 0.35);">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.4rem;">';
         h += '<div>';
         h += '<div style="font-size: 0.85rem; font-weight: 800; color: #00E599; font-family: Space Grotesk, sans-serif;">📈 Precision Worm Progression</div>';
         h += '<div style="font-size: 0.65rem; color: #94a3b8;">Cumulative 1st Innings (DEL) vs Chase (MUM)</div>';
         h += '</div>';
-        h += '<div style="display: flex; gap: 0.35rem; align-items: center;">';
+        h += '<div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">';
         h += '<span style="font-size: 0.65rem; background: rgba(0, 229, 153, 0.15); border: 1px solid rgba(0, 229, 153, 0.4); color: #00E599; padding: 0.15rem 0.45rem; border-radius: 9999px; font-weight: 700;">DEL 178/10</span>';
         h += '<span style="font-size: 0.65rem; background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.4); color: #00D2FF; padding: 0.15rem 0.45rem; border-radius: 9999px; font-weight: 700;">MUM ' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</span>';
         h += '</div>';
@@ -3624,32 +3655,38 @@ export function getMobileAppHtml(): string {
         for (var ol = 0; ol < overLevels.length; ol++) {
           var xPos = getX(overLevels[ol]);
           h += '<line x1="' + xPos + '" y1="' + yTop + '" x2="' + xPos + '" y2="' + yBottom + '" stroke="rgba(255, 255, 255, 0.06)" />';
-          h += '<text x="' + xPos + '" y="' + (yBottom + 12) + '" fill="#64748b" font-size="7.5" font-family="Chakra Petch, monospace" text-anchor="middle">Ov ' + overLevels[ol] + '</text>';
+          var anchor = ol === 0 ? 'start' : (ol === overLevels.length - 1 ? 'end' : 'middle');
+          var xAdj = ol === 0 ? (xPos + 1) : (ol === overLevels.length - 1 ? (xPos - 1) : xPos);
+          h += '<text x="' + xAdj + '" y="' + (yBottom + 13) + '" fill="#64748b" font-size="7.5" font-family="Chakra Petch, monospace" text-anchor="' + anchor + '">Ov ' + overLevels[ol] + '</text>';
         }
 
         h += '<line x1="' + xStart + '" y1="' + targetY + '" x2="' + xEnd + '" y2="' + targetY + '" stroke="rgba(255, 184, 0, 0.7)" stroke-dasharray="4,3" stroke-width="1.5" />';
-        h += '<text x="' + (xEnd - 4) + '" y="' + (targetY - 4) + '" fill="#FFB800" font-size="7" font-weight="700" text-anchor="end">TARGET ' + this.matchState.targetRuns + '</text>';
+        h += '<g transform="translate(' + (xEnd - 58) + ', ' + (targetY - 12) + ')">' +
+             '<rect x="0" y="0" width="56" height="11" rx="3" fill="rgba(4, 7, 13, 0.88)" stroke="#FFB800" stroke-width="0.8"/>' +
+             '<text x="28" y="8" fill="#FFB800" font-size="6.5" font-weight="800" font-family="Chakra Petch, monospace" text-anchor="middle">TARGET ' + this.matchState.targetRuns + '</text>' +
+             '</g>';
 
         var ppX = getX(6);
         var midX = getX(15);
         h += '<rect x="' + xStart + '" y="' + yTop + '" width="' + (ppX - xStart) + '" height="' + height + '" fill="rgba(0, 229, 153, 0.02)" />';
-        h += '<text x="' + (xStart + (ppX - xStart) / 2) + '" y="' + (yTop + 10) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" text-anchor="middle">POWERPLAY</text>';
-        h += '<text x="' + (ppX + (midX - ppX) / 2) + '" y="' + (yTop + 10) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" text-anchor="middle">MIDDLE</text>';
-        h += '<text x="' + (midX + (xEnd - midX) / 2) + '" y="' + (yTop + 10) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" text-anchor="middle">DEATH</text>';
+        h += '<text x="' + (xStart + (ppX - xStart) / 2) + '" y="' + (yBottom - 6) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" font-weight="700" letter-spacing="0.5" text-anchor="middle">POWERPLAY</text>';
+        h += '<text x="' + (ppX + (midX - ppX) / 2) + '" y="' + (yBottom - 6) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" font-weight="700" letter-spacing="0.5" text-anchor="middle">MIDDLE</text>';
+        h += '<text x="' + (midX + (xEnd - midX) / 2) + '" y="' + (yBottom - 6) + '" fill="rgba(255, 255, 255, 0.2)" font-size="6.5" font-weight="700" letter-spacing="0.5" text-anchor="middle">DEATH</text>';
 
         h += '<polyline points="' + inn1Points.join(' ') + '" fill="none" stroke="#00E599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />';
 
         for (var wm1 = 0; wm1 < inn1WicketMarkers.length; wm1++) {
           var m1 = inn1WicketMarkers[wm1];
-          h += '<circle cx="' + m1.x + '" cy="' + m1.y + '" r="2.8" fill="#FF3366" stroke="#ffffff" stroke-width="1" data-tooltip="DEL Wicket at Ov ' + m1.over + ' (' + m1.runs + '/' + m1.wickets + ')" />';
+          h += '<circle cx="' + m1.x + '" cy="' + m1.y + '" r="3.8" fill="#FF3366" stroke="#ffffff" stroke-width="1" data-tooltip="DEL Wicket at Ov ' + m1.over + ' (' + m1.runs + '/' + m1.wickets + ')" />';
+          h += '<text x="' + m1.x + '" y="' + (m1.y + 2) + '" fill="#ffffff" font-size="4.8" font-weight="900" font-family="Chakra Petch, monospace" text-anchor="middle">W</text>';
         }
 
         h += '<polyline points="' + inn2Points.join(' ') + '" fill="none" stroke="#00D2FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />';
 
         for (var wm2 = 0; wm2 < inn2WicketMarkers.length; wm2++) {
           var m2 = inn2WicketMarkers[wm2];
-          h += '<circle cx="' + m2.x + '" cy="' + m2.y + '" r="3.5" fill="#FF3366" stroke="#00D2FF" stroke-width="1.5" data-tooltip="MUM Wicket at Ov ' + m2.over + ' (' + m2.runs + '/' + m2.wickets + ')" />';
-          h += '<text x="' + m2.x + '" y="' + (m2.y - 5) + '" fill="#FF3366" font-size="6.5" font-weight="800" text-anchor="middle">W</text>';
+          h += '<circle cx="' + m2.x + '" cy="' + m2.y + '" r="4.6" fill="#FF3366" stroke="#00D2FF" stroke-width="1.3" data-tooltip="MUM Wicket at Ov ' + m2.over + ' (' + m2.runs + '/' + m2.wickets + ')" />';
+          h += '<text x="' + m2.x + '" y="' + (m2.y + 2.2) + '" fill="#ffffff" font-size="5.5" font-weight="900" font-family="Chakra Petch, monospace" text-anchor="middle">W</text>';
         }
 
         h += '<circle cx="' + liveX + '" cy="' + liveY + '" r="7" fill="none" stroke="#00D2FF" stroke-width="1.5" opacity="0.6"><animate attributeName="r" values="4;10;4" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.8;0.1;0.8" dur="2s" repeatCount="indefinite"/></circle>';
@@ -3717,18 +3754,18 @@ export function getMobileAppHtml(): string {
 
       renderDynamicManhattanChart() {
         var isDual = this.manhattanViewMode === 'DUAL';
-        var maxRuns = 20;
-        var xStart = 25;
+        var maxRuns = 24;
+        var xStart = 28;
         var xEnd = 345;
-        var yTop = 25;
-        var yBottom = 125;
+        var yTop = 26;
+        var yBottom = 135;
         var height = yBottom - yTop;
         var availableWidth = xEnd - xStart;
         var totalOvers = 16;
         var slotWidth = availableWidth / totalOvers;
 
         var h = '<div class="analytics-panel-card" style="border-color: rgba(0, 210, 255, 0.35);">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.35rem;">';
         h += '<div>';
         h += '<div style="font-size: 0.85rem; font-weight: 800; color: #00D2FF; font-family: Space Grotesk, sans-serif;">📊 Precision Manhattan Over Velocity</div>';
         h += '<div style="font-size: 0.65rem; color: #94a3b8;">Over-by-over runs scored & phase breakdown</div>';
@@ -3739,9 +3776,9 @@ export function getMobileAppHtml(): string {
         h += '</div>';
         h += '</div>';
 
-        h += '<svg viewBox="0 0 360 160" width="100%" height="160" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0, 0, 0, 0.35); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06);">';
+        h += '<svg viewBox="0 0 360 170" width="100%" height="170" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0, 0, 0, 0.35); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06);">';
         
-        var gridLevels = [5, 10, 15, 20];
+        var gridLevels = [6, 12, 18, 24];
         for (var gl = 0; gl < gridLevels.length; gl++) {
           var yG = yBottom - (gridLevels[gl] / maxRuns) * height;
           h += '<line x1="' + xStart + '" y1="' + yG + '" x2="' + xEnd + '" y2="' + yG + '" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="2,3" />';
@@ -3769,8 +3806,10 @@ export function getMobileAppHtml(): string {
             h += '<text x="' + (barX + barW / 2) + '" y="' + (barY - 3) + '" fill="#f8fafc" font-size="7.5" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + ovData.runs + '</text>';
 
             if (ovData.wickets > 0) {
-              h += '<circle cx="' + (barX + barW / 2) + '" cy="' + (barY - 11) + '" r="3" fill="#FF3366" />';
-              h += '<text x="' + (barX + barW / 2) + '" y="' + (barY - 9) + '" fill="#ffffff" font-size="5.5" font-weight="900" text-anchor="middle">W</text>';
+              h += '<g transform="translate(' + (barX + barW / 2) + ', ' + (barY - 13) + ')">' +
+                   '<circle r="3.8" fill="#FF3366" stroke="#04070D" stroke-width="0.8"/>' +
+                   '<text dy="2" fill="#ffffff" font-size="5" font-weight="900" font-family="Chakra Petch, monospace" text-anchor="middle">W</text>' +
+                   '</g>';
             }
           } else {
             var dualBarW = 6;
@@ -3787,10 +3826,15 @@ export function getMobileAppHtml(): string {
             var bar2Fill = isSelected ? '#FFB800' : '#00D2FF';
             h += '<rect x="' + bar2X + '" y="' + bar2Y + '" width="' + dualBarW + '" height="' + bar2H + '" rx="1" fill="' + bar2Fill + '" style="cursor: pointer;" onclick="window.cricosMobileApp.selectManhattanOver(this.dataset.over)" data-over="' + ov + '" data-tooltip="MUM Over ' + ov + ': ' + ovData.runs + ' runs (' + ovData.wickets + 'w)" />';
 
-            h += '<text x="' + (startPairX + dualBarW + gap / 2) + '" y="' + (Math.min(bar1Y, bar2Y) - 3) + '" fill="#cbd5e1" font-size="6.5" font-family="Chakra Petch, monospace" text-anchor="middle">' + ovData.runs + '</text>';
+            if (inn1OvData.runs > 0) {
+              h += '<text x="' + (startPairX + dualBarW / 2) + '" y="' + (bar1Y - 3) + '" fill="#00E599" font-size="5.8" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + inn1OvData.runs + '</text>';
+            }
+            if (ovData.runs > 0) {
+              h += '<text x="' + (bar2X + dualBarW / 2) + '" y="' + (bar2Y - 3) + '" fill="' + (isSelected ? '#FFB800' : '#00D2FF') + '" font-size="5.8" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + ovData.runs + '</text>';
+            }
           }
 
-          h += '<text x="' + (slotX + slotWidth / 2) + '" y="' + (yBottom + 12) + '" fill="' + (isSelected ? '#FFB800' : '#64748b') + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="' + (isSelected ? '800' : '400') + '" text-anchor="middle">' + ov + '</text>';
+          h += '<text x="' + (slotX + slotWidth / 2) + '" y="' + (yBottom + 13) + '" fill="' + (isSelected ? '#FFB800' : '#64748b') + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="' + (isSelected ? '800' : '400') + '" text-anchor="middle">' + ov + '</text>';
         }
 
         h += '</svg>';
@@ -3801,12 +3845,12 @@ export function getMobileAppHtml(): string {
           var phaseLabel = this.selectedManhattanOver <= 6 ? 'Powerplay' : (this.selectedManhattanOver <= 15 ? 'Middle Overs' : 'Death Overs');
 
           h += '<div style="margin-top: 0.65rem; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(0, 210, 255, 0.35); border-radius: 8px; padding: 0.65rem 0.85rem;">';
-          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.3rem;">';
           h += '<span style="font-size: 0.75rem; font-weight: 800; color: #00D2FF;">Over ' + this.selectedManhattanOver + ' Breakdown • Bowler: ' + selData.bowler + '</span>';
           h += '<span style="font-size: 0.62rem; color: #94a3b8; background: rgba(255,255,255,0.06); padding: 0.15rem 0.4rem; border-radius: 4px;">' + phaseLabel + '</span>';
           h += '</div>';
 
-          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.3rem;">';
           h += '<div style="font-size: 0.7rem; color: #cbd5e1;">Runs Conceded: <strong style="color: #00E599;">' + selData.runs + '</strong> • Wickets: <strong style="color: ' + (selData.wickets > 0 ? '#FF3366' : '#94a3b8') + ';">' + selData.wickets + '</strong></div>';
           if (isDual) {
             h += '<div style="font-size: 0.7rem; color: #cbd5e1;">1st Inn DEL: <strong style="color: #00E599;">' + inn1Sel.runs + ' runs</strong></div>';
@@ -3932,7 +3976,11 @@ export function getMobileAppHtml(): string {
           h += '<path d="' + pathD + '" fill="' + wedgeFill + '" stroke="' + wedgeStroke + '" stroke-width="' + wedgeStrokeW + '" style="cursor: pointer;" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="' + zoneDef.id + '" data-tooltip="Filter ' + zoneDef.label + ' zone" />';
           
           var labelP = polarToXY(R * 0.78, zoneDef.angleDeg);
-          h += '<text x="' + labelP.x.toFixed(1) + '" y="' + labelP.y.toFixed(1) + '" fill="' + (isZoneSelected ? '#c084fc' : 'rgba(255,255,255,0.45)') + '" font-size="7" font-weight="700" font-family="Space Grotesk, sans-serif" text-anchor="middle">' + zoneDef.shortLabel + '</text>';
+          var labelW = zoneDef.shortLabel.length * 4.6 + 8;
+          h += '<g transform="translate(' + labelP.x.toFixed(1) + ', ' + labelP.y.toFixed(1) + ')">' +
+               '<rect x="-' + (labelW / 2).toFixed(1) + '" y="-6" width="' + labelW.toFixed(1) + '" height="12" rx="3" fill="rgba(3, 12, 8, 0.88)" stroke="' + (isZoneSelected ? '#c084fc' : 'rgba(255,255,255,0.12)') + '" stroke-width="' + (isZoneSelected ? '1' : '0.5') + '" />' +
+               '<text x="0" y="3" fill="' + (isZoneSelected ? '#c084fc' : 'rgba(255,255,255,0.7)') + '" font-size="6.8" font-weight="700" font-family="Space Grotesk, sans-serif" text-anchor="middle">' + zoneDef.shortLabel + '</text>' +
+               '</g>';
         }
 
         h += '<circle cx="' + cx + '" cy="' + cy + '" r="65" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.2" stroke-dasharray="3,3" />';
@@ -3954,7 +4002,7 @@ export function getMobileAppHtml(): string {
             h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="4" fill="#FFB800" stroke="#ffffff" stroke-width="1.2" data-tooltip="' + shot.batterName + ': 6 RUNS (' + shot.zone + ')" />';
           } else if (shot.isBoundary) {
             h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + endP.x.toFixed(1) + '" y2="' + endP.y.toFixed(1) + '" stroke="#00E599" stroke-width="2" stroke-linecap="round" />';
-            h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="3" fill="#00E599" stroke="#ffffff" stroke-width="1" data-tooltip="' + shot.batterName + ': 4 RUNS (' + shot.zone + ')" />';
+            h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="3" fill="#00E599" stroke="#ffffff" stroke-width="1.2" data-tooltip="' + shot.batterName + ': 4 RUNS (' + shot.zone + ')" />';
           } else if (shot.runs > 0) {
             h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + endP.x.toFixed(1) + '" y2="' + endP.y.toFixed(1) + '" stroke="#00D2FF" stroke-width="1.5" stroke-linecap="round" />';
             h += '<circle cx="' + endP.x.toFixed(1) + '" cy="' + endP.y.toFixed(1) + '" r="2.5" fill="#00D2FF" data-tooltip="' + shot.batterName + ': ' + shot.runs + ' run(s)" />';
@@ -3964,10 +4012,18 @@ export function getMobileAppHtml(): string {
           }
         }
 
-        var offX = isLhb ? (cx + R - 25) : (cx - R + 25);
-        var onX = isLhb ? (cx - R + 25) : (cx + R - 25);
-        h += '<text x="' + offX + '" y="' + (cy + 4) + '" fill="#00D2FF" font-size="7.5" font-weight="800" text-anchor="middle">OFF</text>';
-        h += '<text x="' + onX + '" y="' + (cy + 4) + '" fill="#00E599" font-size="7.5" font-weight="800" text-anchor="middle">LEG / ON</text>';
+        var leftLabel = isLhb ? 'ON ▶' : '◀ OFF';
+        var rightLabel = isLhb ? '◀ OFF' : 'ON ▶';
+        var leftColor = isLhb ? '#00E599' : '#00D2FF';
+        var rightColor = isLhb ? '#00D2FF' : '#00E599';
+        h += '<g transform="translate(126, 155)">' +
+             '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4, 7, 13, 0.88)" stroke="' + leftColor + '50" stroke-width="0.8"/>' +
+             '<text x="0" y="3" fill="' + leftColor + '" font-size="6.5" font-family="Chakra Petch, monospace" font-weight="800" text-anchor="middle">' + leftLabel + '</text>' +
+             '</g>';
+        h += '<g transform="translate(194, 155)">' +
+             '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4, 7, 13, 0.88)" stroke="' + rightColor + '50" stroke-width="0.8"/>' +
+             '<text x="0" y="3" fill="' + rightColor + '" font-size="6.5" font-family="Chakra Petch, monospace" font-weight="800" text-anchor="middle">' + rightLabel + '</text>' +
+             '</g>';
 
         h += '</svg>';
         h += '</div>';
@@ -5258,13 +5314,19 @@ export function getMobileAppHtml(): string {
           h += '<text x="0" y="2.5" fill="#94A3B8" font-size="5.5" font-family="Space Grotesk, sans-serif" font-weight="600" text-anchor="middle">Rohit S. ' + this.matchState.nonStriker.runs + '</text>';
           h += '</g>';
 
-          // Off-Side / On-Side Direction Labels
+          // Off-Side / On-Side Direction Labels with Pill Backdrops
           var offLabel = this.currentStance === 'RHB' ? '◀ OFF' : '◀ ON';
           var legLabel = this.currentStance === 'RHB' ? 'ON ▶' : 'OFF ▶';
           var offColor = this.currentStance === 'RHB' ? '#00D2FF' : '#00E599';
           var legColor = this.currentStance === 'RHB' ? '#00E599' : '#00D2FF';
-          h += '<text x="35" y="174" fill="' + offColor + '" font-size="8" font-family="Chakra Petch, monospace" font-weight="700" letter-spacing="0.5">' + offLabel + '</text>';
-          h += '<text x="325" y="174" fill="' + legColor + '" font-size="8" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end" letter-spacing="0.5">' + legLabel + '</text>';
+          h += '<g transform="translate(42, 174)">' +
+               '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + offColor + '60" stroke-width="0.8"/>' +
+               '<text x="0" y="3" fill="' + offColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle" letter-spacing="0.5">' + offLabel + '</text>' +
+               '</g>';
+          h += '<g transform="translate(318, 174)">' +
+               '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + legColor + '60" stroke-width="0.8"/>' +
+               '<text x="0" y="3" fill="' + legColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle" letter-spacing="0.5">' + legLabel + '</text>' +
+               '</g>';
 
           // Dynamic Shot Rays
           h += '<g id="mobileWagonRays">';
