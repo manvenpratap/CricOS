@@ -1,14 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 17:55:00
-**Version:** 1.0.0-phase2bd (Design Variations & Swiss Style Minimalism Theme Engine across Web Console, Mobile App & Android Native APK with 524 Passing Tests)  
+**Last Updated:** 2026-09-27 21:45:00
+**Version:** 1.0.0-phase2be (Playwright E2E Theme Verification Suite across Desktop Web Console & Mobile App with 534 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BD Completed — Design Variations & Swiss Style Minimalism Theme Engine:
+- **Active Phase**: Phase 2BE Completed — Playwright E2E Theme Verification Suite:
+  - **1. Playwright E2E Automated Verification Engine (`tests/test_54_playwright_theme_verification.py`)**:
+    - Built comprehensive end-to-end headless Chromium test suite exercising all 3 design themes: 🇨🇭 Swiss Minimal (`swiss`), 🌾 Nordic Editorial (`nordic`), and 🌙 Stadium Night (`stadium`).
+    - Verified desktop theme switching via topbar switcher click (`#btnDesignThemeSwitcher`) and keyboard shortcut (`Alt + T`).
+    - Verified mobile theme switching via `window.cricosMobileApp.setTheme()`.
+    - Computed style assertions verify mutual inequality and distinctness for `body` backgrounds, text colors, card borders, and header bars.
+    - Verified zero critical console errors (`assert_no_critical_errors(page)`) satisfying Rule 4.
+  - **2. Mobile App Theme Parity & Edge-to-Edge Styles (`apps/api/src/ui/mobile-view.ts`)**:
+    - Added theme rules for native mobile app mode (`body.is-native-app`, `html.is-native-app`, `.device-wrapper`, `.screen-viewport`).
+    - Wired `.mobile-header`, `.mobile-bottom-nav`, and `.status-bar` to dynamic theme variables across all 3 themes.
+  - **3. Local Visual Regression Screenshots & Offline Gallery**:
+    - Captured 6 local high-resolution screenshots to `tests/screenshots/` (Desktop Swiss, Desktop Nordic, Desktop Stadium, Mobile Swiss, Mobile Nordic, Mobile Stadium).
+    - Added `save_screenshot_async()` to `tests/helpers.py` with automatic offline HTML gallery generation (`tests/screenshots/index.html`).
+  - **4. Test Suite 54 & Universal Pipeline Verification**:
+    - Added sequential regression test suite `tests/54-playwright-theme-verification.test.ts` with 10 assertions across 3 suites.
+    - Updated `tests/README.md` test coverage map with test 54 specifications.
+    - Recompiled and verified Android APK (`dist/cricos-debug.apk`) via `./pipeline.sh apk`.
+    - Byte-for-byte distribution parity verified between root `index.html` and `dist/index.html`.
+- **Preceding Phase**: Phase 2BD Completed — Design Variations & Swiss Style Minimalism Theme Engine:
   - **1. Swiss Style Minimalist Design Theme (`dashboard.ts` & `mobile-view.ts`)**:
     - Created comprehensive Swiss Minimalist theme (`data-theme="swiss"`) featuring bright paper canvas (`#F8F9FA`), pure white bento cards (`#FFFFFF`), stark dark charcoal typography (`#0F172A`), hairline borders (`#E2E8F0`), and purposeful Swiss racing emerald (`#059669`) & alpine red (`#DC2626`) accents.
     - Added alternative Nordic Editorial theme (`data-theme="nordic"`) with warm ivory canvas (`#FAF8F5`), warm stone borders (`#E7E5E4`), deep forest green (`#15803D`), and warm clay (`#B45309`).

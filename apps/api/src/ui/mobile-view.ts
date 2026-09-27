@@ -69,15 +69,21 @@ export function getMobileAppHtml(): string {
       border-color: #E2E8F0 !important;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
     }
-    body[data-theme="swiss"] .mobile-app-bar {
+    body[data-theme="swiss"] .mobile-app-bar,
+    body[data-theme="swiss"] .mobile-header {
       background: #FFFFFF !important;
       border-bottom: 1px solid #E2E8F0 !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .status-bar {
+      background: #F8F9FA !important;
       color: #0F172A !important;
     }
     body[data-theme="swiss"] .mobile-app-title {
       color: #0F172A !important;
     }
-    body[data-theme="swiss"] .mobile-nav-bar {
+    body[data-theme="swiss"] .mobile-nav-bar,
+    body[data-theme="swiss"] .mobile-bottom-nav {
       background: #FFFFFF !important;
       border-top: 1px solid #E2E8F0 !important;
     }
@@ -158,15 +164,21 @@ export function getMobileAppHtml(): string {
       border-color: #E7E5E4 !important;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
     }
-    body[data-theme="nordic"] .mobile-app-bar {
+    body[data-theme="nordic"] .mobile-app-bar,
+    body[data-theme="nordic"] .mobile-header {
       background: #FAF8F5 !important;
       border-bottom: 1px solid #E7E5E4 !important;
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .status-bar {
+      background: #FAF8F5 !important;
       color: #1C1917 !important;
     }
     body[data-theme="nordic"] .mobile-app-title {
       color: #1C1917 !important;
     }
-    body[data-theme="nordic"] .mobile-nav-bar {
+    body[data-theme="nordic"] .mobile-nav-bar,
+    body[data-theme="nordic"] .mobile-bottom-nav {
       background: #FAF8F5 !important;
       border-top: 1px solid #E7E5E4 !important;
     }
@@ -318,7 +330,7 @@ export function getMobileAppHtml(): string {
       font-weight: 700;
       color: #f8fafc;
       z-index: 90;
-      background: #04070D;
+      background: var(--bg-pitch);
       font-variant-numeric: tabular-nums;
     }
     .status-icons {
@@ -333,7 +345,7 @@ export function getMobileAppHtml(): string {
       flex: 1 1 auto;
       min-height: 0;
       height: 100%;
-      background: #04070D;
+      background: var(--bg-pitch);
       position: relative;
       display: flex;
       flex-direction: column;
@@ -1276,7 +1288,7 @@ export function getMobileAppHtml(): string {
     /* True Native Mobile & Standalone Edge-to-Edge Styles */
     @media (max-width: 680px), (display-mode: standalone) {
       body {
-        background: #04070D !important;
+        background: var(--bg-pitch) !important;
         margin: 0 !important;
         padding: 0 !important;
         width: 100vw !important;
@@ -1285,6 +1297,15 @@ export function getMobileAppHtml(): string {
         overflow: hidden !important;
         display: block !important;
         justify-content: flex-start !important;
+      }
+      body[data-theme="swiss"] {
+        background: #F8F9FA !important;
+      }
+      body[data-theme="nordic"] {
+        background: #FAF8F5 !important;
+      }
+      body[data-theme="stadium"] {
+        background: #04070D !important;
       }
       .preview-header {
         display: none !important;
@@ -1306,6 +1327,15 @@ export function getMobileAppHtml(): string {
         box-shadow: none !important;
         margin: 0 !important;
         padding: 0 !important;
+        background: var(--bg-pitch) !important;
+      }
+      body[data-theme="swiss"] .device-wrapper {
+        background: #F8F9FA !important;
+      }
+      body[data-theme="nordic"] .device-wrapper {
+        background: #FAF8F5 !important;
+      }
+      body[data-theme="stadium"] .device-wrapper {
         background: #04070D !important;
       }
       .device-notch,
@@ -1332,7 +1362,7 @@ export function getMobileAppHtml(): string {
 
     body.is-native-app,
     html.is-native-app {
-      background: #04070D !important;
+      background: var(--bg-pitch) !important;
       margin: 0 !important;
       padding: 0 !important;
       width: 100vw !important;
@@ -1340,6 +1370,18 @@ export function getMobileAppHtml(): string {
       min-height: 100dvh !important;
       overflow: hidden !important;
       display: block !important;
+    }
+    body.is-native-app[data-theme="swiss"],
+    html.is-native-app[data-theme="swiss"] {
+      background: #F8F9FA !important;
+    }
+    body.is-native-app[data-theme="nordic"],
+    html.is-native-app[data-theme="nordic"] {
+      background: #FAF8F5 !important;
+    }
+    body.is-native-app[data-theme="stadium"],
+    html.is-native-app[data-theme="stadium"] {
+      background: #04070D !important;
     }
     body.is-native-app .preview-header,
     body.is-native-app .device-notch,
@@ -1364,6 +1406,15 @@ export function getMobileAppHtml(): string {
       box-shadow: none !important;
       margin: 0 !important;
       padding: 0 !important;
+      background: var(--bg-pitch) !important;
+    }
+    body.is-native-app[data-theme="swiss"] .device-wrapper {
+      background: #F8F9FA !important;
+    }
+    body.is-native-app[data-theme="nordic"] .device-wrapper {
+      background: #FAF8F5 !important;
+    }
+    body.is-native-app[data-theme="stadium"] .device-wrapper {
       background: #04070D !important;
     }
     body.is-native-app .screen-viewport {
@@ -1377,6 +1428,16 @@ export function getMobileAppHtml(): string {
       overflow: hidden !important;
       display: flex !important;
       flex-direction: column !important;
+      background: var(--bg-pitch) !important;
+    }
+    body.is-native-app[data-theme="swiss"] .screen-viewport {
+      background: #F8F9FA !important;
+    }
+    body.is-native-app[data-theme="nordic"] .screen-viewport {
+      background: #FAF8F5 !important;
+    }
+    body.is-native-app[data-theme="stadium"] .screen-viewport {
+      background: #04070D !important;
     }
     /* Sign In vs Sign Up Tabs */
     .auth-mode-tabs {

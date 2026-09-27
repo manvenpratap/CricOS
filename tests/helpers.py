@@ -119,6 +119,28 @@ def save_screenshot(page, name: str, base_dir: Optional[str] = None) -> str:
     return str(file_path)
 
 
+async def save_screenshot_async(page, name: str, base_dir: Optional[str] = None) -> str:
+    """
+    Asynchronously saves a full viewport screenshot to the local machine directory.
+    Never uploads to external cloud storage.
+    """
+    target_dir = Path(base_dir or DEFAULT_SCREENSHOT_DIR)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    filename = f"{name}.png" if not name.endswith(".png") else name
+    file_path = target_dir / filename
+
+    await page.screenshot(
+        path=str(file_path),
+        full_page=False,
+        timeout=5000,
+        animations="disabled"
+    )
+
+    # Regenerate local HTML gallery
+    catalog_screenshots(str(target_dir))
+    return str(file_path)
+
+
 def catalog_screenshots(screenshot_dir: str = DEFAULT_SCREENSHOT_DIR) -> str:
     """
     Generates a zero-cloud local HTML gallery of all captured screenshots for local visual review.
