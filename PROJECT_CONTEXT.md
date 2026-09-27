@@ -1,14 +1,33 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 11:42:00
-**Version:** 1.0.0-phase2av (UI/UX Pro Max & Design Taste Audit: WCAG 2.2 AA Touch Ergonomics, Input Focus Rings, Vestibular Motion Safety, Responsive Viewport Collapse, 100% Rule 5 Tooltip Coverage & Zero transition: all)  
+**Last Updated:** 2026-09-27 12:20:00
+**Version:** 1.0.0-phase2aw (Motion Performance Optimization: Hardware-Accelerated Compositor Transforms, Three.js 3D WebGL rAF Stop/Cancel Lifecycle & Visibility Observers, Zero Layout Thrashing & 394 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AV Completed — Comprehensive UI/UX Design Audit & High-Agency Polish across Web Console, Mobile App & Distribution Assets:
+- **Active Phase**: Phase 2AW Completed — Motion Performance Optimization & Hardware-Accelerated Compositor Lifecycle across Web Console, Mobile App & 3D WebGL Experiences:
+  - **1. Hardware-Accelerated Mobile Sidebar Drawer (`apps/api/src/ui/dashboard.ts`)**:
+    - Replaced layout-animating `left: -260px` -> `left: 0` with GPU compositor transform `left: 0; transform: translateX(-100%);` and `.app-sidebar.mobile-open { transform: translateX(0); }`.
+    - Transition upgraded to `transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);` with `will-change: transform;`, eliminating forced layout recalculation and paint on every frame of drawer animation.
+  - **2. Three.js rAF Animation Lifecycle & WebGL Resource Reclamation (`apps/api/src/ui/dashboard.ts`)**:
+    - Implemented explicit `start()`, `stop()`, and `dispose()` methods across all four 3D viewer controllers (`ThreeJsStadiumPitch`, `ThreeJsTrophyCabinet`, `ThreeJsPlayerCard`, `ThreeJsBatConfigurator`).
+    - Added `IntersectionObserver` visibility observer to `ThreeJsStadiumPitch` canvas that automatically halts the 60fps render loop when scrolled out of viewport and resumes upon scroll into view.
+    - Added tab-switching pause/resume in `switchTab()` that automatically stops `window.stadiumPitch` when navigating away from the Match Center scoring tab and resumes it upon return.
+    - Implemented universal modal dismissal hook `stop3DModalViewer(modalId)` wired into `closeModal()`, global `Escape` key handler, modal backdrop clicks, and `MutationObserver` on `.modal-backdrop`, guaranteeing 3D render loops immediately terminate upon modal closure.
+  - **3. Mobile Athletic Spectrum Bar Compositor Transition (`apps/api/src/ui/mobile-view.ts`)**:
+    - Replaced layout-triggering `height` transition with `transform-origin: bottom; transition: transform 0.25s ease, background-color 0.25s ease;`.
+  - **4. Codebase-wide Invariant Enforcement**:
+    - Zero `transition: all` across all stylesheets and web components (strict Emil Kowalski invariant).
+    - Zero `window.addEventListener('scroll')` (using performant CSS and IntersectionObservers).
+  - **5. Regression Testing & Parity Verification**:
+    - Added Skill 14 `fixing-motion-performance` unit tests in `tests/36-emil-animation-engine.test.ts`.
+    - Added Section 15 `Three.js rAF Stop & Cancel Lifecycle Management` unit tests in `tests/37-threejs-interaction.test.ts`.
+    - 100% automated test pass rate across all 394 tests / 120 suites (`./pipeline.sh test --summary`).
+    - Rule 6 single-file parity verified byte-for-byte between root `index.html` and `dist/index.html`.
+- **Preceding Phase**: Phase 2AV Completed — Comprehensive UI/UX Design Audit & High-Agency Polish across Web Console, Mobile App & Distribution Assets:
   - **1. WCAG 2.2 AA Touch Ergonomics & Navigation Target Sizing (`apps/api/src/ui/mobile-view.ts`)**:
     - Upgraded `.mobile-nav-item` to satisfy WCAG 2.2 Criterion 2.5.8 target size requirements with `min-height: 44px; min-width: 44px; justify-content: center;` and smooth micro-touch feedback (`scale(0.97)`).
     - Upgraded `.mobile-subnav-btn` with thumb-friendly `min-height: 36px; padding: 0.32rem 0.7rem; font-size: 0.72rem; gap: 0.35rem;` preventing accidental mis-taps.

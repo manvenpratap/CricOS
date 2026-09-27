@@ -731,9 +731,67 @@ describe('37. Three.js Interaction & 3D WebGL Stadium Architecture', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // 15. Distribution Packaging Parity (Rule 6 Invariant)
+  // 15. Motion Performance: rAF Stop/Cancel Lifecycle & Visibility Controls
   // ---------------------------------------------------------------------------
-  describe('Rule 15: Production Packaging & Release Parity', () => {
+  describe('Three.js rAF Stop & Cancel Lifecycle Management', () => {
+    it('implements start, stop, and dispose methods across all 4 Three.js viewer classes', () => {
+      const fakeWindow: any = { devicePixelRatio: 1, addEventListener: () => {}, removeEventListener: () => {} };
+      const scriptCode = `
+        ${indexHtml.slice(indexHtml.indexOf('function initThreeFallback()'), indexHtml.indexOf('window.CricOS3DInteractionManager = CricOS3DInteractionManager;'))}
+        initThreeFallback();
+        return {
+          ThreeJsStadiumPitch,
+          ThreeJsTrophyCabinet,
+          ThreeJsPlayerCard,
+          ThreeJsBatConfigurator
+        };
+      `;
+      const createModule = new Function('window', scriptCode);
+      const {
+        ThreeJsStadiumPitch,
+        ThreeJsTrophyCabinet,
+        ThreeJsPlayerCard,
+        ThreeJsBatConfigurator
+      } = createModule(fakeWindow);
+
+      const stadium = new ThreeJsStadiumPitch();
+      const trophy = new ThreeJsTrophyCabinet();
+      const playerCard = new ThreeJsPlayerCard();
+      const bat = new ThreeJsBatConfigurator();
+
+      [stadium, trophy, playerCard, bat].forEach((viewer) => {
+        assert.equal(typeof viewer.start, 'function', 'Viewer must provide start() method');
+        assert.equal(typeof viewer.stop, 'function', 'Viewer must provide stop() method');
+        assert.equal(typeof viewer.dispose, 'function', 'Viewer must provide dispose() method');
+        assert.equal(viewer.isPaused, false, 'Viewer starts in active/unpaused state flag');
+
+        viewer.stop();
+        assert.equal(viewer.isPaused, true, 'Calling stop() must set isPaused to true');
+
+        viewer.dispose();
+        assert.equal(viewer.isPaused, true, 'Calling dispose() must halt loop');
+      });
+    });
+
+    it('exports stop3DModalViewer globally and integrates it into closeModal', () => {
+      assert.ok(indexHtml.includes('window.stop3DModalViewer = stop3DModalViewer'), 'stop3DModalViewer export missing');
+      assert.ok(indexHtml.includes('stop3DModalViewer(modalId)'), 'closeModal must call stop3DModalViewer');
+    });
+
+    it('pauses stadium pitch loop when switching away from scoring tab', () => {
+      assert.ok(
+        indexHtml.includes("if (tabId === 'scoring')") &&
+        indexHtml.includes('window.stadiumPitch.start()') &&
+        indexHtml.includes('window.stadiumPitch.stop()'),
+        'switchTab must pause/resume window.stadiumPitch'
+      );
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 16. Distribution Packaging Parity (Rule 6 Invariant)
+  // ---------------------------------------------------------------------------
+  describe('Rule 16: Production Packaging & Release Parity', () => {
     it('verifies root index.html and dist/index.html are byte-for-byte identical', () => {
       assert.equal(
         indexHtml,

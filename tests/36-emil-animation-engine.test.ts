@@ -353,6 +353,42 @@ describe('36. Emil Kowalski 13-Skill Design & Animation Architecture', () => {
   });
 
   // ---------------------------------------------------------------------------
+  // Skill 14: fixing-motion-performance (Compositor-Only Transitions & Lifecycle)
+  // ---------------------------------------------------------------------------
+  describe('Skill 14: fixing-motion-performance (Compositor-Only Transitions & Lifecycle)', () => {
+    it('uses GPU-accelerated transform transitions instead of layout-animating left for mobile drawer', () => {
+      assert.ok(
+        indexHtml.includes('transform: translateX(-100%);'),
+        'Mobile drawer must use translateX(-100%) for off-screen positioning'
+      );
+      assert.ok(
+        indexHtml.includes('.app-sidebar.mobile-open {') && indexHtml.includes('transform: translateX(0);'),
+        'Mobile drawer open state must use translateX(0)'
+      );
+      assert.ok(
+        indexHtml.includes('transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);'),
+        'Mobile drawer transition must animate transform exclusively'
+      );
+    });
+
+    it('uses GPU-accelerated transform transitions instead of height for athletic-spectrum-bar in mobile', () => {
+      assert.ok(
+        mobileGeneratedHtml.includes('transform-origin: bottom;'),
+        'Athletic spectrum bar must define transform-origin: bottom'
+      );
+      assert.ok(
+        mobileGeneratedHtml.includes('transition: transform 0.25s ease, background-color 0.25s ease;'),
+        'Athletic spectrum bar must animate transform and background-color instead of height'
+      );
+    });
+
+    it('contains zero instances of non-performant transition: all across stylesheets', () => {
+      assert.ok(!indexHtml.includes('transition: all'), 'Root index.html must not contain transition: all');
+      assert.ok(!mobileGeneratedHtml.includes('transition: all'), 'Mobile view must not contain transition: all');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
   // Rule 6: Distribution Packaging Parity Invariant
   // ---------------------------------------------------------------------------
   describe('Rule 6: Packaging & Distribution Parity Invariants', () => {

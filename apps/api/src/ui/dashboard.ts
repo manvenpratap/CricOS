@@ -780,14 +780,16 @@ export function getDashboardHtml(): string {
       }
       .app-sidebar {
         position: fixed;
-        left: -260px;
+        left: 0;
         top: 0;
         bottom: 0;
         z-index: 200;
-        transition: left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateX(-100%);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform;
       }
       .app-sidebar.mobile-open {
-        left: 0;
+        transform: translateX(0);
       }
       .sidebar-backdrop {
         display: none;
@@ -795,10 +797,14 @@ export function getDashboardHtml(): string {
         inset: 0;
         background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         z-index: 190;
+        opacity: 0;
+        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .sidebar-backdrop.active {
         display: block;
+        opacity: 1;
       }
       .topbar-telemetry-group {
         display: none;
@@ -2694,7 +2700,8 @@ export function getDashboardHtml(): string {
     .athletic-momentum-bar {
       flex: 1;
       border-radius: 3px 3px 0 0;
-      transition: height 0.25s var(--ease-out), opacity 0.2s;
+      transform-origin: bottom;
+      transition: transform var(--duration-fast) var(--ease-out), opacity 0.2s;
       cursor: pointer;
     }
     .athletic-momentum-bar:hover {
@@ -7391,6 +7398,17 @@ cricos_active_sse_connections 1</pre>
         updateWagonTelemetry();
       }
 
+      // Motion Performance: Pause WebGL stadium pitch loop when away from scoring tab
+      if (tabId === 'scoring') {
+        if (window.stadiumPitch && typeof window.stadiumPitch.start === 'function') {
+          window.stadiumPitch.start();
+        }
+      } else {
+        if (window.stadiumPitch && typeof window.stadiumPitch.stop === 'function') {
+          window.stadiumPitch.stop();
+        }
+      }
+
       // Update topbar breadcrumb active tab
       const tabNames = {
         scoring: 'Match Center',
@@ -9348,6 +9366,9 @@ cricos_active_sse_connections 1</pre>
         this.impactRingScale = 0;
         this.isInitialized = false;
         this.animFrameId = null;
+        this.isPaused = false;
+        this.animateFn = null;
+        this.visibilityObserver = null;
       }
 
       checkWebGLSupport() {
@@ -9429,8 +9450,13 @@ cricos_active_sse_connections 1</pre>
 
         this.renderShots();
         this.isInitialized = true;
+        this.isPaused = false;
 
         const animate = () => {
+          if (this.isPaused) {
+            this.animFrameId = null;
+            return;
+          }
           this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
           if (this.interactionManager) {
             this.interactionManager.updateControls();
@@ -9461,7 +9487,9 @@ cricos_active_sse_connections 1</pre>
             this.renderer.render(this.scene, this.camera);
           }
         };
+        this.animateFn = animate;
         animate();
+        this.setupVisibilityObserver();
       }
 
       buildFloodlights() {
@@ -10378,9 +10406,45 @@ cricos_active_sse_connections 1</pre>
         }
       }
 
-      dispose() {
+      start() {
+        if (!this.isInitialized) return;
+        if (!this.isPaused && this.animFrameId) return;
+        this.isPaused = false;
+        if (this.animateFn) {
+          this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(this.animateFn) : null;
+        }
+      }
+
+      stop() {
+        this.isPaused = true;
         if (this.animFrameId && typeof cancelAnimationFrame !== 'undefined') {
           cancelAnimationFrame(this.animFrameId);
+          this.animFrameId = null;
+        }
+      }
+
+      setupVisibilityObserver() {
+        if (typeof IntersectionObserver !== 'undefined' && this.canvas) {
+          try {
+            this.visibilityObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  this.start();
+                } else {
+                  this.stop();
+                }
+              });
+            }, { threshold: 0.05 });
+            this.visibilityObserver.observe(this.canvas);
+          } catch (_) {}
+        }
+      }
+
+      dispose() {
+        this.stop();
+        if (this.visibilityObserver) {
+          try { this.visibilityObserver.disconnect(); } catch (_) {}
+          this.visibilityObserver = null;
         }
         if (this.interactionManager) {
           this.interactionManager.dispose();
@@ -10402,6 +10466,8 @@ cricos_active_sse_connections 1</pre>
         this.rotY = 0;
         this.rotX = 0;
         this.animFrameId = null;
+        this.isPaused = false;
+        this.animateFn = null;
         this.isInitialized = false;
       }
 
@@ -10439,8 +10505,13 @@ cricos_active_sse_connections 1</pre>
         this.buildTrophy(this.currentType);
         this.bindEvents();
         this.isInitialized = true;
+        this.isPaused = false;
 
         const animate = () => {
+          if (this.isPaused) {
+            this.animFrameId = null;
+            return;
+          }
           this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
           if (this.currentTrophyGroup) {
             if (this.autoRotate && !this.isPointerDown) {
@@ -10453,6 +10524,7 @@ cricos_active_sse_connections 1</pre>
             this.renderer.render(this.scene, this.camera);
           }
         };
+        this.animateFn = animate;
         animate();
       }
 
@@ -10554,6 +10626,27 @@ cricos_active_sse_connections 1</pre>
         this.autoRotate = !this.autoRotate;
         return this.autoRotate;
       }
+
+      start() {
+        if (!this.isInitialized) return;
+        if (!this.isPaused && this.animFrameId) return;
+        this.isPaused = false;
+        if (this.animateFn) {
+          this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(this.animateFn) : null;
+        }
+      }
+
+      stop() {
+        this.isPaused = true;
+        if (this.animFrameId && typeof cancelAnimationFrame !== 'undefined') {
+          cancelAnimationFrame(this.animFrameId);
+          this.animFrameId = null;
+        }
+      }
+
+      dispose() {
+        this.stop();
+      }
     }
 
     class ThreeJsPlayerCard {
@@ -10570,6 +10663,8 @@ cricos_active_sse_connections 1</pre>
         this.currentTilt = { x: 0, y: 0 };
         this.specLight = null;
         this.animFrameId = null;
+        this.isPaused = false;
+        this.animateFn = null;
         this.isInitialized = false;
       }
 
@@ -10603,8 +10698,13 @@ cricos_active_sse_connections 1</pre>
         this.buildCard();
         this.bindEvents();
         this.isInitialized = true;
+        this.isPaused = false;
 
         const animate = () => {
+          if (this.isPaused) {
+            this.animFrameId = null;
+            return;
+          }
           this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
           this.currentTilt.x += (this.targetTilt.x - this.currentTilt.x) * 0.1;
           this.currentTilt.y += (this.targetTilt.y - this.currentTilt.y) * 0.1;
@@ -10622,6 +10722,7 @@ cricos_active_sse_connections 1</pre>
             this.renderer.render(this.scene, this.camera);
           }
         };
+        this.animateFn = animate;
         animate();
       }
 
@@ -10705,6 +10806,27 @@ cricos_active_sse_connections 1</pre>
           if (srEl) srEl.textContent = sr !== undefined ? sr : '162.4';
         }
       }
+
+      start() {
+        if (!this.isInitialized) return;
+        if (!this.isPaused && this.animFrameId) return;
+        this.isPaused = false;
+        if (this.animateFn) {
+          this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(this.animateFn) : null;
+        }
+      }
+
+      stop() {
+        this.isPaused = true;
+        if (this.animFrameId && typeof cancelAnimationFrame !== 'undefined') {
+          cancelAnimationFrame(this.animFrameId);
+          this.animFrameId = null;
+        }
+      }
+
+      dispose() {
+        this.stop();
+      }
     }
 
     class ThreeJsBatConfigurator {
@@ -10724,6 +10846,8 @@ cricos_active_sse_connections 1</pre>
         this.rotY = -0.4;
         this.rotX = 0;
         this.animFrameId = null;
+        this.isPaused = false;
+        this.animateFn = null;
         this.isInitialized = false;
       }
 
@@ -10757,8 +10881,13 @@ cricos_active_sse_connections 1</pre>
         this.buildBat();
         this.bindEvents();
         this.isInitialized = true;
+        this.isPaused = false;
 
         const animate = () => {
+          if (this.isPaused) {
+            this.animFrameId = null;
+            return;
+          }
           this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
           if (this.batGroup) {
             this.batGroup.rotation.y = this.rotY;
@@ -10768,6 +10897,7 @@ cricos_active_sse_connections 1</pre>
             this.renderer.render(this.scene, this.camera);
           }
         };
+        this.animateFn = animate;
         animate();
       }
 
@@ -10853,6 +10983,27 @@ cricos_active_sse_connections 1</pre>
       setWillowGrade(grade) {
         this.currentWillow = grade;
         this.buildBat();
+      }
+
+      start() {
+        if (!this.isInitialized) return;
+        if (!this.isPaused && this.animFrameId) return;
+        this.isPaused = false;
+        if (this.animateFn) {
+          this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(this.animateFn) : null;
+        }
+      }
+
+      stop() {
+        this.isPaused = true;
+        if (this.animFrameId && typeof cancelAnimationFrame !== 'undefined') {
+          cancelAnimationFrame(this.animFrameId);
+          this.animFrameId = null;
+        }
+      }
+
+      dispose() {
+        this.stop();
       }
     }
 
@@ -10958,7 +11109,10 @@ cricos_active_sse_connections 1</pre>
         window.trophyCabinet = new ThreeJsTrophyCabinet();
       }
       setTimeout(() => {
-        if (window.trophyCabinet) window.trophyCabinet.init();
+        if (window.trophyCabinet) {
+          window.trophyCabinet.init();
+          window.trophyCabinet.start();
+        }
       }, 50);
     }
 
@@ -11022,6 +11176,7 @@ cricos_active_sse_connections 1</pre>
       setTimeout(() => {
         if (window.playerCard3D) {
           window.playerCard3D.init();
+          window.playerCard3D.start();
           window.playerCard3D.updatePlayer(name || 'Hardik Patel', jersey || '#33', role || 'ALL_ROUNDER', avg || 48.2, sr || 162.4);
         }
       }, 50);
@@ -11051,9 +11206,23 @@ cricos_active_sse_connections 1</pre>
         window.batConfigurator = new ThreeJsBatConfigurator();
       }
       setTimeout(() => {
-        if (window.batConfigurator) window.batConfigurator.init();
+        if (window.batConfigurator) {
+          window.batConfigurator.init();
+          window.batConfigurator.start();
+        }
       }, 50);
     }
+
+    function stop3DModalViewer(modalId) {
+      if (modalId === 'modal3DTrophyCabinet' && window.trophyCabinet && typeof window.trophyCabinet.stop === 'function') {
+        window.trophyCabinet.stop();
+      } else if (modalId === 'modal3DPlayerCard' && window.playerCard3D && typeof window.playerCard3D.stop === 'function') {
+        window.playerCard3D.stop();
+      } else if (modalId === 'modal3DBatCustomizer' && window.batConfigurator && typeof window.batConfigurator.stop === 'function') {
+        window.batConfigurator.stop();
+      }
+    }
+    window.stop3DModalViewer = stop3DModalViewer;
 
     function set3DBatGripColor(colorHex, btn) {
       if (typeof document !== 'undefined') {
@@ -11134,6 +11303,7 @@ cricos_active_sse_connections 1</pre>
     window.update3DBatCustomization = update3DBatCustomization;
     window.addCustomBatToBasket = addCustomBatToBasket;
     window.initThreeFallback = initThreeFallback;
+    window.stop3DModalViewer = stop3DModalViewer;
 
     function recordStudioExtra(extraType, extraRuns) {
       if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
@@ -12850,6 +13020,9 @@ cricos_active_sse_connections 1</pre>
     function closeModal(modalId) {
       const m = document.getElementById(modalId);
       if (m) m.classList.remove('active');
+      if (typeof stop3DModalViewer === 'function') {
+        stop3DModalViewer(modalId);
+      }
     }
 
     function signOffUmpireDesk() {
@@ -15169,9 +15342,14 @@ cricos_active_sse_connections 1</pre>
             if (focusable.length > 0) {
               focusable[0].focus();
             }
-          } else if (lastFocusedElementBeforeModal && document.querySelectorAll('.modal-backdrop.active').length === 0) {
-            try { lastFocusedElementBeforeModal.focus(); } catch (_) {}
-            lastFocusedElementBeforeModal = null;
+          } else {
+            if (typeof stop3DModalViewer === 'function') {
+              stop3DModalViewer(target.id);
+            }
+            if (lastFocusedElementBeforeModal && document.querySelectorAll('.modal-backdrop.active').length === 0) {
+              try { lastFocusedElementBeforeModal.focus(); } catch (_) {}
+              lastFocusedElementBeforeModal = null;
+            }
           }
         }
       });
@@ -15184,9 +15362,14 @@ cricos_active_sse_connections 1</pre>
     // Global Modal Escape & Tab Focus Trapping
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-backdrop.active').forEach(m => m.classList.remove('active'));
+        document.querySelectorAll('.modal-backdrop.active').forEach(m => {
+          m.classList.remove('active');
+          if (typeof stop3DModalViewer === 'function') stop3DModalViewer(m.id);
+        });
         const drawer = document.getElementById('notificationsDrawer');
-        if (drawer && drawer.style.right === '0px') closeNotificationsDrawer();
+        if (drawer && (drawer.style.transform === 'translateX(0%)' || drawer.style.transform === 'translateX(0px)' || drawer.style.right === '0px')) {
+          closeNotificationsDrawer();
+        }
       }
 
       if (e.key === 'Tab') {
@@ -15212,6 +15395,7 @@ cricos_active_sse_connections 1</pre>
       backdrop.addEventListener('click', (e) => {
         if (e.target === backdrop) {
           backdrop.classList.remove('active');
+          if (typeof stop3DModalViewer === 'function') stop3DModalViewer(backdrop.id);
         }
       });
     });
