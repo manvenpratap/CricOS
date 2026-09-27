@@ -913,6 +913,146 @@ export function getMobileAppHtml(): string {
       transition: transform 0.25s ease, background-color 0.25s ease;
     }
 
+    /* Skill 15: Design Spells — Kinetic Motion Graphics & Stadium FX */
+    .cricos-celebration-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10000;
+      display: none;
+    }
+    .cricos-celebration-canvas.active {
+      display: block;
+    }
+
+    .kinetic-boundary-banner {
+      position: absolute;
+      top: 28%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      z-index: 10001;
+      pointer-events: none;
+      text-align: center;
+      padding: 0.85rem 1.25rem;
+      border-radius: 16px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 229, 153, 0.4);
+      border: 2px solid rgba(0, 229, 153, 0.6);
+      background: rgba(4, 7, 13, 0.88);
+      opacity: 0;
+      max-width: 90%;
+    }
+    .kinetic-boundary-banner.active {
+      animation: bannerPopElastic 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes bannerPopElastic {
+      0% { transform: translate(-50%, -50%) scale(0.3) rotate(-6deg); opacity: 0; }
+      20% { transform: translate(-50%, -50%) scale(1.1) rotate(2deg); opacity: 1; }
+      35% { transform: translate(-50%, -50%) scale(0.98) rotate(0deg); opacity: 1; }
+      80% { transform: translate(-50%, -50%) scale(1) translateY(0); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.85) translateY(-25px); opacity: 0; }
+    }
+
+    .holo-foil-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .holo-foil-card::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: linear-gradient(
+        115deg,
+        transparent 20%,
+        rgba(0, 229, 153, 0.12) 38%,
+        rgba(0, 210, 255, 0.28) 48%,
+        rgba(255, 215, 0, 0.22) 58%,
+        transparent 75%
+      );
+      transform: rotate(25deg) translateY(-100%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.7;
+      animation: holoFoilSweep 6s ease-in-out infinite;
+    }
+    @keyframes holoFoilSweep {
+      0%, 20% { transform: rotate(25deg) translateY(-120%); }
+      50%, 70% { transform: rotate(25deg) translateY(120%); }
+      100% { transform: rotate(25deg) translateY(-120%); }
+    }
+
+    .match-momentum-container {
+      position: relative;
+      height: 38px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-left: 3px solid #00E599;
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      padding: 0 0.55rem;
+    }
+    .match-momentum-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .match-momentum-hud {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-size: 0.65rem;
+    }
+
+    .ball-gyro-widget {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.45rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+    }
+    .ball-gyro-sphere {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #FF4D6D 0%, #C9184A 55%, #590D22 100%);
+      box-shadow: inset -1px -1px 3px rgba(0, 0, 0, 0.6), 0 0 6px rgba(255, 77, 109, 0.4);
+      position: relative;
+      animation: ballGyroSpin 2.5s linear infinite;
+    }
+    .ball-gyro-seam {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1.5px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        #FFF 0px,
+        #FFF 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      transform: translateX(-50%) rotate(15deg);
+    }
+    @keyframes ballGyroSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     /* True Native Mobile & Standalone Edge-to-Edge Styles */
     @media (max-width: 680px), (display-mode: standalone) {
       body {
@@ -1226,6 +1366,10 @@ export function getMobileAppHtml(): string {
       <div class="notch-sensor"></div>
       <div class="notch-camera"></div>
     </div>
+
+    <!-- Celebratory Particle Canvas Overlay & Kinetic Banner (Skill 15: Design Spells) -->
+    <canvas id="cricosCelebrationCanvas" class="cricos-celebration-canvas"></canvas>
+    <div id="kineticBoundaryBanner" class="kinetic-boundary-banner" role="status" aria-live="assertive"></div>
 
     <!-- iOS Status Bar -->
     <div class="status-bar">
@@ -2415,6 +2559,10 @@ export function getMobileAppHtml(): string {
             window.CricOSSound.playBatHit(false);
           }
         }
+        if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
+          if (runs === 6) window.CricOSMotionFX.triggerCelebration('SIX');
+          else if (runs === 4) window.CricOSMotionFX.triggerCelebration('FOUR');
+        }
         this.matchState.totalRuns += runs;
         this.matchState.legalBalls += 1;
         this.matchState.striker.runs += runs;
@@ -2683,6 +2831,9 @@ export function getMobileAppHtml(): string {
           confirmStyle: 'background: #ff3366; color: #fff;',
           onConfirm: function() {
             if (window.CricOSSound) window.CricOSSound.playWicket();
+            if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
+              window.CricOSMotionFX.triggerCelebration('WICKET');
+            }
             var select = document.getElementById('incomingBatterSelect');
             var nextBatter = select ? select.value : 'Rishabh P.';
             self.matchState.totalWickets += 1;
@@ -5834,9 +5985,190 @@ export function getMobileAppHtml(): string {
       }
     }
 
+    // ==========================================================================
+    // Skill 15: Design Spells — Mobile Kinetic Motion Graphics & Celebration FX
+    // ==========================================================================
+    const CricOSMotionFX = {
+      canvas: null,
+      ctx: null,
+      particles: [],
+      animId: null,
+      isActive: false,
+
+      init() {
+        if (typeof document === 'undefined') return;
+        this.canvas = document.getElementById('cricosCelebrationCanvas');
+        if (this.canvas && typeof this.canvas.getContext === 'function') {
+          this.ctx = this.canvas.getContext('2d');
+          this.resizeCanvas();
+          if (typeof window !== 'undefined') {
+            window.addEventListener('resize', () => this.resizeCanvas());
+          }
+        }
+      },
+
+      resizeCanvas() {
+        if (!this.canvas) return;
+        const rect = typeof this.canvas.getBoundingClientRect === 'function' ? this.canvas.getBoundingClientRect() : { width: 380, height: 600 };
+        const dpr = Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2);
+        this.canvas.width = (rect.width || 380) * dpr;
+        this.canvas.height = (rect.height || 600) * dpr;
+        if (this.ctx && typeof this.ctx.scale === 'function') {
+          this.ctx.scale(dpr, dpr);
+        }
+      },
+
+      triggerCelebration(type = 'SIX', options = {}) {
+        if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          return;
+        }
+
+        if (!this.canvas || !this.ctx) {
+          this.init();
+        }
+        if (!this.canvas || !this.ctx) return;
+
+        if (this.canvas.classList && typeof this.canvas.classList.add === 'function') {
+          this.canvas.classList.add('active');
+        }
+        this.isActive = true;
+
+        const rect = typeof this.canvas.getBoundingClientRect === 'function' ? this.canvas.getBoundingClientRect() : { width: 380, height: 600 };
+        const w = rect.width || 380;
+        const h = rect.height || 600;
+        const centerX = options.x !== undefined ? options.x : w / 2;
+        const centerY = options.y !== undefined ? options.y : h * 0.35;
+
+        // Display Kinetic Banner
+        const banner = document.getElementById('kineticBoundaryBanner');
+        if (banner) {
+          banner.classList.remove('active');
+          void banner.offsetWidth;
+
+          if (type === 'SIX') {
+            banner.innerHTML = '<div style="font-size: 1.8rem;">🚀</div><div style="font-family: Chakra Petch, monospace; font-size: 1.6rem; font-weight: 800; color: #FFF; text-shadow: 0 0 16px #00E599;">MAXIMUM SIX!</div><div style="font-size: 0.72rem; color: #00E599; font-weight: 700; margin-top: 0.2rem;">108m • 28.4° HIGH ARC</div>';
+            banner.style.borderColor = 'rgba(0, 229, 153, 0.7)';
+          } else if (type === 'FOUR') {
+            banner.innerHTML = '<div style="font-size: 1.8rem;">⚡</div><div style="font-family: Chakra Petch, monospace; font-size: 1.6rem; font-weight: 800; color: #FFF; text-shadow: 0 0 16px #00D2FF;">BOUNDARY FOUR!</div><div style="font-size: 0.72rem; color: #00D2FF; font-weight: 700; margin-top: 0.2rem;">ROARING TURF CUTTER</div>';
+            banner.style.borderColor = 'rgba(0, 210, 255, 0.7)';
+          } else if (type === 'WICKET') {
+            banner.innerHTML = '<div style="font-size: 1.8rem;">🎯</div><div style="font-family: Chakra Petch, monospace; font-size: 1.6rem; font-weight: 800; color: #FFF; text-shadow: 0 0 16px #FF3366;">WICKET! TIMBER!</div><div style="font-size: 0.72rem; color: #FF3366; font-weight: 700; margin-top: 0.2rem;">STUMPS SHATTERED</div>';
+            banner.style.borderColor = 'rgba(255, 51, 102, 0.7)';
+          } else {
+            banner.innerHTML = '<div style="font-size: 1.8rem;">🎪</div><div style="font-family: Chakra Petch, monospace; font-size: 1.6rem; font-weight: 800; color: #FFF; text-shadow: 0 0 16px #C084FC;">STADIUM PULSE!</div>';
+            banner.style.borderColor = 'rgba(192, 132, 252, 0.7)';
+          }
+
+          banner.classList.add('active');
+          if (typeof setTimeout !== 'undefined') {
+            setTimeout(() => {
+              if (banner) banner.classList.remove('active');
+            }, 1800);
+          }
+        }
+
+        const colors = type === 'SIX'
+          ? ['#00E599', '#00FFB2', '#FFD700', '#FFFFFF']
+          : type === 'FOUR'
+          ? ['#00D2FF', '#38BDF8', '#00E599', '#FFFFFF']
+          : ['#FF3366', '#FF5C8A', '#FFB800', '#FFFFFF'];
+
+        const count = 45;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 3 + Math.random() * 8;
+          this.particles.push({
+            x: centerX,
+            y: centerY,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - (type === 'SIX' ? 2 : 1),
+            size: 2.5 + Math.random() * 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            alpha: 1,
+            decay: 0.02 + Math.random() * 0.02,
+            gravity: 0.2,
+            drag: 0.95,
+            rotation: Math.random() * Math.PI * 2,
+            vRot: (Math.random() - 0.5) * 0.2
+          });
+        }
+
+        this.startLoop();
+      },
+
+      startLoop() {
+        if (this.animId) return;
+
+        const animate = () => {
+          if (!this.ctx || !this.canvas) return;
+          const rect = this.canvas.getBoundingClientRect();
+          const w = rect.width || 380;
+          const h = rect.height || 600;
+
+          this.ctx.clearRect(0, 0, w, h);
+
+          for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            p.alpha -= p.decay;
+
+            if (p.alpha <= 0) {
+              this.particles.splice(i, 1);
+              continue;
+            }
+
+            p.vx *= p.drag;
+            p.vy = (p.vy * p.drag) + p.gravity;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rotation += p.vRot;
+
+            this.ctx.save();
+            this.ctx.translate(p.x, p.y);
+            this.ctx.rotate(p.rotation);
+            this.ctx.globalAlpha = p.alpha;
+            this.ctx.fillStyle = p.color;
+            this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            this.ctx.restore();
+          }
+
+          if (this.particles.length > 0) {
+            this.animId = requestAnimationFrame(animate);
+          } else {
+            this.stopLoop();
+          }
+        };
+
+        this.animId = requestAnimationFrame(animate);
+      },
+
+      stopLoop() {
+        if (this.animId && typeof cancelAnimationFrame !== 'undefined') {
+          cancelAnimationFrame(this.animId);
+          this.animId = null;
+        }
+        if (this.ctx && this.canvas) {
+          const rect = typeof this.canvas.getBoundingClientRect === 'function' ? this.canvas.getBoundingClientRect() : { width: 380, height: 600 };
+          if (typeof this.ctx.clearRect === 'function') {
+            this.ctx.clearRect(0, 0, rect.width || 380, rect.height || 600);
+          }
+          if (this.canvas.classList && typeof this.canvas.classList.remove === 'function') {
+            this.canvas.classList.remove('active');
+          }
+        }
+        this.particles = [];
+        this.isActive = false;
+      }
+    };
+    window.CricOSMotionFX = CricOSMotionFX;
+
     const app = new StandaloneMobileApp();
     window.cricosMobileApp = app;
     app.render();
+    if (typeof setTimeout !== 'undefined') {
+      setTimeout(() => CricOSMotionFX.init(), 100);
+    } else {
+      CricOSMotionFX.init();
+    }
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && window.cricosMobileApp) {

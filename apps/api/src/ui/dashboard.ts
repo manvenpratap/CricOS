@@ -2801,6 +2801,181 @@ export function getDashboardHtml(): string {
       100% { transform: scale(1); }
     }
 
+    /* ==========================================================================
+       Skill 15: Design Spells — Kinetic Motion Graphics, Stadium Pyro & Foil FX
+       ========================================================================== */
+    /* 1. Full-screen Celebratory Particle Canvas Overlay */
+    .cricos-celebration-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10000;
+      display: none;
+    }
+    .cricos-celebration-canvas.active {
+      display: block;
+    }
+
+    /* 2. Kinetic 3D Boundary Banner */
+    .kinetic-boundary-banner {
+      position: fixed;
+      top: 24%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      z-index: 10001;
+      pointer-events: none;
+      text-align: center;
+      padding: 1.25rem 2.5rem;
+      border-radius: 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 229, 153, 0.4);
+      border: 2px solid rgba(0, 229, 153, 0.6);
+      background: rgba(4, 7, 13, 0.85);
+      opacity: 0;
+    }
+    .kinetic-boundary-banner.active {
+      animation: bannerPopElastic 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes bannerPopElastic {
+      0% { transform: translate(-50%, -50%) scale(0.3) rotate(-6deg); opacity: 0; }
+      20% { transform: translate(-50%, -50%) scale(1.12) rotate(2deg); opacity: 1; }
+      35% { transform: translate(-50%, -50%) scale(0.98) rotate(0deg); opacity: 1; }
+      80% { transform: translate(-50%, -50%) scale(1) translateY(0); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.85) translateY(-30px); opacity: 0; }
+    }
+
+    /* 3. Holographic Foil Card Shimmer */
+    .holo-foil-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .holo-foil-card::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: linear-gradient(
+        115deg,
+        transparent 20%,
+        rgba(0, 229, 153, 0.12) 38%,
+        rgba(0, 210, 255, 0.28) 48%,
+        rgba(255, 215, 0, 0.22) 58%,
+        transparent 75%
+      );
+      transform: rotate(25deg) translateY(-100%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.7;
+      animation: holoFoilSweep 6s ease-in-out infinite;
+    }
+    @keyframes holoFoilSweep {
+      0%, 20% { transform: rotate(25deg) translateY(-120%); }
+      50%, 70% { transform: rotate(25deg) translateY(120%); }
+      100% { transform: rotate(25deg) translateY(-120%); }
+    }
+
+    /* 4. Live Match Harmonic Momentum Waveform */
+    .match-momentum-container {
+      position: relative;
+      height: 44px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-left: 3px solid var(--turf-emerald);
+      margin: 0.75rem 0;
+      display: flex;
+      align-items: center;
+      padding: 0 0.75rem;
+    }
+    .match-momentum-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .match-momentum-hud {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-size: 0.7rem;
+    }
+
+    /* 5. Cricket Ball Gyroscope Spin Visualizer */
+    .ball-gyro-widget {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.2rem 0.55rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+    }
+    .ball-gyro-sphere {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #FF4D6D 0%, #C9184A 55%, #590D22 100%);
+      box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.6), 0 0 8px rgba(255, 77, 109, 0.4);
+      position: relative;
+      transform-style: preserve-3d;
+      animation: ballGyroSpin 2.5s linear infinite;
+    }
+    .ball-gyro-seam {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        #FFF 0px,
+        #FFF 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      transform: translateX(-50%) rotate(15deg);
+    }
+    @keyframes ballGyroSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 6. Roll-In Ball Animation for Over Strip */
+    .ball-bubble.roll-in {
+      animation: ballRollIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes ballRollIn {
+      0% { transform: scale(0.4) rotate(-180deg) translateX(20px); opacity: 0; }
+      70% { transform: scale(1.14) rotate(12deg) translateX(-2px); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg) translateX(0); opacity: 1; }
+    }
+
+    /* Reduced Motion Safety */
+    @media (prefers-reduced-motion: reduce) {
+      .cricos-celebration-canvas,
+      .holo-foil-card::before,
+      .ball-gyro-sphere,
+      .ball-bubble.roll-in {
+        animation: none !important;
+      }
+      .kinetic-boundary-banner {
+        transition: opacity 0.15s ease !important;
+        animation: none !important;
+      }
+      .kinetic-boundary-banner.active {
+        opacity: 1 !important;
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+    }
+
     /* 3D Hub Engineering Tiles */
     .three-hub-tile {
       display: flex;
@@ -2957,6 +3132,10 @@ export function getDashboardHtml(): string {
 <body>
   <!-- Screen Reader Live Announcer Region (WCAG 2.2 AA) -->
   <div id="liveA11yAnnouncer" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Full-screen Celebratory Particle Canvas Overlay (Skill 15: Design Spells) -->
+  <canvas id="cricosCelebrationCanvas" class="cricos-celebration-canvas"></canvas>
+  <div id="kineticBoundaryBanner" class="kinetic-boundary-banner" role="status" aria-live="assertive"></div>
 
   <!-- Mobile Backdrop for responsive drawer -->
   <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebarMobile()"></div>
@@ -3240,6 +3419,28 @@ export function getDashboardHtml(): string {
           </div>
         </div>
 
+        <!-- Live Match Harmonic Momentum Waveform (Skill 15: Design Spells) -->
+        <div class="match-momentum-container" id="matchMomentumWaveContainer" data-tooltip="Live Match Harmonic Momentum: Real-time kinetic run rate tension vs DLS par curve">
+          <canvas class="match-momentum-canvas" id="matchMomentumCanvas"></canvas>
+          <div class="match-momentum-hud">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-size: 0.8rem;">⚡</span>
+              <strong style="color: var(--turf-emerald); font-family: var(--font-display, sans-serif); letter-spacing: 0.02em;">MATCH MOMENTUM WAVE</strong>
+              <span style="color: var(--text-muted); font-size: 0.65rem;">• Dual-Phase Harmonic Tension</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <div class="ball-gyro-widget" id="ballGyroscopeWidget" data-tooltip="Live delivery telemetry: Seam deviation 4.2° • 2,420 RPM Leg-Break">
+                <div class="ball-gyro-sphere">
+                  <div class="ball-gyro-seam"></div>
+                </div>
+                <span style="font-size: 0.65rem; color: #FFF; font-family: var(--font-mono, monospace); font-weight: 700;">142.4 <span style="color: var(--turf-emerald);">KM/H</span></span>
+                <span style="font-size: 0.62rem; color: var(--cyan); font-family: var(--font-mono, monospace);">2,420 RPM</span>
+              </div>
+              <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.2rem 0.55rem; font-size: 0.65rem; border-color: rgba(0,229,153,0.3); color: var(--turf-emerald);" onclick="window.CricOSMotionFX.triggerCelebration('SIX')" data-tooltip="Test Stadium Pyro &amp; Particle Explosion (Maximum Six FX)">🎆 Stadium FX</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Match Result Victory Banner -->
         <div id="matchResultBanner" style="display: none; background: rgba(0,229,153,0.15); border: 1px solid var(--turf-emerald); border-radius: 8px; padding: 0.85rem 1.25rem; margin-top: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
           <div style="display: flex; align-items: center; gap: 0.6rem;">
@@ -3328,6 +3529,7 @@ export function getDashboardHtml(): string {
             <button class="btn btn-secondary" onclick="sendFanCheer('💥 Boundary Expected!')" data-tooltip="Predict boundary next delivery" style="border-color: rgba(0, 210, 255, 0.4); color: var(--cyan);">💥 Boundary (+1)</button>
             <button class="btn btn-secondary" onclick="sendFanCheer('⚡ Maximum Six!')" data-tooltip="Call for a maximum 6" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple-light);">⚡ Sixer! (+1)</button>
             <button class="btn btn-secondary" onclick="sendFanCheer('🛡️ Wicket Alert!')" data-tooltip="Back the bowling team for a breakthrough" style="border-color: rgba(255, 51, 102, 0.4); color: var(--rose);">🛡️ Breakthrough (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('🎆 Stadium Celebration!')" data-tooltip="Trigger stadium fireworks, confetti, and celebratory pyro FX" style="border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald);">🎆 Stadium Pyro (+1)</button>
           </div>
 
           <!-- Fan Win Probability Prediction Poll -->
@@ -3656,7 +3858,7 @@ export function getDashboardHtml(): string {
         <!-- Bench, Reserves & Team Stats -->
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
           <!-- 21st.dev Athletic KPI & Career Stats Card (Embedded) -->
-          <div class="athletic-stats-card" id="embeddedPlayerStatsCard">
+          <div class="athletic-stats-card holo-foil-card" id="embeddedPlayerStatsCard">
             <div class="athletic-card-header">
               <div class="athletic-player-badge-wrap">
                 <div class="athletic-avatar" id="athleticAvatar">
@@ -7403,9 +7605,15 @@ cricos_active_sse_connections 1</pre>
         if (window.stadiumPitch && typeof window.stadiumPitch.start === 'function') {
           window.stadiumPitch.start();
         }
+        if (window.CricOSMotionFX && typeof window.CricOSMotionFX.startMomentumWave === 'function') {
+          window.CricOSMotionFX.startMomentumWave();
+        }
       } else {
         if (window.stadiumPitch && typeof window.stadiumPitch.stop === 'function') {
           window.stadiumPitch.stop();
+        }
+        if (window.CricOSMotionFX && typeof window.CricOSMotionFX.stopMomentumWave === 'function') {
+          window.CricOSMotionFX.stopMomentumWave();
         }
       }
 
@@ -7569,6 +7777,326 @@ cricos_active_sse_connections 1</pre>
       }),
       copyOnWrite: (source, patch) => Object.freeze(Object.assign({}, source, patch))
     });
+
+    // ==========================================================================
+    // Skill 15: Design Spells — Kinetic Motion Graphics & Stadium FX Engine
+    // ==========================================================================
+    const CricOSMotionFX = {
+      canvas: null,
+      ctx: null,
+      particles: [],
+      animId: null,
+      isActive: false,
+      momentumCanvas: null,
+      momentumCtx: null,
+      momentumAnimId: null,
+      momentumPhase: 0,
+      momentumObserver: null,
+
+      init() {
+        if (typeof document === 'undefined') return;
+        this.canvas = document.getElementById('cricosCelebrationCanvas');
+        if (this.canvas) {
+          this.ctx = this.canvas.getContext('2d');
+          this.resizeCanvas();
+          if (typeof window !== 'undefined') {
+            window.addEventListener('resize', () => this.resizeCanvas());
+          }
+        }
+        this.initMomentumWave();
+      },
+
+      resizeCanvas() {
+        if (!this.canvas) return;
+        const dpr = Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2);
+        const w = (typeof window !== 'undefined' ? window.innerWidth : 800);
+        const h = (typeof window !== 'undefined' ? window.innerHeight : 600);
+        this.canvas.width = w * dpr;
+        this.canvas.height = h * dpr;
+        if (this.ctx) {
+          this.ctx.scale(dpr, dpr);
+        }
+      },
+
+      triggerCelebration(type = 'SIX', options = {}) {
+        if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          if (typeof showToast === 'function') {
+            showToast(type === 'SIX' ? '🚀 MAXIMUM SIX!' : type === 'FOUR' ? '⚡ BOUNDARY FOUR!' : type === 'WICKET' ? '🎯 WICKET!' : '🎉 STADIUM CHEER!');
+          }
+          return;
+        }
+
+        if (!this.canvas || !this.ctx) {
+          this.init();
+        }
+        if (!this.canvas || !this.ctx) return;
+
+        this.canvas.classList.add('active');
+        this.isActive = true;
+
+        const w = typeof window !== 'undefined' ? window.innerWidth : 800;
+        const h = typeof window !== 'undefined' ? window.innerHeight : 600;
+        const centerX = options.x !== undefined ? options.x : w / 2;
+        const centerY = options.y !== undefined ? options.y : h * 0.38;
+
+        // Display Kinetic 3D Banner
+        const banner = document.getElementById('kineticBoundaryBanner');
+        if (banner) {
+          banner.classList.remove('active');
+          void banner.offsetWidth; // trigger reflow for animation restart
+
+          if (type === 'SIX') {
+            banner.innerHTML = '<div style="font-size: 2.2rem; filter: drop-shadow(0 0 16px rgba(0,229,153,0.8));">🚀</div><div style="font-family: var(--font-display, Chakra Petch, sans-serif); font-size: 2.4rem; font-weight: 900; color: #FFF; text-shadow: 0 0 20px #00E599, 0 0 40px #00E599; letter-spacing: 0.04em;">MAXIMUM SIX!</div><div style="font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--turf-emerald, #00E599); margin-top: 0.2rem;">108 METERS • TRAJECTORY: 28.4° HIGH ARC</div>';
+            banner.style.borderColor = 'rgba(0, 229, 153, 0.7)';
+            banner.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 229, 153, 0.5)';
+          } else if (type === 'FOUR') {
+            banner.innerHTML = '<div style="font-size: 2.2rem; filter: drop-shadow(0 0 16px rgba(0,210,255,0.8));">⚡</div><div style="font-family: var(--font-display, Chakra Petch, sans-serif); font-size: 2.4rem; font-weight: 900; color: #FFF; text-shadow: 0 0 20px #00D2FF, 0 0 40px #00D2FF; letter-spacing: 0.04em;">BOUNDARY FOUR!</div><div style="font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--cyan, #00D2FF); margin-top: 0.2rem;">ROARING TURF CUTTER • SPEED: 138.6 KM/H</div>';
+            banner.style.borderColor = 'rgba(0, 210, 255, 0.7)';
+            banner.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 210, 255, 0.5)';
+          } else if (type === 'WICKET') {
+            banner.innerHTML = '<div style="font-size: 2.2rem; filter: drop-shadow(0 0 16px rgba(255,51,102,0.8));">🎯</div><div style="font-family: var(--font-display, Chakra Petch, sans-serif); font-size: 2.4rem; font-weight: 900; color: #FFF; text-shadow: 0 0 20px #FF3366, 0 0 40px #FF3366; letter-spacing: 0.04em;">WICKET! TIMBER!</div><div style="font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--rose, #FF3366); margin-top: 0.2rem;">BOWLED OFF STUMP • DEPARTING BATTER DISMISSED</div>';
+            banner.style.borderColor = 'rgba(255, 51, 102, 0.7)';
+            banner.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 51, 102, 0.5)';
+          } else {
+            banner.innerHTML = '<div style="font-size: 2.2rem; filter: drop-shadow(0 0 16px rgba(192,132,252,0.8));">🎪</div><div style="font-family: var(--font-display, Chakra Petch, sans-serif); font-size: 2.2rem; font-weight: 900; color: #FFF; text-shadow: 0 0 20px #C084FC, 0 0 40px #C084FC; letter-spacing: 0.04em;">STADIUM ROAR!</div><div style="font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--purple-light, #C084FC); margin-top: 0.2rem;">CROWD NOISE: 104 dB • TURF PULSE SURGE</div>';
+            banner.style.borderColor = 'rgba(192, 132, 252, 0.7)';
+            banner.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(192, 132, 252, 0.5)';
+          }
+
+          banner.classList.add('active');
+          setTimeout(() => {
+            if (banner) banner.classList.remove('active');
+          }, 1800);
+        }
+
+        // Generate Particles & Shockwaves
+        const colors = type === 'SIX'
+          ? ['#00E599', '#00FFB2', '#FFD700', '#FFFFFF', '#00D2FF']
+          : type === 'FOUR'
+          ? ['#00D2FF', '#38BDF8', '#00E599', '#FFFFFF']
+          : type === 'WICKET'
+          ? ['#FF3366', '#FF5C8A', '#FFB800', '#FFFFFF', '#C084FC']
+          : ['#00E599', '#00D2FF', '#FFB800', '#FF3366', '#C084FC', '#FFFFFF'];
+
+        const count = type === 'SIX' ? 85 : type === 'FOUR' ? 60 : 70;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 4 + Math.random() * 12;
+          this.particles.push({
+            x: centerX,
+            y: centerY,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - (type === 'SIX' ? 3 : 1),
+            size: 3 + Math.random() * 6,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            alpha: 1,
+            decay: 0.016 + Math.random() * 0.016,
+            gravity: 0.22,
+            drag: 0.96,
+            rotation: Math.random() * Math.PI * 2,
+            vRot: (Math.random() - 0.5) * 0.2,
+            isSparkle: Math.random() > 0.4
+          });
+        }
+
+        // Add expanding shockwave rings
+        for (let r = 0; r < 3; r++) {
+          this.particles.push({
+            isRing: true,
+            x: centerX,
+            y: centerY,
+            radius: 5,
+            vRadius: 6 + r * 3,
+            color: colors[0],
+            alpha: 0.9,
+            decay: 0.024
+          });
+        }
+
+        this.startLoop();
+      },
+
+      startLoop() {
+        if (this.animId) return;
+
+        const animate = () => {
+          if (!this.ctx || !this.canvas) return;
+          const w = typeof window !== 'undefined' ? window.innerWidth : 800;
+          const h = typeof window !== 'undefined' ? window.innerHeight : 600;
+
+          this.ctx.clearRect(0, 0, w, h);
+
+          for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            p.alpha -= p.decay;
+
+            if (p.alpha <= 0) {
+              this.particles.splice(i, 1);
+              continue;
+            }
+
+            if (p.isRing) {
+              p.radius += p.vRadius;
+              this.ctx.save();
+              this.ctx.beginPath();
+              this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+              this.ctx.strokeStyle = p.color;
+              this.ctx.lineWidth = 2.5 * p.alpha;
+              this.ctx.globalAlpha = p.alpha;
+              this.ctx.stroke();
+              this.ctx.restore();
+            } else {
+              p.vx *= p.drag;
+              p.vy = (p.vy * p.drag) + p.gravity;
+              p.x += p.vx;
+              p.y += p.vy;
+              p.rotation += p.vRot;
+
+              this.ctx.save();
+              this.ctx.translate(p.x, p.y);
+              this.ctx.rotate(p.rotation);
+              this.ctx.globalAlpha = p.alpha;
+              this.ctx.fillStyle = p.color;
+
+              if (p.isSparkle) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, -p.size);
+                this.ctx.lineTo(p.size * 0.35, 0);
+                this.ctx.lineTo(0, p.size);
+                this.ctx.lineTo(-p.size * 0.35, 0);
+                this.ctx.closePath();
+                this.ctx.fill();
+              } else {
+                this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+              }
+              this.ctx.restore();
+            }
+          }
+
+          if (this.particles.length > 0) {
+            this.animId = requestAnimationFrame(animate);
+          } else {
+            this.stopLoop();
+          }
+        };
+
+        this.animId = requestAnimationFrame(animate);
+      },
+
+      stopLoop() {
+        if (this.animId && typeof cancelAnimationFrame !== 'undefined') {
+          cancelAnimationFrame(this.animId);
+          this.animId = null;
+        }
+        if (this.ctx && this.canvas) {
+          const w = typeof window !== 'undefined' ? window.innerWidth : 800;
+          const h = typeof window !== 'undefined' ? window.innerHeight : 600;
+          this.ctx.clearRect(0, 0, w, h);
+          this.canvas.classList.remove('active');
+        }
+        this.particles = [];
+        this.isActive = false;
+      },
+
+      initMomentumWave() {
+        this.momentumCanvas = document.getElementById('matchMomentumCanvas');
+        if (!this.momentumCanvas) return;
+        this.momentumCtx = this.momentumCanvas.getContext('2d');
+        if (!this.momentumCtx) return;
+
+        this.resizeMomentumCanvas();
+        if (typeof window !== 'undefined') {
+          window.addEventListener('resize', () => this.resizeMomentumCanvas());
+        }
+
+        // IntersectionObserver to pause rendering when off-screen
+        if (typeof IntersectionObserver !== 'undefined' && this.momentumCanvas) {
+          try {
+            this.momentumObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  this.startMomentumWave();
+                } else {
+                  this.stopMomentumWave();
+                }
+              });
+            }, { threshold: 0.05 });
+            this.momentumObserver.observe(this.momentumCanvas);
+          } catch (_) {
+            this.startMomentumWave();
+          }
+        } else {
+          this.startMomentumWave();
+        }
+      },
+
+      resizeMomentumCanvas() {
+        if (!this.momentumCanvas) return;
+        const rect = this.momentumCanvas.getBoundingClientRect();
+        const dpr = Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2);
+        this.momentumCanvas.width = (rect.width || 600) * dpr;
+        this.momentumCanvas.height = (rect.height || 44) * dpr;
+        if (this.momentumCtx) {
+          this.momentumCtx.scale(dpr, dpr);
+        }
+      },
+
+      startMomentumWave() {
+        if (this.momentumAnimId) return;
+        if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          return;
+        }
+
+        const drawWave = () => {
+          if (!this.momentumCtx || !this.momentumCanvas) return;
+          const rect = this.momentumCanvas.getBoundingClientRect();
+          const w = rect.width || 600;
+          const h = rect.height || 44;
+          const ctx = this.momentumCtx;
+
+          ctx.clearRect(0, 0, w, h);
+          this.momentumPhase += 0.024;
+
+          // Draw Primary Turf Emerald Wave
+          ctx.beginPath();
+          ctx.moveTo(0, h / 2);
+          for (let x = 0; x <= w; x += 4) {
+            const y = h / 2 + Math.sin(x * 0.022 + this.momentumPhase) * 11 + Math.sin(x * 0.045 - this.momentumPhase * 0.7) * 4;
+            ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = '#00E599';
+          ctx.lineWidth = 2.2;
+          ctx.shadowColor = 'rgba(0, 229, 153, 0.6)';
+          ctx.shadowBlur = 8;
+          ctx.stroke();
+
+          // Draw Secondary Cyan Chase Dynamic Wave
+          ctx.beginPath();
+          ctx.moveTo(0, h / 2);
+          for (let x = 0; x <= w; x += 4) {
+            const y = h / 2 + Math.cos(x * 0.018 - this.momentumPhase * 1.2) * 8 + Math.cos(x * 0.038 + this.momentumPhase * 0.5) * 3;
+            ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = '#00D2FF';
+          ctx.lineWidth = 1.4;
+          ctx.shadowColor = 'rgba(0, 210, 255, 0.5)';
+          ctx.shadowBlur = 6;
+          ctx.stroke();
+
+          this.momentumAnimId = requestAnimationFrame(drawWave);
+        };
+
+        this.momentumAnimId = requestAnimationFrame(drawWave);
+      },
+
+      stopMomentumWave() {
+        if (this.momentumAnimId && typeof cancelAnimationFrame !== 'undefined') {
+          cancelAnimationFrame(this.momentumAnimId);
+          this.momentumAnimId = null;
+        }
+      }
+    };
+    window.CricOSMotionFX = CricOSMotionFX;
 
     // ==========================================================================
     // Emil Kowalski Sonner Stacked Toast Engine (Skill 6 - ask-sonner)
@@ -8133,6 +8661,9 @@ cricos_active_sse_connections 1</pre>
       const counter = document.getElementById('fanTotalCheers');
       if (counter) counter.textContent = fanTotalCheers.toLocaleString();
       showToast('📢 Cheer Sent: ' + cheerText);
+      if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
+        window.CricOSMotionFX.triggerCelebration('CHEER');
+      }
       const feed = document.getElementById('scoringFeed');
       if (feed) {
         const item = document.createElement('div');
@@ -8747,6 +9278,12 @@ cricos_active_sse_connections 1</pre>
       if (batRuns === 6) studioStriker.sixes += 1;
       partnership.runs += batRuns;
       partnership.balls += 1;
+
+      if (batRuns === 6 && window.CricOSMotionFX) {
+        window.CricOSMotionFX.triggerCelebration('SIX');
+      } else if (batRuns === 4 && window.CricOSMotionFX) {
+        window.CricOSMotionFX.triggerCelebration('FOUR');
+      }
 
       // Add shot to wagon wheel
       const zoneDef = SHOT_ZONES_DATA.find(z => z.id === currentSelectedZone);
@@ -11220,6 +11757,8 @@ cricos_active_sse_connections 1</pre>
         window.playerCard3D.stop();
       } else if (modalId === 'modal3DBatCustomizer' && window.batConfigurator && typeof window.batConfigurator.stop === 'function') {
         window.batConfigurator.stop();
+      } else if (modalId === 'modal3DWagonWheel' && window.wagonWheel3D && typeof window.wagonWheel3D.stop === 'function') {
+        window.wagonWheel3D.stop();
       }
     }
     window.stop3DModalViewer = stop3DModalViewer;
@@ -14124,7 +14663,7 @@ cricos_active_sse_connections 1</pre>
         cls = 'single';
       }
 
-      bubble.className = 'ball-bubble ' + cls;
+      bubble.className = 'ball-bubble ' + cls + ' roll-in';
       bubble.textContent = label;
 
       strip.appendChild(bubble);
@@ -14267,6 +14806,11 @@ cricos_active_sse_connections 1</pre>
         if (isWicket) triggerHaptic('wicket');
         else if (batRuns === 4 || batRuns === 6) triggerHaptic('boundary');
         else triggerHaptic('default');
+      }
+      if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
+        if (isWicket) window.CricOSMotionFX.triggerCelebration('WICKET');
+        else if (batRuns === 6) window.CricOSMotionFX.triggerCelebration('SIX');
+        else if (batRuns === 4) window.CricOSMotionFX.triggerCelebration('FOUR');
       }
       sequence++;
       const clientEventId = 'evt-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
@@ -15456,6 +16000,9 @@ cricos_active_sse_connections 1</pre>
       updateProtoPickerHighlight();
     }
     applyRolePermissions(currentUser.persona);
+    if (typeof CricOSMotionFX !== 'undefined') {
+      setTimeout(() => CricOSMotionFX.init(), 100);
+    }
   </script>
 </body>
 </html>`;

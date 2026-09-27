@@ -1,32 +1,40 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 12:20:00
-**Version:** 1.0.0-phase2aw (Motion Performance Optimization: Hardware-Accelerated Compositor Transforms, Three.js 3D WebGL rAF Stop/Cancel Lifecycle & Visibility Observers, Zero Layout Thrashing & 394 Passing Tests)  
+**Last Updated:** 2026-09-27 12:40:00
+**Version:** 1.0.0-phase2ax (Kinetic Motion Graphics & Stadium FX Engine: Hardware-Accelerated Compositor Transforms, Three.js 3D WebGL rAF Lifecycle Cancellation, Live Match Harmonic Momentum Wave, Celebratory Particle Shockwaves & 410 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AW Completed — Motion Performance Optimization & Hardware-Accelerated Compositor Lifecycle across Web Console, Mobile App & 3D WebGL Experiences:
-  - **1. Hardware-Accelerated Mobile Sidebar Drawer (`apps/api/src/ui/dashboard.ts`)**:
+- **Active Phase**: Phase 2AX Completed — Kinetic Motion Graphics, Stadium FX Engine & Zero-Layout-Thrashing Compositor Architecture across Web Console, Mobile App & 3D Experiences:
+  - **1. Hardware-Accelerated Compositor Mobile Drawer (`apps/api/src/ui/dashboard.ts`)**:
     - Replaced layout-animating `left: -260px` -> `left: 0` with GPU compositor transform `left: 0; transform: translateX(-100%);` and `.app-sidebar.mobile-open { transform: translateX(0); }`.
-    - Transition upgraded to `transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);` with `will-change: transform;`, eliminating forced layout recalculation and paint on every frame of drawer animation.
+    - Upgraded transition to `transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);` with `will-change: transform;`, eliminating forced layout recalculation and paint on every frame of drawer animation.
   - **2. Three.js rAF Animation Lifecycle & WebGL Resource Reclamation (`apps/api/src/ui/dashboard.ts`)**:
-    - Implemented explicit `start()`, `stop()`, and `dispose()` methods across all four 3D viewer controllers (`ThreeJsStadiumPitch`, `ThreeJsTrophyCabinet`, `ThreeJsPlayerCard`, `ThreeJsBatConfigurator`).
-    - Added `IntersectionObserver` visibility observer to `ThreeJsStadiumPitch` canvas that automatically halts the 60fps render loop when scrolled out of viewport and resumes upon scroll into view.
-    - Added tab-switching pause/resume in `switchTab()` that automatically stops `window.stadiumPitch` when navigating away from the Match Center scoring tab and resumes it upon return.
-    - Implemented universal modal dismissal hook `stop3DModalViewer(modalId)` wired into `closeModal()`, global `Escape` key handler, modal backdrop clicks, and `MutationObserver` on `.modal-backdrop`, guaranteeing 3D render loops immediately terminate upon modal closure.
-  - **3. Mobile Athletic Spectrum Bar Compositor Transition (`apps/api/src/ui/mobile-view.ts`)**:
-    - Replaced layout-triggering `height` transition with `transform-origin: bottom; transition: transform 0.25s ease, background-color 0.25s ease;`.
-  - **4. Codebase-wide Invariant Enforcement**:
-    - Zero `transition: all` across all stylesheets and web components (strict Emil Kowalski invariant).
-    - Zero `window.addEventListener('scroll')` (using performant CSS and IntersectionObservers).
-  - **5. Regression Testing & Parity Verification**:
-    - Added Skill 14 `fixing-motion-performance` unit tests in `tests/36-emil-animation-engine.test.ts`.
-    - Added Section 15 `Three.js rAF Stop & Cancel Lifecycle Management` unit tests in `tests/37-threejs-interaction.test.ts`.
-    - 100% automated test pass rate across all 394 tests / 120 suites (`./pipeline.sh test --summary`).
+    - Implemented explicit `stop()` methods with `cancelAnimationFrame(this.animFrameId)` and `this.animFrameId = null` across all 3D viewer controllers (`ThreeJsStadiumPitch`, `ThreeJsTrophyCabinet`, `ThreeJsPlayerCard`, `ThreeJsBatConfigurator`).
+    - Added `stop3DModalViewer(modalId)` universal dismissal hook wired into `closeModal()`, global `Escape` key handler, modal backdrop clicks, and `MutationObserver` on `.modal-backdrop`, guaranteeing 3D render loops immediately terminate upon modal closure.
+    - Added `IntersectionObserver` visibility observer to `ThreeJsStadiumPitch` canvas and tab-switching hooks in `switchTab()` that automatically pause render loops when hidden.
+  - **3. Skill 15 Design Spells — Kinetic Motion Graphics & Stadium FX Engine (`dashboard.ts`, `mobile-view.ts`)**:
+    - Fullscreen celebration overlay canvas (`#cricosCelebrationCanvas`) & dynamic elastic 3D banner (`#kineticBoundaryBanner`) with `@keyframes bannerPopElastic`.
+    - Dynamic particle explosions with gravity, velocity drag, rotation, and expanding shockwave rings for `SIX` (emerald/gold particles + high arc trajectory), `FOUR` (cyan turf cutter), `WICKET` (ruby timber stumps shattered), and `CHEER` (stadium crowd roar).
+    - Hooked into `scoreDelivery()` and `recordStudioBall()` for boundaries and wickets.
+    - Hooked into `sendFanCheer()` with new "Stadium Pyro (+1)" celebratory button.
+    - Hooked into mobile `scoreBall()` and `promptWicketModal.onConfirm`.
+  - **4. Live Match Harmonic Momentum Waveform (`dashboard.ts`, `mobile-view.ts`)**:
+    - Real-time harmonic wave canvas (`#matchMomentumCanvas`) rendering dual-phase harmonic tension curve: primary `#00E599` emerald wave with glow shadow and secondary `#00D2FF` cyan chase dynamic wave.
+    - Off-screen auto-pausing via `IntersectionObserver` and tab switching in `switchTab()` (`startMomentumWave()`, `stopMomentumWave()`) preventing background CPU/GPU drain.
+  - **5. Gyroscopic Cricket Ball Widget (`dashboard.ts`, `mobile-view.ts`)**:
+    - Continuous seam rotation widget (`.ball-gyro-widget`, `.ball-gyro-sphere`, `.ball-gyro-seam`, `@keyframes ballGyroSpin`) with live ball speed and spin telemetry.
+  - **6. Holo-Foil Sweeping Sheen (`dashboard.ts`, `mobile-view.ts`)**:
+    - Added `.holo-foil-card` with iridescent gradient sweep (`@keyframes holoFoilSweep`) to embedded athletic stats card (`#embeddedPlayerStatsCard`).
+  - **7. Regression Testing & Parity Verification**:
+    - Added comprehensive regression test suite `tests/47-motion-performance-and-design-spells.test.ts` with 16 assertions across 6 suites.
+    - Updated `tests/README.md` coverage map with test 47 specifications.
+    - 100% automated test pass rate across all 410 tests / 127 suites (`./pipeline.sh test --summary`).
     - Rule 6 single-file parity verified byte-for-byte between root `index.html` and `dist/index.html`.
+- **Preceding Phase**: Phase 2AW Completed — Motion Performance Optimization & Hardware-Accelerated Compositor Lifecycle across Web Console, Mobile App & 3D WebGL Experiences.
 - **Preceding Phase**: Phase 2AV Completed — Comprehensive UI/UX Design Audit & High-Agency Polish across Web Console, Mobile App & Distribution Assets:
   - **1. WCAG 2.2 AA Touch Ergonomics & Navigation Target Sizing (`apps/api/src/ui/mobile-view.ts`)**:
     - Upgraded `.mobile-nav-item` to satisfy WCAG 2.2 Criterion 2.5.8 target size requirements with `min-height: 44px; min-width: 44px; justify-content: center;` and smooth micro-touch feedback (`scale(0.97)`).
