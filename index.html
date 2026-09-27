@@ -2612,6 +2612,53 @@
       border-radius: 4px !important;
     }
 
+    body[data-theme="swiss"] .three-stadium-viewport {
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 6px !important;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+    }
+    body[data-theme="swiss"] .three-camera-bar,
+    body[data-theme="swiss"] .three-sub-bar {
+      background: rgba(255, 255, 255, 0.96) !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 6px !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+    }
+    body[data-theme="swiss"] .three-cam-btn {
+      background: #F8FAFC !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #475569 !important;
+      border-radius: 4px !important;
+    }
+    body[data-theme="swiss"] .three-cam-btn:hover {
+      background: #EDF2F7 !important;
+      color: #0F172A !important;
+      border-color: #94A3B8 !important;
+    }
+    body[data-theme="swiss"] .three-cam-btn.active {
+      background: #0F172A !important;
+      color: #FFFFFF !important;
+      border-color: #0F172A !important;
+      box-shadow: none !important;
+    }
+    body[data-theme="swiss"] .three-cam-btn.accent {
+      border-color: #0284C7 !important;
+      color: #0284C7 !important;
+      background: #F0F9FF !important;
+    }
+    body[data-theme="swiss"] .three-cam-btn.accent.active {
+      background: #0284C7 !important;
+      color: #FFFFFF !important;
+      border-color: #0284C7 !important;
+      box-shadow: none !important;
+    }
+    body[data-theme="swiss"] .three-instructions-badge {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #475569 !important;
+      border-radius: 4px !important;
+    }
+
     /* 2. Nordic Editorial Theme (Warm Oat Paper, Curvature, Organic Earth & Pine) */
     body[data-theme="nordic"],
     html[data-theme="nordic"] {
@@ -2809,6 +2856,53 @@
       background: #FCFBF8 !important;
       border: 1px solid #E6DFD5 !important;
       border-radius: 12px !important;
+    }
+
+    body[data-theme="nordic"] .three-stadium-viewport {
+      border: 1.5px solid #E6DFD5 !important;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 24px rgba(68, 64, 60, 0.1) !important;
+    }
+    body[data-theme="nordic"] .three-camera-bar,
+    body[data-theme="nordic"] .three-sub-bar {
+      background: rgba(252, 251, 248, 0.94) !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 12px !important;
+      box-shadow: 0 4px 12px rgba(68, 64, 60, 0.08) !important;
+    }
+    body[data-theme="nordic"] .three-cam-btn {
+      background: #F5F0E8 !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #57534E !important;
+      border-radius: 8px !important;
+    }
+    body[data-theme="nordic"] .three-cam-btn:hover {
+      background: #EFE9DF !important;
+      color: #292524 !important;
+      border-color: #D6D3D1 !important;
+    }
+    body[data-theme="nordic"] .three-cam-btn.active {
+      background: #15803D !important;
+      color: #FFFFFF !important;
+      border-color: #15803D !important;
+      box-shadow: 0 2px 6px rgba(21, 128, 61, 0.25) !important;
+    }
+    body[data-theme="nordic"] .three-cam-btn.accent {
+      border-color: #0369A1 !important;
+      color: #0369A1 !important;
+      background: #F0F9FF !important;
+    }
+    body[data-theme="nordic"] .three-cam-btn.accent.active {
+      background: #0369A1 !important;
+      color: #FFFFFF !important;
+      border-color: #0369A1 !important;
+      box-shadow: 0 2px 6px rgba(3, 105, 161, 0.25) !important;
+    }
+    body[data-theme="nordic"] .three-instructions-badge {
+      background: rgba(252, 251, 248, 0.92) !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #78716C !important;
+      border-radius: 8px !important;
     }
 
     /* 3. Stadium Night Theme (High-Intensity Broadcast Glassmorphism & Floodlights) */
@@ -3053,6 +3147,19 @@
       align-items: center;
       justify-content: center;
       user-select: none;
+      transition: max-width var(--duration-normal) var(--ease-out);
+    }
+    .wagon-wheel-card.is-3d .wagon-wheel-container,
+    .wagon-wheel-container.is-3d {
+      max-width: 100% !important;
+      aspect-ratio: auto !important;
+      border-radius: 14px !important;
+      margin: 0.5rem 0 0.85rem 0 !important;
+      display: block !important;
+    }
+    .wagon-wheel-card.is-3d .field-zone-btn,
+    .wagon-wheel-container.is-3d .field-zone-btn {
+      display: none !important;
     }
     .wagon-wheel-svg {
       width: 100%;
@@ -3225,62 +3332,83 @@
     .three-stadium-viewport {
       position: relative;
       width: 100%;
-      aspect-ratio: 1;
-      max-width: 360px;
-      margin: 0.75rem auto 1.25rem auto;
-      border-radius: 50%;
+      height: 440px;
+      margin: 0;
+      border-radius: 14px;
       overflow: hidden;
       background: radial-gradient(circle at 50% 50%, #0E3324 0%, #092418 60%, #05170F 90%, #030C08 100%);
       border: 2px solid rgba(0, 229, 153, 0.4);
-      box-shadow: 0 0 24px rgba(0, 229, 153, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 0 50px rgba(0, 0, 0, 0.85);
       user-select: none;
       touch-action: none;
+    }
+    .three-stadium-viewport canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
     }
     .three-camera-bar {
       position: absolute;
       top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 8px;
+      right: 8px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 3px;
-      max-width: 95%;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
       background: rgba(4, 7, 13, 0.90);
-      backdrop-filter: blur(10px);
-      padding: 3px 6px;
-      border-radius: 20px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 4px 6px;
+      border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.14);
       z-index: 15;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .three-camera-bar::-webkit-scrollbar {
+      display: none;
     }
     .three-cam-btn {
-      background: transparent;
-      border: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: #94A3B8;
-      font-size: 0.60rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      padding: 0.18rem 0.42rem;
-      border-radius: 12px;
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+      transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-shrink: 0;
     }
     .three-cam-btn:hover {
       color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
     }
     .three-cam-btn.active {
-      background: var(--turf-emerald);
-      color: #04070D;
+      background: var(--turf-emerald) !important;
+      color: #04070D !important;
+      border-color: var(--turf-emerald) !important;
+      font-weight: 800;
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.4);
     }
     .three-cam-btn.accent {
       border: 1px solid rgba(0, 210, 255, 0.35);
       color: var(--cyan);
     }
     .three-cam-btn.accent.active {
-      background: var(--cyan);
-      color: #04070D;
-      border-color: var(--cyan);
+      background: var(--cyan) !important;
+      color: #04070D !important;
+      border-color: var(--cyan) !important;
+      font-weight: 800;
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
     }
     .three-fallback-notice {
       position: absolute;
@@ -3313,19 +3441,20 @@
     }
     .three-instructions-badge {
       position: absolute;
-      bottom: 42px;
+      bottom: 46px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       font-family: var(--font-mono);
-      color: rgba(255, 255, 255, 0.65);
+      color: rgba(255, 255, 255, 0.7);
       pointer-events: none;
-      background: rgba(4, 7, 13, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 2px 8px;
-      border-radius: 10px;
+      background: rgba(4, 7, 13, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 3px 10px;
+      border-radius: 12px;
       white-space: nowrap;
       z-index: 12;
+      backdrop-filter: blur(8px);
     }
     .three-sub-bar {
       position: absolute;
@@ -3335,10 +3464,29 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.35rem;
+      gap: 6px;
+      background: rgba(4, 7, 13, 0.90);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 4px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
       z-index: 15;
       pointer-events: auto;
-      flex-wrap: wrap;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .three-sub-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .three-bar-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
     .three-modal-canvas-wrap {
       width: 100%;
@@ -5118,7 +5266,7 @@
             </div>
 
             <!-- Stadium Outfield SVG Visualizer -->
-            <div class="wagon-wheel-container">
+            <div class="wagon-wheel-container" id="wagonWheelContainer">
               <svg class="wagon-wheel-svg" id="wagonWheelSvg" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <!-- Stadium Grass Radial Gradient -->
@@ -5239,28 +5387,32 @@
                 
                 <!-- 3D Camera Controls Toolbar -->
                 <div class="three-camera-bar" id="threeCameraBar">
-                  <button type="button" class="three-cam-btn active" id="btnCamOrbit" onclick="setThreeCameraPreset('ORBIT')" data-tooltip="Interactive Orbit Camera (Drag to rotate, scroll/pinch to zoom)">🔄 Orbit</button>
-                  <button type="button" class="three-cam-btn" id="btnCamBatsman" onclick="setThreeCameraPreset('BATSMAN')" data-tooltip="Batsman Striker POV View">🏏 Batsman</button>
-                  <button type="button" class="three-cam-btn" id="btnCamElevation" onclick="setThreeCameraPreset('ELEVATION')" data-tooltip="Broadcast Elevation View (35° side angle)">📐 Elevation</button>
-                  <button type="button" class="three-cam-btn" id="btnCamTopDown" onclick="setThreeCameraPreset('TOP_DOWN')" data-tooltip="Direct Top-Down Overhead View">⬇ Top</button>
-                  <button type="button" class="three-cam-btn" id="btnCamGrandstand" onclick="setThreeCameraPreset('GRANDSTAND')" data-tooltip="Upper Grandstand Fan Seat POV">🎟 Grandstand</button>
-                  <button type="button" class="three-cam-btn" id="btnCamPavilion" onclick="setThreeCameraPreset('PAVILION')" data-tooltip="Long-On Members Pavilion POV">🏟 Pavilion</button>
-                  <button type="button" class="three-cam-btn" id="btnCamUmpire" onclick="setThreeCameraPreset('UMPIRE')" data-tooltip="Bowler's End Match Umpire POV">👨‍⚖️ Umpire</button>
-                  <button type="button" class="three-cam-btn" id="btnCamAuto" onclick="toggleThreeAutoRotate()" data-tooltip="Toggle 360° Broadcast Auto-Orbit Camera">🛰 Auto-Cam</button>
-                  <button type="button" class="three-cam-btn accent" id="btnThreeSubMode" onclick="toggleThreeVisualMode()" data-tooltip="Switch to 3D Hawkeye Ball-Tracking Pitch Map">🎯 Hawkeye</button>
-                  <button type="button" class="three-cam-btn" id="btnCamReset" onclick="resetThreeCamera()" data-tooltip="Reset Camera Angle &amp; Distance">↺ Reset</button>
+                  <div class="three-bar-group camera-group">
+                    <button type="button" class="three-cam-btn active" id="btnCamOrbit" onclick="setThreeCameraPreset('ORBIT')" data-tooltip="Interactive Orbit Camera (Drag to rotate, scroll/pinch to zoom)">🔄 Orbit</button>
+                    <button type="button" class="three-cam-btn" id="btnCamBatsman" onclick="setThreeCameraPreset('BATSMAN')" data-tooltip="Batsman Striker POV View">🏏 Batsman</button>
+                    <button type="button" class="three-cam-btn" id="btnCamElevation" onclick="setThreeCameraPreset('ELEVATION')" data-tooltip="Broadcast Elevation View (35° side angle)">📐 Elevation</button>
+                    <button type="button" class="three-cam-btn" id="btnCamTopDown" onclick="setThreeCameraPreset('TOP_DOWN')" data-tooltip="Direct Top-Down Overhead View">⬇ Top</button>
+                    <button type="button" class="three-cam-btn" id="btnCamGrandstand" onclick="setThreeCameraPreset('GRANDSTAND')" data-tooltip="Upper Grandstand Fan Seat POV">🎟 Grandstand</button>
+                    <button type="button" class="three-cam-btn" id="btnCamPavilion" onclick="setThreeCameraPreset('PAVILION')" data-tooltip="Long-On Members Pavilion POV">🏟 Pavilion</button>
+                    <button type="button" class="three-cam-btn" id="btnCamUmpire" onclick="setThreeCameraPreset('UMPIRE')" data-tooltip="Bowler's End Match Umpire POV">👨‍⚖️ Umpire</button>
+                  </div>
+                  <div class="three-bar-group action-group">
+                    <button type="button" class="three-cam-btn" id="btnCamAuto" onclick="toggleThreeAutoRotate()" data-tooltip="Toggle 360° Broadcast Auto-Orbit Camera">🛰 Auto-Cam</button>
+                    <button type="button" class="three-cam-btn accent" id="btnThreeSubMode" onclick="toggleThreeVisualMode()" data-tooltip="Switch to 3D Hawkeye Ball-Tracking Pitch Map">🎯 Hawkeye</button>
+                    <button type="button" class="three-cam-btn" id="btnCamReset" onclick="resetThreeCamera()" data-tooltip="Reset Camera Angle &amp; Distance">↺ Reset</button>
+                  </div>
                 </div>
 
                 <!-- 3D Visual Modes & Stadium Lighting Sub-Bar -->
                 <div class="three-sub-bar" id="threeSubBar">
-                  <div style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
+                  <div class="three-bar-group mode-group">
                     <button type="button" class="three-cam-btn active" id="btnModeWagon" onclick="setThreeVisualMode('WAGON')" data-tooltip="3D Wagon Wheel Outfield Shot Trajectories">🏏 Wagon</button>
                     <button type="button" class="three-cam-btn" id="btnModeHawkeye" onclick="setThreeVisualMode('HAWKEYE')" data-tooltip="3D Hawkeye Ball-Tracking Pitch Length Map">🎯 Hawkeye</button>
                     <button type="button" class="three-cam-btn" id="btnModeFusion" onclick="setThreeVisualMode('FUSION')" data-tooltip="Simultaneous Pitch Delivery &amp; Shot Boundary Fusion">🔀 Fusion</button>
                     <button type="button" class="three-cam-btn" id="btnModeFielders" onclick="setThreeVisualMode('FIELD')" data-tooltip="11 3D Fielders with Dynamic Catch Cones &amp; Radius">👥 Fielders</button>
                     <button type="button" class="three-cam-btn accent" id="btnModeDrs" onclick="setThreeVisualMode('DRS')" data-tooltip="Procedural DRS LBW Ball-Tracking Review &amp; Stumps Collision">⚖️ DRS Review</button>
                   </div>
-                  <div style="display: flex; gap: 0.25rem;">
+                  <div class="three-bar-group lighting-group">
                     <button type="button" class="three-cam-btn" id="btnLightDay" onclick="setThreeStadiumLighting('DAY')" data-tooltip="Afternoon Stadium Sunlight">☀️ Day</button>
                     <button type="button" class="three-cam-btn" id="btnLightDusk" onclick="setThreeStadiumLighting('DUSK')" data-tooltip="Golden Hour Dusk Twilight">🌅 Dusk</button>
                     <button type="button" class="three-cam-btn active" id="btnLightNight" onclick="setThreeStadiumLighting('NIGHT')" data-tooltip="Floodlit Night Match Arena">🌙 Night</button>
@@ -12734,8 +12886,16 @@ cricos_active_sse_connections 1</pre>
       const btn3d = document.getElementById('btnWagonMode3D');
       const svgEl = document.getElementById('wagonWheelSvg');
       const threeViewport = document.getElementById('threeJsStadiumViewport');
+      const card = document.getElementById('wagonWheelCard') || (threeViewport ? threeViewport.closest('.wagon-wheel-card') : null);
+      const container = document.getElementById('wagonWheelContainer') || (threeViewport ? (threeViewport.closest('.wagon-wheel-container') || threeViewport.parentElement) : null);
 
       if (mode === '3D') {
+        if (card) card.classList.add('is-3d');
+        if (container) container.classList.add('is-3d');
+        document.querySelectorAll('.field-zone-btn').forEach(btn => {
+          btn.style.display = 'none';
+        });
+
         if (btn2d) btn2d.classList.remove('active');
         if (btn3d) btn3d.classList.add('active');
         if (svgEl) svgEl.style.display = 'none';
@@ -12750,8 +12910,22 @@ cricos_active_sse_connections 1</pre>
             window.stadiumPitch.renderShots();
           }
         }
+        setTimeout(() => {
+          if (window.stadiumPitch) {
+            window.stadiumPitch.resize();
+            if (window.stadiumPitch.visualMode === 'WAGON') {
+              window.stadiumPitch.renderShots();
+            }
+          }
+        }, 50);
         showToast('Switched to 3D WebGL Stadium: Drag to orbit, scroll to zoom, click shots to inspect');
       } else {
+        if (card) card.classList.remove('is-3d');
+        if (container) container.classList.remove('is-3d');
+        document.querySelectorAll('.field-zone-btn').forEach(btn => {
+          btn.style.display = '';
+        });
+
         if (btn3d) btn3d.classList.remove('active');
         if (btn2d) btn2d.classList.add('active');
         if (threeViewport) threeViewport.style.display = 'none';

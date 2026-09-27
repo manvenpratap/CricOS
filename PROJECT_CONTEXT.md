@@ -1,14 +1,35 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 22:15:00
-**Version:** 1.0.0-phase2bf (Teams & Rosters Modals, Join Team Dialog & Expand Analytics Drawer Functional Parity with 539 Passing Tests)  
+**Last Updated:** 2026-09-27 22:40:00
+**Version:** 1.0.0-phase2bg (3D Stadium Viewport & Toolbar UI Fix Engine with 548 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BF Completed — Teams & Rosters Modals, Join Team Dialog & Expand Analytics Drawer E2E Suite:
+- **Active Phase**: Phase 2BG Completed — 3D Stadium Viewport & Toolbar UI Fix Engine:
+  - **1. Elimination of 2D Field Zone Button Clutter (`dashboard.ts`)**:
+    - Resolved UI defect where all 8 outer perimeter 2D sector buttons (`Third Man 1r`, `Fine Leg 2r`, `Point 4r`, `Sq Leg 1r`, `Cover 8r`, `Mid Wkt 8r`, `Long Off 4r`, `Long On 6r`) floated over the 3D stadium canvas.
+    - Added scoped CSS rule `.wagon-wheel-card.is-3d .field-zone-btn, .wagon-wheel-container.is-3d .field-zone-btn { display: none !important; }`.
+    - Updated `setWagonDisplayMode(mode)` to automatically toggle `.is-3d` on `#wagonWheelCard` and `#wagonWheelContainer` and hide/restore buttons.
+  - **2. Expansive 3D Viewport Geometry & Resizing (`dashboard.ts`)**:
+    - Expanded 3D stadium container from cramped 320x320px circle to full card width (`width: 100%`) with an expansive 440px height and sleek rounded rectangular frame (`border-radius: 14px`).
+    - Added deep turf radial gradient with 2px emerald broadcast border and 50px inset ambient lighting shadow.
+    - Updated `ThreeJsStadiumPitch.resize()` to immediately read client width and height upon switching, with a 50ms reflow fallback ensuring zero distortion.
+  - **3. Sleek Docked Single-Strip Glass Toolbars (`dashboard.ts`)**:
+    - Restructured `#threeCameraBar` into `.three-bar-group.camera-group` (7 camera angles) and `.three-bar-group.action-group` (Auto-Cam, Hawkeye sub-mode, Reset) in a single docked strip with `overflow-x: auto` and hidden scrollbars.
+    - Restructured `#threeSubBar` into `.three-bar-group.mode-group` (Wagon, Hawkeye, Fusion, Fielders, DRS Review) and `.three-bar-group.lighting-group` (Day, Dusk, Night) in a single docked strip.
+    - Reduced toolbar height from 155px/76px multi-line wrapping to clean 34px strips, freeing over 340px of clear field visibility.
+  - **4. Swiss Minimalist & Nordic Editorial Theme Overrides (`dashboard.ts`)**:
+    - Added `body[data-theme="swiss"]` overrides: hairline `#CBD5E1` borders, 6px radii, pure white glass panels (`rgba(255, 255, 255, 0.96)`), jet-black active buttons (`#0F172A`).
+    - Added `body[data-theme="nordic"]` overrides: warm stone `#E6DFD5` borders, 12px radii, warm ivory glass panels (`rgba(252, 251, 248, 0.94)`), forest pine active buttons (`#15803D`).
+  - **5. Test Suite 56 & Playwright E2E Verification**:
+    - Created `tests/test_56_3d_stadium_ui_fix.py` asserting visibility, 440px height, full width >= 450px, complete 2D button hiding in 3D mode, and zero critical console errors (Rule 4).
+    - Captured high-resolution regression screenshots (`3d_stadium_night.png`, `3d_stadium_swiss.png`, `3d_stadium_nordic.png`).
+    - Added Node regression suite `tests/56-3d-stadium-ui-fix.test.ts` with 9 assertions across 3 suites.
+    - Updated `tests/README.md` test coverage map with test 56 specifications.
+- **Preceding Phase**: Phase 2BF Completed — Teams & Rosters Modals, Join Team Dialog & Expand Analytics Drawer E2E Suite:
   - **1. Structural DOM Tag Balancing & Modal Trapping Resolution (`dashboard.ts`)**:
     - Diagnosed root cause for non-responsive 3D Player Card, Join Team button, and Expand Analytics button: `#modalSponsorshipAuction` was missing its closing `</div></div>` tags (closing `.modal-card` and `.modal-backdrop as-drawer`).
     - Because `#modalSponsorshipAuction` was never closed, all 9 subsequent modals (`modalUmpireDesk`, `modalCricsheetExport`, `modalLeagueDivisions`, `modalDlsCalculator`, `modal3DTrophyCabinet`, `modal3DPlayerCard`, `modal3DBatCustomizer`, `modalPlayerStatsDrawer`, `modalAppDialog`) were trapped inside a hidden drawer container with `display: none;` and zero layout bounds (`width: 0, height: 0`).
