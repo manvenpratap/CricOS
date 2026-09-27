@@ -75,7 +75,7 @@ describe('41. Mobile User Sign Up, Custom Bio & Automated Role-Based App Experie
       assert.ok(mobileHtml.includes('Scorer Studio Workspace'), 'Must define Scorer experience title');
       assert.ok(mobileHtml.includes('Stadium Fan Pulse Arena'), 'Must define Fan experience title');
       assert.ok(mobileHtml.includes('Match Officials Desk'), 'Must define Umpire experience title');
-      assert.ok(mobileHtml.includes('Tournament Director Hub'), 'Must define Organiser experience title');
+      assert.ok(mobileHtml.includes('Tournament Organiser Hub') || mobileHtml.includes('Tournament Director Hub'), 'Must define Organiser experience title');
       assert.ok(mobileHtml.includes('Venue Operations Hub'), 'Must define Turf Provider experience title');
       assert.ok(mobileHtml.includes('Platform Governance & Audit Desk'), 'Must define Admin experience title');
     });

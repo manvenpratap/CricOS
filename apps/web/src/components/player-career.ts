@@ -195,7 +195,7 @@ export class PlayerCareerComponent {
   public renderHtml(): string {
     const d = this.careerData;
     return `
-      <div class="player-career-container" style="font-family: 'Inter', sans-serif; color: #FFF;">
+      <div class="player-career-container" style="font-family: 'Plus Jakarta Sans', sans-serif; color: #FFF;">
         <!-- Header Strip -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
           <div>

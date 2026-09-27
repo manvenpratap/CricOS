@@ -1,14 +1,79 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-26 23:45:00
-**Version:** 1.0.0-phase2aq (iOS Native Application, SwiftUI/WebKit Architecture, Apple App Store Readiness & Verified Release)  
+**Last Updated:** 2026-09-27 11:15:00
+**Version:** 1.0.0-phase2au (Scorer Studio Keypad Styling, Logical Strike Rotation Stance Auto-Switching, Persona Profile Isolation, Terminology Unification & Nav Bar Active Indicator Enhancement)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AQ Completed — iOS Native Application, SwiftUI/WebKit Architecture & App Store Readiness:
+- **Active Phase**: Phase 2AU Completed — Scorer Studio Tactical Keypad Polish, Logical Strike Rotation Stance Auto-Switching, Persona Profile Isolation, Terminology Unification & Nav Bar Active Indicator Enhancement across Web & Mobile:
+  - **1. Scorer Studio Keypad & Secondary Button Glassmorphism (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`)**:
+    - Replaced unstyled default browser bevels at the bottom of the scoring pad with bespoke `.btn` and `.btn-secondary` glassmorphism tokens (`background: rgba(255, 255, 255, 0.06)`, `border: 1px solid rgba(255, 255, 255, 0.14)`, `border-radius: 8px`, `color: #F8FAFC`, active scale `0.97`).
+    - Styled 2-second hold-to-confirm reset buttons (`#btnMobileStudioReset`, `#btnStudioReset`) with subtle rose tint (`rgba(255, 51, 102, 0.08)`), rose border (`rgba(255, 51, 102, 0.35)`), and smooth clip-path fill animation.
+  - **2. Logical Strike Rotation & Dynamic LHB/RHB Stance Auto-Switching (`mobile-view.ts`, `dashboard.ts`)**:
+    - Implemented `syncStanceFromStriker()` auto-synchronizing active batter stance (`RHB` / `LHB`) to wagon wheel overlays, shot zone angle mapping, and stance switcher highlights on every strike rotation.
+    - Accurately applied multi-layered cricket laws across legal balls, extras, and over ends: single/triple odd runs rotate strike on balls 1–5; dot/even runs on the 6th ball rotate strike for the next over; odd runs on the 6th ball result in net 0 swap (striker faces next over).
+    - Synchronized stance across wicket dismissals (`promptWicketModal` dynamically assigning incoming batter stance), extras (`applyExtraDelivery`, `scoreCompoundExtra`), manual strike swaps (`rotateStrike`), and delivery undos (`undoLastDelivery`).
+    - Enabled web console parity in `recordStudioBall` and `recordStudioExtra` with legal ball tracking and `swapStudioStrike()`.
+  - **3. Persona Profile Isolation & Roster ID Asymmetry Fix (`mobile-view.ts`, `dashboard.ts`)**:
+    - Fixed player ID asymmetry between mobile (`p1` = Virat K., `p5` = KL Rahul, `p6` = Hardik P.) and web (`p-1` = Virat Sharma, `p-3` = KL Rahul, `p-5` = Hardik Patel).
+    - Pinned `userAthleteId = (this.profile.persona === 'PLAYER' ? 'p6' : 'p1')` in mobile `renderProfile()`, preventing roster inspection leaks from displaying KL Rahul or Virat K. when signed in as Player.
+    - Synced `selectPersona` in `dashboard.ts` to call `updateAthleticStatsCard('p-5')` for Player and `updateAthleticStatsCard('p-1')` for Captain, and mapped `p6` to `p-5` in `normalizePlayerId`.
+  - **4. Terminology Unification to "Tournament Organiser" (`mobile-view.ts`, `dashboard.ts`)**:
+    - Purged conflicting "Tournament Director" and "Director" nomenclature across sign-up role cards, sign-in persona grids, role specialization dropdowns, profile dossiers, and admin configs, standardizing uniformly on "Tournament Organiser" / "Organiser".
+  - **5. High-Contrast Navigation Bar Active State Indicators (`mobile-view.ts`, `dashboard.ts`)**:
+    - Wrapped mobile bottom nav items in dedicated `.mobile-nav-item` classes featuring vibrant active emerald gradient (`linear-gradient(180deg, rgba(0, 229, 153, 0.22) 0%, rgba(0, 229, 153, 0.05) 100%)`), border `1px solid rgba(0, 229, 153, 0.45)`, neon underline pip (`::after`), and scaled icon glow.
+    - Enhanced web console sidebar nav items (`.sidebar-nav-item.active, .tab-btn.active`) with horizontal gradient, `#00FFB2` text, 4px inset neon bar, and active indicator dot.
+  - **6. Packaging, Android APK & Verification**:
+    - 100% automated test pass rate across all 388 tests / 118 suites (`./pipeline.sh test --summary`).
+    - Maintained Rule 6 single-file invariant: `dist/index.html` and root `index.html` byte-for-byte identical (800,207 bytes).
+    - Android native APK compiled and verified at `dist/cricos-debug.apk` via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2AT Completed — High-Density Space-Efficient Cockpit Redesign & Real Estate Optimization across Web & Mobile:
+  - **1. Web Console Multi-Role Hardening & Button Gating (`apps/api/src/ui/dashboard.ts`)**:
+    - Gated `#btnMarketplaceOfficialCalendar` to `UMPIRE`, `SCORER`, and `ADMIN` (hidden for non-officials).
+    - Gated `#btnMarketplaceProviderStorefront` to `TURF_PROVIDER` and `ADMIN` (hidden for non-providers).
+    - Gated `#btnUmpireDeskQuick` to `UMPIRE` and `ADMIN` (hidden for scorers, players, fans, organisers).
+    - Gated `#btnExportCricsheet` to `SCORER`, `ADMIN`, and `ORGANISER` (hidden for fans, players, umpires).
+  - **2. Mobile App Screen Persona Visibility Hardening (`apps/api/src/ui/mobile-view.ts`)**:
+    - **Matches Screen**: Gated 16-button Tactical Scorer Studio Pad & Keypad to `SCORER`, `CAPTAIN`, and `ADMIN`. Tailored `Tactical Chase & Strategy Center` for `PLAYER`, `Lead Umpire Match Telemetry & Invariants` for `UMPIRE`, `Venue Ground Operations & Facility Telemetry` for `TURF_PROVIDER`/`ORGANISER`, and `Stadium Fan Pulse Arena` (cheers and polls) strictly for `FAN`/`ADMIN`.
+    - **Squad & Teams Screen**: Gated raw team join code (`CRIC-BLR-4821` & `Copy` button) to `CAPTAIN` and `PLAYER`. Rendered `Roster Verification: ✓ KYC & Division A Eligibility Cleared` for `ORGANISER`/`ADMIN`, and `Division Status: Premier Division • Active Roster` for spectators (`FAN`, `TURF_PROVIDER`, `UMPIRE`).
+    - **Marketplace Screen**: Restricted Match Officiating earnings and slot listing (`#btnPublishOfficialSlot`) strictly to `UMPIRE`, `SCORER`, and `ADMIN`. Removed extraneous `btnListOfficialSlotQuick` fallback so Fans, Players, and Organisers only see consumer booking actions without role leak. Turf Provider storefront tools kept strictly for `TURF_PROVIDER`.
+    - **Incidents & Disciplinary Screen**: Rendered dedicated `Venue Disputes & Ground Damage Desk` for `TURF_PROVIDER` (facility damage escrow holds and inspection sign-off via `submitFacilityInspectionAction`). Rendered full `Lead Umpire Desk` (DRS, MCC Law 41/42 sanctions, `+5 Penalty Runs`, `#btnMobileSignOffMatch`) for `UMPIRE`/`ADMIN`. Rendered view-only `Match Disciplinary Desk` with official authority notices for players, captains, scorers, organisers, and fans.
+    - **Platform Admin Desk**: Gated infrastructure pulse, double-entry ledger accounts, and dispute queue behind a `Superuser Clearance Required` lock with a quick-switch authorization CTA for non-admin personas.
+    - **Profile Screen**: Gated 21st.dev Athletic KPI card, career batting averages, milestone achievement badges, and tournament logs strictly to athletes (`CAPTAIN`, `PLAYER`). Rendered authentic, role-tailored professional dossiers for all non-athletes:
+      - `UMPIRE`: ICC Elite Panel Dossier (48 matches, 99.2% DRS accuracy, 14 sanctions).
+      - `SCORER`: BCCI Grade-A Portfolio (112 matches, 99.9% sync accuracy, 0 DNB errors).
+      - `TURF_PROVIDER`: Commercial Ground Operations (3 pitches, 1,420 hours, 98.4% true bounce).
+      - `ORGANISER`: Tournament Directorate Ledger (8 championships, 64 clubs, ₹4.5M prize purse).
+      - `ADMIN`: Platform Infrastructure Authority (26 microservices, 99.99% uptime, ₹0 imbalance).
+      - `FAN`: Stadium Club Supporter Pass (24 matches, 1,450 live cheers, 88% win rate).
+  - **3. Packaging, Android APK & Verification**:
+    - All 388 automated tests passing across 118 suites with zero failures (`./pipeline.sh test --summary`).
+    - Rule 6 byte-for-byte parity verified between root `index.html` and `dist/index.html` (798,094 bytes).
+    - Android native APK compiled and verified at `dist/cricos-debug.apk` via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2AR Completed — UI/UX Design Direction: Elimination of Generic AI Tropes, Editorial Typography System, Asymmetric Cockpit Density & Resilient Design States:
+  - **1. Elimination of Banned Generic AI Tropes**:
+    - Purged unmotivated ambient purple/indigo background glows (`rgba(168, 85, 247, 0.07)`) and multi-stop gradient blobs, grounding the entire surface in authentic pitch-dark `#04070D` base with razor-sharp `#182030` sports broadcast borders.
+    - Stripped decorative robot glyphs (`🤖`), sparkle emoji pills, and meaningless icon adornments across sidebar navigation, modals, and asset download badges; renamed "AI Insights" to "Match Intelligence".
+    - Eliminated bouncy/generic hover states, enforcing hardware-accelerated micro-transitions targeting explicit properties (`transform`, `border-color`, `box-shadow`) with zero `transition: all`.
+  - **2. Authentic Sports Cockpit Typography Pairing**:
+    - Purged generic `Inter` and `Roboto` defaults from Web Console, Mobile View, tooltips, and modular web components (`officials-marketplace`, `player-career`, `scorecard-export`).
+    - Enforced strict token-based typographic hierarchy: `Space Grotesk` (high-impact broadcast titling & headers), `Chakra Petch` (stadium scoreboard digital metrics & split readouts), `Plus Jakarta Sans` (ergonomic body & UI controls), and `JetBrains Mono` (monospaced currency calculations, cryptohash IDs, and match clocks).
+  - **3. Asymmetric Match Velocity & Chase Differential Cockpit**:
+    - Rebuilt generic symmetric 3-up card grids into an asymmetric, high-density telemetry cockpit.
+    - Features a 4:3 split pressure gauge: Current Run Rate (8.52) vs Required Run Rate (10.80) with a live differential indicator (+2.28 req/ov), boundary distribution breakdown (12 fours / 6 sixes = 84 runs), and real-time ball-by-ball momentum arc.
+  - **4. Production-Ready Design States**:
+    - Implemented human-readable empty states (`.cricos-empty-state`) with categorical contextual badges, descriptive action triggers, and filter resets.
+    - Added high-performance loading telemetry strips (`.telemetry-loading-strip`), skeleton pulse bars (`.skeleton-bar`), and status spinners.
+    - Implemented human-readable error telemetry banners (`.cricos-error-banner`) with diagnostic error logs and retry CTA buttons.
+    - Enforced explicit `:disabled` state semantics with `cursor: not-allowed`, muted opacity (0.45), and pointer event suppression.
+  - **5. Release Packaging & Zero-Regression Verification**:
+    - Verified all 388 automated tests pass across 118 suites with zero failures (`./pipeline.sh test --summary`).
+    - Maintained Rule 6 single-file invariant: `dist/index.html` and root `index.html` byte-for-byte identical (796,728 bytes).
+    - Synchronized mobile assets across `apps/mobile/ios/CricOS/Resources/www/index.html` and `apps/mobile/android/app/src/main/assets/index.html`.
+- **Preceding Phase**: Phase 2AQ Completed — iOS Native Application, SwiftUI/WebKit Architecture & App Store Readiness:
   - **1. Native SwiftUI Application Entrypoint & Window Scene (`apps/mobile/ios/CricOS/App/CricOSApp.swift`)**:
     - Implemented `@main` SwiftUI App struct with `AppDelegate` lifecycle adapter, light-content status bar styling, and pitch dark `#04070D` background.
   - **2. Edge-to-Edge WebKit Architecture & Local Asset Loading (`apps/mobile/ios/CricOS/App/CricOSWebView.swift`)**:

@@ -28,6 +28,7 @@
       --purple: #A855F7;
       --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
       --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+      --font-ui: var(--font-body);
       --font-score: 'Chakra Petch', monospace;
       --font-mono: 'JetBrains Mono', monospace;
 
@@ -126,9 +127,8 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(1100px circle at 50% -12%, rgba(0, 229, 153, 0.15) 0%, transparent 60%),
-        radial-gradient(850px circle at 90% 25%, rgba(0, 210, 255, 0.09) 0%, transparent 50%),
-        radial-gradient(750px circle at 10% 75%, rgba(168, 85, 247, 0.07) 0%, transparent 50%);
+        radial-gradient(1100px circle at 50% -12%, rgba(0, 229, 153, 0.12) 0%, transparent 60%),
+        radial-gradient(850px circle at 90% 20%, rgba(0, 210, 255, 0.06) 0%, transparent 50%);
       color: var(--text-main);
       font-family: var(--font-body);
       min-height: 100dvh;
@@ -424,11 +424,29 @@
 
     .sidebar-nav-item.active,
     .tab-btn.active {
-      background: rgba(0, 229, 153, 0.1);
-      border-color: rgba(0, 229, 153, 0.3);
-      color: var(--turf-emerald);
-      font-weight: 700;
-      box-shadow: inset 3px 0 0 var(--turf-emerald);
+      background: linear-gradient(90deg, rgba(0, 229, 153, 0.22) 0%, rgba(0, 229, 153, 0.06) 100%);
+      border-color: rgba(0, 229, 153, 0.55);
+      color: #00FFB2;
+      font-weight: 800;
+      box-shadow: inset 4px 0 0 #00E599, 0 0 16px rgba(0, 229, 153, 0.2);
+      position: relative;
+    }
+
+    .sidebar-nav-item.active::after,
+    .tab-btn.active::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00E599;
+      box-shadow: 0 0 8px #00E599;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .app-sidebar.collapsed .sidebar-nav-item.active::after,
+    .app-sidebar.collapsed .tab-btn.active::after {
+      display: none;
     }
 
     .sidebar-nav-item .tab-icon,
@@ -513,8 +531,9 @@
 
     .app-sidebar.collapsed .sidebar-nav-item.active,
     .app-sidebar.collapsed .tab-btn.active {
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.3);
+      box-shadow: 0 0 14px rgba(0, 229, 153, 0.45);
       border-color: var(--turf-emerald);
+      background: rgba(0, 229, 153, 0.2);
     }
 
     .app-sidebar.collapsed .sidebar-footer {
@@ -993,7 +1012,7 @@
     /* Main Container */
     main {
       flex: 1;
-      padding: 2rem;
+      padding: 1.15rem 1.5rem;
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
@@ -1017,13 +1036,13 @@
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.25rem;
+      gap: 0.85rem;
     }
 
     /* Glass Cards */
@@ -1031,8 +1050,8 @@
       background: var(--bg-card);
       backdrop-filter: blur(16px);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 1.5rem;
+      border-radius: 12px;
+      padding: 1rem 1.15rem;
       position: relative;
       overflow: hidden;
       box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
@@ -1050,33 +1069,34 @@
 
     .card-title {
       font-family: var(--font-display);
-      font-size: 1.18rem;
+      font-size: 1.05rem;
       font-weight: 700;
       letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
     .card-desc {
-      font-size: 0.85rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.45rem;
+      line-height: 1.3;
     }
 
     /* Scoreboard Banner */
     .scoreboard {
       background: linear-gradient(135deg, rgba(0, 229, 153, 0.12), rgba(0, 210, 255, 0.07));
       border: 1px solid rgba(0, 229, 153, 0.35);
-      border-radius: 16px;
-      padding: 1.75rem;
-      margin-bottom: 1.5rem;
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.85rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1.5rem;
+      gap: 0.85rem;
       box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
@@ -1424,15 +1444,27 @@
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       color: var(--text-main);
       box-shadow: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.14);
-      box-shadow: none;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.28);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       filter: none;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.97);
+      background: rgba(255, 255, 255, 0.18);
+      border-color: var(--turf-emerald);
     }
 
     /* Commercial Breakdown Drawer */
@@ -1471,9 +1503,9 @@
     }
 
     th {
-      font-family: 'Outfit', sans-serif;
+      font-family: var(--font-display);
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       font-size: 0.75rem;
       letter-spacing: 0.05em;
@@ -1629,7 +1661,7 @@
       display: none;
       max-width: 280px;
       padding: 6px 12px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-body);
       font-size: 12px;
       font-weight: 500;
       line-height: 1.4;
@@ -1730,7 +1762,7 @@
         0 0 0 1px rgba(255, 255, 255, 0.08) inset,
         0 8px 24px rgba(0, 0, 0, 0.4),
         0 2px 6px rgba(0, 0, 0, 0.2);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font-body);
       font-size: 13px;
       line-height: 1;
       -webkit-font-smoothing: antialiased;
@@ -2036,7 +2068,7 @@
       align-items: center;
     }
     .modal-header {
-      padding: 1.25rem 1.75rem;
+      padding: 0.85rem 1.25rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
@@ -2044,7 +2076,7 @@
     }
     .modal-title {
       font-family: var(--font-display);
-      font-size: 1.22rem;
+      font-size: 1.12rem;
       font-weight: 800;
       color: #F8FAFC;
       display: flex;
@@ -2055,14 +2087,14 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94A3B8;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
     }
     @media (hover: hover) and (pointer: fine) {
@@ -2076,10 +2108,10 @@
       transform: scale(0.95);
     }
     .modal-body {
-      padding: 1.5rem 1.75rem;
+      padding: 1rem 1.25rem;
     }
     .modal-footer {
-      padding: 1.15rem 1.75rem;
+      padding: 0.75rem 1.25rem;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       justify-content: flex-end;
@@ -2091,8 +2123,8 @@
     .persona-pills-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
+      gap: 0.35rem;
+      margin-bottom: 0.75rem;
     }
     .persona-pill-btn {
       background: rgba(255, 255, 255, 0.04);
@@ -2130,19 +2162,19 @@
     /* Wagon Wheel Precision Stadium Graphic */
     .wagon-wheel-card {
       position: relative;
-      border-radius: 16px;
+      border-radius: 14px;
       background: linear-gradient(145deg, rgba(13, 20, 36, 0.88) 0%, rgba(8, 12, 22, 0.96) 100%);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 20px 40px -15px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(16px);
-      padding: 1.5rem;
+      padding: 1rem 1.15rem;
     }
     .wagon-wheel-container {
       position: relative;
       width: 100%;
-      max-width: 360px;
+      max-width: 320px;
       aspect-ratio: 1;
-      margin: 0.75rem auto 1.25rem auto;
+      margin: 0.5rem auto 0.85rem auto;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -2718,6 +2750,158 @@
       0% { transform: scale(1.06); color: var(--turf-emerald); }
       100% { transform: scale(1); }
     }
+
+    /* 3D Hub Engineering Tiles */
+    .three-hub-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 0.65rem 0.5rem;
+      cursor: pointer;
+      transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .three-hub-tile:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(0, 229, 153, 0.35);
+        transform: translateY(-1px);
+      }
+    }
+    .three-hub-tile:active {
+      transform: scale(0.97);
+    }
+
+    /* ==========================================================================
+       Intentional Production Design States (Active, Disabled, Loading, Empty, Error)
+       ========================================================================== */
+    /* 1. Loading & Shimmer Telemetry States */
+    .state-loading {
+      position: relative;
+      pointer-events: none;
+      user-select: none;
+    }
+    .skeleton-bar {
+      height: 12px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.8s infinite ease-in-out;
+    }
+    .skeleton-circle {
+      border-radius: 50%;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.8s infinite ease-in-out;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .telemetry-loading-strip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      background: rgba(0, 229, 153, 0.06);
+      border: 1px solid rgba(0, 229, 153, 0.2);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--turf-emerald);
+    }
+
+    /* 2. Human-Readable Empty State Architecture */
+    .cricos-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2.25rem 1.5rem;
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      background: rgba(10, 16, 28, 0.45);
+      margin: 1rem 0;
+    }
+    .empty-state-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      margin-bottom: 0.85rem;
+      color: var(--text-muted);
+    }
+    .empty-state-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+    .empty-state-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      max-width: 420px;
+      line-height: 1.45;
+      margin-bottom: 1rem;
+    }
+
+    /* 3. Human-Readable Error & Disciplinary States */
+    .cricos-error-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.85rem 1.1rem;
+      border-radius: 8px;
+      background: rgba(255, 51, 102, 0.08);
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      color: #FFA3BA;
+      font-size: 0.8rem;
+      margin: 0.75rem 0;
+    }
+    .cricos-error-title {
+      font-weight: 700;
+      color: var(--rose);
+      margin-bottom: 0.2rem;
+    }
+
+    /* 4. Disabled State */
+    button:disabled,
+    input:disabled,
+    select:disabled,
+    textarea:disabled,
+    .btn.disabled,
+    .is-disabled {
+      opacity: 0.42 !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+      filter: grayscale(35%);
+    }
+
+    /* 5. Overflow Containment */
+    .overflow-contain-x {
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+    .overflow-contain-x::-webkit-scrollbar {
+      height: 4px;
+    }
+    .overflow-contain-x::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -2821,9 +3005,9 @@
               <span class="tab-icon">📊</span>
               <span class="sidebar-nav-label">Fixtures Ops</span>
             </button>
-            <button type="button" onclick="openModal('modalMatchInsights')" class="sidebar-nav-item" data-tooltip="AI match narrative recap, turning points, and Player of the Match MVP">
-              <span class="tab-icon">🤖</span>
-              <span class="sidebar-nav-label">AI Insights</span>
+            <button type="button" onclick="openModal('modalMatchInsights')" class="sidebar-nav-item" data-tooltip="Match narrative recap, turning points, and Player of the Match MVP">
+              <span class="tab-icon">📈</span>
+              <span class="sidebar-nav-label">Match Intelligence</span>
             </button>
             <button type="button" onclick="openModal('modalCheckIn')" class="sidebar-nav-item" data-tooltip="Provider arrival OTP verification and 3-party match scorecard sign-off">
               <span class="tab-icon">📍</span>
@@ -3115,54 +3299,54 @@
       </div>
 
       <!-- ===== 3D EXPERIENCES HUB BANNER ===== -->
-      <div id="threeDExperiencesHub" style="margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(0,229,153,0.07) 0%, rgba(0,210,255,0.07) 50%, rgba(168,85,247,0.07) 100%); border: 1px solid rgba(0,229,153,0.25); border-radius: 14px; padding: 1rem 1.25rem;">
+      <div id="threeDExperiencesHub" style="margin-bottom: 1.25rem; background: rgba(8, 14, 24, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(0, 229, 153, 0.35); border-radius: 12px; padding: 1rem 1.25rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
           <div style="display: flex; align-items: center; gap: 0.6rem;">
             <span style="font-size: 1.35rem;">🌐</span>
             <div>
-              <div style="font-weight: 800; color: #F8FAFC; font-size: 0.95rem; letter-spacing: -0.01em;">3D Experiences</div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">WebGL-powered interactive cricket visualisations</div>
+              <div style="font-weight: 800; color: #F8FAFC; font-size: 0.95rem; letter-spacing: -0.01em; font-family: var(--font-display);">3D Visualization Studio</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">WebGL-powered stadium telemetry &amp; interactive tactical viewports</div>
             </div>
           </div>
           <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.3rem 0.75rem; font-size: 0.75rem; border-color: rgba(0,229,153,0.35); color: var(--turf-emerald);" onclick="switchTab('studio'); setTimeout(()=>setWagonDisplayMode('3D'),200);" data-tooltip="Open full 3D Stadium with Camera, Hawkeye, Fielders, DRS & Lighting controls">🏟 Open Full 3D Stadium →</button>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.55rem;">
-          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('WAGON'); }, 200);" data-tooltip="Interactive 3D Stadium with shot trajectory arcs and wagon wheel" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,229,153,0.1)';this.style.borderColor='rgba(0,229,153,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('WAGON'); }, 200);" data-tooltip="Interactive 3D Stadium with shot trajectory arcs and wagon wheel">
             <span style="font-size: 1.4rem;">🏟</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald);">3D Stadium</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">Wagon Wheel</span>
           </button>
-          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('HAWKEYE'); }, 200);" data-tooltip="3D Hawkeye ball-tracking pitch length heatmap with delivery trajectories" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,210,255,0.1)';this.style.borderColor='rgba(0,210,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('HAWKEYE'); }, 200);" data-tooltip="3D Hawkeye ball-tracking pitch length heatmap with delivery trajectories">
             <span style="font-size: 1.4rem;">🎯</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--cyan);">Hawkeye</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">Pitch Map</span>
           </button>
-          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('DRS'); }, 200);" data-tooltip="Procedural LBW DRS review with 3-stage ball trajectory and MCC Law 36 stumps verdict" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,51,102,0.1)';this.style.borderColor='rgba(255,51,102,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('DRS'); }, 200);" data-tooltip="Procedural LBW DRS review with 3-stage ball trajectory and MCC Law 36 stumps verdict">
             <span style="font-size: 1.4rem;">⚖️</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--rose);">DRS Review</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">LBW Tracker</span>
           </button>
-          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FIELD'); }, 200);" data-tooltip="11 3D tactical fielder figurines with dynamic catch probability cones" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(168,85,247,0.1)';this.style.borderColor='rgba(168,85,247,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FIELD'); }, 200);" data-tooltip="11 3D tactical fielder figurines with dynamic catch probability cones">
             <span style="font-size: 1.4rem;">👥</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--purple-light);">Fielders</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">Field Editor</span>
           </button>
-          <button type="button" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FUSION'); }, 200);" data-tooltip="Simultaneous delivery pitch bounce fused with outfield six trajectory" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,184,0,0.1)';this.style.borderColor='rgba(255,184,0,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FUSION'); }, 200);" data-tooltip="Simultaneous delivery pitch bounce fused with outfield six trajectory">
             <span style="font-size: 1.4rem;">🔀</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Fusion</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">Pitch + Shot</span>
           </button>
-          <button type="button" id="btn3DTrophyCabinet" onclick="open3DTrophyCabinetModal();" data-tooltip="Inspect 3D Championship Trophy Cabinet — Premier Cup, MVP Shield, Golden Bat" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(255,184,0,0.1)';this.style.borderColor='rgba(255,184,0,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" id="btn3DTrophyCabinet" class="three-hub-tile" onclick="open3DTrophyCabinetModal();" data-tooltip="Inspect 3D Championship Trophy Cabinet — Premier Cup, MVP Shield, Golden Bat">
             <span style="font-size: 1.4rem;">🏆</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Trophies</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">3D Cabinet</span>
           </button>
-          <button type="button" id="btn3DPlayerCard" onclick="open3DPlayerCardModal('Hardik Patel','#33','ALL_ROUNDER');" data-tooltip="Holographic 3D Player Card Inspector with pointer tilt physics and specular sheen" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,229,153,0.1)';this.style.borderColor='rgba(0,229,153,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" id="btn3DPlayerCard" class="three-hub-tile" onclick="open3DPlayerCardModal('Hardik Patel','#33','ALL_ROUNDER');" data-tooltip="Holographic 3D Player Card Inspector with pointer tilt physics and specular sheen">
             <span style="font-size: 1.4rem;">🃏</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald);">Player Card</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">Holographic</span>
           </button>
-          <button type="button" id="btn3DBatCustomizer" onclick="open3DBatCustomizerModal();" data-tooltip="3D Cricket Bat configurator — willow grade selector and grip color switcher" style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.65rem 0.5rem; cursor: pointer; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.background='rgba(0,210,255,0.1)';this.style.borderColor='rgba(0,210,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="button" id="btn3DBatCustomizer" class="three-hub-tile" onclick="open3DBatCustomizerModal();" data-tooltip="3D Cricket Bat configurator — willow grade selector and grip color switcher">
             <span style="font-size: 1.4rem;">🏏</span>
             <span style="font-size: 0.72rem; font-weight: 700; color: var(--cyan);">Bat Config</span>
             <span style="font-size: 0.63rem; color: var(--text-muted);">3D Gear</span>
@@ -3188,24 +3372,50 @@
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-            <div class="card-title" style="margin: 0; font-size: 1rem;">📊 Match Situation &amp; Phase Analytics</div>
-            <span class="rate-badge" style="color: var(--cyan); border-color: rgba(0, 210, 255, 0.3); font-size: 0.7rem;">DEATH OVERS (16-20)</span>
+            <div class="card-title" style="margin: 0; font-size: 1.05rem; font-family: var(--font-display); letter-spacing: -0.02em;">📊 Match Situation &amp; Chase Cockpit</div>
+            <span class="rate-badge" style="color: var(--cyan); border-color: rgba(0, 210, 255, 0.35); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em;">DEATH OVERS (16-20)</span>
           </div>
-          <div class="card-desc">Live run progression rates, boundary breakdown, and phase analysis</div>
+          <div class="card-desc">Live run rate pressure gauge, boundary velocity, and phase progression telemetry</div>
 
-          <!-- Key Metrics Grid -->
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;">
-              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Current RR</div>
-              <div style="font-size: 1.15rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);">8.52</div>
+          <!-- Asymmetric Sports Cockpit: Rate Differential Gauge + Boundary Telemetry -->
+          <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 0.65rem; margin-bottom: 1rem;">
+            <!-- Primary Chase Pressure Console -->
+            <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.08); border-left: 3px solid var(--rose); border-radius: 10px; padding: 0.75rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Run Rate Pressure Gauge</span>
+                <span style="font-size: 0.66rem; font-weight: 800; color: var(--rose); background: rgba(255, 51, 102, 0.15); border: 1px solid rgba(255, 51, 102, 0.3); padding: 0.1rem 0.4rem; border-radius: 4px;">▲ +2.28 REQ DEFICIT</span>
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 1.25rem; margin-bottom: 0.45rem;">
+                <div>
+                  <span style="font-size: 0.64rem; color: var(--text-muted); display: block; margin-bottom: 2px;">CURRENT RR</span>
+                  <span style="font-size: 1.45rem; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score); line-height: 1;">8.52</span>
+                </div>
+                <div style="color: var(--border-subtle); font-size: 1.2rem;">/</div>
+                <div>
+                  <span style="font-size: 0.64rem; color: var(--rose); display: block; margin-bottom: 2px;">REQUIRED RR</span>
+                  <span style="font-size: 1.45rem; font-weight: 800; color: var(--rose); font-family: var(--font-score); line-height: 1;">10.80</span>
+                </div>
+              </div>
+              <div style="font-size: 0.72rem; color: #cbd5e1; display: flex; align-items: center; gap: 0.35rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.35rem;">
+                <span style="color: var(--cyan); font-weight: 700;">CHASE EQUATION:</span>
+                <span>37 runs needed from 20 legal balls</span>
+              </div>
             </div>
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;">
-              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Required RR</div>
-              <div style="font-size: 1.15rem; font-weight: 800; color: var(--rose); font-family: var(--font-score);">10.80</div>
-            </div>
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; text-align: center;">
-              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Boundaries</div>
-              <div style="font-size: 1.15rem; font-weight: 800; color: var(--amber); font-family: var(--font-score);">18 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: normal;">(14x4, 4x6)</span></div>
+
+            <!-- Boundary Velocity & Distribution Strip -->
+            <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 0.75rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Boundary Velocity</span>
+                <span style="font-size: 0.66rem; color: var(--amber); font-weight: 700;">56.3% of runs</span>
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.35rem;">
+                <span style="font-size: 1.45rem; font-weight: 800; color: var(--amber); font-family: var(--font-score); line-height: 1;">18</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">total boundaries</span>
+              </div>
+              <div style="display: flex; gap: 0.45rem;">
+                <span style="flex: 1; text-align: center; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald); font-family: var(--font-score);">14 × 4s</span>
+                <span style="flex: 1; text-align: center; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; font-weight: 700; color: var(--purple-light); font-family: var(--font-score);">4 × 6s</span>
+              </div>
             </div>
           </div>
 
@@ -3517,10 +3727,10 @@
         <button class="btn btn-secondary" onclick="openBookingLifecycleModal()" data-tooltip="Manage booking cancellation bands, penalty calculations, reschedule price adjustments, and no-show dispute handling" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
           <span>🔄</span> Cancellation &amp; Reschedule Desk
         </button>
-        <button class="btn btn-secondary" onclick="openOfficialCalendarModal()" data-tooltip="Inspect official weekly schedule, slot availability, buffer times, and conflict overlap checks" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+        <button class="btn btn-secondary" id="btnMarketplaceOfficialCalendar" onclick="openOfficialCalendarModal()" data-tooltip="Inspect official weekly schedule, slot availability, buffer times, and conflict overlap checks" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
           <span>📅</span> Official Availability Calendar
         </button>
-        <button class="btn btn-secondary" onclick="openProviderStorefrontModal()" data-tooltip="Provider Capacity Manager: publish hourly slots, set rates, and inspect monthly payout earnings" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+        <button class="btn btn-secondary" id="btnMarketplaceProviderStorefront" onclick="openProviderStorefrontModal()" data-tooltip="Provider Capacity Manager: publish hourly slots, set rates, and inspect monthly payout earnings" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
           <span>🏪</span> Provider Storefront &amp; Slot Publisher
         </button>
       </div>
@@ -3535,7 +3745,10 @@
             <button class="btn btn-secondary" id="btnFilterScorer" onclick="filterMarketplaceListings('SCORER')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Filter digital match scorers">Scorers ⚡</button>
           </div>
           <div id="listingsContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
-            Loading listings...
+            <div class="telemetry-loading-strip">
+              <div class="live-dot"></div>
+              <span>Retrieving accredited venue &amp; official inventory...</span>
+            </div>
           </div>
         </div>
 
@@ -4296,8 +4509,8 @@
         </div>
 
         <!-- Career Figures Card -->
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
-          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Verified Career Figures</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.75rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">Verified Career Figures</div>
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center;">
             <div>
               <div style="font-size: 0.68rem; color: var(--text-muted);" id="lblCareerStat1">Matches</div>
@@ -4319,7 +4532,7 @@
         </div>
 
         <!-- Career Milestone Badges -->
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.85rem; margin-bottom: 1rem;">
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.65rem 0.75rem; margin-bottom: 0.75rem;">
           <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">🏆 Career Milestone Badges</div>
           <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem;">
             <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 6px; padding: 0.45rem 0.65rem; display: flex; align-items: center; gap: 0.5rem;" data-tooltip="5 match-winning competitive centuries">
@@ -5654,7 +5867,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px;">
           <span style="font-size: 0.78rem; color: var(--turf-emerald); font-weight: 700;">✓ Edge-to-Edge Native Android &bull; WCAG 2.2 AA</span>
           <div style="display: flex; gap: 0.4rem;">
-            <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: #FFF; background: rgba(168,85,247,0.25); border-color: var(--purple);" data-tooltip="Direct download standalone Android APK (3.0 MB)">🤖 APK (3.0MB)</a>
+            <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: #FFF; background: rgba(0, 229, 153, 0.15); border-color: var(--turf-emerald);" data-tooltip="Direct download standalone Android APK (3.0 MB)">📦 APK (3.0MB)</a>
             <a href="/mobile" target="_blank" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);" data-tooltip="Open mobile simulator in standalone browser window">↗ Fullscreen</a>
           </div>
         </div>
@@ -5706,7 +5919,7 @@
         <button class="btn btn-secondary" onclick="closeMobilePreviewModal()" style="width: auto;">Close</button>
         <div style="display: flex; gap: 0.5rem;">
           <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="btn btn-secondary" style="width: auto; padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Download compiled Android package">
-            <span>🤖</span> Save APK
+            <span>📦</span> Save APK
           </a>
           <button class="btn btn-primary" onclick="window.open('/mobile', '_blank')" style="width: auto;" data-tooltip="Launch full-screen mobile experience">🚀 Launch Standalone</button>
         </div>
@@ -6100,10 +6313,10 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 650px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">🤖</span>
+          <span style="font-size: 1.4rem;">📈</span>
           <div>
-            <div class="modal-title">AI Match Insights &amp; MVP Impact Analysis</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Algorithmic POTM &bull; Automated Press Recap &bull; Turning Point Swing</div>
+            <div class="modal-title">Match Intelligence &amp; MVP Impact Analysis</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Algorithmic POTM &bull; Tactical Phase Recap &bull; Turning Point Swing</div>
           </div>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalMatchInsights')" data-tooltip="Close insights">×</button>
@@ -6661,7 +6874,7 @@ cricos_active_sse_connections 1</pre>
         <div class="three-modal-canvas-wrap" style="height: 340px;">
           <canvas id="threeJsPlayerCardCanvas" width="540" height="340"></canvas>
           <div style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 0.62rem; color: #94A3B8; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 10px;">
-            ✨ Move cursor across card to inspect holographic specular sheen
+            Move cursor across card to inspect 3D tilt &amp; specular reflection physics
           </div>
         </div>
 
@@ -7749,6 +7962,26 @@ cricos_active_sse_connections 1</pre>
         auditDesk.style.display = perms.canAccessAdmin ? 'block' : 'none';
       }
 
+      // 8. Marketplace Action Buttons Gating
+      const officialCalBtn = document.getElementById('btnMarketplaceOfficialCalendar');
+      const providerStorefrontBtn = document.getElementById('btnMarketplaceProviderStorefront');
+      if (officialCalBtn) {
+        officialCalBtn.style.display = (role === 'UMPIRE' || role === 'SCORER' || role === 'ADMIN') ? 'flex' : 'none';
+      }
+      if (providerStorefrontBtn) {
+        providerStorefrontBtn.style.display = (role === 'TURF_PROVIDER' || role === 'ADMIN') ? 'flex' : 'none';
+      }
+
+      // 9. Match Scoreboard Header Quick Buttons Gating
+      const umpireDeskQuickBtn = document.getElementById('btnUmpireDeskQuick');
+      const exportCricsheetBtn = document.getElementById('btnExportCricsheet');
+      if (umpireDeskQuickBtn) {
+        umpireDeskQuickBtn.style.display = (role === 'UMPIRE' || role === 'ADMIN') ? 'inline-block' : 'none';
+      }
+      if (exportCricsheetBtn) {
+        exportCricsheetBtn.style.display = (role === 'SCORER' || role === 'ADMIN' || role === 'ORGANISER') ? 'inline-block' : 'none';
+      }
+
       if (typeof renderRoster === 'function') {
         renderRoster();
       }
@@ -7765,7 +7998,7 @@ cricos_active_sse_connections 1</pre>
         FAN: { name: 'Aarav Mehta', jersey: 7, batting: 'RHB', bowling: 'None', bio: 'Cricket devotee and stadium pulse leader. Backing my squad through every over and thrilling finish.', stats: ['250', '1,428', '42', '78%'] },
         UMPIRE: { name: 'Nitin Menon', jersey: 44, batting: 'RHB', bowling: 'None', bio: 'Certified elite match official upholding the Spirit of Cricket, Code of Conduct, and precision decisions.', stats: ['84', '312', '88%', '9.4'] },
         ADMIN: { name: 'System Root', jersey: 99, batting: 'RHB', bowling: 'Right-Arm Fast', bio: 'Platform governance director overseeing double-entry settlements, dispute resolutions, and circuit integrity.', stats: ['99.9%', '12 Nodes', '<10ms', '₹500k'] },
-        ORGANISER: { name: 'Jay Shah', jersey: 10, batting: 'RHB', bowling: 'None', bio: 'Tournament director orchestrating high-stakes tournaments, round-robin brackets, and venue logistics.', stats: ['14', '64', '128', '8'] },
+        ORGANISER: { name: 'Jay Shah', jersey: 10, batting: 'RHB', bowling: 'None', bio: 'Tournament organiser orchestrating high-stakes tournaments, round-robin brackets, and venue logistics.', stats: ['14', '64', '128', '8'] },
         TURF_PROVIDER: { name: 'Bengaluru Turf Ops', jersey: 12, batting: 'RHB', bowling: 'None', bio: 'Premier box-cricket and floodlit turf venue host providing competition-grade playing facilities.', stats: ['360', '92%', '₹1.2M', '4.9★'] }
       };
       const def = defaultProfiles[role];
@@ -7806,6 +8039,18 @@ cricos_active_sse_connections 1</pre>
       });
 
       applyRolePermissions(role);
+
+      if (role === 'PLAYER') {
+        if (typeof updateAthleticStatsCard === 'function') {
+          updateAthleticStatsCard('p-5');
+        }
+        if (typeof selectedPlayerId !== 'undefined') selectedPlayerId = 'p-5';
+      } else if (role === 'CAPTAIN') {
+        if (typeof updateAthleticStatsCard === 'function') {
+          updateAthleticStatsCard('p-1');
+        }
+        if (typeof selectedPlayerId !== 'undefined') selectedPlayerId = 'p-1';
+      }
     }
 
     // Expose authoritative CricOS Public Platform API
@@ -8462,7 +8707,9 @@ cricos_active_sse_connections 1</pre>
 
       scoreDelivery(batRuns, 0, 'NONE', true, false);
 
-      if (batRuns % 2 === 1) {
+      const isOddRuns = (batRuns % 2 === 1);
+      const isOverEnd = (partnership.balls % 6 === 0);
+      if ((isOddRuns && !isOverEnd) || (!isOddRuns && isOverEnd)) {
         swapStudioStrike();
       } else {
         updateStudioUI();
@@ -10852,9 +11099,16 @@ cricos_active_sse_connections 1</pre>
         triggerHaptic('default');
       }
       partnership.runs += extraRuns;
-      scoreDelivery(0, extraRuns, extraType, extraType !== 'WIDE' && extraType !== 'NO_BALL', false);
-      if (extraType === 'BYE' || extraType === 'LEG_BYE') {
-        if (extraRuns % 2 === 1) swapStudioStrike();
+      const isLegal = extraType !== 'WIDE' && extraType !== 'NO_BALL';
+      scoreDelivery(0, extraRuns, extraType, isLegal, false);
+      if (isLegal) {
+        partnership.balls += 1;
+        const isOddRuns = (extraRuns % 2 === 1);
+        const isOverEnd = (partnership.balls % 6 === 0);
+        if ((isOddRuns && !isOverEnd) || (!isOddRuns && isOverEnd)) {
+          swapStudioStrike();
+          return;
+        }
       }
       updateStudioUI();
     }
@@ -11400,6 +11654,7 @@ cricos_active_sse_connections 1</pre>
 
     function normalizePlayerId(id) {
       if (!id) return 'p-5';
+      if (id === 'p6' || id === 'p-6-player') return 'p-5';
       return id.replace(/^(p|b)(\d+)$/, '$1-$2');
     }
 
@@ -14129,7 +14384,14 @@ cricos_active_sse_connections 1</pre>
         return l.category === currentCat;
       });
       if (filtered.length === 0) {
-        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem; text-align: center;">No listings found for category ' + currentCat + '</div>';
+        container.innerHTML = `
+          <div class="cricos-empty-state">
+            <div class="empty-state-badge">🏪</div>
+            <div class="empty-state-title">No ${currentCat === 'ALL' ? 'Marketplace' : currentCat} Listings Available</div>
+            <div class="empty-state-desc">There are currently no accredited ${currentCat.toLowerCase()} providers published for this time window. Onboard a new facility or register as an official to publish availability.</div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="filterMarketplaceListings('ALL')" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.74rem;" data-tooltip="Reset category filter to view all listings">Reset Filter to All</button>
+          </div>
+        `;
         return;
       }
       container.innerHTML = filtered.map(l => `

@@ -122,7 +122,7 @@ export class OfficialsMarketplaceComponent {
   public renderHtml(): string {
     const list = this.getFilteredOfficials();
     return `
-      <div class="officials-marketplace-panel" style="font-family: 'Inter', sans-serif; color: #FFF;">
+      <div class="officials-marketplace-panel" style="font-family: 'Plus Jakarta Sans', sans-serif; color: #FFF;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
           <div>
             <div style="font-size: 1.15rem; font-weight: 700; color: #FFF;">Certified Match Officials & Scorers</div>

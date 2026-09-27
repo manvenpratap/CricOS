@@ -120,7 +120,7 @@ export function generatePrintableScorecardHtml(data: MatchScorecardData): string
   <meta charset="utf-8">
   <title>${data.matchTitle} — Official Scorecard</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 2rem; color: #0f172a; }
+    body { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; margin: 2rem; color: #0f172a; }
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
     .meta { font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem; }
     .result-banner { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 0.75rem 1rem; border-radius: 6px; font-weight: 700; margin-bottom: 1.5rem; }

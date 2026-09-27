@@ -54,12 +54,17 @@ export class CricOSWebApp {
     this.container = document.getElementById(containerId);
     if (this.container) {
       this.container.innerHTML = `
-        <div class="cricos-app-shell" style="font-family:'Inter',sans-serif;color:#f1f5f9;background:#090d16;min-height:100vh;">
-          <header style="padding:1rem 2rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;">
-            <div style="font-size:1.25rem;font-weight:700;color:#10b981;">🏏 CricOS Web Portal</div>
-            <div id="cricos-connection-status" style="font-size:0.8rem;color:#94a3b8;">API: ${this.client.getBaseUrl()}</div>
+        <div class="cricos-app-shell" style="font-family:'Plus Jakarta Sans',sans-serif;color:#F8FAFC;background:#04070D;min-height:100vh;">
+          <header style="padding:1rem 2rem;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(10,16,28,0.85);backdrop-filter:blur(16px);display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-0.02em;color:#00E599;display:flex;align-items:center;gap:0.5rem;">
+              <span>🏏</span> CricOS <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#00D2FF;background:rgba(0,210,255,0.1);border:1px solid rgba(0,210,255,0.25);padding:0.15rem 0.45rem;border-radius:999px;">Broadcast Portal</span>
+            </div>
+            <div id="cricos-connection-status" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:0.4rem;">
+              <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#00E599;box-shadow:0 0 8px #00E599;"></span>
+              API: ${this.client.getBaseUrl()}
+            </div>
           </header>
-          <main style="max-width:1200px;margin:2rem auto;padding:0 1.5rem;">
+          <main style="max-width:1240px;margin:2rem auto;padding:0 1.5rem;">
             <div id="cricos-app-content"></div>
           </main>
         </div>
