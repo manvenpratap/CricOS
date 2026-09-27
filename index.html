@@ -1515,6 +1515,35 @@
       border-color: var(--turf-emerald);
     }
 
+    /* Tactical Strike Swap Button (Scorer Only) */
+    .btn-swap-strike {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      background: rgba(0, 229, 153, 0.1);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      color: var(--turf-emerald);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.22rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+    }
+    .btn-swap-strike:hover {
+      background: rgba(0, 229, 153, 0.22);
+      border-color: rgba(0, 229, 153, 0.7);
+      color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.25);
+    }
+    .btn-swap-strike:active {
+      transform: scale(0.95);
+      background: rgba(0, 229, 153, 0.3);
+    }
+
     /* Commercial Breakdown Drawer */
     .breakdown-table {
       width: 100%;
@@ -4479,7 +4508,7 @@
                   <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 800;">STRIKER ⚡</span>
                   <span id="studioStrikerStanceBadge" style="font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(0, 229, 153, 0.15); color: var(--turf-emerald); font-weight: 800;">RHB</span>
                 </div>
-                <button class="btn btn-secondary" id="btnStudioSwapStrike" style="width: auto; padding: 0.15rem 0.5rem; font-size: 0.68rem;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually: flips off/on side for opposite batting stance">Swap Strike</button>
+                <button type="button" class="btn btn-swap-strike" id="btnStudioSwapStrike" style="display: none;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually (Scorer only)">⇄ Swap Strike</button>
               </div>
               <div style="font-size: 1.05rem; font-weight: 800; color: #F8FAFC; margin-top: 0.35rem;" id="studioStrikerName">Virat Sharma</div>
               <div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 800; color: var(--turf-emerald);" id="studioStrikerStats">48* <span style="font-size: 0.8rem; color: var(--text-muted);">(32b, 4x4, 2x6)</span></div>
@@ -8930,7 +8959,7 @@ cricos_active_sse_connections 1</pre>
         studioControls.style.display = (role === 'SCORER') ? 'block' : 'none';
       }
       if (studioSwapBtn) {
-        studioSwapBtn.style.display = (role === 'SCORER') ? 'inline-block' : 'none';
+        studioSwapBtn.style.display = (role === 'SCORER') ? 'inline-flex' : 'none';
       }
 
       // 7. Admin Audit Desk Visibility

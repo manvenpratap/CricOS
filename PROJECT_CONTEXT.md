@@ -1,14 +1,30 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 17:00:00
-**Version:** 1.0.0-phase2bb (Scoring Pad Generic Extras & Dedicated Undo Last Ball System across Web Console, Mobile App & Android Native APK with 506 Passing Tests)  
+**Last Updated:** 2026-09-27 17:15:00
+**Version:** 1.0.0-phase2bc (Strike Swap Scorer-Only Persona Gating & Tactile CSS System across Web Console, Mobile App & Android Native APK with 515 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BB Completed — Scoring Pad Generic Extras & Dedicated Undo Last Ball System:
+- **Active Phase**: Phase 2BC Completed — Strike Swap Scorer-Only Persona Gating & Tactile CSS System:
+  - **1. Strike Swap Persona Gating (`mobile-view.ts` & `dashboard.ts`)**:
+    - Mobile App: Gated Swap button rendering strictly on `this.profile.persona === 'SCORER'`, ensuring other personas (`CAPTAIN`, `PLAYER`, `FAN`, `UMPIRE`, `ADMIN`, etc.) never see or have access to strike swapping.
+    - Web Console: Set `#btnStudioSwapStrike` to `style="display: none;"` in default HTML, only revealing it via `applyRolePermissions('SCORER')` with `inline-flex`.
+    - Both `rotateStrike()` and `swapStudioStrike()` enforce runtime security guard checks with toast notifications when an unauthorized role attempts strike rotation.
+  - **2. Tactile CSS Polish & Design Tokens**:
+    - Created dedicated `.btn-swap-strike` CSS class in both mobile and dashboard environments.
+    - Styled with turf emerald theme (`rgba(0, 229, 153, 0.1)`), 6px border-radius, `⇄` icon alignment, hover glow, and active press tactile feedback (`scale(0.94)` / `scale(0.95)`).
+    - Preserved Emil Kowalski zero `transition: all` invariant with explicit transitions (`background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease`).
+    - Rule 5 accessible `data-tooltip` on both mobile and desktop buttons.
+  - **3. Regression Testing & Parity Verification**:
+    - Added sequential regression test suite `tests/52-strike-swap-scorer-persona-and-css.test.ts` with 9 assertions across 3 suites.
+    - Updated `tests/README.md` test coverage map with test 52 specifications.
+    - 100% automated test pass rate across all 515 tests / 157 suites (`./pipeline.sh test --summary`).
+    - Recompiled and verified Android APK (`dist/cricos-debug.apk`) via `./pipeline.sh apk`.
+    - Byte-for-byte distribution parity verified between root `index.html` and `dist/index.html`.
+- **Preceding Phase**: Phase 2BB Completed — Scoring Pad Generic Extras & Dedicated Undo Last Ball System:
   - **1. Scoring Pad Extras Streamlining (`mobile-view.ts` & `dashboard.ts`)**:
     - Replaced `+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye` on both web console and mobile app with clean generic labels: `Wide`, `No Ball`, `Leg Bye`, `Bye` (without preceding `+1`).
     - Clicking any generic extra button opens the comprehensive extra runs selection menu (`openExtraPickerSheet(type)` on mobile and `openStudioExtraPicker(extraType)` modal on desktop console).
