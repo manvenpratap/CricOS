@@ -1,30 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 17:15:00
-**Version:** 1.0.0-phase2bc (Strike Swap Scorer-Only Persona Gating & Tactile CSS System across Web Console, Mobile App & Android Native APK with 515 Passing Tests)  
+**Last Updated:** 2026-09-27 17:55:00
+**Version:** 1.0.0-phase2bd (Design Variations & Swiss Style Minimalism Theme Engine across Web Console, Mobile App & Android Native APK with 524 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BC Completed — Strike Swap Scorer-Only Persona Gating & Tactile CSS System:
-  - **1. Strike Swap Persona Gating (`mobile-view.ts` & `dashboard.ts`)**:
-    - Mobile App: Gated Swap button rendering strictly on `this.profile.persona === 'SCORER'`, ensuring other personas (`CAPTAIN`, `PLAYER`, `FAN`, `UMPIRE`, `ADMIN`, etc.) never see or have access to strike swapping.
-    - Web Console: Set `#btnStudioSwapStrike` to `style="display: none;"` in default HTML, only revealing it via `applyRolePermissions('SCORER')` with `inline-flex`.
-    - Both `rotateStrike()` and `swapStudioStrike()` enforce runtime security guard checks with toast notifications when an unauthorized role attempts strike rotation.
-  - **2. Tactile CSS Polish & Design Tokens**:
-    - Created dedicated `.btn-swap-strike` CSS class in both mobile and dashboard environments.
-    - Styled with turf emerald theme (`rgba(0, 229, 153, 0.1)`), 6px border-radius, `⇄` icon alignment, hover glow, and active press tactile feedback (`scale(0.94)` / `scale(0.95)`).
-    - Preserved Emil Kowalski zero `transition: all` invariant with explicit transitions (`background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease`).
-    - Rule 5 accessible `data-tooltip` on both mobile and desktop buttons.
-  - **3. Regression Testing & Parity Verification**:
-    - Added sequential regression test suite `tests/52-strike-swap-scorer-persona-and-css.test.ts` with 9 assertions across 3 suites.
-    - Updated `tests/README.md` test coverage map with test 52 specifications.
-    - 100% automated test pass rate across all 515 tests / 157 suites (`./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2BD Completed — Design Variations & Swiss Style Minimalism Theme Engine:
+  - **1. Swiss Style Minimalist Design Theme (`dashboard.ts` & `mobile-view.ts`)**:
+    - Created comprehensive Swiss Minimalist theme (`data-theme="swiss"`) featuring bright paper canvas (`#F8F9FA`), pure white bento cards (`#FFFFFF`), stark dark charcoal typography (`#0F172A`), hairline borders (`#E2E8F0`), and purposeful Swiss racing emerald (`#059669`) & alpine red (`#DC2626`) accents.
+    - Added alternative Nordic Editorial theme (`data-theme="nordic"`) with warm ivory canvas (`#FAF8F5`), warm stone borders (`#E7E5E4`), deep forest green (`#15803D`), and warm clay (`#B45309`).
+    - Preserved original Stadium Night theme (`data-theme="stadium"`) with obsidian dark mode (`#04070D`) and floodlit glow.
+  - **2. Interactive Theme Switcher & Prototyping Engine**:
+    - Desktop Web Console: Added `#btnDesignThemeSwitcher` in the topbar with active theme icon and name (`🇨🇭 SWISS MINIMAL`), cycling on click and via keyboard shortcut `Alt + T`.
+    - Integrated with `toggleOutdoorMode()` to keep high-contrast outdoor mode in full sync with the theme engine.
+    - Mobile App: Added `theme-selection-card` inside `renderProfile()` with 3 tactile theme chips (`🇨🇭 Swiss`, `🌾 Nordic`, `🌙 Stadium`), updating live with `StandaloneMobileApp.setTheme()`.
+    - Preference saved across sessions via `localStorage.setItem('cricos_design_theme', theme)`.
+  - **3. High-Fidelity Visual Design Mockups Artifact**:
+    - Generated high-resolution AI renders of the Swiss Style Minimalist and Nordic Editorial interfaces saved in artifacts and documented in `design_variations_showcase.md`.
+  - **4. Regression Testing & Parity Verification**:
+    - Added sequential regression test suite `tests/53-design-variations-swiss-minimalism.test.ts` with 9 assertions across 3 suites.
+    - Updated `tests/README.md` test coverage map with test 53 specifications.
+    - 100% automated test pass rate across all 524 tests / 161 suites (`./pipeline.sh test --summary`).
     - Recompiled and verified Android APK (`dist/cricos-debug.apk`) via `./pipeline.sh apk`.
     - Byte-for-byte distribution parity verified between root `index.html` and `dist/index.html`.
-- **Preceding Phase**: Phase 2BB Completed — Scoring Pad Generic Extras & Dedicated Undo Last Ball System:
+- **Preceding Phase**: Phase 2BC Completed — Strike Swap Scorer-Only Persona Gating & Tactile CSS System:
   - **1. Scoring Pad Extras Streamlining (`mobile-view.ts` & `dashboard.ts`)**:
     - Replaced `+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye` on both web console and mobile app with clean generic labels: `Wide`, `No Ball`, `Leg Bye`, `Bye` (without preceding `+1`).
     - Clicking any generic extra button opens the comprehensive extra runs selection menu (`openExtraPickerSheet(type)` on mobile and `openStudioExtraPicker(extraType)` modal on desktop console).
