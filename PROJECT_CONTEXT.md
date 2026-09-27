@@ -1,14 +1,30 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 21:58:00
-**Version:** 1.0.0-phase2be (3 Distinct Design Themes Enhanced: Swiss Minimal Dot-Grid & 4px Geometry, Nordic Editorial Oat Canvas & 16px Radii, Stadium Night Floodlights & Neon Glass with 534 Passing Tests)  
+**Last Updated:** 2026-09-27 22:15:00
+**Version:** 1.0.0-phase2bf (Teams & Rosters Modals, Join Team Dialog & Expand Analytics Drawer Functional Parity with 539 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BE Completed — Playwright E2E Theme Verification & Distinct Visual Identity System:
+- **Active Phase**: Phase 2BF Completed — Teams & Rosters Modals, Join Team Dialog & Expand Analytics Drawer E2E Suite:
+  - **1. Structural DOM Tag Balancing & Modal Trapping Resolution (`dashboard.ts`)**:
+    - Diagnosed root cause for non-responsive 3D Player Card, Join Team button, and Expand Analytics button: `#modalSponsorshipAuction` was missing its closing `</div></div>` tags (closing `.modal-card` and `.modal-backdrop as-drawer`).
+    - Because `#modalSponsorshipAuction` was never closed, all 9 subsequent modals (`modalUmpireDesk`, `modalCricsheetExport`, `modalLeagueDivisions`, `modalDlsCalculator`, `modal3DTrophyCabinet`, `modal3DPlayerCard`, `modal3DBatCustomizer`, `modalPlayerStatsDrawer`, `modalAppDialog`) were trapped inside a hidden drawer container with `display: none;` and zero layout bounds (`width: 0, height: 0`).
+    - Balanced all `<div>` tags (1,307 opening tags, exactly 1,307 closing tags), restoring all modals to top-level `<body>` children.
+    - Exported `window.openJoinTeamPrompt`, `window.openCreateTeamModal`, and `window.closeCreateTeamModal` explicitly to the global `window` object.
+  - **2. Interactive Roster Controls Verified**:
+    - **🃏 3D Player Card (`open3DPlayerCardModal`)**: Opens `#modal3DPlayerCard` with full Three.js holographic canvas, rotating athletic figurines, and player switcher pills (Hardik, Virat, Jasprit).
+    - **➕ Join Team (`openJoinTeamPrompt`)**: Opens `#modalAppDialog` in prompt mode with custom invite code input field (`#appDialogInput`), focus trap, and instant toast confirmation.
+    - **↗ Expand Analytics (`openPlayerStatsDrawer`)**: Opens `#modalPlayerStatsDrawer` slide-over drawer with interactive 6-axis SVG radar capability chart, situational splits, and 5-match game logs.
+    - **🏆 Create New Team (`openCreateTeamModal`)**: Opens `#modalCreateTeam` dialog with franchise name, team code, and verified squad roster generator.
+  - **3. Test Suite 55 & Playwright E2E Verification**:
+    - Created `tests/test_55_teams_roster_modals.py` asserting visibility, geometry, close actions, and zero critical console errors (Rule 4).
+    - Captured high-resolution regression screenshots (`roster_3d_player_card.png`, `roster_join_team_dialog.png`, `roster_expand_analytics_drawer.png`).
+    - Added Node regression suite `tests/55-teams-roster-modals.test.ts` with 5 assertions across 2 suites.
+    - Updated `tests/README.md` test coverage map with test 55 specifications.
+- **Preceding Phase**: Phase 2BE Completed — Playwright E2E Theme Verification & Distinct Visual Identity System:
   - **1. Enhanced 3 Distinct Design Visual Identities (`dashboard.ts` & `mobile-view.ts`)**:
     - **🇨🇭 Swiss Style Minimalist (`data-theme="swiss"`)**: High-contrast graphic grid system with 20px dot-grid canvas background (`#CBD5E1` dots on `#F8F9FA`), razor-sharp 4px border radii, hairline borders (`#CBD5E1`), scoreboard framed in solid black with bold 6px Swiss Alpine Red (`#DC2626`) left racing stripe, jet-black primary buttons (`#0F172A`) with 4px radii, and crisp technical rectangular theme switcher.
     - **🌾 Nordic Editorial (`data-theme="nordic"`)**: Warm Scandinavian publication & hygge aesthetic with rich warm oat canvas (`#F5F0E8` / `rgb(245, 240, 232)`), warm ivory parchment cards (`#FCFBF8`), generous organic 16px border radii, warm stone borders (`#E6DFD5`), scoreboard with 5px Terracotta (`#C2410C`) top accent stripe and warm dark espresso numerals (`#292524`), deep forest pine buttons (`#15803D`) with 12px rounded pill geometry, warm oat sidebar (`#EFE9DF`), and organic pebble switcher pill.

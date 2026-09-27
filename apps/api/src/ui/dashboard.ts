@@ -7641,6 +7641,9 @@ cricos_active_sse_connections 1</pre>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="closeModal('modalSponsorshipAuction')" data-tooltip="Close sponsorship auction desk" aria-label="Close sponsorship auction desk">Close</button>
       </div>
+    </div>
+  </div>
+
   <!-- Modal: Official Umpire Match Day Desk & DRS Incident Review -->
   <div class="modal-backdrop as-drawer" id="modalUmpireDesk">
     <div class="modal-card" style="max-width: 780px;">
@@ -14044,16 +14047,19 @@ cricos_active_sse_connections 1</pre>
         showToast('✓ Request sent to join team ' + code.toUpperCase());
       }
     }
+    window.openJoinTeamPrompt = openJoinTeamPrompt;
 
     function openCreateTeamModal() {
       const modal = document.getElementById('modalCreateTeam');
       if (modal) modal.classList.add('active');
     }
+    window.openCreateTeamModal = openCreateTeamModal;
 
     function closeCreateTeamModal() {
       const modal = document.getElementById('modalCreateTeam');
       if (modal) modal.classList.remove('active');
     }
+    window.closeCreateTeamModal = closeCreateTeamModal;
 
     function saveNewTeam() {
       const nameInput = document.getElementById('newTeamName');
