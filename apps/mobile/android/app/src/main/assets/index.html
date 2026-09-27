@@ -1341,6 +1341,16 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #cbd5e1;
     }
+
+    /* Mobile Avatar Upload Overlay */
+    #mobileProfileAvatar:active .mobile-avatar-cam-overlay,
+    #mobileProfileAvatar:hover .mobile-avatar-cam-overlay {
+      opacity: 1;
+    }
+    #editSheetAvatarPreview:active,
+    #editSheetAvatarPreview:hover {
+      box-shadow: 0 0 22px rgba(0, 229, 153, 0.55);
+    }
   </style>
 </head>
 <body class="is-native-app is-native-android">
@@ -1867,6 +1877,7 @@
           bio: 'Relentless run-machine, tactical captain, and high-intensity leader on and off the 22 yards.',
           stance: 'RHB',
           bowlingStyle: 'Right-arm medium',
+          avatarUrl: '',
           batting: { runs: 4892, innings: 118, notOuts: 19, ballsFaced: 3624 },
           bowling: { wickets: 8, overs: 48, runsConceded: 384, bestBowling: '2/18' },
           tournaments: [
@@ -2269,10 +2280,128 @@
         this.render();
       }
 
+      // ==========================================
+      // Mobile Image Upload Handlers
+      // ==========================================
+      handleMobileProfilePhoto(event) {
+        var self = this;
+        var file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        var validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/avif'];
+        if (validTypes.indexOf(file.type) === -1) {
+          self.showToast('⚠️ Invalid format. Use PNG, JPG, WebP, or GIF.', 'error');
+          return;
+        }
+        if (file.size > 8 * 1024 * 1024) {
+          self.showToast('⚠️ File too large. Maximum 8 MB.', 'error');
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          self.profile.avatarUrl = e.target.result;
+          self.showToast('✓ Profile photo updated!', 'success');
+          self._screenChanged = true;
+          self.render();
+        };
+        reader.onerror = function() {
+          self.showToast('⚠️ Failed to read image.', 'error');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      resetMobileAvatar() {
+        this.profile.avatarUrl = '';
+        this._screenChanged = true;
+        this.render();
+        this.showToast('↺ Avatar reset to jersey number', 'info');
+      }
+
+      selectMobilePresetAvatar(index) {
+        var presetUrls = [
+          'https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL',
+          'https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS',
+          'https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM',
+          'https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td'
+        ];
+        if (presetUrls[index]) {
+          this.profile.avatarUrl = presetUrls[index];
+          this.showToast('✓ Preset portrait #' + (index + 1) + ' selected', 'success');
+          this._screenChanged = true;
+          this.render();
+        }
+      }
+
+      handleMobileVenuePhoto(event) {
+        var self = this;
+        var file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        var validTypes = ['image/png', 'image/jpeg', 'image/webp'];
+        if (validTypes.indexOf(file.type) === -1) {
+          self.showToast('⚠️ Use PNG, JPG, or WebP format.', 'error');
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          self.showToast('⚠️ Max 10 MB per photo.', 'error');
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          if (!self.venuePhotos) self.venuePhotos = [];
+          self.venuePhotos.push(e.target.result);
+          var gallery = document.getElementById('mobileVenueGallery');
+          if (gallery) {
+            var thumb = document.createElement('div');
+            thumb.style.cssText = 'width: 56px; height: 40px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;';
+            thumb.innerHTML = '<img src="' + e.target.result + '" style="width: 100%; height: 100%; object-fit: cover;" alt="Venue">';
+            thumb.setAttribute('data-tooltip', 'Venue photo ' + self.venuePhotos.length);
+            gallery.appendChild(thumb);
+          }
+          self.showToast('✓ Venue photo added (' + self.venuePhotos.length + ' total)', 'success');
+        };
+        reader.readAsDataURL(file);
+      }
+
       openEditProfileSheet() {
         var self = this;
         var p = this.profile;
+
+        // Avatar preview section
+        var avatarPreviewHtml = '';
+        if (p.avatarUrl) {
+          avatarPreviewHtml = '<img src="' + p.avatarUrl + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 50%;" alt="Avatar">';
+        } else {
+          avatarPreviewHtml = '<span style="font-size: 1.5rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">#' + p.jerseyNumber + '</span>';
+        }
+
         var bodyHtml = '<div style="display: flex; flex-direction: column; gap: 0.85rem;">' +
+          // Profile Photo Upload Section
+          '<div style="text-align: center;">' +
+            '<div style="font-size: 0.72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.45rem;">Profile Photo</div>' +
+            '<div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">' +
+              '<div style="position: relative; width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2.5px solid #00E599; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 16px rgba(0, 229, 153, 0.35);" onclick="document.getElementById(&#39;editProfilePhotoInput&#39;).click()" data-tooltip="Tap to upload profile photo" id="editSheetAvatarPreview">' +
+                avatarPreviewHtml +
+              '</div>' +
+              '<div style="display: flex; flex-direction: column; gap: 0.3rem;">' +
+                '<button type="button" onclick="document.getElementById(&#39;editProfilePhotoInput&#39;).click()" style="padding: 0.3rem 0.65rem; border-radius: 5px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: #00E599; font-weight: 700; font-size: 0.68rem; cursor: pointer;" data-tooltip="Choose image file from device">📷 Upload Photo</button>' +
+                '<button type="button" onclick="window.cricosMobileApp.resetMobileAvatar(); window.cricosMobileApp.closeActionSheet();" style="padding: 0.3rem 0.65rem; border-radius: 5px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.08); color: #ff3366; font-weight: 600; font-size: 0.68rem; cursor: pointer;" data-tooltip="Reset to jersey number">↺ Reset</button>' +
+              '</div>' +
+            '</div>' +
+            '<input type="file" id="editProfilePhotoInput" accept="image/*" style="display: none;" onchange="window.cricosMobileApp.handleMobileProfilePhoto(event); window.cricosMobileApp.closeActionSheet();">' +
+            '<div style="margin-top: 0.45rem;">' +
+              '<div style="font-size: 0.62rem; color: #64748b; margin-bottom: 0.25rem;">Or choose a preset portrait:</div>' +
+              '<div style="display: flex; gap: 0.4rem; justify-content: center;">' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(0); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Premier Batsman"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL" style="width:100%;height:100%;object-fit:cover;" alt="Preset 1"></button>' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(1); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Fast Bowler"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS" style="width:100%;height:100%;object-fit:cover;" alt="Preset 2"></button>' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(2); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Official Scorer"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM" style="width:100%;height:100%;object-fit:cover;" alt="Preset 3"></button>' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(3); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Lofted Drive"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td" style="width:100%;height:100%;object-fit:cover;" alt="Preset 4"></button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="border-top: 1px solid rgba(255,255,255,0.06);"></div>' +
           '<div>' +
             '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Full Name</label>' +
             '<input type="text" id="editProfileNameInput" value="' + (p.name || '') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.9rem;" />' +
@@ -2308,7 +2437,7 @@
 
         this.openActionSheet({
           title: '✏️ Edit Profile & Bio',
-          subtitle: 'Update your athlete details and cricket summary',
+          subtitle: 'Update your athlete details, photo, and cricket summary',
           bodyHtml: bodyHtml,
           confirmText: 'Save Profile & Bio ✓',
           confirmTooltip: 'Persist updated bio and profile specifications',
@@ -5646,11 +5775,24 @@
         }
         h += '</div></div>';
 
-        // Profile Identity Card
+        // Profile Identity Card with Avatar Upload
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.75rem;">';
-        h += '<div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2px solid #00E599; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">#' + this.profile.jerseyNumber + '</div>';
-        h += '<div>';
+
+        // Avatar with upload support
+        var avatarContent = '';
+        if (this.profile.avatarUrl) {
+          avatarContent = '<img src="' + this.profile.avatarUrl + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 50%;" alt="Profile">';
+        } else {
+          avatarContent = '<span style="font-size: 1.1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">#' + this.profile.jerseyNumber + '</span>';
+        }
+        h += '<div id="mobileProfileAvatar" style="position: relative; width: 52px; height: 52px; min-width: 52px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2.5px solid #00E599; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; box-shadow: 0 0 14px rgba(0, 229, 153, 0.3);" onclick="document.getElementById(&#39;mobileProfilePhotoInput&#39;).click()" data-tooltip="Tap to upload your profile photo">';
+        h += '<div id="mobileAvatarContent">' + avatarContent + '</div>';
+        h += '<div style="position: absolute; inset: 0; background: rgba(4, 7, 13, 0.65); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; border-radius: 50%;" class="mobile-avatar-cam-overlay"><span style="font-size: 0.85rem;">📷</span></div>';
+        h += '</div>';
+        h += '<input type="file" id="mobileProfilePhotoInput" accept="image/*" style="display: none;" onchange="window.cricosMobileApp.handleMobileProfilePhoto(event)">';
+
+        h += '<div style="flex: 1;">';
         h += '<div style="font-size: 1.05rem; font-weight: 700;">' + this.profile.name + '</div>';
         h += '<div style="font-size: 0.7rem; color: #94a3b8;"><span style="color: #00E599; font-weight: 600;">' + this.profile.persona + '</span> • ' + this.profile.role + ' • ' + this.profile.teamName + '</div>';
         h += '</div></div></div>';

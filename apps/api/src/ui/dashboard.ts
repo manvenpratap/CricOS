@@ -1561,6 +1561,304 @@ export function getDashboardHtml(): string {
     }
 
     /* ==========================================================================
+       Visual Media & Athletic Imagery Engine (Self, Turf, Team & Evidence)
+       ========================================================================== */
+    .avatar-upload-studio {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+    }
+    .avatar-preview-wrapper {
+      position: relative;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: rgba(0, 229, 153, 0.15);
+      border: 2.5px solid var(--turf-emerald);
+      box-shadow: 0 0 20px rgba(0, 229, 153, 0.35);
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .avatar-preview-wrapper:hover {
+      transform: scale(1.05);
+      border-color: #FFF;
+      box-shadow: 0 0 25px rgba(0, 229, 153, 0.6);
+    }
+    .avatar-preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .avatar-initials-fallback {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--turf-emerald);
+      font-family: var(--font-display);
+    }
+    .avatar-camera-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 7, 13, 0.72);
+      backdrop-filter: blur(2px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      color: #FFF;
+      font-size: 0.72rem;
+      font-weight: 700;
+      gap: 0.2rem;
+    }
+    .avatar-preview-wrapper:hover .avatar-camera-overlay {
+      opacity: 1;
+    }
+    .image-dropzone {
+      width: 100%;
+      border: 2px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .image-dropzone:hover, .image-dropzone.dragover {
+      border-color: var(--turf-emerald);
+      background: rgba(0, 229, 153, 0.06);
+    }
+    .preset-avatar-chip {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s ease, box-shadow 0.15s ease;
+      padding: 0;
+      background: transparent;
+    }
+    .preset-avatar-chip:hover {
+      transform: scale(1.14);
+      border-color: var(--turf-emerald);
+    }
+    .preset-avatar-chip.active {
+      border-color: var(--turf-emerald);
+      box-shadow: 0 0 14px rgba(0, 229, 153, 0.6);
+      transform: scale(1.08);
+    }
+    .preset-avatar-chip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .venue-card-visual {
+      position: relative;
+      width: 100%;
+      height: 135px;
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 0.6rem;
+    }
+    .venue-card-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(4, 7, 13, 0.92) 0%, rgba(4, 7, 13, 0.3) 50%, transparent 100%);
+    }
+    .venue-card-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      z-index: 2;
+      background: rgba(4, 7, 13, 0.88);
+      backdrop-filter: blur(8px);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--turf-emerald);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .venue-card-rating {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      background: rgba(4, 7, 13, 0.88);
+      backdrop-filter: blur(8px);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--amber);
+      border: 1px solid rgba(255, 184, 0, 0.25);
+    }
+    .venue-card-title-overlay {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      right: 10px;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .turf-gallery-carousel {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .turf-gallery-carousel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(4, 7, 13, 0.9) 0%, rgba(4, 7, 13, 0.2) 60%, transparent 100%);
+    }
+    .turf-gallery-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      background: rgba(4, 7, 13, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFF;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+    .turf-gallery-nav-btn:hover {
+      background: rgba(0, 229, 153, 0.25);
+      border-color: var(--turf-emerald);
+      transform: translateY(-50%) scale(1.1);
+    }
+    .turf-gallery-nav-btn.prev { left: 12px; }
+    .turf-gallery-nav-btn.next { right: 12px; }
+    .turf-gallery-thumbs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .turf-thumb-item {
+      width: 72px;
+      height: 48px;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    .turf-thumb-item:hover, .turf-thumb-item.active {
+      border-color: var(--turf-emerald);
+      transform: scale(1.05);
+    }
+    .team-squad-hero {
+      position: relative;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .team-squad-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(4, 7, 13, 0.94) 0%, rgba(10, 16, 28, 0.85) 60%, rgba(0, 229, 153, 0.15) 100%);
+      z-index: 1;
+    }
+    .team-squad-hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .team-crest-badge {
+      width: 58px;
+      height: 58px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid var(--turf-emerald);
+      box-shadow: 0 0 16px rgba(0, 229, 153, 0.4);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s ease;
+    }
+    .team-crest-badge:hover {
+      transform: scale(1.08);
+      border-color: #FFF;
+    }
+    .team-crest-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .evidence-photo-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      background: rgba(0, 0, 0, 0.4);
+      height: 120px;
+      cursor: zoom-in;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.18s ease, border-color 0.15s ease;
+    }
+    .evidence-photo-card:hover {
+      transform: scale(1.03);
+      border-color: var(--rose);
+    }
+
+    /* ==========================================================================
        Sonner-Grade Stacked Toast Engine (Emil Kowalski Design Engineering - Skill 6)
        ========================================================================== */
     #sonnerToaster {
@@ -4723,6 +5021,49 @@ export function getDashboardHtml(): string {
           </button>
         </div>
 
+        <!-- Athletic Avatar & Self Photo Upload Studio (Visual Experience) -->
+        <div class="avatar-upload-studio">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.65rem; width: 100%; text-align: center;">Athletic Profile Photo &amp; Avatar</div>
+          <div style="display: flex; align-items: center; gap: 1.25rem; width: 100%; justify-content: center; flex-wrap: wrap;">
+            <div class="avatar-preview-wrapper" id="profileAvatarWrapper" onclick="document.getElementById('profilePhotoInput').click()" data-tooltip="Click or drop an image file to upload custom player photo">
+              <div id="profileAvatarContent">
+                <span class="avatar-initials-fallback" id="profileAvatarInitials">VK</span>
+              </div>
+              <div class="avatar-camera-overlay">
+                <span style="font-size: 1.2rem;">📷</span>
+                <span>Upload</span>
+              </div>
+            </div>
+            <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="handleUserPhotoUpload(event)">
+            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+              <div style="display: flex; gap: 0.4rem;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('profilePhotoInput').click()" data-tooltip="Select image file from your device" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;">📁 Choose File</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="resetUserAvatarToDefault()" data-tooltip="Reset to standard initials monogram" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem; color: var(--rose);">↺ Reset</button>
+              </div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);">PNG, JPG, WebP &bull; Drag &amp; drop onto avatar circle</div>
+            </div>
+          </div>
+
+          <!-- Quick-Pick Athletic Cricket Headshots -->
+          <div style="margin-top: 0.85rem; width: 100%;">
+            <div style="font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.35rem; text-align: center;">Or choose an elite athletic preset portrait:</div>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; align-items: center;" id="avatarPresetsContainer">
+              <button type="button" class="preset-avatar-chip active" onclick="selectPresetAvatar(0)" data-tooltip="Premier Batsman • Golden Hour Floodlit Stance">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL" alt="Premier Batsman">
+              </button>
+              <button type="button" class="preset-avatar-chip" onclick="selectPresetAvatar(1)" data-tooltip="Fast Bowler • Intense Violet Floodlight Focus">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS" alt="Fast Bowler">
+              </button>
+              <button type="button" class="preset-avatar-chip" onclick="selectPresetAvatar(2)" data-tooltip="Certified Official Scorer • Match Telemetry Specialist">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM" alt="Official Scorer">
+              </button>
+              <button type="button" class="preset-avatar-chip" onclick="selectPresetAvatar(3)" data-tooltip="Dynamic Lofted Drive Batter • Stadium Spotlight">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td" alt="Lofted Drive Batter">
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Profile Form -->
         <div class="grid-2" style="margin-bottom: 1rem;">
           <div class="form-group">
@@ -5471,6 +5812,19 @@ export function getDashboardHtml(): string {
               <input type="number" id="storefrontSlotRate" value="6500" style="width: 100%; padding: 0.4rem; font-size: 0.78rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 4px;">
             </div>
           </div>
+
+          <!-- Venue Facility Photo Upload -->
+          <div style="margin-bottom: 0.65rem;">
+            <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.3rem; display: block;">Facility Photos (optional)</label>
+            <div class="image-dropzone" id="venueUploadDropzone" onclick="document.getElementById('venuePhotoInput').click()" data-tooltip="Click or drag & drop venue/ground facility photos here">
+              <input type="file" id="venuePhotoInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleVenueImageUpload(event, 'new-slot')">
+              <div style="font-size: 1.2rem; margin-bottom: 0.25rem;">📸</div>
+              <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">Drop ground photos or click to upload</div>
+              <div style="font-size: 0.62rem; color: #64748b; margin-top: 0.15rem;">PNG, JPG, WebP • Max 10 MB each</div>
+            </div>
+            <div id="venueGallery-new-slot" style="display: flex; gap: 0.4rem; margin-top: 0.4rem; flex-wrap: wrap;"></div>
+          </div>
+
           <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
             <button class="btn btn-primary" onclick="submitNewSlotPublication()" data-tooltip="Publish ground slot into real-time search index" style="padding: 0.35rem 0.8rem; font-size: 0.75rem; width: auto;">Publish Ground Slot</button>
           </div>
@@ -8410,7 +8764,9 @@ cricos_active_sse_connections 1</pre>
       jerseyNumber: 18,
       battingStyle: 'RHB',
       bowlingStyle: 'Right-Arm Fast',
-      bio: 'Aggressive top-order batsman & tactical captain. Focused on clinical chases and building unshakeable team culture.'
+      bio: 'Aggressive top-order batsman & tactical captain. Focused on clinical chases and building unshakeable team culture.',
+      avatarUrl: '',
+      avatarPreset: 0
     };
 
     function openUserModal() {
@@ -8708,6 +9064,265 @@ cricos_active_sse_connections 1</pre>
       applyRolePermissions(currentUser.persona);
       showToast('Profile updated! Active Persona: ' + currentUser.persona);
     }
+
+    // ==========================================
+    // Visual Media & Image Upload Engine
+    // ==========================================
+    const PRESET_AVATAR_URLS = [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM',
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td'
+    ];
+
+    let venueGalleryImages = {};
+
+    function handleUserPhotoUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      // Validate file type
+      const validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/avif'];
+      if (validTypes.indexOf(file.type) === -1) {
+        showToast('⚠️ Invalid file type. Please upload PNG, JPG, WebP, or GIF images.', 'error');
+        return;
+      }
+
+      // Validate file size (max 8MB)
+      if (file.size > 8 * 1024 * 1024) {
+        showToast('⚠️ File too large. Maximum 8 MB allowed.', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        currentUser.avatarUrl = dataUrl;
+        currentUser.avatarPreset = -1;
+        applyAvatarToUI(dataUrl);
+        showToast('✓ Profile photo uploaded successfully!');
+      };
+      reader.onerror = function() {
+        showToast('⚠️ Failed to read image file.', 'error');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function applyAvatarToUI(imageUrl) {
+      // Update avatar preview in profile modal
+      const contentEl = document.getElementById('profileAvatarContent');
+      if (contentEl) {
+        if (imageUrl) {
+          contentEl.innerHTML = '<img src="' + imageUrl + '" alt="Profile Photo" class="avatar-preview-img">';
+        } else {
+          const initials = (currentUser.name || 'VK').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+          contentEl.innerHTML = '<span class="avatar-initials-fallback" id="profileAvatarInitials">' + initials + '</span>';
+        }
+      }
+
+      // Update header sidebar avatar
+      const headerAvatar = document.getElementById('headerUserAvatar');
+      if (headerAvatar) {
+        if (imageUrl) {
+          headerAvatar.innerHTML = '<img src="' + imageUrl + '" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;" alt="Avatar">';
+        } else {
+          const initials = (currentUser.name || 'VK').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+          headerAvatar.innerHTML = initials;
+        }
+      }
+
+      // Update preset avatar chips active state
+      document.querySelectorAll('.preset-avatar-chip').forEach(function(chip, idx) {
+        chip.classList.toggle('active', currentUser.avatarPreset === idx);
+      });
+    }
+
+    function selectPresetAvatar(index) {
+      const url = PRESET_AVATAR_URLS[index];
+      if (!url) return;
+      currentUser.avatarUrl = url;
+      currentUser.avatarPreset = index;
+      applyAvatarToUI(url);
+      showToast('✓ Athletic preset portrait #' + (index + 1) + ' selected');
+    }
+
+    function resetUserAvatarToDefault() {
+      currentUser.avatarUrl = '';
+      currentUser.avatarPreset = -1;
+      applyAvatarToUI('');
+
+      // Reset file input value
+      const fileInput = document.getElementById('profilePhotoInput');
+      if (fileInput) fileInput.value = '';
+
+      // Reset preset chip active states
+      document.querySelectorAll('.preset-avatar-chip').forEach(function(chip) {
+        chip.classList.remove('active');
+      });
+
+      showToast('↺ Avatar reset to default initials monogram');
+    }
+
+    // Drag & Drop on Avatar Circle
+    function initAvatarDragDrop() {
+      const wrapper = document.getElementById('profileAvatarWrapper');
+      if (!wrapper) return;
+
+      wrapper.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        wrapper.style.borderColor = '#FFF';
+        wrapper.style.boxShadow = '0 0 30px rgba(0, 229, 153, 0.8)';
+      });
+
+      wrapper.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        wrapper.style.borderColor = '';
+        wrapper.style.boxShadow = '';
+      });
+
+      wrapper.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        wrapper.style.borderColor = '';
+        wrapper.style.boxShadow = '';
+
+        const files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length > 0) {
+          const syntheticEvent = { target: { files: files } };
+          handleUserPhotoUpload(syntheticEvent);
+        }
+      });
+    }
+
+    // Venue / Turf Facility Image Upload
+    function handleVenueImageUpload(event, slotId) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const validTypes = ['image/png', 'image/jpeg', 'image/webp'];
+      if (validTypes.indexOf(file.type) === -1) {
+        showToast('⚠️ Invalid venue image format. Use PNG, JPG, or WebP.', 'error');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('⚠️ Venue image too large. Maximum 10 MB allowed.', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        if (!venueGalleryImages[slotId]) venueGalleryImages[slotId] = [];
+        venueGalleryImages[slotId].push(dataUrl);
+        updateVenueGalleryPreview(slotId);
+        showToast('✓ Venue photo added (' + venueGalleryImages[slotId].length + ' total)');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateVenueGalleryPreview(slotId) {
+      const container = document.getElementById('venueGallery-' + slotId);
+      if (!container) return;
+      const images = venueGalleryImages[slotId] || [];
+      var html = '';
+      for (var i = 0; i < images.length; i++) {
+        html += '<div style="position: relative; width: 72px; height: 48px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;" data-tooltip="Venue photo ' + (i + 1) + ' • Click to preview full size">';
+        html += '<img src="' + images[i] + '" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" alt="Venue photo ' + (i + 1) + '" onclick="previewVenueImage(&apos;' + slotId + '&apos;, ' + i + ')">';
+        html += '<button type="button" onclick="removeVenueImage(&apos;' + slotId + '&apos;, ' + i + ')" style="position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(255, 51, 102, 0.85); border: none; color: #FFF; font-size: 0.55rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;" data-tooltip="Remove this venue photo">×</button>';
+        html += '</div>';
+      }
+      container.innerHTML = html;
+    }
+
+    function removeVenueImage(slotId, index) {
+      if (venueGalleryImages[slotId]) {
+        venueGalleryImages[slotId].splice(index, 1);
+        updateVenueGalleryPreview(slotId);
+        showToast('↺ Venue photo removed');
+      }
+    }
+
+    function previewVenueImage(slotId, index) {
+      const images = venueGalleryImages[slotId] || [];
+      if (!images[index]) return;
+      const overlay = document.createElement('div');
+      overlay.id = 'imagePreviewOverlay';
+      overlay.style.cssText = 'position: fixed; inset: 0; z-index: 10000; background: rgba(4, 7, 13, 0.94); backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;';
+      overlay.setAttribute('data-tooltip', 'Click anywhere or press Escape to close preview');
+      overlay.innerHTML = '<img src="' + images[index] + '" style="max-width: 90vw; max-height: 80vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); object-fit: contain;" alt="Venue preview">' +
+        '<div style="margin-top: 1rem; color: #94a3b8; font-size: 0.8rem; font-family: Plus Jakarta Sans, sans-serif;">Photo ' + (index + 1) + ' of ' + images.length + ' • Click or press Escape to close</div>';
+      overlay.addEventListener('click', function() { overlay.remove(); });
+      document.addEventListener('keydown', function handler(e) {
+        if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', handler); }
+      });
+      document.body.appendChild(overlay);
+    }
+
+    // Team Logo Upload
+    function handleTeamLogoUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'];
+      if (validTypes.indexOf(file.type) === -1) {
+        showToast('⚠️ Invalid logo format. Use PNG, JPG, WebP, or SVG.', 'error');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('⚠️ Logo file too large. Maximum 5 MB allowed.', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        const preview = document.getElementById('teamLogoPreview');
+        if (preview) preview.innerHTML = '<img src="' + dataUrl + '" style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;" alt="Team Logo">';
+        showToast('✓ Team logo uploaded successfully!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Evidence / Incident Image Upload for Disputes
+    function handleEvidenceUpload(event, caseId) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const validTypes = ['image/png', 'image/jpeg', 'image/webp'];
+      if (validTypes.indexOf(file.type) === -1) {
+        showToast('⚠️ Invalid evidence file type. Use PNG, JPG, or WebP.', 'error');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('⚠️ Evidence file too large. Maximum 10 MB.', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const container = document.getElementById('evidenceGallery-' + caseId);
+        if (container) {
+          const thumb = document.createElement('div');
+          thumb.style.cssText = 'width: 64px; height: 44px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;';
+          thumb.innerHTML = '<img src="' + e.target.result + '" style="width: 100%; height: 100%; object-fit: cover;" alt="Evidence">';
+          thumb.setAttribute('data-tooltip', 'Uploaded evidence photo for case ' + caseId);
+          container.appendChild(thumb);
+        }
+        showToast('✓ Evidence photo attached to case ' + caseId);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Window exports for image upload functions
+    window.handleUserPhotoUpload = handleUserPhotoUpload;
+    window.selectPresetAvatar = selectPresetAvatar;
+    window.resetUserAvatarToDefault = resetUserAvatarToDefault;
+    window.handleVenueImageUpload = handleVenueImageUpload;
+    window.removeVenueImage = removeVenueImage;
+    window.previewVenueImage = previewVenueImage;
+    window.handleTeamLogoUpload = handleTeamLogoUpload;
+    window.handleEvidenceUpload = handleEvidenceUpload;
 
     async function confirmAccountDeletion() {
       const confirmed = await showAppDialog({
@@ -16002,6 +16617,29 @@ cricos_active_sse_connections 1</pre>
     applyRolePermissions(currentUser.persona);
     if (typeof CricOSMotionFX !== 'undefined') {
       setTimeout(() => CricOSMotionFX.init(), 100);
+    }
+
+    // Initialize image upload drag & drop handlers
+    initAvatarDragDrop();
+
+    // Venue dropzone drag & drop
+    const venueDropzone = document.getElementById('venueUploadDropzone');
+    if (venueDropzone) {
+      venueDropzone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        venueDropzone.classList.add('dragover');
+      });
+      venueDropzone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        venueDropzone.classList.remove('dragover');
+      });
+      venueDropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        venueDropzone.classList.remove('dragover');
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          handleVenueImageUpload({ target: { files: e.dataTransfer.files } }, 'new-slot');
+        }
+      });
     }
   </script>
 </body>

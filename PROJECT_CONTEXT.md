@@ -1,40 +1,44 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 12:40:00
-**Version:** 1.0.0-phase2ax (Kinetic Motion Graphics & Stadium FX Engine: Hardware-Accelerated Compositor Transforms, Three.js 3D WebGL rAF Lifecycle Cancellation, Live Match Harmonic Momentum Wave, Celebratory Particle Shockwaves & 410 Passing Tests)  
+**Last Updated:** 2026-09-27 16:12:00
+**Version:** 1.0.0-phase2ay (Visual Media & Image Upload Engine: Profile Avatar Upload Studio, Venue/Turf Facility Photo Gallery, Team Logo Upload, Evidence Attachment, Drag-and-Drop, Preset Portrait Picker & 450 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AX Completed — Kinetic Motion Graphics, Stadium FX Engine & Zero-Layout-Thrashing Compositor Architecture across Web Console, Mobile App & 3D Experiences:
-  - **1. Hardware-Accelerated Compositor Mobile Drawer (`apps/api/src/ui/dashboard.ts`)**:
-    - Replaced layout-animating `left: -260px` -> `left: 0` with GPU compositor transform `left: 0; transform: translateX(-100%);` and `.app-sidebar.mobile-open { transform: translateX(0); }`.
-    - Upgraded transition to `transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);` with `will-change: transform;`, eliminating forced layout recalculation and paint on every frame of drawer animation.
-  - **2. Three.js rAF Animation Lifecycle & WebGL Resource Reclamation (`apps/api/src/ui/dashboard.ts`)**:
-    - Implemented explicit `stop()` methods with `cancelAnimationFrame(this.animFrameId)` and `this.animFrameId = null` across all 3D viewer controllers (`ThreeJsStadiumPitch`, `ThreeJsTrophyCabinet`, `ThreeJsPlayerCard`, `ThreeJsBatConfigurator`).
-    - Added `stop3DModalViewer(modalId)` universal dismissal hook wired into `closeModal()`, global `Escape` key handler, modal backdrop clicks, and `MutationObserver` on `.modal-backdrop`, guaranteeing 3D render loops immediately terminate upon modal closure.
-    - Added `IntersectionObserver` visibility observer to `ThreeJsStadiumPitch` canvas and tab-switching hooks in `switchTab()` that automatically pause render loops when hidden.
-  - **3. Skill 15 Design Spells — Kinetic Motion Graphics & Stadium FX Engine (`dashboard.ts`, `mobile-view.ts`)**:
-    - Fullscreen celebration overlay canvas (`#cricosCelebrationCanvas`) & dynamic elastic 3D banner (`#kineticBoundaryBanner`) with `@keyframes bannerPopElastic`.
-    - Dynamic particle explosions with gravity, velocity drag, rotation, and expanding shockwave rings for `SIX` (emerald/gold particles + high arc trajectory), `FOUR` (cyan turf cutter), `WICKET` (ruby timber stumps shattered), and `CHEER` (stadium crowd roar).
-    - Hooked into `scoreDelivery()` and `recordStudioBall()` for boundaries and wickets.
-    - Hooked into `sendFanCheer()` with new "Stadium Pyro (+1)" celebratory button.
-    - Hooked into mobile `scoreBall()` and `promptWicketModal.onConfirm`.
-  - **4. Live Match Harmonic Momentum Waveform (`dashboard.ts`, `mobile-view.ts`)**:
-    - Real-time harmonic wave canvas (`#matchMomentumCanvas`) rendering dual-phase harmonic tension curve: primary `#00E599` emerald wave with glow shadow and secondary `#00D2FF` cyan chase dynamic wave.
-    - Off-screen auto-pausing via `IntersectionObserver` and tab switching in `switchTab()` (`startMomentumWave()`, `stopMomentumWave()`) preventing background CPU/GPU drain.
-  - **5. Gyroscopic Cricket Ball Widget (`dashboard.ts`, `mobile-view.ts`)**:
-    - Continuous seam rotation widget (`.ball-gyro-widget`, `.ball-gyro-sphere`, `.ball-gyro-seam`, `@keyframes ballGyroSpin`) with live ball speed and spin telemetry.
-  - **6. Holo-Foil Sweeping Sheen (`dashboard.ts`, `mobile-view.ts`)**:
-    - Added `.holo-foil-card` with iridescent gradient sweep (`@keyframes holoFoilSweep`) to embedded athletic stats card (`#embeddedPlayerStatsCard`).
-  - **7. Regression Testing & Parity Verification**:
-    - Added comprehensive regression test suite `tests/47-motion-performance-and-design-spells.test.ts` with 16 assertions across 6 suites.
-    - Updated `tests/README.md` coverage map with test 47 specifications.
-    - 100% automated test pass rate across all 410 tests / 127 suites (`./pipeline.sh test --summary`).
-    - Rule 6 single-file parity verified byte-for-byte between root `index.html` and `dist/index.html`.
-- **Preceding Phase**: Phase 2AW Completed — Motion Performance Optimization & Hardware-Accelerated Compositor Lifecycle across Web Console, Mobile App & 3D WebGL Experiences.
+- **Active Phase**: Phase 2AY Completed — Visual Media & Image Upload Engine across Web Console & Mobile App:
+  - **1. Web Console Profile Avatar Upload Studio (`apps/api/src/ui/dashboard.ts`)**:
+    - Added `avatarUrl` and `avatarPreset` fields to `currentUser` model for persistent image state.
+    - Implemented `handleUserPhotoUpload()` with FileReader client-side preview, type validation (PNG/JPEG/WebP/GIF/AVIF), and 8 MB size limit.
+    - Implemented `applyAvatarToUI()` updating both profile modal preview and sidebar header avatar simultaneously.
+    - Implemented `selectPresetAvatar(index)` with 4 AI-generated athletic portrait presets from Google CDN.
+    - Implemented `resetUserAvatarToDefault()` reverting to initials monogram with full state cleanup.
+    - Implemented `initAvatarDragDrop()` with dragover/dragleave/drop event handlers and visual glow feedback on the avatar circle.
+  - **2. Venue/Turf Facility Photo Gallery (`apps/api/src/ui/dashboard.ts`)**:
+    - Added `<div class="image-dropzone">` with click-to-upload and drag-and-drop support to the storefront ground publishing form.
+    - Implemented `handleVenueImageUpload()`, `updateVenueGalleryPreview()`, `removeVenueImage()`, `previewVenueImage()` for full gallery CRUD.
+    - Full-size preview overlay with Escape key dismissal and click-anywhere-to-close.
+    - 10 MB per-image size limit with PNG/JPEG/WebP validation.
+  - **3. Team Logo & Evidence Attachment Uploads (`apps/api/src/ui/dashboard.ts`)**:
+    - `handleTeamLogoUpload()` with SVG support and 5 MB limit.
+    - `handleEvidenceUpload()` for dispute case photo attachment with gallery appending.
+    - All functions exported to `window` for cross-module access.
+  - **4. Mobile App Profile Photo Upload (`apps/api/src/ui/mobile-view.ts`)**:
+    - Added `avatarUrl` to mobile `this.profile` object.
+    - Replaced static jersey number circle with dynamic avatar preview (image or #jersey fallback).
+    - Added tap-to-upload camera overlay (`.mobile-avatar-cam-overlay`) with `:active` CSS feedback.
+    - Implemented `handleMobileProfilePhoto()`, `resetMobileAvatar()`, `selectMobilePresetAvatar()`.
+    - Enhanced `openEditProfileSheet()` with visual photo upload section, preset portrait picker (4 thumbnails), and Reset button.
+  - **5. Mobile Venue Photo Upload (`apps/api/src/ui/mobile-view.ts`)**:
+    - Implemented `handleMobileVenuePhoto()` with gallery thumbnail appending and `mobileVenueGallery` container.
+  - **6. Regression Testing & Parity Verification**:
+    - Added `tests/48-visual-media-and-image-upload-engine.test.ts` with 40 assertions across 8 suites.
+    - Updated `tests/README.md` coverage map with test 48 specifications.
+    - 100% automated test pass rate across all 450 tests / 135 suites (`./pipeline.sh test --summary`).
+    - Rule 6 single-file parity verified between root `index.html` and `dist/index.html`.
+- **Preceding Phase**: Phase 2AX Completed — Kinetic Motion Graphics, Stadium FX Engine & Zero-Layout-Thrashing Compositor Architecture across Web Console, Mobile App & 3D Experiences:
 - **Preceding Phase**: Phase 2AV Completed — Comprehensive UI/UX Design Audit & High-Agency Polish across Web Console, Mobile App & Distribution Assets:
   - **1. WCAG 2.2 AA Touch Ergonomics & Navigation Target Sizing (`apps/api/src/ui/mobile-view.ts`)**:
     - Upgraded `.mobile-nav-item` to satisfy WCAG 2.2 Criterion 2.5.8 target size requirements with `min-height: 44px; min-width: 44px; justify-content: center;` and smooth micro-touch feedback (`scale(0.97)`).
