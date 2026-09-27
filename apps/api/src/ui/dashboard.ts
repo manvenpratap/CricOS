@@ -805,6 +805,48 @@ export function getDashboardHtml(): string {
       }
     }
 
+    /* Mobile & Narrow Viewport Collapse (< 768px) */
+    @media (max-width: 768px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr !important;
+      }
+      .app-main-content {
+        padding: 0.75rem !important;
+      }
+      .card {
+        padding: 0.85rem !important;
+      }
+      .target-equation-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.45rem;
+      }
+      .topbar {
+        padding: 0.65rem 0.85rem !important;
+      }
+      .modal-dialog {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        margin: 1rem auto !important;
+        padding: 1.25rem !important;
+      }
+    }
+
+    .cal-day-btn {
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+    .cal-day-btn:hover {
+      border-color: rgba(0, 229, 153, 0.4);
+      color: #F8FAFC;
+    }
+    .cal-day-btn:active {
+      transform: scale(0.96);
+    }
+    .cal-day-btn:focus-visible {
+      outline: 2px solid var(--turf-emerald) !important;
+      outline-offset: 2px !important;
+    }
+
     /* Target Equation & Chase Progress */
     .target-equation-bar {
       width: 100%;
@@ -4183,7 +4225,7 @@ export function getDashboardHtml(): string {
                   <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚠️</div>
                   <div style="font-weight: 700; margin-bottom: 0.25rem;">WebGL Acceleration Unavailable</div>
                   <div style="font-size: 0.72rem; color: #94A3B8; margin-bottom: 0.75rem;">Your device or browser does not currently support hardware WebGL rendering.</div>
-                  <button type="button" class="btn btn-primary" onclick="setWagonDisplayMode('2D')" style="font-size: 0.72rem; padding: 0.3rem 0.7rem;">Return to 2D Schematic Map</button>
+                  <button type="button" class="btn btn-primary" onclick="setWagonDisplayMode('2D')" style="font-size: 0.72rem; padding: 0.3rem 0.7rem;" data-tooltip="Return to 2D schematic wagon map" aria-label="Return to 2D Schematic Map">Return to 2D Schematic Map</button>
                 </div>
 
                 <!-- Floating 3D HUD Tooltip (World-to-Screen Projection) -->
@@ -4620,7 +4662,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" style="width: auto;" onclick="closeUserModal()">Cancel</button>
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeUserModal()" data-tooltip="Cancel user profile edit" aria-label="Cancel user edit">Cancel</button>
         <button class="btn" style="width: auto; padding: 0.5rem 1.5rem;" onclick="saveUserProfile()" data-tooltip="Save profile edits and persona selection">Save Profile</button>
       </div>
     </div>
@@ -4672,7 +4714,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" style="width: auto;" onclick="closeDismissalModal()">Cancel</button>
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeDismissalModal()" data-tooltip="Cancel dismissal selection" aria-label="Cancel dismissal">Cancel</button>
         <button class="btn" style="width: auto; background: var(--rose); border-color: var(--rose); color: white;" onclick="confirmDismissal()" data-tooltip="Record wicket and fall of wicket to scorecard">Confirm Wicket</button>
       </div>
     </div>
@@ -4704,7 +4746,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" style="width: auto;" onclick="closeBowlerModal()">Close</button>
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeBowlerModal()" data-tooltip="Close bowler selection modal" aria-label="Close bowler selection">Close</button>
         <button class="btn" style="width: auto; background: var(--turf-emerald); border-color: var(--turf-emerald); color: black; font-weight: 700;" onclick="confirmBowlerChange()" data-tooltip="Set new bowler for next over">Confirm Bowler</button>
       </div>
     </div>
@@ -4748,7 +4790,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" style="width: auto;" onclick="closeCreateTeamModal()">Cancel</button>
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeCreateTeamModal()" data-tooltip="Cancel team creation" aria-label="Cancel team creation">Cancel</button>
         <button class="btn" style="width: auto;" onclick="saveNewTeam()" data-tooltip="Register new team and generate squad join code">Create Team</button>
       </div>
     </div>
@@ -4796,7 +4838,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" style="width: auto;" onclick="closeCheckoutModal()">Cancel</button>
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeCheckoutModal()" data-tooltip="Cancel checkout" aria-label="Cancel checkout">Cancel</button>
         <button class="btn" style="width: auto;" onclick="confirmBookingPayment()" data-tooltip="Process mock payment and confirm slot booking">Confirm &amp; Pay ₹1,059</button>
       </div>
     </div>
@@ -4861,7 +4903,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" style="width: auto;" onclick="closeScorecardModal()">Close</button>
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeScorecardModal()" data-tooltip="Close detailed match scorecard" aria-label="Close scorecard">Close</button>
       </div>
     </div>
   </div>
@@ -4909,7 +4951,7 @@ export function getDashboardHtml(): string {
           </div>
 
           <div style="display: flex; gap: 0.75rem;">
-            <button type="button" class="btn btn-secondary" onclick="closeTossModal()" style="width: auto; flex: 1;">Cancel</button>
+            <button type="button" class="btn btn-secondary" onclick="closeTossModal()" style="width: auto; flex: 1;" data-tooltip="Cancel coin toss" aria-label="Cancel coin toss">Cancel</button>
             <button type="submit" class="btn" style="width: auto; flex: 2;" data-tooltip="Submit toss record and lock match lineups">✓ Confirm Toss &amp; Start Match</button>
           </div>
         </form>
@@ -4974,7 +5016,7 @@ export function getDashboardHtml(): string {
           </div>
 
           <div style="display: flex; gap: 0.75rem;">
-            <button type="button" onclick="closeMatchRatingModal()" class="btn btn-secondary" style="width: auto; flex: 1;">Cancel</button>
+            <button type="button" onclick="closeMatchRatingModal()" class="btn btn-secondary" style="width: auto; flex: 1;" data-tooltip="Cancel match rating" aria-label="Cancel match rating">Cancel</button>
             <button type="submit" class="btn" style="width: auto; flex: 2;" data-tooltip="Submit verified review and disburse escrow to provider">✓ Submit &amp; Disburse Escrow</button>
           </div>
         </form>
@@ -4993,9 +5035,9 @@ export function getDashboardHtml(): string {
       </div>
       <div class="modal-body">
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
-          <button type="button" id="btnLegalTabPrivacy" class="nav-pill active" onclick="switchLegalTab('privacy')" style="cursor: pointer; font-weight: 700;">🔒 Privacy Policy</button>
-          <button type="button" id="btnLegalTabTerms" class="nav-pill" onclick="switchLegalTab('terms')" style="cursor: pointer; font-weight: 700;">⚖️ Terms of Service</button>
-          <button type="button" id="btnLegalTabApple" class="nav-pill" onclick="switchLegalTab('apple')" style="cursor: pointer; font-weight: 700; color: var(--turf-emerald);">🍏 Store Guidelines</button>
+          <button type="button" id="btnLegalTabPrivacy" class="nav-pill active" onclick="switchLegalTab('privacy')" style="cursor: pointer; font-weight: 700;" data-tooltip="View Privacy Policy" aria-label="Privacy Policy">🔒 Privacy Policy</button>
+          <button type="button" id="btnLegalTabTerms" class="nav-pill" onclick="switchLegalTab('terms')" style="cursor: pointer; font-weight: 700;" data-tooltip="View Terms of Service" aria-label="Terms of Service">⚖️ Terms of Service</button>
+          <button type="button" id="btnLegalTabApple" class="nav-pill" onclick="switchLegalTab('apple')" style="cursor: pointer; font-weight: 700; color: var(--turf-emerald);" data-tooltip="View Apple Store Guidelines Compliance" aria-label="Store Guidelines">🍏 Store Guidelines</button>
         </div>
 
         <div id="legalSubViewPrivacy" style="font-size: 0.84rem; line-height: 1.6; color: #CBD5E1; max-height: 420px; overflow-y: auto; padding-right: 0.5rem;">
@@ -5026,7 +5068,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" style="width: auto;" onclick="closeLegalModal()">Close</button>
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeLegalModal()" data-tooltip="Close Legal and Compliance modal" aria-label="Close legal modal">Close</button>
       </div>
     </div>
   </div>
@@ -5253,7 +5295,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeProviderStorefrontModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeProviderStorefrontModal()" style="width: auto;" data-tooltip="Close Provider Storefront modal" aria-label="Close storefront modal">Close</button>
       </div>
     </div>
   </div>
@@ -5390,10 +5432,10 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-secondary" id="wizPrevBtn" onclick="prevWizardStep()" style="display: none; width: auto;">Previous</button>
+        <button class="btn btn-secondary" id="wizPrevBtn" onclick="prevWizardStep()" style="display: none; width: auto;" data-tooltip="Return to previous wizard step" aria-label="Previous step">Previous</button>
         <div style="display: flex; gap: 0.5rem; margin-left: auto;">
-          <button class="btn btn-secondary" onclick="closeCreateEventModal()" style="width: auto;">Cancel</button>
-          <button class="btn btn-primary" id="wizNextBtn" onclick="nextWizardStep()" style="width: auto;">Next: Teams &amp; Officials →</button>
+          <button class="btn btn-secondary" onclick="closeCreateEventModal()" style="width: auto;" data-tooltip="Cancel event creation" aria-label="Cancel event creation">Cancel</button>
+          <button class="btn btn-primary" id="wizNextBtn" onclick="nextWizardStep()" style="width: auto;" data-tooltip="Proceed to next wizard step" aria-label="Next step">Next: Teams &amp; Officials →</button>
         </div>
       </div>
     </div>
@@ -5478,7 +5520,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-secondary" onclick="closeEventOverviewModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeEventOverviewModal()" style="width: auto;" data-tooltip="Close Readiness Checklist modal" aria-label="Close readiness checklist">Close</button>
         <button class="btn btn-primary" onclick="closeEventOverviewModal(); openEventBasketModal();" data-tooltip="Inspect escrow financial deposit breakdown" style="width: auto;">🧺 View Event Basket</button>
       </div>
     </div>
@@ -5510,13 +5552,13 @@ export function getDashboardHtml(): string {
 
         <!-- Day Selector Tabs -->
         <div style="display: flex; gap: 0.35rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.25rem;">
-          <button class="cal-day-btn" onclick="selectCalendarDay('MON', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Mon</button>
-          <button class="cal-day-btn" onclick="selectCalendarDay('TUE', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Tue</button>
-          <button class="cal-day-btn" onclick="selectCalendarDay('WED', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Wed</button>
-          <button class="cal-day-btn" onclick="selectCalendarDay('THU', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Thu</button>
-          <button class="cal-day-btn" onclick="selectCalendarDay('FRI', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Fri</button>
-          <button class="cal-day-btn active" onclick="selectCalendarDay('SAT', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid var(--turf-emerald); background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-weight: 700; font-size: 0.75rem; cursor: pointer;">Sat (Matchday)</button>
-          <button class="cal-day-btn" onclick="selectCalendarDay('SUN', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;">Sun</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('MON', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;" data-tooltip="View Monday schedule" aria-label="Monday schedule">Mon</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('TUE', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;" data-tooltip="View Tuesday schedule" aria-label="Tuesday schedule">Tue</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('WED', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;" data-tooltip="View Wednesday schedule" aria-label="Wednesday schedule">Wed</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('THU', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;" data-tooltip="View Thursday schedule" aria-label="Thursday schedule">Thu</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('FRI', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;" data-tooltip="View Friday schedule" aria-label="Friday schedule">Fri</button>
+          <button class="cal-day-btn active" onclick="selectCalendarDay('SAT', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid var(--turf-emerald); background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-weight: 700; font-size: 0.75rem; cursor: pointer;" data-tooltip="View Saturday matchday schedule" aria-label="Saturday matchday schedule">Sat (Matchday)</button>
+          <button class="cal-day-btn" onclick="selectCalendarDay('SUN', this)" style="padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;" data-tooltip="View Sunday schedule" aria-label="Sunday schedule">Sun</button>
         </div>
 
         <!-- Hourly Schedule Grid -->
@@ -5573,7 +5615,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeOfficialCalendarModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeOfficialCalendarModal()" style="width: auto;" data-tooltip="Close official calendar" aria-label="Close official calendar">Close</button>
       </div>
     </div>
   </div>
@@ -5741,7 +5783,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-secondary" onclick="closeBookingLifecycleModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeBookingLifecycleModal()" style="width: auto;" data-tooltip="Close booking lifecycle modal" aria-label="Close booking lifecycle">Close</button>
         <button class="btn btn-secondary" onclick="cancelCurrentBooking()" style="width: auto; color: var(--rose); border-color: rgba(255,51,102,0.3);" data-tooltip="Cancel booking under active band rules">Cancel Booking</button>
       </div>
     </div>
@@ -5845,7 +5887,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-secondary" onclick="closeReconciliationModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeReconciliationModal()" style="width: auto;" data-tooltip="Close settlement reconciliation modal" aria-label="Close settlement reconciliation">Close</button>
         <button class="btn btn-primary" onclick="downloadReconciliationCsv()" data-tooltip="Download full reconciliation audit ledger as RFC 4180 CSV" style="width: auto;">📥 Export Reconciliation CSV</button>
       </div>
     </div>
@@ -5917,7 +5959,7 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-secondary" onclick="closeMobilePreviewModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeMobilePreviewModal()" style="width: auto;" data-tooltip="Close mobile preview modal" aria-label="Close mobile preview">Close</button>
         <div style="display: flex; gap: 0.5rem;">
           <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="btn btn-secondary" style="width: auto; padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Download compiled Android package">
             <span>📦</span> Save APK
@@ -5978,9 +6020,9 @@ export function getDashboardHtml(): string {
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-secondary" onclick="closeApiDocsModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeApiDocsModal()" style="width: auto;" data-tooltip="Close API documentation modal" aria-label="Close API docs">Close</button>
         <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeApiDocsModal();" style="width: auto;">⚡ Explorer Tab</button>
+          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeApiDocsModal();" style="width: auto;" data-tooltip="Open operations explorer tab" aria-label="Open operations explorer">⚡ Explorer Tab</button>
           <button class="btn btn-primary" onclick="window.open('/docs', '_blank')" style="width: auto;" data-tooltip="Open full OpenAPI documentation in new tab">↗ Open /docs Portal</button>
         </div>
       </div>
@@ -6035,7 +6077,7 @@ export function getDashboardHtml(): string {
         <div id="healthProbeFeedback" style="display: none; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.75rem; margin-bottom: 0.5rem; background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); border: 1px solid var(--turf-emerald);"></div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-secondary" onclick="closeHealthModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeHealthModal()" style="width: auto;" data-tooltip="Close system health modal" aria-label="Close health modal">Close</button>
         <button class="btn btn-primary" onclick="runHealthProbePing()" style="width: auto;" data-tooltip="Ping Fastify server live and readiness endpoints">⚡ Run Probe Ping</button>
       </div>
     </div>
@@ -6086,9 +6128,9 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-secondary" onclick="closeMetricsModal()" style="width: auto;">Close</button>
+        <button class="btn btn-secondary" onclick="closeMetricsModal()" style="width: auto;" data-tooltip="Close Prometheus metrics modal" aria-label="Close metrics modal">Close</button>
         <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeMetricsModal();" style="width: auto;">⚡ Switch to Explorer</button>
+          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeMetricsModal();" style="width: auto;" data-tooltip="Open operations explorer tab" aria-label="Open operations explorer">⚡ Switch to Explorer</button>
           <button class="btn btn-primary" onclick="window.open('/metrics', '_blank')" style="width: auto;" data-tooltip="View raw Prometheus text exposition">↗ Raw /metrics</button>
         </div>
       </div>
@@ -6116,7 +6158,7 @@ cricos_active_sse_connections 1</pre>
             <span class="badge badge-cyan" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 6px;">Active Requirements</span>
             <span style="font-size: 0.75rem; color: #8E9BAE;">1 Open Tender</span>
           </div>
-          <button class="btn btn-secondary btn-sm" onclick="showToast('Create RFQ specification builder opened')" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; padding: 0.4rem 0.75rem; border-radius: 8px;">
+          <button class="btn btn-secondary btn-sm" onclick="showToast('Create RFQ specification builder opened')" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; padding: 0.4rem 0.75rem; border-radius: 8px;" data-tooltip="Open RFQ specification builder" aria-label="New RFQ">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>New Requirement</span>
           </button>
@@ -6172,7 +6214,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.07); padding: 1rem 1.5rem; display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalRfq')" style="border-radius: 8px;">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalRfq')" style="border-radius: 8px;" data-tooltip="Close RFQ procurement desk" aria-label="Close RFQ desk">Close</button>
       </div>
     </div>
   </div>
@@ -6206,7 +6248,7 @@ cricos_active_sse_connections 1</pre>
             </div>
             <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹4,800</span>
-              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Box of Match Balls to Basket!')">Add</button>
+              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Box of Match Balls to Basket!')" data-tooltip="Add match balls to basket" aria-label="Add match balls">Add</button>
             </div>
           </div>
 
@@ -6218,7 +6260,7 @@ cricos_active_sse_connections 1</pre>
             </div>
             <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹1,500</span>
-              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Practice Net Rental to Basket!')">Add</button>
+              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Practice Net Rental to Basket!')" data-tooltip="Add practice net rental to basket" aria-label="Add practice net rental">Add</button>
             </div>
           </div>
 
@@ -6230,13 +6272,13 @@ cricos_active_sse_connections 1</pre>
             </div>
             <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹8,500</span>
-              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Trophy Set to Basket!')">Add</button>
+              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Trophy Set to Basket!')" data-tooltip="Add championship trophy set to basket" aria-label="Add trophy set">Add</button>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalCommerce')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalCommerce')" data-tooltip="Close cricket commerce store" aria-label="Close gear store">Close</button>
       </div>
     </div>
   </div>
@@ -6284,7 +6326,7 @@ cricos_active_sse_connections 1</pre>
                 <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sat, 13:00</td>
                 <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
                 <td style="padding: 0.65rem 0.75rem; text-align: right;">
-                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')">📋 Verified</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')" data-tooltip="Tournament procurement checklist verified" aria-label="Procurement verified">📋 Verified</button>
                 </td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
@@ -6296,7 +6338,7 @@ cricos_active_sse_connections 1</pre>
                 <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sun, 09:00</td>
                 <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
                 <td style="padding: 0.65rem 0.75rem; text-align: right;">
-                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')">📋 Verified</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')" data-tooltip="Tournament procurement checklist verified" aria-label="Procurement verified">📋 Verified</button>
                 </td>
               </tr>
             </tbody>
@@ -6304,7 +6346,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalTournamentOps')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalTournamentOps')" data-tooltip="Close tournament operations desk" aria-label="Close tournament ops">Close</button>
       </div>
     </div>
   </div>
@@ -6358,7 +6400,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalMatchInsights')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalMatchInsights')" data-tooltip="Close match intelligence recap" aria-label="Close match insights">Close</button>
       </div>
     </div>
   </div>
@@ -6383,7 +6425,7 @@ cricos_active_sse_connections 1</pre>
           <p style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 0.75rem;">Official enters 4-digit PIN upon arrival at the venue.</p>
           <div style="display: flex; gap: 0.5rem;">
             <input type="text" id="providerOtpInput" maxlength="6" value="4821" style="width: 140px; text-align: center; font-family: var(--font-mono); font-size: 1.2rem; letter-spacing: 0.2rem; padding: 0.4rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: var(--turf-emerald);" />
-            <button class="btn btn-primary btn-sm" onclick="showToast('✓ Provider Check-In Verified via OTP 4821!')">Verify Arrival</button>
+            <button class="btn btn-primary btn-sm" onclick="showToast('✓ Provider Check-In Verified via OTP 4821!')" data-tooltip="Verify provider arrival OTP" aria-label="Verify Arrival">Verify Arrival</button>
           </div>
         </div>
 
@@ -6402,13 +6444,13 @@ cricos_active_sse_connections 1</pre>
               <input type="checkbox" checked /> Lead Umpire (Certified Official) Digitally Signed
             </label>
           </div>
-          <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="showToast('✍ 3-Party Sign-Off Complete! Escrow Payouts Unlocked.')">
+          <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="showToast('✍ 3-Party Sign-Off Complete! Escrow Payouts Unlocked.')" data-tooltip="Submit 3-party scorecard sign-off and unlock escrow" aria-label="Sign off match and unlock escrow">
             ✍ Complete Digital Sign-Off
           </button>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalCheckIn')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalCheckIn')" data-tooltip="Close provider check-in desk" aria-label="Close check-in desk">Close</button>
       </div>
     </div>
   </div>
@@ -6463,14 +6505,14 @@ cricos_active_sse_connections 1</pre>
             </div>
           </div>
           <div style="display: flex; gap: 0.5rem;">
-            <button class="btn btn-secondary btn-sm" style="flex: 1;" onclick="submitAuctionBid(2500000)">+ ₹25k</button>
-            <button class="btn btn-secondary btn-sm" style="flex: 1;" onclick="submitAuctionBid(5000000)">+ ₹50k</button>
-            <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="submitAuctionBid(10000000)">+ ₹1,00,000</button>
+            <button class="btn btn-secondary btn-sm" style="flex: 1;" onclick="submitAuctionBid(2500000)" data-tooltip="Bid increment: +₹25,000" aria-label="Bid 25k">+ ₹25k</button>
+            <button class="btn btn-secondary btn-sm" style="flex: 1;" onclick="submitAuctionBid(5000000)" data-tooltip="Bid increment: +₹50,000" aria-label="Bid 50k">+ ₹50k</button>
+            <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="submitAuctionBid(10000000)" data-tooltip="Bid increment: +₹1,00,000" aria-label="Bid 1 Lakh">+ ₹1,00,000</button>
           </div>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalSponsorshipAuction')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalSponsorshipAuction')" data-tooltip="Close sponsorship auction desk" aria-label="Close sponsorship auction desk">Close</button>
       </div>
   <!-- Modal: Official Umpire Match Day Desk & DRS Incident Review -->
   <div class="modal-backdrop as-drawer" id="modalUmpireDesk">
@@ -6549,7 +6591,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalUmpireDesk')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalUmpireDesk')" data-tooltip="Close digital umpire desk" aria-label="Close umpire desk">Close</button>
       </div>
     </div>
   </div>
@@ -6615,7 +6657,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalCricsheetExport')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalCricsheetExport')" data-tooltip="Close Cricsheet export desk" aria-label="Close Cricsheet export desk">Close</button>
       </div>
     </div>
   </div>
@@ -6720,7 +6762,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalLeagueDivisions')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalLeagueDivisions')" data-tooltip="Close league divisions ladder" aria-label="Close league divisions">Close</button>
       </div>
     </div>
   </div>
@@ -6807,7 +6849,7 @@ cricos_active_sse_connections 1</pre>
         </button>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalDlsCalculator')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalDlsCalculator')" data-tooltip="Close DLS calculator modal" aria-label="Close DLS calculator">Close</button>
       </div>
     </div>
   </div>
@@ -6849,7 +6891,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modal3DTrophyCabinet')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modal3DTrophyCabinet')" data-tooltip="Close 3D trophy cabinet" aria-label="Close 3D trophy cabinet">Close</button>
       </div>
     </div>
   </div>
@@ -6899,7 +6941,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modal3DPlayerCard')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modal3DPlayerCard')" data-tooltip="Close 3D player card" aria-label="Close 3D player card">Close</button>
       </div>
     </div>
   </div>
@@ -6952,7 +6994,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modal3DBatCustomizer')">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modal3DBatCustomizer')" data-tooltip="Close 3D bat customizer" aria-label="Close 3D bat customizer">Close</button>
       </div>
     </div>
   </div>
@@ -7050,7 +7092,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
-        <button type="button" class="btn btn-secondary" onclick="closePlayerStatsDrawer()" style="width: auto;">Dismiss</button>
+        <button type="button" class="btn btn-secondary" onclick="closePlayerStatsDrawer()" style="width: auto;" data-tooltip="Dismiss player statistics drawer" aria-label="Dismiss player drawer">Dismiss</button>
         <button type="button" class="btn btn-primary" onclick="showToast('✓ Athlete Dossier exported to PDF / CSV')" style="width: auto;" data-tooltip="Download certified player analytical report">📥 Export Athlete Report</button>
       </div>
     </div>
@@ -7063,9 +7105,9 @@ cricos_active_sse_connections 1</pre>
   <!-- Emil Kowalski Floating Prototype Picker (Skill 11 - prototype) -->
   <nav class="proto-picker" id="protoPicker" aria-label="Tactile Prototype Selector" data-ready>
     <div class="proto-picker-highlight" id="protoPickerHighlight"></div>
-    <button type="button" class="proto-picker-item" data-variant="STADIUM_HAPTIC" data-active onclick="selectTactileVariant('STADIUM_HAPTIC')">1 Stadium</button>
-    <button type="button" class="proto-picker-item" data-variant="BROADCAST_MINIMAL" onclick="selectTactileVariant('BROADCAST_MINIMAL')">2 Minimal</button>
-    <button type="button" class="proto-picker-item" data-variant="ATHLETIC_KINETIC" onclick="selectTactileVariant('ATHLETIC_KINETIC')">3 Kinetic</button>
+    <button type="button" class="proto-picker-item" data-variant="STADIUM_HAPTIC" data-active onclick="selectTactileVariant('STADIUM_HAPTIC')" data-tooltip="Select Stadium Haptic prototype variant" aria-label="Stadium Haptic variant">1 Stadium</button>
+    <button type="button" class="proto-picker-item" data-variant="BROADCAST_MINIMAL" onclick="selectTactileVariant('BROADCAST_MINIMAL')" data-tooltip="Select Broadcast Minimal prototype variant" aria-label="Broadcast Minimal variant">2 Minimal</button>
+    <button type="button" class="proto-picker-item" data-variant="ATHLETIC_KINETIC" onclick="selectTactileVariant('ATHLETIC_KINETIC')" data-tooltip="Select Athletic Kinetic prototype variant" aria-label="Athletic Kinetic variant">3 Kinetic</button>
     <div class="proto-picker-divider" aria-hidden="true"></div>
     <button type="button" class="proto-picker-item proto-picker-replay" aria-label="Replay tactile animation" data-tooltip="Replay animation (R)" onclick="replayTactileAnimation()">↻</button>
   </nav>
@@ -7086,8 +7128,8 @@ cricos_active_sse_connections 1</pre>
           <input type="text" id="appDialogInput" style="width: 100%;" placeholder="">
         </div>
         <div style="display: flex; gap: 0.65rem; justify-content: flex-end; margin-top: 0.75rem;">
-          <button type="button" id="appDialogCancelBtn" class="btn btn-secondary" style="width: auto; padding: 0.45rem 1rem; font-size: 0.82rem;" onclick="dismissAppDialog()">Cancel</button>
-          <button type="button" id="appDialogConfirmBtn" class="btn" style="width: auto; padding: 0.45rem 1.15rem; font-size: 0.82rem;" onclick="resolveAppDialog()">Confirm</button>
+          <button type="button" id="appDialogCancelBtn" class="btn btn-secondary" style="width: auto; padding: 0.45rem 1rem; font-size: 0.82rem;" onclick="dismissAppDialog()" data-tooltip="Cancel dialog action" aria-label="Cancel dialog">Cancel</button>
+          <button type="button" id="appDialogConfirmBtn" class="btn" style="width: auto; padding: 0.45rem 1.15rem; font-size: 0.82rem;" onclick="resolveAppDialog()" data-tooltip="Confirm dialog action" aria-label="Confirm dialog">Confirm</button>
         </div>
       </div>
     </div>
@@ -7326,11 +7368,13 @@ cricos_active_sse_connections 1</pre>
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.remove('active');
         b.setAttribute('aria-selected', 'false');
+        b.removeAttribute('aria-current');
         const t = b.getAttribute('data-tab');
         const onclickAttr = b.getAttribute('onclick') || '';
         if (t === tabId || onclickAttr.indexOf("'" + tabId + "'") !== -1) {
           b.classList.add('active');
           b.setAttribute('aria-selected', 'true');
+          b.setAttribute('aria-current', 'page');
         }
       });
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -7552,7 +7596,7 @@ cricos_active_sse_connections 1</pre>
 
         const iconStr = opts.icon || icons[type] || '⚡';
         const descHtml = opts.description ? ('<div class="sonner-description">' + opts.description + '</div>') : '';
-        const actionHtml = opts.action ? ('<button type="button" class="sonner-action-btn" id="' + id + '-action">' + opts.action.label + '</button>') : '';
+        const actionHtml = opts.action ? ('<button type="button" class="sonner-action-btn" id="' + id + '-action" data-tooltip="Execute toast action" aria-label="' + opts.action.label + '">' + opts.action.label + '</button>') : '';
 
         toastEl.innerHTML = 
           '<div class="sonner-toast-content">' +

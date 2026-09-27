@@ -96,6 +96,23 @@ async function runPackaging() {
     fs.writeFileSync(distMobilePath, mobileHtml, 'utf8');
     fs.writeFileSync(distPublicMobilePath, mobileHtml, 'utf8');
     console.log('✓ Generated dist/mobile.html & dist/public/mobile.html');
+
+    const androidAssetPath = path.join(rootDir, 'apps/mobile/android/app/src/main/assets/index.html');
+    const iosAssetPath = path.join(rootDir, 'apps/mobile/ios/CricOS/Resources/www/index.html');
+    if (fs.existsSync(path.dirname(androidAssetPath))) {
+      const androidHtml = mobileHtml
+        .replace('<html lang="en">', '<html lang="en" class="is-native-app is-native-android">')
+        .replace('<body>', '<body class="is-native-app is-native-android">');
+      fs.writeFileSync(androidAssetPath, androidHtml, 'utf8');
+      console.log('✓ Synced mobile distribution to Android native assets');
+    }
+    if (fs.existsSync(path.dirname(iosAssetPath))) {
+      const iosHtml = mobileHtml
+        .replace('<html lang="en">', '<html lang="en" class="is-native-app is-native-ios">')
+        .replace('<body>', '<body class="is-native-app is-native-ios">');
+      fs.writeFileSync(iosAssetPath, iosHtml, 'utf8');
+      console.log('✓ Synced mobile distribution to iOS native assets');
+    }
   }
 
   // 7. Compute Cryptographic Checksums & Manifest

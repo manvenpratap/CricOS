@@ -80,7 +80,7 @@ export function renderQuoteRowHtml(quote: RfqQuote & { provider_name?: string; p
   const totalScore = quote.total_score || 88;
 
   return `
-    <div class="quote-row glass-panel" id="quote-${quote.id}" style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1.15rem 1.25rem; border-radius: 12px; margin-bottom: 0.85rem; border: 1px solid rgba(255, 255, 255, 0.07); background: rgba(15, 23, 42, 0.6); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); gap: 1.25rem; flex-wrap: wrap; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);">
+    <div class="quote-row glass-panel" id="quote-${quote.id}" style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1.15rem 1.25rem; border-radius: 12px; margin-bottom: 0.85rem; border: 1px solid rgba(255, 255, 255, 0.07); background: rgba(15, 23, 42, 0.6); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); gap: 1.25rem; flex-wrap: wrap; transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;">
       <div style="flex: 1; min-width: 240px;">
         <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem;">
           <span style="font-family: var(--font-display); font-weight: 600; color: #FFFFFF; font-size: 0.98rem; letter-spacing: -0.01em;">${quote.provider_name || 'Verified Provider'}</span>

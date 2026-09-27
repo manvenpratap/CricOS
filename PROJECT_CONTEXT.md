@@ -1,14 +1,36 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 11:15:00
-**Version:** 1.0.0-phase2au (Scorer Studio Keypad Styling, Logical Strike Rotation Stance Auto-Switching, Persona Profile Isolation, Terminology Unification & Nav Bar Active Indicator Enhancement)  
+**Last Updated:** 2026-09-27 11:42:00
+**Version:** 1.0.0-phase2av (UI/UX Pro Max & Design Taste Audit: WCAG 2.2 AA Touch Ergonomics, Input Focus Rings, Vestibular Motion Safety, Responsive Viewport Collapse, 100% Rule 5 Tooltip Coverage & Zero transition: all)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AU Completed — Scorer Studio Tactical Keypad Polish, Logical Strike Rotation Stance Auto-Switching, Persona Profile Isolation, Terminology Unification & Nav Bar Active Indicator Enhancement across Web & Mobile:
+- **Active Phase**: Phase 2AV Completed — Comprehensive UI/UX Design Audit & High-Agency Polish across Web Console, Mobile App & Distribution Assets:
+  - **1. WCAG 2.2 AA Touch Ergonomics & Navigation Target Sizing (`apps/api/src/ui/mobile-view.ts`)**:
+    - Upgraded `.mobile-nav-item` to satisfy WCAG 2.2 Criterion 2.5.8 target size requirements with `min-height: 44px; min-width: 44px; justify-content: center;` and smooth micro-touch feedback (`scale(0.97)`).
+    - Upgraded `.mobile-subnav-btn` with thumb-friendly `min-height: 36px; padding: 0.32rem 0.7rem; font-size: 0.72rem; gap: 0.35rem;` preventing accidental mis-taps.
+  - **2. Vestibular Motion Safeguards & Reduced Motion Accessibility (`mobile-view.ts`)**:
+    - Added `@media (prefers-reduced-motion: reduce)` in `mobile-view.ts` disabling heavy animations, transitions, and scroll animations for users with vestibular disorders.
+  - **3. High-Contrast Form Focus Rings (`mobile-view.ts`, `dashboard.ts`)**:
+    - Implemented high-contrast emerald focus ring for all form controls (`input:focus, select:focus, textarea:focus`) featuring `border-color: #00E599 !important; outline: none !important; box-shadow: 0 0 12px rgba(0, 229, 153, 0.35) !important;`.
+  - **4. 100% Rule 5 Tooltip & Accessibility Coverage (`mobile-view.ts`, `dashboard.ts`)**:
+    - Audited and added accessible `data-tooltip="..."` and `aria-label="..."` to all 12 mobile dismissal method chips, match format chips, and equipment accent selectors.
+    - Audited and added contextual tooltips and aria attributes to all 71 web console modal actions, close buttons, cancel triggers, calendar day selectors, and auction bid buttons.
+    - Injected `aria-current="page"` and `aria-selected` tracking dynamically in `switchTab()` and mobile bottom navigation.
+  - **5. Mobile Responsive Viewport Collapse (< 768px) & Viewport Stability (`dashboard.ts`)**:
+    - Added `@media (max-width: 768px)` single-column collapse rules preventing horizontal scrolling on mobile/tablet screens.
+    - Pinned modal dialog widths to `95vw` on mobile screens with responsive padding.
+    - Added `.cal-day-btn` interactive hover, active scaling (`scale(0.96)`), and `:focus-visible` styling.
+  - **6. Complete Elimination of `transition: all` across Codebase (`openapi.ts`, `rfq-manager.ts`)**:
+    - Replaced remaining legacy `transition: all` occurrences with explicit hardware-accelerated CSS properties (`transform`, `border-color`, `background-color`, `box-shadow`).
+  - **7. Packaging, Android & iOS Native Sync, and Zero-Regression Verification**:
+    - Updated `scripts/package-distribution.mjs` to automatically synchronize mobile web assets into both Android (`apps/mobile/android/app/src/main/assets/index.html`) and iOS (`apps/mobile/ios/CricOS/Resources/www/index.html`) native bundles with platform-specific classes (`is-native-android`, `is-native-ios`).
+    - 100% automated test pass rate across all 388 tests / 118 suites (`./pipeline.sh test --summary`).
+    - Rule 6 single-file invariant: `dist/index.html` and root `index.html` verified byte-for-byte identical (802,284 bytes).
+- **Preceding Phase**: Phase 2AU Completed — Scorer Studio Tactical Keypad Polish, Logical Strike Rotation Stance Auto-Switching, Persona Profile Isolation, Terminology Unification & Nav Bar Active Indicator Enhancement across Web & Mobile:
   - **1. Scorer Studio Keypad & Secondary Button Glassmorphism (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`)**:
     - Replaced unstyled default browser bevels at the bottom of the scoring pad with bespoke `.btn` and `.btn-secondary` glassmorphism tokens (`background: rgba(255, 255, 255, 0.06)`, `border: 1px solid rgba(255, 255, 255, 0.14)`, `border-radius: 8px`, `color: #F8FAFC`, active scale `0.97`).
     - Styled 2-second hold-to-confirm reset buttons (`#btnMobileStudioReset`, `#btnStudioReset`) with subtle rose tint (`rgba(255, 51, 102, 0.08)`), rose border (`rgba(255, 51, 102, 0.35)`), and smooth clip-path fill animation.

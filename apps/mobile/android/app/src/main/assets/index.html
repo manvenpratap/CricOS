@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="is-native-app">
+<html lang="en" class="is-native-app is-native-android">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -240,10 +240,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 0.15rem;
       cursor: pointer;
       padding: 0.25rem 0.6rem;
       border-radius: 10px;
+      min-height: 44px;
+      min-width: 44px;
       position: relative;
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
     }
@@ -292,6 +295,11 @@
       outline: 2px solid #00E599 !important;
       outline-offset: 2px !important;
     }
+    input:focus, select:focus, textarea:focus {
+      border-color: #00E599 !important;
+      outline: none !important;
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.35) !important;
+    }
     button, .role-pill, .slot-pill, .mobile-chip, .pad-touch-btn {
       cursor: pointer;
       user-select: none;
@@ -300,6 +308,16 @@
     }
     button:active, .role-pill:active, .slot-pill:active, .mobile-chip:active, .pad-touch-btn:active {
       transform: scale(0.97);
+    }
+
+    /* Vestibular Motion Safeguard (WCAG 2.2 AA) */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
 
     /* In-App Toast System */
@@ -466,13 +484,14 @@
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 20px;
-      padding: 0.22rem 0.55rem;
-      font-size: 0.68rem;
+      padding: 0.32rem 0.7rem;
+      min-height: 36px;
+      font-size: 0.72rem;
       font-weight: 600;
       color: #94a3b8;
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.35rem;
       cursor: pointer;
       transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
@@ -1183,7 +1202,7 @@
     }
   </style>
 </head>
-<body class="is-native-app">
+<body class="is-native-app is-native-android">
 
   <div class="preview-header">
     <div class="preview-badge">
@@ -1224,7 +1243,7 @@
     <div class="home-indicator"></div>
   </div>
 
-  <script>
+  <script type="module">
     // Auto-detect native mobile app / standalone mode to strip emulator framing
     (function initNativePlatformMode() {
       const isNative = window.location.protocol === 'file:' ||
@@ -2645,12 +2664,12 @@
           title: '🚨 Confirm Wicket Dismissal',
           bodyHtml: '<div style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.75rem;">Select dismissal method for striker <strong style="color: #ff3366;">' + strikerName + '</strong>:</div>' +
             '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 0.85rem;">' +
-            '<button type="button" class="mobile-chip active" style="text-align: center;" onclick="this.parentElement.dataset.method=\'CAUGHT\'">Caught</button>' +
-            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'BOWLED\'">Bowled</button>' +
-            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'LBW\'">LBW</button>' +
-            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'RUN_OUT\'">Run Out</button>' +
-            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'STUMPED\'">Stumped</button>' +
-            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'HIT_WKT\'">Hit Wkt</button>' +
+            '<button type="button" class="mobile-chip active" style="text-align: center;" onclick="this.parentElement.dataset.method=\'CAUGHT\'" data-tooltip="Dismissal method: Caught" aria-label="Dismissal method: Caught">Caught</button>' +
+            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'BOWLED\'" data-tooltip="Dismissal method: Bowled" aria-label="Dismissal method: Bowled">Bowled</button>' +
+            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'LBW\'" data-tooltip="Dismissal method: Leg Before Wicket (LBW)" aria-label="Dismissal method: Leg Before Wicket">LBW</button>' +
+            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'RUN_OUT\'" data-tooltip="Dismissal method: Run Out" aria-label="Dismissal method: Run Out">Run Out</button>' +
+            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'STUMPED\'" data-tooltip="Dismissal method: Stumped" aria-label="Dismissal method: Stumped">Stumped</button>' +
+            '<button type="button" class="mobile-chip" style="text-align: center;" onclick="this.parentElement.dataset.method=\'HIT_WKT\'" data-tooltip="Dismissal method: Hit Wicket" aria-label="Dismissal method: Hit Wicket">Hit Wkt</button>' +
             '</div>' +
             '<div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.4rem;">Incoming Batter:</div>' +
             '<select id="incomingBatterSelect" style="width: 100%; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem; margin-bottom: 0.85rem;">' +
@@ -3826,8 +3845,8 @@
             '<div style="margin-bottom: 1rem;">' +
             '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Elected To:</label>' +
             '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;" id="tossDecisionGroup">' +
-            '<button type="button" class="mobile-chip active" style="text-align: center; padding: 0.5rem;" onclick="this.classList.add(\'active\'); this.nextElementSibling.classList.remove(\'active\'); this.parentElement.dataset.decision=\'BAT\'">🏏 Bat First</button>' +
-            '<button type="button" class="mobile-chip" style="text-align: center; padding: 0.5rem;" onclick="this.classList.add(\'active\'); this.previousElementSibling.classList.remove(\'active\'); this.parentElement.dataset.decision=\'BOWL\'">🎳 Bowl First</button>' +
+            '<button type="button" class="mobile-chip active" style="text-align: center; padding: 0.5rem;" onclick="this.classList.add(\'active\'); this.nextElementSibling.classList.remove(\'active\'); this.parentElement.dataset.decision=\'BAT\'" data-tooltip="Elect to bat first" aria-label="Elect to bat first">🏏 Bat First</button>' +
+            '<button type="button" class="mobile-chip" style="text-align: center; padding: 0.5rem;" onclick="this.classList.add(\'active\'); this.previousElementSibling.classList.remove(\'active\'); this.parentElement.dataset.decision=\'BOWL\'" data-tooltip="Elect to bowl first" aria-label="Elect to bowl first">🎳 Bowl First</button>' +
             '</div></div>',
           confirmText: 'Certify Toss Result ✓',
           confirmStyle: 'background: linear-gradient(135deg, #FFB800, #FF8800); color: #04070D;',
@@ -3959,10 +3978,10 @@
             '<div style="margin-bottom: 0.75rem;">' +
             '<label style="display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.35rem;">Grip Accent Color:</label>' +
             '<div style="display: flex; gap: 0.4rem;">' +
-            '<button type="button" class="mobile-chip active" style="flex: 1; text-align: center;">Emerald</button>' +
-            '<button type="button" class="mobile-chip" style="flex: 1; text-align: center;">Cyan</button>' +
-            '<button type="button" class="mobile-chip" style="flex: 1; text-align: center;">Amber</button>' +
-            '<button type="button" class="mobile-chip" style="flex: 1; text-align: center;">Stealth</button>' +
+            '<button type="button" class="mobile-chip active" style="flex: 1; text-align: center;" data-tooltip="Select Emerald grip accent" aria-label="Select Emerald grip accent">Emerald</button>' +
+            '<button type="button" class="mobile-chip" style="flex: 1; text-align: center;" data-tooltip="Select Cyan grip accent" aria-label="Select Cyan grip accent">Cyan</button>' +
+            '<button type="button" class="mobile-chip" style="flex: 1; text-align: center;" data-tooltip="Select Amber grip accent" aria-label="Select Amber grip accent">Amber</button>' +
+            '<button type="button" class="mobile-chip" style="flex: 1; text-align: center;" data-tooltip="Select Stealth grip accent" aria-label="Select Stealth grip accent">Stealth</button>' +
             '</div></div>',
           confirmText: 'Add Custom Gear to Basket 🛒',
           confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
@@ -5729,7 +5748,7 @@
           var item = navItems[i];
           var active = this.currentScreen === item[0];
           var activeClass = active ? ' active' : '';
-          h += '<button type="button" class="mobile-nav-item' + activeClass + '" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="' + item[0] + '" data-tooltip="Navigate to ' + item[2] + '">';
+          h += '<button type="button" class="mobile-nav-item' + activeClass + '" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="' + item[0] + '" data-tooltip="Navigate to ' + item[2] + '" aria-label="' + item[2] + '" aria-current="' + (active ? 'page' : 'false') + '">';
           h += '<span class="mobile-nav-icon">' + item[1] + '</span>';
           h += '<span>' + item[2] + '</span>';
           h += '</button>';

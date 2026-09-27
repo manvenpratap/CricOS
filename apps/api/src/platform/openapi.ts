@@ -272,7 +272,7 @@ export function getApiDocsHtml(): string {
     .hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 800px; }
     
     .nav-links { display: flex; gap: 1rem; margin-top: 1rem; }
-    .nav-btn { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: rgba(255,255,255,0.02); transition: all 0.2s; }
+    .nav-btn { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: rgba(255,255,255,0.02); transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
     .nav-btn:hover { background: rgba(16,185,129,0.1); border-color: var(--primary); }
 
     .tag-section { margin-bottom: 2.5rem; }
