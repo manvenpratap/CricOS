@@ -2026,8 +2026,15 @@ export function getMobileAppHtml(): string {
         this.toasts.push({ id: id, msg: msg, type: type });
         if (window.CricOSSound) window.CricOSSound.playClick();
         try {
-          if (navigator.vibrate) {
+          if (window.AndroidBridge && typeof window.AndroidBridge.triggerHaptic === 'function') {
+            window.AndroidBridge.triggerHaptic(type === 'error' ? 'error' : 'tap');
+          } else if (navigator.vibrate) {
             navigator.vibrate(type === 'error' ? [80, 50, 80] : 30);
+          }
+        } catch (_) {}
+        try {
+          if (window.AndroidBridge && typeof window.AndroidBridge.showToast === 'function') {
+            window.AndroidBridge.showToast(msg);
           }
         } catch (_) {}
         this.renderToasts();
@@ -4276,6 +4283,144 @@ export function getMobileAppHtml(): string {
         });
       }
 
+      open3DPlayerCardSheet(playerName) {
+        var self = this;
+        var players = {
+          'Hardik Patel': { jersey: '#33', role: 'ALL_ROUNDER', avg: '48.2', sr: '162.4', wkts: '72', power: '94' },
+          'Virat Kohli': { jersey: '#18', role: 'TOP_ORDER_BAT', avg: '53.8', sr: '138.2', wkts: '4', power: '92' },
+          'Jasprit Bumrah': { jersey: '#93', role: 'FAST_BOWLER', avg: '12.4', sr: '110.0', wkts: '145', power: '65' }
+        };
+        var activeName = playerName || 'Hardik Patel';
+        var p = players[activeName] || players['Hardik Patel'];
+
+        var chipsHtml = '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.75rem;">';
+        var names = ['Hardik Patel', 'Virat Kohli', 'Jasprit Bumrah'];
+        for (var nIdx = 0; nIdx < names.length; nIdx++) {
+          var n = names[nIdx];
+          var isCur = n === activeName;
+          chipsHtml += '<button type="button" class="mobile-chip' + (isCur ? ' active' : '') + '" onclick="window.cricosMobileApp.open3DPlayerCardSheet(&apos;' + n + '&apos;)" style="flex: 1; text-align: center; font-size: 0.7rem;" data-tooltip="Inspect ' + n + ' holographic 3D card" aria-label="Inspect ' + n + ' holographic card">' + n.split(' ')[0] + '</button>';
+        }
+        chipsHtml += '</div>';
+
+        var cardHtml = '<div style="background: linear-gradient(145deg, rgba(16, 24, 40, 0.95), rgba(4, 7, 13, 0.98)); border: 2px solid rgba(0, 229, 153, 0.4); border-radius: 14px; padding: 1rem; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">' +
+          '<div style="position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(0,229,153,0.25) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>' +
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">' +
+            '<div>' +
+              '<div style="font-size: 0.65rem; color: #00E599; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">CricOS Holographic Athlete Card</div>' +
+              '<div style="font-size: 1.25rem; font-weight: 800; font-family: Space Grotesk, sans-serif; color: #F8FAFC;">' + activeName + '</div>' +
+              '<div style="font-size: 0.72rem; color: #94A3B8;">' + p.role.replace('_', ' ') + '</div>' +
+            '</div>' +
+            '<div style="font-family: Chakra Petch, monospace; font-size: 1.5rem; font-weight: 800; color: #00D2FF; text-shadow: 0 0 10px rgba(0,210,255,0.4);">' + p.jersey + '</div>' +
+          '</div>' +
+          '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; background: rgba(0,0,0,0.5); padding: 0.6rem; border-radius: 8px; margin-bottom: 0.65rem; border: 1px solid rgba(255,255,255,0.06); text-align: center;">' +
+            '<div><div style="font-size: 0.58rem; color: #94A3B8;">AVG</div><div style="font-size: 0.95rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">' + p.avg + '</div></div>' +
+            '<div><div style="font-size: 0.58rem; color: #94A3B8;">S/R</div><div style="font-size: 0.95rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">' + p.sr + '</div></div>' +
+            '<div><div style="font-size: 0.58rem; color: #94A3B8;">WKTS</div><div style="font-size: 0.95rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">' + p.wkts + '</div></div>' +
+            '<div><div style="font-size: 0.58rem; color: #94A3B8;">POWER</div><div style="font-size: 0.95rem; font-weight: 800; color: #FF3366; font-family: Chakra Petch, monospace;">' + p.power + '</div></div>' +
+          '</div>' +
+          '<div style="font-size: 0.68rem; color: #94A3B8; text-align: center;">Holographic 3D Tilt Physics • Specular Sheen Active</div>' +
+        '</div>';
+
+        this.openActionSheet({
+          title: '🃏 3D Holographic Player Card',
+          bodyHtml: chipsHtml + cardHtml,
+          confirmText: 'Done Viewing ✓',
+          confirmStyle: 'background: linear-gradient(135deg, #00D2FF, #00E599); color: #04070D;',
+          onConfirm: function() {
+            self.showToast('✓ Holographic Card verified', 'success');
+            self.closeActionSheet();
+          }
+        });
+      }
+
+      open3DTrophyCabinetSheet(trophyType) {
+        var self = this;
+        var trophies = {
+          'PREMIER_CUP': {
+            title: 'CricOS Premier T20 Cup (2026 Edition)',
+            holder: 'Defending Champions: Coastal Titans',
+            metal: '24k Polished Gold-Gilt • Obsidian Granite Base',
+            desc: 'Crafted in 24k polished gold-gilt with tiered handles, resting upon an obsidian-granite octagonal base. Engraved with MCC Law 1.3 match sanctions.',
+            color: '#FFB800'
+          },
+          'MVP_SHIELD': {
+            title: 'Tournament MVP Silver Shield',
+            holder: '2026 Holder: Virat Sharma (842 runs)',
+            metal: 'Solid Sterling Silver • 18k Star Medallion',
+            desc: 'Forged in solid sterling silver with radiant radial fluting and an embossed 18k star medallion honoring all-round tactical mastery.',
+            color: '#00D2FF'
+          },
+          'GOLDEN_BAT': {
+            title: 'Golden Bat Award (Leading Run Scorer)',
+            holder: 'Award Holder: Rohit Verma (SR 164.2)',
+            metal: 'Solid 24k Mirrored Willow • Polyurethane Core',
+            desc: 'Solid 24k mirrored electro-plated miniature willow with high-density polyurethane core and laser-engraved tournament milestone tally.',
+            color: '#00E599'
+          }
+        };
+        var activeKey = trophyType || 'PREMIER_CUP';
+        var t = trophies[activeKey] || trophies['PREMIER_CUP'];
+
+        var chipsHtml = '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.75rem;">';
+        var tList = [
+          ['PREMIER_CUP', 'Premier Cup 🏆'],
+          ['MVP_SHIELD', 'MVP Shield 🛡️'],
+          ['GOLDEN_BAT', 'Golden Bat 🏏']
+        ];
+        for (var tIdx = 0; tIdx < tList.length; tIdx++) {
+          var item = tList[tIdx];
+          var isCur = item[0] === activeKey;
+          chipsHtml += '<button type="button" class="mobile-chip' + (isCur ? ' active' : '') + '" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet(&apos;' + item[0] + '&apos;)" style="flex: 1; text-align: center; font-size: 0.68rem;" data-tooltip="Inspect ' + item[1] + '" aria-label="Inspect ' + item[1] + '">' + item[1] + '</button>';
+        }
+        chipsHtml += '</div>';
+
+        var trophyCardHtml = '<div style="background: linear-gradient(145deg, rgba(16, 24, 40, 0.95), rgba(4, 7, 13, 0.98)); border: 2px solid ' + t.color + '44; border-radius: 14px; padding: 1rem; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">' +
+          '<div style="font-size: 0.65rem; color: ' + t.color + '; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Championship Silverware Telemetry</div>' +
+          '<div style="font-size: 1.15rem; font-weight: 800; font-family: Space Grotesk, sans-serif; color: #F8FAFC; margin: 0.25rem 0 0.15rem;">' + t.title + '</div>' +
+          '<div style="font-size: 0.75rem; color: ' + t.color + '; font-weight: 700; margin-bottom: 0.45rem;">' + t.holder + '</div>' +
+          '<div style="background: rgba(0,0,0,0.4); padding: 0.5rem 0.65rem; border-radius: 6px; font-size: 0.68rem; color: #94A3B8; margin-bottom: 0.6rem; border: 1px solid rgba(255,255,255,0.06);">' + t.metal + '</div>' +
+          '<div style="font-size: 0.72rem; color: #CBD5E1; line-height: 1.4;">' + t.desc + '</div>' +
+        '</div>';
+
+        this.openActionSheet({
+          title: '🏆 3D Championship Trophy Cabinet',
+          bodyHtml: chipsHtml + trophyCardHtml,
+          confirmText: 'Done Viewing ✓',
+          confirmStyle: 'background: linear-gradient(135deg, #FFB800, #00E599); color: #04070D;',
+          onConfirm: function() {
+            self.showToast('🏆 Silverware inspected: ' + t.title, 'success');
+            self.closeActionSheet();
+          }
+        });
+      }
+
+      openDlsCalculatorSheet() {
+        var self = this;
+        this.openActionSheet({
+          title: '🌧️ DLS Interruption Calculator',
+          bodyHtml: '<div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 0.75rem;">Duckworth-Lewis-Stern Standard Resource Calculator:</div>' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.65rem;">' +
+              '<div><label style="font-size: 0.7rem; color: #94a3b8;">Original Overs:</label><input type="number" id="dlsOrigOvers" value="20" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.4rem; color: #fff; font-size: 0.8rem;" /></div>' +
+              '<div><label style="font-size: 0.7rem; color: #94a3b8;">Team 1 Score:</label><input type="number" id="dlsT1Score" value="184" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.4rem; color: #fff; font-size: 0.8rem;" /></div>' +
+            '</div>' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.65rem;">' +
+              '<div><label style="font-size: 0.7rem; color: #94a3b8;">Revised Overs (T2):</label><input type="number" id="dlsRevOvers" value="15" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.4rem; color: #fff; font-size: 0.8rem;" /></div>' +
+              '<div><label style="font-size: 0.7rem; color: #94a3b8;">Wickets Lost:</label><input type="number" id="dlsWktsLost" value="2" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.4rem; color: #fff; font-size: 0.8rem;" /></div>' +
+            '</div>' +
+            '<div style="background: rgba(0,229,153,0.1); border: 1px solid rgba(0,229,153,0.3); border-radius: 8px; padding: 0.65rem; text-align: center;">' +
+              '<div style="font-size: 0.65rem; color: #00E599; font-weight: 700; text-transform: uppercase;">Par Target Calculation</div>' +
+              '<div style="font-size: 1.3rem; font-weight: 800; font-family: Chakra Petch, monospace; color: #00E599; margin-top: 0.2rem;">148 Runs in 15.0 Overs</div>' +
+              '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.2rem;">Resource Percentage: 80.4% • Required Run Rate: 9.87</div>' +
+            '</div>',
+          confirmText: 'Apply Target to Match ⚡',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            self.showToast('🌧️ Revised DLS Target Applied: 148 runs from 15 overs (Req: 9.87)', 'success');
+            self.closeActionSheet();
+          }
+        });
+      }
+
       generateFixtures() {
         this.showToast('📅 Round-Robin Brackets Generated: 8 teams, 28 matches with temporal GiST conflict prevention.', 'success');
       }
@@ -4360,7 +4505,14 @@ export function getMobileAppHtml(): string {
             '<div style="margin-bottom: 0.75rem;">' +
             '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Time Slot:</label>' +
             '<input type="text" id="slotTimeInput" value="14:00 - 18:00" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.6rem; color: #f8fafc; font-size: 0.85rem;" />' +
-            '</div>',
+            '</div>' +
+            '<div style="margin-bottom: 0.75rem;">' +
+            '<label style="display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.35rem;">Facility Photos (Optional):</label>' +
+            '<div style="display: flex; gap: 0.4rem; align-items: center; margin-bottom: 0.4rem;">' +
+            '<input type="file" id="mobileVenuePhotoInput" accept="image/*" style="display: none;" onchange="window.cricosMobileApp.handleMobileVenuePhoto(event)" />' +
+            '<button type="button" onclick="document.getElementById(&apos;mobileVenuePhotoInput&apos;).click()" class="mobile-chip active" style="font-size: 0.7rem; padding: 0.3rem 0.6rem;" data-tooltip="Upload ground facility photos" aria-label="Upload ground photos">📸 Add Venue Photos</button>' +
+            '<div id="mobileVenueGallery" style="display: flex; gap: 0.3rem; overflow-x: auto;"></div>' +
+            '</div></div>',
           confirmText: 'Publish Live Slot ⚡',
           confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
           onConfirm: function() {
@@ -4789,7 +4941,8 @@ export function getMobileAppHtml(): string {
         h += '<span style="font-size: 0.68rem; color: #94a3b8;">Wankhede Stadium</span>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.3rem;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.openDrsReviewSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Launch Hawk-Eye DRS Review">📡 Hawk-Eye</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.openDrsReviewSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Launch Hawk-Eye DRS Review" aria-label="Hawk-Eye DRS Review">📡 Hawk-Eye</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.openDlsCalculatorSheet()" style="background: rgba(255, 184, 0, 0.12); border: 1px solid rgba(255, 184, 0, 0.35); color: #FFB800; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open Duckworth-Lewis-Stern target calculator" aria-label="DLS Calculator">🌧️ DLS Target</button>';
         h += '</div></div>';
 
         // LED Scoreboard HUD
@@ -5236,12 +5389,16 @@ export function getMobileAppHtml(): string {
 
         // Team Header & Join Code
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">';
         h += '<div>';
         h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00E599; text-transform: uppercase;">Captain &amp; Squad Hub</div>';
         h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.2rem; font-family: Space Grotesk, sans-serif;">' + this.profile.teamName + '</h2>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.openGearCustomizerSheet()" style="padding: 0.25rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.7rem; font-weight: 700;" data-tooltip="Customise 3D bat blade and grips">🏏 3D Gear</button>';
+        h += '<div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.openGearCustomizerSheet()" style="padding: 0.22rem 0.45rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.68rem; font-weight: 700;" data-tooltip="Customise 3D bat blade and grips" aria-label="3D Gear Configurator">🏏 3D Gear</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="padding: 0.22rem 0.45rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.68rem; font-weight: 700;" data-tooltip="Inspect Holographic 3D Player Card and telemetry" aria-label="3D Player Card">🃏 3D Card</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet()" style="padding: 0.22rem 0.45rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #FFB800; font-size: 0.68rem; font-weight: 700;" data-tooltip="Inspect 3D Championship Trophy Cabinet" aria-label="3D Trophy Cabinet">🏆 3D Trophy</button>';
+        h += '</div>';
         h += '</div>';
         if (isCaptain || this.profile.persona === 'PLAYER') {
           h += '<div style="margin-top: 0.45rem; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">';
@@ -5323,8 +5480,13 @@ export function getMobileAppHtml(): string {
 
         // Tournament Card & 4-Stage Stepper
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div>';
         h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">Championship Hub</div>';
         h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">' + (this.activeTournamentName || 'Club Premier League 2026') + '</h2>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet()" style="padding: 0.22rem 0.5rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #FFB800; font-size: 0.68rem; font-weight: 700;" data-tooltip="Inspect 3D Tournament Championship Silverware" aria-label="3D Silverware">🏆 Silverware</button>';
+        h += '</div>';
         h += '<div style="display: flex; gap: 0.25rem; margin-top: 0.5rem;">';
         var stages = ['REGISTRATION', 'GROUP_STAGE', 'PLAYOFFS', 'COMPLETED'];
         for (var st = 0; st < stages.length; st++) {

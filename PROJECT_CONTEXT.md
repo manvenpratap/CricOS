@@ -1,44 +1,42 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 16:12:00
-**Version:** 1.0.0-phase2ay (Visual Media & Image Upload Engine: Profile Avatar Upload Studio, Venue/Turf Facility Photo Gallery, Team Logo Upload, Evidence Attachment, Drag-and-Drop, Preset Portrait Picker & 450 Passing Tests)  
+**Last Updated:** 2026-09-27 16:30:00
+**Version:** 1.0.0-phase2az (Android Native APK & Complete Feature Parity: True Native Android Binary `dist/cricos-debug.apk`, WebView Chrome FileChooser for HTML File Uploads, Audio Permissions for Speech Commentary, Native AndroidBridge Haptics/Toasts, 8-Persona Matrix, Scoring Studio, 3D Sheets & 474 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2AY Completed — Visual Media & Image Upload Engine across Web Console & Mobile App:
-  - **1. Web Console Profile Avatar Upload Studio (`apps/api/src/ui/dashboard.ts`)**:
-    - Added `avatarUrl` and `avatarPreset` fields to `currentUser` model for persistent image state.
-    - Implemented `handleUserPhotoUpload()` with FileReader client-side preview, type validation (PNG/JPEG/WebP/GIF/AVIF), and 8 MB size limit.
-    - Implemented `applyAvatarToUI()` updating both profile modal preview and sidebar header avatar simultaneously.
-    - Implemented `selectPresetAvatar(index)` with 4 AI-generated athletic portrait presets from Google CDN.
-    - Implemented `resetUserAvatarToDefault()` reverting to initials monogram with full state cleanup.
-    - Implemented `initAvatarDragDrop()` with dragover/dragleave/drop event handlers and visual glow feedback on the avatar circle.
-  - **2. Venue/Turf Facility Photo Gallery (`apps/api/src/ui/dashboard.ts`)**:
-    - Added `<div class="image-dropzone">` with click-to-upload and drag-and-drop support to the storefront ground publishing form.
-    - Implemented `handleVenueImageUpload()`, `updateVenueGalleryPreview()`, `removeVenueImage()`, `previewVenueImage()` for full gallery CRUD.
-    - Full-size preview overlay with Escape key dismissal and click-anywhere-to-close.
-    - 10 MB per-image size limit with PNG/JPEG/WebP validation.
-  - **3. Team Logo & Evidence Attachment Uploads (`apps/api/src/ui/dashboard.ts`)**:
-    - `handleTeamLogoUpload()` with SVG support and 5 MB limit.
-    - `handleEvidenceUpload()` for dispute case photo attachment with gallery appending.
-    - All functions exported to `window` for cross-module access.
-  - **4. Mobile App Profile Photo Upload (`apps/api/src/ui/mobile-view.ts`)**:
-    - Added `avatarUrl` to mobile `this.profile` object.
-    - Replaced static jersey number circle with dynamic avatar preview (image or #jersey fallback).
-    - Added tap-to-upload camera overlay (`.mobile-avatar-cam-overlay`) with `:active` CSS feedback.
-    - Implemented `handleMobileProfilePhoto()`, `resetMobileAvatar()`, `selectMobilePresetAvatar()`.
-    - Enhanced `openEditProfileSheet()` with visual photo upload section, preset portrait picker (4 thumbnails), and Reset button.
-  - **5. Mobile Venue Photo Upload (`apps/api/src/ui/mobile-view.ts`)**:
-    - Implemented `handleMobileVenuePhoto()` with gallery thumbnail appending and `mobileVenueGallery` container.
-  - **6. Regression Testing & Parity Verification**:
-    - Added `tests/48-visual-media-and-image-upload-engine.test.ts` with 40 assertions across 8 suites.
-    - Updated `tests/README.md` coverage map with test 48 specifications.
-    - 100% automated test pass rate across all 450 tests / 135 suites (`./pipeline.sh test --summary`).
+- **Active Phase**: Phase 2AZ Completed — Android Native APK & Complete Feature Parity:
+  - **1. Android Native Java & WebView Architecture (`MainActivity.java`)**:
+    - Implemented `WebChromeClient.onShowFileChooser(WebView, ValueCallback<Uri[]>, FileChooserParams)` with `FILECHOOSER_RESULTCODE` and `onActivityResult` handling multi-file and single-file data URIs, enabling HTML `<input type="file">` to invoke the native Android image gallery, file picker, and camera.
+    - Implemented `WebChromeClient.onPermissionRequest(PermissionRequest)` to grant microphone and camera access for speech-to-score commentary and real-time photo capture.
+    - Created `WebAppInterface` exposing `@JavascriptInterface` bridge `window.AndroidBridge` with `triggerHaptic(String type)` (via `Vibrator` and `VibrationEffect.createOneShot/createWaveform`), `showToast(String message)`, and `isNativeAndroid()`.
+    - Wired `window.AndroidBridge` directly into `showToast()` in `mobile-view.ts`.
+  - **2. Android Manifest Permissions & Hardware Acceleration (`AndroidManifest.xml`)**:
+    - Added permissions: `android.permission.CAMERA`, `android.permission.READ_MEDIA_IMAGES`, `android.permission.READ_EXTERNAL_STORAGE` (`maxSdkVersion="32"`), `android.permission.RECORD_AUDIO`, `android.permission.MODIFY_AUDIO_SETTINGS`.
+    - Added camera and microphone optional features (`required="false"`).
+    - Enabled `android:hardwareAccelerated="true"` on `<application>` for 60/120fps 3D and canvas rendering.
+  - **3. Mobile View Complete Feature Parity (`apps/api/src/ui/mobile-view.ts`)**:
+    - **3D Features**:
+      - Implemented `open3DPlayerCardSheet(playerName)` on `cricosMobileApp`: interactive holographic 3D tilt card with specular sheen, radar splits, and athlete selector chips (`Hardik Patel`, `Virat Kohli`, `Jasprit Bumrah`).
+      - Implemented `open3DTrophyCabinetSheet(trophyType)` on `cricosMobileApp`: 3D championship silverware specs (`Premier T20 Cup`, `MVP Silver Shield`, `Golden Bat Award`) with metal compositions, defending champions, and tournament tallies.
+      - Added `🃏 3D Card` and `🏆 3D Trophy` action buttons alongside `🏏 3D Gear` in `renderTeams()`, and `🏆 Silverware` button in `renderTournaments()` Championship Hub.
+    - **DLS Target Calculator**:
+      - Implemented `openDlsCalculatorSheet()` on `cricosMobileApp` with Duckworth-Lewis-Stern par calculation inputs (original overs, team 1 score, revised overs, wickets lost) and revised target equation output.
+      - Added `🌧️ DLS Target` action button to match top badges in `renderMatches()`.
+    - **Photo Upload in Ground Slots**:
+      - Added `mobileVenuePhotoInput` and `mobileVenueGallery` thumbnail container inside `publishSlotAction()`.
+  - **4. Android Build Pipeline & Asset Sync (`apps/mobile/android/build-apk.sh`)**:
+    - Updated `sed` asset sync replacement to retain both `is-native-app` and `is-native-android` class tokens in `apps/mobile/android/app/src/main/assets/index.html`.
+    - Successfully compiled true native APK at `apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk` and copied to `dist/cricos-debug.apk`.
+  - **5. Regression Testing & Parity Verification**:
+    - Added `tests/49-android-native-apk-and-feature-parity.test.ts` with 24 assertions across 7 suites covering APK binary, DEX bytecode, manifest permissions, hardware acceleration, Java WebView methods, bundled assets, 8 personas, scoring studio, 3D sheets, photo upload engine, Rule 5 data-tooltip coverage, and Rule 6 parity.
+    - Updated `tests/README.md` coverage map with test 49 specifications.
+    - 100% automated test pass rate across all 474 tests / 143 suites (`./pipeline.sh test --summary`).
     - Rule 6 single-file parity verified between root `index.html` and `dist/index.html`.
-- **Preceding Phase**: Phase 2AX Completed — Kinetic Motion Graphics, Stadium FX Engine & Zero-Layout-Thrashing Compositor Architecture across Web Console, Mobile App & 3D Experiences:
+- **Preceding Phase**: Phase 2AY Completed — Visual Media & Image Upload Engine across Web Console & Mobile App:
 - **Preceding Phase**: Phase 2AV Completed — Comprehensive UI/UX Design Audit & High-Agency Polish across Web Console, Mobile App & Distribution Assets:
   - **1. WCAG 2.2 AA Touch Ergonomics & Navigation Target Sizing (`apps/api/src/ui/mobile-view.ts`)**:
     - Upgraded `.mobile-nav-item` to satisfy WCAG 2.2 Criterion 2.5.8 target size requirements with `min-height: 44px; min-width: 44px; justify-content: center;` and smooth micro-touch feedback (`scale(0.97)`).

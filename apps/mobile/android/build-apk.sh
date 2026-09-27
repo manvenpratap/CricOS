@@ -13,8 +13,8 @@ node "$REPO_ROOT/scripts/package-distribution.mjs"
 
 echo "==> Syncing latest CricOS mobile web distribution into Android assets..."
 mkdir -p "$SCRIPT_DIR/app/src/main/assets"
-sed -e 's/<html lang="en">/<html lang="en" class="is-native-app">/' \
-    -e 's/<body>/<body class="is-native-app">/' \
+sed -e 's/<html lang="en">/<html lang="en" class="is-native-app is-native-android">/' \
+    -e 's/<body>/<body class="is-native-app is-native-android">/' \
     -e 's/<script type="module">/<script>/' \
     "$REPO_ROOT/dist/mobile.html" > "$SCRIPT_DIR/app/src/main/assets/index.html"
 
