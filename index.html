@@ -2384,8 +2384,9 @@
     }
 
     /* ==========================================================================
-       Design System Themes: Swiss Minimal & Nordic Editorial
+       Design System Themes: Swiss Minimal, Nordic Editorial & Stadium Night
        ========================================================================== */
+    /* 1. Swiss Minimal Theme (Architectural, High-Contrast Modernist Grid) */
     body[data-theme="swiss"],
     html[data-theme="swiss"],
     body.outdoor-mode {
@@ -2405,21 +2406,22 @@
       --amber: #D97706;
       --rose: #DC2626;
       --purple: #7C3AED;
-      background: #F8FAFC !important;
-      background-image: none !important;
+      background: #F8F9FA !important;
+      background-image: radial-gradient(circle, #CBD5E1 0.75px, transparent 0.75px) !important;
+      background-size: 20px 20px !important;
       color: #0F172A !important;
     }
 
     body[data-theme="swiss"] .app-sidebar,
     body.outdoor-mode .app-sidebar {
       background: #FFFFFF !important;
-      border-right: 1px solid #E2E8F0 !important;
-      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.03) !important;
+      border-right: 1px solid #CBD5E1 !important;
+      box-shadow: 2px 0 8px rgba(15, 23, 42, 0.03) !important;
     }
 
     body[data-theme="swiss"] .sidebar-header,
     body.outdoor-mode .sidebar-header {
-      border-bottom: 1px solid #E2E8F0 !important;
+      border-bottom: 1px solid #CBD5E1 !important;
     }
 
     body[data-theme="swiss"] .brand-title,
@@ -2427,12 +2429,14 @@
       background: none !important;
       -webkit-text-fill-color: #0F172A !important;
       color: #0F172A !important;
+      letter-spacing: -0.02em !important;
+      font-weight: 800 !important;
     }
 
     body[data-theme="swiss"] .app-topbar,
     body.outdoor-mode .app-topbar {
       background: #FFFFFF !important;
-      border-bottom: 1px solid #E2E8F0 !important;
+      border-bottom: 1px solid #CBD5E1 !important;
     }
 
     body[data-theme="swiss"] .card,
@@ -2446,9 +2450,10 @@
     body.outdoor-mode .modal-card,
     body.outdoor-mode .metric-card {
       background: #FFFFFF !important;
-      border: 1px solid #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
     }
 
     body[data-theme="swiss"] .card::before,
@@ -2459,61 +2464,101 @@
     body[data-theme="swiss"] .topbar-node,
     body.outdoor-mode .topbar-node {
       background: #F1F5F9 !important;
-      border-color: #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
     }
 
     body[data-theme="swiss"] .sidebar-nav-item,
     body.outdoor-mode .sidebar-nav-item {
       color: #475569 !important;
+      border-radius: 4px !important;
     }
 
     body[data-theme="swiss"] .sidebar-nav-item:hover,
     body[data-theme="swiss"] .sidebar-nav-item.active,
     body.outdoor-mode .sidebar-nav-item:hover,
     body.outdoor-mode .sidebar-nav-item.active {
-      background: #F1F5F9 !important;
-      color: #0F172A !important;
+      background: #0F172A !important;
+      color: #FFFFFF !important;
+      border-radius: 4px !important;
     }
 
     body[data-theme="swiss"] .scoreboard,
     body.outdoor-mode .scoreboard {
       background: #FFFFFF !important;
-      border: 1px solid #E2E8F0 !important;
+      border: 1px solid #0F172A !important;
+      border-left: 6px solid #DC2626 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
     }
 
     body[data-theme="swiss"] .scoreboard .live-score,
     body.outdoor-mode .scoreboard .live-score {
       color: #0F172A !important;
       text-shadow: none !important;
+      font-weight: 800 !important;
+    }
+
+    body[data-theme="swiss"] .scoreboard .overs-val,
+    body.outdoor-mode .scoreboard .overs-val {
+      color: #059669 !important;
+      text-shadow: none !important;
+      font-weight: 700 !important;
     }
 
     body[data-theme="swiss"] .pad-btn {
       background: #FFFFFF !important;
-      border: 1px solid #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
+      font-weight: 800 !important;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
     }
 
-    body[data-theme="swiss"] .btn-secondary {
+    body[data-theme="swiss"] .pad-btn:hover {
+      border-color: #0F172A !important;
       background: #F8FAFC !important;
-      border-color: #CBD5E1 !important;
+    }
+
+    body[data-theme="swiss"] .btn-primary {
+      background: #0F172A !important;
+      color: #FFFFFF !important;
+      border: 1px solid #0F172A !important;
+      border-radius: 4px !important;
+      font-weight: 700 !important;
+      box-shadow: none !important;
+    }
+
+    body[data-theme="swiss"] .btn-secondary {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
     }
 
     body[data-theme="swiss"] .btn-swap-strike {
       background: #ECFDF5 !important;
-      border-color: #A7F3D0 !important;
+      border: 1px solid #059669 !important;
+      border-radius: 4px !important;
       color: #059669 !important;
       box-shadow: none !important;
     }
 
     body[data-theme="swiss"] .btn-undo-ball {
       background: #F1F5F9 !important;
-      border-color: #CBD5E1 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #334155 !important;
+    }
+
+    body[data-theme="swiss"] #btnDesignThemeSwitcher {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
+      color: #0F172A !important;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
     }
 
     body[data-theme="swiss"] input,
@@ -2521,6 +2566,7 @@
     body[data-theme="swiss"] textarea {
       background: #FFFFFF !important;
       border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
     }
 
@@ -2531,7 +2577,10 @@
     body[data-theme="swiss"] th {
       background: #F8FAFC !important;
       color: #475569 !important;
-      border-bottom: 1px solid #E2E8F0 !important;
+      border-bottom: 2px solid #0F172A !important;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
     }
 
     body[data-theme="swiss"] td {
@@ -2540,66 +2589,72 @@
     }
 
     body[data-theme="swiss"] .modal-header {
-      border-bottom: 1px solid #E2E8F0 !important;
+      border-bottom: 2px solid #0F172A !important;
     }
 
     body[data-theme="swiss"] .modal-title {
       color: #0F172A !important;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
     }
 
     body[data-theme="swiss"] .modal-close-btn {
       background: #F1F5F9 !important;
-      border-color: #E2E8F0 !important;
-      color: #64748B !important;
+      border-color: #CBD5E1 !important;
+      border-radius: 4px !important;
+      color: #0F172A !important;
     }
 
     body[data-theme="swiss"] .stat-tile {
-      background: #F8FAFC !important;
-      border-color: #E2E8F0 !important;
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
     }
 
-    /* Nordic Editorial Theme */
+    /* 2. Nordic Editorial Theme (Warm Oat Paper, Curvature, Organic Earth & Pine) */
     body[data-theme="nordic"],
     html[data-theme="nordic"] {
-      --bg-dark: #FAF8F5;
-      --bg-card: #FFFFFF;
-      --bg-card-solid: #FFFFFF;
-      --border-subtle: #E7E5E4;
-      --border-accent: #1C1917;
-      --text-main: #1C1917;
+      --bg-dark: #F5F0E8;
+      --bg-card: #FCFBF8;
+      --bg-card-solid: #FCFBF8;
+      --border-subtle: #E6DFD5;
+      --border-accent: #292524;
+      --text-main: #292524;
       --text-muted: #78716C;
       --turf-emerald: #15803D;
-      --turf-glow: rgba(21, 128, 61, 0.12);
-      --primary: #1C1917;
-      --primary-glow: rgba(28, 25, 23, 0.08);
+      --turf-glow: rgba(21, 128, 61, 0.15);
+      --primary: #292524;
+      --primary-glow: rgba(41, 37, 36, 0.08);
       --cyan: #0369A1;
-      --amber: #B45309;
+      --amber: #C2410C;
       --rose: #BE123C;
       --purple: #6B21A8;
-      background: #FAF8F5 !important;
-      background-image: none !important;
-      color: #1C1917 !important;
+      background: #F5F0E8 !important;
+      background-image: radial-gradient(ellipse at 50% 0%, rgba(194, 65, 12, 0.07) 0%, transparent 65%) !important;
+      color: #292524 !important;
     }
 
     body[data-theme="nordic"] .app-sidebar {
-      background: #FAF8F5 !important;
-      border-right: 1px solid #E7E5E4 !important;
-      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.02) !important;
+      background: #EFE9DF !important;
+      border-right: 1px solid #E6DFD5 !important;
+      box-shadow: 2px 0 16px rgba(68, 64, 60, 0.04) !important;
     }
 
     body[data-theme="nordic"] .sidebar-header {
-      border-bottom: 1px solid #E7E5E4 !important;
+      border-bottom: 1px solid #E6DFD5 !important;
     }
 
     body[data-theme="nordic"] .brand-title {
       background: none !important;
-      -webkit-text-fill-color: #1C1917 !important;
-      color: #1C1917 !important;
+      -webkit-text-fill-color: #292524 !important;
+      color: #292524 !important;
+      letter-spacing: -0.01em !important;
     }
 
     body[data-theme="nordic"] .app-topbar {
-      background: #FAF8F5 !important;
-      border-bottom: 1px solid #E7E5E4 !important;
+      background: #EFE9DF !important;
+      border-bottom: 1px solid #E6DFD5 !important;
     }
 
     body[data-theme="nordic"] .card,
@@ -2607,10 +2662,11 @@
     body[data-theme="nordic"] .modal-dialog,
     body[data-theme="nordic"] .modal-card,
     body[data-theme="nordic"] .metric-card {
-      background: #FFFFFF !important;
-      border: 1px solid #E7E5E4 !important;
-      color: #1C1917 !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 16px !important;
+      color: #292524 !important;
+      box-shadow: 0 8px 24px -4px rgba(68, 64, 60, 0.08), 0 2px 6px -1px rgba(68, 64, 60, 0.04) !important;
     }
 
     body[data-theme="nordic"] .card::before {
@@ -2618,75 +2674,257 @@
     }
 
     body[data-theme="nordic"] .topbar-node {
-      background: #F5F5F4 !important;
-      border-color: #E7E5E4 !important;
-      color: #1C1917 !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 999px !important;
+      color: #292524 !important;
     }
 
     body[data-theme="nordic"] .sidebar-nav-item {
       color: #57534E !important;
+      border-radius: 10px !important;
     }
 
     body[data-theme="nordic"] .sidebar-nav-item:hover,
     body[data-theme="nordic"] .sidebar-nav-item.active {
-      background: #F5F5F4 !important;
-      color: #1C1917 !important;
+      background: #292524 !important;
+      color: #FCFBF8 !important;
+      border-radius: 10px !important;
     }
 
     body[data-theme="nordic"] .scoreboard {
-      background: #FFFFFF !important;
-      border: 1px solid #E7E5E4 !important;
-      color: #1C1917 !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-top: 5px solid #C2410C !important;
+      border-radius: 16px !important;
+      color: #292524 !important;
+      box-shadow: 0 10px 30px -5px rgba(68, 64, 60, 0.1) !important;
     }
 
     body[data-theme="nordic"] .scoreboard .live-score {
-      color: #1C1917 !important;
+      color: #292524 !important;
       text-shadow: none !important;
+      font-weight: 800 !important;
+    }
+
+    body[data-theme="nordic"] .scoreboard .overs-val {
+      color: #15803D !important;
+      text-shadow: none !important;
+      font-weight: 700 !important;
     }
 
     body[data-theme="nordic"] .pad-btn {
-      background: #FFFFFF !important;
-      border: 1px solid #E7E5E4 !important;
-      color: #1C1917 !important;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 12px !important;
+      color: #292524 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 5px rgba(68, 64, 60, 0.05) !important;
+    }
+
+    body[data-theme="nordic"] .pad-btn:hover {
+      border-color: #15803D !important;
+      background: #F5F0E8 !important;
+    }
+
+    body[data-theme="nordic"] .btn-primary {
+      background: #15803D !important;
+      color: #FFFFFF !important;
+      border-radius: 12px !important;
+      border: none !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.25) !important;
+    }
+
+    body[data-theme="nordic"] .btn-secondary {
+      background: #EFE9DF !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 12px !important;
+      color: #292524 !important;
+    }
+
+    body[data-theme="nordic"] .btn-swap-strike {
+      background: #F0FDF4 !important;
+      border: 1px solid #BBF7D0 !important;
+      border-radius: 10px !important;
+      color: #15803D !important;
+    }
+
+    body[data-theme="nordic"] .btn-undo-ball {
+      background: #EFE9DF !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 10px !important;
+      color: #57534E !important;
+    }
+
+    body[data-theme="nordic"] #btnDesignThemeSwitcher {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 999px !important;
+      color: #292524 !important;
+      box-shadow: 0 2px 6px rgba(68, 64, 60, 0.06) !important;
     }
 
     body[data-theme="nordic"] input,
     body[data-theme="nordic"] select,
     body[data-theme="nordic"] textarea {
-      background: #FFFFFF !important;
+      background: #FCFBF8 !important;
       border: 1px solid #D6D3D1 !important;
-      color: #1C1917 !important;
+      border-radius: 10px !important;
+      color: #292524 !important;
     }
 
     body[data-theme="nordic"] table {
-      color: #1C1917 !important;
+      color: #292524 !important;
     }
 
     body[data-theme="nordic"] th {
-      background: #F5F5F4 !important;
+      background: #EFE9DF !important;
       color: #57534E !important;
-      border-bottom: 1px solid #E7E5E4 !important;
+      border-bottom: 1px solid #E6DFD5 !important;
+      font-weight: 700;
     }
 
     body[data-theme="nordic"] td {
-      border-bottom: 1px solid #F5F5F4 !important;
-      color: #1C1917 !important;
+      border-bottom: 1px solid #E6DFD5 !important;
+      color: #292524 !important;
     }
 
     body[data-theme="nordic"] .modal-header {
-      border-bottom: 1px solid #E7E5E4 !important;
+      border-bottom: 1px solid #E6DFD5 !important;
     }
 
     body[data-theme="nordic"] .modal-title {
-      color: #1C1917 !important;
+      color: #292524 !important;
     }
 
     body[data-theme="nordic"] .modal-close-btn {
-      background: #F5F5F4 !important;
-      border-color: #E7E5E4 !important;
+      background: #EFE9DF !important;
+      border-color: #E6DFD5 !important;
+      border-radius: 50% !important;
       color: #78716C !important;
+    }
+
+    body[data-theme="nordic"] .stat-tile {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 12px !important;
+    }
+
+    /* 3. Stadium Night Theme (High-Intensity Broadcast Glassmorphism & Floodlights) */
+    body[data-theme="stadium"],
+    html[data-theme="stadium"] {
+      --bg-dark: #04070D;
+      --bg-card: rgba(10, 16, 28, 0.85);
+      --bg-card-solid: #0A101C;
+      --border-subtle: rgba(0, 229, 153, 0.2);
+      --border-accent: #00E599;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --turf-emerald: #00E599;
+      --turf-glow: rgba(0, 229, 153, 0.25);
+      --primary: #00E599;
+      --primary-glow: rgba(0, 229, 153, 0.35);
+      --cyan: #00D2FF;
+      --amber: #FFB800;
+      --rose: #FF3366;
+      --purple: #A855F7;
+      background: #04070D !important;
+      background-image: 
+        radial-gradient(1200px circle at 50% -12%, rgba(0, 229, 153, 0.16) 0%, transparent 60%),
+        radial-gradient(850px circle at 90% 20%, rgba(0, 210, 255, 0.10) 0%, transparent 50%),
+        radial-gradient(800px circle at 10% 40%, rgba(168, 85, 247, 0.08) 0%, transparent 50%) !important;
+      color: #F8FAFC !important;
+    }
+
+    body[data-theme="stadium"] .app-sidebar {
+      background: rgba(6, 10, 18, 0.96) !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    body[data-theme="stadium"] .app-topbar {
+      background: rgba(6, 10, 18, 0.95) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    body[data-theme="stadium"] .card,
+    body[data-theme="stadium"] .glass-panel,
+    body[data-theme="stadium"] .modal-dialog,
+    body[data-theme="stadium"] .modal-card,
+    body[data-theme="stadium"] .metric-card {
+      background: rgba(10, 16, 28, 0.85) !important;
+      border: 1px solid rgba(0, 229, 153, 0.22) !important;
+      border-radius: 10px !important;
+      color: #F8FAFC !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+
+    body[data-theme="stadium"] .scoreboard {
+      background: rgba(8, 14, 24, 0.92) !important;
+      border: 1px solid rgba(0, 229, 153, 0.45) !important;
+      border-radius: 10px !important;
+      color: #F8FAFC !important;
+      box-shadow: 0 0 25px rgba(0, 229, 153, 0.18), 0 8px 32px rgba(0, 0, 0, 0.7) !important;
+    }
+
+    body[data-theme="stadium"] .scoreboard .live-score {
+      color: #00E599 !important;
+      text-shadow: 0 0 16px rgba(0, 229, 153, 0.65) !important;
+      font-weight: 800 !important;
+    }
+
+    body[data-theme="stadium"] .scoreboard .overs-val {
+      color: #00D2FF !important;
+      text-shadow: 0 0 12px rgba(0, 210, 255, 0.5) !important;
+      font-weight: 700 !important;
+    }
+
+    body[data-theme="stadium"] .pad-btn {
+      background: rgba(15, 23, 42, 0.8) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 8px !important;
+      color: #F8FAFC !important;
+      font-weight: 700 !important;
+    }
+
+    body[data-theme="stadium"] .pad-btn:hover {
+      border-color: #00E599 !important;
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.3) !important;
+      color: #00E599 !important;
+    }
+
+    body[data-theme="stadium"] .btn-primary {
+      background: linear-gradient(135deg, #00E599, #00D2FF) !important;
+      color: #04070D !important;
+      border-radius: 8px !important;
+      border: none !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 20px rgba(0, 229, 153, 0.35) !important;
+    }
+
+    body[data-theme="stadium"] .btn-swap-strike {
+      background: rgba(0, 229, 153, 0.12) !important;
+      border: 1px solid rgba(0, 229, 153, 0.35) !important;
+      border-radius: 6px !important;
+      color: #00E599 !important;
+    }
+
+    body[data-theme="stadium"] .btn-undo-ball {
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 6px !important;
+      color: #94A3B8 !important;
+    }
+
+    body[data-theme="stadium"] #btnDesignThemeSwitcher {
+      background: rgba(14, 22, 36, 0.85) !important;
+      border: 1px solid rgba(0, 229, 153, 0.35) !important;
+      border-radius: 999px !important;
+      color: #00E599 !important;
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2) !important;
     }
 
     /* Common Reusable Layout Utilities */

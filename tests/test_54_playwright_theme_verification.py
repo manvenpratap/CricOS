@@ -142,9 +142,14 @@ async def test_desktop_themes_working_and_distinct():
         assert swiss_data["bodyColor"] != stadium_data["bodyColor"], "Swiss and Stadium text colors must differ"
         assert nordic_data["bodyColor"] != stadium_data["bodyColor"], "Nordic and Stadium text colors must differ"
 
-        # Sidebar Backgrounds must be distinct
+        # Sidebar Backgrounds must be mutually distinct across all 3 themes
+        assert swiss_data["sidebarBg"] != nordic_data["sidebarBg"], "Swiss and Nordic sidebar backgrounds must differ"
         assert swiss_data["sidebarBg"] != stadium_data["sidebarBg"], "Swiss and Stadium sidebar backgrounds must differ"
         assert nordic_data["sidebarBg"] != stadium_data["sidebarBg"], "Nordic and Stadium sidebar backgrounds must differ"
+
+        # Card Borders must be mutually distinct across all 3 themes
+        assert swiss_data["cardBorder"] != nordic_data["cardBorder"], "Swiss and Nordic card borders must differ"
+        assert swiss_data["cardBorder"] != stadium_data["cardBorder"], "Swiss and Stadium card borders must differ"
 
         # Assert no critical console errors
         assert_no_critical_errors(page)
@@ -235,6 +240,11 @@ async def test_mobile_themes_working_and_distinct():
         # Assert Mobile Text Colors are Distinct
         assert mobile_swiss["bodyColor"] != mobile_stadium["bodyColor"], "Mobile Swiss and Stadium text colors must differ"
         assert mobile_nordic["bodyColor"] != mobile_stadium["bodyColor"], "Mobile Nordic and Stadium text colors must differ"
+
+        # Assert Mobile Header Bars are Distinct
+        assert mobile_swiss["barBg"] != mobile_nordic["barBg"], "Mobile Swiss and Nordic header bars must differ"
+        assert mobile_swiss["barBg"] != mobile_stadium["barBg"], "Mobile Swiss and Stadium header bars must differ"
+        assert mobile_nordic["barBg"] != mobile_stadium["barBg"], "Mobile Nordic and Stadium header bars must differ"
 
         # Regenerate gallery
         catalog_screenshots()

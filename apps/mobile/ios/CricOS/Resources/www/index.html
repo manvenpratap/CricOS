@@ -52,6 +52,7 @@
     /* ==========================================================================
        Design System Themes: Swiss Minimal & Nordic Editorial
        ========================================================================== */
+    /* 1. Swiss Minimal Theme (Architectural, High-Contrast Modernist Grid) */
     body[data-theme="swiss"], html[data-theme="swiss"] {
       --bg-pitch: #F8F9FA;
       --turf-emerald: #059669;
@@ -60,18 +61,20 @@
       --rose: #DC2626;
       --purple: #7C3AED;
       background-color: #F8F9FA !important;
-      background-image: none !important;
+      background-image: radial-gradient(circle, #CBD5E1 0.75px, transparent 0.75px) !important;
+      background-size: 20px 20px !important;
       color: #0F172A !important;
     }
     body[data-theme="swiss"] .mobile-device-shell {
-      background: #F8FAFC !important;
-      border-color: #E2E8F0 !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      border-radius: 6px !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
     }
     body[data-theme="swiss"] .mobile-app-bar,
     body[data-theme="swiss"] .mobile-header {
       background: #FFFFFF !important;
-      border-bottom: 1px solid #E2E8F0 !important;
+      border-bottom: 2px solid #0F172A !important;
       color: #0F172A !important;
     }
     body[data-theme="swiss"] .status-bar {
@@ -80,144 +83,221 @@
     }
     body[data-theme="swiss"] .mobile-app-title {
       color: #0F172A !important;
+      letter-spacing: -0.02em !important;
+      font-weight: 800 !important;
     }
     body[data-theme="swiss"] .mobile-nav-bar,
     body[data-theme="swiss"] .mobile-bottom-nav {
       background: #FFFFFF !important;
-      border-top: 1px solid #E2E8F0 !important;
+      border-top: 1px solid #CBD5E1 !important;
     }
     body[data-theme="swiss"] .mobile-nav-item {
       color: #64748B !important;
     }
     body[data-theme="swiss"] .mobile-nav-item.active {
-      color: #059669 !important;
+      color: #0F172A !important;
+      font-weight: 800 !important;
     }
     body[data-theme="swiss"] .mobile-card,
     body[data-theme="swiss"] .mobile-sheet,
     body[data-theme="swiss"] .mobile-extra-picker-sheet,
     body[data-theme="swiss"] .theme-selection-card {
       background: #FFFFFF !important;
-      border: 1px solid #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 6px !important;
       color: #0F172A !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
     }
     body[data-theme="swiss"] .mobile-pad-btn {
       background: #FFFFFF !important;
-      border: 1px solid #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
+      font-weight: 800 !important;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
     }
     body[data-theme="swiss"] .btn-swap-strike {
       background: #ECFDF5 !important;
-      border-color: #A7F3D0 !important;
+      border: 1px solid #059669 !important;
+      border-radius: 4px !important;
       color: #059669 !important;
     }
     body[data-theme="swiss"] .btn-mobile-undo {
       background: #F1F5F9 !important;
-      border-color: #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #334155 !important;
     }
     body[data-theme="swiss"] .striker-card,
     body[data-theme="swiss"] .non-striker-card,
     body[data-theme="swiss"] .bowler-card {
       background: #FFFFFF !important;
-      border-color: #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
     }
     body[data-theme="swiss"] .over-bubble {
       background: #FFFFFF !important;
-      border-color: #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
       color: #0F172A !important;
     }
     body[data-theme="swiss"] input,
     body[data-theme="swiss"] select,
     body[data-theme="swiss"] textarea {
       background: #FFFFFF !important;
-      border-color: #CBD5E1 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #0F172A !important;
     }
     body[data-theme="swiss"] .mobile-subnav-btn {
       background: #FFFFFF !important;
-      border: 1px solid #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 4px !important;
       color: #64748B !important;
     }
     body[data-theme="swiss"] .mobile-subnav-btn.active {
-      background: #059669 !important;
+      background: #0F172A !important;
       color: #FFFFFF !important;
-      border-color: #059669 !important;
+      border-color: #0F172A !important;
     }
 
+    /* 2. Nordic Editorial Theme (Warm Oat Paper, Curvature, Organic Earth & Pine) */
     body[data-theme="nordic"], html[data-theme="nordic"] {
-      --bg-pitch: #FAF8F5;
+      --bg-pitch: #F5F0E8;
       --turf-emerald: #15803D;
       --cyan: #0369A1;
-      --amber: #B45309;
+      --amber: #C2410C;
       --rose: #BE123C;
       --purple: #6B21A8;
-      background-color: #FAF8F5 !important;
-      background-image: none !important;
-      color: #1C1917 !important;
+      background-color: #F5F0E8 !important;
+      background-image: radial-gradient(ellipse at 50% 0%, rgba(194, 65, 12, 0.07) 0%, transparent 65%) !important;
+      color: #292524 !important;
     }
     body[data-theme="nordic"] .mobile-device-shell {
-      background: #FAF8F5 !important;
-      border-color: #E7E5E4 !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+      background: #FCFBF8 !important;
+      border-color: #E6DFD5 !important;
+      border-radius: 20px !important;
+      box-shadow: 0 10px 30px rgba(68, 64, 60, 0.05) !important;
     }
     body[data-theme="nordic"] .mobile-app-bar,
     body[data-theme="nordic"] .mobile-header {
-      background: #FAF8F5 !important;
-      border-bottom: 1px solid #E7E5E4 !important;
-      color: #1C1917 !important;
+      background: #EFE9DF !important;
+      border-bottom: 1px solid #E6DFD5 !important;
+      color: #292524 !important;
     }
     body[data-theme="nordic"] .status-bar {
-      background: #FAF8F5 !important;
-      color: #1C1917 !important;
+      background: #EFE9DF !important;
+      color: #292524 !important;
     }
     body[data-theme="nordic"] .mobile-app-title {
-      color: #1C1917 !important;
+      color: #292524 !important;
+      letter-spacing: -0.01em !important;
     }
     body[data-theme="nordic"] .mobile-nav-bar,
     body[data-theme="nordic"] .mobile-bottom-nav {
-      background: #FAF8F5 !important;
-      border-top: 1px solid #E7E5E4 !important;
+      background: #EFE9DF !important;
+      border-top: 1px solid #E6DFD5 !important;
     }
     body[data-theme="nordic"] .mobile-nav-item {
       color: #78716C !important;
     }
     body[data-theme="nordic"] .mobile-nav-item.active {
       color: #15803D !important;
+      font-weight: 700 !important;
     }
     body[data-theme="nordic"] .mobile-card,
     body[data-theme="nordic"] .mobile-sheet,
     body[data-theme="nordic"] .mobile-extra-picker-sheet,
     body[data-theme="nordic"] .theme-selection-card {
-      background: #FFFFFF !important;
-      border: 1px solid #E7E5E4 !important;
-      color: #1C1917 !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 16px !important;
+      color: #292524 !important;
+      box-shadow: 0 6px 18px rgba(68, 64, 60, 0.06) !important;
     }
     body[data-theme="nordic"] .mobile-pad-btn {
-      background: #FFFFFF !important;
-      border: 1px solid #E7E5E4 !important;
-      color: #1C1917 !important;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 12px !important;
+      color: #292524 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 5px rgba(68, 64, 60, 0.05) !important;
     }
     body[data-theme="nordic"] input,
     body[data-theme="nordic"] select,
     body[data-theme="nordic"] textarea {
-      background: #FFFFFF !important;
-      border-color: #D6D3D1 !important;
-      color: #1C1917 !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #D6D3D1 !important;
+      border-radius: 10px !important;
+      color: #292524 !important;
     }
     body[data-theme="nordic"] .mobile-subnav-btn {
-      background: #FFFFFF !important;
-      border: 1px solid #E7E5E4 !important;
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      border-radius: 10px !important;
       color: #78716C !important;
     }
     body[data-theme="nordic"] .mobile-subnav-btn.active {
       background: #15803D !important;
       color: #FFFFFF !important;
       border-color: #15803D !important;
+    }
+
+    /* 3. Stadium Night Theme (High-Intensity Broadcast Glassmorphism & Floodlights) */
+    body[data-theme="stadium"], html[data-theme="stadium"] {
+      --bg-pitch: #04070D;
+      --turf-emerald: #00E599;
+      --cyan: #00D2FF;
+      --amber: #FFB800;
+      --rose: #FF3366;
+      --purple: #A855F7;
+      background-color: #04070D !important;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 229, 153, 0.14) 0%, transparent 65%),
+        radial-gradient(circle at 85% 30%, rgba(0, 210, 255, 0.08) 0%, transparent 50%) !important;
+      color: #F8FAFC !important;
+    }
+    body[data-theme="stadium"] .mobile-device-shell {
+      background: #04070D !important;
+      border-color: rgba(0, 229, 153, 0.3) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+    }
+    body[data-theme="stadium"] .mobile-app-bar,
+    body[data-theme="stadium"] .mobile-header {
+      background: rgba(6, 10, 18, 0.98) !important;
+      border-bottom: 1px solid rgba(0, 229, 153, 0.2) !important;
+      color: #F8FAFC !important;
+    }
+    body[data-theme="stadium"] .status-bar {
+      background: #04070D !important;
+      color: #F8FAFC !important;
+    }
+    body[data-theme="stadium"] .mobile-nav-bar,
+    body[data-theme="stadium"] .mobile-bottom-nav {
+      background: rgba(6, 10, 18, 0.98) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    body[data-theme="stadium"] .mobile-card,
+    body[data-theme="stadium"] .mobile-sheet,
+    body[data-theme="stadium"] .mobile-extra-picker-sheet,
+    body[data-theme="stadium"] .theme-selection-card {
+      background: rgba(14, 22, 36, 0.92) !important;
+      border: 1px solid rgba(0, 229, 153, 0.22) !important;
+      border-radius: 10px !important;
+      color: #F8FAFC !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    }
+    body[data-theme="stadium"] .mobile-pad-btn {
+      background: rgba(20, 30, 48, 0.8) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 8px !important;
+      color: #F8FAFC !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="stadium"] .mobile-pad-btn:hover {
+      border-color: #00E599 !important;
+      color: #00E599 !important;
     }
 
     body {
@@ -1301,7 +1381,7 @@
         background: #F8F9FA !important;
       }
       body[data-theme="nordic"] {
-        background: #FAF8F5 !important;
+        background: #F5F0E8 !important;
       }
       body[data-theme="stadium"] {
         background: #04070D !important;
@@ -1332,7 +1412,7 @@
         background: #F8F9FA !important;
       }
       body[data-theme="nordic"] .device-wrapper {
-        background: #FAF8F5 !important;
+        background: #F5F0E8 !important;
       }
       body[data-theme="stadium"] .device-wrapper {
         background: #04070D !important;
@@ -1376,7 +1456,7 @@
     }
     body.is-native-app[data-theme="nordic"],
     html.is-native-app[data-theme="nordic"] {
-      background: #FAF8F5 !important;
+      background: #F5F0E8 !important;
     }
     body.is-native-app[data-theme="stadium"],
     html.is-native-app[data-theme="stadium"] {
@@ -1411,7 +1491,7 @@
       background: #F8F9FA !important;
     }
     body.is-native-app[data-theme="nordic"] .device-wrapper {
-      background: #FAF8F5 !important;
+      background: #F5F0E8 !important;
     }
     body.is-native-app[data-theme="stadium"] .device-wrapper {
       background: #04070D !important;
@@ -1433,7 +1513,7 @@
       background: #F8F9FA !important;
     }
     body.is-native-app[data-theme="nordic"] .screen-viewport {
-      background: #FAF8F5 !important;
+      background: #F5F0E8 !important;
     }
     body.is-native-app[data-theme="stadium"] .screen-viewport {
       background: #04070D !important;

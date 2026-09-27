@@ -62,12 +62,28 @@ describe('54. Playwright E2E Theme Verification Suite', () => {
         'Must assert Swiss and Stadium desktop body backgrounds differ'
       );
       assert.ok(
+        playwrightSrc.includes('swiss_data["sidebarBg"] != nordic_data["sidebarBg"]'),
+        'Must assert Swiss and Nordic desktop sidebar backgrounds differ'
+      );
+      assert.ok(
+        playwrightSrc.includes('swiss_data["cardBorder"] != nordic_data["cardBorder"]'),
+        'Must assert Swiss and Nordic desktop card borders differ'
+      );
+      assert.ok(
+        playwrightSrc.includes('swiss_data["cardBorder"] != stadium_data["cardBorder"]'),
+        'Must assert Swiss and Stadium desktop card borders differ'
+      );
+      assert.ok(
         playwrightSrc.includes('mobile_swiss["bodyBg"] != mobile_nordic["bodyBg"]'),
         'Must assert Swiss and Nordic mobile body backgrounds differ'
       );
       assert.ok(
         playwrightSrc.includes('mobile_swiss["bodyBg"] != mobile_stadium["bodyBg"]'),
         'Must assert Swiss and Stadium mobile body backgrounds differ'
+      );
+      assert.ok(
+        playwrightSrc.includes('mobile_swiss["barBg"] != mobile_nordic["barBg"]'),
+        'Must assert Swiss and Nordic mobile bar backgrounds differ'
       );
     });
 

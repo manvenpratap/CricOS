@@ -1,27 +1,31 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 21:45:00
-**Version:** 1.0.0-phase2be (Playwright E2E Theme Verification Suite across Desktop Web Console & Mobile App with 534 Passing Tests)  
+**Last Updated:** 2026-09-27 21:58:00
+**Version:** 1.0.0-phase2be (3 Distinct Design Themes Enhanced: Swiss Minimal Dot-Grid & 4px Geometry, Nordic Editorial Oat Canvas & 16px Radii, Stadium Night Floodlights & Neon Glass with 534 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BE Completed — Playwright E2E Theme Verification Suite:
-  - **1. Playwright E2E Automated Verification Engine (`tests/test_54_playwright_theme_verification.py`)**:
+- **Active Phase**: Phase 2BE Completed — Playwright E2E Theme Verification & Distinct Visual Identity System:
+  - **1. Enhanced 3 Distinct Design Visual Identities (`dashboard.ts` & `mobile-view.ts`)**:
+    - **🇨🇭 Swiss Style Minimalist (`data-theme="swiss"`)**: High-contrast graphic grid system with 20px dot-grid canvas background (`#CBD5E1` dots on `#F8F9FA`), razor-sharp 4px border radii, hairline borders (`#CBD5E1`), scoreboard framed in solid black with bold 6px Swiss Alpine Red (`#DC2626`) left racing stripe, jet-black primary buttons (`#0F172A`) with 4px radii, and crisp technical rectangular theme switcher.
+    - **🌾 Nordic Editorial (`data-theme="nordic"`)**: Warm Scandinavian publication & hygge aesthetic with rich warm oat canvas (`#F5F0E8` / `rgb(245, 240, 232)`), warm ivory parchment cards (`#FCFBF8`), generous organic 16px border radii, warm stone borders (`#E6DFD5`), scoreboard with 5px Terracotta (`#C2410C`) top accent stripe and warm dark espresso numerals (`#292524`), deep forest pine buttons (`#15803D`) with 12px rounded pill geometry, warm oat sidebar (`#EFE9DF`), and organic pebble switcher pill.
+    - **🌙 Stadium Night (`data-theme="stadium"`)**: High-octane floodlit night cricket broadcast spectacle with deep obsidian pitch (`#04070D`), multi-spectrum floodlight beams (turf emerald, electric cyan, neon purple), midnight glass cards with `backdrop-filter: blur(20px)` and refractive neon emerald borders (`rgba(0, 229, 153, 0.22)`), scoreboard with 25px ambient glow and glowing cyber-turf LED numbers (`#00E599` with `text-shadow: 0 0 16px rgba(0, 229, 153, 0.65)`), neon gradient CTAs, and illuminated cyber-turf glass switcher pill.
+  - **2. Playwright E2E Automated Verification Engine (`tests/test_54_playwright_theme_verification.py`)**:
     - Built comprehensive end-to-end headless Chromium test suite exercising all 3 design themes: 🇨🇭 Swiss Minimal (`swiss`), 🌾 Nordic Editorial (`nordic`), and 🌙 Stadium Night (`stadium`).
     - Verified desktop theme switching via topbar switcher click (`#btnDesignThemeSwitcher`) and keyboard shortcut (`Alt + T`).
     - Verified mobile theme switching via `window.cricosMobileApp.setTheme()`.
-    - Computed style assertions verify mutual inequality and distinctness for `body` backgrounds, text colors, card borders, and header bars.
+    - Computed style assertions verify mutual inequality and distinctness for `body` backgrounds, text colors, sidebar backgrounds, card borders, and mobile header bars.
     - Verified zero critical console errors (`assert_no_critical_errors(page)`) satisfying Rule 4.
-  - **2. Mobile App Theme Parity & Edge-to-Edge Styles (`apps/api/src/ui/mobile-view.ts`)**:
+  - **3. Mobile App Theme Parity & Edge-to-Edge Styles (`apps/api/src/ui/mobile-view.ts`)**:
     - Added theme rules for native mobile app mode (`body.is-native-app`, `html.is-native-app`, `.device-wrapper`, `.screen-viewport`).
     - Wired `.mobile-header`, `.mobile-bottom-nav`, and `.status-bar` to dynamic theme variables across all 3 themes.
-  - **3. Local Visual Regression Screenshots & Offline Gallery**:
+  - **4. Local Visual Regression Screenshots & Offline Gallery**:
     - Captured 6 local high-resolution screenshots to `tests/screenshots/` (Desktop Swiss, Desktop Nordic, Desktop Stadium, Mobile Swiss, Mobile Nordic, Mobile Stadium).
     - Added `save_screenshot_async()` to `tests/helpers.py` with automatic offline HTML gallery generation (`tests/screenshots/index.html`).
-  - **4. Test Suite 54 & Universal Pipeline Verification**:
+  - **5. Test Suite 54 & Universal Pipeline Verification**:
     - Added sequential regression test suite `tests/54-playwright-theme-verification.test.ts` with 10 assertions across 3 suites.
     - Updated `tests/README.md` test coverage map with test 54 specifications.
     - Recompiled and verified Android APK (`dist/cricos-debug.apk`) via `./pipeline.sh apk`.
