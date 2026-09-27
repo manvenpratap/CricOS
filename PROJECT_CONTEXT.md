@@ -1,39 +1,34 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 16:45:00
-**Version:** 1.0.0-phase2ba (Precision Chart Layout, Zero-Collision Positioning & Anti-Overlap Invariants: Worm, Manhattan Over Velocity, 360° Wagon Wheel across Web Console, Mobile App & Android Native APK with 491 Passing Tests)  
+**Last Updated:** 2026-09-27 17:00:00
+**Version:** 1.0.0-phase2bb (Scoring Pad Generic Extras & Dedicated Undo Last Ball System across Web Console, Mobile App & Android Native APK with 506 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BA Completed — Precision Chart Layout, Zero-Collision Positioning & Anti-Overlap Invariants (Worm, Bars, Wagon):
-  - **1. Mobile Worm Chart Anti-Overlap Invariants (`mobile-view.ts`)**:
-    - Relocated phase division labels (`POWERPLAY`, `MIDDLE`, `DEATH`) to bottom baseline `(yBottom - 6)`, separating them from the high-run `TARGET 178` line by >115px.
-    - Added high-contrast pill backdrop `<rect width="56" height="11" rx="3" fill="rgba(4, 7, 13, 0.88)" stroke="#FFB800" .../>` behind `TARGET 178`.
-    - Centered white `W` text inside wicket circles (`r="4.6" fill="#FF3366"`), eliminating floating wicket text.
-    - Applied directional `text-anchor` on x-axis over levels (`start` for `Ov 0`, `end` for `Ov 20`, `middle` for intermediate overs).
-    - Analytics HUD metric cards flex-column layout with explicit `.label` and `.value` enforcing `white-space: nowrap; overflow: hidden; text-overflow: ellipsis;` to prevent awkward inline wrapping.
-  - **2. Mobile Manhattan Over Velocity Headroom & Bars Layout (`mobile-view.ts`)**:
-    - Increased `maxRuns` to 24 and expanded SVG viewBox to `360 170` (`yTop = 26`, `yBottom = 135`, `height = 109`), giving 19-run bars >20px of clean top headroom.
-    - Stacked wicket badges (`r="3.8" fill="#FF3366"`) at `barY - 13` and run counts at `barY - 3`.
-    - In Dual mode, rendered separate, centered run labels above each respective team's bar (`bar1Y - 3` for DEL, `bar2Y - 3` for MUM).
-  - **3. Mobile Wagon Wheel Anti-Collision & Backdrops (`mobile-view.ts`)**:
-    - Relocated `◀ OFF` and `ON ▶` labels from the outer perimeter into the inner grass corridor beside the central pitch strip at `(126, 155)` and `(194, 155)` with pill backgrounds, completely eliminating collisions with `Cover` and `Mid Wkt` sectors.
-    - Added dark pill badges `<rect rx="3" fill="rgba(3, 12, 8, 0.88)" .../>` behind all 8 sector labels.
-    - Protected Scoring Studio wagon wheel and wagon picker sheet direction labels with pill backdrops.
-  - **4. Web Console Dashboard Worm, Manhattan & Wagon Layouts (`dashboard.ts`)**:
-    - Fixed `.field-zone-btn:hover`, `:active`, and `.active` CSS to preserve `translateX(-50%)` for top and bottom zone buttons, eliminating horizontal button jumping on hover/selection.
-    - Upgraded Dashboard WORM chart with `h=230, padT=38`, header legend at `y=18` (above plot area), target line at 178 with pill backdrop, and phase labels at bottom baseline.
-    - Upgraded Dashboard MANHATTAN chart with `maxBar=24`, horizontal grid lines at 6, 12, 18, 24 with labels, stacked wickets with centered 'W', and even-over labels `(i + 1) % 2 === 0` to eliminate 1 & 2 clumping.
-    - Upgraded Dashboard WAGON wheel with `mcWagonOffGroup` and `mcWagonLegGroup` pill containers dynamically repositioning on LHB/RHB stance switch, and stat cards with text-overflow ellipsis protection.
-  - **5. Regression Testing & Native Sync**:
-    - Added `tests/50-chart-layout-and-no-overlap.test.ts` with 17 assertions across 4 suites.
-    - Updated `tests/README.md` coverage map with test 50 specifications.
-    - 100% automated test pass rate across all 491 tests / 148 suites (`./pipeline.sh test --summary`).
-    - Synced distribution artifacts and rebuilt native Android APK (`dist/cricos-debug.apk`).
-- **Preceding Phase**: Phase 2AZ Completed — Android Native APK & Complete Feature Parity:
+- **Active Phase**: Phase 2BB Completed — Scoring Pad Generic Extras & Dedicated Undo Last Ball System:
+  - **1. Scoring Pad Extras Streamlining (`mobile-view.ts` & `dashboard.ts`)**:
+    - Replaced `+1 Wd`, `+1 Nb (Free Hit)`, `+1 Lb`, `+1 Bye` on both web console and mobile app with clean generic labels: `Wide`, `No Ball`, `Leg Bye`, `Bye` (without preceding `+1`).
+    - Clicking any generic extra button opens the comprehensive extra runs selection menu (`openExtraPickerSheet(type)` on mobile and `openStudioExtraPicker(extraType)` modal on desktop console).
+    - Removed redundant compound extras (`+5wd(4b)`, `+4Nb(5r)`, `+6Nb(7r)`, and `+5 Penalty`) from both mobile and desktop scoring pads.
+  - **2. Dedicated Undo Last Ball Button (`mobile-view.ts` & `dashboard.ts`)**:
+    - Removed `Hold to Reset` button from the scoring pad strip on both web console and mobile app.
+    - Added dedicated, full-width `↺ Undo Last Ball` button (`#btnMobileStudioUndoBall` / `#btnStudioUndoBall`) invoking `undoLastDelivery()` for instant fat-finger mis-scoring recovery.
+    - Contextual tooltip: `"Undo last delivery (revert fat finger or scoring misunderstanding)"` satisfying Rule 5.
+  - **3. Desktop Extra Runs Picker Modal (`dashboard.ts`)**:
+    - Added `#modalExtraPicker` modal backdrop and dialog with `role="dialog"`, `aria-modal="true"`, and `aria-labelledby="extraPickerTitle"`.
+    - Defined `STUDIO_EXTRA_OPTIONS` for `WIDE` (Wide Only 1, +1 Bye 2, +2 Byes 3, +3 Byes 4, +4 Boundary Byes 5), `NO_BALL` (Dot 1, 1 Run Off Bat 2, 2 Runs 3, 3 Runs 4, Four Off Bat 5, Six Off Bat 7), `LEG_BYE` (1 to 4 runs), and `BYE` (1 to 4 runs).
+    - Implemented `openStudioExtraPicker`, `closeStudioExtraPicker`, `selectStudioExtraOptionIndex`, and `selectStudioExtraOption`, exporting them to `window`.
+  - **4. Regression Testing & Parity Verification**:
+    - Updated `tests/40-mobile-scoring-studio-parity.test.ts` in-place per Rule 4 to assert the new generic extra labels and dedicated undo last ball button.
+    - Added sequential regression test suite `tests/51-scoring-pad-generic-extras-and-undo.test.ts` with 15 assertions across 4 suites.
+    - Updated `tests/README.md` test coverage map with test 51 specifications.
+    - 100% automated test pass rate across all 506 tests / 153 suites (`./pipeline.sh test --summary`).
+    - Recompiled and verified Android APK (`dist/cricos-debug.apk`) via `./pipeline.sh apk`.
+    - Byte-for-byte distribution parity verified between root `index.html` and `dist/index.html`.
+- **Preceding Phase**: Phase 2BA Completed — Precision Chart Layout, Zero-Collision Positioning & Anti-Overlap Invariants (Worm, Bars, Wagon):
   - **1. Android Native Java & WebView Architecture (`MainActivity.java`)**:
     - Implemented `WebChromeClient.onShowFileChooser(WebView, ValueCallback<Uri[]>, FileChooserParams)` with `FILECHOOSER_RESULTCODE` and `onActivityResult` handling multi-file and single-file data URIs, enabling HTML `<input type="file">` to invoke the native Android image gallery, file picker, and camera.
     - Implemented `WebChromeClient.onPermissionRequest(PermissionRequest)` to grant microphone and camera access for speech-to-score commentary and real-time photo capture.

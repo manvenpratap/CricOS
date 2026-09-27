@@ -4510,21 +4510,17 @@
               <button class="studio-btn pad-btn" id="btnStudioUndo" data-id="btnUndoBall" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber);" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">↺<span class="studio-sublabel">Undo</span></button>
             </div>
 
-            <!-- Quick Extras Strip -->
+            <!-- Quick Extras Strip with Generic Labels (Opens wider extra runs menu) -->
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
-              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('WIDE', 1)" data-tooltip="Wide ball (+1 run, ball does not count toward over)">+1 Wd</button>
-              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('NO_BALL', 1)" data-tooltip="No Ball (+1 run, triggers Free Hit on next delivery)">+1 Nb (Free Hit)</button>
-              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('LEG_BYE', 1)" data-tooltip="Leg Bye (+1 run, strike rotates)">+1 Lb</button>
-              <button class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem;" onclick="recordStudioExtra('BYE', 1)" data-tooltip="Bye (+1 run, strike rotates)">+1 Bye</button>
+              <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem; font-weight: 700;" data-extra="WIDE" onclick="openStudioExtraPicker('WIDE')" data-tooltip="Wide delivery (opens extra runs picker)">Wide</button>
+              <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem; font-weight: 700;" data-extra="NO_BALL" onclick="openStudioExtraPicker('NO_BALL')" data-tooltip="No Ball delivery (opens extra runs picker, Free Hit)">No Ball</button>
+              <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem; font-weight: 700;" data-extra="LEG_BYE" onclick="openStudioExtraPicker('LEG_BYE')" data-tooltip="Leg Bye delivery (opens extra runs picker)">Leg Bye</button>
+              <button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.45rem; font-size: 0.78rem; font-weight: 700;" data-extra="BYE" onclick="openStudioExtraPicker('BYE')" data-tooltip="Bye delivery (opens extra runs picker)">Bye</button>
             </div>
 
-            <!-- Compound Extras & Reset Strip -->
-            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'WIDE', false)" data-tooltip="Wide + 4 Byes: +5 runs total, delivery re-bowled">+5 Wd (4b)</button>
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(4, 1, 'NO_BALL', false)" data-tooltip="No Ball + Boundary 4: +5 runs, Free Hit next delivery">+4 Nb (5 runs)</button>
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(6, 1, 'NO_BALL', false)" data-tooltip="No Ball + Maximum 6: +7 runs, Free Hit next delivery">+6 Nb (7 runs)</button>
-              <button class="btn btn-secondary" style="flex: 1; min-width: 68px; padding: 0.35rem 0.4rem; font-size: 0.72rem;" onclick="scoreDelivery(0, 5, 'PENALTY', false)" data-tooltip="Penalty runs awarded (+5 runs)">+5 Penalty</button>
-              <button class="btn btn-secondary btn-hold-confirm" id="btnStudioReset" style="padding: 0.35rem 0.6rem; font-size: 0.72rem; border-color: rgba(255,51,102,0.3); color: var(--rose);" onclick="handleResetButtonClick()" data-tooltip="Hold 2s to reset match score for new innings"><span class="hold-progress-overlay"></span><span style="position: relative; z-index: 1;">↺ Hold to Reset</span></button>
+            <!-- Dedicated Undo Last Ball Button (Replaced redundant compound extras & hold-to-reset) -->
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
+              <button type="button" class="btn btn-secondary" id="btnStudioUndoBall" onclick="undoLastDelivery()" style="width: 100%; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"><span style="font-size: 0.95rem;">↺</span> Undo Last Ball</button>
             </div>
           </div>
         </div>
@@ -5277,6 +5273,29 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" style="width: auto;" onclick="closeDismissalModal()" data-tooltip="Cancel dismissal selection" aria-label="Cancel dismissal">Cancel</button>
         <button class="btn" style="width: auto; background: var(--rose); border-color: var(--rose); color: white;" onclick="confirmDismissal()" data-tooltip="Record wicket and fall of wicket to scorecard">Confirm Wicket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extra Runs Picker Modal (Studio) -->
+  <div class="modal-backdrop" id="modalExtraPicker" role="dialog" aria-modal="true" aria-labelledby="extraPickerTitle">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <div class="modal-title" id="extraPickerTitle">
+          <span style="color: var(--amber);">🏏 Record Extra Delivery</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close extra runs dialog" onclick="closeStudioExtraPicker()" data-tooltip="Dismiss extra runs dialog">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;" id="extraPickerDesc">
+          Select the specific number of runs scored on this extra delivery.
+        </div>
+        <div id="extraPickerOptionsList" style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <!-- Dynamically populated by openStudioExtraPicker -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeStudioExtraPicker()" data-tooltip="Cancel extra runs selection" aria-label="Cancel extra selection">Cancel</button>
       </div>
     </div>
   </div>
@@ -12469,6 +12488,153 @@ cricos_active_sse_connections 1</pre>
     window.addCustomBatToBasket = addCustomBatToBasket;
     window.initThreeFallback = initThreeFallback;
     window.stop3DModalViewer = stop3DModalViewer;
+    window.openStudioExtraPicker = openStudioExtraPicker;
+    window.closeStudioExtraPicker = closeStudioExtraPicker;
+    window.selectStudioExtraOption = selectStudioExtraOption;
+    window.selectStudioExtraOptionIndex = selectStudioExtraOptionIndex;
+    window.undoLastDelivery = undoLastDelivery;
+
+    const STUDIO_EXTRA_OPTIONS = {
+      'WIDE': {
+        title: 'Wide Delivery — Run Selection',
+        desc: 'Bowler concedes 1 penalty run + additional byes. Ball is re-bowled. Strike rotates on odd additional byes.',
+        badge: '+1 PENALTY • RE-BOWL',
+        color: '#ffb800',
+        options: [
+          { label: 'Wide Only (0 byes)', runs: 1, batRuns: 0, desc: '1 penalty run conceded, ball re-bowled', rotatesStrike: false, isBoundary: false },
+          { label: '+1 Bye Run', runs: 2, batRuns: 0, desc: '2 runs total (1 bye), strike rotates', rotatesStrike: true, isBoundary: false },
+          { label: '+2 Bye Runs', runs: 3, batRuns: 0, desc: '3 runs total (2 byes)', rotatesStrike: false, isBoundary: false },
+          { label: '+3 Bye Runs', runs: 4, batRuns: 0, desc: '4 runs total (3 byes), strike rotates', rotatesStrike: true, isBoundary: false },
+          { label: '+4 Boundary Byes', runs: 5, batRuns: 0, desc: '5 runs total (4b) - ball beats keeper to rope', rotatesStrike: false, isBoundary: true }
+        ]
+      },
+      'NO_BALL': {
+        title: 'No Ball — Run Selection',
+        desc: '1 penalty run conceded by bowler + runs off bat credited to striker. Ball is re-bowled. Free Hit awarded next.',
+        badge: 'FREE HIT NEXT • RE-BOWL',
+        color: '#ff3366',
+        options: [
+          { label: 'Dot Ball (0 off bat)', runs: 1, batRuns: 0, desc: '1 penalty run total, Free Hit awarded', rotatesStrike: false, isBoundary: false },
+          { label: '1 Run Off Bat', runs: 2, batRuns: 1, desc: '2 runs total (1 to batter), strike rotates, Free Hit', rotatesStrike: true, isBoundary: false },
+          { label: '2 Runs Off Bat', runs: 3, batRuns: 2, desc: '3 runs total (2 to batter), Free Hit', rotatesStrike: false, isBoundary: false },
+          { label: '3 Runs Off Bat', runs: 4, batRuns: 3, desc: '4 runs total (3 to batter), strike rotates, Free Hit', rotatesStrike: true, isBoundary: false },
+          { label: 'Four Off Bat ⚡', runs: 5, batRuns: 4, desc: '5 runs total (4 to batter), Free Hit next ball', rotatesStrike: false, isBoundary: true, isFour: true },
+          { label: 'Six Off Bat 🚀', runs: 7, batRuns: 6, desc: '7 runs total (6 to batter), Free Hit next ball', rotatesStrike: false, isBoundary: true, isSix: true }
+        ]
+      },
+      'LEG_BYE': {
+        title: 'Leg Bye — Run Selection',
+        desc: 'Deflected off batter pads/body without bat contact. Legal ball in over. Not charged to bowler.',
+        badge: 'LEGAL BALL • NOT TO BOWLER',
+        color: '#00D2FF',
+        options: [
+          { label: '1 Leg Bye', runs: 1, batRuns: 0, desc: '1 run total, strike rotates', rotatesStrike: true, isBoundary: false },
+          { label: '2 Leg Byes', runs: 2, batRuns: 0, desc: '2 runs total', rotatesStrike: false, isBoundary: false },
+          { label: '3 Leg Bye Runs', runs: 3, batRuns: 0, desc: '3 runs total, strike rotates', rotatesStrike: true, isBoundary: false },
+          { label: '4 Leg Byes ⚡', runs: 4, batRuns: 0, desc: '4 runs total (boundary off pads)', rotatesStrike: false, isBoundary: true }
+        ]
+      },
+      'BYE': {
+        title: 'Bye — Run Selection',
+        desc: 'Ball passes batter without contact. Legal ball in over. Not charged to bowler.',
+        badge: 'LEGAL BALL • NOT TO BOWLER',
+        color: '#a78bfa',
+        options: [
+          { label: '1 Bye', runs: 1, batRuns: 0, desc: '1 run total, strike rotates', rotatesStrike: true, isBoundary: false },
+          { label: '2 Byes', runs: 2, batRuns: 0, desc: '2 runs total', rotatesStrike: false, isBoundary: false },
+          { label: '3 Byes', runs: 3, batRuns: 0, desc: '3 runs total, strike rotates', rotatesStrike: true, isBoundary: false },
+          { label: '4 Byes ⚡', runs: 4, batRuns: 0, desc: '4 runs total (boundary byes)', rotatesStrike: false, isBoundary: true }
+        ]
+      }
+    };
+
+    let pendingStudioExtraType = 'WIDE';
+
+    function openStudioExtraPicker(extraType) {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can record extras.');
+        return;
+      }
+      pendingStudioExtraType = (extraType || 'WIDE').toUpperCase();
+      const def = STUDIO_EXTRA_OPTIONS[pendingStudioExtraType] || STUDIO_EXTRA_OPTIONS['WIDE'];
+      const modal = document.getElementById('modalExtraPicker');
+      const titleEl = document.getElementById('extraPickerTitle');
+      const descEl = document.getElementById('extraPickerDesc');
+      const listEl = document.getElementById('extraPickerOptionsList');
+
+      if (titleEl) {
+        titleEl.innerHTML = '<span style="color: ' + def.color + ';">🏏 ' + def.title + '</span> <span style="font-size: 0.65rem; color: ' + def.color + '; background: rgba(255,255,255,0.06); padding: 0.15rem 0.45rem; border-radius: 9999px; margin-left: 0.4rem; font-weight: 800;">' + def.badge + '</span>';
+      }
+      if (descEl) {
+        descEl.textContent = def.desc;
+      }
+      if (listEl) {
+        listEl.innerHTML = def.options.map((opt, idx) => {
+          return '<button type="button" class="btn btn-secondary studio-extra-opt-btn" onclick="selectStudioExtraOptionIndex(' + idx + ')" style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.85rem; text-align: left; width: 100%; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; transition: border-color 0.15s ease, background-color 0.15s ease;" data-tooltip="' + opt.desc + '">' +
+            '<div>' +
+              '<div style="font-weight: 700; font-size: 0.88rem; color: #f8fafc;">' + opt.label + '</div>' +
+              '<div style="font-size: 0.74rem; color: #94a3b8; margin-top: 0.15rem;">' + opt.desc + '</div>' +
+            '</div>' +
+            '<div style="font-family: var(--font-mono); font-size: 0.92rem; font-weight: 800; color: ' + def.color + '; background: rgba(255,255,255,0.05); padding: 0.25rem 0.55rem; border-radius: 6px;">+' + opt.runs + '</div>' +
+          '</button>';
+        }).join('');
+      }
+
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeStudioExtraPicker() {
+      const modal = document.getElementById('modalExtraPicker');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function selectStudioExtraOptionIndex(idx) {
+      const type = pendingStudioExtraType || 'WIDE';
+      const def = STUDIO_EXTRA_OPTIONS[type] || STUDIO_EXTRA_OPTIONS['WIDE'];
+      const opt = def.options[idx] || def.options[0];
+      selectStudioExtraOption(type, opt.runs, opt.batRuns, !!opt.rotatesStrike, !!opt.isBoundary, !!opt.isFour, !!opt.isSix);
+    }
+
+    function selectStudioExtraOption(extraType, totalRuns, batRuns, rotatesStrike, isBoundary, isFour, isSix) {
+      closeStudioExtraPicker();
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
+        showToast('🔒 Only official Scorers can record extras.');
+        return;
+      }
+      if (typeof triggerHaptic === 'function') {
+        triggerHaptic(isBoundary ? 'boundary' : 'default');
+      }
+
+      if (batRuns > 0) {
+        studioStriker.runs += batRuns;
+        studioStriker.balls += 1;
+        if (isFour) studioStriker.fours += 1;
+        if (isSix) studioStriker.sixes += 1;
+      }
+
+      if (isSix && window.CricOSMotionFX) {
+        window.CricOSMotionFX.triggerCelebration('SIX');
+      } else if (isFour && window.CricOSMotionFX) {
+        window.CricOSMotionFX.triggerCelebration('FOUR');
+      }
+
+      partnership.runs += totalRuns;
+      const isLegal = extraType !== 'WIDE' && extraType !== 'NO_BALL';
+      const extraPenaltyRuns = totalRuns - batRuns;
+
+      scoreDelivery(batRuns, extraPenaltyRuns, extraType, isLegal, false);
+
+      if (isLegal) {
+        partnership.balls += 1;
+      }
+
+      const isOverEnd = isLegal && (partnership.balls % 6 === 0);
+      if ((rotatesStrike && !isOverEnd) || (!rotatesStrike && isOverEnd)) {
+        swapStudioStrike();
+      } else {
+        updateStudioUI();
+      }
+    }
 
     function recordStudioExtra(extraType, extraRuns) {
       if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {

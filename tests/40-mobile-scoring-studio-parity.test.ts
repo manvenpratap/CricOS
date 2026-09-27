@@ -24,22 +24,21 @@ describe('40. Mobile Scoring Studio & Precision Wagon Wheel Parity', () => {
       assert.ok(mobileHtml.includes('mobile-studio-sublabel'), 'Must include sublabels');
     });
 
-    it('provides quick and compound extras controls with free hit indication', () => {
-      assert.ok(mobileHtml.includes('+1 Wd'), 'Must include +1 Wide');
-      assert.ok(mobileHtml.includes('+1 Nb (Free Hit)'), 'Must include +1 No Ball Free Hit');
-      assert.ok(mobileHtml.includes('+1 Lb'), 'Must include +1 Leg Bye');
-      assert.ok(mobileHtml.includes('+1 Bye'), 'Must include +1 Bye');
-      assert.ok(mobileHtml.includes('+5 Wd (4b)'), 'Must include +5 Wd compound extra');
-      assert.ok(mobileHtml.includes('+4 Nb (5r)'), 'Must include +4 Nb compound extra');
-      assert.ok(mobileHtml.includes('+6 Nb (7r)'), 'Must include +6 Nb compound extra');
-      assert.ok(mobileHtml.includes('+5 Penalty'), 'Must include +5 Penalty compound extra');
+    it('provides generic extras controls (Wide, No Ball, Leg Bye, Bye) opening wider run picker without redundant compound buttons', () => {
+      assert.ok(mobileHtml.includes('>Wide</button>'), 'Must include generic Wide button');
+      assert.ok(mobileHtml.includes('>No Ball</button>'), 'Must include generic No Ball button');
+      assert.ok(mobileHtml.includes('>Leg Bye</button>'), 'Must include generic Leg Bye button');
+      assert.ok(mobileHtml.includes('>Bye</button>'), 'Must include generic Bye button');
+      assert.ok(mobileHtml.includes('openExtraPickerSheet'), 'Must trigger extra runs picker sheet');
+      assert.ok(!mobileHtml.includes('+5 Wd (4b)'), 'Must not include redundant compound +5 Wd button');
+      assert.ok(!mobileHtml.includes('+4 Nb (5r)'), 'Must not include redundant compound +4 Nb button');
+      assert.ok(!mobileHtml.includes('+6 Nb (7r)'), 'Must not include redundant compound +6 Nb button');
     });
 
-    it('implements 2-second Hold-to-Reset button with animated progress overlay', () => {
-      assert.ok(mobileHtml.includes('btnMobileStudioReset'), 'Must include mobile studio reset button');
-      assert.ok(mobileHtml.includes('hold-progress-overlay'), 'Must include hold progress overlay element');
-      assert.ok(mobileHtml.includes('↺ Hold to Reset'), 'Must include hold to reset label');
-      assert.ok(mobileHtml.includes('bindHoldToReset'), 'Must bind hold-to-reset touch & mouse listeners');
+    it('implements dedicated Undo Last Ball button on scoring pad for rapid mis-scoring recovery', () => {
+      assert.ok(mobileHtml.includes('btnMobileStudioUndoBall'), 'Must include mobile studio undo ball button');
+      assert.ok(mobileHtml.includes('Undo Last Ball'), 'Must include Undo Last Ball label');
+      assert.ok(mobileHtml.includes('undoLastDelivery()'), 'Must call undoLastDelivery');
     });
   });
 
@@ -105,8 +104,8 @@ describe('40. Mobile Scoring Studio & Precision Wagon Wheel Parity', () => {
     it('verifies all interactive scoring buttons include data-tooltip per Rule 5', () => {
       const tooltipMatches = mobileHtml.match(/data-tooltip="[^"]+"/g) || [];
       assert.ok(tooltipMatches.length >= 40, `Expected >= 40 accessible data-tooltips, found ${tooltipMatches.length}`);
-      assert.ok(mobileHtml.includes('data-tooltip="Wide (+1 run, ball re-bowled)"'));
-      assert.ok(mobileHtml.includes('data-tooltip="Hold 2s to reset match score for new innings"'));
+      assert.ok(mobileHtml.includes('data-tooltip="Wide delivery (opens extra runs picker)"'));
+      assert.ok(mobileHtml.includes('data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"'));
     });
 
     it('strictly forbids transition: all per Emil Kowalski animation invariants', () => {
