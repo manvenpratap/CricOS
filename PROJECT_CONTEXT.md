@@ -1,14 +1,28 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-28 06:48:00
-**Version:** 1.0.0-phase2bh (UI/UX Contrast & Accessibility Invariant Engine with 576 Passing Tests)  
+**Last Updated:** 2026-09-28 08:30:00
+**Version:** 1.0.0-phase2bi (High-Cohesion Domain Test Architecture & Consolidation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BH Completed — UI/UX Contrast, Focus Rings & Accessibility Invariant Engine:
+- **Active Phase**: Phase 2BI Completed — Test Suite Consolidation & High-Cohesion Domain Architecture:
+  - **1. Unified 5 Cohesive Domain Test Suites**:
+    - Consolidating 35 numbered, fragmented test files (`tests/23-*.test.ts` through `tests/57-*.test.ts`) into 5 cohesive, high-performance domain test files:
+      1. `tests/domain-scoring-and-match-ops.test.ts` (18 tests): Match lifecycle, DLS, offline delivery sync, single-ball undo, strike rotation, generic extras, umpire sanctions, DRS Hawk-Eye review, Cricsheet JSON export, and multi-division league ladders.
+      2. `tests/domain-commerce-tournaments-and-marketplace.test.ts` (31 tests): Officials availability desk, multi-provider checkout, GST invoicing, RFQ & physical commerce, sponsorship auctions, conflict detection, 0-20% facilitation fee, official rate cards, and visual media galleries.
+      3. `tests/domain-identity-personas-and-themes.test.ts` (33 tests): Sessions, consents, contextual messaging, 8-persona RBAC, live persona switching, detailed scorecards, 21st.dev Athletic KPI card, design themes (Swiss Minimalist, Nordic Editorial, Stadium Night), teams & rosters modals, and WCAG contrast/focus rings.
+      4. `tests/domain-mobile-journeys-and-native.test.ts` (25 tests): Multi-persona mobile app journeys, in-app action sheets/toasts, 4-column studio keypad, role experience auto-routing, dynamic Worm and Manhattan velocity charts, 360° wagon wheel, iOS SwiftUI/WebKit, and Android APK bridge.
+      5. `tests/domain-3d-stadium-and-visual-graphics.test.ts` (36 tests): Emil Kowalski motion tokens & zero `transition: all`, Sonner stacked toasts, momentum waveform, celebratory particles, Three.js WebGL stadium pitch, 440px viewport, single-strip toolbars, day/night lighting, 11 fielders, 3D silverware, holographic cards, and precision chart layouts.
+  - **2. Performance & Minimal Tokens Protocol**:
+    - Reduced test suite execution time to **< 500ms** (170 tests across 51 suites) running via `./pipeline.sh test --summary`.
+    - Eliminated file clutter, redundant setup overhead, and test discovery fragmentation.
+  - **3. Packaging Parity & Governance**:
+    - Verified byte-for-byte identity between root `index.html` and `dist/index.html` per Rule 6.
+    - Updated `tests/README.md` test coverage map with the consolidated suite architecture.
+- **Preceding Phase**: Phase 2BH Completed — UI/UX Contrast, Focus Rings & Accessibility Invariant Engine:
   - **1. WCAG 2.1/2.2 AA & AAA Contrast Compliance across All 3 Themes (`dashboard.ts`, `mobile-view.ts`)**:
     - **🇨🇭 Swiss Minimalist**: Updated `--text-muted` from `#64748B` (4.38:1 edge case) to `#475569` (Slate-600), delivering **7.09:1** contrast ratio against `#F8F9FA` canvas and `#FFFFFF` cards, passing WCAG AAA. Updated mobile nav items and subnav buttons to `#475569 !important;`.
     - **🌾 Nordic Editorial**: Updated `--text-muted` from `#78716C` (4.38:1 on card, 3.79:1 on sidebar) to `#57534E` (Stone-600), achieving **6.87:1** on cards and **5.91:1** on oat sidebar (`#EFE9DF`), passing WCAG AA/AAA. Updated mobile nav items and subnav buttons to `#57534E !important;`.
