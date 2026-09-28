@@ -297,4 +297,74 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.strictEqual(distMobileHtml, mobileHtml, 'dist/mobile.html must match getMobileAppHtml()');
     });
   });
+
+  // ---- Suite 8: Mobile 3D Interactive Features, Stadium Viewport & Action Sheets ----
+  describe('Suite 8: Mobile 3D Interactive Features, Stadium Viewport & Action Sheets', () => {
+    it('1. Three.js library and fallback engine in mobile head and runtime script', () => {
+      assert.ok(mobileHtml.includes('three.min.js'), 'Mobile head must load Three.js script');
+      assert.ok(mobileHtml.includes('initMobileThreeFallback'), 'Fallback engine must be present');
+      assert.ok(mobileHtml.includes('window.MobileThreeStadiumPitch = MobileThreeStadiumPitch'), 'Must export MobileThreeStadiumPitch');
+      assert.ok(mobileHtml.includes('window.MobileThreeTrophyCabinet = MobileThreeTrophyCabinet'), 'Must export MobileThreeTrophyCabinet');
+      assert.ok(mobileHtml.includes('window.MobileThreeBatConfigurator = MobileThreeBatConfigurator'), 'Must export MobileThreeBatConfigurator');
+    });
+
+    it('2. Interactive 3D Stadium Pitch Viewport in Match Center', () => {
+      assert.ok(mobileHtml.includes("'STADIUM_3D'"), 'STADIUM_3D subtab must exist');
+      assert.ok(mobileHtml.includes('🌐 3D Stadium'), '3D Stadium label must be in subtabs');
+      assert.ok(mobileHtml.includes('id="mobileThreeStadiumCanvas"'), '3D stadium canvas element must exist');
+      assert.ok(mobileHtml.includes('id="mobileThreeFallbackNotice"'), '3D fallback notice element must exist');
+      assert.ok(mobileHtml.includes('renderMobile3DStadium()'), '3D stadium rendering method must exist');
+      assert.ok(mobileHtml.includes('setThreeCameraPreset'), 'Camera preset controller must exist');
+      assert.ok(mobileHtml.includes('setThreeVisualMode'), 'Tactical visual mode controller must exist');
+      assert.ok(mobileHtml.includes('setThreeLighting'), 'Broadcast lighting controller must exist');
+      assert.ok(mobileHtml.includes('BATSMAN') && mobileHtml.includes('GRANDSTAND') && mobileHtml.includes('UMPIRE'), 'All camera presets must be present');
+      assert.ok(mobileHtml.includes('HAWKEYE') && mobileHtml.includes('DRS') && mobileHtml.includes('FIELDERS'), 'Tactical overlays must be present');
+      assert.ok(mobileHtml.includes('DAY') && mobileHtml.includes('DUSK') && mobileHtml.includes('NIGHT'), 'Lighting states must be present');
+    });
+
+    it('3. Dual-mode 2D / 3D Stadium switch in 8-Zone Precision Wagon Wheel', () => {
+      assert.ok(mobileHtml.includes('setWagonDisplayMode'), 'Mode switch handler must exist');
+      assert.ok(mobileHtml.includes("setWagonDisplayMode('2D')") || mobileHtml.includes("setWagonDisplayMode(this.dataset.mode)"), '2D Map button must exist');
+      assert.ok(mobileHtml.includes("setWagonDisplayMode('3D')") || mobileHtml.includes("setWagonDisplayMode(this.dataset.mode)"), '3D Stadium button must exist');
+      assert.ok(mobileHtml.includes("wagonDisplayMode === '3D'"), 'Wagon mode state toggle check must exist');
+    });
+
+    it('4. Interactive 3D Championship Trophy Cabinet action sheet', () => {
+      assert.ok(mobileHtml.includes('open3DTrophyCabinetSheet'), 'open3DTrophyCabinetSheet must exist');
+      assert.ok(mobileHtml.includes('id="mobileTrophyCanvas"'), 'mobileTrophyCanvas must exist');
+      assert.ok(mobileHtml.includes('id="btnMobileTrophyRotate"'), 'Auto-spin toggle button must exist');
+      assert.ok(mobileHtml.includes('toggleMobileTrophyAutoRotate'), 'toggleMobileTrophyAutoRotate must exist');
+      assert.ok(mobileHtml.includes('PREMIER_CUP') && mobileHtml.includes('MVP_SHIELD') && mobileHtml.includes('GOLDEN_BAT'), 'All 3 trophies must exist');
+    });
+
+    it('5. Interactive 3D Cricket Bat Configurator action sheet', () => {
+      assert.ok(mobileHtml.includes('openGearCustomizerSheet'), 'openGearCustomizerSheet must exist');
+      assert.ok(mobileHtml.includes('id="mobileBatCanvas"'), 'mobileBatCanvas must exist');
+      assert.ok(mobileHtml.includes('willowGradeSelect'), 'willow grade selector must exist');
+      assert.ok(mobileHtml.includes('onMobileBatWillowChange'), 'willow change handler must exist');
+      assert.ok(mobileHtml.includes('setMobileBatGrip'), 'grip color setter must exist');
+      assert.ok(mobileHtml.includes('#00E599') && mobileHtml.includes('#00D2FF') && mobileHtml.includes('#FFB800') && mobileHtml.includes('#1E293B'), 'Grip color chips must exist');
+    });
+
+    it('6. Interactive 3D Holographic Player Card with touch & tilt physics', () => {
+      assert.ok(mobileHtml.includes('open3DPlayerCardSheet'), 'open3DPlayerCardSheet must exist');
+      assert.ok(mobileHtml.includes('id="mobileHoloCard"'), 'mobileHoloCard element must exist');
+      assert.ok(mobileHtml.includes('id="mobileHoloSheen"'), 'mobileHoloSheen overlay must exist');
+      assert.ok(mobileHtml.includes('onHoloCardMove'), 'touch/pointer move handler must exist');
+      assert.ok(mobileHtml.includes('onHoloCardLeave'), 'tilt reset handler must exist');
+      assert.ok(mobileHtml.includes('perspective: 900px') || mobileHtml.includes('perspective(900px)'), '3D perspective style must exist');
+    });
+
+    it('7. Universal 3D Visualization Studio card in Profile screen for all personas', () => {
+      assert.ok(mobileHtml.includes('mobile-three-studio-card'), 'Studio card container must exist');
+      assert.ok(mobileHtml.includes('🌐 3D Visualization Studio'), 'Studio card heading must exist');
+      assert.ok(mobileHtml.includes('mobile-three-tile-btn'), 'Studio launch tiles must exist');
+      assert.ok(mobileHtml.includes('3D Stadium Pitch') && mobileHtml.includes('Trophy Cabinet') && mobileHtml.includes('Bat Configurator') && mobileHtml.includes('Holo Player Card'), 'All 4 launch tiles must exist in profile');
+    });
+
+    it('8. Clean lifecycle management and memory leak prevention', () => {
+      assert.ok(mobileHtml.includes('stopMobile3DViewers'), 'stopMobile3DViewers lifecycle cleanup method must exist');
+      assert.ok(mobileHtml.includes('cancelAnimationFrame'), 'Must cancel animation frames on cleanup');
+    });
+  });
 });

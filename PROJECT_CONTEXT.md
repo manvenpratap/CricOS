@@ -1,14 +1,41 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-28 08:30:00
-**Version:** 1.0.0-phase2bi (High-Cohesion Domain Test Architecture & Consolidation)  
+**Last Updated:** 2026-09-28 09:55:00
+**Version:** 1.0.0-phase2bj (Mobile 3D WebGL Interactive Features & Parity)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BI Completed — Test Suite Consolidation & High-Cohesion Domain Architecture:
+- **Active Phase**: Phase 2BJ Completed — Mobile 3D WebGL Interactive Feature Parity:
+  - **1. Three.js Library & Resilient Fallback Engine (`mobile-view.ts`)**:
+    - Integrated Three.js r128 CDN script into mobile `<head>`.
+    - Added comprehensive fallback engine (`initMobileThreeFallback`) ensuring zero crashes in headless or WebGL-unsupported environments.
+    - Exported `MobileThreeStadiumPitch`, `MobileThreeTrophyCabinet`, and `MobileThreeBatConfigurator` to global `window`.
+  - **2. Interactive 3D Stadium Pitch Viewport in Match Center (`mobile-view.ts`)**:
+    - Added dedicated `['STADIUM_3D', '🌐 3D Stadium']` subtab to Match Center.
+    - Built responsive 320px WebGL viewport `#mobileThreeStadiumCanvas` with 22-yard clay pitch strip, stumps/bails, crease lines, 30-yard fielding ring, and boundary rope.
+    - Docked single-strip camera toolbar (8 presets: `Auto-Cam`, `Batsman`, `Pitch`, `High`, `Grandstand`, `Pavilion`, `Umpire`, `Reset`).
+    - Docked tactical overlay toolbar (5 layers: `Wagon Arcs`, `Hawk-Eye`, `DRS Review`, `11 Fielders`, `Fusion`).
+    - Docked broadcast lighting toolbar (3 states: `Day`, `Dusk`, `Night`).
+    - Touch orbit controls with clamped polar angle (`0.15` to `1.35 rad`) to prevent under-ground clipping and page scroll interference (`touch-action: none;`).
+  - **3. Dual-Mode 2D / 3D Stadium Switcher in Precision Wagon Wheel (`mobile-view.ts`)**:
+    - Added seamless dual-mode switch `[2D Map] [🌐 3D Stadium]` in both Live Scoring and Analytics wagon wheels.
+  - **4. Interactive 3D Championship Trophy Cabinet Action Sheet (`open3DTrophyCabinetSheet`)**:
+    - Interactive 3D silverware viewer `#mobileTrophyCanvas` rendering Premier Cup, MVP Shield, and Golden Bat with 360° touch drag rotation and toggleable auto-spin.
+  - **5. Interactive 3D Cricket Bat Configurator Action Sheet (`openGearCustomizerSheet`)**:
+    - 3D willow blade & grip canvas `#mobileBatCanvas` with live willow selector and dynamic grip color chips (Emerald, Cyan, Amber, Stealth).
+  - **6. Interactive 3D Holographic Player Card Action Sheet (`open3DPlayerCardSheet`)**:
+    - Real touch/gyro tilt physics (`perspective(900px) rotateX(...) rotateY(...) scale3d(1.02, 1.02, 1.02)`) with dynamic specular holo-foil sheen overlay `#mobileHoloSheen`.
+  - **7. Universal "🌐 3D Visualization Studio" Hub Card on Profile Screen**:
+    - Integrated universal 4-tile studio hub card into Profile accessible to all 8 personas (`CAPTAIN`, `PLAYER`, `SCORER`, `FAN`, `UMPIRE`, `ORGANISER`, `TURF_PROVIDER`, `ADMIN`).
+  - **8. Lifecycle Battery Management & Quality Invariants**:
+    - `stopMobile3DViewers()` cleanly terminates `requestAnimationFrame` loops on action sheet dismissal, screen navigation, or subtab switch.
+    - Zero `transition: all`, zero `alert()`/`confirm()`/`prompt()`, WCAG AA/AAA contrast across all 3 themes.
+    - Consolidated test suite expanded with Suite 8 (178/178 tests passing in 478ms).
+    - Android native APK compiled and verified at `dist/cricos-debug.apk`.
+- **Preceding Phase**: Phase 2BI Completed — Test Suite Consolidation & High-Cohesion Domain Architecture:
   - **1. Unified 5 Cohesive Domain Test Suites**:
     - Consolidating 35 numbered, fragmented test files (`tests/23-*.test.ts` through `tests/57-*.test.ts`) into 5 cohesive, high-performance domain test files:
       1. `tests/domain-scoring-and-match-ops.test.ts` (18 tests): Match lifecycle, DLS, offline delivery sync, single-ball undo, strike rotation, generic extras, umpire sanctions, DRS Hawk-Eye review, Cricsheet JSON export, and multi-division league ladders.
