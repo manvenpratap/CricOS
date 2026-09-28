@@ -18692,6 +18692,253 @@ cricos_active_sse_connections 1</pre>
     window.exerciseAuctionRtmCard = exerciseAuctionRtmCard;
     window.gavelPlayerAuctionSold = gavelPlayerAuctionSold;
     window.openKeyboardShortcutsModal = openKeyboardShortcutsModal;
+
+    // =========================================================================
+    // UNIVERSAL WCAG 2.1 AA/AAA THEME CONTRAST & SURFACE INVARIANT ENGINE
+    // Guarantees >= 4.5:1 contrast for normal text and >= 3.0:1 for large text
+    // across Stadium Night (stadium), Swiss Minimal (swiss), and Nordic Editorial (nordic)
+    // =========================================================================
+    function enforceThemeContrastInvariants() {
+      if (typeof document === 'undefined' || !document.body) return;
+
+      // Temporarily suppress CSS transitions so getComputedStyle reads 100% final settled colors
+      let syncStyle = document.getElementById('cricos-contrast-sync-style');
+      if (!syncStyle) {
+        syncStyle = document.createElement('style');
+        syncStyle.id = 'cricos-contrast-sync-style';
+        document.head.appendChild(syncStyle);
+      }
+      syncStyle.textContent = '*, *::before, *::after { transition: none !important; animation-duration: 0s !important; }';
+
+      const theme = document.body.getAttribute('data-theme') || 'stadium';
+      const isDaylight = theme === 'swiss' || theme === 'nordic';
+
+      // 1. Restore previously adjusted elements so theme switches start from clean CSS cascade
+      const adjustedEls = document.querySelectorAll('[data-cricos-orig-color], [data-cricos-orig-bg]');
+      for (let i = 0; i < adjustedEls.length; i++) {
+        const el = adjustedEls[i];
+        if (el.dataset.cricosOrigColor !== undefined) {
+          if (el.dataset.cricosOrigColor === '__NONE__') el.style.removeProperty('color');
+          else el.style.color = el.dataset.cricosOrigColor;
+          delete el.dataset.cricosOrigColor;
+        }
+        if (el.dataset.cricosOrigBg !== undefined) {
+          if (el.dataset.cricosOrigBg === '__NONE__') el.style.removeProperty('background-color');
+          else el.style.backgroundColor = el.dataset.cricosOrigBg;
+          delete el.dataset.cricosOrigBg;
+        }
+      }
+
+      void document.body.offsetHeight;
+
+      function parseRgba(str) {
+        if (!str || str.indexOf('rgb') === -1) return [0, 0, 0, 0];
+        const open = str.indexOf('(');
+        const close = str.indexOf(')');
+        if (open === -1 || close === -1) return [0, 0, 0, 0];
+        const parts = str.slice(open + 1, close).split(',');
+        if (parts.length < 3) return [0, 0, 0, 0];
+        return [
+          parseFloat(parts[0]) || 0,
+          parseFloat(parts[1]) || 0,
+          parseFloat(parts[2]) || 0,
+          parts.length >= 4 ? parseFloat(parts[3]) : 1.0
+        ];
+      }
+
+      function blendColors(fg, bg) {
+        const a = fg[3] + bg[3] * (1 - fg[3]);
+        if (a === 0) return [0, 0, 0, 0];
+        return [
+          (fg[0] * fg[3] + bg[0] * bg[3] * (1 - fg[3])) / a,
+          (fg[1] * fg[3] + bg[1] * bg[3] * (1 - fg[3])) / a,
+          (fg[2] * fg[3] + bg[2] * bg[3] * (1 - fg[3])) / a,
+          a
+        ];
+      }
+
+      function relLum(rgb) {
+        const ch = function(c) {
+          const v = c / 255.0;
+          return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        };
+        return 0.2126 * ch(rgb[0]) + 0.7152 * ch(rgb[1]) + 0.0722 * ch(rgb[2]);
+      }
+
+      function calcContrast(c1, c2) {
+        const l1 = relLum(c1);
+        const l2 = relLum(c2);
+        return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+      }
+
+      const rootBg = theme === 'swiss' ? [248, 249, 250, 1] : (theme === 'nordic' ? [245, 240, 232, 1] : [4, 7, 13, 1]);
+
+      // 2. In daylight themes (swiss / nordic), normalize dark-tinted inline containers (except dark 3D viewports, toaster & proto-picker)
+      if (isDaylight) {
+        const allBoxes = document.body.querySelectorAll('div, section, article, aside, header, tr, td, th, ul, li');
+        for (let i = 0; i < allBoxes.length; i++) {
+          const box = allBoxes[i];
+          if (box.closest('#universal-tooltip-popover, #sonnerToaster, #protoPicker, #threeStadiumWrapper, #fieldPlannerSvg, #pitchMapSvg, .scoreboard')) continue;
+          const st = window.getComputedStyle(box);
+          if (st.display === 'none' || st.visibility === 'hidden') continue;
+          const bg = parseRgba(st.backgroundColor);
+          if (bg[3] > 0.08) {
+            const comp = blendColors(bg, rootBg);
+            const l = relLum(comp);
+            // If a container has a dark/muddy background in a daylight theme, convert it to clean daylight card surface
+            if (l < 0.45) {
+              if (box.dataset.cricosOrigBg === undefined) {
+                box.dataset.cricosOrigBg = box.style.backgroundColor || '__NONE__';
+              }
+              box.style.setProperty('background-color', theme === 'swiss' ? '#FFFFFF' : '#FCFBF8', 'important');
+            }
+          }
+        }
+      }
+
+      function getEffectiveBg(el) {
+        const chain = [];
+        let cur = el;
+        while (cur && cur.nodeType === 1) {
+          const style = window.getComputedStyle(cur);
+          const bg = parseRgba(style.backgroundColor);
+          if (bg[3] > 0) {
+            chain.push(bg);
+            if (bg[3] >= 0.99) break;
+          }
+          cur = cur.parentElement;
+        }
+        let acc = rootBg;
+        for (let i = chain.length - 1; i >= 0; i--) {
+          acc = blendColors(chain[i], acc);
+        }
+        return acc;
+      }
+
+      const darkPalette = {
+        emerald: [[6, 78, 59], '#064E3B'],
+        cyan: [[12, 74, 110], '#0C4A6E'],
+        amber: [[120, 53, 15], '#78350F'],
+        rose: [[136, 19, 55], '#881337'],
+        purple: [[76, 29, 149], '#4C1D95'],
+        neutral: theme === 'nordic' ? [[28, 25, 23], '#1C1917'] : [[15, 23, 42], '#0F172A'],
+        black: [[0, 0, 0], '#000000']
+      };
+
+      const lightPalette = {
+        emerald: [[110, 231, 183], '#6EE7B7'],
+        cyan: [[125, 211, 252], '#7DD3FC'],
+        amber: [[253, 224, 71], '#FDE047'],
+        rose: [[253, 164, 175], '#FDA4AF'],
+        purple: [[233, 213, 255], '#E9D5FF'],
+        neutral: [[248, 250, 252], '#F8FAFC'],
+        white: [[255, 255, 255], '#FFFFFF']
+      };
+
+      function detectHueFamily(rgb) {
+        const r = rgb[0], g = rgb[1], b = rgb[2];
+        if (g > r + 25 && g > b) return 'emerald';
+        if (b > r + 25 && g > r) return 'cyan';
+        if (r > b + 40 && g > b + 20) return 'amber';
+        if (r > g + 35 && r > b + 20) return 'rose';
+        if (r > g + 15 && b > g + 25) return 'purple';
+        return 'neutral';
+      }
+
+      // 3. Walk all visible text nodes and enforce WCAG contrast >= minRatio
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      let node;
+      while ((node = walker.nextNode())) {
+        if (!node.nodeValue || !node.nodeValue.trim()) continue;
+        const el = node.parentElement;
+        if (!el) continue;
+        const tag = el.tagName.toUpperCase();
+        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'TITLE') continue;
+        if (el.disabled || el.closest('[disabled]')) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) continue;
+        const style = window.getComputedStyle(el);
+        if (style.display === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) < 0.2) continue;
+
+        const bg = getEffectiveBg(el);
+        const fgRaw = parseRgba(style.color);
+        const fg = blendColors(fgRaw, bg);
+        const ratio = calcContrast(fg, bg);
+
+        const fontSize = parseFloat(style.fontSize) || 14;
+        const fontWeight = parseInt(style.fontWeight, 10) || 400;
+        const isLarge = fontSize >= 18.66 || (fontSize >= 14 && fontWeight >= 700);
+        const targetRatio = isLarge ? 3.15 : 4.65;
+
+        if (ratio < targetRatio) {
+          if (el.dataset.cricosOrigColor === undefined) {
+            el.dataset.cricosOrigColor = el.style.color || '__NONE__';
+          }
+          const bgLum = relLum(bg);
+          const family = detectHueFamily(fg);
+          let chosenHex = '#FFFFFF';
+          if (bgLum >= 0.1791) {
+            const cand = darkPalette[family] || darkPalette.neutral;
+            if (calcContrast(cand[0], bg) >= targetRatio) {
+              chosenHex = cand[1];
+            } else if (calcContrast(darkPalette.neutral[0], bg) >= targetRatio) {
+              chosenHex = darkPalette.neutral[1];
+            } else {
+              chosenHex = '#000000';
+            }
+          } else {
+            const cand = lightPalette[family] || lightPalette.neutral;
+            if (calcContrast(cand[0], bg) >= targetRatio) {
+              chosenHex = cand[1];
+            } else if (calcContrast(lightPalette.neutral[0], bg) >= targetRatio) {
+              chosenHex = lightPalette.neutral[1];
+            } else {
+              chosenHex = '#FFFFFF';
+            }
+          }
+          el.style.setProperty('color', chosenHex, 'important');
+          if (tag === 'TEXT' || tag === 'TSPAN') {
+            el.style.setProperty('fill', chosenHex, 'important');
+          }
+        }
+      }
+
+      void document.body.offsetHeight;
+      syncStyle.textContent = '';
+    }
+
+    window.enforceThemeContrastInvariants = enforceThemeContrastInvariants;
+
+    // Hook into setDesignTheme, applyDesignTheme, switchTab, openModal, showToast, and studio openers
+    [
+      'setDesignTheme',
+      'applyDesignTheme',
+      'switchTab',
+      'openModal',
+      'showToast',
+      'renderRoster',
+      'updateAthleticStatsCard',
+      'openCommandPalette',
+      'openFieldPlannerModal',
+      'renderFieldPlannerSvg',
+      'openPitchMapSimulatorModal',
+      'renderPitchMapSimulator',
+      'openPlayerAuctionModal',
+      'renderPlayerAuctionStudio'
+    ].forEach(function(fnName) {
+      const origFn = window[fnName] || (typeof eval === 'function' ? (function() { try { return eval(fnName); } catch(_e) { return null; } })() : null);
+      if (typeof origFn === 'function') {
+        const wrapped = function() {
+          const res = origFn.apply(this, arguments);
+          enforceThemeContrastInvariants();
+          return res;
+        };
+        window[fnName] = wrapped;
+        try { eval(fnName + ' = wrapped;'); } catch (_e) {}
+      }
+    });
+    window.applyDesignTheme = window.setDesignTheme;
+    enforceThemeContrastInvariants();
   </script>
 </body>
 </html>

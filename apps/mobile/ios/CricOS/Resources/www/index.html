@@ -7378,11 +7378,228 @@
 
         this.renderToasts();
         this.bindHoldToReset();
+        this.enforceContrastInvariants();
 
         var newScroll = document.getElementById('mobileScrollBody');
         if (newScroll && prevScrollTop > 0) {
           newScroll.scrollTop = prevScrollTop;
         }
+      }
+
+      enforceContrastInvariants() {
+        var rootEl = document.documentElement;
+        if (!rootEl || !document.body) return;
+
+        var syncStyle = document.getElementById('cricos-mobile-contrast-sync-style');
+        if (!syncStyle) {
+          syncStyle = document.createElement('style');
+          syncStyle.id = 'cricos-mobile-contrast-sync-style';
+          document.head.appendChild(syncStyle);
+        }
+        syncStyle.textContent = '*, *::before, *::after { transition: none !important; animation-duration: 0s !important; }';
+
+        var theme = document.body.getAttribute('data-theme') || rootEl.getAttribute('data-theme') || this.theme || 'stadium';
+        var isDaylight = theme === 'swiss' || theme === 'nordic';
+
+        // 1. Restore any previously mutated colors/backgrounds
+        var prevEls = document.querySelectorAll('[data-cricos-orig-color], [data-cricos-orig-bg]');
+        for (var i = 0; i < prevEls.length; i++) {
+          var el = prevEls[i];
+          if (el.hasAttribute('data-cricos-orig-color')) {
+            var origC = el.getAttribute('data-cricos-orig-color');
+            if (origC) el.style.color = origC;
+            else el.style.removeProperty('color');
+            el.removeAttribute('data-cricos-orig-color');
+          }
+          if (el.hasAttribute('data-cricos-orig-bg')) {
+            var origB = el.getAttribute('data-cricos-orig-bg');
+            if (origB) el.style.backgroundColor = origB;
+            else el.style.removeProperty('background-color');
+            el.removeAttribute('data-cricos-orig-bg');
+          }
+        }
+
+        void document.body.offsetHeight;
+
+        function parseRgba(str) {
+          if (!str || str.indexOf('rgb') === -1) return [0, 0, 0, 0];
+          var open = str.indexOf('(');
+          var close = str.indexOf(')');
+          if (open === -1 || close === -1) return [0, 0, 0, 0];
+          var parts = str.slice(open + 1, close).split(',');
+          if (parts.length < 3) return [0, 0, 0, 0];
+          return [
+            parseFloat(parts[0]) || 0,
+            parseFloat(parts[1]) || 0,
+            parseFloat(parts[2]) || 0,
+            parts.length >= 4 ? parseFloat(parts[3]) : 1.0
+          ];
+        }
+
+        function blendRgba(fg, bg) {
+          var a = fg[3] + bg[3] * (1 - fg[3]);
+          if (a === 0) return [0, 0, 0, 0];
+          return [
+            (fg[0] * fg[3] + bg[0] * bg[3] * (1 - fg[3])) / a,
+            (fg[1] * fg[3] + bg[1] * bg[3] * (1 - fg[3])) / a,
+            (fg[2] * fg[3] + bg[2] * bg[3] * (1 - fg[3])) / a,
+            a
+          ];
+        }
+
+        function srgbToLin(c) {
+          var v = c / 255.0;
+          return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        }
+
+        function relLum(rgb) {
+          return 0.2126 * srgbToLin(rgb[0]) + 0.7152 * srgbToLin(rgb[1]) + 0.0722 * srgbToLin(rgb[2]);
+        }
+
+        function calcContrast(rgb1, rgb2) {
+          var l1 = relLum(rgb1);
+          var l2 = relLum(rgb2);
+          var lighter = Math.max(l1, l2);
+          var darker = Math.min(l1, l2);
+          return (lighter + 0.05) / (darker + 0.05);
+        }
+
+        var pageBgRgb = theme === 'swiss' ? [248, 249, 250, 1.0] : (theme === 'nordic' ? [245, 240, 232, 1.0] : [4, 7, 13, 1.0]);
+
+        if (isDaylight) {
+          var surfaceBg = theme === 'nordic' ? '#FCFBF8' : '#FFFFFF';
+          var styledBgEls = document.querySelectorAll('div, section, article, aside, header, button, span');
+          for (var b = 0; b < styledBgEls.length; b++) {
+            var bgEl = styledBgEls[b];
+            if (bgEl.closest('#mobile3DCanvas, #mobileFieldPlannerSvg, #mobilePitchMapSvg, #cricosCelebrationCanvas, svg, canvas')) continue;
+            var csBg = window.getComputedStyle(bgEl).backgroundColor;
+            var parsedBg = parseRgba(csBg);
+            if (parsedBg[3] > 0.06) {
+              var compBg = blendRgba(parsedBg, pageBgRgb);
+              var lum = relLum(compBg);
+              if (lum < 0.45) {
+                if (!bgEl.hasAttribute('data-cricos-orig-bg')) {
+                  bgEl.setAttribute('data-cricos-orig-bg', bgEl.style.backgroundColor || '');
+                }
+                bgEl.style.setProperty('background-color', surfaceBg, 'important');
+              }
+            }
+          }
+        }
+
+        function getEffBg(node) {
+          var chain = [];
+          var curr = node;
+          while (curr && curr.nodeType === 1) {
+            var cs = window.getComputedStyle(curr);
+            var bg = parseRgba(cs.backgroundColor);
+            if (bg[3] > 0) {
+              chain.push(bg);
+              if (bg[3] >= 0.99) break;
+            }
+            curr = curr.parentElement;
+          }
+          var composite = pageBgRgb;
+          for (var j = chain.length - 1; j >= 0; j--) {
+            composite = blendRgba(chain[j], composite);
+          }
+          return composite;
+        }
+
+        var darkPalette = {
+          emerald: [[6, 78, 59], '#064E3B'],
+          cyan:    [[12, 74, 110], '#0C4A6E'],
+          amber:   [[120, 53, 15], '#78350F'],
+          rose:    [[136, 19, 55], '#881337'],
+          purple:  [[76, 29, 149], '#4C1D95'],
+          neutral: [[15, 23, 42], '#0F172A']
+        };
+        var lightPalette = {
+          emerald: [[110, 231, 183], '#6EE7B7'],
+          cyan:    [[125, 211, 252], '#7DD3FC'],
+          amber:   [[253, 224, 71], '#FDE047'],
+          rose:    [[253, 164, 175], '#FDA4AF'],
+          purple:  [[233, 213, 255], '#E9D5FF'],
+          neutral: [[248, 250, 252], '#F8FAFC']
+        };
+
+        function detectHueFamily(rgb) {
+          var r = rgb[0], g = rgb[1], bl = rgb[2];
+          var max = Math.max(r, g, bl);
+          var min = Math.min(r, g, bl);
+          if (max - min < 28) return 'neutral';
+          if (g >= r && g >= bl) {
+            return bl > g * 0.75 ? 'cyan' : 'emerald';
+          }
+          if (bl >= r && bl >= g) {
+            return r > bl * 0.6 ? 'purple' : 'cyan';
+          }
+          if (r >= g && r >= bl) {
+            if (g > r * 0.55) return 'amber';
+            if (bl > r * 0.55) return 'purple';
+            return 'rose';
+          }
+          return 'neutral';
+        }
+
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var tNode;
+        while ((tNode = walker.nextNode())) {
+          if (!tNode.nodeValue || !tNode.nodeValue.trim()) continue;
+          var pEl = tNode.parentElement;
+          if (!pEl) continue;
+          var tag = pEl.tagName.toUpperCase();
+          if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'TITLE') continue;
+          if (pEl.disabled || pEl.closest('[disabled]')) continue;
+
+          var cs = window.getComputedStyle(pEl);
+          if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.1) continue;
+
+          var bg = getEffBg(pEl);
+          var fgRaw = parseRgba(cs.color);
+          var fg = blendRgba(fgRaw, bg);
+          var ratio = calcContrast(fg, bg);
+
+          var fontSize = parseFloat(cs.fontSize) || 14;
+          var fontWeight = parseInt(cs.fontWeight, 10) || 400;
+          var isLarge = fontSize >= 18.66 || (fontSize >= 14 && fontWeight >= 700);
+          var targetRatio = isLarge ? 3.15 : 4.65;
+
+          if (ratio < targetRatio) {
+            if (!pEl.hasAttribute('data-cricos-orig-color')) {
+              pEl.setAttribute('data-cricos-orig-color', pEl.style.color || '');
+            }
+            var bgLum = relLum(bg);
+            var family = detectHueFamily(fg);
+            var chosenHex = '#FFFFFF';
+            if (bgLum >= 0.1791) {
+              var cand = darkPalette[family] || darkPalette.neutral;
+              if (calcContrast(cand[0], bg) >= targetRatio) {
+                chosenHex = cand[1];
+              } else if (calcContrast(darkPalette.neutral[0], bg) >= targetRatio) {
+                chosenHex = darkPalette.neutral[1];
+              } else {
+                chosenHex = '#000000';
+              }
+            } else {
+              var candL = lightPalette[family] || lightPalette.neutral;
+              if (calcContrast(candL[0], bg) >= targetRatio) {
+                chosenHex = candL[1];
+              } else if (calcContrast(lightPalette.neutral[0], bg) >= targetRatio) {
+                chosenHex = lightPalette.neutral[1];
+              } else {
+                chosenHex = '#FFFFFF';
+              }
+            }
+            pEl.style.setProperty('color', chosenHex, 'important');
+            if (tag === 'TEXT' || tag === 'TSPAN') {
+              pEl.style.setProperty('fill', chosenHex, 'important');
+            }
+          }
+        }
+
+        void document.body.offsetHeight;
+        syncStyle.textContent = '';
       }
     }
 

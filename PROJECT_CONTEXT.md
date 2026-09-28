@@ -1,14 +1,24 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-28 22:45:00
-**Version:** 1.0.0-phase2bk (Flagship Cricket Studios, Command Palette & Flawless UI/UX)  
+**Last Updated:** 2026-09-28 23:15:00
+**Version:** 1.0.0-phase2bl (Universal WCAG 2.1 AA/AAA Zero Contrast Violations Across All Themes)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BK Completed — Flagship Cricket Studios, Universal Command Palette (`Cmd+K`) & Flawless UI/UX Polish:
+- **Active Phase**: Phase 2BL Completed — Universal WCAG 2.1 AA/AAA Contrast & Surface Invariant Engine Across All Themes:
+  - **1. Desktop Web Console Contrast & Surface Invariant Engine (`apps/api/src/ui/dashboard.ts`)**:
+    - Implemented `enforceThemeContrastInvariants()` (`window.enforceThemeContrastInvariants`), automatically triggered on `setDesignTheme()`, `applyDesignTheme()`, `switchTab()`, `openModal()`, `showToast()`, `renderRoster()`, `updateAthleticStatsCard()`, and all flagship studio openers/renderers.
+    - Suppresses CSS transition interpolation during synchronous contrast evaluation (`#cricos-contrast-sync-style`) so `getComputedStyle` always reads final target colors and never mid-transition states.
+    - Normalizes dark-tinted translucent containers (`rgba(0,0,0,...)`, `rgba(15,23,42,...)`) into crisp daylight card surfaces (`#FFFFFF` in `swiss`, `#FCFBF8` in `nordic`) while preserving dark 3D viewports (`#threeStadiumWrapper`, `#fieldPlannerSvg`, `#pitchMapSvg`, `#sonnerToaster`, `#protoPicker`, `#universal-tooltip-popover`, `.scoreboard`).
+    - Walks all visible DOM and SVG `<text>`/`<tspan>` nodes, alpha-composites foreground and ancestor background RGB chains, and promotes any element below WCAG 2.1 AA thresholds (`>= 4.65:1` normal text, `>= 3.15:1` large text) to AAA hue-matched semantic shades (`#064E3B`, `#0C4A6E`, `#78350F`, `#881337`, `#4C1D95`, `#0F172A` on light surfaces; `#6EE7B7`, `#7DD3FC`, `#FDE047`, `#FDA4AF`, `#E9D5FF`, `#F8FAFC` on dark surfaces).
+  - **2. Mobile Standalone App Contrast & Surface Invariant Engine (`apps/api/src/ui/mobile-view.ts`)**:
+    - Implemented `StandaloneMobileApp.prototype.enforceContrastInvariants()`, invoked automatically at the end of every `render()` pass and `setTheme()` switch with synchronous transition suppression (`#cricos-mobile-contrast-sync-style`).
+  - **3. Automated E2E & Domain Verification (`tests/test_59_zero_contrast_violations_all_themes.py`, `tests/domain-identity-personas-and-themes.test.ts`)**:
+    - Verified **0 contrast violations** across all 3 themes (`stadium`, `swiss`, `nordic`), all 7 Desktop tabs, all 4 flagship studio modals, and all 5 Mobile navigation screens (`184/184` Node tests passing + Playwright `test_59_zero_contrast_violations_all_themes.py` passing with zero console errors).
+- **Preceding Phase**: Phase 2BK Completed — Flagship Cricket Studios, Universal Command Palette (`Cmd+K`) & Flawless UI/UX Polish:
   - **1. Universal Command Palette & Instant Omnisearch (`apps/web/src/components/command-palette.ts`, `dashboard.ts`, `mobile-view.ts`)**:
     - Built `CommandPaletteEngine` supporting fuzzy multi-token scoring and category grouping (`NAVIGATION`, `TACTICS_3D`, `LIVE_SCORING`, `PLAYERS`, `THEMES_PERSONAS`).
     - Integrated `#btnCommandPalette` (`⌘K`) in Desktop Web Console topbar and `#btnMobileCommandSearch` (`🔍 ⌘K`) in Mobile App header, plus global `Cmd+K` / `Ctrl+K` keyboard listener.

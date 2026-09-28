@@ -780,5 +780,13 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.strictEqual(rootIndexHtml, distIndexHtml, 'Root index.html and dist/index.html must be byte-for-byte identical');
       assert.strictEqual(distMobileHtml, mobileHtml, 'dist/mobile.html must match getMobileAppHtml()');
     });
+
+    it('5. Universal WCAG 2.1 AA/AAA Contrast & Surface Invariant Engine is active across Desktop and Mobile themes', () => {
+      assert.ok(dashboardHtml.includes('function enforceThemeContrastInvariants()'), 'Desktop HTML must include enforceThemeContrastInvariants()');
+      assert.ok(dashboardHtml.includes('cricos-contrast-sync-style'), 'Desktop HTML must suppress transitions during synchronous contrast evaluation');
+      assert.ok(dashboardHtml.includes('window.enforceThemeContrastInvariants = enforceThemeContrastInvariants'), 'Desktop HTML must expose enforceThemeContrastInvariants');
+      assert.ok(mobileHtml.includes('enforceContrastInvariants()'), 'Mobile HTML must include enforceContrastInvariants()');
+      assert.ok(mobileHtml.includes('cricos-mobile-contrast-sync-style'), 'Mobile HTML must suppress transitions during synchronous contrast evaluation');
+    });
   });
 });
