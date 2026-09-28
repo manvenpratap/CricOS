@@ -75,12 +75,40 @@
     button:focus-visible,
     a:focus-visible,
     input:focus-visible,
+    textarea:focus-visible,
     select:focus-visible,
+    .btn:focus-visible,
     .tab-btn:focus-visible,
     .nav-pill:focus-visible,
     .pad-btn:focus-visible,
-    .modal-close-btn:focus-visible {
+    .modal-close-btn:focus-visible,
+    .three-cam-btn:focus-visible,
+    .wagon-filter-pill:focus-visible,
+    .wagon-batter-pill:focus-visible,
+    .btn-stance:focus-visible,
+    .btn-wagon-mode:focus-visible,
+    .field-zone-btn:focus-visible {
       outline: 2px solid var(--turf-emerald) !important;
+      outline-offset: 2px !important;
+    }
+
+    body[data-theme="swiss"] :focus-visible,
+    body[data-theme="swiss"] button:focus-visible,
+    body[data-theme="swiss"] a:focus-visible,
+    body[data-theme="swiss"] input:focus-visible,
+    body[data-theme="swiss"] textarea:focus-visible,
+    body[data-theme="swiss"] select:focus-visible {
+      outline: 2px solid #0F172A !important;
+      outline-offset: 2px !important;
+    }
+
+    body[data-theme="nordic"] :focus-visible,
+    body[data-theme="nordic"] button:focus-visible,
+    body[data-theme="nordic"] a:focus-visible,
+    body[data-theme="nordic"] input:focus-visible,
+    body[data-theme="nordic"] textarea:focus-visible,
+    body[data-theme="nordic"] select:focus-visible {
+      outline: 2px solid #15803D !important;
       outline-offset: 2px !important;
     }
 
@@ -2396,7 +2424,7 @@
       --border-subtle: #E2E8F0;
       --border-accent: #0F172A;
       --text-main: #0F172A;
-      --text-muted: #64748B;
+      --text-muted: #475569;
       --turf-emerald: #059669;
       --turf-glow: rgba(5, 150, 105, 0.12);
       --primary: #0F172A;
@@ -2659,6 +2687,41 @@
       border-radius: 4px !important;
     }
 
+    body[data-theme="swiss"] .wagon-pill-switch-wrap {
+      background: #F1F5F9 !important;
+      border-color: #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .wagon-filter-pill,
+    body[data-theme="swiss"] .wagon-batter-pill {
+      background: #F8FAFC !important;
+      border-color: #CBD5E1 !important;
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .wagon-filter-pill.active,
+    body[data-theme="swiss"] .wagon-batter-pill.active,
+    body[data-theme="swiss"] .btn-wagon-mode.active,
+    body[data-theme="swiss"] .btn-stance.active {
+      background: #0F172A !important;
+      border-color: #0F172A !important;
+      color: #FFFFFF !important;
+    }
+    body[data-theme="swiss"] .wagon-batter-pill.active .batter-pill-badge {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .wagon-batter-pill.active .batter-pill-score {
+      color: #A7F3D0 !important;
+    }
+    body[data-theme="swiss"] .batter-pill-badge {
+      background: #E2E8F0 !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] #wagonWheelSelectedZone {
+      background: rgba(5, 150, 105, 0.12) !important;
+      border-color: rgba(5, 150, 105, 0.4) !important;
+      color: #059669 !important;
+    }
+
     /* 2. Nordic Editorial Theme (Warm Oat Paper, Curvature, Organic Earth & Pine) */
     body[data-theme="nordic"],
     html[data-theme="nordic"] {
@@ -2668,7 +2731,7 @@
       --border-subtle: #E6DFD5;
       --border-accent: #292524;
       --text-main: #292524;
-      --text-muted: #78716C;
+      --text-muted: #57534E;
       --turf-emerald: #15803D;
       --turf-glow: rgba(21, 128, 61, 0.15);
       --primary: #292524;
@@ -2901,8 +2964,43 @@
     body[data-theme="nordic"] .three-instructions-badge {
       background: rgba(252, 251, 248, 0.92) !important;
       border: 1px solid #E6DFD5 !important;
-      color: #78716C !important;
+      color: #57534E !important;
       border-radius: 8px !important;
+    }
+
+    body[data-theme="nordic"] .wagon-pill-switch-wrap {
+      background: #EFE9DF !important;
+      border-color: #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] .wagon-filter-pill,
+    body[data-theme="nordic"] .wagon-batter-pill {
+      background: #FAF8F5 !important;
+      border-color: #E6DFD5 !important;
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .wagon-filter-pill.active,
+    body[data-theme="nordic"] .wagon-batter-pill.active,
+    body[data-theme="nordic"] .btn-wagon-mode.active,
+    body[data-theme="nordic"] .btn-stance.active {
+      background: #15803D !important;
+      border-color: #15803D !important;
+      color: #FFFFFF !important;
+    }
+    body[data-theme="nordic"] .wagon-batter-pill.active .batter-pill-badge {
+      background: #FFFFFF !important;
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .wagon-batter-pill.active .batter-pill-score {
+      color: #DCFCE7 !important;
+    }
+    body[data-theme="nordic"] .batter-pill-badge {
+      background: #E6DFD5 !important;
+      color: #292524 !important;
+    }
+    body[data-theme="nordic"] #wagonWheelSelectedZone {
+      background: rgba(21, 128, 61, 0.12) !important;
+      border-color: rgba(21, 128, 61, 0.4) !important;
+      color: #15803D !important;
     }
 
     /* 3. Stadium Night Theme (High-Intensity Broadcast Glassmorphism & Floodlights) */
@@ -3238,21 +3336,30 @@
       color: #04070D;
     }
     .wagon-filter-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
       font-size: 0.72rem;
-      padding: 0.25rem 0.6rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94A3B8;
+      color: var(--text-muted);
       cursor: pointer;
       transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
     }
+    .wagon-filter-pill.active {
+      background: rgba(0, 229, 153, 0.12);
+      border-color: var(--turf-emerald);
+      color: var(--turf-emerald);
+      font-weight: 600;
+    }
     @media (hover: hover) and (pointer: fine) {
-      .wagon-filter-pill:hover, .wagon-filter-pill.active {
+      .wagon-filter-pill:hover {
         background: rgba(0, 229, 153, 0.12);
         border-color: var(--turf-emerald);
         color: var(--turf-emerald);
-        font-weight: 600;
       }
     }
     .wagon-filter-pill:active {
@@ -3262,21 +3369,27 @@
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
+      min-height: 32px;
       font-size: 0.72rem;
-      padding: 0.25rem 0.6rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94A3B8;
+      color: var(--text-muted);
       cursor: pointer;
       transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
     }
+    .wagon-batter-pill.active {
+      background: rgba(0, 229, 153, 0.14);
+      border-color: var(--turf-emerald);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
     @media (hover: hover) and (pointer: fine) {
-      .wagon-batter-pill:hover, .wagon-batter-pill.active {
+      .wagon-batter-pill:hover {
         background: rgba(0, 229, 153, 0.14);
         border-color: var(--turf-emerald);
         color: #FFFFFF;
-        font-weight: 600;
       }
     }
     .wagon-batter-pill:active {
@@ -3311,22 +3424,37 @@
     }
 
     /* 3D WebGL Stadium & Three.js Interaction Styles */
-    .btn-wagon-mode {
+    .wagon-pill-switch-wrap {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .btn-wagon-mode,
+    .btn-stance {
       font-size: 0.68rem;
       font-weight: 700;
       padding: 0.2rem 0.55rem;
+      min-height: 28px;
       border-radius: 6px;
       border: none;
       background: transparent;
-      color: #8E9BAE;
+      color: var(--text-muted);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
     }
-    .btn-wagon-mode.active {
+    .btn-wagon-mode.active,
+    .btn-stance.active {
       background: var(--turf-emerald);
       color: #04070D;
     }
-    .btn-wagon-mode:active {
+    .btn-wagon-mode:active,
+    .btn-stance:active {
       transform: scale(0.96);
     }
     .three-stadium-viewport {
@@ -5213,11 +5341,11 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
               <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                 <div class="card-title" style="margin: 0; font-size: 1.05rem;">8-Zone Precision Wagon Wheel</div>
-                <div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2px;">
-                  <button type="button" class="btn-stance active" id="btnStanceRhb" onclick="setBatterStance('RHB', true)" data-tooltip="Right-Handed Batsman orientation (Off-side Left, On-side Right)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: var(--turf-emerald); color: #04070D; cursor: pointer;">RHB</button>
-                  <button type="button" class="btn-stance" id="btnStanceLhb" onclick="setBatterStance('LHB', true)" data-tooltip="Left-Handed Batsman orientation (Off-side Right, On-side Left)" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: none; background: transparent; color: #8E9BAE; cursor: pointer;">LHB</button>
+                <div class="wagon-pill-switch-wrap">
+                  <button type="button" class="btn-stance active" id="btnStanceRhb" onclick="setBatterStance('RHB', true)" data-tooltip="Right-Handed Batsman orientation (Off-side Left, On-side Right)">RHB</button>
+                  <button type="button" class="btn-stance" id="btnStanceLhb" onclick="setBatterStance('LHB', true)" data-tooltip="Left-Handed Batsman orientation (Off-side Right, On-side Left)">LHB</button>
                 </div>
-                <div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2px;">
+                <div class="wagon-pill-switch-wrap">
                   <button type="button" class="btn-wagon-mode active" id="btnWagonMode2D" onclick="setWagonDisplayMode('2D')" data-tooltip="Switch to 2D Overhead Schematic View">2D Map</button>
                   <button type="button" class="btn-wagon-mode" id="btnWagonMode3D" onclick="setWagonDisplayMode('3D')" data-tooltip="Switch to Interactive 3D Stadium Pitch &amp; Shot Trajectories">🌐 3D Stadium</button>
                 </div>
@@ -5226,9 +5354,9 @@
             </div>
 
             <!-- Batsman Selector Strip -->
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem; padding: 0.45rem 0.65rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 8px; flex-wrap: wrap;">
+            <div class="wagon-batter-strip-wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem; padding: 0.45rem 0.65rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 8px; flex-wrap: wrap;">
               <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                <span style="font-size: 0.7rem; font-weight: 700; color: #8E9BAE; text-transform: uppercase; letter-spacing: 0.5px;">Batsman:</span>
+                <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Batsman:</span>
                 <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;" id="wagonBatterSelector">
                   <button type="button" class="wagon-batter-pill active" id="wagonBatterBtn_Virat" onclick="filterWagonBatter('Virat Sharma', this)" data-tooltip="Wagon wheel for Virat Sharma (RHB): 48* (32 balls, 4x4, 2x6)">
                     <span class="batter-pill-badge">VK • RHB</span>
@@ -5247,7 +5375,7 @@
                   </button>
                 </div>
               </div>
-              <div style="font-size: 0.72rem; color: #8E9BAE;" id="wagonBatterSummaryInfo">
+              <div style="font-size: 0.72rem; color: var(--text-muted);" id="wagonBatterSummaryInfo">
                 Wagon for: <strong style="color: var(--turf-emerald);" id="wagonActiveBatterLabel">Virat Sharma (48* off 32)</strong>
               </div>
             </div>
@@ -5260,8 +5388,8 @@
                 <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('SINGLES', this)" data-tooltip="Show 1s, 2s, 3s only">Singles / 2s (4)</button>
                 <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('DOTS', this)" data-tooltip="Show dot balls">Dots (2)</button>
               </div>
-              <div style="font-size: 0.72rem; color: #8E9BAE;">
-                Facing: <strong style="color: #FFFFFF;" id="wagonFacingBatter">Virat Sharma</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">
+                Facing: <strong style="color: var(--text-main);" id="wagonFacingBatter">Virat Sharma</strong>
               </div>
             </div>
 
@@ -5430,7 +5558,7 @@
                 <!-- Floating 3D HUD Tooltip (World-to-Screen Projection) -->
                 <div class="three-hud-tooltip" id="threeJsHudTooltip" style="display: none;">
                   <div id="threeHudTitle" style="font-weight: 700; color: var(--turf-emerald);">Shot Telemetry</div>
-                  <div id="threeHudDetails" style="font-size: 0.65rem; color: #8E9BAE;">Select a trajectory to view details</div>
+                  <div id="threeHudDetails" style="font-size: 0.65rem; color: var(--text-muted);">Select a trajectory to view details</div>
                 </div>
 
                 <!-- Touch / Mouse Orbit Guidance Badge -->
@@ -5476,21 +5604,21 @@
 
             <!-- Telemetry & Distribution Bar -->
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.85rem; font-size: 0.78rem;">
-              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
-                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Off Side Ratio</div>
+              <div class="wagon-telemetry-item" style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: var(--text-muted); font-size: 0.7rem; margin-bottom: 2px;">Off Side Ratio</div>
                 <div style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonOffTally">58% (28 runs)</div>
               </div>
-              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
-                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Leg Side Ratio</div>
+              <div class="wagon-telemetry-item" style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: var(--text-muted); font-size: 0.7rem; margin-bottom: 2px;">Leg Side Ratio</div>
                 <div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonLegTally">42% (20 runs)</div>
               </div>
-              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
-                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Boundaries</div>
+              <div class="wagon-telemetry-item" style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: var(--text-muted); font-size: 0.7rem; margin-bottom: 2px;">Boundaries</div>
                 <div style="font-family: var(--font-mono); font-weight: 700; color: var(--amber); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonBoundaryTally">6 Hits (4x4, 2x6)</div>
               </div>
-              <div style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
-                <div style="color: #8E9BAE; font-size: 0.7rem; margin-bottom: 2px;">Batsman SR</div>
-                <div style="font-family: var(--font-mono); font-weight: 700; color: #FFFFFF; font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonBatterSrTally">150.0 SR (32b)</div>
+              <div class="wagon-telemetry-item" style="background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <div style="color: var(--text-muted); font-size: 0.7rem; margin-bottom: 2px;">Batsman SR</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; color: var(--text-main); font-size: 0.95rem; font-variant-numeric: tabular-nums;" id="wagonBatterSrTally">150.0 SR (32b)</div>
               </div>
             </div>
           </div>
@@ -7425,7 +7553,7 @@ cricos_active_sse_connections 1</pre>
           </div>
           <div>
             <div class="modal-title" style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: #FFFFFF;">Procurement RFQ &amp; Quote Negotiation Desk</div>
-            <div style="font-size: 0.75rem; color: #8E9BAE; margin-top: 2px;">Tournament Requirements &bull; Competitive Bidding &bull; Escrow Contract Awarding</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Tournament Requirements &bull; Competitive Bidding &bull; Escrow Contract Awarding</div>
           </div>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalRfq')" data-tooltip="Close RFQ modal" style="font-size: 1.25rem; width: 32px; height: 32px; border-radius: 8px;">×</button>
@@ -7434,7 +7562,7 @@ cricos_active_sse_connections 1</pre>
         <div style="margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; align-items: center; gap: 0.5rem;">
             <span class="badge badge-cyan" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 6px;">Active Requirements</span>
-            <span style="font-size: 0.75rem; color: #8E9BAE;">1 Open Tender</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">1 Open Tender</span>
           </div>
           <button class="btn btn-secondary btn-sm" onclick="showToast('Create RFQ specification builder opened')" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; padding: 0.4rem 0.75rem; border-radius: 8px;" data-tooltip="Open RFQ specification builder" aria-label="New RFQ">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -7456,7 +7584,7 @@ cricos_active_sse_connections 1</pre>
               </div>
               <div style="text-align: right; flex-shrink: 0;">
                 <div style="font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; color: var(--turf-emerald); font-variant-numeric: tabular-nums; line-height: 1.1;">₹3,000</div>
-                <div style="font-size: 0.7rem; color: #8E9BAE; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.2rem;">Budget Cap</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.2rem;">Budget Cap</div>
               </div>
             </div>
             <p style="font-size: 0.85rem; color: #94A3B8; margin: 0 0 1.1rem; line-height: 1.5; max-width: 60ch;">
@@ -7467,19 +7595,19 @@ cricos_active_sse_connections 1</pre>
                 <div style="font-size: 0.72rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.05em; text-transform: uppercase;">
                   Submitted Proposals (1 Verified Bid)
                 </div>
-                <span style="font-size: 0.7rem; color: #8E9BAE;">Algorithm Score: 92/100</span>
+                <span style="font-size: 0.7rem; color: var(--text-muted);">Algorithm Score: 92/100</span>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
                 <div>
                   <div style="font-weight: 600; color: #FFFFFF; font-size: 0.92rem;">R. Venkatesh (BCCI Level-2 Official)</div>
-                  <div style="font-size: 0.75rem; color: #8E9BAE; margin-top: 2px;">
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
                     Trust Track Record: <strong style="color: var(--amber);">96.8%</strong> &bull; 14 Matches Officiated &bull; Zero Incident Reports
                   </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 1rem;">
                   <div style="text-align: right;">
                     <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 1.15rem; font-variant-numeric: tabular-nums;">₹2,800</span>
-                    <div style="font-size: 0.68rem; color: #8E9BAE;">Excl. GST</div>
+                    <div style="font-size: 0.68rem; color: var(--text-muted);">Excl. GST</div>
                   </div>
                   <button class="btn btn-primary btn-sm" onclick="awardSampleQuote()" data-tooltip="Award contract, lock escrow deposit, and dispatch confirmation" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; border-radius: 8px; padding: 0.45rem 0.9rem;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -7578,7 +7706,7 @@ cricos_active_sse_connections 1</pre>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
           <div>
             <span class="badge badge-emerald">✓ Zero Conflicts Detected</span>
-            <span style="font-size: 0.8rem; color: #8E9BAE; margin-left: 0.5rem;">Overall Readiness: <strong style="color: var(--turf-emerald);">100%</strong></span>
+            <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 0.5rem;">Overall Readiness: <strong style="color: var(--turf-emerald);">100%</strong></span>
           </div>
           <button class="btn btn-primary btn-sm" onclick="showBulkImportPrompt()" data-tooltip="Upload fixture schedule via CSV">📤 Bulk Import</button>
         </div>
@@ -7586,7 +7714,7 @@ cricos_active_sse_connections 1</pre>
         <div style="overflow-x: auto;">
           <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
             <thead>
-              <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #8E9BAE; font-size: 0.7rem; text-transform: uppercase;">
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase;">
                 <th style="padding: 0.5rem 0.75rem;">Round</th>
                 <th style="padding: 0.5rem 0.75rem;">Matchup &amp; Venue</th>
                 <th style="padding: 0.5rem 0.75rem;">Slot</th>
@@ -7599,7 +7727,7 @@ cricos_active_sse_connections 1</pre>
                 <td style="padding: 0.65rem 0.75rem; font-weight: 700; color: var(--cyan);">R1</td>
                 <td style="padding: 0.65rem 0.75rem;">
                   <div style="font-weight: 700; color: #fff;">Northside XI vs Riverside XI</div>
-                  <div style="font-size: 0.75rem; color: #8E9BAE;">Harbour Ground - Pitch 1</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Harbour Ground - Pitch 1</div>
                 </td>
                 <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sat, 13:00</td>
                 <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
@@ -7611,7 +7739,7 @@ cricos_active_sse_connections 1</pre>
                 <td style="padding: 0.65rem 0.75rem; font-weight: 700; color: var(--cyan);">R1</td>
                 <td style="padding: 0.65rem 0.75rem;">
                   <div style="font-weight: 700; color: #fff;">Eastern Knights vs Southern Stars</div>
-                  <div style="font-size: 0.75rem; color: #8E9BAE;">Harbour Ground - Pitch 2</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Harbour Ground - Pitch 2</div>
                 </td>
                 <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sun, 09:00</td>
                 <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
@@ -7655,8 +7783,8 @@ cricos_active_sse_connections 1</pre>
               <div style="font-size: 0.85rem; color: var(--cyan); font-weight: 600;">Northside XI &bull; 74 (42) + 2 Catches</div>
             </div>
             <div style="display: flex; gap: 0.75rem; text-align: right; font-size: 0.8rem;">
-              <div><span style="color: #8E9BAE;">Bat:</span> <strong>84</strong></div>
-              <div><span style="color: #8E9BAE;">Field:</span> <strong>20</strong></div>
+              <div><span style="color: var(--text-muted);">Bat:</span> <strong>84</strong></div>
+              <div><span style="color: var(--text-muted);">Field:</span> <strong>20</strong></div>
             </div>
           </div>
         </div>
@@ -7770,15 +7898,15 @@ cricos_active_sse_connections 1</pre>
         <div style="padding: 1rem; border-radius: 10px; background: rgba(0, 210, 255, 0.05); border: 1px solid rgba(0, 210, 255, 0.25);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
             <span class="badge badge-purple">LIVE FRANCHISE AUCTION</span>
-            <span style="font-size: 0.75rem; color: #8E9BAE;">Purse Remaining: <strong style="color: #fff;">₹10,00,000</strong></span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Purse Remaining: <strong style="color: #fff;">₹10,00,000</strong></span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1rem;">
             <div>
               <h3 style="margin: 0; color: #fff; font-size: 1.25rem;">K.L. Rahul</h3>
-              <div style="font-size: 0.8rem; color: #8E9BAE;">Wicketkeeper-Batter &bull; Base: ₹1,00,000</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Wicketkeeper-Batter &bull; Base: ₹1,00,000</div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 0.7rem; color: #8E9BAE;">Highest Bid</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Highest Bid</div>
               <div style="font-family: var(--font-mono); font-size: 1.5rem; font-weight: 800; color: var(--turf-emerald);" id="auctionHighestBid">₹3,25,000</div>
             </div>
           </div>
@@ -7857,7 +7985,7 @@ cricos_active_sse_connections 1</pre>
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                  <span style="font-weight: 700; color: #fff;">Hardik Patel <span style="font-size: 0.75rem; color: #8E9BAE;">(Delhi Daredevils)</span></span>
+                  <span style="font-weight: 700; color: #fff;">Hardik Patel <span style="font-size: 0.75rem; color: var(--text-muted);">(Delhi Daredevils)</span></span>
                   <span class="badge badge-amber" style="font-size: 0.65rem;">LEVEL 1 &bull; DISSENT</span>
                 </div>
                 <div style="font-size: 0.75rem; color: #CBD5E1; margin-top: 0.25rem;">
@@ -7922,7 +8050,7 @@ cricos_active_sse_connections 1</pre>
 
         <!-- Cricsheet Export Code Preview -->
         <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden;">
-          <div style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.04); font-size: 0.72rem; color: #8E9BAE; font-weight: 700; text-transform: uppercase;">
+          <div style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.04); font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">
             Cricsheet JSON Manifest Preview
           </div>
           <pre style="margin: 0; padding: 0.85rem; max-height: 160px; overflow-y: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--turf-emerald); line-height: 1.4;"><code>{
@@ -7969,7 +8097,7 @@ cricos_active_sse_connections 1</pre>
           </div>
           <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
             <thead>
-              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #8E9BAE; font-size: 0.7rem; text-transform: uppercase;">
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase;">
                 <th style="padding: 0.4rem 0.75rem;"># Team</th>
                 <th style="padding: 0.4rem; text-align: center;">P</th>
                 <th style="padding: 0.4rem; text-align: center;">W</th>
@@ -8018,7 +8146,7 @@ cricos_active_sse_connections 1</pre>
           </div>
           <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
             <thead>
-              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #8E9BAE; font-size: 0.7rem; text-transform: uppercase;">
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase;">
                 <th style="padding: 0.4rem 0.75rem;"># Team</th>
                 <th style="padding: 0.4rem; text-align: center;">P</th>
                 <th style="padding: 0.4rem; text-align: center;">W</th>
@@ -10251,8 +10379,8 @@ cricos_active_sse_connections 1</pre>
       const legLabel = document.getElementById('wagonLabelLeg');
 
       if (stance === 'RHB') {
-        if (btnRhb) { btnRhb.style.background = 'var(--turf-emerald)'; btnRhb.style.color = '#04070D'; }
-        if (btnLhb) { btnLhb.style.background = 'transparent'; btnLhb.style.color = '#8E9BAE'; }
+        if (btnRhb) { btnRhb.classList.add('active'); btnRhb.style.background = ''; btnRhb.style.color = ''; }
+        if (btnLhb) { btnLhb.classList.remove('active'); btnLhb.style.background = ''; btnLhb.style.color = ''; }
         if (offLabel) {
           offLabel.setAttribute('x', '35');
           offLabel.setAttribute('text-anchor', 'start');
@@ -10266,8 +10394,8 @@ cricos_active_sse_connections 1</pre>
           legLabel.textContent = 'ON SIDE ▶';
         }
       } else {
-        if (btnLhb) { btnLhb.style.background = 'var(--turf-emerald)'; btnLhb.style.color = '#04070D'; }
-        if (btnRhb) { btnRhb.style.background = 'transparent'; btnRhb.style.color = '#8E9BAE'; }
+        if (btnLhb) { btnLhb.classList.add('active'); btnLhb.style.background = ''; btnLhb.style.color = ''; }
+        if (btnRhb) { btnRhb.classList.remove('active'); btnRhb.style.background = ''; btnRhb.style.color = ''; }
         if (offLabel) {
           offLabel.setAttribute('x', '325');
           offLabel.setAttribute('text-anchor', 'end');

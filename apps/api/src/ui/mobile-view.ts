@@ -93,7 +93,7 @@ export function getMobileAppHtml(): string {
       border-top: 1px solid #CBD5E1 !important;
     }
     body[data-theme="swiss"] .mobile-nav-item {
-      color: #64748B !important;
+      color: #475569 !important;
     }
     body[data-theme="swiss"] .mobile-nav-item.active {
       color: #0F172A !important;
@@ -154,7 +154,7 @@ export function getMobileAppHtml(): string {
       background: #FFFFFF !important;
       border: 1px solid #CBD5E1 !important;
       border-radius: 4px !important;
-      color: #64748B !important;
+      color: #475569 !important;
     }
     body[data-theme="swiss"] .mobile-subnav-btn.active {
       background: #0F172A !important;
@@ -200,7 +200,7 @@ export function getMobileAppHtml(): string {
       border-top: 1px solid #E6DFD5 !important;
     }
     body[data-theme="nordic"] .mobile-nav-item {
-      color: #78716C !important;
+      color: #57534E !important;
     }
     body[data-theme="nordic"] .mobile-nav-item.active {
       color: #15803D !important;
@@ -236,7 +236,7 @@ export function getMobileAppHtml(): string {
       background: #FCFBF8 !important;
       border: 1px solid #E6DFD5 !important;
       border-radius: 10px !important;
-      color: #78716C !important;
+      color: #57534E !important;
     }
     body[data-theme="nordic"] .mobile-subnav-btn.active {
       background: #15803D !important;
@@ -548,10 +548,40 @@ export function getMobileAppHtml(): string {
       outline: 2px solid #00E599 !important;
       outline-offset: 2px !important;
     }
+    body[data-theme="swiss"] :focus-visible,
+    body[data-theme="swiss"] button:focus-visible,
+    body[data-theme="swiss"] a:focus-visible,
+    body[data-theme="swiss"] input:focus-visible,
+    body[data-theme="swiss"] textarea:focus-visible,
+    body[data-theme="swiss"] select:focus-visible {
+      outline: 2px solid #0F172A !important;
+      outline-offset: 2px !important;
+    }
+    body[data-theme="nordic"] :focus-visible,
+    body[data-theme="nordic"] button:focus-visible,
+    body[data-theme="nordic"] a:focus-visible,
+    body[data-theme="nordic"] input:focus-visible,
+    body[data-theme="nordic"] textarea:focus-visible,
+    body[data-theme="nordic"] select:focus-visible {
+      outline: 2px solid #15803D !important;
+      outline-offset: 2px !important;
+    }
     input:focus, select:focus, textarea:focus {
       border-color: #00E599 !important;
       outline: none !important;
       box-shadow: 0 0 12px rgba(0, 229, 153, 0.35) !important;
+    }
+    body[data-theme="swiss"] input:focus,
+    body[data-theme="swiss"] select:focus,
+    body[data-theme="swiss"] textarea:focus {
+      border-color: #0F172A !important;
+      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12) !important;
+    }
+    body[data-theme="nordic"] input:focus,
+    body[data-theme="nordic"] select:focus,
+    body[data-theme="nordic"] textarea:focus {
+      border-color: #15803D !important;
+      box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15) !important;
     }
     button, .role-pill, .slot-pill, .mobile-chip, .pad-touch-btn {
       cursor: pointer;

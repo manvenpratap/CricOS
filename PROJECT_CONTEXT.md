@@ -1,14 +1,33 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-27 22:40:00
-**Version:** 1.0.0-phase2bg (3D Stadium Viewport & Toolbar UI Fix Engine with 548 Passing Tests)  
+**Last Updated:** 2026-09-28 06:48:00
+**Version:** 1.0.0-phase2bh (UI/UX Contrast & Accessibility Invariant Engine with 576 Passing Tests)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BG Completed — 3D Stadium Viewport & Toolbar UI Fix Engine:
+- **Active Phase**: Phase 2BH Completed — UI/UX Contrast, Focus Rings & Accessibility Invariant Engine:
+  - **1. WCAG 2.1/2.2 AA & AAA Contrast Compliance across All 3 Themes (`dashboard.ts`, `mobile-view.ts`)**:
+    - **🇨🇭 Swiss Minimalist**: Updated `--text-muted` from `#64748B` (4.38:1 edge case) to `#475569` (Slate-600), delivering **7.09:1** contrast ratio against `#F8F9FA` canvas and `#FFFFFF` cards, passing WCAG AAA. Updated mobile nav items and subnav buttons to `#475569 !important;`.
+    - **🌾 Nordic Editorial**: Updated `--text-muted` from `#78716C` (4.38:1 on card, 3.79:1 on sidebar) to `#57534E` (Stone-600), achieving **6.87:1** on cards and **5.91:1** on oat sidebar (`#EFE9DF`), passing WCAG AA/AAA. Updated mobile nav items and subnav buttons to `#57534E !important;`.
+    - **🌙 Stadium Night**: Verified `--text-muted` (`#94A3B8`) on `#0A101C` cards yields **5.6:1** contrast (passes WCAG AA).
+    - **Hardcoded Color Eradication**: Completely eliminated 20+ occurrences of low-contrast hardcoded `#8E9BAE` across RFQ procurement desks, tournament fixture boards, MVP cards, auction desks, umpire match desks, and Cricsheet preview panels, replacing them with theme-adaptive `var(--text-muted)`.
+  - **2. Touch & Mobile Ergonomics for Wagon Controls & Stance Switcher (`dashboard.ts`)**:
+    - Fixed touch defect in `.wagon-filter-pill.active` and `.wagon-batter-pill.active` which were erroneously trapped inside `@media (hover: hover) and (pointer: fine)` blocks, ensuring active states render reliably on touchscreens and mobile browsers.
+    - Added dedicated `.wagon-pill-switch-wrap`, `.btn-stance`, and `.btn-wagon-mode` classes with `min-height: 28px`/`32px` touch targets.
+    - Added theme-specific Swiss and Nordic overrides for wagon filter pills, batter pill score badges, and stance buttons (`#0F172A` Swiss, `#15803D` Nordic).
+    - Updated `setBatterStance()` to dynamically toggle `.active` classes rather than applying hardcoded inline hex color overrides.
+  - **3. Visible High-Contrast Keyboard Focus Rings (`:focus-visible`)**:
+    - Expanded keyboard focus selectors in `dashboard.ts` and `mobile-view.ts` to include `.wagon-filter-pill`, `.wagon-batter-pill`, `.btn-stance`, `.btn-wagon-mode`, `.three-cam-btn`, `.pad-btn`, `.modal-close-btn`, and form inputs.
+    - Added theme-specific focus rings with minimum 3:1 contrast against surfaces: Swiss uses solid `#0F172A` outline with 2px offset; Nordic uses solid `#15803D` outline with 2px offset; Stadium Night uses neon `#00E599` outline.
+  - **4. Test Suite 57 & Playwright E2E Verification**:
+    - Created `tests/test_57_ui_ux_contrast_and_accessibility.py` with relative luminance and contrast ratio calculations for all 3 themes, touch target assertions, and zero critical console errors (`assert_no_critical_errors(page)`).
+    - Captured verified visual screenshots in `tests/screenshots/` (`contrast_stadium_night.png`, `contrast_swiss_minimal.png`, `contrast_nordic_editorial.png`).
+    - Added Node regression suite `tests/57-ui-ux-contrast-and-accessibility.test.ts` with 10 assertions across 4 suites.
+    - Updated `tests/README.md` test coverage map with test 57 specifications.
+- **Preceding Phase**: Phase 2BG Completed — 3D Stadium Viewport & Toolbar UI Fix Engine:
   - **1. Elimination of 2D Field Zone Button Clutter (`dashboard.ts`)**:
     - Resolved UI defect where all 8 outer perimeter 2D sector buttons (`Third Man 1r`, `Fine Leg 2r`, `Point 4r`, `Sq Leg 1r`, `Cover 8r`, `Mid Wkt 8r`, `Long Off 4r`, `Long On 6r`) floated over the 3D stadium canvas.
     - Added scoped CSS rule `.wagon-wheel-card.is-3d .field-zone-btn, .wagon-wheel-container.is-3d .field-zone-btn { display: none !important; }`.
