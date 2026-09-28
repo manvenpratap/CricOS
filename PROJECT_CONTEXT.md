@@ -1,14 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-28 09:55:00
-**Version:** 1.0.0-phase2bj (Mobile 3D WebGL Interactive Features & Parity)  
+**Last Updated:** 2026-09-28 22:45:00
+**Version:** 1.0.0-phase2bk (Flagship Cricket Studios, Command Palette & Flawless UI/UX)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BJ Completed — Mobile 3D WebGL Interactive Feature Parity:
+- **Active Phase**: Phase 2BK Completed — Flagship Cricket Studios, Universal Command Palette (`Cmd+K`) & Flawless UI/UX Polish:
+  - **1. Universal Command Palette & Instant Omnisearch (`apps/web/src/components/command-palette.ts`, `dashboard.ts`, `mobile-view.ts`)**:
+    - Built `CommandPaletteEngine` supporting fuzzy multi-token scoring and category grouping (`NAVIGATION`, `TACTICS_3D`, `LIVE_SCORING`, `PLAYERS`, `THEMES_PERSONAS`).
+    - Integrated `#btnCommandPalette` (`⌘K`) in Desktop Web Console topbar and `#btnMobileCommandSearch` (`🔍 ⌘K`) in Mobile App header, plus global `Cmd+K` / `Ctrl+K` keyboard listener.
+  - **2. Interactive 11-Fielder Tactical Radar & MCC Law 28.4 Powerplay Restriction Engine (`apps/web/src/components/field-placement-planner.ts`)**:
+    - Built `FieldPlacementPlannerEngine` enforcing ICC Powerplay circle restrictions (`PP1_OVERS_1_6` max 2 outside 30-yard circle, `MIDDLE_OVERS_7_15` max 4, `DEATH_OVERS_16_20` max 5) and MCC Law 28.4 leg-side behind-square limits.
+    - Integrated interactive 360° SVG Turf Radar (`#fieldPlannerSvg`) in `#modalFieldPlanner` and mobile `openFieldPlannerSheet()` with clickable fielder nodes, RHB/LHB horizontal mirror toggle, tactical presets (`Powerplay Attack`, `Middle Spin Trap`, `Death Yorker Defense`), and 1-click synchronization to the 3D Floodlit Stadium Pitch.
+  - **3. Biomechanics Pitch Beehive Map & Monte Carlo Win Probability Simulator (`apps/web/src/components/pitch-map-win-prob.ts`)**:
+    - Built `PitchMapAndWinProbEngine` classifying 22-yard pitch lengths (`FULL_TOSS`, `YORKER`, `FULL_DRIVING`, `GOOD_LENGTH`, `SHORT_OF_GOOD`, `BOUNCER`) and running logistic Monte Carlo "What-If" chase simulations (`+18r Big Over`, `Tight Over`, `Double Wicket`).
+    - Integrated `#modalPitchMapSimulator` on Desktop and `openPitchMapSheet()` on Mobile.
+  - **4. Live Player Auction Gavel, Franchise Salary Cap Purse & RTM Draft Room (`apps/web/src/components/player-auction-draft.ts`)**:
+    - Built `PlayerAuctionDraftEngine` managing marquee player lots, integer minor-unit increment paddles (`+₹10K`, `+₹25K`, `+₹50K`), franchise salary cap validation (`₹15,00,000` cap), Right-To-Match (`🃏 RTM`) card execution, and auctioneer gavel progression.
+    - Integrated `#modalPlayerAuction` on Desktop and `openPlayerAuctionSheet()` on Mobile.
+  - **5. Flawless Slide-Over Drawer (`.modal-card`) & Sonner Toast (`#sonnerToaster`) Theme Contrast & Anti-Overlap Polish**:
+    - Docked `#sonnerToaster` to `bottom: 1.25rem; left: 1.25rem;` so stacked notifications never overlap right-hand slide-over drawers (`.modal-backdrop.as-drawer`) or topbar action pills.
+    - Enforced WCAG AAA contrast on `.modal-card` and `.sonner-toast` across all 3 themes (`🇨🇭 Swiss Minimalist`, `🌾 Nordic Editorial`, `🌙 Stadium Night`).
+    - Added Keyboard Shortcuts & Accessibility Cheat Sheet (`#modalKeyboardShortcuts` via `?` key).
+    - Verified via Suite 7 in `tests/domain-scoring-and-match-ops.test.ts` (183/183 tests passing) and Playwright E2E `tests/test_58_flagship_studios_and_command_palette.py` with zero console errors.
+- **Preceding Phase**: Phase 2BJ Completed — Mobile 3D WebGL Interactive Feature Parity:
   - **1. Three.js Library & Resilient Fallback Engine (`mobile-view.ts`)**:
     - Integrated Three.js r128 CDN script into mobile `<head>`.
     - Added comprehensive fallback engine (`initMobileThreeFallback`) ensuring zero crashes in headless or WebGL-unsupported environments.

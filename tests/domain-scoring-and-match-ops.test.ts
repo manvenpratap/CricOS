@@ -22,6 +22,21 @@ import {
   calculateNetRunRate,
   formatNrrString
 } from '../apps/web/dist/components/league-divisions.js';
+import {
+  CommandPaletteEngine,
+  DEFAULT_COMMAND_REGISTRY
+} from '../apps/web/dist/components/command-palette.js';
+import {
+  FieldPlacementPlannerEngine,
+  FIELD_PRESETS
+} from '../apps/web/dist/components/field-placement-planner.js';
+import {
+  PitchMapAndWinProbEngine,
+  SAMPLE_PITCH_MAP_DELIVERIES
+} from '../apps/web/dist/components/pitch-map-win-prob.js';
+import {
+  PlayerAuctionDraftEngine
+} from '../apps/web/dist/components/player-auction-draft.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -418,6 +433,118 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(mobileSrc.includes('data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"'), 'Mobile undo tooltip');
       assert.ok(mobileSrc.includes('data-tooltip="Rotate strike manually (Scorer only)"'), 'Mobile swap tooltip');
       assert.ok(dashboardSrc.includes('data-tooltip="Rotate strike manually (Scorer only)"'), 'Dashboard swap tooltip');
+    });
+  });
+
+  // =========================================================================
+  // Suite 7: Command Palette (Cmd+K), Field Placement Engine, Pitch Map Sim & Player Auction
+  // =========================================================================
+  describe('Suite 7 — Command Palette, Tactical Field Placement, Pitch Map Simulator & Player Auction Room', () => {
+    it('7.1 should search and group items accurately in CommandPaletteEngine', () => {
+      const cmdEngine = new CommandPaletteEngine(DEFAULT_COMMAND_REGISTRY);
+      const fieldResults = cmdEngine.search('field powerplay');
+      assert.ok(fieldResults.length > 0, 'Finds field placement command');
+      assert.equal(fieldResults[0]?.id, 'cmd-tactics-field-planner');
+
+      const viratResults = cmdEngine.search('virat');
+      assert.ok(viratResults.some((item) => item.id === 'cmd-player-virat'));
+
+      const grouped = cmdEngine.groupByCategory(DEFAULT_COMMAND_REGISTRY);
+      assert.ok(grouped.TACTICS_3D.length >= 4);
+      assert.ok(grouped.THEMES_PERSONAS.length >= 3);
+    });
+
+    it('7.2 should validate MCC Law 28.4 & ICC Powerplay field restrictions and LHB mirroring', () => {
+      const ppPreset = FIELD_PRESETS.POWERPLAY_ATTACK!;
+      const validRes = FieldPlacementPlannerEngine.validateFieldPlacement(
+        ppPreset.fielders,
+        'PP1_OVERS_1_6',
+        'RHB'
+      );
+      assert.equal(validRes.isLegal, true);
+      assert.equal(validRes.outsideCircleCount, 2);
+      assert.equal(validRes.maxAllowedOutsideCircle, 2);
+      assert.ok(validRes.runSavingEfficiencyPct > 10);
+
+      // Push a 3rd fielder outside the 30-yard circle in Powerplay 1 -> should trigger No-Ball violation
+      const illegalFielders = ppPreset.fielders.map((f, i) =>
+        i === 4 ? { ...f, radiusRatio: 0.88 } : f
+      );
+      const invalidRes = FieldPlacementPlannerEngine.validateFieldPlacement(
+        illegalFielders,
+        'PP1_OVERS_1_6',
+        'RHB'
+      );
+      assert.equal(invalidRes.isLegal, false);
+      assert.equal(invalidRes.outsideCircleCount, 3);
+      assert.ok(invalidRes.violations[0]?.includes('No-Ball Restriction Breach'));
+
+      // Mirror field for Left-Handed Batter (LHB)
+      const mirrored = FieldPlacementPlannerEngine.mirrorFieldForBatterHand(ppPreset.fielders, 'LHB');
+      assert.equal(mirrored.length, 11);
+      assert.equal(mirrored[2]?.angleDeg, (360 - ppPreset.fielders[2]!.angleDeg) % 360);
+    });
+
+    it('7.3 should classify pitch lengths and compute Monte Carlo Win Probability scenarios', () => {
+      assert.equal(PitchMapAndWinProbEngine.classifyPitchLength(1.9), 'YORKER');
+      assert.equal(PitchMapAndWinProbEngine.classifyPitchLength(6.2), 'GOOD_LENGTH');
+      assert.equal(PitchMapAndWinProbEngine.classifyPitchLength(9.6), 'BOUNCER');
+
+      const dist = PitchMapAndWinProbEngine.summarizeLengthDistribution(SAMPLE_PITCH_MAP_DELIVERIES);
+      assert.equal(dist.GOOD_LENGTH.balls, 3);
+      assert.equal(dist.YORKER.balls, 1);
+
+      const baseSim = PitchMapAndWinProbEngine.simulateWinProbability({
+        targetScore: 178,
+        currentScore: 142,
+        wicketsLost: 3,
+        ballsRemaining: 20
+      });
+      assert.ok(baseSim.battingTeamWinPct > 40 && baseSim.battingTeamWinPct < 85);
+
+      const bigOverSim = PitchMapAndWinProbEngine.simulateWinProbability({
+        targetScore: 178,
+        currentScore: 142,
+        wicketsLost: 3,
+        ballsRemaining: 20,
+        simulatedNextBalls: 6,
+        simulatedNextRuns: 18,
+        simulatedNextWickets: 0
+      });
+      assert.ok(
+        bigOverSim.battingTeamWinPct > baseSim.battingTeamWinPct,
+        '18-run over increases batting win probability'
+      );
+    });
+
+    it('7.4 should enforce salary cap purse limits, RTM matching, and gavel sales in PlayerAuctionDraftEngine', () => {
+      const auction = new PlayerAuctionDraftEngine();
+      const lot = auction.getActiveLot();
+      assert.equal(lot.id, 'lot-1');
+      assert.equal(lot.currentBidMinor, 240000);
+
+      const bidRes = auction.placeBid('lot-1', 'fr-titan', 25000);
+      assert.equal(bidRes.ok, true);
+      assert.equal(bidRes.updatedLot?.currentBidMinor, 265000);
+      assert.equal(bidRes.updatedLot?.highestBidderName, 'Titan XI');
+
+      const soldRes = auction.gavelSold('lot-1');
+      assert.equal(soldRes.ok, true);
+      assert.equal(soldRes.soldLot?.status, 'SOLD');
+      assert.equal(auction.getActiveLot().id, 'lot-2');
+    });
+
+    it('7.5 should expose all flagship modals and mobile action sheets across dashboard.ts and mobile-view.ts', () => {
+      assert.ok(dashboardSrc.includes('id="modalCommandPalette"'), 'Desktop Command Palette modal');
+      assert.ok(dashboardSrc.includes('id="modalFieldPlanner"'), 'Desktop Tactical Field Planner modal');
+      assert.ok(dashboardSrc.includes('id="modalPitchMapSimulator"'), 'Desktop Pitch Map Simulator modal');
+      assert.ok(dashboardSrc.includes('id="modalPlayerAuction"'), 'Desktop Live Player Auction modal');
+      assert.ok(dashboardSrc.includes('id="modalKeyboardShortcuts"'), 'Desktop Keyboard Shortcuts modal');
+
+      assert.ok(mobileSrc.includes('openCommandPaletteSheet()'), 'Mobile Command Palette sheet');
+      assert.ok(mobileSrc.includes('openFieldPlannerSheet('), 'Mobile Field Planner sheet');
+      assert.ok(mobileSrc.includes('openPitchMapSheet('), 'Mobile Pitch Map sheet');
+      assert.ok(mobileSrc.includes('openPlayerAuctionSheet('), 'Mobile Player Auction sheet');
     });
   });
 });

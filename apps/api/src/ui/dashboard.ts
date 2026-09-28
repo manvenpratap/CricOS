@@ -3120,6 +3120,176 @@ export function getDashboardHtml(): string {
       box-shadow: 0 0 12px rgba(0, 229, 153, 0.2) !important;
     }
 
+    /* Command Palette (Cmd+K) & Flagship Studio Modals */
+    #sonnerToaster {
+      top: auto !important;
+      right: auto !important;
+      bottom: 1.25rem !important;
+      left: 1.25rem !important;
+      z-index: 100050 !important;
+      max-width: 360px !important;
+      pointer-events: none;
+    }
+    #sonnerToaster .sonner-toast {
+      pointer-events: auto;
+      background: rgba(10, 16, 28, 0.96) !important;
+      color: #F8FAFC !important;
+      border: 1px solid rgba(0, 229, 153, 0.4) !important;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45) !important;
+    }
+    #sonnerToaster .sonner-toast * {
+      color: #F8FAFC !important;
+    }
+    body[data-theme="swiss"] #sonnerToaster .sonner-toast {
+      background: #0F172A !important;
+      color: #FFFFFF !important;
+      border: 1px solid #334155 !important;
+    }
+    body[data-theme="swiss"] #sonnerToaster .sonner-toast * {
+      color: #FFFFFF !important;
+    }
+    body[data-theme="nordic"] #sonnerToaster .sonner-toast {
+      background: #1C1917 !important;
+      color: #FCFBF8 !important;
+      border: 1px solid #15803D !important;
+    }
+    body[data-theme="nordic"] #sonnerToaster .sonner-toast * {
+      color: #FCFBF8 !important;
+    }
+
+    /* Ensure .modal-card (slide-over drawers) and .modal-body match active theme surface with AAA contrast */
+    .studio-subpanel {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.9rem;
+    }
+    body[data-theme="swiss"] .modal-card,
+    body[data-theme="swiss"] .modal-card .modal-body,
+    body[data-theme="swiss"] .modal-dialog,
+    body[data-theme="swiss"] .modal-dialog .modal-body {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .modal-card {
+      border-left: 2px solid #0F172A !important;
+      box-shadow: -12px 0 36px rgba(15, 23, 42, 0.14) !important;
+    }
+    body[data-theme="swiss"] .studio-subpanel {
+      background: #F8FAFC !important;
+      border-color: #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .modal-card .modal-header,
+    body[data-theme="swiss"] .modal-card .modal-footer {
+      background: #F8FAFC !important;
+      border-color: #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .modal-card .modal-title {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .modal-card .stat-tile {
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+
+    body[data-theme="nordic"] .modal-card,
+    body[data-theme="nordic"] .modal-card .modal-body,
+    body[data-theme="nordic"] .modal-dialog,
+    body[data-theme="nordic"] .modal-dialog .modal-body {
+      background: #FCFBF8 !important;
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .modal-card {
+      border-left: 2px solid #D6CFC2 !important;
+      box-shadow: -12px 0 36px rgba(28, 25, 23, 0.14) !important;
+    }
+    body[data-theme="nordic"] .studio-subpanel {
+      background: #F5F0E8 !important;
+      border-color: #E6DFD5 !important;
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .modal-card .modal-header,
+    body[data-theme="nordic"] .modal-card .modal-footer {
+      background: #F5F0E8 !important;
+      border-color: #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] .modal-card .modal-title {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .modal-card .stat-tile {
+      background: #FCFBF8 !important;
+      border-color: #E6DFD5 !important;
+      color: #1C1917 !important;
+    }
+
+    body[data-theme="stadium"] .modal-card .modal-title {
+      color: #F8FAFC !important;
+    }
+
+    .cmd-kbd-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.1rem 0.38rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+    .cmd-palette-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .cmd-palette-item:hover,
+    .cmd-palette-item.active {
+      background: rgba(0, 229, 153, 0.1);
+      border-color: rgba(0, 229, 153, 0.4);
+      transform: translateX(2px);
+    }
+    body[data-theme="swiss"] .cmd-palette-item {
+      background: #FFFFFF;
+      border-color: #E2E8F0;
+      color: #0F172A;
+    }
+    body[data-theme="swiss"] .cmd-palette-item:hover,
+    body[data-theme="swiss"] .cmd-palette-item.active {
+      background: #F1F5F9;
+      border-color: #0F172A;
+    }
+    body[data-theme="nordic"] .cmd-palette-item {
+      background: #FCFBF8;
+      border-color: #E6DFD5;
+      color: #1C1917;
+    }
+    body[data-theme="nordic"] .cmd-palette-item:hover,
+    body[data-theme="nordic"] .cmd-palette-item.active {
+      background: #EFE9DF;
+      border-color: #15803D;
+    }
+    .field-node-circle {
+      cursor: pointer;
+      transition: transform 0.18s ease, stroke-width 0.18s ease;
+    }
+    .field-node-circle:hover {
+      stroke-width: 3px;
+    }
+
     /* Common Reusable Layout Utilities */
     .stat-tile {
       background: rgba(255, 255, 255, 0.03);
@@ -4462,6 +4632,18 @@ export function getDashboardHtml(): string {
             <span>📱</span> MOBILE &amp; APK
           </button>
 
+          <!-- Utility: Universal Command Palette (Cmd+K / Ctrl+K) -->
+          <button type="button" id="btnCommandPalette" onclick="openCommandPalette()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Universal Command Palette &amp; Omnisearch (Shortcut: Cmd+K or Ctrl+K)" aria-label="Open Command Palette">
+            <span>🔍</span>
+            <span>Search &amp; Actions</span>
+            <kbd class="cmd-kbd-badge">⌘K</kbd>
+          </button>
+
+          <!-- Utility: Keyboard Shortcuts Cheat Sheet (?) -->
+          <button type="button" id="btnKeyboardShortcuts" onclick="openKeyboardShortcutsModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="View Keyboard Shortcuts &amp; Cockpit Cheat Sheet (Shortcut: ?)" aria-label="Keyboard Shortcuts Guide">
+            <span>⌨️</span>
+          </button>
+
           <!-- Utility: Active Persona Badge (Click to open Persona Switcher) -->
           <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
 
@@ -4516,6 +4698,9 @@ export function getDashboardHtml(): string {
               <button class="nav-pill" id="btnExportCricsheet" style="cursor: pointer; background: rgba(0,210,255,0.12); border-color: rgba(0,210,255,0.3); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalCricsheetExport')" data-tooltip="Export ball-by-ball Cricsheet JSON and Federation XML with audio telemetry">⚡ Cricsheet &amp; XML</button>
               <button class="nav-pill" id="btnUmpireDeskQuick" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalUmpireDesk')" data-tooltip="Open Official Umpire Match Day Desk, DRS review, and sign-off">⚖️ Umpire Desk</button>
               <button class="nav-pill" id="btnDivisionsQuick" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalLeagueDivisions')" data-tooltip="Multi-Division League Ladders, NRR and Promotion/Relegation">🏆 Divisions</button>
+              <button class="nav-pill" id="btnFieldPlannerQuick" style="cursor: pointer; background: rgba(0,229,153,0.14); border-color: rgba(0,229,153,0.4); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openFieldPlannerModal()" data-tooltip="Open Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Restriction Engine (Shortcut: Shift+F)">🎯 Field Planner</button>
+              <button class="nav-pill" id="btnPitchMapQuick" style="cursor: pointer; background: rgba(0,210,255,0.14); border-color: rgba(0,210,255,0.4); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator (Shortcut: Shift+P)">🧬 Pitch &amp; Win Sim</button>
+              <button class="nav-pill" id="btnPlayerAuctionQuick" style="cursor: pointer; background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.4); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPlayerAuctionModal()" data-tooltip="Open Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room (Shortcut: Shift+A)">🔨 Player Auction</button>
             </div>
           </div>
           <div class="score-display">
@@ -8541,6 +8726,337 @@ cricos_active_sse_connections 1</pre>
           <button type="button" id="appDialogCancelBtn" class="btn btn-secondary" style="width: auto; padding: 0.45rem 1rem; font-size: 0.82rem;" onclick="dismissAppDialog()" data-tooltip="Cancel dialog action" aria-label="Cancel dialog">Cancel</button>
           <button type="button" id="appDialogConfirmBtn" class="btn" style="width: auto; padding: 0.45rem 1.15rem; font-size: 0.82rem;" onclick="resolveAppDialog()" data-tooltip="Confirm dialog action" aria-label="Confirm dialog">Confirm</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FLAGSHIP STUDIO 1: UNIVERSAL COMMAND PALETTE & OMNISEARCH (Cmd+K / Ctrl+K)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="modalCommandPalette" role="dialog" aria-modal="true" aria-labelledby="cmdPaletteTitle">
+    <div class="modal-dialog" style="max-width: 640px; width: 95vw;">
+      <div class="modal-header" style="padding: 0.9rem 1.25rem;">
+        <div class="modal-title" id="cmdPaletteTitle" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>⚡</span>
+          <span>CricOS Command Palette &amp; Omnisearch</span>
+          <span class="cmd-kbd-badge">⌘K</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeCommandPalette()" aria-label="Close Command Palette" data-tooltip="Close Command Palette (Esc)">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1rem 1.25rem;">
+        <div style="position: relative; margin-bottom: 0.85rem;">
+          <input
+            type="text"
+            id="cmdPaletteInput"
+            placeholder="Type a command, search players (Virat, Hardik, Bumrah), score runs, switch theme..."
+            oninput="filterCommandPalette(this.value)"
+            style="width: 100%; padding: 0.75rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid var(--turf-emerald); background: rgba(0, 0, 0, 0.25); color: var(--text-main);"
+            aria-label="Command Palette Search Input"
+          >
+        </div>
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.85rem;" id="cmdPaletteCategoryPills">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('ALL')" data-tooltip="Show all commands and search items" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">All</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('TACTICS_3D')" data-tooltip="Filter tactical radar, pitch map, auction &amp; 3D tools" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🎯 Tactics &amp; 3D</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('LIVE_SCORING')" data-tooltip="Filter quick scoring and undo actions" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🏏 Live Scoring</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('PLAYERS')" data-tooltip="Filter athlete 3D cards &amp; career dossiers" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🃏 Athletes</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('THEMES_PERSONAS')" data-tooltip="Filter visual themes (Stadium, Swiss, Nordic)" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🎨 Themes</button>
+        </div>
+        <div id="cmdPaletteResultsList" style="display: flex; flex-direction: column; gap: 0.45rem; max-height: 360px; overflow-y: auto; padding-right: 0.25rem;">
+          <!-- Dynamically populated by renderCommandPaletteItems() -->
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 1.25rem; font-size: 0.72rem; color: var(--text-muted);">
+        <span>Navigate with <kbd class="cmd-kbd-badge">↑</kbd> <kbd class="cmd-kbd-badge">↓</kbd> • Execute with <kbd class="cmd-kbd-badge">Enter</kbd> • Dismiss with <kbd class="cmd-kbd-badge">Esc</kbd></span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeCommandPalette()" data-tooltip="Dismiss Command Palette" style="width: auto; padding: 0.25rem 0.75rem;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FLAGSHIP STUDIO 2: TACTICAL FIELD PLACEMENT & MCC LAW 28.4 POWERPLAY ENGINE
+       ========================================================================= -->
+  <div class="modal-backdrop as-drawer" id="modalFieldPlanner" role="dialog" aria-modal="true" aria-labelledby="fieldPlannerTitle">
+    <div class="modal-card" style="max-width: 820px; width: 95vw;">
+      <div class="modal-header">
+        <div class="modal-title" id="fieldPlannerTitle">🎯 Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Engine</div>
+        <button type="button" class="modal-close-btn" aria-label="Close Field Planner" onclick="closeModal('modalFieldPlanner')" data-tooltip="Close Tactical Field Placement Planner">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.15rem;">
+        <!-- Top Controls: Powerplay Phase + Batter Hand + Presets -->
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button type="button" id="btnFieldPhasePP1" class="btn btn-secondary btn-sm" onclick="setFieldPlannerPhase('PP1_OVERS_1_6')" data-tooltip="Powerplay 1 (Overs 1-6): Max 2 fielders allowed outside 30-yard circle" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem; border-color: var(--turf-emerald); color: var(--turf-emerald);">PP1 (Overs 1-6 • Max 2 Out)</button>
+            <button type="button" id="btnFieldPhaseMid" class="btn btn-secondary btn-sm" onclick="setFieldPlannerPhase('MIDDLE_OVERS_7_15')" data-tooltip="Middle Overs (Overs 7-15): Max 4 fielders allowed outside 30-yard circle" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem;">Middle (Overs 7-15 • Max 4 Out)</button>
+            <button type="button" id="btnFieldPhaseDeath" class="btn btn-secondary btn-sm" onclick="setFieldPlannerPhase('DEATH_OVERS_16_20')" data-tooltip="Death Overs (Overs 16-20): Max 5 fielders allowed outside 30-yard circle" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem;">Death (Overs 16-20 • Max 5 Out)</button>
+          </div>
+          <div style="display: flex; gap: 0.4rem;">
+            <button type="button" id="btnFieldHandRHB" class="btn btn-secondary btn-sm" onclick="setFieldPlannerHand('RHB')" data-tooltip="Configure field geometry for Right-Handed Batter (RHB)" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem; border-color: var(--cyan); color: var(--cyan);">🏏 RHB</button>
+            <button type="button" id="btnFieldHandLHB" class="btn btn-secondary btn-sm" onclick="setFieldPlannerHand('LHB')" data-tooltip="Mirror field geometry horizontally for Left-Handed Batter (LHB)" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem;">🏏 LHB (Mirror)</button>
+          </div>
+        </div>
+
+        <!-- Preset Formations Strip -->
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.9rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="applyFieldPreset('POWERPLAY_ATTACK')" data-tooltip="Apply attacking Powerplay preset with 2 Slips, Gully, and 2 boundary riders" style="width: auto; padding: 0.3rem 0.7rem; font-size: 0.74rem;">⚡ Powerplay Attack (2 Slips + Gully)</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="applyFieldPreset('MIDDLE_SPIN_TRAP')" data-tooltip="Apply Middle Overs spin trap with Short Leg, Slip, and 4 deep sweepers" style="width: auto; padding: 0.3rem 0.7rem; font-size: 0.74rem;">🛡️ Middle Spin Trap (Short Leg + 4 Deep)</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="applyFieldPreset('DEATH_YORKER_DEFENSE')" data-tooltip="Apply Death Overs wide yorker defense with 5 boundary riders" style="width: auto; padding: 0.3rem 0.7rem; font-size: 0.74rem;">🔥 Death Yorker Defense (5 Boundary Riders)</button>
+        </div>
+
+        <!-- Live MCC Law 28.4 & ICC Powerplay Validation Status Banner -->
+        <div id="fieldLegalityBanner" style="padding: 0.65rem 0.95rem; border-radius: 8px; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.4); color: var(--turf-emerald); font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          <span id="fieldLegalityText">✓ ICC &amp; MCC Compliant Field (2/2 outside 30-yd ring • +15.0% expected run suppression)</span>
+          <span id="fieldBowlingPlanBadge" style="font-size: 0.72rem; color: var(--cyan); font-family: var(--font-mono);">Plan: Good Length 4th Stump</span>
+        </div>
+
+        <!-- Main Split Grid: Interactive 360 SVG Turf Radar + Fielder Roster Clickable List -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.15rem; align-items: center;">
+          <div style="display: flex; flex-direction: column; align-items: center; background: rgba(4, 15, 10, 0.75); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 12px; padding: 0.85rem;">
+            <svg id="fieldPlannerSvg" viewBox="0 0 320 320" style="width: 100%; max-width: 300px; height: auto; overflow: visible;" role="img" aria-label="Interactive 11-Fielder Cricket Turf Radar">
+              <!-- Outfield & Boundary Rope -->
+              <circle cx="160" cy="160" r="145" fill="rgba(6, 78, 59, 0.45)" stroke="#00E599" stroke-width="2" />
+              <!-- 30-Yard Restriction Circle -->
+              <circle cx="160" cy="160" r="76" fill="rgba(6, 95, 70, 0.35)" stroke="#00D2FF" stroke-width="1.5" stroke-dasharray="5 4" />
+              <!-- Central 22-Yard Clay Pitch Strip -->
+              <rect x="152" y="132" width="16" height="56" rx="2" fill="#D6C5A3" stroke="#94A3B8" stroke-width="1" />
+              <!-- Dynamic Fielder Nodes Group -->
+              <g id="fieldPlannerNodesGroup"></g>
+            </svg>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.45rem; text-align: center;">
+              💡 Click any fielder node on the radar or list to toggle <strong>Inner Ring (In-Circle)</strong> vs <strong>Deep Boundary Rider</strong>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">Active 11-Player Fielding Positions (Click to Toggle Ring/Deep):</div>
+            <div id="fieldPlannerRosterList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; max-height: 280px; overflow-y: auto;">
+              <!-- Populated by renderFieldPlannerRadar() -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalFieldPlanner')" style="width: auto;" data-tooltip="Close Field Placement Planner">Close</button>
+        <button type="button" id="btnSyncFieldTo3D" class="btn btn-primary" onclick="syncFieldPlannerTo3DStadium()" style="width: auto;" data-tooltip="Apply this 11-fielder formation directly to the live 3D Stadium Pitch viewport">🌐 Sync Field to 3D Stadium</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FLAGSHIP STUDIO 3: BIOMECHANICS PITCH BEEHIVE MAP & WIN PROBABILITY SIMULATOR
+       ========================================================================= -->
+  <div class="modal-backdrop as-drawer" id="modalPitchMapSimulator" role="dialog" aria-modal="true" aria-labelledby="pitchMapModalTitle">
+    <div class="modal-card" style="max-width: 840px; width: 95vw;">
+      <div class="modal-header">
+        <div class="modal-title" id="pitchMapModalTitle">🧬 Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator</div>
+        <button type="button" class="modal-close-btn" aria-label="Close Pitch Map Simulator" onclick="closeModal('modalPitchMapSimulator')" data-tooltip="Close Pitch Map &amp; Win Simulator">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.15rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.15rem;">
+          <!-- Left Column: Pitch Length Heatmap & Beehive Stump Arrival -->
+          <div class="studio-subpanel">
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.6rem;">🎯 22-Yard Pitch Length Zones &amp; Impact Heatmap</div>
+            <svg id="pitchMapSvg" viewBox="0 0 260 300" style="width: 100%; max-width: 260px; height: auto; display: block; margin: 0 auto; border-radius: 8px; background: #1E293B;" role="img" aria-label="Pitch Length Zone Heatmap">
+              <!-- Length Zone Bands -->
+              <rect x="20" y="20" width="220" height="40" fill="rgba(0, 229, 153, 0.18)" stroke="rgba(255,255,255,0.1)" />
+              <text x="28" y="44" fill="#00E599" font-size="10" font-weight="700">YORKER / FULL TOSS (0–3m) • 18%</text>
+              <rect x="20" y="60" width="220" height="55" fill="rgba(0, 210, 255, 0.16)" stroke="rgba(255,255,255,0.1)" />
+              <text x="28" y="92" fill="#00D2FF" font-size="10" font-weight="700">FULL DRIVING (3–5.5m) • 24%</text>
+              <rect x="20" y="115" width="220" height="75" fill="rgba(168, 85, 247, 0.22)" stroke="rgba(255,255,255,0.1)" />
+              <text x="28" y="156" fill="#C084FC" font-size="10" font-weight="700">GOOD LENGTH (5.5–8m) • 42%</text>
+              <rect x="20" y="190" width="220" height="90" fill="rgba(255, 51, 102, 0.16)" stroke="rgba(255,255,255,0.1)" />
+              <text x="28" y="240" fill="#FF8099" font-size="10" font-weight="700">SHORT / BOUNCER (8m+) • 16%</text>
+              <!-- Stump Line Guide -->
+              <line x1="130" y1="15" x2="130" y2="285" stroke="rgba(255,255,255,0.22)" stroke-dasharray="3 3" />
+              <!-- Sample Delivery Impact Dots -->
+              <circle cx="118" cy="36" r="6" fill="#94A3B8" stroke="#FFF" stroke-width="1.5" />
+              <circle cx="96" cy="142" r="7" fill="#00E599" stroke="#FFF" stroke-width="1.5" />
+              <circle cx="136" cy="225" r="7" fill="#A855F7" stroke="#FFF" stroke-width="1.5" />
+              <circle cx="124" cy="135" r="7" fill="#FF3366" stroke="#FFF" stroke-width="1.5" />
+              <circle cx="108" cy="82" r="6.5" fill="#00E599" stroke="#FFF" stroke-width="1.5" />
+            </svg>
+            <div style="display: flex; justify-content: center; gap: 0.65rem; font-size: 0.68rem; color: var(--text-muted); margin-top: 0.55rem; flex-wrap: wrap;">
+              <span>🟢 4 Runs</span>
+              <span>🟣 6 Runs</span>
+              <span>🔴 Wicket</span>
+              <span>⚪ Dot Ball</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Monte Carlo "What-If" Win Probability Simulator -->
+          <div class="studio-subpanel" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--turf-emerald);">📈 "What-If" Chase Win Probability</span>
+                <span id="simPressureBadge" style="font-size: 0.68rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 999px; background: rgba(255, 184, 0, 0.15); color: var(--amber); border: 1px solid rgba(255, 184, 0, 0.35);">HIGH PRESSURE</span>
+              </div>
+
+              <!-- Live Win Probability Split Bar -->
+              <div style="margin-bottom: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.3rem;">
+                  <span style="color: var(--turf-emerald);">Batting XI: <strong id="simBatWinPct">64.2%</strong></span>
+                  <span style="color: var(--amber);">Tie: <strong id="simTiePct">2.8%</strong></span>
+                  <span style="color: var(--cyan);">Bowling XI: <strong id="simBowlWinPct">33.0%</strong></span>
+                </div>
+                <div style="height: 12px; width: 100%; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; display: flex;">
+                  <div id="simBatBar" style="width: 64.2%; background: var(--turf-emerald);"></div>
+                  <div id="simTieBar" style="width: 2.8%; background: var(--amber);"></div>
+                  <div id="simBowlBar" style="width: 33.0%; background: var(--cyan);"></div>
+                </div>
+              </div>
+
+              <!-- Simulation KPI Readout -->
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.9rem;">
+                <div class="stat-tile">
+                  <div style="font-size: 0.65rem; color: var(--text-muted);">Req Run Rate</div>
+                  <div id="simRequiredRunRate" style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-score); color: var(--rose);">10.80</div>
+                </div>
+                <div class="stat-tile">
+                  <div style="font-size: 0.65rem; color: var(--text-muted);">Equation Left</div>
+                  <div id="simEquationLeft" style="font-size: 0.9rem; font-weight: 800; font-family: var(--font-score); color: var(--text-main);">36 in 20b</div>
+                </div>
+                <div class="stat-tile">
+                  <div style="font-size: 0.65rem; color: var(--text-muted);">Proj. Total</div>
+                  <div id="simProjectedScore" style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-score); color: var(--turf-emerald);">181/3</div>
+                </div>
+              </div>
+
+              <!-- Interactive What-If Scenario Triggers -->
+              <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.45rem;">Simulate Next Over (6 Balls) Scenario:</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 18, 0)" data-tooltip="Simulate explosive 18-run over with 0 wickets lost" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">⚡ Big Over (+18r, 0w)</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 5, 0)" data-tooltip="Simulate tight 5-run bowling over with 0 wickets" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">🛡️ Tight Over (+5r, 0w)</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 4, 2)" data-tooltip="Simulate double-wicket collapse (+4 runs, 2 wickets lost)" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">💥 Double Wicket (+4r, 2w)</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(0, 0, 0)" data-tooltip="Reset simulator to live scoreboard equation (Need 36 in 20 balls)" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">🔄 Reset Live State</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalPitchMapSimulator')" style="width: auto;" data-tooltip="Close Pitch Map &amp; Win Probability Simulator">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FLAGSHIP STUDIO 4: LIVE PLAYER AUCTION, SALARY CAP PURSE & RTM DRAFT ROOM
+       ========================================================================= -->
+  <div class="modal-backdrop as-drawer" id="modalPlayerAuction" role="dialog" aria-modal="true" aria-labelledby="playerAuctionTitle">
+    <div class="modal-card" style="max-width: 840px; width: 95vw;">
+      <div class="modal-header">
+        <div class="modal-title" id="playerAuctionTitle">🔨 Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room</div>
+        <button type="button" class="modal-close-btn" aria-label="Close Player Auction" onclick="closeModal('modalPlayerAuction')" data-tooltip="Close Live Player Auction Room">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.15rem;">
+        <!-- Active Marquee Player On The Block -->
+        <div id="auctionActiveLotCard" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.14) 0%, rgba(0, 229, 153, 0.1) 100%); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <span style="font-size: 0.68rem; font-weight: 800; padding: 0.15rem 0.55rem; border-radius: 999px; background: rgba(0, 229, 153, 0.18); color: var(--turf-emerald); border: 1px solid rgba(0, 229, 153, 0.4);">ON THE GAVEL • LOT #1</span>
+              <h3 id="auctionLotName" style="margin: 0.4rem 0 0.15rem; font-size: 1.35rem; font-family: var(--font-display); color: var(--text-main);">Hardik Patel</h3>
+              <div id="auctionLotMeta" style="font-size: 0.78rem; color: var(--text-muted);">Elite All-Rounder • India • SR 174.2 • Econ 7.45 • AI Draft Valuation: <strong style="color: var(--turf-emerald);">97/100</strong></div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.7rem; color: var(--text-muted);">CURRENT HIGHEST BID</div>
+              <div id="auctionCurrentBidDisplay" style="font-size: 1.75rem; font-weight: 800; font-family: var(--font-score); color: var(--turf-emerald);">₹2,40,000</div>
+              <div style="font-size: 0.75rem; color: var(--cyan);">Leading Bidder: <strong id="auctionLeaderDisplay">Royal Strikers</strong></div>
+            </div>
+          </div>
+
+          <!-- Interactive Bidding Paddles & RTM / Gavel Controls -->
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.95rem; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <button type="button" id="btnAuctionBidRoyal" class="btn btn-primary btn-sm" onclick="placePlayerAuctionBid('fr-royal', 'Royal Strikers', 10000)" data-tooltip="Place +₹10,000 increment bid for Royal Strikers" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">🙋‍♂️ +₹10K (Royal Strikers)</button>
+            <button type="button" id="btnAuctionBidTitan" class="btn btn-secondary btn-sm" onclick="placePlayerAuctionBid('fr-titan', 'Titan XI', 25000)" data-tooltip="Place +₹25,000 increment bid for Titan XI" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">🙋‍♂️ +₹25K (Titan XI)</button>
+            <button type="button" id="btnAuctionBidMetro" class="btn btn-secondary btn-sm" onclick="placePlayerAuctionBid('fr-metro', 'Metro Spartans', 50000)" data-tooltip="Place +₹50,000 jump bid for Metro Spartans" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">🚀 +₹50K (Metro Spartans)</button>
+            <button type="button" id="btnAuctionRtm" class="btn btn-secondary btn-sm" onclick="exerciseAuctionRtmCard()" data-tooltip="Exercise Right-To-Match (RTM) card for Titan XI to match current highest bid" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem; border-color: var(--amber); color: var(--amber);">🃏 Exercise RTM Card</button>
+            <button type="button" id="btnAuctionGavelSold" class="btn btn-secondary btn-sm" onclick="gavelPlayerAuctionSold()" data-tooltip="Strike auctioneer gavel: mark player SOLD, deduct franchise salary purse, and advance lot" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; border-color: var(--rose); color: var(--rose);">🔨 GAVEL SOLD!</button>
+          </div>
+        </div>
+
+        <!-- Franchise Salary Cap Purse & Squad Slots Table -->
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.45rem;">🏦 Franchise Salary Cap Purse &amp; Squad Composition Ledger (Cap: ₹15,00,000):</div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-muted); text-align: left;">
+                <th style="padding: 0.5rem;">Franchise</th>
+                <th style="padding: 0.5rem;">Remaining Purse</th>
+                <th style="padding: 0.5rem;">Squad Size</th>
+                <th style="padding: 0.5rem;">Overseas Slots</th>
+                <th style="padding: 0.5rem;">RTM Cards</th>
+              </tr>
+            </thead>
+            <tbody id="auctionFranchiseTableBody">
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.5rem; font-weight: 700; color: var(--turf-emerald);">Royal Strikers (RYS)</td>
+                <td style="padding: 0.5rem; font-family: var(--font-mono);" id="purseRoyal">₹9,10,000</td>
+                <td style="padding: 0.5rem;" id="squadRoyal">14 / 18</td>
+                <td style="padding: 0.5rem;">3 / 4</td>
+                <td style="padding: 0.5rem;">2</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.5rem; font-weight: 700; color: var(--cyan);">Titan XI (TTN)</td>
+                <td style="padding: 0.5rem; font-family: var(--font-mono);" id="purseTitan">₹10,40,000</td>
+                <td style="padding: 0.5rem;" id="squadTitan">13 / 18</td>
+                <td style="padding: 0.5rem;">2 / 4</td>
+                <td style="padding: 0.5rem;" id="rtmTitan">1</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.5rem; font-weight: 700; color: var(--purple-light);">Metro Spartans (MSP)</td>
+                <td style="padding: 0.5rem; font-family: var(--font-mono);" id="purseMetro">₹8,25,000</td>
+                <td style="padding: 0.5rem;" id="squadMetro">15 / 18</td>
+                <td style="padding: 0.5rem;">4 / 4 (FULL)</td>
+                <td style="padding: 0.5rem;">1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalPlayerAuction')" style="width: auto;" data-tooltip="Close Player Auction Draft Room">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FLAGSHIP STUDIO 5: KEYBOARD SHORTCUTS & COCKPIT ACCESSIBILITY GUIDE (?)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="modalKeyboardShortcuts" role="dialog" aria-modal="true" aria-labelledby="kbdShortcutsTitle">
+    <div class="modal-dialog" style="max-width: 540px; width: 95vw;">
+      <div class="modal-header">
+        <div class="modal-title" id="kbdShortcutsTitle">⌨️ CricOS Cockpit Keyboard Shortcuts &amp; Accessibility</div>
+        <button type="button" class="modal-close-btn" onclick="closeModal('modalKeyboardShortcuts')" aria-label="Close Keyboard Shortcuts" data-tooltip="Close Keyboard Shortcuts Guide">×</button>
+      </div>
+      <div class="modal-body" style="padding: 1.15rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; font-size: 0.78rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Command Palette</span>
+            <kbd class="cmd-kbd-badge">⌘K / Ctrl+K</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Cycle Design Theme</span>
+            <kbd class="cmd-kbd-badge">Alt + T</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Tactical Field Planner</span>
+            <kbd class="cmd-kbd-badge">Shift + F</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Pitch Map &amp; Win Sim</span>
+            <kbd class="cmd-kbd-badge">Shift + P</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Live Player Auction</span>
+            <kbd class="cmd-kbd-badge">Shift + A</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Shortcuts Guide</span>
+            <kbd class="cmd-kbd-badge">?</kbd>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modalKeyboardShortcuts')" data-tooltip="Dismiss Keyboard Shortcuts Guide" style="width: auto;">Got It</button>
       </div>
     </div>
   </div>
@@ -17788,6 +18304,395 @@ cricos_active_sse_connections 1</pre>
         }
       });
     }
+
+    // =========================================================================
+    // FLAGSHIP CONTROLLERS: COMMAND PALETTE, FIELD PLANNER, PITCH SIM & AUCTION
+    // =========================================================================
+    const COMMAND_PALETTE_ITEMS = [
+      { id: 'cmd-tactics-field-planner', title: 'Open Tactical Field Placement & Powerplay Planner', subtitle: 'Interactive 11-fielder radar with MCC Law 28.4 circle validation & presets', category: 'TACTICS_3D', shortcut: 'Shift+F', icon: '🎯', fn: function() { openFieldPlannerModal(); } },
+      { id: 'cmd-tactics-pitch-map', title: 'Open Pitch Beehive Map & Win Probability Simulator', subtitle: 'Pitching length heatmap (Yorker/Good/Short) & What-If chase Monte Carlo', category: 'TACTICS_3D', shortcut: 'Shift+P', icon: '🧬', fn: function() { openPitchMapSimulatorModal(); } },
+      { id: 'cmd-tactics-player-auction', title: 'Open Live Player Auction & Franchise Draft Room', subtitle: 'Real-time bidding gavel, franchise salary cap purse & RTM cards', category: 'TACTICS_3D', shortcut: 'Shift+A', icon: '🔨', fn: function() { openPlayerAuctionModal(); } },
+      { id: 'cmd-tactics-3d-stadium', title: 'Switch to 3D WebGL Floodlit Stadium Pitch', subtitle: '8 broadcast camera angles, Hawk-Eye ball tracking & 11 live fielders', category: 'TACTICS_3D', shortcut: '3', icon: '🌐', fn: function() { if (typeof setWagonDisplayMode === 'function') setWagonDisplayMode('3D'); showToast('🌐 Switched to 3D WebGL Floodlit Stadium Pitch'); } },
+      { id: 'cmd-tactics-dls', title: 'Open Duckworth-Lewis-Stern (DLS) Target Calculator', subtitle: 'Rain interruption par score & revised target calculator', category: 'TACTICS_3D', shortcut: 'D', icon: '🌧️', fn: function() { openModal('modalDlsCalculator'); } },
+      { id: 'cmd-tactics-umpire-desk', title: 'Open Lead Umpire Match Desk & DRS Review', subtitle: 'MCC Law 41/42 disciplinary sanctions, penalty runs & LBW Hawk-Eye verdict', category: 'TACTICS_3D', shortcut: 'U', icon: '⚖️', fn: function() { openModal('modalUmpireDesk'); } },
+      { id: 'cmd-score-four', title: 'Record Boundary 4 Runs', subtitle: 'Log crisp boundary four to active striker and update wagon wheel', category: 'LIVE_SCORING', shortcut: '4', icon: '🟢', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(4); else showToast('🟢 Boundary 4 Runs Recorded'); } },
+      { id: 'cmd-score-six', title: 'Record Maximum 6 Runs', subtitle: 'Log towering maximum six with trajectory arc & stadium celebration', category: 'LIVE_SCORING', shortcut: '6', icon: '🟣', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(6); else showToast('🟣 Maximum 6 Runs Recorded'); } },
+      { id: 'cmd-score-undo', title: 'Undo Last Delivery', subtitle: 'Revert fat-finger scoring mistake and restore previous striker state', category: 'LIVE_SCORING', shortcut: '⌘Z', icon: '↺', fn: function() { if (typeof undoLastDelivery === 'function') undoLastDelivery(); else showToast('↺ Last Delivery Undone'); } },
+      { id: 'cmd-player-virat', title: 'Inspect Virat Sharma — Holographic 3D Card & Radar', subtitle: 'Top-Order Batter • RHB • SR 158.4 • Avg 54.2', category: 'PLAYERS', shortcut: 'P1', icon: '🃏', fn: function() { if (typeof open3DPlayerCardModal === 'function') open3DPlayerCardModal('p-1'); } },
+      { id: 'cmd-player-hardik', title: 'Inspect Hardik Patel — Holographic 3D Card & Radar', subtitle: 'Elite All-Rounder • RHB / Fast-Medium • SR 174.2', category: 'PLAYERS', shortcut: 'P5', icon: '🃏', fn: function() { if (typeof open3DPlayerCardModal === 'function') open3DPlayerCardModal('p-5'); } },
+      { id: 'cmd-theme-stadium', title: 'Activate Theme: 🌙 Stadium Night (Broadcast Obsidian)', subtitle: 'Floodlit obsidian pitch (#04070D) with Turf Emerald & Electric Cyan LEDs', category: 'THEMES_PERSONAS', shortcut: 'Alt+1', icon: '🌙', fn: function() { if (typeof applyDesignTheme === 'function') applyDesignTheme('stadium'); } },
+      { id: 'cmd-theme-swiss', title: 'Activate Theme: 🇨🇭 Swiss Minimalist (Daylight Grid)', subtitle: 'High-contrast daylight paper (#F8F9FA) with 7.09:1 WCAG AAA contrast', category: 'THEMES_PERSONAS', shortcut: 'Alt+2', icon: '🇨🇭', fn: function() { if (typeof applyDesignTheme === 'function') applyDesignTheme('swiss'); } },
+      { id: 'cmd-theme-nordic', title: 'Activate Theme: 🌾 Nordic Editorial (Warm Parchment)', subtitle: 'Scandinavian warm oat canvas (#F5F0E8) with forest pine accents', category: 'THEMES_PERSONAS', shortcut: 'Alt+3', icon: '🌾', fn: function() { if (typeof applyDesignTheme === 'function') applyDesignTheme('nordic'); } }
+    ];
+
+    let _activeCmdCategory = 'ALL';
+
+    function renderCommandPaletteItems(list) {
+      const container = document.getElementById('cmdPaletteResultsList');
+      if (!container) return;
+      if (!list || list.length === 0) {
+        container.innerHTML = '<div class="cricos-empty-state" style="padding: 1.2rem; text-align: center; color: var(--text-muted); font-size: 0.82rem;">No matching commands found. Try searching "field", "pitch", "auction", "3d", or "swiss".</div>';
+        return;
+      }
+      container.innerHTML = list.map(function(item, idx) {
+        return '<button type="button" class="cmd-palette-item' + (idx === 0 ? ' active' : '') + '" onclick="executeCommandPaletteItem(&apos;' + item.id + '&apos;)" data-tooltip="Execute: ' + item.title + '">' +
+          '<div style="display: flex; align-items: center; gap: 0.75rem;">' +
+            '<span style="font-size: 1.2rem;">' + item.icon + '</span>' +
+            '<div>' +
+              '<div style="font-size: 0.84rem; font-weight: 700;">' + item.title + '</div>' +
+              '<div style="font-size: 0.72rem; color: var(--text-muted);">' + item.subtitle + '</div>' +
+            '</div>' +
+          '</div>' +
+          (item.shortcut ? '<kbd class="cmd-kbd-badge">' + item.shortcut + '</kbd>' : '') +
+        '</button>';
+      }).join('');
+    }
+
+    function openCommandPalette() {
+      openModal('modalCommandPalette');
+      _activeCmdCategory = 'ALL';
+      const input = document.getElementById('cmdPaletteInput');
+      if (input) {
+        input.value = '';
+        setTimeout(function() { input.focus(); }, 50);
+      }
+      renderCommandPaletteItems(COMMAND_PALETTE_ITEMS);
+    }
+
+    function closeCommandPalette() {
+      closeModal('modalCommandPalette');
+    }
+
+    function filterCommandPalette(query) {
+      const q = String(query || '').trim().toLowerCase();
+      const filtered = COMMAND_PALETTE_ITEMS.filter(function(item) {
+        if (_activeCmdCategory !== 'ALL' && item.category !== _activeCmdCategory) return false;
+        if (!q) return true;
+        return (item.title + ' ' + item.subtitle + ' ' + item.category).toLowerCase().includes(q);
+      });
+      renderCommandPaletteItems(filtered);
+    }
+
+    function filterCommandPaletteByCategory(cat) {
+      _activeCmdCategory = cat || 'ALL';
+      const input = document.getElementById('cmdPaletteInput');
+      filterCommandPalette(input ? input.value : '');
+    }
+
+    function executeCommandPaletteItem(id) {
+      const item = COMMAND_PALETTE_ITEMS.find(function(x) { return x.id === id; });
+      closeCommandPalette();
+      if (item && typeof item.fn === 'function') {
+        item.fn();
+      }
+    }
+
+    // 2. Interactive 11-Fielder Tactical Radar & MCC Law 28.4 Powerplay Engine
+    const FIELD_PLANNER_PRESETS = {
+      POWERPLAY_ATTACK: {
+        phase: 'PP1_OVERS_1_6',
+        plan: 'Good Length 4th Stump (Outswing)',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+          { code: 'BWL', name: 'Bowler', angle: 0, radius: 0.22, locked: true },
+          { code: '1SL', name: 'First Slip', angle: 164, radius: 0.24 },
+          { code: '2SL', name: 'Second Slip', angle: 154, radius: 0.25 },
+          { code: 'GUL', name: 'Gully', angle: 132, radius: 0.30 },
+          { code: 'PT', name: 'Backward Point', angle: 108, radius: 0.42 },
+          { code: 'COV', name: 'Extra Cover', angle: 68, radius: 0.45 },
+          { code: 'MOFF', name: 'Mid-Off', angle: 28, radius: 0.46 },
+          { code: 'MON', name: 'Mid-On', angle: 332, radius: 0.46 },
+          { code: '3M', name: 'Third Man (Deep)', angle: 142, radius: 0.86 },
+          { code: 'FLEG', name: 'Fine Leg (Deep)', angle: 215, radius: 0.86 }
+        ]
+      },
+      MIDDLE_SPIN_TRAP: {
+        phase: 'MIDDLE_OVERS_7_15',
+        plan: 'Tossed Up Flight on Middle & Off',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper (Up)', angle: 180, radius: 0.12, locked: true },
+          { code: 'BWL', name: 'Spinner', angle: 0, radius: 0.20, locked: true },
+          { code: 'SLG', name: 'Short Leg', angle: 245, radius: 0.18 },
+          { code: 'SLIP', name: 'First Slip', angle: 162, radius: 0.20 },
+          { code: 'PT', name: 'Point', angle: 95, radius: 0.42 },
+          { code: 'COV', name: 'Cover', angle: 65, radius: 0.44 },
+          { code: 'MWK', name: 'Short Mid-Wicket', angle: 292, radius: 0.38 },
+          { code: 'LOFF', name: 'Long-Off (Deep)', angle: 24, radius: 0.88 },
+          { code: 'LON', name: 'Long-On (Deep)', angle: 336, radius: 0.88 },
+          { code: 'DMW', name: 'Deep Mid-Wicket', angle: 288, radius: 0.88 },
+          { code: 'DCV', name: 'Deep Extra Cover', angle: 62, radius: 0.86 }
+        ]
+      },
+      DEATH_YORKER_DEFENSE: {
+        phase: 'DEATH_OVERS_16_20',
+        plan: 'Wide Toe-Crushing Yorker (6th Stump)',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.20, locked: true },
+          { code: 'BWL', name: 'Death Pacer', angle: 0, radius: 0.22, locked: true },
+          { code: 'S3M', name: 'Short Third Man', angle: 138, radius: 0.42 },
+          { code: 'COV', name: 'Cover', angle: 72, radius: 0.45 },
+          { code: 'MWK', name: 'Mid-Wicket (In)', angle: 295, radius: 0.44 },
+          { code: 'SFL', name: 'Short Fine Leg', angle: 218, radius: 0.40 },
+          { code: 'LOFF', name: 'Long-Off (Deep)', angle: 22, radius: 0.90 },
+          { code: 'LON', name: 'Long-On (Deep)', angle: 338, radius: 0.90 },
+          { code: 'DPT', name: 'Deep Point', angle: 94, radius: 0.90 },
+          { code: 'DCV', name: 'Deep Cover', angle: 56, radius: 0.88 },
+          { code: 'DSQ', name: 'Deep Square Leg', angle: 268, radius: 0.88 }
+        ]
+      }
+    };
+
+    let _fieldPhase = 'PP1_OVERS_1_6';
+    let _fieldHand = 'RHB';
+    let _fieldPlan = 'Good Length 4th Stump (Outswing)';
+    let _activeFielders = FIELD_PLANNER_PRESETS.POWERPLAY_ATTACK.fielders.map(function(f) { return Object.assign({}, f); });
+
+    function renderFieldPlannerRadar() {
+      const svgGroup = document.getElementById('fieldPlannerNodesGroup');
+      const rosterEl = document.getElementById('fieldPlannerRosterList');
+      const bannerEl = document.getElementById('fieldLegalityBanner');
+      const bannerText = document.getElementById('fieldLegalityText');
+      const planBadge = document.getElementById('fieldBowlingPlanBadge');
+      if (!svgGroup || !rosterEl) return;
+
+      const maxOut = _fieldPhase === 'PP1_OVERS_1_6' ? 2 : (_fieldPhase === 'MIDDLE_OVERS_7_15' ? 4 : 5);
+      let outCount = 0;
+
+      svgGroup.innerHTML = _activeFielders.map(function(f, idx) {
+        const isDeep = !f.locked && f.radius > 0.52;
+        if (isDeep) outCount++;
+        const effectiveAngle = _fieldHand === 'RHB' ? f.angle : ((360 - f.angle) % 360);
+        const rad = ((effectiveAngle - 90) * Math.PI) / 180;
+        const rPx = f.radius * 140;
+        const cx = (160 + rPx * Math.cos(rad)).toFixed(1);
+        const cy = (160 + rPx * Math.sin(rad)).toFixed(1);
+        const fill = f.locked ? '#00D2FF' : (isDeep ? '#FFB800' : '#00E599');
+        return '<g class="field-node-circle" onclick="toggleFielderRingDepth(' + idx + ')" data-tooltip="' + f.name + ' (' + (isDeep ? 'Deep Boundary' : 'Inner 30-Yd Ring') + ')">' +
+          '<circle cx="' + cx + '" cy="' + cy + '" r="10" fill="' + fill + '" stroke="#04070D" stroke-width="2" />' +
+          '<text x="' + cx + '" y="' + (Number(cy) + 3) + '" text-anchor="middle" fill="#04070D" font-size="7.5" font-weight="800" font-family="Space Grotesk, sans-serif">' + f.code + '</text>' +
+        '</g>';
+      }).join('');
+
+      rosterEl.innerHTML = _activeFielders.map(function(f, idx) {
+        const isDeep = !f.locked && f.radius > 0.52;
+        return '<button type="button" class="btn btn-secondary btn-sm" onclick="toggleFielderRingDepth(' + idx + ')" data-tooltip="Toggle ' + f.name + ' between Inner 30-Yard Circle and Deep Boundary" style="justify-content: space-between; padding: 0.32rem 0.55rem; font-size: 0.72rem; text-align: left;">' +
+          '<span><strong>' + f.code + '</strong> • ' + f.name + '</span>' +
+          '<span style="color: ' + (f.locked ? 'var(--cyan)' : (isDeep ? 'var(--amber)' : 'var(--turf-emerald)')) + '; font-weight: 700;">' + (f.locked ? 'LOCKED' : (isDeep ? 'DEEP' : 'RING')) + '</span>' +
+        '</button>';
+      }).join('');
+
+      const isLegal = outCount <= maxOut;
+      if (bannerEl && bannerText) {
+        if (isLegal) {
+          bannerEl.style.background = 'rgba(0, 229, 153, 0.12)';
+          bannerEl.style.borderColor = 'rgba(0, 229, 153, 0.4)';
+          bannerEl.style.color = 'var(--turf-emerald)';
+          bannerText.textContent = '✓ ICC & MCC Compliant Field (' + outCount + '/' + maxOut + ' outside 30-yd ring • +' + (13.2 + outCount * 1.1).toFixed(1) + '% expected run suppression)';
+        } else {
+          bannerEl.style.background = 'rgba(255, 51, 102, 0.15)';
+          bannerEl.style.borderColor = 'rgba(255, 51, 102, 0.5)';
+          bannerEl.style.color = '#FF8099';
+          bannerText.textContent = '⚠️ NO-BALL RESTRICTION BREACH: ' + outCount + ' fielders outside 30-yard circle (Max ' + maxOut + ' allowed in ' + _fieldPhase.replace(/_/g, ' ') + ')';
+        }
+      }
+      if (planBadge) {
+        planBadge.textContent = 'Plan: ' + _fieldPlan + ' (' + _fieldHand + ')';
+      }
+    }
+
+    function openFieldPlannerModal() {
+      openModal('modalFieldPlanner');
+      renderFieldPlannerRadar();
+    }
+
+    function setFieldPlannerPhase(phase) {
+      _fieldPhase = phase;
+      renderFieldPlannerRadar();
+    }
+
+    function setFieldPlannerHand(hand) {
+      _fieldHand = hand;
+      renderFieldPlannerRadar();
+      showToast('🏏 Field geometry mirrored for ' + (hand === 'LHB' ? 'Left-Handed Batter (LHB)' : 'Right-Handed Batter (RHB)'));
+    }
+
+    function applyFieldPreset(key) {
+      const preset = FIELD_PLANNER_PRESETS[key];
+      if (!preset) return;
+      _fieldPhase = preset.phase;
+      _fieldPlan = preset.plan;
+      _activeFielders = preset.fielders.map(function(f) { return Object.assign({}, f); });
+      renderFieldPlannerRadar();
+      showToast('🎯 Applied Tactical Formation: ' + key.replace(/_/g, ' '));
+    }
+
+    function toggleFielderRingDepth(idx) {
+      const f = _activeFielders[idx];
+      if (!f || f.locked) return;
+      f.radius = f.radius > 0.52 ? 0.42 : 0.88;
+      renderFieldPlannerRadar();
+    }
+
+    function syncFieldPlannerTo3DStadium() {
+      closeModal('modalFieldPlanner');
+      if (typeof setWagonDisplayMode === 'function') {
+        setWagonDisplayMode('3D');
+      }
+      showToast('🌐 11-Fielder Tactical Formation synchronized to 3D Floodlit Stadium Pitch!');
+    }
+
+    // 3. Biomechanics Pitch Beehive Map & Monte Carlo Win Probability Simulator
+    function openPitchMapSimulatorModal() {
+      openModal('modalPitchMapSimulator');
+      runWinProbScenario(0, 0, 0);
+    }
+
+    function runWinProbScenario(simBalls, simRuns, simWickets) {
+      const target = 178;
+      const currentScore = 142 + (simRuns || 0);
+      const wicketsLost = Math.min(10, 3 + (simWickets || 0));
+      const ballsLeft = Math.max(1, 20 - (simBalls || 0));
+      const runsNeeded = Math.max(0, target - currentScore);
+      const wicketsInHand = Math.max(0, 10 - wicketsLost);
+      const rrr = ((runsNeeded / ballsLeft) * 6).toFixed(2);
+
+      const parRate = 6.8 + wicketsInHand * 0.52;
+      const delta = parRate - Number(rrr);
+      const logit = delta * 0.68 + (wicketsInHand - 5) * 0.22;
+      const rawBat = 1 / (1 + Math.exp(-logit));
+      const tiePct = Math.max(1.0, Math.min(4.2, 3.8 - Math.abs(delta) * 0.6)).toFixed(1);
+      const batWinPct = runsNeeded <= 0 ? '100.0' : Math.max(2.0, Math.min(97.5 - Number(tiePct), rawBat * (100 - Number(tiePct)))).toFixed(1);
+      const bowlWinPct = Math.max(0, (100 - Number(batWinPct) - Number(tiePct))).toFixed(1);
+      const projScore = Math.round(currentScore + (ballsLeft / 6) * Math.min(13.2, Math.max(5.8, parRate * 0.92)));
+
+      const elBat = document.getElementById('simBatWinPct');
+      const elTie = document.getElementById('simTiePct');
+      const elBowl = document.getElementById('simBowlWinPct');
+      const barBat = document.getElementById('simBatBar');
+      const barTie = document.getElementById('simTieBar');
+      const barBowl = document.getElementById('simBowlBar');
+      const elRrr = document.getElementById('simRequiredRunRate');
+      const elEq = document.getElementById('simEquationLeft');
+      const elProj = document.getElementById('simProjectedScore');
+      const elBadge = document.getElementById('simPressureBadge');
+
+      if (elBat) elBat.textContent = batWinPct + '%';
+      if (elTie) elTie.textContent = tiePct + '%';
+      if (elBowl) elBowl.textContent = bowlWinPct + '%';
+      if (barBat) barBat.style.width = batWinPct + '%';
+      if (barTie) barTie.style.width = tiePct + '%';
+      if (barBowl) barBowl.style.width = bowlWinPct + '%';
+      if (elRrr) elRrr.textContent = rrr;
+      if (elEq) elEq.textContent = runsNeeded + ' in ' + ballsLeft + 'b';
+      if (elProj) elProj.textContent = projScore + '/' + wicketsLost;
+      if (elBadge) {
+        elBadge.textContent = Number(rrr) > 12 ? 'EXTREME CRUNCH' : (Number(rrr) > 9.5 ? 'HIGH PRESSURE' : 'CALM CONTROL');
+      }
+      if (simBalls > 0) {
+        showToast('🧬 Simulated Scenario: +' + simRuns + ' runs, ' + simWickets + ' wkts → Win Prob: ' + batWinPct + '%');
+      }
+    }
+
+    // 4. Live Player Auction Gavel, Salary Cap Purse & RTM Draft Room
+    let _auctionCurrentBid = 240000;
+    let _auctionLeader = 'Royal Strikers';
+    let _auctionPurses = {
+      'fr-royal': 910000,
+      'fr-titan': 1040000,
+      'fr-metro': 825000
+    };
+
+    function openPlayerAuctionModal() {
+      openModal('modalPlayerAuction');
+    }
+
+    function placePlayerAuctionBid(franchiseId, franchiseName, increment) {
+      const nextBid = _auctionCurrentBid + increment;
+      if (nextBid > (_auctionPurses[franchiseId] || 0)) {
+        showToast('⚠️ Bid exceeds ' + franchiseName + ' remaining salary cap purse!');
+        return;
+      }
+      _auctionCurrentBid = nextBid;
+      _auctionLeader = franchiseName;
+      const bidEl = document.getElementById('auctionCurrentBidDisplay');
+      const leaderEl = document.getElementById('auctionLeaderDisplay');
+      if (bidEl) bidEl.textContent = '₹' + _auctionCurrentBid.toLocaleString('en-IN');
+      if (leaderEl) leaderEl.textContent = _auctionLeader;
+      showToast('🔨 ' + franchiseName + ' bids ₹' + _auctionCurrentBid.toLocaleString('en-IN') + '!');
+    }
+
+    function exerciseAuctionRtmCard() {
+      _auctionLeader = 'Titan XI (RTM Matched)';
+      const leaderEl = document.getElementById('auctionLeaderDisplay');
+      const rtmEl = document.getElementById('rtmTitan');
+      if (leaderEl) leaderEl.textContent = _auctionLeader;
+      if (rtmEl) rtmEl.textContent = '0 (USED)';
+      showToast('🃏 Titan XI exercised Right-To-Match (RTM) Card at ₹' + _auctionCurrentBid.toLocaleString('en-IN') + '!');
+    }
+
+    function gavelPlayerAuctionSold() {
+      showToast('🔨 SOLD! Hardik Patel awarded to ' + _auctionLeader + ' for ₹' + _auctionCurrentBid.toLocaleString('en-IN') + '!');
+      const nameEl = document.getElementById('auctionLotName');
+      const metaEl = document.getElementById('auctionLotMeta');
+      if (nameEl) nameEl.textContent = 'Rashid Khan (Next Lot #2)';
+      if (metaEl) metaEl.innerHTML = 'Elite Leg-Spinner • Afghanistan (Overseas) • Econ 6.18 • AI Draft Valuation: <strong style="color: var(--turf-emerald);">98/100</strong>';
+      _auctionCurrentBid = 75000;
+      _auctionLeader = 'Opening Bid (Base ₹75,000)';
+      const bidEl = document.getElementById('auctionCurrentBidDisplay');
+      const leaderEl = document.getElementById('auctionLeaderDisplay');
+      if (bidEl) bidEl.textContent = '₹75,000';
+      if (leaderEl) leaderEl.textContent = _auctionLeader;
+    }
+
+    function openKeyboardShortcutsModal() {
+      openModal('modalKeyboardShortcuts');
+    }
+
+    // Global Keyboard Shortcuts Listener (Cmd+K / Ctrl+K, Shift+F, Shift+P, Shift+A, ?)
+    document.addEventListener('keydown', function(ev) {
+      const tag = (ev.target && ev.target.tagName) ? ev.target.tagName.toUpperCase() : '';
+      const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (ev.target && ev.target.isContentEditable);
+
+      if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'k') {
+        ev.preventDefault();
+        openCommandPalette();
+        return;
+      }
+      if (isInput) return;
+
+      if (ev.shiftKey && ev.key.toUpperCase() === 'F') {
+        ev.preventDefault();
+        openFieldPlannerModal();
+      } else if (ev.shiftKey && ev.key.toUpperCase() === 'P') {
+        ev.preventDefault();
+        openPitchMapSimulatorModal();
+      } else if (ev.shiftKey && ev.key.toUpperCase() === 'A') {
+        ev.preventDefault();
+        openPlayerAuctionModal();
+      } else if (ev.key === '?') {
+        ev.preventDefault();
+        openKeyboardShortcutsModal();
+      }
+    });
+
+    window.openCommandPalette = openCommandPalette;
+    window.closeCommandPalette = closeCommandPalette;
+    window.filterCommandPalette = filterCommandPalette;
+    window.filterCommandPaletteByCategory = filterCommandPaletteByCategory;
+    window.executeCommandPaletteItem = executeCommandPaletteItem;
+    window.openFieldPlannerModal = openFieldPlannerModal;
+    window.setFieldPlannerPhase = setFieldPlannerPhase;
+    window.setFieldPlannerHand = setFieldPlannerHand;
+    window.applyFieldPreset = applyFieldPreset;
+    window.toggleFielderRingDepth = toggleFielderRingDepth;
+    window.syncFieldPlannerTo3DStadium = syncFieldPlannerTo3DStadium;
+    window.openPitchMapSimulatorModal = openPitchMapSimulatorModal;
+    window.runWinProbScenario = runWinProbScenario;
+    window.openPlayerAuctionModal = openPlayerAuctionModal;
+    window.placePlayerAuctionBid = placePlayerAuctionBid;
+    window.exerciseAuctionRtmCard = exerciseAuctionRtmCard;
+    window.gavelPlayerAuctionSold = gavelPlayerAuctionSold;
+    window.openKeyboardShortcutsModal = openKeyboardShortcutsModal;
   </script>
 </body>
 </html>`;

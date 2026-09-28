@@ -5339,6 +5339,121 @@ export function getMobileAppHtml(): string {
         });
       }
 
+      openCommandPaletteSheet() {
+        var self = this;
+        this.openActionSheet({
+          title: '⚡ Command Palette & Omnisearch (⌘K)',
+          bodyHtml: '<div style="margin-bottom: 0.65rem;">' +
+            '<input type="text" id="mobileCmdSearchInput" placeholder="Search features, players, tactics or themes..." style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.65); border: 1px solid #00E599; border-radius: 8px; padding: 0.55rem 0.75rem; color: #f8fafc; font-size: 0.82rem;" />' +
+            '</div>' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">' +
+              '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.35); border-radius: 8px; padding: 0.55rem; color: #00E599; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Open 11-Fielder Tactical Radar">🎯 Field Planner</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet()" style="background: rgba(0,210,255,0.12); border: 1px solid rgba(0,210,255,0.35); border-radius: 8px; padding: 0.55rem; color: #00D2FF; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Open Pitch Beehive & Win Sim">🧬 Pitch & Win Sim</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openPlayerAuctionSheet()" style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.35); border-radius: 8px; padding: 0.55rem; color: #C084FC; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Open Live Player Auction Room">🔨 Player Auction</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="background: rgba(255,184,0,0.12); border: 1px solid rgba(255,184,0,0.35); border-radius: 8px; padding: 0.55rem; color: #FFB800; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Inspect 3D Holographic Card">🃏 3D Player Card</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.setTheme(&apos;swiss&apos;); window.cricosMobileApp.closeActionSheet();" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem; color: #f8fafc; font-size: 0.72rem; font-weight: 700; text-align: left;" data-tooltip="Switch to Swiss Minimalist Theme">🇨🇭 Swiss Theme</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.setTheme(&apos;nordic&apos;); window.cricosMobileApp.closeActionSheet();" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem; color: #f8fafc; font-size: 0.72rem; font-weight: 700; text-align: left;" data-tooltip="Switch to Nordic Editorial Theme">🌾 Nordic Theme</button>' +
+            '</div>',
+          confirmText: 'Launch 3D Stadium 🌐',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            self.closeActionSheet();
+            self.switchMatchSubTab('STADIUM_3D');
+          }
+        });
+      }
+
+      openFieldPlannerSheet(presetKey) {
+        var self = this;
+        var mode = presetKey || 'POWERPLAY_ATTACK';
+        var label = mode === 'DEATH_YORKER' ? '🔥 Death Yorker Defense (5 Deep Riders • Overs 16-20)' : (mode === 'MIDDLE_SPIN' ? '🛡️ Middle Spin Trap (4 Deep Riders • Overs 7-15)' : '⚡ Powerplay Attacking (2 Slips + Gully • Max 2 Out)');
+        this.openActionSheet({
+          title: '🎯 11-Fielder Radar & MCC Law 28.4',
+          bodyHtml: '<div style="font-size: 0.74rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.35); border-radius: 8px; padding: 0.45rem 0.65rem; margin-bottom: 0.6rem;">' +
+            '✓ ICC & MCC Compliant Field • ' + label +
+            '</div>' +
+            '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem;">' +
+              '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet(&apos;POWERPLAY_ATTACK&apos;)" style="flex: 1; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.4); color: #00E599; border-radius: 6px; padding: 0.35rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Select Powerplay 1 preset">⚡ PP1 (2 Out)</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet(&apos;MIDDLE_SPIN&apos;)" style="flex: 1; background: rgba(0,210,255,0.15); border: 1px solid rgba(0,210,255,0.4); color: #00D2FF; border-radius: 6px; padding: 0.35rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Select Middle Overs preset">🛡️ Mid (4 Out)</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet(&apos;DEATH_YORKER&apos;)" style="flex: 1; background: rgba(255,184,0,0.15); border: 1px solid rgba(255,184,0,0.4); color: #FFB800; border-radius: 6px; padding: 0.35rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Select Death Overs preset">🔥 Death (5 Out)</button>' +
+            '</div>' +
+            '<svg viewBox="0 0 220 220" style="width: 180px; height: 180px; display: block; margin: 0 auto; background: rgba(4,15,10,0.85); border-radius: 50%; border: 2px solid #00E599;">' +
+              '<circle cx="110" cy="110" r="100" fill="rgba(6,78,59,0.45)" stroke="#00E599" stroke-width="1.5" />' +
+              '<circle cx="110" cy="110" r="52" fill="rgba(6,95,70,0.35)" stroke="#00D2FF" stroke-width="1.2" stroke-dasharray="4 3" />' +
+              '<rect x="104" y="90" width="12" height="40" rx="2" fill="#D6C5A3" />' +
+              '<circle cx="110" cy="82" r="6" fill="#00D2FF" /><circle cx="110" cy="136" r="6" fill="#00D2FF" />' +
+              '<circle cx="96" cy="78" r="6" fill="#00E599" /><circle cx="84" cy="82" r="6" fill="#00E599" />' +
+              '<circle cx="72" cy="108" r="6" fill="#00E599" /><circle cx="80" cy="132" r="6" fill="#00E599" />' +
+              '<circle cx="136" cy="130" r="6" fill="#00E599" /><circle cx="144" cy="104" r="6" fill="#00E599" />' +
+              '<circle cx="44" cy="56" r="6.5" fill="#FFB800" /><circle cx="172" cy="58" r="6.5" fill="#FFB800" />' +
+              '<circle cx="95" cy="150" r="6" fill="#00E599" />' +
+            '</svg>',
+          confirmText: 'Sync Field to 3D Stadium 🌐',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            self.closeActionSheet();
+            self.switchMatchSubTab('STADIUM_3D');
+            self.showToast('🎯 11-Fielder Tactical Formation synchronized to 3D Stadium!', 'success');
+          }
+        });
+      }
+
+      openPitchMapSheet(simMode) {
+        var self = this;
+        var winPct = simMode === 'BIG' ? '82.4%' : (simMode === 'COLLAPSE' ? '31.5%' : '64.2%');
+        var bowlPct = simMode === 'BIG' ? '15.8%' : (simMode === 'COLLAPSE' ? '65.7%' : '33.0%');
+        this.openActionSheet({
+          title: '🧬 Pitch Beehive & Win Simulator',
+          bodyHtml: '<div style="margin-bottom: 0.65rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.6rem;">' +
+            '<div style="display: flex; justify-content: space-between; font-size: 0.74rem; font-weight: 700; margin-bottom: 0.35rem;">' +
+              '<span style="color: #00E599;">Batting Win: ' + winPct + '</span>' +
+              '<span style="color: #FFB800;">Tie: 2.8%</span>' +
+              '<span style="color: #00D2FF;">Bowling Win: ' + bowlPct + '</span>' +
+            '</div>' +
+            '<div style="height: 10px; border-radius: 999px; overflow: hidden; display: flex; background: rgba(255,255,255,0.1);">' +
+              '<div style="width: ' + winPct + '; background: #00E599;"></div>' +
+              '<div style="width: 2.8%; background: #FFB800;"></div>' +
+              '<div style="width: ' + bowlPct + '; background: #00D2FF;"></div>' +
+            '</div>' +
+            '</div>' +
+            '<div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.45rem;">Pitch Length Zones: Good Length (42%) • Full (24%) • Yorker (18%) • Short (16%)</div>' +
+            '<div style="display: flex; gap: 0.35rem;">' +
+              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet(&apos;BIG&apos;)" style="flex: 1; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.4); color: #00E599; border-radius: 6px; padding: 0.4rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Simulate 18-run big over">⚡ +18r Over</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet(&apos;COLLAPSE&apos;)" style="flex: 1; background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.4); color: #FF8099; border-radius: 6px; padding: 0.4rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Simulate double wicket collapse">💥 2 Wickets</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet(&apos;LIVE&apos;)" style="flex: 1; background: rgba(0,210,255,0.15); border: 1px solid rgba(0,210,255,0.4); color: #00D2FF; border-radius: 6px; padding: 0.4rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Reset to live match state">🔄 Live State</button>' +
+            '</div>',
+          confirmText: 'Done ✓',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            self.closeActionSheet();
+          }
+        });
+      }
+
+      openPlayerAuctionSheet(bidAmount) {
+        var self = this;
+        var currentBid = bidAmount || 240000;
+        this.openActionSheet({
+          title: '🔨 Live Player Auction & RTM Room',
+          bodyHtml: '<div style="background: linear-gradient(135deg, rgba(168,85,247,0.16), rgba(0,229,153,0.12)); border: 1px solid rgba(168,85,247,0.45); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.65rem;">' +
+            '<div style="font-size: 0.65rem; font-weight: 800; color: #00E599;">LOT #1 • MARQUEE ALL-ROUNDER</div>' +
+            '<div style="font-size: 1.15rem; font-weight: 800; color: #f8fafc; margin: 0.15rem 0;">Hardik Patel (AI Val: 97/100)</div>' +
+            '<div style="font-size: 1.35rem; font-weight: 800; font-family: Chakra Petch, monospace; color: #00E599;">Current Bid: ₹' + currentBid.toLocaleString('en-IN') + '</div>' +
+            '<div style="font-size: 0.72rem; color: #00D2FF;">Leading Franchise: Royal Strikers • Purse Left: ₹9,10,000</div>' +
+            '</div>' +
+            '<div style="display: flex; gap: 0.4rem; margin-bottom: 0.45rem;">' +
+              '<button type="button" onclick="window.cricosMobileApp.openPlayerAuctionSheet(' + (currentBid + 10000) + ')" style="flex: 1; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.4); color: #00E599; border-radius: 6px; padding: 0.42rem; font-size: 0.7rem; font-weight: 700;" data-tooltip="Bid +10K for Royal Strikers">🙋‍♂️ +₹10K Bid</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openPlayerAuctionSheet(' + (currentBid + 25000) + ')" style="flex: 1; background: rgba(0,210,255,0.15); border: 1px solid rgba(0,210,255,0.4); color: #00D2FF; border-radius: 6px; padding: 0.42rem; font-size: 0.7rem; font-weight: 700;" data-tooltip="Bid +25K for Titan XI">🚀 +₹25K Bid</button>' +
+            '</div>',
+          confirmText: '🔨 Strike Gavel: SOLD!',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            self.showToast('🔨 SOLD! Hardik Patel drafted for ₹' + currentBid.toLocaleString('en-IN') + '!', 'success');
+            self.closeActionSheet();
+          }
+        });
+      }
+
       generateFixtures() {
         this.showToast('📅 Round-Robin Brackets Generated: 8 teams, 28 matches with temporal GiST conflict prevention.', 'success');
       }
@@ -5859,7 +5974,10 @@ export function getMobileAppHtml(): string {
         h += '<span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 9999px;">🔴 LIVE MATCH</span>';
         h += '<span style="font-size: 0.68rem; color: #94a3b8;">Wankhede Stadium</span>';
         h += '</div>';
-        h += '<div style="display: flex; gap: 0.3rem;">';
+        h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); color: #00E599; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open 11-Fielder Tactical Radar & MCC Law 28.4 Engine" aria-label="Field Planner">🎯 Field Radar</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open Pitch Beehive Map & Monte Carlo Win Simulator" aria-label="Pitch and Win Simulator">🧬 Pitch & Win</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.openPlayerAuctionSheet()" style="background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.35); color: #C084FC; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open Live Player Auction Gavel & Salary Purse" aria-label="Player Auction Room">🔨 Auction</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.openDrsReviewSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Launch Hawk-Eye DRS Review" aria-label="Hawk-Eye DRS Review">📡 Hawk-Eye</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.openDlsCalculatorSheet()" style="background: rgba(255, 184, 0, 0.12); border: 1px solid rgba(255, 184, 0, 0.35); color: #FFB800; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open Duckworth-Lewis-Stern target calculator" aria-label="DLS Calculator">🌧️ DLS Target</button>';
         h += '</div></div>';
@@ -7121,6 +7239,7 @@ export function getMobileAppHtml(): string {
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
         h += '</div>';
         h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+        h += '<button type="button" id="btnMobileCommandSearch" onclick="window.cricosMobileApp.openCommandPaletteSheet()" style="background: rgba(0, 210, 255, 0.12); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35); padding: 0.2rem 0.45rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Open Mobile Command Palette & Omnisearch (⌘K)" aria-label="Open Command Palette">🔍 ⌘K</button>';
         h += '<button type="button" id="btnMobileSoundToggle" onclick="window.cricosMobileApp.toggleSound()" style="background: rgba(255,255,255,0.06); color: ' + (this.soundEnabled ? '#00E599' : '#64748b') + '; border: 1px solid rgba(255,255,255,0.12); padding: 0.2rem 0.45rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;" data-tooltip="Toggle Web Audio synthesized sound FX">' + (this.soundEnabled ? '🔊' : '🔇') + '</button>';
         h += '<button type="button" id="btnMobilePersonaSwitch" onclick="window.cricosMobileApp.openPersonaSheet()" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch persona sheet">' + this.profile.persona + ' ▾</button>';
         h += '</div></header>';
