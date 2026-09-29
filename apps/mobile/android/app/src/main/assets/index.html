@@ -4136,21 +4136,46 @@
         });
       }
 
+      getBatterStance(name) {
+        if (!name || name === 'ALL') {
+          if (this.matchState && this.matchState.striker && this.matchState.striker.stance) {
+            return this.matchState.striker.stance;
+          }
+          return this.currentStance || 'RHB';
+        }
+        if (this.matchState) {
+          if (this.matchState.striker && this.matchState.striker.name === name && this.matchState.striker.stance) {
+            return this.matchState.striker.stance;
+          }
+          if (this.matchState.nonStriker && this.matchState.nonStriker.name === name && this.matchState.nonStriker.stance) {
+            return this.matchState.nonStriker.stance;
+          }
+        }
+        var n = String(name);
+        if (n.indexOf('Rohit') !== -1 || n.indexOf('Hardik') !== -1 || n.indexOf('Rishabh') !== -1 || n.indexOf('Jadeja') !== -1) {
+          return 'LHB';
+        }
+        return 'RHB';
+      }
+
       syncStanceFromStriker() {
         if (this.matchState && this.matchState.striker) {
           var s = this.matchState.striker;
-          if (s.stance) {
-            this.currentStance = s.stance;
-          } else {
-            this.currentStance = (s.name && s.name.indexOf('Rohit') !== -1) ? 'LHB' : 'RHB';
-            s.stance = this.currentStance;
+          if (!s.stance) {
+            s.stance = this.getBatterStance(s.name);
           }
+          this.currentStance = s.stance;
+          this.analyticsWagonStance = s.stance;
           this.currentBatterFilter = s.name;
+          this.analyticsWagonBatter = s.name;
+          if (window.mobileStadiumPitch && typeof window.mobileStadiumPitch.setStance === 'function') {
+            window.mobileStadiumPitch.setStance(s.stance);
+          }
         }
       }
 
-      rotateStrike() {
-        if (this.profile.persona !== 'SCORER') {
+      rotateStrike(forceSync) {
+        if (!forceSync && this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can swap strike.', 'warning');
           return;
         }
@@ -4158,7 +4183,7 @@
         this.matchState.striker = this.matchState.nonStriker;
         this.matchState.nonStriker = tmp;
         this.syncStanceFromStriker();
-        this.showToast('Strike swapped between batsmen', 'info', 1500);
+        this.showToast('Strike rotated: ' + this.matchState.striker.name + ' (' + this.currentStance + ') on strike ⚡', 'info', 1500);
         this.render();
       }
 
@@ -4218,8 +4243,14 @@
 
       setBatterStance(stance) {
         this.currentStance = stance;
-        if (this.matchState && this.matchState.striker) {
+        this.analyticsWagonStance = stance;
+        if (this.matchState && this.matchState.striker && (this.currentBatterFilter === 'ALL' || this.currentBatterFilter === this.matchState.striker.name)) {
           this.matchState.striker.stance = stance;
+        } else if (this.matchState && this.matchState.nonStriker && this.currentBatterFilter === this.matchState.nonStriker.name) {
+          this.matchState.nonStriker.stance = stance;
+        }
+        if (window.mobileStadiumPitch && typeof window.mobileStadiumPitch.setStance === 'function') {
+          window.mobileStadiumPitch.setStance(stance);
         }
         this.showToast('Stance: ' + stance + (stance === 'LHB' ? ' (Field Mirrored)' : ' (Standard)'), 'info', 1200);
         this.render();
@@ -4263,16 +4294,12 @@
 
       filterWagonBatter(name) {
         this.currentBatterFilter = name;
-        if (this.matchState) {
-          if (this.matchState.striker && this.matchState.striker.name === name && this.matchState.striker.stance) {
-            this.currentStance = this.matchState.striker.stance;
-          } else if (this.matchState.nonStriker && this.matchState.nonStriker.name === name && this.matchState.nonStriker.stance) {
-            this.currentStance = this.matchState.nonStriker.stance;
-          } else if (name === 'Rohit S.' || name === 'Hardik P.') {
-            this.currentStance = 'LHB';
-          } else if (name === 'Virat K.') {
-            this.currentStance = 'RHB';
-          }
+        this.analyticsWagonBatter = name;
+        var resolvedStance = this.getBatterStance(name);
+        this.currentStance = resolvedStance;
+        this.analyticsWagonStance = resolvedStance;
+        if (window.mobileStadiumPitch && typeof window.mobileStadiumPitch.setStance === 'function') {
+          window.mobileStadiumPitch.setStance(resolvedStance);
         }
         this.render();
       }
@@ -4705,6 +4732,13 @@
 
       filterAnalyticsWagonBatter(batter) {
         this.analyticsWagonBatter = batter;
+        this.currentBatterFilter = batter;
+        var resolvedStance = this.getBatterStance(batter);
+        this.analyticsWagonStance = resolvedStance;
+        this.currentStance = resolvedStance;
+        if (window.mobileStadiumPitch && typeof window.mobileStadiumPitch.setStance === 'function') {
+          window.mobileStadiumPitch.setStance(resolvedStance);
+        }
         this.render();
       }
 
@@ -5212,13 +5246,14 @@
         h += '</div>';
         h += '</div>';
 
-        h += '<div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.65rem; align-items: center;">';
+        h += '<div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.45rem; align-items: center;">';
         
         var batters = ['ALL', 'Virat K.', 'Rohit S.'];
         for (var bi = 0; bi < batters.length; bi++) {
           var bName = batters[bi];
           var isBActive = this.analyticsWagonBatter === bName;
-          h += '<button type="button" class="mobile-chip' + (isBActive ? ' active' : '') + '" style="font-size: 0.68rem; padding: 0.25rem 0.55rem;" onclick="window.cricosMobileApp.filterAnalyticsWagonBatter(this.dataset.batter)" data-batter="' + bName + '" data-tooltip="Filter shots for ' + bName + '">' + (bName === 'ALL' ? 'All Batters' : bName) + '</button>';
+          var bStanceTag = bName === 'ALL' ? '' : (' [' + this.getBatterStance(bName) + ']');
+          h += '<button type="button" class="mobile-chip' + (isBActive ? ' active' : '') + '" style="font-size: 0.68rem; padding: 0.25rem 0.55rem;" onclick="window.cricosMobileApp.filterAnalyticsWagonBatter(this.dataset.batter)" data-batter="' + bName + '" data-tooltip="Filter shots for ' + bName + bStanceTag + '">' + (bName === 'ALL' ? 'All Batters' : (bName + bStanceTag)) + '</button>';
         }
 
         var shotTypes = [
@@ -5233,6 +5268,8 @@
           h += '<button type="button" class="mobile-chip' + (isStActive ? ' active' : '') + '" style="font-size: 0.68rem; padding: 0.25rem 0.55rem;" onclick="window.cricosMobileApp.filterAnalyticsWagonShotType(this.dataset.shottype)" data-shottype="' + st.id + '" data-tooltip="Filter shots by ' + st.label + '">' + st.label + '</button>';
         }
         h += '</div>';
+
+        h += '<div id="mobileAnalyticsWagonOrientation" style="text-align: center; font-size: 0.65rem; font-weight: 800; font-family: Chakra Petch, monospace; color: ' + (isLhb ? '#00D2FF' : '#00E599') + '; margin-bottom: 0.4rem;">' + (isLhb ? 'LHB ORIENTATION: ◀ ON-SIDE (Left) | OFF-SIDE (Right) ▶' : 'RHB ORIENTATION: ◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶') + '</div>';
 
         h += '<div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.75rem;">';
         h += '<svg viewBox="0 0 320 310" width="280" height="280" xmlns="http://www.w3.org/2000/svg" style="background: #030C08; border-radius: 50%; border: 2px solid rgba(0, 229, 153, 0.4); box-shadow: 0 0 20px rgba(0, 229, 153, 0.15);">';
@@ -6458,20 +6495,22 @@
           }
 
           // 2. Active Batters on Field (Striker + Non-Striker)
+          var strikerStanceBadge = this.getBatterStance(this.matchState.striker.name);
+          var nonStrikerStanceBadge = this.getBatterStance(this.matchState.nonStriker.name);
           h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin-bottom: 0.5rem;">';
           
           // Striker Card
-          h += '<div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 10px; padding: 0.55rem 0.65rem; position: relative;" data-tooltip="Striker facing delivery">';
+          h += '<div id="mobileStrikerCard" onclick="window.cricosMobileApp.filterWagonBatter(window.cricosMobileApp.matchState.striker.name)" style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 10px; padding: 0.55rem 0.65rem; position: relative; cursor: pointer;" data-tooltip="Striker facing delivery — tap to focus Wagon Wheel on ' + this.matchState.striker.name + ' (' + strikerStanceBadge + ')">';
           h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">';
           h += '<div style="display: flex; align-items: center; gap: 0.25rem;">';
           h += '<span style="font-size: 0.65rem; color: #00E599; font-weight: 800;">STRIKER ⚡</span>';
-          h += '<span style="font-size: 0.58rem; padding: 0.08rem 0.3rem; border-radius: 3px; background: rgba(0, 229, 153, 0.2); color: #00E599; font-weight: 800;">' + this.currentStance + '</span>';
+          h += '<span id="mobileStrikerStanceBadge" style="font-size: 0.58rem; padding: 0.08rem 0.3rem; border-radius: 3px; background: rgba(0, 229, 153, 0.2); color: #00E599; font-weight: 800;">' + strikerStanceBadge + '</span>';
           h += '</div>';
           if (this.profile.persona === 'SCORER') {
-            h += '<button type="button" class="btn-swap-strike" id="btnMobileSwapStrike" onclick="window.cricosMobileApp.rotateStrike()" data-tooltip="Rotate strike manually (Scorer only)">⇄ Swap</button>';
+            h += '<button type="button" class="btn-swap-strike" id="btnMobileSwapStrike" onclick="event.stopPropagation(); window.cricosMobileApp.rotateStrike()" data-tooltip="Rotate strike manually (Scorer only)">⇄ Swap</button>';
           }
           h += '</div>';
-          h += '<div style="font-size: 0.92rem; font-weight: 800; color: #f8fafc;">' + this.matchState.striker.name + '</div>';
+          h += '<div id="mobileStrikerName" style="font-size: 0.92rem; font-weight: 800; color: #f8fafc;">' + this.matchState.striker.name + '</div>';
           h += '<div style="font-family: Chakra Petch, monospace; font-size: 1.15rem; font-weight: 800; color: #00E599; margin-top: 0.1rem;">';
           h += this.matchState.striker.runs + '* <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 600;">(' + this.matchState.striker.balls + 'b, ' + (this.matchState.striker.fours || 0) + 'x4, ' + (this.matchState.striker.sixes || 0) + 'x6)</span>';
           h += '</div>';
@@ -6480,14 +6519,14 @@
           h += '</div>';
 
           // Non-Striker Card
-          h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.55rem 0.65rem;" data-tooltip="Non-striker crease">';
+          h += '<div id="mobileNonStrikerCard" onclick="window.cricosMobileApp.filterWagonBatter(window.cricosMobileApp.matchState.nonStriker.name)" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.55rem 0.65rem; cursor: pointer;" data-tooltip="Non-striker crease — tap to focus Wagon Wheel on ' + this.matchState.nonStriker.name + ' (' + nonStrikerStanceBadge + ')">';
           h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">';
           h += '<div style="display: flex; align-items: center; gap: 0.25rem;">';
           h += '<span style="font-size: 0.65rem; color: #94a3b8; font-weight: 700;">NON-STRIKER</span>';
-          h += '<span style="font-size: 0.58rem; padding: 0.08rem 0.3rem; border-radius: 3px; background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-weight: 800;">' + (this.currentStance === 'RHB' ? 'LHB' : 'RHB') + '</span>';
+          h += '<span id="mobileNonStrikerStanceBadge" style="font-size: 0.58rem; padding: 0.08rem 0.3rem; border-radius: 3px; background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-weight: 800;">' + nonStrikerStanceBadge + '</span>';
           h += '</div>';
           h += '</div>';
-          h += '<div style="font-size: 0.92rem; font-weight: 800; color: #f8fafc;">' + this.matchState.nonStriker.name + '</div>';
+          h += '<div id="mobileNonStrikerName" style="font-size: 0.92rem; font-weight: 800; color: #f8fafc;">' + this.matchState.nonStriker.name + '</div>';
           h += '<div style="font-family: Chakra Petch, monospace; font-size: 1.15rem; font-weight: 800; color: #00D2FF; margin-top: 0.1rem;">';
           h += this.matchState.nonStriker.runs + ' <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 600;">(' + this.matchState.nonStriker.balls + 'b, ' + (this.matchState.nonStriker.fours || 0) + 'x4, ' + (this.matchState.nonStriker.sixes || 0) + 'x6)</span>';
           h += '</div>';
@@ -6655,10 +6694,22 @@
           h += '</div>';
 
           // Batter Filter Row
-          h += '<div style="display: flex; gap: 0.3rem; margin-bottom: 0.4rem; overflow-x: auto; padding-bottom: 0.15rem;">';
-          h += '<button type="button" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Virat K.' ? 'active' : '') + '" data-batter="Virat K." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Virat K.">Virat K. (' + this.matchState.striker.runs + '*)</button>';
-          h += '<button type="button" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Rohit S.' ? 'active' : '') + '" data-batter="Rohit S." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Rohit S.">Rohit S. (' + this.matchState.nonStriker.runs + ')</button>';
-          h += '<button type="button" class="wagon-pill-btn ' + (this.currentBatterFilter === 'ALL' ? 'active' : '') + '" data-batter="ALL" onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Partnership">🤝 Partnership (' + this.partnership.runs + ')</button>';
+          var viratBatterObj = (this.matchState.striker.name === 'Virat K.') ? this.matchState.striker : ((this.matchState.nonStriker.name === 'Virat K.') ? this.matchState.nonStriker : { name: 'Virat K.', runs: 54 });
+          var rohitBatterObj = (this.matchState.striker.name === 'Rohit S.') ? this.matchState.striker : ((this.matchState.nonStriker.name === 'Rohit S.') ? this.matchState.nonStriker : { name: 'Rohit S.', runs: 22 });
+          var viratIsOnStrike = (this.matchState.striker.name === 'Virat K.');
+          var rohitIsOnStrike = (this.matchState.striker.name === 'Rohit S.');
+          h += '<div id="mobileWagonBatterRow" style="display: flex; gap: 0.3rem; margin-bottom: 0.4rem; overflow-x: auto; padding-bottom: 0.15rem; align-items: center;">';
+          h += '<button type="button" id="mobileWagonBtn_Virat" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Virat K.' ? 'active' : '') + '" data-batter="Virat K." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Virat K. (RHB)">Virat K. (' + viratBatterObj.runs + (viratIsOnStrike ? '* ⚡' : '') + ') [RHB]</button>';
+          h += '<button type="button" id="mobileWagonBtn_Rohit" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Rohit S.' ? 'active' : '') + '" data-batter="Rohit S." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Rohit S. (LHB)">Rohit S. (' + rohitBatterObj.runs + (rohitIsOnStrike ? '* ⚡' : '') + ') [LHB]</button>';
+          h += '<button type="button" id="mobileWagonBtn_All" class="wagon-pill-btn ' + (this.currentBatterFilter === 'ALL' ? 'active' : '') + '" data-batter="ALL" onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Partnership">🤝 Partnership (' + this.partnership.runs + ')</button>';
+          h += '<select id="mobileWagonBatterSelect" aria-label="Select batsman for Wagon Wheel" onchange="window.cricosMobileApp.filterWagonBatter(this.value)" style="background: rgba(15,23,42,0.9); color: #f8fafc; border: 1px solid rgba(0,229,153,0.35); border-radius: 9999px; font-size: 0.62rem; font-weight: 700; padding: 0.18rem 0.45rem; cursor: pointer;" data-tooltip="Select any squad batsman to dynamically switch Wagon Wheel between RHB and LHB">';
+          h += '<option value="Virat K."' + (this.currentBatterFilter === 'Virat K.' ? ' selected' : '') + '>🏏 Virat K. (RHB)' + (viratIsOnStrike ? ' ⚡' : '') + '</option>';
+          h += '<option value="Rohit S."' + (this.currentBatterFilter === 'Rohit S.' ? ' selected' : '') + '>🏏 Rohit S. (LHB)' + (rohitIsOnStrike ? ' ⚡' : '') + '</option>';
+          h += '<option value="Rishabh P."' + (this.currentBatterFilter === 'Rishabh P.' ? ' selected' : '') + '>🏏 Rishabh P. (LHB)</option>';
+          h += '<option value="Hardik P."' + (this.currentBatterFilter === 'Hardik P.' ? ' selected' : '') + '>🏏 Hardik P. (LHB)</option>';
+          h += '<option value="Surya Y."' + (this.currentBatterFilter === 'Surya Y.' ? ' selected' : '') + '>🏏 Surya Y. (RHB)</option>';
+          h += '<option value="ALL"' + (this.currentBatterFilter === 'ALL' ? ' selected' : '') + '>🤝 Partnership Stand (ALL)</option>';
+          h += '</select>';
           h += '</div>';
 
           // Shot Filter Row

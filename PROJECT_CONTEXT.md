@@ -1,14 +1,25 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 11:50:00
-**Version:** 1.0.0-phase2br (Sidebar Navigation & Decluttered Main Area Across All Personas)  
+**Last Updated:** 2026-09-29 13:16:00
+**Version:** 1.0.0-phase2bs (Dynamic Wagon Wheel RHB / LHB Orientation Sync with Selected & On-Strike Batsman)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BR Completed — Sidebar Navigation Drawer & Decluttered Main Workspace Across All 8 Personas (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BS Completed — Dynamic Wagon Wheel RHB / LHB Orientation Synchronization Across Selected & On-Strike Batsmen (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Desktop Dynamic Wagon Wheel RHB/LHB Sync (`apps/api/src/ui/dashboard.ts`)**:
+    - Audited and unified `resolveBatterStance(batterName)`, `filterWagonBatter(batterName, btnEl)`, `swapStudioStrike()`, `updateStudioUI()`, and `filterMcWagon(batterName, btnEl, skipStudioSync)` across the Scoring Studio 2D Wagon Wheel (`#wagonWheelSvg`), 3D Stadium Viewport (`window.stadiumPitch`), and Match Center Analytics Wagon Wheel (`#mcWagonSvg`).
+    - Added `#wagonSideLegend` (`◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶` for `RHB` vs `◀ ON-SIDE (Left) | OFF-SIDE (Right) ▶` for `LHB`) and `<select id="wagonBatterSelectDropdown">` (`Virat Sharma (RHB)`, `Hardik Patel (LHB)`, `Rishabh Pant (LHB)`, `Suryakumar Yadav (RHB)`, `Rohit Verma (RHB)`, `Ravindra Jadeja (LHB)`, `ALL`) plus clickable Crease Cards (`#studioStrikerCard`, `#studioNonStrikerCard`).
+    - Fixed `updateStudioUI()` pill-overwrite bug where `#wagonBatterBtn_Virat` was previously overwritten with `Hardik Patel` upon strike swap; now `#wagonBatterBtn_Virat` remains bound to `Virat Sharma (RHB)` and `#wagonBatterBtn_Hardik` remains bound to `Hardik Patel (LHB)`, with `* ⚡` dynamically tracking the on-strike batsman.
+    - Fixed `swapStudioStrike()` so strike rotation (manual swap, odd runs `1`/`3`, over completion, or Match Center `swapMatchStrike()`) always flips `currentStance` and synchronizes `#mcWagonSvg` (`#mcWagonStanceBadge`, `#mcWagonZoneSelected`, `#mcWagonZoneLabelsGroup`).
+  - **2. Mobile / Android APK Dynamic Wagon Wheel RHB/LHB Sync (`apps/api/src/ui/mobile-view.ts`)**:
+    - Added `getBatterStance(name)` and unified `syncStanceFromStriker()`, `rotateStrike()`, `filterWagonBatter(name)`, and `filterAnalyticsWagonBatter(batter)` so selecting any batter or rotating strike immediately updates both `this.currentStance` and `this.analyticsWagonStance` (`'RHB'` vs `'LHB'`), mirrors `getWedgesForStance()`, and updates `window.mobileStadiumPitch`.
+    - Made `#mobileStrikerCard` and `#mobileNonStrikerCard` tappable to focus the Wagon Wheel on that crease batter while preserving each batter's true stance badge (`#mobileStrikerStanceBadge`, `#mobileNonStrikerStanceBadge`) and true run total, and added `<select id="mobileWagonBatterSelect">` + `#mobileAnalyticsWagonOrientation`.
+  - **3. Automated E2E Verification (`tests/test_67_wagon_wheel_dynamic_rhb_lhb_sync.py`)**:
+    - Verified via Playwright across both Desktop (`index.html?hero=1`) and Mobile/APK (`dist/mobile.html?hero=1`) that selecting batsmen via pills, dropdowns, crease cards, or analytics chips and rotating strike dynamically flips RHB/LHB stance, side legends, SVG sector wedges, and zone labels with zero console/page errors.
+- **Preceding Phase**: Phase 2BR Completed — Sidebar Navigation Drawer & Decluttered Main Workspace Across All 8 Personas (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Desktop Sidebar Navigation & Main Area Clutter Reduction (`apps/api/src/ui/dashboard.ts`)**:
     - Added `#sidebarAllowedPersonaStrip` inside `.sidebar-footer` of `#appSidebar` displaying quick-switch persona chips strictly scoped to the authenticated user's `allowedPersonas`.
     - Added `#workspaceCleanFocusBar` (`#cleanFocusPersonaTitle`, `#cleanFocusPersonaSummary`, `#btnToggleMainAreaDeclutter`) at the top of `#appMainContent` with default `window.desktopCleanFocusMode = true` (`✨ Clean Focus Mode`).

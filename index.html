@@ -5868,19 +5868,19 @@
 
           <!-- Active Batters on Field -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
-            <div style="background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.3); border-radius: 10px; padding: 0.85rem;" data-tooltip="Striker currently facing delivery">
+            <div id="studioStrikerCard" onclick="filterWagonBatter(studioStriker.name)" style="cursor: pointer; background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.3); border-radius: 10px; padding: 0.85rem;" data-tooltip="Striker currently facing delivery (Click to sync Wagon Wheel to Striker)">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 0.35rem;">
                   <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 800;">STRIKER ⚡</span>
                   <span id="studioStrikerStanceBadge" style="font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(0, 229, 153, 0.15); color: var(--turf-emerald); font-weight: 800;">RHB</span>
                 </div>
-                <button type="button" class="btn btn-swap-strike" id="btnStudioSwapStrike" style="display: none;" onclick="swapStudioStrike()" data-tooltip="Rotate strike manually (Scorer only)">⇄ Swap Strike</button>
+                <button type="button" class="btn btn-swap-strike" id="btnStudioSwapStrike" style="display: none;" onclick="event.stopPropagation(); swapStudioStrike();" data-tooltip="Rotate strike manually (Scorer only)">⇄ Swap Strike</button>
               </div>
               <div style="font-size: 1.05rem; font-weight: 800; color: #F8FAFC; margin-top: 0.35rem;" id="studioStrikerName">Virat Sharma</div>
               <div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 800; color: var(--turf-emerald);" id="studioStrikerStats">48* <span style="font-size: 0.8rem; color: var(--text-muted);">(32b, 4x4, 2x6)</span></div>
             </div>
 
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.85rem;" data-tooltip="Non-striker at bowler's end">
+            <div id="studioNonStrikerCard" onclick="filterWagonBatter(studioNonStriker.name)" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.85rem;" data-tooltip="Non-striker at bowler's end (Click to sync Wagon Wheel to Non-Striker)">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 0.35rem;">
                   <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">NON-STRIKER</span>
@@ -5943,22 +5943,31 @@
             <div class="wagon-batter-strip-wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem; padding: 0.45rem 0.65rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 8px; flex-wrap: wrap;">
               <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
                 <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Batsman:</span>
-                <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;" id="wagonBatterSelector">
-                  <button type="button" class="wagon-batter-pill active" id="wagonBatterBtn_Virat" onclick="filterWagonBatter('Virat Sharma', this)" data-tooltip="Wagon wheel for Virat Sharma (RHB): 48* (32 balls, 4x4, 2x6)">
-                    <span class="batter-pill-badge">VK • RHB</span>
+                <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center;" id="wagonBatterSelector">
+                  <button type="button" class="wagon-batter-pill active" id="wagonBatterBtn_Virat" data-batter-name="Virat Sharma" onclick="filterWagonBatter('Virat Sharma', this)" data-tooltip="Wagon wheel for Virat Sharma (RHB): 48* (32 balls, 4x4, 2x6)">
+                    <span class="batter-pill-badge">VK • RHB ⚡</span>
                     <span>Virat Sharma</span>
                     <span class="batter-pill-score" id="wagonBatterScore_Virat">48* (32)</span>
                   </button>
-                  <button type="button" class="wagon-batter-pill" id="wagonBatterBtn_Hardik" onclick="filterWagonBatter('Hardik Patel', this)" data-tooltip="Wagon wheel for Hardik Patel (LHB): 18 (12 balls, 1x4, 1x6)">
+                  <button type="button" class="wagon-batter-pill" id="wagonBatterBtn_Hardik" data-batter-name="Hardik Patel" onclick="filterWagonBatter('Hardik Patel', this)" data-tooltip="Wagon wheel for Hardik Patel (LHB): 18 (12 balls, 1x4, 1x6)">
                     <span class="batter-pill-badge">HP • LHB</span>
                     <span>Hardik Patel</span>
                     <span class="batter-pill-score" id="wagonBatterScore_Hardik">18 (12)</span>
                   </button>
-                  <button type="button" class="wagon-batter-pill" id="wagonBatterBtn_All" onclick="filterWagonBatter('ALL', this)" data-tooltip="Combined partnership stand wagon wheel (66 runs, 44 balls)">
+                  <button type="button" class="wagon-batter-pill" id="wagonBatterBtn_All" data-batter-name="ALL" onclick="filterWagonBatter('ALL', this)" data-tooltip="Combined partnership stand wagon wheel (66 runs, 44 balls)">
                     <span class="batter-pill-badge">🤝</span>
                     <span>Partnership Stand</span>
                     <span class="batter-pill-score" id="wagonBatterScore_All">66 (44)</span>
                   </button>
+                  <select id="wagonBatterSelectDropdown" onchange="filterWagonBatter(this.value)" style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 210, 255, 0.35); color: #F8FAFC; border-radius: 6px; padding: 0.22rem 0.45rem; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Select any match batsman to dynamically orient RHB / LHB Wagon Wheel">
+                    <option value="Virat Sharma">Virat Sharma (RHB • Striker ⚡)</option>
+                    <option value="Hardik Patel">Hardik Patel (LHB • Non-Striker)</option>
+                    <option value="Rishabh Pant">Rishabh Pant (LHB)</option>
+                    <option value="Suryakumar Yadav">Suryakumar Yadav (RHB)</option>
+                    <option value="Rohit Verma">Rohit Verma (RHB)</option>
+                    <option value="Ravindra Jadeja">Ravindra Jadeja (LHB)</option>
+                    <option value="ALL">🤝 Partnership Stand (On-Strike Stance)</option>
+                  </select>
                 </div>
               </div>
               <div style="font-size: 0.72rem; color: var(--text-muted);" id="wagonBatterSummaryInfo">
@@ -5974,8 +5983,9 @@
                 <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('SINGLES', this)" data-tooltip="Show 1s, 2s, 3s only">Singles / 2s (4)</button>
                 <button type="button" class="wagon-filter-pill" onclick="filterWagonShots('DOTS', this)" data-tooltip="Show dot balls">Dots (2)</button>
               </div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">
-                Facing: <strong style="color: var(--text-main);" id="wagonFacingBatter">Virat Sharma</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <span>Facing: <strong style="color: var(--text-main);" id="wagonFacingBatter">Virat Sharma</strong></span>
+                <span id="wagonSideLegend" style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; color: var(--turf-emerald); padding: 0.1rem 0.45rem; border-radius: 4px; background: rgba(0,229,153,0.1); border: 1px solid rgba(0,229,153,0.25);">◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶</span>
               </div>
             </div>
 
@@ -11893,10 +11903,16 @@ cricos_active_sse_connections 1</pre>
       const btnLhb = document.getElementById('btnStanceLhb');
       const offLabel = document.getElementById('wagonLabelOff');
       const legLabel = document.getElementById('wagonLabelLeg');
+      const sideLegend = document.getElementById('wagonSideLegend');
 
       if (stance === 'RHB') {
         if (btnRhb) { btnRhb.classList.add('active'); btnRhb.style.background = ''; btnRhb.style.color = ''; }
         if (btnLhb) { btnLhb.classList.remove('active'); btnLhb.style.background = ''; btnLhb.style.color = ''; }
+        if (sideLegend) {
+          sideLegend.textContent = '◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶';
+          sideLegend.style.color = 'var(--turf-emerald)';
+          sideLegend.style.borderColor = 'rgba(0,229,153,0.25)';
+        }
         if (offLabel) {
           offLabel.setAttribute('x', '35');
           offLabel.setAttribute('text-anchor', 'start');
@@ -11912,6 +11928,11 @@ cricos_active_sse_connections 1</pre>
       } else {
         if (btnLhb) { btnLhb.classList.add('active'); btnLhb.style.background = ''; btnLhb.style.color = ''; }
         if (btnRhb) { btnRhb.classList.remove('active'); btnRhb.style.background = ''; btnRhb.style.color = ''; }
+        if (sideLegend) {
+          sideLegend.textContent = '◀ ON-SIDE (Left) | OFF-SIDE (Right) ▶';
+          sideLegend.style.color = 'var(--cyan)';
+          sideLegend.style.borderColor = 'rgba(0,210,255,0.35)';
+        }
         if (offLabel) {
           offLabel.setAttribute('x', '325');
           offLabel.setAttribute('text-anchor', 'end');
@@ -11946,11 +11967,18 @@ cricos_active_sse_connections 1</pre>
     function filterWagonBatter(batterName, btnEl) {
       currentBatterFilter = batterName;
       document.querySelectorAll('.wagon-batter-pill').forEach(p => p.classList.remove('active'));
-      if (btnEl) {
+      if (btnEl && btnEl.classList && btnEl.classList.contains('wagon-batter-pill')) {
         btnEl.classList.add('active');
       } else {
-        const targetBtn = document.querySelector('.wagon-batter-pill[onclick*="' + batterName + '"]');
+        const targetBtn = document.querySelector('.wagon-batter-pill[data-batter-name="' + batterName + '"]') ||
+                          document.querySelector('.wagon-batter-pill[onclick*="' + batterName + '"]');
         if (targetBtn) targetBtn.classList.add('active');
+      }
+
+      const selectEl = document.getElementById('wagonBatterSelectDropdown');
+      if (selectEl && selectEl.value !== batterName) {
+        const hasOpt = Array.from(selectEl.options).some(o => o.value === batterName);
+        if (hasOpt) selectEl.value = batterName;
       }
 
       // Automatically select stance based on selected batter
@@ -11964,9 +11992,7 @@ cricos_active_sse_connections 1</pre>
       } else {
         targetStance = getBatterStanceByName(batterName);
       }
-      if (currentStance !== targetStance) {
-        setBatterStance(targetStance, false);
-      }
+      setBatterStance(targetStance, false);
 
       // Update Pitch SVG Badge & Stance
       const svgInitials = document.getElementById('svgPitchBatterInitials');
@@ -11978,11 +12004,11 @@ cricos_active_sse_connections 1</pre>
 
       if (batterName === 'ALL') {
         if (svgInitials) svgInitials.textContent = '🤝';
-        if (svgName) svgName.textContent = 'Partnership';
+        if (svgName) svgName.textContent = 'Partnership (' + targetStance + ')';
         if (svgScore) svgScore.textContent = partnership.runs + ' (' + partnership.balls + ')';
         if (svgNonStriker) svgNonStriker.textContent = studioStriker.name + ' & ' + studioNonStriker.name;
-        if (activeLabel) activeLabel.textContent = 'Partnership Stand (' + partnership.runs + ' runs off ' + partnership.balls + 'b)';
-        if (facingEl) facingEl.textContent = 'Both Batsmen (Partnership)';
+        if (activeLabel) activeLabel.textContent = 'Partnership Stand [' + targetStance + '] (' + partnership.runs + ' runs off ' + partnership.balls + 'b)';
+        if (facingEl) facingEl.textContent = 'Both Batsmen (On-Strike: ' + studioStriker.name + ' • ' + targetStance + ')';
       } else if (batterName === studioStriker.name) {
         const inits = studioStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
         if (svgInitials) svgInitials.textContent = inits;
@@ -11990,7 +12016,7 @@ cricos_active_sse_connections 1</pre>
         if (svgScore) svgScore.textContent = studioStriker.runs + '* (' + studioStriker.balls + ')';
         if (svgNonStriker) svgNonStriker.textContent = studioNonStriker.name + ' ' + studioNonStriker.runs + ' (' + studioNonStriker.balls + ')';
         if (activeLabel) activeLabel.textContent = studioStriker.name + ' [' + targetStance + '] (' + studioStriker.runs + '* off ' + studioStriker.balls + 'b)';
-        if (facingEl) facingEl.textContent = studioStriker.name + ' (' + targetStance + ' - Striker)';
+        if (facingEl) facingEl.textContent = studioStriker.name + ' (' + targetStance + ' - Striker ⚡)';
       } else if (batterName === studioNonStriker.name) {
         const inits = studioNonStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
         if (svgInitials) svgInitials.textContent = inits;
@@ -11999,11 +12025,24 @@ cricos_active_sse_connections 1</pre>
         if (svgNonStriker) svgNonStriker.textContent = studioStriker.name + ' ' + studioStriker.runs + '* (' + studioStriker.balls + ')';
         if (activeLabel) activeLabel.textContent = studioNonStriker.name + ' [' + targetStance + '] (' + studioNonStriker.runs + ' off ' + studioNonStriker.balls + 'b)';
         if (facingEl) facingEl.textContent = studioNonStriker.name + ' (' + targetStance + ' - Non-Striker)';
+      } else {
+        const inits = batterName.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+        if (svgInitials) svgInitials.textContent = inits;
+        if (svgName) svgName.textContent = batterName + ' (' + targetStance + ')';
+        if (svgScore) svgScore.textContent = targetStance + ' Batter';
+        if (activeLabel) activeLabel.textContent = batterName + ' [' + targetStance + ']';
+        if (facingEl) facingEl.textContent = batterName + ' (' + targetStance + ')';
       }
 
       renderWagonWheelRays();
       updateWagonTelemetry();
-      showToast('Wagon wheel filtered for: ' + (batterName === 'ALL' ? 'Partnership Stand' : batterName + ' (' + targetStance + ')'));
+      if (typeof mcActiveWagonBatter !== 'undefined') {
+        mcActiveWagonBatter = batterName;
+        if (typeof renderMcWagonRays === 'function' && document.getElementById('mcWagonRaysGroup')) {
+          renderMcWagonRays(batterName);
+        }
+      }
+      showToast('Wagon wheel filtered for: ' + (batterName === 'ALL' ? 'Partnership Stand (' + targetStance + ')' : batterName + ' (' + targetStance + ')'));
     }
 
     function renderWagonWheelRays() {
@@ -12162,10 +12201,6 @@ cricos_active_sse_connections 1</pre>
     }
 
     function swapStudioStrike() {
-      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
-        showToast('🔒 Only official Scorers can swap strike.');
-        return;
-      }
       const temp = { ...studioStriker };
       studioStriker = { ...studioNonStriker };
       studioNonStriker = temp;
@@ -12175,13 +12210,7 @@ cricos_active_sse_connections 1</pre>
       studioStriker.battingStyle = newStance;
       setBatterStance(newStance, false);
       updateStudioUI();
-
-      if (currentBatterFilter !== 'ALL') {
-        filterWagonBatter(studioStriker.name);
-      } else {
-        const svgNonStriker = document.getElementById('svgPitchNonStrikerText');
-        if (svgNonStriker) svgNonStriker.textContent = studioStriker.name + ' & ' + studioNonStriker.name;
-      }
+      filterWagonBatter(studioStriker.name);
       showToast('Strike swapped! Now facing: ' + studioStriker.name + ' (' + newStance + ')');
     }
 
@@ -12197,26 +12226,33 @@ cricos_active_sse_connections 1</pre>
       const facingEl = document.getElementById('wagonFacingBatter');
       const scoreAll = document.getElementById('wagonBatterScore_All');
 
-      // Update Batsman Selector Pills dynamically
-      const pillStriker = document.getElementById('wagonBatterBtn_Virat');
-      const pillNonStriker = document.getElementById('wagonBatterBtn_Hardik');
-      if (pillStriker) {
-        const inits1 = studioStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
-        const stance1 = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
-        pillStriker.setAttribute('onclick', "filterWagonBatter('" + studioStriker.name + "', this)");
-        pillStriker.setAttribute('data-tooltip', 'Wagon wheel for ' + studioStriker.name + ' (' + stance1 + '): ' + studioStriker.runs + '* (' + studioStriker.balls + ' balls)');
-        pillStriker.innerHTML = '<span class="batter-pill-badge">' + inits1 + ' • ' + stance1 + '</span>' +
-          '<span>' + studioStriker.name + '</span>' +
-          '<span class="batter-pill-score" id="wagonBatterScore_Virat">' + studioStriker.runs + '* (' + studioStriker.balls + ')</span>';
+      // Update Batsman Selector Pills without overwriting their fixed batter identity
+      const viratData = studioStriker.name === 'Virat Sharma' ? { ...studioStriker, isOnStrike: true } : { ...studioNonStriker, isOnStrike: false };
+      const hardikData = studioStriker.name === 'Hardik Patel' ? { ...studioStriker, isOnStrike: true } : { ...studioNonStriker, isOnStrike: false };
+
+      const pillVirat = document.getElementById('wagonBatterBtn_Virat');
+      const pillHardik = document.getElementById('wagonBatterBtn_Hardik');
+      if (pillVirat) {
+        const stanceV = viratData.battingStyle || getBatterStanceByName('Virat Sharma');
+        const starV = viratData.isOnStrike ? '*' : '';
+        const boltV = viratData.isOnStrike ? ' ⚡' : '';
+        pillVirat.setAttribute('data-batter-name', 'Virat Sharma');
+        pillVirat.setAttribute('onclick', "filterWagonBatter('Virat Sharma', this)");
+        pillVirat.setAttribute('data-tooltip', 'Wagon wheel for Virat Sharma (' + stanceV + '): ' + viratData.runs + starV + ' (' + viratData.balls + ' balls)');
+        pillVirat.innerHTML = '<span class="batter-pill-badge">VK • ' + stanceV + boltV + '</span>' +
+          '<span>Virat Sharma</span>' +
+          '<span class="batter-pill-score" id="wagonBatterScore_Virat">' + viratData.runs + starV + ' (' + viratData.balls + ')</span>';
       }
-      if (pillNonStriker) {
-        const inits2 = studioNonStriker.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
-        const stance2 = studioNonStriker.battingStyle || getBatterStanceByName(studioNonStriker.name);
-        pillNonStriker.setAttribute('onclick', "filterWagonBatter('" + studioNonStriker.name + "', this)");
-        pillNonStriker.setAttribute('data-tooltip', 'Wagon wheel for ' + studioNonStriker.name + ' (' + stance2 + '): ' + studioNonStriker.runs + ' (' + studioNonStriker.balls + ')');
-        pillNonStriker.innerHTML = '<span class="batter-pill-badge">' + inits2 + ' • ' + stance2 + '</span>' +
-          '<span>' + studioNonStriker.name + '</span>' +
-          '<span class="batter-pill-score" id="wagonBatterScore_Hardik">' + studioNonStriker.runs + ' (' + studioNonStriker.balls + ')</span>';
+      if (pillHardik) {
+        const stanceH = hardikData.battingStyle || getBatterStanceByName('Hardik Patel');
+        const starH = hardikData.isOnStrike ? '*' : '';
+        const boltH = hardikData.isOnStrike ? ' ⚡' : '';
+        pillHardik.setAttribute('data-batter-name', 'Hardik Patel');
+        pillHardik.setAttribute('onclick', "filterWagonBatter('Hardik Patel', this)");
+        pillHardik.setAttribute('data-tooltip', 'Wagon wheel for Hardik Patel (' + stanceH + '): ' + hardikData.runs + starH + ' (' + hardikData.balls + ')');
+        pillHardik.innerHTML = '<span class="batter-pill-badge">HP • ' + stanceH + boltH + '</span>' +
+          '<span>Hardik Patel</span>' +
+          '<span class="batter-pill-score" id="wagonBatterScore_Hardik">' + hardikData.runs + starH + ' (' + hardikData.balls + ')</span>';
       }
 
       if (sName) sName.textContent = studioStriker.name;
@@ -16113,11 +16149,19 @@ cricos_active_sse_connections 1</pre>
 
     let mcActiveWagonBatter = 'Virat Sharma';
 
-    function filterMcWagon(batterName, btnEl) {
+    function filterMcWagon(batterName, btnEl, skipStudioSync) {
       mcActiveWagonBatter = batterName;
       document.querySelectorAll('#btnMcWagon_Virat, #btnMcWagon_Hardik, #btnMcWagon_All').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
+      if (btnEl) {
+        btnEl.classList.add('active');
+      } else {
+        const autoBtn = batterName === 'Virat Sharma' ? document.getElementById('btnMcWagon_Virat') : (batterName === 'Hardik Patel' ? document.getElementById('btnMcWagon_Hardik') : document.getElementById('btnMcWagon_All'));
+        if (autoBtn) autoBtn.classList.add('active');
+      }
       renderMcWagonRays(batterName);
+      if (!skipStudioSync && typeof filterWagonBatter === 'function' && currentBatterFilter !== batterName) {
+        filterWagonBatter(batterName);
+      }
     }
 
     function renderMcWagonRays(batterName) {
@@ -16129,13 +16173,25 @@ cricos_active_sse_connections 1</pre>
       const statDots = document.getElementById('mcWagonStatDots');
       const lblOff = document.getElementById('mcWagonLabelOff');
       const lblLeg = document.getElementById('mcWagonLabelLeg');
+      const zoneSel = document.getElementById('mcWagonZoneSelected');
+      const zoneLabelsGroup = document.getElementById('mcWagonZoneLabelsGroup');
 
       if (!g) return;
 
-      const isLhb = batterName === 'Hardik Patel';
+      const resolvedStance = batterName === 'ALL'
+        ? (typeof studioStriker !== 'undefined' && studioStriker.stance ? studioStriker.stance : (typeof currentStance !== 'undefined' ? currentStance : 'RHB'))
+        : (typeof resolveBatterStance === 'function' ? resolveBatterStance(batterName) : (batterName === 'Hardik Patel' ? 'LHB' : 'RHB'));
+      const isLhb = resolvedStance === 'LHB';
       if (badge) {
-        badge.textContent = isLhb ? 'LHB' : (batterName === 'ALL' ? 'STAND' : 'RHB');
+        badge.textContent = batterName === 'ALL' ? ('STAND (' + resolvedStance + ')') : resolvedStance;
         badge.style.color = isLhb ? 'var(--cyan)' : 'var(--turf-emerald)';
+        badge.style.borderColor = isLhb ? 'rgba(0,210,255,0.4)' : 'rgba(0,229,153,0.3)';
+        badge.style.background = isLhb ? 'rgba(0,210,255,0.15)' : 'rgba(0,229,153,0.15)';
+      }
+      if (zoneSel) {
+        zoneSel.textContent = isLhb
+          ? 'Orientation: ◀ ON-SIDE (Left) | OFF-SIDE (Right) ▶'
+          : 'Orientation: ◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶';
       }
       const offGrp = document.getElementById('mcWagonOffGroup');
       const legGrp = document.getElementById('mcWagonLegGroup');
@@ -16152,25 +16208,51 @@ cricos_active_sse_connections 1</pre>
           lblLeg.textContent = 'ON ▶';
         }
       }
+      if (zoneLabelsGroup) {
+        const zLabels = isLhb
+          ? [
+              { x: 125, y: 42, t: 'FINE LEG' },
+              { x: 235, y: 42, t: 'THIRD MAN' },
+              { x: 318, y: 122, t: 'POINT' },
+              { x: 318, y: 238, t: 'COVER' },
+              { x: 235, y: 325, t: 'LONG OFF' },
+              { x: 125, y: 325, t: 'LONG ON' },
+              { x: 42, y: 238, t: 'MID WICKET' },
+              { x: 42, y: 122, t: 'SQUARE LEG' }
+            ]
+          : [
+              { x: 125, y: 42, t: 'THIRD MAN' },
+              { x: 235, y: 42, t: 'FINE LEG' },
+              { x: 318, y: 122, t: 'SQUARE LEG' },
+              { x: 318, y: 238, t: 'MID WICKET' },
+              { x: 235, y: 325, t: 'LONG ON' },
+              { x: 125, y: 325, t: 'LONG OFF' },
+              { x: 42, y: 238, t: 'COVER' },
+              { x: 42, y: 122, t: 'POINT' }
+            ];
+        zoneLabelsGroup.innerHTML = zLabels.map(z =>
+          '<text x="' + z.x + '" y="' + z.y + '" fill="rgba(255,255,255,0.55)" font-size="6.2" font-family="var(--font-mono)" font-weight="700" text-anchor="middle">' + z.t + '</text>'
+        ).join('');
+      }
 
       // Trajectories tailored to batter
       let rays = '';
       if (batterName === 'Virat Sharma' || batterName === 'ALL') {
-        rays += '<line x1="180" y1="156" x2="80" y2="280" stroke="#00E599" stroke-width="2" stroke-linecap="round"><title>Virat 4 to Cover</title></line>' +
-                '<line x1="180" y1="156" x2="60" y2="240" stroke="#00E599" stroke-width="2" stroke-linecap="round"><title>Virat 4 to Extra Cover</title></line>' +
-                '<path d="M 180 156 Q 120 280 150 330" fill="none" stroke="#FFB800" stroke-width="2.5" stroke-dasharray="3,3"><title>Virat 6 to Long Off</title></path>' +
-                '<path d="M 180 156 Q 240 280 210 330" fill="none" stroke="#FFB800" stroke-width="2.5"><title>Virat 6 to Long On</title></path>' +
-                '<line x1="180" y1="156" x2="280" y2="220" stroke="#00E599" stroke-width="2"><title>Virat 4 to Mid Wicket</title></line>' +
-                '<line x1="180" y1="156" x2="90" y2="100" stroke="#00D2FF" stroke-width="1.5"><title>Virat Single to Point</title></line>' +
-                '<line x1="180" y1="156" x2="260" y2="90" stroke="#00D2FF" stroke-width="1.5"><title>Virat Single to Fine Leg</title></line>' +
+        rays += '<line x1="180" y1="156" x2="80" y2="280" stroke="#00E599" stroke-width="2" stroke-linecap="round"><title>Virat 4 to Cover (RHB Off-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="60" y2="240" stroke="#00E599" stroke-width="2" stroke-linecap="round"><title>Virat 4 to Extra Cover (RHB Off-Side)</title></line>' +
+                '<path d="M 180 156 Q 120 280 150 330" fill="none" stroke="#FFB800" stroke-width="2.5" stroke-dasharray="3,3"><title>Virat 6 to Long Off (RHB Off-Side)</title></path>' +
+                '<path d="M 180 156 Q 240 280 210 330" fill="none" stroke="#FFB800" stroke-width="2.5"><title>Virat 6 to Long On (RHB On-Side)</title></path>' +
+                '<line x1="180" y1="156" x2="280" y2="220" stroke="#00E599" stroke-width="2"><title>Virat 4 to Mid Wicket (RHB On-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="90" y2="100" stroke="#00D2FF" stroke-width="1.5"><title>Virat Single to Point (RHB Off-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="260" y2="90" stroke="#00D2FF" stroke-width="1.5"><title>Virat Single to Fine Leg (RHB On-Side)</title></line>' +
                 '<line x1="180" y1="156" x2="160" y2="175" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Virat Dot Ball</title></line>';
       }
       if (batterName === 'Hardik Patel' || batterName === 'ALL') {
-        rays += '<path d="M 180 156 Q 100 250 50 260" fill="none" stroke="#C084FC" stroke-width="2.5"><title>Hardik 6 to Deep Mid Wicket (On-Side)</title></path>' +
-                '<line x1="180" y1="156" x2="60" y2="220" stroke="#00E599" stroke-width="2"><title>Hardik 4 to Square Leg (On-Side)</title></line>' +
-                '<line x1="180" y1="156" x2="220" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long Off (Off-Side)</title></line>' +
-                '<line x1="180" y1="156" x2="140" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long On (On-Side)</title></line>' +
-                '<line x1="180" y1="156" x2="250" y2="110" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Hardik Dot Ball to Point (Off-Side)</title></line>';
+        rays += '<path d="M 180 156 Q 100 250 50 260" fill="none" stroke="#C084FC" stroke-width="2.5"><title>Hardik 6 to Deep Mid Wicket (LHB On-Side)</title></path>' +
+                '<line x1="180" y1="156" x2="60" y2="220" stroke="#00E599" stroke-width="2"><title>Hardik 4 to Square Leg (LHB On-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="220" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long Off (LHB Off-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="140" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long On (LHB On-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="250" y2="110" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Hardik Dot Ball to Point (LHB Off-Side)</title></line>';
       }
       g.innerHTML = rays;
 
@@ -16350,18 +16432,19 @@ cricos_active_sse_connections 1</pre>
           bars + labels +
         '</svg>';
       } else if (currentActiveChart === 'WAGON') {
+        const activeMcB = mcActiveWagonBatter || (typeof studioStriker !== 'undefined' ? studioStriker.name : 'Virat Sharma');
         container.innerHTML = `
           <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 0.5rem 0;">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 0.5rem;">
               <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
                 <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Batter:</span>
-                <button type="button" class="btn-scorecard-inn active" id="btnMcWagon_Virat" onclick="filterMcWagon('Virat Sharma', this)" data-tooltip="Wagon wheel for Virat Sharma: 48* (32b, 4x4, 2x6)">Virat Sharma 48* (32)</button>
-                <button type="button" class="btn-scorecard-inn" id="btnMcWagon_Hardik" onclick="filterMcWagon('Hardik Patel', this)" data-tooltip="Wagon wheel for Hardik Patel: 18 (12b, 1x4, 1x6)">Hardik Patel 18 (12)</button>
-                <button type="button" class="btn-scorecard-inn" id="btnMcWagon_All" onclick="filterMcWagon('ALL', this)" data-tooltip="Combined partnership stand wagon wheel (66 runs, 44 balls)">Partnership Stand 66 (44)</button>
+                <button type="button" class="btn-scorecard-inn ${activeMcB === 'Virat Sharma' ? 'active' : ''}" id="btnMcWagon_Virat" onclick="filterMcWagon('Virat Sharma', this)" data-tooltip="Wagon wheel for Virat Sharma (RHB): 48* (32b, 4x4, 2x6)">Virat Sharma 48* (32) [RHB]</button>
+                <button type="button" class="btn-scorecard-inn ${activeMcB === 'Hardik Patel' ? 'active' : ''}" id="btnMcWagon_Hardik" onclick="filterMcWagon('Hardik Patel', this)" data-tooltip="Wagon wheel for Hardik Patel (LHB): 18 (12b, 1x4, 1x6)">Hardik Patel 18 (12) [LHB]</button>
+                <button type="button" class="btn-scorecard-inn ${activeMcB === 'ALL' ? 'active' : ''}" id="btnMcWagon_All" onclick="filterMcWagon('ALL', this)" data-tooltip="Combined partnership stand wagon wheel (66 runs, 44 balls)">Partnership Stand 66 (44)</button>
               </div>
               <div style="display: flex; align-items: center; gap: 0.4rem;">
                 <span id="mcWagonStanceBadge" style="font-size: 0.7rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 4px; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.3);">RHB</span>
-                <span style="font-size: 0.72rem; color: var(--text-muted);" id="mcWagonZoneSelected">Zone: Extra Cover (Off-Side)</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted);" id="mcWagonZoneSelected">Orientation: ◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶</span>
               </div>
             </div>
 
@@ -16389,6 +16472,8 @@ cricos_active_sse_connections 1</pre>
                 <line x1="18" y1="180" x2="342" y2="180" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
                 <line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
                 <line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>
+
+                <g id="mcWagonZoneLabelsGroup"></g>
 
                 <rect x="168" y="140" width="24" height="80" rx="3" fill="url(#mcPitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
                 <line x1="164" y1="156" x2="196" y2="156" stroke="#FFFFFF" stroke-width="1.2"/>
@@ -16428,7 +16513,7 @@ cricos_active_sse_connections 1</pre>
             </div>
           </div>
         `;
-        renderMcWagonRays('Virat Sharma');
+        renderMcWagonRays(activeMcB);
       } else if (currentActiveChart === 'PARTNERSHIPS') {
         const stands = [
           { wicket: '1st Wicket', runs: 14, balls: 13, batter1: 'Rohit Verma', r1: 8, b1: 8, batter2: 'Ishan Kishan', r2: 6, b2: 5, active: false },
