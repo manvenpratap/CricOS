@@ -5839,13 +5839,20 @@
         <!-- Studio Pad & Ball Logger -->
         <div class="card" id="cardStudioKeypad">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <div class="card-title">🎯 Scorer Studio & Tactical Pad</div>
-            <span class="rate-badge" id="studioModePill" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">TACTICAL SCORER MODE</span>
+            <div class="card-title" id="studioCardTitle">👑 Captain Crease &amp; Tactical Command</div>
+            <span class="rate-badge" id="studioModePill" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">CAPTAIN TACTICAL MODE</span>
           </div>
-          <div class="card-desc">Select runs, trigger dismissals with fielders, or record extras with free hits</div>
-          <div id="captainTacticalNotice" style="display: none; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700;">👑 Captain Tactical View: Wagon Wheel &amp; Shot Telemetry (Official ball scoring managed by Scorer)</div>
+          <div class="card-desc" id="studioCardDesc">Live striker/non-striker crease matchups, partnership velocity, and field placement strategy (Official ball scoring reserved for Scorer)</div>
+          <div id="captainTacticalNotice" style="display: block; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.65rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700;">
+            <div style="margin-bottom: 0.45rem;">👑 Captain Tactical View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Official ball-by-ball scoring is managed exclusively by the Scorer)</div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald); border-color: rgba(0, 229, 153, 0.35);" onclick="openFieldPlannerModal()" data-tooltip="Open 11-Fielder Tactical Radar &amp; MCC Law 28.4 Engine">🎯 Field Placement Radar</button>
+              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--cyan); border-color: rgba(0, 210, 255, 0.35);" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator">🔮 Pitch &amp; Win Simulator</button>
+              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--amber); border-color: rgba(255, 184, 0, 0.35);" onclick="openTossModal()" data-tooltip="Conduct Match Toss or adjust DLS target">🪙 Toss &amp; DLS</button>
+            </div>
+          </div>
           <div id="fanTacticalNotice" style="display: none; background: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--purple-light); font-weight: 700;">🎪 Fan Spectator View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Scoring Pad disabled in spectator mode)</div>
-          <div id="adminTacticalNotice" style="display: none; background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--rose); font-weight: 700;">⚡ Non-Scorer Observation View: Scoring keypad locked. Only certified Official Scorers can input deliveries.</div>
+          <div id="adminTacticalNotice" style="display: none; background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--rose); font-weight: 700;">⚡ Non-Scorer Observation View: Scoring keypad hidden. Only certified Official Scorers can input deliveries.</div>
 
           <!-- Active Batters on Field -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
@@ -5873,7 +5880,7 @@
             </div>
           </div>
 
-          <div id="studioScoringControlsGroup">
+          <div id="studioScoringControlsGroup" style="display: none;">
             <!-- Studio Keypad -->
             <div class="studio-pad-grid">
               <button class="studio-btn pad-btn dot" data-runs="0" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery)">0<span class="studio-sublabel">Dot</span></button>
@@ -10607,11 +10614,30 @@ cricos_active_sse_connections 1</pre>
 
       // 6. Update Studio Pad modes
       const studioModePill = document.getElementById('studioModePill');
+      const studioCardTitle = document.getElementById('studioCardTitle');
+      const studioCardDesc = document.getElementById('studioCardDesc');
       const captainNotice = document.getElementById('captainTacticalNotice');
       const fanNotice = document.getElementById('fanTacticalNotice');
       const adminNotice = document.getElementById('adminTacticalNotice');
       const studioControls = document.getElementById('studioScoringControlsGroup');
       const studioSwapBtn = document.getElementById('btnStudioSwapStrike');
+
+      if (studioCardTitle) {
+        if (role === 'SCORER') {
+          studioCardTitle.textContent = '🎯 Scorer Studio & Tactical Pad';
+        } else if (role === 'CAPTAIN') {
+          studioCardTitle.textContent = '👑 Captain Crease & Tactical Command';
+        } else {
+          studioCardTitle.textContent = '📊 Live Batter Crease & Matchups';
+        }
+      }
+      if (studioCardDesc) {
+        if (role === 'SCORER') {
+          studioCardDesc.textContent = 'Select runs, trigger dismissals with fielders, or record extras with free hits';
+        } else {
+          studioCardDesc.textContent = 'Live striker/non-striker crease matchups, partnership velocity, and field placement strategy (Official ball scoring reserved for Scorer)';
+        }
+      }
 
       if (studioModePill) {
         if (role === 'CAPTAIN') {

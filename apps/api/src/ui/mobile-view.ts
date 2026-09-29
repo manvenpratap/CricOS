@@ -6137,9 +6137,9 @@ export function getMobileAppHtml(): string {
           }
           h += '</div></div>';
 
-          // 5. Tactical Scorer Studio Pad vs Persona-Tailored Match Intelligence
-          if (persona === 'SCORER' || persona === 'CAPTAIN' || persona === 'ADMIN') {
-            h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">';
+          // 5. Tactical Scorer Studio Pad (Strictly SCORER only) vs Persona-Tailored Match Intelligence
+          if (persona === 'SCORER') {
+            h += '<div id="mobileScorerStudioPad" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">';
             h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
             h += '<span style="font-size: 0.8rem;">🎯</span>';
@@ -6173,22 +6173,29 @@ export function getMobileAppHtml(): string {
             h += '<button type="button" class="btn btn-secondary" id="btnMobileStudioUndoBall" onclick="window.cricosMobileApp.undoLastDelivery()" style="width: 100%; padding: 0.45rem 0.5rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"><span style="font-size: 0.9rem;">↺</span> Undo Last Ball</button>';
             h += '</div>';
             h += '</div>';
-          } else if (persona === 'PLAYER') {
-            h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
+          } else if (persona === 'CAPTAIN' || persona === 'PLAYER') {
+            h += '<div id="mobileCaptainTacticalCenter" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">';
             h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
             h += '<span style="font-size: 0.8rem;">👑</span>';
-            h += '<span style="font-size: 0.78rem; font-weight: 800; color: #00E599; font-family: Space Grotesk, sans-serif;">Tactical Chase &amp; Strategy Center</span>';
+            h += '<span style="font-size: 0.78rem; font-weight: 800; color: #00E599; font-family: Space Grotesk, sans-serif;">' + (persona === 'CAPTAIN' ? 'Captain Tactical &amp; Field Strategy Center' : 'Tactical Chase &amp; Strategy Center') + '</span>';
             h += '</div>';
-            h += '<span style="font-size: 0.6rem; color: #00E599; background: rgba(0,229,153,0.12); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">INNINGS 2 CHASE</span>';
+            h += '<span style="font-size: 0.6rem; color: #00E599; background: rgba(0,229,153,0.12); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">' + (persona === 'CAPTAIN' ? 'CAPTAIN HUD' : 'INNINGS 2 CHASE') + '</span>';
             h += '</div>';
             h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem; margin-bottom: 0.45rem; text-align: center;">';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Target Runs</div><div style="font-weight: 800; font-size: 0.82rem; color: #00E599; font-family: Chakra Petch, monospace;">' + remainingRuns + '</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Balls Left</div><div style="font-weight: 800; font-size: 0.82rem; color: #00D2FF; font-family: Chakra Petch, monospace;">' + remainingBalls + '</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Required RR</div><div style="font-weight: 800; font-size: 0.82rem; color: #FFB800; font-family: Chakra Petch, monospace;">' + rrr + '</div></div>';
             h += '</div>';
+            if (persona === 'CAPTAIN') {
+              h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.45rem;">';
+              h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.36rem 0.4rem; font-size: 0.68rem; font-weight: 700; color: #00E599; border-color: rgba(0, 229, 153, 0.35);" onclick="window.cricosMobileApp.openFieldPlannerSheet()" data-tooltip="Adjust 11-Fielder Tactical Radar &amp; Powerplay ring">🎯 Field Radar</button>';
+              h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.36rem 0.4rem; font-size: 0.68rem; font-weight: 700; color: #00D2FF; border-color: rgba(0, 210, 255, 0.35);" onclick="window.cricosMobileApp.openPitchMapSheet()" data-tooltip="Inspect Pitch Beehive &amp; Win Probability">🧬 Win Simulator</button>';
+              h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.36rem 0.4rem; font-size: 0.68rem; font-weight: 700; color: #FFB800; border-color: rgba(255, 184, 0, 0.35);" data-screen="TEAMS" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-tooltip="Manage Playing XI &amp; Toss">🏏 Playing XI</button>';
+              h += '</div>';
+            }
             h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
-            h += '<strong>Tactical Directive:</strong> Target deep mid-wicket &amp; cover corridors against spin. Maintain 8.5+ strike rotation per over. 2 boundary hitters held in reserve for death overs.';
+            h += '<strong>Tactical Directive:</strong> Target deep mid-wicket &amp; cover corridors against spin. Official ball-by-ball scoring is managed exclusively by the match Scorer.';
             h += '</div>';
             h += '</div>';
           } else if (persona === 'UMPIRE') {
@@ -6209,7 +6216,7 @@ export function getMobileAppHtml(): string {
             h += '<strong>MCC Playing Conditions:</strong> 20-minute innings break scheduled at 18:45 IST. Ball tracking camera arrays calibrated with 100% telemetry sync.';
             h += '</div>';
             h += '</div>';
-          } else if (persona === 'TURF_PROVIDER' || persona === 'ORGANISER') {
+          } else if (persona === 'TURF_PROVIDER' || persona === 'ORGANISER' || persona === 'ADMIN') {
             h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">';
             h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
