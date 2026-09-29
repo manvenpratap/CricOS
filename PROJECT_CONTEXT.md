@@ -1,14 +1,28 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 08:47:00
-**Version:** 1.0.0-phase2bo (Android APK 3D Stadium Non-Blank Perspective Engine & Live DOM Canvas Rebinding)  
+**Last Updated:** 2026-09-29 09:50:00
+**Version:** 1.0.0-phase2bp (LHB/RHB Stance, Ball Trajectory & Shot Direction Confirmation Invariants)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BO Completed — Android APK 3D Stadium Non-Blank Perspective Engine & Live DOM Canvas Rebinding (`apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BP Completed — LHB/RHB Stance, Ball Trajectory & Shot Direction Confirmation Invariants (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. True Cricket OFF-SIDE vs ON-SIDE Semantic Invariant Across RHB & LHB (`dashboard.ts` & `mobile-view.ts`)**:
+    - Fixed `selectShotZone()` and `updateWagonTelemetry()` in `apps/api/src/ui/dashboard.ts` where `const isOff = currentStance === 'RHB' ? zoneDef?.side === 'OFF' : zoneDef?.side === 'LEG';` previously inverted the side classification of fielding zones when a Left-Handed Batsman (`LHB`) came on strike (falsely labeling `Cover / Extra Cover`, `Point`, `Third Man`, `Long Off` as `ON-SIDE` and `Deep Mid Wicket`, `Deep Square Leg`, `Fine Leg`, `Long On` as `OFF-SIDE`, and swapping the Off-Side vs On-Side run ratio bar).
+    - Replaced with `const isOff = zoneDef?.side === 'OFF';` and mirrored the displayed compass angle (`displayAngle = currentStance === 'LHB' ? (360 - zoneDef.angleDeg) % 360 : zoneDef.angleDeg`) so `Cover / Extra Cover`, `Point`, `Third Man`, `Long Off` are **always `OFF-SIDE`** (`OFF`) and `Fine Leg`, `Deep Square Leg`, `Deep Mid Wicket`, `Long On` are **always `ON-SIDE`** (`ON`) regardless of batter stance, while their physical Left/Right side of the pitch mirrors accurately (`Left = ON-SIDE, Right = OFF-SIDE` for `LHB`).
+    - Added explicit `(OFF)` and `(ON)` badges (`data-side="OFF"` / `data-side="ON"`) to all 8 outer perimeter field zone buttons (`#btnZone_top_left`, `#btnZone_lower_right`, etc.) in `updateZoneElementsForStance()`.
+    - Synced `swapMatchStrike()` with `swapStudioStrike()` so rotating strike on the main Scoreboard immediately updates the Scoring Studio striker and flips `RHB` / `LHB`.
+  - **2. Mobile & APK "Select Shot Direction" Sheet, Wedge Mirroring & Spatially Aligned Confirmation Buttons (`apps/api/src/ui/mobile-view.ts`)**:
+    - Implemented `getWedgesForStance(stance)` and wired it into both `renderWagonPickerSheet()` ("Select Shot Direction" modal when scoring `0`, `1`, `2`, `3`, `4`, `6` runs) and the `Matches` tab 8-Zone Precision Wagon Wheel. Previously, the SVG sector wedges were hardcoded to `RHB` coordinates while `previewAngle` mirrored for `LHB`, causing the ball trajectory preview ray (`#wagonPickerPreviewRay`) and the highlighted wedge/button to point to opposite sides of the pitch when an `LHB` (`Rohit S.`) came on strike.
+    - Reorganized the 8 written shot-direction buttons inside `renderWagonPickerSheet()` into two side-by-side spatial columns (`#wagonPickerColLeft` and `#wagonPickerColRight`) matching the physical Left and Right sides of the pitch (`◀ ON-SIDE (Left)` with `Fine Leg`, `Sq Leg`, `Mid Wkt`, `Long On` vs `OFF-SIDE (Right) ▶` with `Third Man`, `Point`, `Cover`, `Long Off` when `LHB` is on strike), and updated `#btnConfirmWagonShot` to `Record +X to <Zone> (<OFF/ON>-SIDE) ✓`.
+    - Fixed `polarToXY()` Y-axis inversion (`y: cy - (radius * Math.cos(rad))`) and `leftLabel`/`rightLabel` (`◀ ON` / `OFF ▶`) in `renderDynamicAnalyticsWagon()`.
+  - **3. 3D Stadium Pitch Fielder & Trajectory Stance Mirroring (`dashboard.ts` & `mobile-view.ts`)**:
+    - Added `ThreeStadiumPitch.prototype.updateForStance(stance)` in `dashboard.ts` and `stanceSign` mirroring in `MobileThreeStadiumPitch.prototype.renderScene3D()` in `mobile-view.ts` so all 11 3D fielders and 3D parabolic shot trajectories mirror across the pitch (`X -> -X`) whenever an `LHB` batter is on strike.
+  - **4. Automated E2E Verification (`tests/test_63_lhb_rhb_on_off_side_trajectory_and_buttons.py`)**:
+    - Verified via Playwright across both Desktop (`index.html`) and Mobile/APK (`dist/mobile.html`) that when an `LHB` batsman comes on strike (`Hardik Patel` on Desktop, `Rohit S.` on Mobile after a single), `Cover / Extra Cover` is on the Right (`x > 180`), labeled `OFF-SIDE`, with its ball trajectory pointing Right (`endX > 180`), and `Deep Mid Wicket` is on the Left (`x < 180`), labeled `ON-SIDE`, with its ball trajectory pointing Left (`endX < 180`).
+- **Preceding Phase**: Phase 2BO Completed — Android APK 3D Stadium Non-Blank Perspective Engine & Live DOM Canvas Rebinding (`apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Live DOM `<canvas>` Rebinding After Every `StandaloneMobileApp.prototype.render()` (`apps/api/src/ui/mobile-view.ts`)**:
     - Fixed detached canvas bug where `root.innerHTML = h` inside `StandaloneMobileApp.prototype.render()` destroyed and replaced `<canvas id="mobileThreeStadiumCanvas">`, `<canvas id="mobileTrophyCanvas">`, and `<canvas id="mobileBatCanvas">` while `window.mobileStadiumPitch` / `window.mobileTrophyCabinet` / `window.mobileBatConfigurator` remained bound to the stale DOM element because `this.isInitialized` was `true`.
     - Added live DOM canvas identity checks (`if (this.canvas !== liveCanvas)`) inside `MobileThreeStadiumPitch.prototype.init()`, `MobileThreeTrophyCabinet.prototype.init()`, `MobileThreeBatConfigurator.prototype.init()`, and `StandaloneMobileApp.prototype.render()` so every camera preset (`BATSMAN`, `PITCH`, `HIGH`, `GRANDSTAND`, `PAVILION`, `UMPIRE`, `RESET`), tactical overlay (`WAGON`, `HAWKEYE`, `DRS`, `FIELD`, `FUSION`), and lighting switch (`DAY`, `DUSK`, `NIGHT`) automatically re-binds and renders to the live DOM `<canvas>`.

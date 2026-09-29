@@ -11224,16 +11224,20 @@ cricos_active_sse_connections 1</pre>
       const layout = ZONE_LAYOUT[stance] || ZONE_LAYOUT.RHB;
       Object.keys(layout).forEach(pos => {
         const info = layout[pos];
+        const sideTag = info.side === 'OFF' ? 'OFF' : 'ON';
+        const sideColor = info.side === 'OFF' ? 'var(--cyan)' : 'var(--turf-emerald)';
         const btn = document.getElementById('btnZone_' + pos);
         if (btn) {
           btn.setAttribute('data-zone', info.id);
+          btn.setAttribute('data-side', sideTag);
           btn.setAttribute('onclick', "selectShotZone('" + info.id + "', this)");
           btn.setAttribute('data-tooltip', info.tooltip);
-          btn.innerHTML = '<span>' + info.shortLabel + '</span> <span class="field-zone-runs" id="zoneRuns_' + info.id + '">0r</span>';
+          btn.innerHTML = '<span>' + info.shortLabel + ' <small style="font-size:0.6rem;color:' + sideColor + ';font-weight:800;">(' + sideTag + ')</small></span> <span class="field-zone-runs" id="zoneRuns_' + info.id + '">0r</span>';
         }
         const wedge = document.getElementById('wedge_' + pos);
         if (wedge) {
           wedge.setAttribute('data-zone', info.id);
+          wedge.setAttribute('data-side', sideTag);
           wedge.setAttribute('onclick', "selectShotZone('" + info.id + "')");
           wedge.setAttribute('data-tooltip', info.label + ' (' + (info.side === 'OFF' ? 'Off-Side' : 'On-Side') + ')');
         }
@@ -11252,12 +11256,13 @@ cricos_active_sse_connections 1</pre>
       if (matchedWedge) matchedWedge.classList.add('active');
 
       const zoneDef = SHOT_ZONES_DATA.find(z => z.id === zone);
-      const isOff = currentStance === 'RHB' ? zoneDef?.side === 'OFF' : zoneDef?.side === 'LEG';
+      const isOff = zoneDef?.side === 'OFF';
       const sideLabel = isOff ? 'OFF-SIDE' : 'ON-SIDE';
+      const displayAngle = zoneDef ? (currentStance === 'LHB' ? (360 - zoneDef.angleDeg) % 360 : zoneDef.angleDeg) : 0;
 
       const label = document.getElementById('wagonWheelSelectedZone');
       if (label && zoneDef) {
-        label.textContent = 'ZONE: ' + zoneDef.label.toUpperCase() + ' (' + sideLabel + ' • ' + Math.round(zoneDef.angleDeg) + '°)';
+        label.textContent = 'ZONE: ' + zoneDef.label.toUpperCase() + ' (' + sideLabel + ' • ' + Math.round(displayAngle) + '°)';
       }
       if (window.stadiumPitch && typeof window.stadiumPitch.highlightZone === 'function') {
         window.stadiumPitch.highlightZone(zone);
@@ -11313,6 +11318,9 @@ cricos_active_sse_connections 1</pre>
       selectShotZone(currentSelectedZone);
       renderWagonWheelRays();
       updateWagonTelemetry();
+      if (window.stadiumPitch && typeof window.stadiumPitch.updateForStance === 'function') {
+        window.stadiumPitch.updateForStance(stance);
+      }
       showToast('Batsman stance: ' + stance + ' (Off-Side & On-Side flipped dynamically)');
     }
 
@@ -11509,7 +11517,7 @@ cricos_active_sse_connections 1</pre>
           zoneRuns[s.zone] += s.runs;
         }
         const zoneDef = SHOT_ZONES_DATA.find(z => z.id === s.zone);
-        const isOff = currentStance === 'RHB' ? zoneDef?.side === 'OFF' : zoneDef?.side === 'LEG';
+        const isOff = zoneDef?.side === 'OFF';
         if (isOff) offRuns += s.runs;
         else legRuns += s.runs;
 
@@ -12694,6 +12702,18 @@ cricos_active_sse_connections 1</pre>
         }
       }
 
+      updateForStance(stance) {
+        const stanceSign = (stance === 'LHB') ? -1 : 1;
+        if (this.fieldersGroup && this.fieldersGroup.children) {
+          this.fieldersGroup.children.forEach(fielderObj => {
+            if (fielderObj && fielderObj.userData && typeof fielderObj.userData.baseX === 'number') {
+              fielderObj.position.x = fielderObj.userData.baseX * stanceSign;
+            }
+          });
+        }
+        this.renderShots();
+      }
+
       buildFielderPositions() {
         const THREE = window.THREE;
         if (!this.fieldersGroup) {
@@ -12705,20 +12725,21 @@ cricos_active_sse_connections 1</pre>
         const fielders = [
           { id: 'F-1', name: 'Mohammed Siraj', posName: 'Bowler', x: 0, z: -3.6, role: 'Fast Bowler', catchRate: '78%' },
           { id: 'F-2', name: 'KL Rahul', posName: 'Wicket Keeper', x: 0, z: 4.8, role: 'Wicketkeeper', catchRate: '96%' },
-          { id: 'F-3', name: 'Rohit Verma', posName: 'First Slip', x: 1.1, z: 4.9, role: 'Slip Specialist', catchRate: '91%' },
-          { id: 'F-4', name: 'Ravindra Singh', posName: 'Point', x: 6.8, z: 2.2, role: 'Backward Point', catchRate: '95%' },
-          { id: 'F-5', name: 'Virat Sharma', posName: 'Cover', x: 7.2, z: -1.2, role: 'Extra Cover', catchRate: '93%' },
-          { id: 'F-6', name: 'Hardik Patel', posName: 'Mid-Off', x: 2.8, z: -5.4, role: 'Mid-Off Ring', catchRate: '88%' },
-          { id: 'F-7', name: 'Axar Patel', posName: 'Mid-On', x: -2.8, z: -5.4, role: 'Mid-On Ring', catchRate: '89%' },
-          { id: 'F-8', name: 'Suryakumar Rao', posName: 'Mid-Wicket', x: -6.5, z: -1.2, role: 'Short Mid-Wicket', catchRate: '90%' },
-          { id: 'F-9', name: 'Shivam Dube', posName: 'Square Leg', x: -7.0, z: 3.2, role: 'Deep Square Ring', catchRate: '85%' },
-          { id: 'F-10', name: 'Kuldeep Yadav', posName: 'Deep Fine Leg', x: -10.8, z: 9.0, role: 'Boundary Sweeper', catchRate: '82%' },
-          { id: 'F-11', name: 'Jasprit Bumrah', posName: 'Long-Off', x: 9.8, z: -10.5, role: 'Boundary Guard', catchRate: '86%' }
+          { id: 'F-3', name: 'Rohit Verma', posName: 'First Slip', x: -1.1, z: 4.9, role: 'Slip Specialist', catchRate: '91%' },
+          { id: 'F-4', name: 'Ravindra Singh', posName: 'Point', x: -6.8, z: 2.2, role: 'Backward Point', catchRate: '95%' },
+          { id: 'F-5', name: 'Virat Sharma', posName: 'Cover', x: -7.2, z: -1.2, role: 'Extra Cover', catchRate: '93%' },
+          { id: 'F-6', name: 'Hardik Patel', posName: 'Mid-Off', x: -2.8, z: -5.4, role: 'Mid-Off Ring', catchRate: '88%' },
+          { id: 'F-7', name: 'Axar Patel', posName: 'Mid-On', x: 2.8, z: -5.4, role: 'Mid-On Ring', catchRate: '89%' },
+          { id: 'F-8', name: 'Suryakumar Rao', posName: 'Mid-Wicket', x: 6.5, z: -1.2, role: 'Short Mid-Wicket', catchRate: '90%' },
+          { id: 'F-9', name: 'Shivam Dube', posName: 'Square Leg', x: 7.0, z: 3.2, role: 'Deep Square Ring', catchRate: '85%' },
+          { id: 'F-10', name: 'Kuldeep Yadav', posName: 'Deep Fine Leg', x: 10.8, z: 9.0, role: 'Boundary Sweeper', catchRate: '82%' },
+          { id: 'F-11', name: 'Jasprit Bumrah', posName: 'Long-Off', x: -9.8, z: -10.5, role: 'Boundary Guard', catchRate: '86%' }
         ];
 
         const bodyMat = new THREE.MeshStandardMaterial({ color: 0x00E599, roughness: 0.3, metalness: 0.1 });
         const headMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.4 });
         const capMat = new THREE.MeshStandardMaterial({ color: 0x00D2FF, roughness: 0.4 });
+        const stanceSign = (typeof currentStance !== 'undefined' && currentStance === 'LHB') ? -1 : 1;
 
         fielders.forEach(f => {
           const fielderObj = new THREE.Group();
@@ -12750,10 +12771,11 @@ cricos_active_sse_connections 1</pre>
           coneMesh.position.y = 0.025;
           fielderObj.add(coneMesh);
 
-          fielderObj.position.set(f.x, 0, f.z);
+          fielderObj.position.set(f.x * stanceSign, 0, f.z);
 
           const fielderData = {
             fielder: f,
+            baseX: f.x,
             onClick: () => {
               this.selectFielder(f);
             }
@@ -15532,11 +15554,11 @@ cricos_active_sse_connections 1</pre>
                 '<line x1="180" y1="156" x2="160" y2="175" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Virat Dot Ball</title></line>';
       }
       if (batterName === 'Hardik Patel' || batterName === 'ALL') {
-        rays += '<path d="M 180 156 Q 260 250 310 260" fill="none" stroke="#C084FC" stroke-width="2.5"><title>Hardik 6 to Deep Mid Wicket</title></path>' +
-                '<line x1="180" y1="156" x2="300" y2="220" stroke="#00E599" stroke-width="2"><title>Hardik 4 to Square Leg</title></line>' +
-                '<line x1="180" y1="156" x2="140" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long Off</title></line>' +
-                '<line x1="180" y1="156" x2="220" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long On</title></line>' +
-                '<line x1="180" y1="156" x2="110" y2="110" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Hardik Dot Ball</title></line>';
+        rays += '<path d="M 180 156 Q 100 250 50 260" fill="none" stroke="#C084FC" stroke-width="2.5"><title>Hardik 6 to Deep Mid Wicket (On-Side)</title></path>' +
+                '<line x1="180" y1="156" x2="60" y2="220" stroke="#00E599" stroke-width="2"><title>Hardik 4 to Square Leg (On-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="220" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long Off (Off-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="140" y2="290" stroke="#00D2FF" stroke-width="1.5"><title>Hardik Single to Long On (On-Side)</title></line>' +
+                '<line x1="180" y1="156" x2="250" y2="110" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2,2"><title>Hardik Dot Ball to Point (Off-Side)</title></line>';
       }
       g.innerHTML = rays;
 
@@ -17512,6 +17534,24 @@ cricos_active_sse_connections 1</pre>
         showToast('🔒 Only official Scorers can swap strike.');
         return;
       }
+      const sNameEl = document.getElementById('strikerName');
+      const sFigEl = document.getElementById('strikerFigures');
+      const nsNameEl = document.getElementById('nonStrikerName');
+      const nsFigEl = document.getElementById('nonStrikerFigures');
+      if (sNameEl && nsNameEl) {
+        const tmpN = sNameEl.textContent.replace(' *', '').trim();
+        const tmpNs = nsNameEl.textContent.replace(' *', '').trim();
+        sNameEl.textContent = tmpNs + ' *';
+        nsNameEl.textContent = tmpN;
+      }
+      if (sFigEl && nsFigEl) {
+        const tmpF = sFigEl.innerHTML;
+        sFigEl.innerHTML = nsFigEl.innerHTML;
+        nsFigEl.innerHTML = tmpF;
+      }
+      if (typeof swapStudioStrike === 'function') {
+        swapStudioStrike();
+      }
       try {
         const res = await fetch('/api/v1/scoring/matches/' + matchId + '/swap-strike', {
           method: 'POST',
@@ -17520,10 +17560,9 @@ cricos_active_sse_connections 1</pre>
         if (res.ok) {
           const data = await res.json();
           renderScoreState(data.state, null, 'STRIKE_SWAPPED');
-          showToast('⚡ Strike rotated');
         }
       } catch (e) {
-        showToast('⚠️ Error swapping strike');
+        // Offline / local mode already swapped above
       }
     }
 

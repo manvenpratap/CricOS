@@ -2330,10 +2330,10 @@ export function getMobileAppHtml(): string {
         };
 
         this.SHOT_ZONES_DATA = [
-          { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 22.5, side: 'LEG' },
-          { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', angleDeg: 67.5, side: 'LEG' },
-          { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', angleDeg: 112.5, side: 'LEG' },
-          { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', angleDeg: 157.5, side: 'LEG' },
+          { id: 'FINE_LEG', label: 'Fine Leg', shortLabel: 'Fine Leg', angleDeg: 22.5, side: 'ON' },
+          { id: 'SQUARE_LEG', label: 'Deep Square Leg', shortLabel: 'Sq Leg', angleDeg: 67.5, side: 'ON' },
+          { id: 'MID_WICKET', label: 'Deep Mid Wicket', shortLabel: 'Mid Wkt', angleDeg: 112.5, side: 'ON' },
+          { id: 'LONG_ON', label: 'Long On', shortLabel: 'Long On', angleDeg: 157.5, side: 'ON' },
           { id: 'LONG_OFF', label: 'Long Off', shortLabel: 'Long Off', angleDeg: 202.5, side: 'OFF' },
           { id: 'EXTRA_COVER', label: 'Cover / Extra Cover', shortLabel: 'Cover', angleDeg: 247.5, side: 'OFF' },
           { id: 'POINT', label: 'Point', shortLabel: 'Point', angleDeg: 292.5, side: 'OFF' },
@@ -3830,17 +3830,55 @@ export function getMobileAppHtml(): string {
         this.render();
       }
 
+      getWedgesForStance(stance) {
+        var isLhb = (stance === 'LHB');
+        if (isLhb) {
+          return [
+            { id: 'FINE_LEG', d: 'M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z', name: 'Fine Leg', side: 'ON', posSide: 'LEFT' },
+            { id: 'THIRD_MAN', d: 'M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z', name: 'Third Man', side: 'OFF', posSide: 'RIGHT' },
+            { id: 'SQUARE_LEG', d: 'M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z', name: 'Deep Square Leg', side: 'ON', posSide: 'LEFT' },
+            { id: 'POINT', d: 'M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z', name: 'Point', side: 'OFF', posSide: 'RIGHT' },
+            { id: 'MID_WICKET', d: 'M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z', name: 'Deep Mid Wicket', side: 'ON', posSide: 'LEFT' },
+            { id: 'EXTRA_COVER', d: 'M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z', name: 'Extra Cover', side: 'OFF', posSide: 'RIGHT' },
+            { id: 'LONG_ON', d: 'M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z', name: 'Long On', side: 'ON', posSide: 'LEFT' },
+            { id: 'LONG_OFF', d: 'M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z', name: 'Long Off', side: 'OFF', posSide: 'RIGHT' }
+          ];
+        }
+        return [
+          { id: 'THIRD_MAN', d: 'M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z', name: 'Third Man', side: 'OFF', posSide: 'LEFT' },
+          { id: 'FINE_LEG', d: 'M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z', name: 'Fine Leg', side: 'ON', posSide: 'RIGHT' },
+          { id: 'POINT', d: 'M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z', name: 'Point', side: 'OFF', posSide: 'LEFT' },
+          { id: 'SQUARE_LEG', d: 'M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z', name: 'Deep Square Leg', side: 'ON', posSide: 'RIGHT' },
+          { id: 'EXTRA_COVER', d: 'M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z', name: 'Extra Cover', side: 'OFF', posSide: 'LEFT' },
+          { id: 'MID_WICKET', d: 'M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z', name: 'Deep Mid Wicket', side: 'ON', posSide: 'RIGHT' },
+          { id: 'LONG_OFF', d: 'M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z', name: 'Long Off', side: 'OFF', posSide: 'LEFT' },
+          { id: 'LONG_ON', d: 'M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z', name: 'Long On', side: 'ON', posSide: 'RIGHT' }
+        ];
+      }
+
       selectWagonZone(zoneId) {
         this.currentSelectedZone = zoneId;
         var self = this;
         var zoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === zoneId; });
+        var sideLabel = (zoneDef && zoneDef.side === 'OFF') ? 'OFF-SIDE' : 'ON-SIDE';
         if (navigator.vibrate) navigator.vibrate([15, 25, 20]);
-        this.showToast('🎯 Target zone: ' + (zoneDef ? zoneDef.label : zoneId), 'info', 1200);
+        this.showToast('🎯 Target zone: ' + (zoneDef ? zoneDef.label + ' (' + sideLabel + ')' : zoneId), 'info', 1200);
         this.render();
       }
 
       filterWagonBatter(name) {
         this.currentBatterFilter = name;
+        if (this.matchState) {
+          if (this.matchState.striker && this.matchState.striker.name === name && this.matchState.striker.stance) {
+            this.currentStance = this.matchState.striker.stance;
+          } else if (this.matchState.nonStriker && this.matchState.nonStriker.name === name && this.matchState.nonStriker.stance) {
+            this.currentStance = this.matchState.nonStriker.stance;
+          } else if (name === 'Rohit S.' || name === 'Hardik P.') {
+            this.currentStance = 'LHB';
+          } else if (name === 'Virat K.') {
+            this.currentStance = 'RHB';
+          }
+        }
         this.render();
       }
 
@@ -3898,10 +3936,12 @@ export function getMobileAppHtml(): string {
         var runs = this.pendingWagonRuns;
         var striker = this.matchState.striker;
         var self = this;
-        var activeZoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === self.pendingSelectedZone; }) || this.SHOT_ZONES_DATA[4];
+        var activeZoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === self.pendingSelectedZone; }) || this.SHOT_ZONES_DATA[5];
         var activeZoneLabel = activeZoneDef.label;
-        var activeZoneSide = activeZoneDef.side;
+        var activeZoneSide = activeZoneDef.side === 'OFF' ? 'OFF' : 'ON';
         var activeZoneShort = activeZoneDef.shortLabel;
+        var isLhb = (this.currentStance === 'LHB');
+        var activeDisplayAngle = Math.round(isLhb ? (360 - activeZoneDef.angleDeg) % 360 : activeZoneDef.angleDeg);
 
         var runsLabel = 'DOT (0 RUNS)';
         var runsColor = '#94a3b8';
@@ -3923,7 +3963,7 @@ export function getMobileAppHtml(): string {
         h += '<span>🎯 Select Shot Direction</span>';
         h += '<span style="font-size: 0.65rem; font-family: Chakra Petch, monospace; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.15); color: ' + runsColor + '; border: 1px solid ' + runsColor + '40;">' + runsLabel + '</span>';
         h += '</div>';
-        h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.15rem;">Batter: <strong style="color: #f8fafc;">' + striker.name + '</strong> (' + this.currentStance + ')</div>';
+        h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.15rem;">Batter: <strong style="color: #f8fafc;">' + striker.name + '</strong> (' + this.currentStance + ' • ' + (isLhb ? '◀ ON-Side | OFF-Side ▶' : '◀ OFF-Side | ON-Side ▶') + ')</div>';
         h += '</div>';
 
         h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
@@ -3939,27 +3979,18 @@ export function getMobileAppHtml(): string {
         h += '<div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.4rem 0.6rem; margin-bottom: 0.6rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
         h += '<span style="font-size: 0.8rem;">📍</span>';
-        h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.72rem; font-weight: 800; color: #00E599;" id="wagonPickerActiveZoneLabel">' + activeZoneLabel.toUpperCase() + ' (' + activeZoneSide + '-SIDE)</span>';
+        h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.72rem; font-weight: 800; color: #00E599;" id="wagonPickerActiveZoneLabel">' + activeZoneLabel.toUpperCase() + ' (' + activeZoneSide + '-SIDE • ' + activeDisplayAngle + '°)</span>';
         h += '</div>';
-        h += '<span style="font-size: 0.65rem; color: #94a3b8;">Tap sector or quick button</span>';
+        h += '<span style="font-size: 0.65rem; color: #94a3b8;">Tap sector or button</span>';
         h += '</div>';
 
-        // Sector Wedges
-        var wedges = [
-          { id: 'THIRD_MAN', d: 'M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z', name: 'Third Man' },
-          { id: 'FINE_LEG', d: 'M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z', name: 'Fine Leg' },
-          { id: 'POINT', d: 'M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z', name: 'Point' },
-          { id: 'SQUARE_LEG', d: 'M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z', name: 'Deep Square Leg' },
-          { id: 'EXTRA_COVER', d: 'M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z', name: 'Extra Cover' },
-          { id: 'MID_WICKET', d: 'M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z', name: 'Deep Mid Wicket' },
-          { id: 'LONG_OFF', d: 'M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z', name: 'Long Off' },
-          { id: 'LONG_ON', d: 'M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z', name: 'Long On' }
-        ];
+        // Sector Wedges dynamically mapped for active RHB / LHB stance
+        var wedges = this.getWedgesForStance(this.currentStance);
 
         var wedgesSvg = '';
         for (var w = 0; w < wedges.length; w++) {
           var isSel = this.pendingSelectedZone === wedges[w].id;
-          wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" onclick="window.cricosMobileApp.selectPickerZone(this.dataset.zone)" data-tooltip="Aim at ' + wedges[w].name + '"/>';
+          wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" data-side="' + wedges[w].side + '" onclick="window.cricosMobileApp.selectPickerZone(this.dataset.zone)" data-tooltip="Aim at ' + wedges[w].name + ' (' + wedges[w].side + '-Side)"/>';
         }
 
         // SVG Outfield Preview
@@ -4030,41 +4061,71 @@ export function getMobileAppHtml(): string {
         if (runs === 6) {
           var cpX = 180 + Math.cos(rad) * (targetDist * 0.5) - Math.sin(rad) * 16;
           var cpY = 156 + Math.sin(rad) * (targetDist * 0.5) + Math.cos(rad) * 16;
-          h += '<path d="M180,156 Q' + cpX.toFixed(1) + ',' + cpY.toFixed(1) + ' ' + endX.toFixed(1) + ',' + endY.toFixed(1) + '" fill="none" stroke="#FFB800" stroke-width="2.8" stroke-linecap="round"/>';
+          h += '<path id="wagonPickerPreviewRay" data-end-x="' + endX.toFixed(1) + '" data-end-y="' + endY.toFixed(1) + '" d="M180,156 Q' + cpX.toFixed(1) + ',' + cpY.toFixed(1) + ' ' + endX.toFixed(1) + ',' + endY.toFixed(1) + '" fill="none" stroke="#FFB800" stroke-width="2.8" stroke-linecap="round"/>';
           h += '<polygon points="' + endX.toFixed(1) + ',' + (endY - 6).toFixed(1) + ' ' + (endX + 4).toFixed(1) + ',' + (endY + 3).toFixed(1) + ' ' + (endX - 5).toFixed(1) + ',' + (endY - 2).toFixed(1) + ' ' + (endX + 5).toFixed(1) + ',' + (endY - 2).toFixed(1) + ' ' + (endX - 4).toFixed(1) + ',' + (endY + 3).toFixed(1) + '" fill="#FFB800"/>';
         } else if (runs === 4) {
-          h += '<line x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#00D2FF" stroke-width="2.6" stroke-linecap="round"/>';
+          h += '<line id="wagonPickerPreviewRay" data-end-x="' + endX.toFixed(1) + '" data-end-y="' + endY.toFixed(1) + '" x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#00D2FF" stroke-width="2.6" stroke-linecap="round"/>';
           h += '<circle cx="' + endX.toFixed(1) + '" cy="' + endY.toFixed(1) + '" r="4.5" fill="#00D2FF" stroke="#FFFFFF" stroke-width="1.5"/>';
         } else if (runs === 0) {
-          h += '<line x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="3,3" stroke-linecap="round"/>';
+          h += '<line id="wagonPickerPreviewRay" data-end-x="' + endX.toFixed(1) + '" data-end-y="' + endY.toFixed(1) + '" x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="3,3" stroke-linecap="round"/>';
           h += '<circle cx="' + endX.toFixed(1) + '" cy="' + endY.toFixed(1) + '" r="2.5" fill="#94a3b8"/>';
         } else {
-          h += '<line x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#00E599" stroke-width="2" stroke-linecap="round"/>';
+          h += '<line id="wagonPickerPreviewRay" data-end-x="' + endX.toFixed(1) + '" data-end-y="' + endY.toFixed(1) + '" x1="180" y1="156" x2="' + endX.toFixed(1) + '" y2="' + endY.toFixed(1) + '" stroke="#00E599" stroke-width="2" stroke-linecap="round"/>';
           h += '<circle cx="' + endX.toFixed(1) + '" cy="' + endY.toFixed(1) + '" r="3.5" fill="#00E599"/>';
         }
 
-        var offText = this.currentStance === 'RHB' ? '◀ OFF' : '◀ ON';
-        var legText = this.currentStance === 'RHB' ? 'ON ▶' : 'OFF ▶';
-        h += '<g transform="translate(42, 174)"><rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="rgba(0,210,255,0.4)" stroke-width="0.8"/><text x="0" y="3" fill="#00D2FF" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + offText + '</text></g>';
-        h += '<g transform="translate(318, 174)"><rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="rgba(0,229,153,0.4)" stroke-width="0.8"/><text x="0" y="3" fill="#00E599" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + legText + '</text></g>';
+        var leftSvgLabel = isLhb ? '◀ ON' : '◀ OFF';
+        var rightSvgLabel = isLhb ? 'OFF ▶' : 'ON ▶';
+        var leftSvgColor = isLhb ? '#00E599' : '#00D2FF';
+        var rightSvgColor = isLhb ? '#00D2FF' : '#00E599';
+        h += '<g transform="translate(42, 174)"><rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + leftSvgColor + '66" stroke-width="0.8"/><text x="0" y="3" fill="' + leftSvgColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + leftSvgLabel + '</text></g>';
+        h += '<g transform="translate(318, 174)"><rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + rightSvgColor + '66" stroke-width="0.8"/><text x="0" y="3" fill="' + rightSvgColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle">' + rightSvgLabel + '</text></g>';
         h += '</svg></div>';
 
-        // 8 Tactile Zone Grid Buttons
-        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem; margin-bottom: 0.75rem;">';
-        for (var zi = 0; zi < this.SHOT_ZONES_DATA.length; zi++) {
-          var zd = this.SHOT_ZONES_DATA[zi];
-          var isZoneSel = this.pendingSelectedZone === zd.id;
-          h += '<button type="button" class="wagon-picker-zone-btn ' + (isZoneSel ? 'active' : '') + '" data-zone="' + zd.id + '" onclick="window.cricosMobileApp.selectPickerZone(this.dataset.zone)" data-tooltip="Aim at ' + zd.label + ' (' + zd.side + ')">';
-          h += zd.shortLabel;
-          h += '<div style="font-size: 0.58rem; color: ' + (zd.side === 'OFF' ? '#00D2FF' : '#00E599') + '; font-weight: 700;">' + zd.side + '</div>';
+        // Spatially Aligned Left-of-Pitch vs Right-of-Pitch Written Shot Direction Buttons
+        var leftZoneIds = isLhb ? ['FINE_LEG', 'SQUARE_LEG', 'MID_WICKET', 'LONG_ON'] : ['THIRD_MAN', 'POINT', 'EXTRA_COVER', 'LONG_OFF'];
+        var rightZoneIds = isLhb ? ['THIRD_MAN', 'POINT', 'EXTRA_COVER', 'LONG_OFF'] : ['FINE_LEG', 'SQUARE_LEG', 'MID_WICKET', 'LONG_ON'];
+        var leftColHeader = isLhb ? '◀ ON-SIDE (Left)' : '◀ OFF-SIDE (Left)';
+        var rightColHeader = isLhb ? 'OFF-SIDE (Right) ▶' : 'ON-SIDE (Right) ▶';
+        var leftColColor = isLhb ? '#00E599' : '#00D2FF';
+        var rightColColor = isLhb ? '#00D2FF' : '#00E599';
+
+        h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin-bottom: 0.75rem;" id="wagonPickerSpatialGrid">';
+        // Left Column
+        h += '<div id="wagonPickerColLeft" data-side="' + (isLhb ? 'ON' : 'OFF') + '" style="display: flex; flex-direction: column; gap: 0.3rem;">';
+        h += '<div style="font-size: 0.62rem; font-weight: 800; color: ' + leftColColor + '; text-transform: uppercase; letter-spacing: 0.04em; padding: 0 0.2rem;">' + leftColHeader + '</div>';
+        h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem;">';
+        for (var lzi = 0; lzi < leftZoneIds.length; lzi++) {
+          var lzd = this.SHOT_ZONES_DATA.find(function(z) { return z.id === leftZoneIds[lzi]; });
+          if (!lzd) continue;
+          var isLSel = this.pendingSelectedZone === lzd.id;
+          h += '<button type="button" class="wagon-picker-zone-btn ' + (isLSel ? 'active' : '') + '" data-zone="' + lzd.id + '" data-side="' + lzd.side + '" data-pos-side="LEFT" onclick="window.cricosMobileApp.selectPickerZone(this.dataset.zone)" data-tooltip="Aim at ' + lzd.label + ' (' + lzd.side + '-Side)">';
+          h += lzd.shortLabel;
+          h += '<div style="font-size: 0.56rem; color: ' + (lzd.side === 'OFF' ? '#00D2FF' : '#00E599') + '; font-weight: 800;">' + lzd.side + '-SIDE</div>';
           h += '</button>';
         }
+        h += '</div></div>';
+
+        // Right Column
+        h += '<div id="wagonPickerColRight" data-side="' + (isLhb ? 'OFF' : 'ON') + '" style="display: flex; flex-direction: column; gap: 0.3rem;">';
+        h += '<div style="font-size: 0.62rem; font-weight: 800; color: ' + rightColColor + '; text-transform: uppercase; letter-spacing: 0.04em; text-align: right; padding: 0 0.2rem;">' + rightColHeader + '</div>';
+        h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem;">';
+        for (var rzi = 0; rzi < rightZoneIds.length; rzi++) {
+          var rzd = this.SHOT_ZONES_DATA.find(function(z) { return z.id === rightZoneIds[rzi]; });
+          if (!rzd) continue;
+          var isRSel = this.pendingSelectedZone === rzd.id;
+          h += '<button type="button" class="wagon-picker-zone-btn ' + (isRSel ? 'active' : '') + '" data-zone="' + rzd.id + '" data-side="' + rzd.side + '" data-pos-side="RIGHT" onclick="window.cricosMobileApp.selectPickerZone(this.dataset.zone)" data-tooltip="Aim at ' + rzd.label + ' (' + rzd.side + '-Side)">';
+          h += rzd.shortLabel;
+          h += '<div style="font-size: 0.56rem; color: ' + (rzd.side === 'OFF' ? '#00D2FF' : '#00E599') + '; font-weight: 800;">' + rzd.side + '-SIDE</div>';
+          h += '</button>';
+        }
+        h += '</div></div>';
         h += '</div>';
 
         // Footer Actions
         h += '<div style="display: flex; gap: 0.5rem;">';
         h += '<button type="button" onclick="window.cricosMobileApp.confirmWagonShot(true)" style="flex: 1; padding: 0.65rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; font-weight: 600; font-size: 0.8rem;" data-tooltip="Record +' + runs + ' runs without direction">Skip</button>';
-        h += '<button type="button" id="btnConfirmWagonShot" onclick="window.cricosMobileApp.confirmWagonShot(false)" style="flex: 2; padding: 0.65rem; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; box-shadow: 0 4px 15px rgba(0, 229, 153, 0.3);" data-tooltip="Confirm shot direction and score ball">Record +' + runs + ' to ' + activeZoneShort + ' ✓</button>';
+        h += '<button type="button" id="btnConfirmWagonShot" onclick="window.cricosMobileApp.confirmWagonShot(false)" style="flex: 2; padding: 0.65rem; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; box-shadow: 0 4px 15px rgba(0, 229, 153, 0.3);" data-tooltip="Confirm shot direction and score ball">Record +' + runs + ' to ' + activeZoneShort + ' (' + activeZoneSide + '-SIDE) ✓</button>';
         h += '</div>';
 
         h += '</div>';
@@ -4701,7 +4762,7 @@ export function getMobileAppHtml(): string {
           if (isLhb) sinVal = -sinVal;
           return {
             x: cx + (radius * sinVal),
-            y: cy + (radius * Math.cos(rad))
+            y: cy - (radius * Math.cos(rad))
           };
         }
 
@@ -4833,8 +4894,8 @@ export function getMobileAppHtml(): string {
           }
         }
 
-        var leftLabel = isLhb ? 'ON ▶' : '◀ OFF';
-        var rightLabel = isLhb ? '◀ OFF' : 'ON ▶';
+        var leftLabel = isLhb ? '◀ ON' : '◀ OFF';
+        var rightLabel = isLhb ? 'OFF ▶' : 'ON ▶';
         var leftColor = isLhb ? '#00E599' : '#00D2FF';
         var rightColor = isLhb ? '#00D2FF' : '#00E599';
         h += '<g transform="translate(126, 155)">' +
@@ -6206,22 +6267,13 @@ export function getMobileAppHtml(): string {
           h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'DOTS' ? 'active' : '') + '" data-filter="DOTS" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show dot balls only">Dots</button>';
           h += '</div>';
 
-          // 8 Sector Wedges definition
-          var wedges = [
-            { id: 'THIRD_MAN', d: 'M180,180 L65.5,65.5 A162,162 0 0,1 180,18 Z', name: 'Third Man' },
-            { id: 'FINE_LEG', d: 'M180,180 L180,18 A162,162 0 0,1 294.5,65.5 Z', name: 'Fine Leg' },
-            { id: 'POINT', d: 'M180,180 L18,180 A162,162 0 0,1 65.5,65.5 Z', name: 'Point' },
-            { id: 'SQUARE_LEG', d: 'M180,180 L294.5,65.5 A162,162 0 0,1 342,180 Z', name: 'Deep Square Leg' },
-            { id: 'EXTRA_COVER', d: 'M180,180 L65.5,294.5 A162,162 0 0,1 18,180 Z', name: 'Extra Cover' },
-            { id: 'MID_WICKET', d: 'M180,180 L342,180 A162,162 0 0,1 294.5,294.5 Z', name: 'Deep Mid Wicket' },
-            { id: 'LONG_OFF', d: 'M180,180 L180,342 A162,162 0 0,1 65.5,294.5 Z', name: 'Long Off' },
-            { id: 'LONG_ON', d: 'M180,180 L294.5,294.5 A162,162 0 0,1 180,342 Z', name: 'Long On' }
-          ];
+          // 8 Sector Wedges definition (stance-aware)
+          var wedges = this.getWedgesForStance(this.currentStance);
 
           var wedgesSvg = '';
           for (var w = 0; w < wedges.length; w++) {
             var isSel = this.currentSelectedZone === wedges[w].id;
-            wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" onclick="window.cricosMobileApp.selectWagonZone(this.dataset.zone)" data-tooltip="Select ' + wedges[w].name + ' Zone"/>';
+            wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" data-side="' + wedges[w].side + '" onclick="window.cricosMobileApp.selectWagonZone(this.dataset.zone)" data-tooltip="Select ' + wedges[w].name + ' (' + wedges[w].side + '-SIDE)"/>';
           }
 
           // SVG Stadium Outfield
@@ -6283,20 +6335,21 @@ export function getMobileAppHtml(): string {
           h += '<circle cx="180" cy="212" r="1" fill="#FFFFFF"/>';
           h += '<circle cx="183" cy="212" r="1" fill="#FFFFFF"/>';
 
-          // Striker Crease Indicator
+          // Striker Crease Indicator (dynamic striker & stance)
+          var strikerStanceTag = this.matchState.striker.stance || this.currentStance || 'RHB';
           h += '<circle cx="180" cy="156" r="4.5" fill="#00E599" stroke="#FFFFFF" stroke-width="1.5"/>';
           h += '<g transform="translate(180, 134)">';
-          h += '<rect x="-56" y="-8" width="112" height="16" rx="8" fill="rgba(4, 7, 13, 0.92)" stroke="rgba(0, 229, 153, 0.5)" stroke-width="1.2"/>';
-          h += '<text x="-46" y="2.5" fill="#00E599" font-size="6" font-family="Chakra Petch, monospace" font-weight="800">VK</text>';
-          h += '<text x="-34" y="2.5" fill="#FFFFFF" font-size="6" font-family="Space Grotesk, sans-serif" font-weight="700">Virat K.</text>';
-          h += '<text x="50" y="2.5" fill="#00E599" font-size="6" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end">' + this.matchState.striker.runs + '*</text>';
+          h += '<rect x="-62" y="-8" width="124" height="16" rx="8" fill="rgba(4, 7, 13, 0.92)" stroke="rgba(0, 229, 153, 0.5)" stroke-width="1.2"/>';
+          h += '<text x="-52" y="2.5" fill="#00E599" font-size="5.8" font-family="Chakra Petch, monospace" font-weight="800">' + strikerStanceTag + '</text>';
+          h += '<text x="-34" y="2.5" fill="#FFFFFF" font-size="6" font-family="Space Grotesk, sans-serif" font-weight="700">' + this.matchState.striker.name + '</text>';
+          h += '<text x="54" y="2.5" fill="#00E599" font-size="6" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end">' + this.matchState.striker.runs + '*</text>';
           h += '</g>';
 
           // Non-Striker Crease Indicator
           h += '<g transform="translate(180, 226)">';
           h += '<circle cx="0" cy="-22" r="3" fill="#64748B" stroke="#FFFFFF" stroke-width="1"/>';
           h += '<rect x="-44" y="-7" width="88" height="14" rx="7" fill="rgba(4, 7, 13, 0.85)" stroke="rgba(255, 255, 255, 0.18)" stroke-width="0.8"/>';
-          h += '<text x="0" y="2.5" fill="#94A3B8" font-size="5.5" font-family="Space Grotesk, sans-serif" font-weight="600" text-anchor="middle">Rohit S. ' + this.matchState.nonStriker.runs + '</text>';
+          h += '<text x="0" y="2.5" fill="#94A3B8" font-size="5.5" font-family="Space Grotesk, sans-serif" font-weight="600" text-anchor="middle">' + this.matchState.nonStriker.name + ' ' + this.matchState.nonStriker.runs + '</text>';
           h += '</g>';
 
           // Off-Side / On-Side Direction Labels with Pill Backdrops
@@ -8258,21 +8311,23 @@ export function getMobileAppHtml(): string {
 
         const mode = this.currentMode || 'FUSION';
         const isFusion = mode === 'FUSION';
+        const isLhb = !!(window.cricosMobileApp && window.cricosMobileApp.currentStance === 'LHB');
+        const stanceSign = isLhb ? -1 : 1;
 
         // 6. Layer: 11 Fielders (FIELD / FIELDERS / FUSION)
         if (isFusion || mode === 'FIELD' || mode === 'FIELDERS') {
           const fielders = [
             { x: 0, z: 7.4, role: 'WK' },
-            { x: -1.6, z: 7.1, role: 'Slip' },
-            { x: -9.5, z: 3.5, role: 'Point' },
-            { x: -8.5, z: -4.2, role: 'Cover' },
-            { x: -3.8, z: -10.2, role: 'Mid-Off' },
-            { x: 3.8, z: -10.2, role: 'Mid-On' },
-            { x: 8.8, z: -2.5, role: 'Mid-Wkt' },
-            { x: 8.2, z: 4.5, role: 'Sq Leg' },
-            { x: 5.5, z: 16.5, role: 'Fine Leg' },
-            { x: -12.5, z: 15.0, role: '3rd Man' },
-            { x: 11.5, z: -16.5, role: 'Long On' }
+            { x: -1.6 * stanceSign, z: 7.1, role: 'Slip' },
+            { x: -9.5 * stanceSign, z: 3.5, role: 'Point' },
+            { x: -8.5 * stanceSign, z: -4.2, role: 'Cover' },
+            { x: -3.8 * stanceSign, z: -10.2, role: 'Mid-Off' },
+            { x: 3.8 * stanceSign, z: -10.2, role: 'Mid-On' },
+            { x: 8.8 * stanceSign, z: -2.5, role: 'Mid-Wkt' },
+            { x: 8.2 * stanceSign, z: 4.5, role: 'Sq Leg' },
+            { x: 5.5 * stanceSign, z: 16.5, role: 'Fine Leg' },
+            { x: -12.5 * stanceSign, z: 15.0, role: '3rd Man' },
+            { x: 11.5 * stanceSign, z: -16.5, role: 'Long On' }
           ];
           for (let f = 0; f < fielders.length; f++) {
             const fd = fielders[f];
@@ -8308,13 +8363,13 @@ export function getMobileAppHtml(): string {
         // 7. Layer: 3D Parabolic Wagon Wheel Shot Arcs (WAGON / FUSION)
         if (isFusion || mode === 'WAGON') {
           const shots = [
-            { tx: -16, tz: -14, h: 7.5, color: '#00E599', label: '104m SIX' },
-            { tx: 17, tz: -13, h: 8.2, color: '#00E599', label: '108m SIX' },
-            { tx: -19, tz: 4, h: 2.2, color: '#00D2FF', label: '68m FOUR' },
-            { tx: 18, tz: 6, h: 2.0, color: '#00D2FF', label: '66m FOUR' },
+            { tx: -16 * stanceSign, tz: -14, h: 7.5, color: '#00E599', label: '104m SIX (OFF)' },
+            { tx: 17 * stanceSign, tz: -13, h: 8.2, color: '#00E599', label: '108m SIX (ON)' },
+            { tx: -19 * stanceSign, tz: 4, h: 2.2, color: '#00D2FF', label: '68m FOUR (OFF)' },
+            { tx: 18 * stanceSign, tz: 6, h: 2.0, color: '#00D2FF', label: '66m FOUR (ON)' },
             { tx: 0, tz: -21, h: 8.6, color: '#00E599', label: '112m SIX' },
-            { tx: -10, tz: 12, h: 1.4, color: '#FFB800', label: '2 Runs' },
-            { tx: 11, tz: 11, h: 1.5, color: '#FFB800', label: '2 Runs' }
+            { tx: -10 * stanceSign, tz: 12, h: 1.4, color: '#FFB800', label: '2 Runs' },
+            { tx: 11 * stanceSign, tz: 11, h: 1.5, color: '#FFB800', label: '2 Runs' }
           ];
           const pulseT = ((Date.now() % 2400) / 2400);
           for (let s = 0; s < shots.length; s++) {
