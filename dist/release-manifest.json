@@ -1,0 +1,47 @@
+{
+  "name": "cricos",
+  "version": "1.0.0-phase1v",
+  "release_name": "CricOS Unified Cricket Operating System",
+  "built_at": "2026-09-29T18:51:56.781Z",
+  "git_commit": "41566fa586eabf149c76bdc96dbe8c98864a1939",
+  "architectures": [
+    "linux/amd64",
+    "linux/arm64",
+    "darwin/arm64",
+    "darwin/x64"
+  ],
+  "modules_count": 26,
+  "packages": [
+    "@cricket-platform/contracts",
+    "@cricket-platform/domain",
+    "@cricket-platform/commercial",
+    "@cricket-platform/scoring",
+    "@cricket-platform/api",
+    "@cricket-platform/worker",
+    "@cricket-platform/web",
+    "@cricket-platform/mobile"
+  ],
+  "artifacts": {
+    "dist/index.html": {
+      "bytes": 1124250,
+      "sha256": "55d1634fe22c25f332dbed31964bc9eabc32ad6e588c7a43cfb1f426eb56702b"
+    },
+    "index.html": {
+      "bytes": 1124250,
+      "sha256": "55d1634fe22c25f332dbed31964bc9eabc32ad6e588c7a43cfb1f426eb56702b"
+    },
+    "dist/docs.html": {
+      "bytes": 9436,
+      "sha256": "9e4e233429e2bedb40fff449662de4c19ef57ff1348cd35cf99de7a892120e22"
+    },
+    "dist/openapi.json": {
+      "bytes": 11155,
+      "sha256": "50d986e54f28521b46917b16aff836dc825cdbea03e556deed97389db450409d"
+    },
+    "dist/mobile.html": {
+      "bytes": 648531,
+      "sha256": "bf3cd0ee22a959322a4fcbcdf2091de2d3d7a37b865a9ebc9d5c47d050a1e53d"
+    }
+  },
+  "single_file_sync_verified": true
+}

@@ -2149,14 +2149,6 @@ export function getMobileAppHtml(): string {
         this.role = 'CAPTAIN';
         this.allowedPersonas = ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
         this.strictPersonaLock = false;
-        var shouldShowMobileHero = Boolean(
-          typeof navigator !== 'undefined' && (
-            !navigator.webdriver ||
-            (typeof window !== 'undefined' && window.location && window.location.search && window.location.search.indexOf('hero=1') !== -1) ||
-            (typeof window !== 'undefined' && window.__FORCE_HERO_GATEWAY__)
-          )
-        );
-        this.heroGatewayStage = shouldShowMobileHero ? 'HERO' : 'AUTHENTICATED';
         this.presetAccounts = {
           CAPTAIN_PLAYER: { name: 'Virat Sharma', identifier: 'virat@cricos.io', allowedPersonas: ['CAPTAIN', 'PLAYER'], defaultPersona: 'CAPTAIN' },
           SCORER_ONLY: { name: 'Sunil Gavaskar', identifier: 'scorer@cricos.io', allowedPersonas: ['SCORER'], defaultPersona: 'SCORER' },
@@ -2165,6 +2157,51 @@ export function getMobileAppHtml(): string {
           FAN_ONLY: { name: 'Aarav Mehta', identifier: 'fan@cricos.io', allowedPersonas: ['FAN'], defaultPersona: 'FAN' },
           ADMIN_SUPERUSER: { name: 'System Root', identifier: 'admin@cricos.io', allowedPersonas: ['ADMIN', 'CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER'], defaultPersona: 'ADMIN' }
         };
+        var forceHeroGateway = Boolean(
+          typeof window !== 'undefined' && (
+            (window.location && window.location.search && window.location.search.indexOf('hero=1') !== -1) ||
+            window.__FORCE_HERO_GATEWAY__
+          )
+        );
+        var restoredSession = null;
+        if (!forceHeroGateway) {
+          try {
+            var rawSession = typeof localStorage !== 'undefined' ? localStorage.getItem('cricos_session_v1') : null;
+            if (rawSession) {
+              var parsed = JSON.parse(rawSession);
+              if (parsed && parsed.token) {
+                restoredSession = parsed;
+              }
+            }
+          } catch (_) {}
+        }
+        this._restoredSession = restoredSession;
+        var shouldShowMobileHero = Boolean(
+          forceHeroGateway ||
+          (!restoredSession && typeof navigator !== 'undefined' && !navigator.webdriver)
+        );
+        this.heroGatewayStage = shouldShowMobileHero ? 'HERO' : 'AUTHENTICATED';
+        if (restoredSession) {
+          this.strictPersonaLock = Boolean(restoredSession.strictPersonaLock);
+          if (Array.isArray(restoredSession.allowedPersonas) && restoredSession.allowedPersonas.length > 0) {
+            this.allowedPersonas = restoredSession.allowedPersonas.slice();
+          }
+          if (restoredSession.identifier) this.identifier = restoredSession.identifier;
+          if (restoredSession.role) this.role = restoredSession.role;
+          this.client.setSession(restoredSession);
+        } else if (this.heroGatewayStage === 'AUTHENTICATED') {
+          this.client.setSession({
+            token: 'jwt_default_session',
+            refreshToken: 'rt_default_session',
+            name: 'Virat K.',
+            identifier: this.identifier,
+            role: 'CAPTAIN',
+            allowedPersonas: this.allowedPersonas.slice(),
+            strictPersonaLock: false,
+            issuedAt: Date.now(),
+            expiresAt: Date.now() + 86400000
+          });
+        }
         this.signupData = {
           name: 'Rohit Sharma',
           identifier: '+91 98765 43210',
@@ -2647,6 +2684,18 @@ export function getMobileAppHtml(): string {
         this.disputes = [
           { id: 'dsp-101', matchId: 'match-pilot-1', amount: '₹3,500.00', reason: 'Floodlight outage during 2nd innings', status: 'PENDING' }
         ];
+
+        if (this._restoredSession) {
+          if (this._restoredSession.name) this.profile.name = this._restoredSession.name;
+          if (this._restoredSession.role) {
+            this.profile.persona = this._restoredSession.role;
+            if (this._restoredSession.role === 'CAPTAIN') this.currentScreen = 'TEAMS';
+            else if (this._restoredSession.role === 'UMPIRE') this.currentScreen = 'INCIDENTS';
+            else if (this._restoredSession.role === 'ADMIN') this.currentScreen = 'ADMIN';
+            else if (this._restoredSession.role === 'TURF_PROVIDER') this.currentScreen = 'MARKETPLACE';
+            else this.currentScreen = 'MATCHES';
+          }
+        }
       }
 
       showToast(msg, type = 'info', duration = 2200) {
@@ -3019,9 +3068,33 @@ export function getMobileAppHtml(): string {
         this.render();
       }
 
+      persistMobileSession(sessionData) {
+        this.client.setSession(sessionData);
+        try {
+          if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('cricos_session_v1', JSON.stringify(sessionData));
+            if (sessionData && sessionData.token) {
+              localStorage.setItem('cricos_access_token', sessionData.token);
+            }
+          }
+        } catch (_) {}
+      }
+
       finalizeAuthAndApplyRole(isSignup) {
         var chosenRole = isSignup ? (this.signupData.role || 'PLAYER') : (this.role || 'CAPTAIN');
-        this.client.setSession({ token: 'mock-jwt-token', role: chosenRole });
+        var userName = isSignup ? (this.signupData.name || 'Rohit Sharma') : (this.profile.name || 'Virat Sharma');
+        this.heroGatewayStage = 'AUTHENTICATED';
+        this.persistMobileSession({
+          token: 'jwt_otp_' + chosenRole.toLowerCase(),
+          refreshToken: 'rt_otp_' + chosenRole.toLowerCase(),
+          name: userName,
+          identifier: this.identifier,
+          role: chosenRole,
+          allowedPersonas: this.allowedPersonas.slice(),
+          strictPersonaLock: Boolean(this.strictPersonaLock),
+          issuedAt: Date.now(),
+          expiresAt: Date.now() + 86400000
+        });
         this.applyRoleExperience(chosenRole, isSignup);
       }
 
@@ -3561,6 +3634,16 @@ export function getMobileAppHtml(): string {
         } else if (role === 'CAPTAIN' && this.currentScreen !== 'TEAMS') {
           this.currentScreen = 'TEAMS';
         }
+        var existingSession = this.client.getSession();
+        if (existingSession) {
+          existingSession.role = role;
+          if (this.strictPersonaLock && existingSession.name) {
+            this.profile.name = existingSession.name;
+          } else {
+            existingSession.name = this.profile.name;
+          }
+          this.persistMobileSession(existingSession);
+        }
         this.showToast('Switched to ' + role + ' persona', 'success');
         this.render();
       }
@@ -3578,14 +3661,27 @@ export function getMobileAppHtml(): string {
 
       loginWithPresetAccount(accountKey) {
         var acct = (this.presetAccounts && this.presetAccounts[accountKey]) ? this.presetAccounts[accountKey] : this.presetAccounts.CAPTAIN_PLAYER;
+        var primaryRole = acct.defaultPersona || acct.allowedPersonas[0];
         this.strictPersonaLock = true;
         this.allowedPersonas = acct.allowedPersonas.slice();
         this.heroGatewayStage = 'AUTHENTICATED';
         this.identifier = acct.identifier;
-        try {
-          localStorage.setItem('cricos_access_token', 'jwt_' + accountKey.toLowerCase());
-        } catch (_) {}
-        this.switchUserPersona(acct.defaultPersona || acct.allowedPersonas[0]);
+        this.profile.name = acct.name;
+        this.persistMobileSession({
+          token: 'jwt_' + accountKey.toLowerCase(),
+          refreshToken: 'rt_' + accountKey.toLowerCase(),
+          accountKey: accountKey,
+          name: acct.name,
+          identifier: acct.identifier,
+          role: primaryRole,
+          allowedPersonas: acct.allowedPersonas.slice(),
+          strictPersonaLock: true,
+          issuedAt: Date.now(),
+          expiresAt: Date.now() + 86400000
+        });
+        this.switchUserPersona(primaryRole);
+        this.profile.name = acct.name;
+        this.render();
         this.showToast('Signed in as ' + acct.name + ' (' + acct.allowedPersonas.join(', ') + ')', 'success');
       }
 
@@ -3598,26 +3694,41 @@ export function getMobileAppHtml(): string {
           if (cbs[i].value) selected.push(cbs[i].value);
         }
         if (selected.length === 0) selected.push('FAN');
+        var customName = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'KL Rahul';
+        var customId = (idEl && idEl.value.trim()) ? idEl.value.trim() : '+91 98765 43210';
         this.strictPersonaLock = true;
         this.allowedPersonas = selected;
         this.heroGatewayStage = 'AUTHENTICATED';
-        if (idEl && idEl.value.trim()) this.identifier = idEl.value.trim();
-        try {
-          localStorage.setItem('cricos_access_token', 'jwt_custom_session');
-        } catch (_) {}
+        this.identifier = customId;
+        this.profile.name = customName;
+        this.persistMobileSession({
+          token: 'jwt_custom_session',
+          refreshToken: 'rt_custom_session',
+          accountKey: 'CUSTOM',
+          name: customName,
+          identifier: customId,
+          role: selected[0],
+          allowedPersonas: selected.slice(),
+          strictPersonaLock: true,
+          issuedAt: Date.now(),
+          expiresAt: Date.now() + 86400000
+        });
         this.switchUserPersona(selected[0]);
-        if (nameEl && nameEl.value.trim()) {
-          this.profile.name = nameEl.value.trim();
-          this.render();
-        }
+        this.profile.name = customName;
+        this.render();
         this.showToast('Signed in • Provisioned: ' + selected.join(', '), 'success');
       }
 
       logoutToHero() {
         this.personaSheetOpen = false;
+        this.sidebarDrawerOpen = false;
         this.heroGatewayStage = 'HERO';
+        this.client.clearSession();
         try {
-          localStorage.removeItem('cricos_access_token');
+          if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('cricos_access_token');
+            localStorage.removeItem('cricos_session_v1');
+          }
         } catch (_) {}
         this.showToast('Signed out to Animated Hero Page', 'info');
         this.render();
@@ -6338,9 +6449,7 @@ export function getMobileAppHtml(): string {
       }
 
       signOutAction() {
-        this.client.clearSession();
-        this.showToast('Signed out of session', 'info');
-        this.navigateTo('AUTH');
+        this.logoutToHero();
       }
 
       promptDeleteAccount() {
@@ -8327,15 +8436,17 @@ export function getMobileAppHtml(): string {
 
         var h = '<div style="padding: 0.65rem 0.75rem;">';
 
-        // Scoped Persona Switcher Strip (Filtered by allowedPersonas)
+        // Scoped Persona Switcher Strip & Active Session Status (Filtered by allowedPersonas)
         var allowedList = (Array.isArray(this.allowedPersonas) && this.allowedPersonas.length > 0)
           ? this.allowedPersonas
           : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
-        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.55rem 0.65rem; margin-bottom: 0.65rem;">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">';
-        h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00E599;">🔄 Available Account Personas (' + allowedList.join(', ') + ')</div>';
+        var activeSess = this.client.getSession() || { token: 'jwt_active_session', identifier: this.identifier };
+        h += '<div id="mobileActiveSessionBadge" style="background: rgba(10, 16, 28, 0.92); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 12px; padding: 0.55rem 0.65rem; margin-bottom: 0.65rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">';
+        h += '<div style="font-size: 0.65rem; font-weight: 800; color: #00E599;">🟢 JWT Session Active • ' + (this.profile.name || 'Virat Sharma') + ' (' + (this.identifier || 'virat@cricos.io') + ')</div>';
         h += '<button type="button" id="btnMobileProfileSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.4); color: #00D2FF; border-radius: 5px; padding: 0.18rem 0.45rem; font-size: 0.6rem; font-weight: 700; cursor: pointer;" data-tooltip="Sign out to Animated Hero Page">🚪 Sign Out</button>';
         h += '</div>';
+        h += '<div style="font-size: 0.6rem; color: #94a3b8; margin-bottom: 0.35rem; font-family: JetBrains Mono, monospace;">Token: ' + String(activeSess.token || 'jwt_active').slice(0, 22) + ' • Provisioned: ' + allowedList.join(', ') + '</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">';
         var allRoles = [
           ['CAPTAIN', '🏏 Cpt'],
@@ -8581,7 +8692,23 @@ export function getMobileAppHtml(): string {
         this._screenChanged = false;
 
         var session = this.client.getSession();
-        var isAuth = !!session;
+        if (!session && this.heroGatewayStage === 'AUTHENTICATED') {
+          session = {
+            token: 'jwt_authenticated_session',
+            refreshToken: 'rt_authenticated_session',
+            name: (this.profile && this.profile.name) ? this.profile.name : 'Virat Sharma',
+            identifier: this.identifier || 'virat@cricos.io',
+            role: (this.profile && this.profile.persona) ? this.profile.persona : 'CAPTAIN',
+            allowedPersonas: Array.isArray(this.allowedPersonas) ? this.allowedPersonas.slice() : ['CAPTAIN', 'PLAYER'],
+            strictPersonaLock: Boolean(this.strictPersonaLock),
+            issuedAt: Date.now()
+          };
+          this.client.setSession(session);
+        }
+        var isAuth = Boolean(session || this.heroGatewayStage === 'AUTHENTICATED');
+        if (isAuth && this.currentScreen === 'AUTH') {
+          this.currentScreen = (this.profile && this.profile.persona === 'CAPTAIN') ? 'TEAMS' : 'MATCHES';
+        }
 
         var content = '';
         if (this.currentScreen === 'AUTH') {

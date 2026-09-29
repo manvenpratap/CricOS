@@ -11290,8 +11290,19 @@ cricos_active_sse_connections 1</pre>
     }
     window.showHeroLoginStage = showHeroLoginStage;
 
+    function persistDesktopSession(sessionPayload) {
+      currentUser.sessionToken = sessionPayload.token;
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('cricos_session_v1', JSON.stringify(sessionPayload));
+          localStorage.setItem('cricos_access_token', sessionPayload.token);
+        }
+      } catch (_) {}
+    }
+
     function loginWithHeroAccount(accountKey) {
       const acct = HERO_PRESET_ACCOUNTS[accountKey] || HERO_PRESET_ACCOUNTS.CAPTAIN_PLAYER;
+      const primaryRole = acct.defaultPersona || acct.allowedPersonas[0];
       currentUser.isAuthenticated = true;
       currentUser.strictPersonaLock = true;
       currentUser.name = acct.name;
@@ -11301,11 +11312,24 @@ cricos_active_sse_connections 1</pre>
       currentUser.bowlingStyle = acct.bowling;
       currentUser.allowedPersonas = acct.allowedPersonas.slice();
 
+      persistDesktopSession({
+        token: 'jwt_' + accountKey.toLowerCase(),
+        refreshToken: 'rt_' + accountKey.toLowerCase(),
+        accountKey: accountKey,
+        name: acct.name,
+        identifier: acct.identifier,
+        role: primaryRole,
+        allowedPersonas: acct.allowedPersonas.slice(),
+        strictPersonaLock: true,
+        issuedAt: Date.now(),
+        expiresAt: Date.now() + 86400000
+      });
+
       const overlay = document.getElementById('cricosHeroAuthOverlay');
       if (overlay) overlay.style.display = 'none';
 
       applyAllowedPersonasFilter();
-      selectPersona(acct.defaultPersona || acct.allowedPersonas[0]);
+      selectPersona(primaryRole);
       showToast('Signed in as ' + acct.name + ' • Provisioned Personas: ' + acct.allowedPersonas.join(', '));
     }
     window.loginWithHeroAccount = loginWithHeroAccount;
@@ -11325,6 +11349,19 @@ cricos_active_sse_connections 1</pre>
       currentUser.identifier = (idEl && idEl.value.trim()) ? idEl.value.trim() : '+91 98765 43210';
       currentUser.allowedPersonas = finalPersonas;
 
+      persistDesktopSession({
+        token: 'jwt_custom_session',
+        refreshToken: 'rt_custom_session',
+        accountKey: 'CUSTOM',
+        name: currentUser.name,
+        identifier: currentUser.identifier,
+        role: finalPersonas[0],
+        allowedPersonas: finalPersonas.slice(),
+        strictPersonaLock: true,
+        issuedAt: Date.now(),
+        expiresAt: Date.now() + 86400000
+      });
+
       const overlay = document.getElementById('cricosHeroAuthOverlay');
       if (overlay) overlay.style.display = 'none';
 
@@ -11337,22 +11374,58 @@ cricos_active_sse_connections 1</pre>
     function logoutToHero() {
       closeUserModal();
       currentUser.isAuthenticated = false;
+      currentUser.sessionToken = null;
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('cricos_session_v1');
+          localStorage.removeItem('cricos_access_token');
+        }
+      } catch (_) {}
       openHeroGateway('HERO');
       showToast('Signed out to Animated Hero Page.');
     }
     window.logoutToHero = logoutToHero;
 
     function initHeroAuthGateway() {
+      const forceHeroOnBoot = Boolean(
+        (window.location && window.location.search && window.location.search.indexOf('hero=1') !== -1) ||
+        window.__FORCE_HERO_GATEWAY__
+      );
+      let restoredSession = null;
+      if (!forceHeroOnBoot) {
+        try {
+          const raw = typeof localStorage !== 'undefined' ? localStorage.getItem('cricos_session_v1') : null;
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.token) restoredSession = parsed;
+          }
+        } catch (_) {}
+      }
+      if (restoredSession) {
+        currentUser.isAuthenticated = true;
+        currentUser.sessionToken = restoredSession.token;
+        currentUser.strictPersonaLock = Boolean(restoredSession.strictPersonaLock);
+        currentUser.name = restoredSession.name || currentUser.name;
+        currentUser.identifier = restoredSession.identifier || currentUser.identifier;
+        currentUser.allowedPersonas = Array.isArray(restoredSession.allowedPersonas) && restoredSession.allowedPersonas.length > 0
+          ? restoredSession.allowedPersonas.slice()
+          : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN', 'ORGANISER', 'TURF_PROVIDER'];
+        const overlay = document.getElementById('cricosHeroAuthOverlay');
+        if (overlay) overlay.style.display = 'none';
+        applyAllowedPersonasFilter();
+        selectPersona(restoredSession.role || currentUser.allowedPersonas[0] || 'CAPTAIN');
+        return;
+      }
+      currentUser.isAuthenticated = true;
+      currentUser.sessionToken = 'jwt_default_session';
       currentUser.allowedPersonas = ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN', 'ORGANISER', 'TURF_PROVIDER'];
       currentUser.strictPersonaLock = false;
       applyAllowedPersonasFilter();
       applySidebarAndMainAreaDeclutter(currentUser.persona || 'CAPTAIN');
-      const shouldShowHeroOnBoot = Boolean(
-        !navigator.webdriver ||
-        (window.location && window.location.search && window.location.search.indexOf('hero=1') !== -1) ||
-        window.__FORCE_HERO_GATEWAY__
-      );
+      const shouldShowHeroOnBoot = Boolean(forceHeroOnBoot || !navigator.webdriver);
       if (shouldShowHeroOnBoot) {
+        currentUser.isAuthenticated = false;
+        currentUser.sessionToken = null;
         openHeroGateway('HERO');
       }
     }
@@ -11587,6 +11660,21 @@ cricos_active_sse_connections 1</pre>
         }
         if (typeof selectedPlayerId !== 'undefined') selectedPlayerId = 'p-1';
       }
+
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const rawSess = localStorage.getItem('cricos_session_v1');
+          if (rawSess) {
+            const parsedSess = JSON.parse(rawSess);
+            if (parsedSess && parsedSess.token) {
+              parsedSess.role = role;
+              localStorage.setItem('cricos_session_v1', JSON.stringify(parsedSess));
+            }
+          }
+        }
+      } catch (_) {}
+
+      return true;
     }
 
     // Expose authoritative CricOS Public Platform API

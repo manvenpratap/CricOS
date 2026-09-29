@@ -1,14 +1,24 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 23:12:00
-**Version:** 1.0.0-phase2bv (Pro Cricket Gear, Match Balls & Pavilion Equipment Store with Variant Cart, Promo Engine & Turf Dispatch)  
+**Last Updated:** 2026-09-30 00:20:00
+**Version:** 1.0.0-phase2bw (Unified JWT Session Persistence & Removal of Redundant Sign In Tab When Authenticated)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BV Completed — Pro Cricket Gear, Match Balls & Pavilion Equipment Store (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BW Completed — Unified JWT Session Persistence & Removal of Redundant `🔑 Sign In` Tab When Authenticated (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Mobile & Android APK Session Synchronization & Removal of `🔑 Sign In` Tab (`apps/api/src/ui/mobile-view.ts`)**:
+    - Fixed `loginWithPresetAccount()`, `completeCustomHeroLogin()`, `finalizeAuthAndApplyRole()`, `switchUserPersona()`, and `StandaloneMobileApp` constructor so `this.client.setSession(...)` and `localStorage.setItem('cricos_session_v1', ...)` are always synchronized upon Hero login, OTP login, and default authenticated boot.
+    - Updated `render()` so `isAuth = Boolean(session || this.heroGatewayStage === 'AUTHENTICATED')` guarantees the `['AUTH', '🔑', 'Sign In']` tab (`button[data-screen="AUTH"]`) is **never** rendered in `#mobileBottomNav` when the user is logged in, and automatically redirects `this.currentScreen === 'AUTH'` to the active persona's default screen (`TEAMS` / `MATCHES`).
+    - Added `#mobileActiveSessionBadge` in `renderProfile()` displaying the active JWT session (`🟢 JWT Session Active`), account name/identifier, provisioned personas, and `🚪 Sign Out` button (`#btnMobileProfileSignOut`), and unified `signOutAction()` with `logoutToHero()`.
+  - **2. Desktop & Mobile Cross-Reload Session Persistence (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`)**:
+    - Added `persistDesktopSession()` and `persistMobileSession()` storing structured session records (`token`, `refreshToken`, `accountKey`, `name`, `identifier`, `role`, `allowedPersonas`, `strictPersonaLock`, `issuedAt`, `expiresAt`) in `localStorage` (`cricos_session_v1` & `cricos_access_token`).
+    - Restores authenticated session, active persona, and RBAC `allowedPersonas` lock automatically across page reloads unless `?hero=1` or `logoutToHero()` is explicitly invoked.
+  - **3. Automated E2E Verification (`tests/test_71_session_persistence_and_no_signin_tab_when_authenticated.py`)**:
+    - Verified via Playwright across Mobile/APK (`dist/mobile.html`) and Desktop (`index.html`) that `button[data-screen="AUTH"]` is absent when logged in, `#mobileActiveSessionBadge` renders in Profile, `cricos_session_v1` persists across reloads, and `logoutToHero()` cleanly clears session state.
+- **Preceding Phase**: Phase 2BV Completed — Pro Cricket Gear, Match Balls & Pavilion Equipment Store (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Desktop Pro Cricket Gear Store (`#modalCommerce` & `#btnOpenGearStoreFromMarketplace` in `apps/api/src/ui/dashboard.ts`)**:
     - Transformed `#modalCommerce` from a static 3-card dummy dialog into a full-width (`1120px`) 2-column e-commerce and match-day pavilion procurement store (`GEAR_STORE_CATALOG`, `window.gearStoreCart`, `window.gearStoreOrders`).
     - Built a 10-product catalog across 6 categories (`ALL`, `BATS`, `BALLS`, `PROTECTIVE`, `NETS_TECH`, `TROPHIES`) with live search (`#gearStoreSearchInput`), sort (`#gearStoreSortSelect` — Featured, Price Low-High, Price High-Low, Top Rated), and per-product spec/variant selectors (`SH`/`LH` willow handles, `RHB`/`LHB` batting legguards & Pittards gloves, `4-Piece MCC Law 4` vs `Dew-Shield` balls, `Medium`/`Large`/`XL` BS7928 titanium helmets).

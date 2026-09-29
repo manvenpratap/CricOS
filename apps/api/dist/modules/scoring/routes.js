@@ -1,0 +1,336 @@
+import crypto from 'node:crypto';
+import { query } from '../../platform/db.js';
+import { createInitialScoreState, applyDelivery, undoDelivery, swapStrike, changeBowler, closeInnings } from '@cricket-platform/scoring';
+import { broadcastHub } from './broadcast.js';
+// In-memory score states and event history cache per match
+const matchScores = new Map();
+const matchEventHistory = new Map();
+export function getMatchScore(matchId) {
+    return matchScores.get(matchId) || createInitialScoreState();
+}
+export function setMatchScore(matchId, state) {
+    matchScores.set(matchId, state);
+}
+export async function scoringRoutes(app) {
+    const handleScoreEvent = async (req, reply) => {
+        const { id } = req.params;
+        const body = req.body || {};
+        const client_event_id = body.client_event_id || body.clientEventId || `cevt-${Date.now()}`;
+        const sequence = body.sequence ?? 1;
+        const bat_runs = body.bat_runs ?? body.batRuns ?? 0;
+        const extra_runs = body.extra_runs ?? body.extraRuns ?? 0;
+        const extra_type = body.extra_type || body.extraType || 'NONE';
+        const legal_ball = body.legal_ball ?? body.legalBall ?? (extra_type !== 'WIDE' && extra_type !== 'NO_BALL');
+        const is_wicket = body.is_wicket ?? body.isWicket ?? false;
+        const wicket_type = body.wicket_type || body.wicketType;
+        const player_out_id = body.player_out_id || body.playerOutId;
+        const bowler_id = body.bowler_id || body.bowlerId;
+        const striker_id = body.striker_id || body.strikerId;
+        const non_striker_id = body.non_striker_id || body.nonStrikerId;
+        const next_batter_id = body.next_batter_id || body.nextBatterId;
+        const fielder_id = body.fielder_id || body.fielderId;
+        const is_free_hit = body.is_free_hit ?? body.isFreeHit;
+        const shot_zone = body.shot_zone || body.shotZone;
+        const innings_id = body.innings_id || body.inningsId || '00000000-0000-0000-0000-000000000001';
+        let currentState = matchScores.get(id);
+        if (!currentState) {
+            currentState = createInitialScoreState();
+        }
+        const eventPayload = {
+            client_event_id,
+            sequence,
+            event_type: 'DELIVERY',
+            bat_runs,
+            extra_runs,
+            extra_type,
+            legal_ball,
+            is_wicket,
+            wicket_type,
+            player_out_id,
+            bowler_id,
+            striker_id,
+            non_striker_id,
+            next_batter_id,
+            fielder_id,
+            is_free_hit,
+            shot_zone
+        };
+        let updatedState;
+        try {
+            updatedState = applyDelivery(currentState, eventPayload);
+            matchScores.set(id, updatedState);
+            if (!matchEventHistory.has(id)) {
+                matchEventHistory.set(id, []);
+            }
+            matchEventHistory.get(id).push(eventPayload);
+        }
+        catch (err) {
+            return reply.status(400).send({ error: err.message });
+        }
+        // Determine event classification for live broadcast subscribers
+        let broadcastType = 'BALL_BOWLED';
+        if (updatedState.is_innings_closed) {
+            broadcastType = 'INNINGS_CLOSED';
+        }
+        else if (is_wicket) {
+            broadcastType = 'WICKET_FALLEN';
+        }
+        else if (legal_ball && updatedState.legal_balls % 6 === 0 && updatedState.legal_balls > 0) {
+            broadcastType = 'OVER_COMPLETED';
+        }
+        // Fan-out to all live SSE subscribers instantaneously
+        broadcastHub.broadcast(id, {
+            type: broadcastType,
+            matchId: id,
+            timestamp: new Date().toISOString(),
+            state: updatedState,
+            event: eventPayload
+        });
+        const eventId = crypto.randomUUID();
+        try {
+            await query(`INSERT INTO score_events (
+          id, match_id, innings_id, client_event_id, sequence, event_type, payload
+        ) VALUES ($1, $2, $3, $4, $5, 'DELIVERY', $6)
+        ON CONFLICT (match_id, innings_id, sequence) DO NOTHING`, [eventId, id, innings_id, client_event_id, sequence, JSON.stringify(eventPayload)]);
+        }
+        catch { }
+        return reply.status(201).send({
+            event_id: eventId,
+            eventId,
+            client_event_id,
+            sequence,
+            match_id: id,
+            matchId: id,
+            broadcast_type: broadcastType,
+            state: updatedState,
+            event: eventPayload
+        });
+    };
+    // Register score event endpoints (both path patterns)
+    app.post('/matches/:id/score-events', handleScoreEvent);
+    app.post('/scoring/matches/:id/events', handleScoreEvent);
+    app.post('/scoring/matches/:id/score-events', handleScoreEvent);
+    // Single-ball Undo Endpoint
+    const handleUndo = async (req, reply) => {
+        const { id } = req.params;
+        const history = matchEventHistory.get(id);
+        if (!history || history.length === 0) {
+            return reply.status(400).send({ error: 'No deliveries to undo for this match' });
+        }
+        const { state: restoredState, undoneEvent } = undoDelivery(history);
+        matchScores.set(id, restoredState);
+        broadcastHub.broadcast(id, {
+            type: 'UNDO_DELIVERY',
+            matchId: id,
+            timestamp: new Date().toISOString(),
+            state: restoredState,
+            event: undoneEvent || undefined
+        });
+        if (undoneEvent) {
+            try {
+                await query(`DELETE FROM score_events WHERE match_id = $1 AND client_event_id = $2`, [id, undoneEvent.client_event_id]);
+            }
+            catch { }
+        }
+        return reply.status(200).send({
+            success: true,
+            match_id: id,
+            matchId: id,
+            state: restoredState,
+            undone_event: undoneEvent
+        });
+    };
+    app.post('/scoring/matches/:id/undo', handleUndo);
+    app.post('/matches/:id/undo', handleUndo);
+    app.delete('/scoring/matches/:id/events/last', handleUndo);
+    // Bowler Selection & Rotation Endpoint
+    const handleBowlerChange = async (req, reply) => {
+        const { id } = req.params;
+        const body = req.body || {};
+        const bowlerId = body.bowler_id || body.bowlerId;
+        if (!bowlerId) {
+            return reply.status(400).send({ error: 'bowler_id is required' });
+        }
+        const currentState = matchScores.get(id) || createInitialScoreState();
+        let updatedState;
+        try {
+            updatedState = changeBowler(currentState, bowlerId, body.enforce_rule !== false);
+            if (body.bowler_name && updatedState.bowlers[bowlerId]) {
+                updatedState.bowlers[bowlerId].name = body.bowler_name;
+            }
+            matchScores.set(id, updatedState);
+        }
+        catch (err) {
+            return reply.status(400).send({ error: err.message });
+        }
+        broadcastHub.broadcast(id, {
+            type: 'BOWLER_CHANGED',
+            matchId: id,
+            timestamp: new Date().toISOString(),
+            state: updatedState,
+            message: `Bowler changed to ${body.bowler_name || bowlerId}`
+        });
+        return reply.status(200).send({
+            success: true,
+            match_id: id,
+            state: updatedState
+        });
+    };
+    app.post('/scoring/matches/:id/bowler', handleBowlerChange);
+    app.post('/matches/:id/bowler', handleBowlerChange);
+    // Manual Strike Swap Endpoint
+    const handleSwapStrike = async (req, reply) => {
+        const { id } = req.params;
+        const currentState = matchScores.get(id) || createInitialScoreState();
+        const updatedState = swapStrike(currentState);
+        matchScores.set(id, updatedState);
+        broadcastHub.broadcast(id, {
+            type: 'STRIKE_SWAPPED',
+            matchId: id,
+            timestamp: new Date().toISOString(),
+            state: updatedState
+        });
+        return reply.status(200).send({
+            success: true,
+            match_id: id,
+            state: updatedState
+        });
+    };
+    app.post('/scoring/matches/:id/swap-strike', handleSwapStrike);
+    app.post('/matches/:id/swap-strike', handleSwapStrike);
+    // Innings Close Endpoint
+    const handleCloseInnings = async (req, reply) => {
+        const { id } = req.params;
+        const target = req.body?.target;
+        const currentState = matchScores.get(id) || createInitialScoreState();
+        const updatedState = closeInnings(currentState, target);
+        matchScores.set(id, updatedState);
+        broadcastHub.broadcast(id, {
+            type: 'INNINGS_CLOSED',
+            matchId: id,
+            timestamp: new Date().toISOString(),
+            state: updatedState
+        });
+        return reply.status(200).send({
+            success: true,
+            match_id: id,
+            state: updatedState
+        });
+    };
+    app.post('/scoring/matches/:id/innings/close', handleCloseInnings);
+    app.post('/matches/:id/innings/close', handleCloseInnings);
+    // Score state inquiry endpoints
+    const handleScoreState = async (req, reply) => {
+        const { id } = req.params;
+        const state = matchScores.get(id) || createInitialScoreState();
+        return reply.status(200).send({
+            match_id: id,
+            matchId: id,
+            state
+        });
+    };
+    app.get('/matches/:id/score-state', handleScoreState);
+    app.get('/scoring/matches/:id/score-state', handleScoreState);
+    app.get('/scoring/matches/:id/state', handleScoreState);
+    // Real-Time Server-Sent Events (SSE) Live Broadcast stream
+    const handleLiveStream = async (req, reply) => {
+        const { id } = req.params;
+        // Flush standard SSE headers
+        reply.raw.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache, no-transform',
+            'Connection': 'keep-alive',
+            'Access-Control-Allow-Origin': '*'
+        });
+        const currentState = matchScores.get(id) || createInitialScoreState();
+        // Send initial handshake and state snapshot
+        reply.raw.write(`event: initial_state\ndata: ${JSON.stringify({
+            type: 'INITIAL_STATE',
+            matchId: id,
+            timestamp: new Date().toISOString(),
+            state: currentState
+        })}\n\n`);
+        // Subscribe client to real-time broadcasts
+        const unsubscribe = broadcastHub.subscribe(id, (msg) => {
+            if (msg.type === 'HEARTBEAT') {
+                reply.raw.write(`:keepalive\n\n`);
+            }
+            else {
+                reply.raw.write(`event: ${msg.type.toLowerCase()}\ndata: ${JSON.stringify(msg)}\n\n`);
+            }
+        });
+        // Cleanup subscription on client disconnect
+        req.raw.on('close', () => {
+            unsubscribe();
+        });
+    };
+    app.get('/matches/:id/live', handleLiveStream);
+    app.get('/scoring/matches/:id/live', handleLiveStream);
+    // Batch Delivery Synchronization (Offline Queue Flush)
+    app.post('/scoring/matches/:id/sync', async (req, reply) => {
+        const { id } = req.params;
+        const deliveries = req.body?.deliveries || [];
+        let currentState = matchScores.get(id) || createInitialScoreState();
+        let appliedCount = 0;
+        for (const d of deliveries) {
+            try {
+                currentState = applyDelivery(currentState, d);
+                appliedCount++;
+            }
+            catch { }
+        }
+        matchScores.set(id, currentState);
+        return reply.status(200).send({
+            success: true,
+            match_id: id,
+            synced_count: appliedCount,
+            current_state: currentState,
+            highest_sequence: deliveries.length > 0 ? deliveries[deliveries.length - 1].sequence : 0
+        });
+    });
+    // Sync Status Inquiry
+    app.get('/scoring/matches/:id/sync-status', async (req, reply) => {
+        const { id } = req.params;
+        const currentState = matchScores.get(id) || createInitialScoreState();
+        return reply.status(200).send({
+            match_id: id,
+            legal_balls: currentState.legal_balls,
+            total_runs: currentState.runs,
+            wickets: currentState.wickets,
+            is_innings_closed: currentState.is_innings_closed,
+            last_synced_at: new Date().toISOString()
+        });
+    });
+    // Score Verification (Scorer / Lead Umpire Sign-Off)
+    app.post('/scoring/matches/:id/verify', async (req, reply) => {
+        const { id } = req.params;
+        const { verified_by = 'Rajesh Sharma (Lead Umpire)' } = req.body || {};
+        const verifiedAt = new Date().toISOString();
+        try {
+            await query(`UPDATE matches SET score_verified_by = $1, score_verified_at = $2 WHERE id = $3`, [verified_by, verifiedAt, id]);
+        }
+        catch { }
+        return reply.status(200).send({
+            success: true,
+            match_id: id,
+            verified_by,
+            verified_at: verifiedAt
+        });
+    });
+    // Score Publication & Final Result Lock
+    app.post('/scoring/matches/:id/publish', async (req, reply) => {
+        const { id } = req.params;
+        const publishedAt = new Date().toISOString();
+        try {
+            await query(`UPDATE matches SET status = 'COMPLETED', published_at = $1 WHERE id = $2`, [publishedAt, id]);
+        }
+        catch { }
+        return reply.status(200).send({
+            success: true,
+            match_id: id,
+            status: 'PUBLISHED',
+            published_at: publishedAt
+        });
+    });
+}
+//# sourceMappingURL=routes.js.map

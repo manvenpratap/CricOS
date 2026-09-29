@@ -1,0 +1,404 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CricOS Unified Cricket Platform API",
+    "version": "1.0.0-phase1u",
+    "description": "Autonomous operating system for cricket: tournament scheduling, provider marketplace, MCC Laws ball-by-ball scoring, real-time SSE broadcast, Bayesian reputation, and double-entry financial settlements.",
+    "contact": {
+      "name": "CricOS Engineering",
+      "url": "https://github.com/manvenpratap/CricOS.git"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Development & Test Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Observability",
+      "description": "Cloud-native probes, Prometheus metrics, and system telemetry"
+    },
+    {
+      "name": "Identity",
+      "description": "User authentication and cryptographic JWT token management"
+    },
+    {
+      "name": "Marketplace",
+      "description": "Provider service slot availability and escrow bookings"
+    },
+    {
+      "name": "Scoring",
+      "description": "MCC Laws ball-by-ball live scoring engine and SSE broadcasts"
+    },
+    {
+      "name": "Tournaments",
+      "description": "Bracket scheduling, standings, and autonomous tournament orchestration"
+    },
+    {
+      "name": "Disputes & Trust",
+      "description": "Provider Bayesian ratings, circuit breakers, and dispute resolution"
+    },
+    {
+      "name": "Settlement",
+      "description": "Double-entry ledger reconciliation and payout disbursements"
+    }
+  ],
+  "paths": {
+    "/health/live": {
+      "get": {
+        "tags": [
+          "Observability"
+        ],
+        "summary": "Liveness probe",
+        "description": "Reports server process uptime and liveliness status for container orchestrators.",
+        "responses": {
+          "200": {
+            "description": "Process is alive"
+          }
+        }
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "tags": [
+          "Observability"
+        ],
+        "summary": "Readiness probe",
+        "description": "Checks database pool connectivity and system readiness for traffic.",
+        "responses": {
+          "200": {
+            "description": "Ready for traffic"
+          },
+          "503": {
+            "description": "Degraded"
+          }
+        }
+      }
+    },
+    "/health/metrics": {
+      "get": {
+        "tags": [
+          "Observability"
+        ],
+        "summary": "Operational telemetry summary",
+        "description": "JSON metrics report covering memory, event loop lag, scoring activity, and pool stats.",
+        "responses": {
+          "200": {
+            "description": "Telemetry metrics"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "Observability"
+        ],
+        "summary": "Prometheus metrics exposition",
+        "description": "Standard text exposition format for scraping by Prometheus and OpenTelemetry collectors.",
+        "responses": {
+          "200": {
+            "description": "Prometheus metrics text"
+          }
+        }
+      }
+    },
+    "/api/v1/identity/login": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "summary": "Authenticate user and issue JWT",
+        "description": "Verifies user credentials and returns an HMAC-SHA256 signed bearer JWT token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "captain@cricos.app",
+                  "role": "CAPTAIN"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication successful with JWT"
+          }
+        }
+      }
+    },
+    "/api/v1/marketplace/listings": {
+      "get": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "Query provider availability slots",
+        "description": "Lists active ground, umpire, scorer, and coach service slots with temporal bounds.",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "description": "Provider category filter (GROUND, UMPIRE, SCORER)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Available service slots"
+          }
+        }
+      }
+    },
+    "/api/v1/checkout/bookings": {
+      "post": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "Book provider slot with escrow hold",
+        "description": "Calculates 5% platform fee + 18% GST in integer minor units and reserves slot.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "slotId": "slot-101",
+                  "paymentMethod": "MOCK_UPI"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booking confirmed and escrow created"
+          }
+        }
+      }
+    },
+    "/api/v1/scoring/matches/{id}/live": {
+      "get": {
+        "tags": [
+          "Scoring"
+        ],
+        "summary": "Subscribe to real-time live match SSE stream",
+        "description": "Server-Sent Events connection streaming real-time deliveries, scorecards, and commentary.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Match identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SSE event stream initiated"
+          }
+        }
+      }
+    },
+    "/api/v1/scoring/matches/{id}/deliveries": {
+      "post": {
+        "tags": [
+          "Scoring"
+        ],
+        "summary": "Record ball delivery with MCC Laws scoring",
+        "description": "Submits a ball event with automatic strike rotation, extras accounting, and live broadcast.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Match identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "runs": 4,
+                  "legal_ball": true,
+                  "is_wicket": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Delivery recorded and broadcasted"
+          }
+        }
+      }
+    },
+    "/api/v1/tournaments": {
+      "post": {
+        "tags": [
+          "Tournaments"
+        ],
+        "summary": "Create tournament bracket",
+        "description": "Registers a new tournament with round-robin or knockout format.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "Premier Cricket League",
+                  "format": "ROUND_ROBIN",
+                  "team_count": 8
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tournament created"
+          }
+        }
+      }
+    },
+    "/api/v1/tournaments/orchestrate": {
+      "post": {
+        "tags": [
+          "Tournaments"
+        ],
+        "summary": "Autonomous tournament orchestrator & simulation",
+        "description": "Runs complete end-to-end synthetic tournament with fixtures, bookings, scoring, standings, and payouts.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "Invitational Cup",
+                  "teamCount": 4,
+                  "oversPerInnings": 5
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tournament simulation and reconciliation complete"
+          }
+        }
+      }
+    },
+    "/api/v1/tournaments/{id}/standings": {
+      "get": {
+        "tags": [
+          "Tournaments"
+        ],
+        "summary": "Fetch tournament standings & Net Run Rate",
+        "description": "Retrieves ranked points table with ICC Net Run Rate (NRR) and multi-tier tie-breakers.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Tournament identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current standings table"
+          }
+        }
+      }
+    },
+    "/api/v1/disputes/{id}/resolve": {
+      "post": {
+        "tags": [
+          "Disputes & Trust"
+        ],
+        "summary": "Resolve operational dispute with balanced auto-refund",
+        "description": "Settles incident, applies provider rating delta, and issues zero-sum double-entry refund.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Dispute identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "resolution": "PROVIDER_FAULT",
+                  "refundAmountMinor": 100000
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dispute resolved and journal created"
+          }
+        }
+      }
+    },
+    "/api/v1/payouts/disburse": {
+      "post": {
+        "tags": [
+          "Settlement"
+        ],
+        "summary": "Disburse provider payouts from escrow",
+        "description": "Validates trust standing, absence of active disputes, and issues balanced ledger disbursement.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "bookingId": "bk-12345"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payout disbursed successfully"
+          }
+        }
+      }
+    }
+  }
+}
