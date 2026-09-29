@@ -4955,8 +4955,9 @@
         </div>
       </div>
 
-      <!-- 4. Sidebar Footer: User Profile & Quick Persona -->
+      <!-- 4. Sidebar Footer: User Profile & Quick Persona Switcher -->
       <div class="sidebar-footer">
+        <div id="sidebarAllowedPersonaStrip" style="display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.5rem;" aria-label="Provisioned Account Personas"></div>
         <div class="user-profile-header-btn" onclick="openUserModal()" data-tooltip="Manage User Profile, Career Stats, and Switch Persona (Captain, Player, Scorer...)" style="width: 100%; display: flex; align-items: center; gap: 0.65rem; padding: 0.35rem; cursor: pointer; border-radius: 8px; transition: background 0.2s;">
           <div class="user-avatar-pill" id="headerUserAvatar" style="width: 34px; height: 34px; font-size: 0.85rem; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; background: var(--turf-emerald); color: #04070D;">VK</div>
           <div class="user-meta-pill" style="display: flex; flex-direction: column; min-width: 0; overflow: hidden;">
@@ -5052,6 +5053,17 @@
       </header>
 
       <main id="appMainContent">
+        <!-- Persona-Scoped Clean Workspace & Clutter Control Bar -->
+        <div id="workspaceCleanFocusBar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.5rem 0.9rem; margin-bottom: 0.95rem; border-radius: 10px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.28); flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.55rem;">
+            <span id="cleanFocusPersonaTitle" style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald);">👑 Captain Focused Workspace</span>
+            <span style="color: var(--text-muted); font-size: 0.72rem;" id="cleanFocusPersonaSummary">• Main area decluttered (secondary tools &amp; studios organized in Left Sidebar)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.45rem;">
+            <button type="button" id="btnToggleMainAreaDeclutter" onclick="toggleMainAreaDeclutter()" style="background: rgba(0, 210, 255, 0.14); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35); border-radius: 6px; padding: 0.26rem 0.65rem; font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle between Focused Clean View and Full Extended Telemetry View">✨ Clean View: ON (Show All Panels)</button>
+          </div>
+        </div>
+
     <!-- TAB 1: LIVE MATCH SCORING -->
     <div id="tab-scoring" class="tab-pane active">
       <div class="scoreboard">
@@ -10822,7 +10834,118 @@ cricos_active_sse_connections 1</pre>
           ? ('🔐 Verified Account (' + (currentUser.identifier || 'Signed In') + ')')
           : '🔐 Authenticated Session • Provisioned Personas';
       }
+      const sidebarStrip = document.getElementById('sidebarAllowedPersonaStrip');
+      if (sidebarStrip) {
+        const roleBadges = {
+          CAPTAIN: '👑 Cpt',
+          PLAYER: '🏏 Ply',
+          SCORER: '📋 Scr',
+          FAN: '🎪 Fan',
+          UMPIRE: '⚖️ Ump',
+          ORGANISER: '🏆 Org',
+          TURF_PROVIDER: '🏟️ Trf',
+          ADMIN: '⚡ Adm'
+        };
+        sidebarStrip.innerHTML = allowed.map(r => {
+          const isAct = currentUser.persona === r;
+          const bg = isAct ? 'rgba(0, 229, 153, 0.22)' : 'rgba(255,255,255,0.05)';
+          const bdr = isAct ? '#00E599' : 'rgba(255,255,255,0.12)';
+          const col = isAct ? '#00E599' : '#94a3b8';
+          return '<button type="button" class="sidebar-persona-chip sidebar-quick-persona-chip' + (isAct ? ' active' : '') + '" data-role="' + r + '" data-sidebar-persona="' + r + '" onclick="selectPersona(this.dataset.sidebarPersona)" style="background:' + bg + '; border:1px solid ' + bdr + '; color:' + col + '; border-radius:5px; padding:0.18rem 0.42rem; font-size:0.62rem; font-weight:700; cursor:pointer;" data-tooltip="Switch active workspace to ' + r + '">' + (roleBadges[r] || r) + '</button>';
+        }).join('');
+      }
     }
+
+    window.desktopCleanFocusMode = true;
+    function applySidebarAndMainAreaDeclutter(role) {
+      const activeRole = role || currentUser.persona || 'CAPTAIN';
+      const perms = ROLE_PERMISSIONS[activeRole] || ROLE_PERMISSIONS.FAN;
+
+      // 1. Scope Scoreboard Match Action Toolbar (.match-action-toolbar) so at most 2-3 persona-specific buttons show
+      const toolbarRoleAllowMap = {
+        CAPTAIN: ['btnConductToss', 'btnFieldPlannerQuick', 'btnPitchMapQuick'],
+        PLAYER: ['btnPitchMapQuick'],
+        SCORER: ['btnExportCricsheet', 'btnPitchMapQuick'],
+        FAN: ['btnPitchMapQuick'],
+        UMPIRE: ['btnUmpireDeskQuick', 'btnPitchMapQuick'],
+        ORGANISER: ['btnPlayerAuctionQuick', 'btnDivisionsQuick'],
+        TURF_PROVIDER: ['btnDivisionsQuick'],
+        ADMIN: ['btnUmpireDeskQuick', 'btnExportCricsheet', 'btnFieldPlannerQuick']
+      };
+      const allowedBtnIds = toolbarRoleAllowMap[activeRole] || ['btnPitchMapQuick'];
+      document.querySelectorAll('.match-action-toolbar button.nav-pill').forEach(btn => {
+        const id = btn.id || '';
+        const onclickStr = btn.getAttribute('onclick') || '';
+        let shouldShow = false;
+        if (id && allowedBtnIds.includes(id)) {
+          shouldShow = true;
+        } else if (!id && onclickStr.includes('openScorecardModal') && (activeRole === 'SCORER' || activeRole === 'PLAYER' || activeRole === 'ORGANISER')) {
+          shouldShow = true;
+        } else if (!id && onclickStr.includes('openMatchRatingModal') && (activeRole === 'FAN' || activeRole === 'TURF_PROVIDER')) {
+          shouldShow = true;
+        }
+        btn.style.display = shouldShow ? 'inline-flex' : 'none';
+      });
+
+      // 2. Scope Left Sidebar (#appSidebar) secondary studio & officiating items per persona
+      const sidebarItemAllowMap = {
+        sidebarBtnFieldPlanner: ['CAPTAIN', 'PLAYER', 'ADMIN'],
+        sidebarBtnPitchMap: ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN'],
+        sidebarBtnCricsheetExport: ['SCORER', 'ORGANISER', 'ADMIN'],
+        sidebarBtnUmpireDesk: ['UMPIRE', 'ADMIN'],
+        sidebarBtnPlayerAuction: ['CAPTAIN', 'PLAYER', 'ORGANISER', 'ADMIN'],
+        sidebarBtnLeagueDivisions: ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN']
+      };
+      Object.keys(sidebarItemAllowMap).forEach(elId => {
+        const el = document.getElementById(elId);
+        if (el) {
+          el.style.display = sidebarItemAllowMap[elId].includes(activeRole) ? 'flex' : 'none';
+        }
+      });
+
+      // 3. Declutter Main Content Area secondary telemetry panels across all personas when desktopCleanFocusMode is true
+      const secondarySelectors = [
+        '#matchMomentumWaveContainer',
+        '#eventReadinessBanner',
+        '.fow-container',
+        '#threeDExperiencesHub'
+      ];
+      secondarySelectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(panel => {
+          panel.setAttribute('data-declutter-secondary', 'true');
+          panel.style.display = window.desktopCleanFocusMode ? 'none' : '';
+        });
+      });
+
+      // 4. Update #workspaceCleanFocusBar status banner
+      const titleEl = document.getElementById('cleanFocusPersonaTitle');
+      const sumEl = document.getElementById('cleanFocusPersonaSummary');
+      const btnEl = document.getElementById('btnToggleMainAreaDeclutter');
+      if (titleEl) {
+        titleEl.innerHTML = perms.icon + ' ' + perms.label + ' Focused Workspace';
+      }
+      if (sumEl) {
+        sumEl.textContent = window.desktopCleanFocusMode
+          ? '• Clutter reduced: showing core ' + perms.label + ' modules (secondary studios & tools accessible in Left Sidebar)'
+          : '• Extended Telemetry View active (showing all secondary panels)';
+      }
+      if (btnEl) {
+        btnEl.textContent = window.desktopCleanFocusMode
+          ? '✨ Clean View: ON (Show Extended Panels)'
+          : '📊 Extended View: ON (Switch to Clean View)';
+      }
+    }
+    window.applySidebarAndMainAreaDeclutter = applySidebarAndMainAreaDeclutter;
+
+    function toggleMainAreaDeclutter(forceState) {
+      if (typeof forceState === 'boolean') {
+        window.desktopCleanFocusMode = forceState;
+      } else {
+        window.desktopCleanFocusMode = !window.desktopCleanFocusMode;
+      }
+      applySidebarAndMainAreaDeclutter(currentUser.persona);
+    }
+    window.toggleMainAreaDeclutter = toggleMainAreaDeclutter;
 
     let _heroCanvasRaf = null;
     function startHeroStadiumCanvasAnimation() {
@@ -10994,6 +11117,7 @@ cricos_active_sse_connections 1</pre>
       currentUser.allowedPersonas = ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN', 'ORGANISER', 'TURF_PROVIDER'];
       currentUser.strictPersonaLock = false;
       applyAllowedPersonasFilter();
+      applySidebarAndMainAreaDeclutter(currentUser.persona || 'CAPTAIN');
       const shouldShowHeroOnBoot = Boolean(
         !navigator.webdriver ||
         (window.location && window.location.search && window.location.search.indexOf('hero=1') !== -1) ||
@@ -11151,6 +11275,8 @@ cricos_active_sse_connections 1</pre>
       if (exportCricsheetBtn) {
         exportCricsheetBtn.style.display = (role === 'SCORER' || role === 'ADMIN' || role === 'ORGANISER') ? 'inline-block' : 'none';
       }
+
+      applySidebarAndMainAreaDeclutter(role);
 
       if (typeof renderRoster === 'function') {
         renderRoster();

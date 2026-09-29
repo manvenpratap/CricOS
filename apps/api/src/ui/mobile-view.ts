@@ -3212,10 +3212,179 @@ export function getMobileAppHtml(): string {
         });
       }
 
+      toggleSidebarDrawer(forceState) {
+        if (typeof forceState === 'boolean') {
+          this.sidebarDrawerOpen = forceState;
+        } else {
+          this.sidebarDrawerOpen = !this.sidebarDrawerOpen;
+        }
+        this.render();
+      }
+
+      openSidebarDrawer() {
+        this.sidebarDrawerOpen = true;
+        this.render();
+      }
+
+      closeSidebarDrawer() {
+        this.sidebarDrawerOpen = false;
+        this.render();
+      }
+
+      navigateToFromSidebar(screenId, subTab) {
+        this.sidebarDrawerOpen = false;
+        if (subTab) {
+          this.matchSubTab = subTab;
+        }
+        this.navigateTo(screenId);
+      }
+
+      toggleCleanFocusMode(forceState) {
+        if (this.cleanFocusMode === undefined) this.cleanFocusMode = true;
+        if (typeof forceState === 'boolean') {
+          this.cleanFocusMode = forceState;
+        } else {
+          this.cleanFocusMode = !this.cleanFocusMode;
+        }
+        this.render();
+      }
+
+      applyMobileMainAreaDeclutter() {
+        if (this.cleanFocusMode === undefined) this.cleanFocusMode = true;
+        var scrollBody = document.getElementById('mobileScrollBody');
+        if (!scrollBody) return;
+        var banner = document.getElementById('roleExperienceBanner');
+        if (banner) {
+          banner.style.display = this.cleanFocusMode ? 'none' : 'flex';
+        }
+        // Hide secondary excess cards inside main scroll area when cleanFocusMode is active
+        var topLevelCards = scrollBody.querySelectorAll('.mobile-secondary-clutter');
+        for (var i = 0; i < topLevelCards.length; i++) {
+          topLevelCards[i].style.display = this.cleanFocusMode ? 'none' : '';
+        }
+      }
+
+      renderMobileSidebarDrawer() {
+        var isOpen = Boolean(this.sidebarDrawerOpen);
+        if (this.cleanFocusMode === undefined) this.cleanFocusMode = true;
+        var role = this.profile.persona || 'CAPTAIN';
+        var cfg = this.roleExperienceConfig[role] || this.roleExperienceConfig.FAN;
+        var allowedList = (Array.isArray(this.allowedPersonas) && this.allowedPersonas.length > 0)
+          ? this.allowedPersonas
+          : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
+
+        var navItems = [];
+        if (role === 'CAPTAIN' || role === 'PLAYER') {
+          navItems.push(['MATCHES', '🏏', 'Match Center']);
+          navItems.push(['TEAMS', '👥', 'Squad & Playing XI']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Standings & Brackets']);
+          navItems.push(['MARKETPLACE', '🛒', 'Turf Marketplace']);
+          navItems.push(['PROFILE', '👤', 'Profile & Career']);
+        } else if (role === 'SCORER') {
+          navItems.push(['MATCHES', '⚡', 'Scorer Studio Pad']);
+          navItems.push(['TEAMS', '👥', 'Team Lineups']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Tournament Standings']);
+          navItems.push(['PROFILE', '👤', 'Official Profile']);
+        } else if (role === 'FAN') {
+          navItems.push(['MATCHES', '🎪', 'Live Stadium Pulse']);
+          navItems.push(['TOURNAMENTS', '🏆', 'League Standings']);
+          navItems.push(['MARKETPLACE', '🛒', 'Venues & Tickets']);
+          navItems.push(['PROFILE', '👤', 'Fan Profile']);
+        } else if (role === 'UMPIRE') {
+          navItems.push(['MATCHES', '🏏', 'Match Center']);
+          navItems.push(['INCIDENTS', '⚖️', 'Umpire Desk & Sanctions']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Tournament Standings']);
+          navItems.push(['PROFILE', '👤', 'Official Profile']);
+        } else if (role === 'ORGANISER') {
+          navItems.push(['MATCHES', '🏏', 'Live Match Center']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Fixtures & Brackets']);
+          navItems.push(['TEAMS', '👥', 'Registered Teams']);
+          navItems.push(['MARKETPLACE', '🧺', 'Venue Procurement']);
+          navItems.push(['PROFILE', '👤', 'Organiser Profile']);
+        } else if (role === 'TURF_PROVIDER') {
+          navItems.push(['MATCHES', '🏏', 'Live Ground Feed']);
+          navItems.push(['MARKETPLACE', '🏟️', 'Turf Slot Storefront']);
+          navItems.push(['INCIDENTS', '⚖️', 'Escrow Disputes']);
+          navItems.push(['PROFILE', '👤', 'Provider Profile']);
+        } else {
+          navItems.push(['MATCHES', '🏏', 'Match Center']);
+          navItems.push(['TEAMS', '👥', 'Teams & Rosters']);
+          navItems.push(['INCIDENTS', '⚖️', 'Incidents & Fair Play']);
+          navItems.push(['ADMIN', '⚡', 'Settlement Audit Desk']);
+          navItems.push(['PROFILE', '👤', 'System Root Profile']);
+        }
+
+        var h = '';
+        h += '<div id="mobileSidebarBackdrop" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="position: fixed; inset: 0; z-index: 9490; background: rgba(2, 6, 14, 0.72); backdrop-filter: blur(4px); display: ' + (isOpen ? 'block' : 'none') + ';"></div>';
+        h += '<aside id="mobileSidebarDrawer" aria-label="Mobile Sidebar Navigation" style="position: fixed; top: 0; left: 0; bottom: 0; width: 282px; max-width: 84vw; z-index: 9500; background: linear-gradient(180deg, #071222 0%, #040914 100%); border-right: 1px solid rgba(0, 229, 153, 0.28); display: ' + (isOpen ? 'flex' : 'none') + '; flex-direction: column; overflow-y: auto; padding: 0.9rem; box-shadow: 14px 0 38px rgba(0,0,0,0.75); color: #f8fafc;">';
+
+        // Header
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 0.75rem;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+        h += '<span style="font-size: 1.2rem;">🏏</span>';
+        h += '<div><div style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 0.95rem; color: #f8fafc;">CricOS Navigation</div><div style="font-size: 0.62rem; color: #00E599; font-weight: 700;">' + cfg.icon + ' ' + role + ' WORKSPACE</div></div>';
+        h += '</div>';
+        h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); color: #cbd5e1; border-radius: 6px; padding: 0.22rem 0.5rem; font-size: 0.8rem; cursor: pointer;" data-tooltip="Close Sidebar">✕</button>';
+        h += '</div>';
+
+        // Section 1: Allowed Account Personas
+        h += '<div style="margin-bottom: 0.85rem;">';
+        h += '<div style="font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Provisioned Account Personas</div>';
+        h += '<div id="mobileSidebarPersonaStrip" style="display: flex; flex-wrap: wrap; gap: 0.3rem;">';
+        for (var p = 0; p < allowedList.length; p++) {
+          var pKey = allowedList[p];
+          var isActRole = pKey === role;
+          var st = isActRole ? 'background: rgba(0, 229, 153, 0.22); border: 1px solid #00E599; color: #00E599; font-weight: 800;' : 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1;';
+          h += '<button type="button" class="mobile-sidebar-persona-chip' + (isActRole ? ' active' : '') + '" data-persona="' + pKey + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona); window.cricosMobileApp.closeSidebarDrawer();" style="padding: 0.26rem 0.5rem; border-radius: 6px; font-size: 0.64rem; cursor: pointer; ' + st + '" data-tooltip="Switch to ' + pKey + '">' + pKey + '</button>';
+        }
+        h += '</div></div>';
+
+        // Section 2: Core Workspaces (Scoped to Persona)
+        h += '<div style="margin-bottom: 0.85rem;">';
+        h += '<div style="font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Core Workspaces</div>';
+        h += '<div id="mobileSidebarWorkspaces" style="display: flex; flex-direction: column; gap: 0.28rem;">';
+        for (var n = 0; n < navItems.length; n++) {
+          var nav = navItems[n];
+          var isCurScreen = this.currentScreen === nav[0];
+          var navStyle = isCurScreen ? 'background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.45); color: #00E599; font-weight: 800;' : 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: #f8fafc; font-weight: 600;';
+          h += '<button type="button" class="mobile-sidebar-nav-item' + (isCurScreen ? ' active' : '') + '" data-screen="' + nav[0] + '" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.5rem 0.65rem; border-radius: 8px; font-size: 0.76rem; cursor: pointer; ' + navStyle + '" data-tooltip="Open ' + nav[2] + '"><span>' + nav[1] + '</span><span>' + nav[2] + '</span></button>';
+        }
+        h += '</div></div>';
+
+        // Section 3: 3D & Tactical Studios (Tucked out of Main Area to eliminate clutter)
+        h += '<div style="margin-bottom: 0.85rem;">';
+        h += '<div style="font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D &amp; Tactical Studios</div>';
+        h += '<div id="mobileSidebarStudios" style="display: flex; flex-direction: column; gap: 0.28rem;">';
+        h += '<button type="button" data-screen="MATCHES" data-subtab="3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.28); color: #00D2FF; font-size: 0.73rem; font-weight: 700; cursor: pointer;" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
+        h += '<button type="button" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.28); color: #00E599; font-size: 0.73rem; font-weight: 700; cursor: pointer;" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.28); color: #a78bfa; font-size: 0.73rem; font-weight: 700; cursor: pointer;" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
+        h += '</div></div>';
+
+        // Section 4: Clutter Control & Sign Out
+        h += '<div style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 0.45rem;">';
+        h += '<button type="button" id="btnMobileSidebarDeclutterToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.38); background: rgba(0, 229, 153, 0.12); color: #00E599; font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle Clean Main Area Focus Mode">' + (this.cleanFocusMode ? '✨ Clean Main View: ON' : '📊 Extended View: ON') + '</button>';
+        h += '<button type="button" id="btnMobileSidebarSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.38); background: rgba(255, 51, 102, 0.12); color: #ff3366; font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Sign Out to Animated Hero Page">🚪 Sign Out / Switch Account</button>';
+        h += '</div>';
+
+        h += '</aside>';
+        return h;
+      }
+
       renderRoleExperienceBanner() {
+        if (this.cleanFocusMode === undefined) this.cleanFocusMode = true;
         var role = this.profile.persona || 'PLAYER';
         var cfg = this.roleExperienceConfig[role] || this.roleExperienceConfig.FAN;
-        var h = '<div class="role-exp-hud-banner" id="roleExperienceBanner">';
+        var h = '';
+        // Sleek 1-line Clean Focus Strip replacing bulky top clutter
+        h += '<div id="mobileCleanFocusBar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; padding: 0.38rem 0.6rem; margin-bottom: 0.5rem; border-radius: 8px; background: rgba(10, 18, 32, 0.85); border: 1px solid ' + cfg.badgeColor + ';">';
+        h += '<div style="display: flex; align-items: center; gap: 0.38rem; min-width: 0;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: ' + cfg.badgeBg + '; color: ' + cfg.badgeColor + '; border: 1px solid ' + cfg.badgeColor + '; border-radius: 5px; padding: 0.14rem 0.4rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Open Sidebar Menu">☰ Menu</button>';
+        h += '<span style="font-size: 0.68rem; font-weight: 800; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + cfg.icon + ' ' + cfg.title + '</span>';
+        h += '</div>';
+        h += '<button type="button" id="btnMobileToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Toggle Clean View vs Extended Details">' + (this.cleanFocusMode ? '✨ Clean View' : '📊 Full View') + '</button>';
+        h += '</div>';
+
+        h += '<div class="role-exp-hud-banner" id="roleExperienceBanner" style="display: ' + (this.cleanFocusMode ? 'none' : 'flex') + ';">';
         h += '<div class="role-exp-hud-info">';
         h += '<div class="role-exp-hud-badge" style="background: ' + cfg.badgeBg + '; color: ' + cfg.badgeColor + '; border: 1px solid ' + cfg.badgeColor + ';">';
         h += '<span>' + cfg.icon + '</span><span>' + cfg.title + '</span>';
@@ -7528,7 +7697,8 @@ export function getMobileAppHtml(): string {
         var h = '';
         // Fixed Top Header Inside Viewport (Locked at top, never scrolls)
         h += '<header class="mobile-header">';
-        h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+        h += '<button type="button" id="btnMobileSidebarToggle" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 6px; padding: 0.2rem 0.5rem; font-size: 0.85rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Open Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios)" aria-label="Open Left Sidebar Navigation Drawer">☰</button>';
         h += '<span style="font-size: 1.1rem;">🏏</span>';
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
         h += '</div>';
@@ -7671,10 +7841,14 @@ export function getMobileAppHtml(): string {
           h += this.renderWagonPickerSheet();
         }
 
+        // Slide-Out Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios & Clean Focus Toggle)
+        h += this.renderMobileSidebarDrawer();
+
         // Animated Hero Landing Page -> Login -> Persona-Scoped Access Gateway Overlay
         h += this.renderHeroAuthGatewayOverlay();
 
         root.innerHTML = h;
+        this.applyMobileMainAreaDeclutter();
 
         if (this.activeActionSheet && typeof this.activeActionSheet.onConfirm === 'function') {
           var confirmBtn = document.getElementById('btnActionSheetConfirm');

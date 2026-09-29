@@ -1,14 +1,28 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 11:04:00
-**Version:** 1.0.0-phase2bq (Animated Hero Page -> Login -> Persona-Scoped In-App Access)  
+**Last Updated:** 2026-09-29 11:50:00
+**Version:** 1.0.0-phase2br (Sidebar Navigation & Decluttered Main Area Across All Personas)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BQ Completed — Animated Hero Landing Page -> Login -> Persona-Scoped In-App Access (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BR Completed — Sidebar Navigation Drawer & Decluttered Main Workspace Across All 8 Personas (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Desktop Sidebar Navigation & Main Area Clutter Reduction (`apps/api/src/ui/dashboard.ts`)**:
+    - Added `#sidebarAllowedPersonaStrip` inside `.sidebar-footer` of `#appSidebar` displaying quick-switch persona chips strictly scoped to the authenticated user's `allowedPersonas`.
+    - Added `#workspaceCleanFocusBar` (`#cleanFocusPersonaTitle`, `#cleanFocusPersonaSummary`, `#btnToggleMainAreaDeclutter`) at the top of `#appMainContent` with default `window.desktopCleanFocusMode = true` (`✨ Clean Focus Mode`).
+    - Implemented `applySidebarAndMainAreaDeclutter(role)` and `toggleMainAreaDeclutter()` across all 8 personas (`CAPTAIN`, `PLAYER`, `SCORER`, `FAN`, `UMPIRE`, `ORGANISER`, `TURF_PROVIDER`, `ADMIN`):
+      - Scopes `.match-action-toolbar` so each persona sees only 1–3 role-relevant action pills (`CAPTAIN`: Toss & DLS, Field Radar, Win Sim; `SCORER`: Toss & DLS, Cricsheet; `UMPIRE`: Toss & DLS, DRS Review, Umpire Desk; `FAN`: Win Sim, Analytics; `ORGANISER`: Readiness, Auction, Analytics; `TURF_PROVIDER`: Readiness; `PLAYER`: Analytics) instead of all 9 buttons simultaneously.
+      - Dynamically hides non-applicable secondary sidebar studio items (`#sidebarBtnFieldPlanner`, `#sidebarBtnPitchMap`, `#sidebarBtnCricsheetExport`, `#sidebarBtnUmpireDesk`, `#sidebarBtnPlayerAuction`, `#sidebarBtnLeagueDivisions`) per active persona.
+      - Collapses secondary main-area telemetry & clutter panels (`#matchMomentumWaveContainer`, `#eventReadinessBanner`, `.fow-container`, `#threeDExperiencesHub`) in Clean Focus Mode, with 1-click expansion via `#btnToggleMainAreaDeclutter` (`📂 Show All Telemetry`).
+  - **2. Mobile / Android APK Slide-Out Left Sidebar Navigation Drawer & Main Area Clutter Reduction (`apps/api/src/ui/mobile-view.ts`)**:
+    - Added top-left hamburger trigger (`#btnMobileSidebarToggle` `☰`) in `.mobile-header` and slide-out **Left Sidebar Navigation Drawer (`#mobileSidebarDrawer` + `#mobileSidebarBackdrop`)** via `renderMobileSidebarDrawer()`, `toggleSidebarDrawer()`, `openSidebarDrawer()`, `closeSidebarDrawer()`, and `navigateToFromSidebar()`.
+    - Populated `#mobileSidebarDrawer` with: (1) Provisioned Account Personas (`#mobileSidebarPersonaStrip`), (2) Persona-Scoped Core Workspaces (`#mobileSidebarWorkspaces`), (3) 3D & Tactical Studios (`#mobileSidebarStudios`: `3D Stadium Pitch`, `8-Zone Wagon Wheel`, `Command Palette ⌘K`), and (4) Clean Focus Mode Toggle (`#btnMobileSidebarDeclutterToggle`) + Sign Out (`#btnMobileSidebarSignOut`).
+    - Replaced the bulky top `#roleExperienceBanner` across all 8 personas with a sleek 1-line `#mobileCleanFocusBar` (`☰ Menu` + persona badge + `#btnMobileToggleDeclutter` `✨ Clean View`), hiding `#roleExperienceBanner` and `.mobile-secondary-clutter` cards by default (`this.cleanFocusMode = true`) via `applyMobileMainAreaDeclutter()`.
+  - **3. Automated E2E Verification (`tests/test_66_sidebar_navigation_and_decluttered_main_area.py`)**:
+    - Verified via Playwright across both Desktop (`index.html?hero=1`) and Mobile/APK (`dist/mobile.html?hero=1`) that Sidebar Navigation and Clean Focus Mode decluttering operate cleanly across all 8 personas with zero console/page errors.
+- **Preceding Phase**: Phase 2BQ Completed — Animated Hero Landing Page -> Login -> Persona-Scoped In-App Access (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Animated 60fps Hero Landing Page (`STAGE 1: HERO` in `dashboard.ts` & `mobile-view.ts`)**:
     - Implemented full-screen `#cricosHeroAuthOverlay` (Desktop) and `#mobileHeroAuthOverlay` (Mobile/APK) with a live 60fps HTML5 `<canvas>` (`#heroStadiumCanvas` & `#mobileHeroStadiumCanvas`) rendering sweeping stadium floodlight cones, 3D perspective turf boundary rings, and animated parabolic `SIX`/`FOUR` cricket ball trajectories (`startHeroStadiumCanvasAnimation()` and `initMobileHeroCanvas()`).
     - Presented kinetic hero headline (`Every Ball. Every Tactic. Every Persona — Unified in 3D.`), feature showcase cards, and primary CTA (`#btnHeroProceedToLogin` / `#btnMobileHeroProceedToLogin` — `⚡ Enter CricOS — Sign In →`) transitioning cleanly to Stage 2 (`LOGIN`).
