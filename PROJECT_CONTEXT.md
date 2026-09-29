@@ -1,14 +1,31 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-28 23:15:00
-**Version:** 1.0.0-phase2bl (Universal WCAG 2.1 AA/AAA Zero Contrast Violations Across All Themes)  
+**Last Updated:** 2026-09-29 07:10:00
+**Version:** 1.0.0-phase2bm (Hover-Only Delayed Tooltips & Logical Menu Organization)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BL Completed — Universal WCAG 2.1 AA/AAA Contrast & Surface Invariant Engine Across All Themes:
+- **Active Phase**: Phase 2BM Completed — Hover-Only Delayed Tooltips (`450ms`) & Logical Menu Organization Across Desktop & Mobile:
+  - **1. Hover-Only Delayed Tooltip Engine (`HOVER_DELAY_MS = 450` in `apps/api/src/ui/dashboard.ts` & `apps/api/src/ui/mobile-view.ts`)**:
+    - Removed `focusin` and `focusout` tooltip listeners so tooltips never pop up unexpectedly on button click, drawer open, or keyboard tab focus.
+    - Implemented a pointer/mouse hover controller with `const HOVER_DELAY_MS = 450;` so tooltips only appear after the cursor rests on a `[data-tooltip]` trigger for `450ms`.
+    - Moving off the trigger before `450ms` cancels `showTimer` (`cancelPendingShow()`); clicking (`pointerdown`), scrolling (`scroll`), or pressing `Escape` immediately cancels pending timers and dismisses any visible tooltip.
+  - **2. Logical Menu & Toolbar Organization (`apps/api/src/ui/dashboard.ts` & `apps/api/src/ui/mobile-view.ts`)**:
+    - **Desktop Left Sidebar (`#appSidebar`)**: Structured into 5 cohesive domain sections:
+      1. `Core Workspaces` (`Match Center`, `Scoring Studio`, `Teams & Rosters`, `Tournaments`, `Venues & Turfs`, `Fair Play & Trust`, `Operations & APIs` — with `Match Center` and `Scoring Studio` adjacent at the top).
+      2. `Tactical & 3D Studios` (`Field Placement Radar`, `Pitch & Win Simulator`, `Match Intelligence`, `Cricsheet & XML`).
+      3. `Match Day & Officiating` (`Readiness`, `Check-In`, `Umpire Desk`, `Match Chat`).
+      4. `League, Auction & Commerce` (`Player Auction Room`, `Divisions`, `Fixtures Ops`, `Calendar`, `Sponsors & Auction`, `RFQ Desk`, `Gear Store`).
+      5. `Developer & Platform` (`Mobile App`, `API Docs`, `Metrics`, `System Health`, `Legal & Privacy`).
+    - **Desktop Top Header Bar (`.app-topbar`)**: Organized `.topbar-right` into 4 functional `.topbar-cluster` containers separated by `.topbar-divider` (`Global Search & Shortcuts` -> `Live Platform Telemetry` -> `Appearance & Theme Controls` -> `Mobile App, Persona & Notifications`).
+    - **Scoreboard Match Action Toolbar (`.match-action-toolbar`)**: Organized the 9 action buttons into 2 labeled `.match-action-group` containers (`Match Ops:` for `Toss & DLS`, `DRS Review`, `Umpire`, `Readiness`, `Cricsheet`; `Studios:` for `Field Radar`, `Win Sim`, `Auction`, `Analytics`).
+    - **Mobile Bottom Navigation (`#mobileBottomNav` in `mobile-view.ts`)**: Standardized all 8 persona navigation bars so `MATCHES` (`Match` / `Scoring` / `Pulse` / `Live`) is always the primary leftmost tab and `PROFILE` is always anchored on the right.
+  - **3. Automated E2E & Domain Verification (`tests/test_60_hover_delayed_tooltips_and_menu_organization.py`, `tests/domain-identity-personas-and-themes.test.ts`)**:
+    - Verified hover-only delayed tooltip timing (not visible on focus, not visible at 150ms hover, visible after 450ms hover, dismissed on `Escape`) and logical menu structures across Desktop and Mobile (`185/185` Node tests passing + Playwright `test_59` & `test_60` passing with zero console errors).
+- **Preceding Phase**: Phase 2BL Completed — Universal WCAG 2.1 AA/AAA Contrast & Surface Invariant Engine Across All Themes:
   - **1. Desktop Web Console Contrast & Surface Invariant Engine (`apps/api/src/ui/dashboard.ts`)**:
     - Implemented `enforceThemeContrastInvariants()` (`window.enforceThemeContrastInvariants`), automatically triggered on `setDesignTheme()`, `applyDesignTheme()`, `switchTab()`, `openModal()`, `showToast()`, `renderRoster()`, `updateAthleticStatsCard()`, and all flagship studio openers/renderers.
     - Suppresses CSS transition interpolation during synchronous contrast evaluation (`#cricos-contrast-sync-style`) so `getComputedStyle` always reads final target colors and never mid-transition states.

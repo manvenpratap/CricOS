@@ -7250,6 +7250,7 @@
         h += '<main class="mobile-scroll-body" id="mobileScrollBody">' + content + '</main>';
 
         // Fixed Bottom Navigation Bar tailored to Persona (Permanently pinned at bottom, never scrolls)
+        // Logical ergonomic order: Live Match (Primary Left) -> Squad/Teams -> Standings/Fixtures -> Turf/Ops -> Profile (Account Right)
         h += '<nav class="mobile-bottom-nav" id="mobileBottomNav">';
 
         var navItems = [];
@@ -7262,6 +7263,7 @@
           navItems.push(['PROFILE', '👤', 'Profile']);
         } else if (persona === 'SCORER') {
           navItems.push(['MATCHES', '⚡', 'Scoring']);
+          navItems.push(['TEAMS', '👥', 'Squad']);
           navItems.push(['TOURNAMENTS', '🏆', 'Standings']);
           navItems.push(['PROFILE', '👤', 'Profile']);
         } else if (persona === 'FAN') {
@@ -7270,27 +7272,27 @@
           navItems.push(['MARKETPLACE', '🛒', 'Venues']);
           navItems.push(['PROFILE', '👤', 'Profile']);
         } else if (persona === 'UMPIRE') {
-          navItems.push(['INCIDENTS', '⚖️', 'Umpire']);
           navItems.push(['MATCHES', '🏏', 'Match']);
+          navItems.push(['INCIDENTS', '⚖️', 'Umpire']);
           navItems.push(['TOURNAMENTS', '🏆', 'Standings']);
           navItems.push(['PROFILE', '👤', 'Profile']);
         } else if (persona === 'ORGANISER') {
-          navItems.push(['TOURNAMENTS', '🏆', 'Fixtures']);
-          navItems.push(['MARKETPLACE', '🧺', 'Basket']);
-          navItems.push(['TEAMS', '👥', 'Teams']);
           navItems.push(['MATCHES', '🏏', 'Match']);
+          navItems.push(['TOURNAMENTS', '🏆', 'Fixtures']);
+          navItems.push(['TEAMS', '👥', 'Teams']);
+          navItems.push(['MARKETPLACE', '🧺', 'Basket']);
           navItems.push(['PROFILE', '👤', 'Profile']);
         } else if (persona === 'TURF_PROVIDER') {
+          navItems.push(['MATCHES', '🏏', 'Live']);
           navItems.push(['MARKETPLACE', '🏟️', 'Storefront']);
           navItems.push(['INCIDENTS', '⚖️', 'Disputes']);
-          navItems.push(['MATCHES', '🏏', 'Live']);
           navItems.push(['PROFILE', '👤', 'Profile']);
         } else {
           // ADMIN
-          navItems.push(['ADMIN', '⚡', 'Audit']);
           navItems.push(['MATCHES', '🏏', 'Match']);
           navItems.push(['TEAMS', '👥', 'Teams']);
           navItems.push(['INCIDENTS', '⚖️', 'Incidents']);
+          navItems.push(['ADMIN', '⚡', 'Audit']);
           navItems.push(['PROFILE', '👤', 'Profile']);
         }
 
@@ -7471,7 +7473,7 @@
           var styledBgEls = document.querySelectorAll('div, section, article, aside, header, button, span');
           for (var b = 0; b < styledBgEls.length; b++) {
             var bgEl = styledBgEls[b];
-            if (bgEl.closest('#mobile3DCanvas, #mobileFieldPlannerSvg, #mobilePitchMapSvg, #cricosCelebrationCanvas, svg, canvas')) continue;
+            if (bgEl.closest('#universal-tooltip-popover, #mobile3DCanvas, #mobileFieldPlannerSvg, #mobilePitchMapSvg, #cricosCelebrationCanvas, svg, canvas')) continue;
             var csBg = window.getComputedStyle(bgEl).backgroundColor;
             var parsedBg = parseRgba(csBg);
             if (parsedBg[3] > 0.06) {
@@ -8639,6 +8641,128 @@
         }
       }
     });
+
+    // Hover-Only Delayed Tooltip Engine (HOVER_DELAY_MS = 450ms; never triggers on touch, click, or focus)
+    (function () {
+      const HOVER_DELAY_MS = 450;
+      let activeTooltip = null;
+      let activeTrigger = null;
+      let pendingTrigger = null;
+      let showTimer = null;
+      let hideTimer = null;
+      let lastPointerType = 'mouse';
+
+      function getTooltipElement() {
+        let el = document.getElementById('universal-tooltip-popover');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'universal-tooltip-popover';
+          el.className = 'uni-tooltip';
+          el.setAttribute('role', 'tooltip');
+          el.setAttribute('aria-hidden', 'true');
+          el.style.cssText = 'position:absolute;z-index:99999;display:none;max-width:260px;padding:6px 11px;font-size:11.5px;font-weight:500;line-height:1.4;border-radius:8px;pointer-events:none;background:rgba(15,23,42,0.95);color:#f8fafc;border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 20px rgba(0,0,0,0.5);opacity:0;transition:opacity 120ms ease-out;';
+          document.body.appendChild(el);
+        }
+        return el;
+      }
+
+      function cancelPendingShow() {
+        if (showTimer) {
+          clearTimeout(showTimer);
+          showTimer = null;
+        }
+        pendingTrigger = null;
+      }
+
+      function show(trigger, text) {
+        if (!text) return;
+        clearTimeout(hideTimer);
+        const tooltip = getTooltipElement();
+        tooltip.textContent = text;
+        tooltip.style.display = 'block';
+        const trigRect = trigger.getBoundingClientRect();
+        const ttRect = tooltip.getBoundingClientRect();
+        const margin = 8;
+        let top = trigRect.top - ttRect.height - margin;
+        if (top < margin) top = trigRect.bottom + margin;
+        let left = trigRect.left + (trigRect.width / 2) - (ttRect.width / 2);
+        if (left < margin) left = margin;
+        if (left + ttRect.width > window.innerWidth - margin) left = window.innerWidth - ttRect.width - margin;
+        tooltip.style.top = Math.round(top + window.scrollY) + 'px';
+        tooltip.style.left = Math.round(left + window.scrollX) + 'px';
+        tooltip.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(() => {
+          tooltip.style.opacity = '1';
+          tooltip.classList.add('visible');
+        });
+        activeTooltip = tooltip;
+        activeTrigger = trigger;
+      }
+
+      function hide() {
+        cancelPendingShow();
+        if (!activeTooltip) return;
+        const tooltip = activeTooltip;
+        tooltip.style.opacity = '0';
+        tooltip.classList.remove('visible');
+        tooltip.setAttribute('aria-hidden', 'true');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          if (!activeTooltip) tooltip.style.display = 'none';
+        }, 130);
+        activeTooltip = null;
+        activeTrigger = null;
+      }
+
+      document.addEventListener('pointermove', (e) => {
+        if (e.pointerType) lastPointerType = e.pointerType;
+      }, { passive: true });
+
+      document.addEventListener('mouseover', (e) => {
+        if (lastPointerType === 'touch') return;
+        const trigger = e.target && e.target.closest ? e.target.closest('[data-tooltip]') : null;
+        if (!trigger) {
+          cancelPendingShow();
+          if (activeTooltip) hide();
+          return;
+        }
+        if (trigger === activeTrigger || trigger === pendingTrigger) return;
+        if (activeTooltip) hide();
+        cancelPendingShow();
+        const text = trigger.getAttribute('data-tooltip');
+        if (!text) return;
+        pendingTrigger = trigger;
+        showTimer = setTimeout(() => {
+          showTimer = null;
+          if (pendingTrigger === trigger && document.body.contains(trigger)) {
+            pendingTrigger = null;
+            show(trigger, text);
+          }
+        }, HOVER_DELAY_MS);
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        const related = e.relatedTarget;
+        if (pendingTrigger && (!related || !pendingTrigger.contains(related))) {
+          cancelPendingShow();
+        }
+        if (activeTrigger && (!related || !activeTrigger.contains(related))) {
+          hide();
+        }
+      });
+
+      document.addEventListener('pointerdown', () => {
+        cancelPendingShow();
+        if (activeTooltip) hide();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          cancelPendingShow();
+          if (activeTooltip) hide();
+        }
+      });
+    })();
   </script>
 </body>
 </html>

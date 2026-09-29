@@ -788,5 +788,13 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(mobileHtml.includes('enforceContrastInvariants()'), 'Mobile HTML must include enforceContrastInvariants()');
       assert.ok(mobileHtml.includes('cricos-mobile-contrast-sync-style'), 'Mobile HTML must suppress transitions during synchronous contrast evaluation');
     });
+
+    it('6. Tooltips appear only on hover with a 450ms delay and menus are organized into logical domain clusters', () => {
+      assert.ok(dashboardHtml.includes('const HOVER_DELAY_MS = 450;'), 'Desktop tooltips must enforce 450ms hover delay');
+      assert.ok(!dashboardHtml.includes("document.addEventListener('focusin'"), 'Desktop tooltips must not trigger on focusin');
+      assert.ok(mobileHtml.includes('const HOVER_DELAY_MS = 450;'), 'Mobile tooltips must enforce 450ms hover delay');
+      assert.ok(dashboardHtml.includes('Core Workspaces') && dashboardHtml.includes('Tactical &amp; 3D Studios') && dashboardHtml.includes('Match Day &amp; Officiating'), 'Sidebar must organize items into logical domain sections');
+      assert.ok(dashboardHtml.includes('class="topbar-cluster"') && dashboardHtml.includes('class="match-action-toolbar"'), 'Topbar and scoreboard must organize actions into logical clusters');
+    });
   });
 });

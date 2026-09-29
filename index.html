@@ -650,9 +650,57 @@
     .topbar-right {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       min-width: 0;
       flex-wrap: nowrap;
+    }
+
+    .topbar-cluster {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .topbar-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      margin: 0 0.15rem;
+      flex-shrink: 0;
+    }
+
+    body[data-theme="swiss"] .topbar-divider,
+    body[data-theme="nordic"] .topbar-divider {
+      background: rgba(15, 23, 42, 0.14);
+    }
+
+    .match-action-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 0.45rem;
+    }
+
+    .match-action-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      padding: 0.22rem 0.45rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .match-action-group-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-right: 0.2rem;
     }
 
     @media (max-width: 1550px) {
@@ -4452,13 +4500,17 @@
 
       <!-- 3. Navigation Sections (Scrollable Container) -->
       <div class="sidebar-nav-scroll">
-        <!-- Section A: Main Consoles & Studios (The 7 Tabs) -->
+        <!-- Section 1: Core Workspaces (The 7 Primary Consoles) -->
         <div class="sidebar-nav-section">
-          <div class="sidebar-section-title">Consoles &amp; Studios</div>
+          <div class="sidebar-section-title">Core Workspaces</div>
           <div class="sidebar-nav-list" role="tablist" aria-label="Operating system consoles and studios">
             <button class="tab-btn sidebar-nav-item active" role="tab" aria-selected="true" aria-controls="tab-scoring" data-tab="scoring" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip">
               <span class="tab-icon">🏏</span>
               <span class="sidebar-nav-label">Match Center</span>
+            </button>
+            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-studio" data-tab="studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships">
+              <span class="tab-icon">🎯</span>
+              <span class="sidebar-nav-label">Scoring Studio</span>
             </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-teams" data-tab="teams" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes">
               <span class="tab-icon">👥</span>
@@ -4472,10 +4524,6 @@
               <span class="tab-icon">🛒</span>
               <span class="sidebar-nav-label">Venues &amp; Turfs</span>
             </button>
-            <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-studio" data-tab="studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships">
-              <span class="tab-icon">🎯</span>
-              <span class="sidebar-nav-label">Scoring Studio</span>
-            </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-incidents" data-tab="incidents" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection">
               <span class="tab-icon">🛡️</span>
               <span class="sidebar-nav-label">Fair Play &amp; Trust</span>
@@ -4487,22 +4535,76 @@
           </div>
         </div>
 
-        <!-- Section B: Operations & Workflows -->
+        <!-- Section 2: Tactical & 3D Studios -->
         <div class="sidebar-nav-section">
-          <div class="sidebar-section-title">Operations &amp; Workflows</div>
+          <div class="sidebar-section-title">Tactical &amp; 3D Studios</div>
+          <div class="sidebar-nav-list">
+            <button type="button" id="sidebarBtnFieldPlanner" onclick="openFieldPlannerModal()" class="sidebar-nav-item" data-tooltip="Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Restriction Engine (Shortcut: Shift+F)">
+              <span class="tab-icon">🎯</span>
+              <span class="sidebar-nav-label">Field Placement Radar</span>
+            </button>
+            <button type="button" id="sidebarBtnPitchMap" onclick="openPitchMapSimulatorModal()" class="sidebar-nav-item" data-tooltip="Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator (Shortcut: Shift+P)">
+              <span class="tab-icon">🧬</span>
+              <span class="sidebar-nav-label">Pitch &amp; Win Simulator</span>
+            </button>
+            <button type="button" onclick="openModal('modalMatchInsights')" class="sidebar-nav-item" data-tooltip="Match narrative recap, turning points, and Player of the Match MVP">
+              <span class="tab-icon">📈</span>
+              <span class="sidebar-nav-label">Match Intelligence</span>
+            </button>
+            <button type="button" id="sidebarBtnCricsheetExport" onclick="openModal('modalCricsheetExport')" class="sidebar-nav-item" data-tooltip="Cricsheet JSON, Federation XML, and live speech-to-score commentary recorder">
+              <span class="tab-icon">⚡</span>
+              <span class="sidebar-nav-label">Cricsheet &amp; XML</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 3: Match Day & Officiating -->
+        <div class="sidebar-nav-section">
+          <div class="sidebar-section-title">Match Day &amp; Officiating</div>
           <div class="sidebar-nav-list">
             <button type="button" onclick="openEventOverviewModal()" class="sidebar-nav-item" data-tooltip="Event procurement readiness, operational checklists, and match countdown">
               <span class="tab-icon">📋</span>
               <span class="sidebar-nav-label">Readiness</span>
             </button>
-            <button type="button" onclick="openOfficialCalendarModal()" class="sidebar-nav-item" data-tooltip="Weekly availability schedule, match assignments, and rest buffers">
-              <span class="tab-icon">📅</span>
-              <span class="sidebar-nav-label">Calendar</span>
+            <button type="button" onclick="openModal('modalCheckIn')" class="sidebar-nav-item" data-tooltip="Provider arrival OTP verification and 3-party match scorecard sign-off">
+              <span class="tab-icon">📍</span>
+              <span class="sidebar-nav-label">Check-In</span>
+            </button>
+            <button type="button" id="sidebarBtnUmpireDesk" onclick="openModal('modalUmpireDesk')" class="sidebar-nav-item" data-tooltip="Umpire Match Day Desk, MCC Law 41/42 sanctions, DRS ball-tracking, and match card sign-off">
+              <span class="tab-icon">⚖️</span>
+              <span class="sidebar-nav-label">Umpire Desk</span>
             </button>
             <button type="button" onclick="openMessagingModal()" class="sidebar-nav-item" data-tooltip="Match operations chat, official dispatch, and booking alerts">
               <span class="tab-icon">💬</span>
               <span class="sidebar-nav-label">Match Chat</span>
               <span class="counter-badge amber">1</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 4: League, Auction & Commerce -->
+        <div class="sidebar-nav-section">
+          <div class="sidebar-section-title">League, Auction &amp; Commerce</div>
+          <div class="sidebar-nav-list">
+            <button type="button" id="sidebarBtnPlayerAuction" onclick="openPlayerAuctionModal()" class="sidebar-nav-item" data-tooltip="Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room (Shortcut: Shift+A)">
+              <span class="tab-icon">🔨</span>
+              <span class="sidebar-nav-label">Player Auction Room</span>
+            </button>
+            <button type="button" id="sidebarBtnLeagueDivisions" onclick="openModal('modalLeagueDivisions')" class="sidebar-nav-item" data-tooltip="Multi-tier league standings, NRR calculator, promotion/relegation ladders, and playoff brackets">
+              <span class="tab-icon">🏆</span>
+              <span class="sidebar-nav-label">Divisions</span>
+            </button>
+            <button type="button" onclick="openModal('modalTournamentOps')" class="sidebar-nav-item" data-tooltip="Tournament fixture board, conflict detection, and bulk CSV schedule import">
+              <span class="tab-icon">📊</span>
+              <span class="sidebar-nav-label">Fixtures Ops</span>
+            </button>
+            <button type="button" onclick="openOfficialCalendarModal()" class="sidebar-nav-item" data-tooltip="Weekly availability schedule, match assignments, and rest buffers">
+              <span class="tab-icon">📅</span>
+              <span class="sidebar-nav-label">Calendar</span>
+            </button>
+            <button type="button" onclick="openModal('modalSponsorshipAuction')" class="sidebar-nav-item" data-tooltip="Tournament sponsorship prize pool pledges and virtual player auction desk">
+              <span class="tab-icon">🤝</span>
+              <span class="sidebar-nav-label">Sponsors &amp; Auction</span>
             </button>
             <button type="button" onclick="openModal('modalRfq')" class="sidebar-nav-item" data-tooltip="Tournament procurement requests, quote submissions, and provider bids">
               <span class="tab-icon">📑</span>
@@ -4512,38 +4614,10 @@
               <span class="tab-icon">🛍️</span>
               <span class="sidebar-nav-label">Gear Store</span>
             </button>
-            <button type="button" onclick="openModal('modalTournamentOps')" class="sidebar-nav-item" data-tooltip="Tournament fixture board, conflict detection, and bulk CSV schedule import">
-              <span class="tab-icon">📊</span>
-              <span class="sidebar-nav-label">Fixtures Ops</span>
-            </button>
-            <button type="button" onclick="openModal('modalMatchInsights')" class="sidebar-nav-item" data-tooltip="Match narrative recap, turning points, and Player of the Match MVP">
-              <span class="tab-icon">📈</span>
-              <span class="sidebar-nav-label">Match Intelligence</span>
-            </button>
-            <button type="button" onclick="openModal('modalCheckIn')" class="sidebar-nav-item" data-tooltip="Provider arrival OTP verification and 3-party match scorecard sign-off">
-              <span class="tab-icon">📍</span>
-              <span class="sidebar-nav-label">Check-In</span>
-            </button>
-            <button type="button" onclick="openModal('modalSponsorshipAuction')" class="sidebar-nav-item" data-tooltip="Tournament sponsorship prize pool pledges and virtual player auction desk">
-              <span class="tab-icon">🤝</span>
-              <span class="sidebar-nav-label">Sponsors &amp; Auction</span>
-            </button>
-            <button type="button" id="sidebarBtnUmpireDesk" onclick="openModal('modalUmpireDesk')" class="sidebar-nav-item" data-tooltip="Umpire Match Day Desk, MCC Law 41/42 sanctions, DRS ball-tracking, and match card sign-off">
-              <span class="tab-icon">⚖️</span>
-              <span class="sidebar-nav-label">Umpire Desk</span>
-            </button>
-            <button type="button" id="sidebarBtnCricsheetExport" onclick="openModal('modalCricsheetExport')" class="sidebar-nav-item" data-tooltip="Cricsheet JSON, Federation XML, and live speech-to-score commentary recorder">
-              <span class="tab-icon">⚡</span>
-              <span class="sidebar-nav-label">Cricsheet &amp; XML</span>
-            </button>
-            <button type="button" id="sidebarBtnLeagueDivisions" onclick="openModal('modalLeagueDivisions')" class="sidebar-nav-item" data-tooltip="Multi-tier league standings, NRR calculator, promotion/relegation ladders, and playoff brackets">
-              <span class="tab-icon">🏆</span>
-              <span class="sidebar-nav-label">Divisions</span>
-            </button>
           </div>
         </div>
 
-        <!-- Section C: Developer & Platform -->
+        <!-- Section 5: Developer & Platform -->
         <div class="sidebar-nav-section">
           <div class="sidebar-section-title">Developer &amp; Platform</div>
           <div class="sidebar-nav-list">
@@ -4585,7 +4659,7 @@
 
     <!-- Main Content Area -->
     <div class="app-main-wrapper">
-      <!-- Streamlined, Decluttered Top Bar -->
+      <!-- Streamlined, Logically Clustered Top Bar -->
       <header class="app-topbar">
         <div class="topbar-left">
           <button type="button" class="mobile-sidebar-toggle" onclick="toggleSidebarMobile()" data-tooltip="Toggle Navigation Menu" aria-label="Toggle Navigation">
@@ -4600,78 +4674,80 @@
           </div>
         </div>
 
-        <!-- Center / Right: Clean Status & Actions -->
+        <!-- Right: 4 Logical Functional Clusters (Search & Help | Telemetry | Appearance | Identity & Alerts) -->
         <div class="topbar-right">
-          <!-- Compact Telemetry Pills -->
-          <div class="topbar-telemetry-group">
-            <div class="topbar-node" data-tooltip="Live matches running across the platform with active SSE stream">
-              <span class="telemetry-pulse"></span>
-              <span class="topbar-node-val" id="telemetryMatches">1 LIVE</span>
+          <!-- Cluster 1: Global Omnisearch & Keyboard Shortcuts -->
+          <div class="topbar-cluster" aria-label="Global Search and Shortcuts">
+            <button type="button" id="btnCommandPalette" onclick="openCommandPalette()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Universal Command Palette &amp; Omnisearch (Shortcut: Cmd+K or Ctrl+K)" aria-label="Open Command Palette">
+              <span>🔍</span>
+              <span>Search &amp; Actions</span>
+              <kbd class="cmd-kbd-badge">⌘K</kbd>
+            </button>
+            <button type="button" id="btnKeyboardShortcuts" onclick="openKeyboardShortcutsModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="View Keyboard Shortcuts &amp; Cockpit Cheat Sheet (Shortcut: ?)" aria-label="Keyboard Shortcuts Guide">
+              <span>⌨️</span>
+            </button>
+          </div>
+
+          <div class="topbar-divider" aria-hidden="true"></div>
+
+          <!-- Cluster 2: Live Platform Telemetry & Service Status -->
+          <div class="topbar-cluster" aria-label="Live Platform Telemetry">
+            <div class="topbar-telemetry-group">
+              <div class="topbar-node" data-tooltip="Live matches running across the platform with active SSE stream">
+                <span class="telemetry-pulse"></span>
+                <span class="topbar-node-val" id="telemetryMatches">1 LIVE</span>
+              </div>
+              <div class="topbar-node" data-tooltip="Total platform funds locked in double-entry escrow ledger">
+                <span class="topbar-node-icon">🔒</span>
+                <span class="topbar-node-val" id="telemetryEscrow">₹500,000</span>
+              </div>
+              <div class="topbar-node" data-tooltip="Automated provider circuit breaker: freezes unbooked slots if reliability drops below 65%">
+                <span class="topbar-node-icon">🛡️</span>
+                <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetryCircuit">100% NOMINAL</span>
+              </div>
+              <div class="topbar-node" data-tooltip="Real-time Server-Sent Events delivery latency">
+                <span class="topbar-node-icon">⚡</span>
+                <span class="topbar-node-val" style="color: var(--cyan);" id="telemetryLatency">&lt;10ms</span>
+              </div>
+              <div class="topbar-node" id="telemetrySyncNode" onclick="triggerQueueSync()" data-tooltip="Offline Scoring Queue: Click to flush queued deliveries to Fastify API" style="cursor: pointer;">
+                <span class="telemetry-pulse" id="telemetrySyncPulse" style="background: var(--turf-emerald);"></span>
+                <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetrySyncVal">ONLINE (0)</span>
+              </div>
             </div>
-            <div class="topbar-node" data-tooltip="Total platform funds locked in double-entry escrow ledger">
-              <span class="topbar-node-icon">🔒</span>
-              <span class="topbar-node-val" id="telemetryEscrow">₹500,000</span>
-            </div>
-            <div class="topbar-node" data-tooltip="Automated provider circuit breaker: freezes unbooked slots if reliability drops below 65%">
-              <span class="topbar-node-icon">🛡️</span>
-              <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetryCircuit">100% NOMINAL</span>
-            </div>
-            <div class="topbar-node" data-tooltip="Real-time Server-Sent Events delivery latency">
-              <span class="topbar-node-icon">⚡</span>
-              <span class="topbar-node-val" style="color: var(--cyan);" id="telemetryLatency">&lt;10ms</span>
-            </div>
-            <div class="topbar-node" id="telemetrySyncNode" onclick="triggerQueueSync()" data-tooltip="Offline Scoring Queue: Click to flush queued deliveries to Fastify API" style="cursor: pointer;">
-              <span class="telemetry-pulse" id="telemetrySyncPulse" style="background: var(--turf-emerald);"></span>
-              <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetrySyncVal">ONLINE (0)</span>
+            <div class="status-pill" id="healthPill" onclick="openHealthModal()" style="cursor: pointer;" data-tooltip="API Service &amp; Live SSE Connection Status. Click for detailed diagnostics.">
+              <div class="pulse-dot"></div>
+              <span id="healthText">Online</span>
             </div>
           </div>
 
-          <!-- Utility: Mobile App & APK Quick Launcher Modal Trigger -->
-          <button type="button" id="btnMobileQuickLauncher" onclick="openMobilePreviewModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: var(--purple); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Mobile App demo, scan live QR code, or download compiled Android APK">
-            <span>📱</span> MOBILE &amp; APK
-          </button>
+          <div class="topbar-divider" aria-hidden="true"></div>
 
-          <!-- Utility: Universal Command Palette (Cmd+K / Ctrl+K) -->
-          <button type="button" id="btnCommandPalette" onclick="openCommandPalette()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Universal Command Palette &amp; Omnisearch (Shortcut: Cmd+K or Ctrl+K)" aria-label="Open Command Palette">
-            <span>🔍</span>
-            <span>Search &amp; Actions</span>
-            <kbd class="cmd-kbd-badge">⌘K</kbd>
-          </button>
+          <!-- Cluster 3: Appearance, Theme & Tactile Mode -->
+          <div class="topbar-cluster" aria-label="Theme and Display Controls">
+            <button type="button" id="btnDesignThemeSwitcher" onclick="cycleDesignTheme()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Switch Design Theme: Swiss Minimal, Nordic Editorial, Stadium Night (Shortcut: Alt+T)">
+              <span id="designThemeIcon">🇨🇭</span>
+              <span id="designThemeLabel">SWISS MINIMAL</span>
+            </button>
+            <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" data-tooltip="Toggle High-Contrast Outdoor Mode for sunlight visibility" aria-label="Toggle Outdoor Mode">
+              <span class="pill-icon" id="outdoorModeIcon">☀️</span>
+            </button>
+            <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.12); color: var(--cyan); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);" data-tooltip="Tactile Prototype: Switch between Stadium, Minimal, and Kinetic variants (Keys Alt+1-3)">
+              <span id="tactilePrototypeLabel">⚡ HAPTIC STADIUM</span>
+            </button>
+          </div>
 
-          <!-- Utility: Keyboard Shortcuts Cheat Sheet (?) -->
-          <button type="button" id="btnKeyboardShortcuts" onclick="openKeyboardShortcutsModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="View Keyboard Shortcuts &amp; Cockpit Cheat Sheet (Shortcut: ?)" aria-label="Keyboard Shortcuts Guide">
-            <span>⌨️</span>
-          </button>
+          <div class="topbar-divider" aria-hidden="true"></div>
 
-          <!-- Utility: Active Persona Badge (Click to open Persona Switcher) -->
-          <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
-
-          <!-- Utility: Tactile Prototype Switcher (Emil Kowalski Prototyping - Skill 11) -->
-          <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.12); color: var(--cyan); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);" data-tooltip="Tactile Prototype: Switch between Stadium, Minimal, and Kinetic variants (Keys Alt+1-3)">
-            <span id="tactilePrototypeLabel">⚡ HAPTIC STADIUM</span>
-          </button>
-
-          <!-- Utility: Design Variations Theme Switcher -->
-          <button type="button" id="btnDesignThemeSwitcher" onclick="cycleDesignTheme()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Switch Design Theme: Swiss Minimal, Nordic Editorial, Stadium Night (Shortcut: Alt+T)">
-            <span id="designThemeIcon">🇨🇭</span>
-            <span id="designThemeLabel">SWISS MINIMAL</span>
-          </button>
-
-          <!-- Utility: High-Contrast Outdoor / Daylight Mode Toggle -->
-          <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" data-tooltip="Toggle High-Contrast Outdoor Mode for sunlight visibility" aria-label="Toggle Outdoor Mode">
-            <span class="pill-icon" id="outdoorModeIcon">☀️</span>
-          </button>
-
-          <!-- Utility: Notifications Drawer -->
-          <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
-            <span class="pill-icon">🔔</span>
-            <span id="headerNotifBadge" class="counter-badge emerald">3</span>
-          </button>
-
-          <!-- Status Pill -->
-          <div class="status-pill" id="healthPill" onclick="openHealthModal()" style="cursor: pointer;" data-tooltip="API Service &amp; Live SSE Connection Status. Click for detailed diagnostics.">
-            <div class="pulse-dot"></div>
-            <span id="healthText">Online</span>
+          <!-- Cluster 4: Mobile Companion, Active Persona & Notifications -->
+          <div class="topbar-cluster" aria-label="Mobile App, Persona, and Notifications">
+            <button type="button" id="btnMobileQuickLauncher" onclick="openMobilePreviewModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: var(--purple); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Mobile App demo, scan live QR code, or download compiled Android APK">
+              <span>📱</span> MOBILE &amp; APK
+            </button>
+            <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
+            <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
+              <span class="pill-icon">🔔</span>
+              <span id="headerNotifBadge" class="counter-badge emerald">3</span>
+            </button>
           </div>
         </div>
       </header>
@@ -4682,24 +4758,31 @@
       <div class="scoreboard">
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <div class="match-info">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem; flex-wrap: wrap;">
               <h2>Delhi Daredevils vs Mumbai Super Strikers</h2>
               <div class="sse-badge" id="sseStatusBadge">
                 <div class="pulse-dot" style="background: var(--cyan); width: 8px; height: 8px;"></div>
                 <span id="sseStatusText">SSE Stream: Connecting...</span>
               </div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
               <div class="match-meta">T20 Championship • Innings 2 • Match ID: <span id="currentMatchId" style="font-family: monospace; color: var(--cyan);">match-pilot-1</span></div>
-              <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
-              <button class="nav-pill" id="btnConductToss" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
-              <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
-              <button class="nav-pill" id="btnExportCricsheet" style="cursor: pointer; background: rgba(0,210,255,0.12); border-color: rgba(0,210,255,0.3); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalCricsheetExport')" data-tooltip="Export ball-by-ball Cricsheet JSON and Federation XML with audio telemetry">⚡ Cricsheet &amp; XML</button>
-              <button class="nav-pill" id="btnUmpireDeskQuick" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalUmpireDesk')" data-tooltip="Open Official Umpire Match Day Desk, DRS review, and sign-off">⚖️ Umpire Desk</button>
-              <button class="nav-pill" id="btnDivisionsQuick" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalLeagueDivisions')" data-tooltip="Multi-Division League Ladders, NRR and Promotion/Relegation">🏆 Divisions</button>
-              <button class="nav-pill" id="btnFieldPlannerQuick" style="cursor: pointer; background: rgba(0,229,153,0.14); border-color: rgba(0,229,153,0.4); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openFieldPlannerModal()" data-tooltip="Open Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Restriction Engine (Shortcut: Shift+F)">🎯 Field Planner</button>
-              <button class="nav-pill" id="btnPitchMapQuick" style="cursor: pointer; background: rgba(0,210,255,0.14); border-color: rgba(0,210,255,0.4); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator (Shortcut: Shift+P)">🧬 Pitch &amp; Win Sim</button>
-              <button class="nav-pill" id="btnPlayerAuctionQuick" style="cursor: pointer; background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.4); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPlayerAuctionModal()" data-tooltip="Open Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room (Shortcut: Shift+A)">🔨 Player Auction</button>
+            </div>
+            <!-- Organized Match Action Toolbar (Officiating & Records vs Tactical & League Studios) -->
+            <div class="match-action-toolbar">
+              <div class="match-action-group" aria-label="Match Officiating and Records">
+                <span class="match-action-group-label">Match Ops:</span>
+                <button class="nav-pill" id="btnConductToss" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
+                <button class="nav-pill" id="btnUmpireDeskQuick" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalUmpireDesk')" data-tooltip="Open Official Umpire Match Day Desk, DRS review, and sign-off">⚖️ Umpire Desk</button>
+                <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
+                <button class="nav-pill" id="btnExportCricsheet" style="cursor: pointer; background: rgba(0,210,255,0.12); border-color: rgba(0,210,255,0.3); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalCricsheetExport')" data-tooltip="Export ball-by-ball Cricsheet JSON and Federation XML with audio telemetry">⚡ Cricsheet &amp; XML</button>
+                <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
+              </div>
+              <div class="match-action-group" aria-label="Tactical and League Studios">
+                <span class="match-action-group-label">Studios:</span>
+                <button class="nav-pill" id="btnFieldPlannerQuick" style="cursor: pointer; background: rgba(0,229,153,0.14); border-color: rgba(0,229,153,0.4); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openFieldPlannerModal()" data-tooltip="Open Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Restriction Engine (Shortcut: Shift+F)">🎯 Field Planner</button>
+                <button class="nav-pill" id="btnPitchMapQuick" style="cursor: pointer; background: rgba(0,210,255,0.14); border-color: rgba(0,210,255,0.4); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator (Shortcut: Shift+P)">🧬 Pitch &amp; Win Sim</button>
+                <button class="nav-pill" id="btnPlayerAuctionQuick" style="cursor: pointer; background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.4); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPlayerAuctionModal()" data-tooltip="Open Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room (Shortcut: Shift+A)">🔨 Player Auction</button>
+                <button class="nav-pill" id="btnDivisionsQuick" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalLeagueDivisions')" data-tooltip="Multi-Division League Ladders, NRR and Promotion/Relegation">🏆 Divisions</button>
+              </div>
             </div>
           </div>
           <div class="score-display">
@@ -17740,11 +17823,13 @@ cricos_active_sse_connections 1</pre>
 
     // Accessible Universal Tooltip Component (Skill 2 & 6: emil-design-eng)
     (function () {
+      const HOVER_DELAY_MS = 450;
       let activeTooltip = null;
       let activeTrigger = null;
-      let isWarm = false;
-      let warmTimer = null;
+      let pendingTrigger = null;
+      let showTimer = null;
       let hideTimer = null;
+      let lastPointerType = 'mouse';
 
       function createTooltipElement() {
         const el = document.createElement('div');
@@ -17765,7 +17850,6 @@ cricos_active_sse_connections 1</pre>
         const ttRect = tooltip.getBoundingClientRect();
         const margin = 8;
         const vpW = window.innerWidth;
-        const vpH = window.innerHeight;
 
         let top = trigRect.top - ttRect.height - margin;
         let left = trigRect.left + (trigRect.width / 2) - (ttRect.width / 2);
@@ -17784,19 +17868,21 @@ cricos_active_sse_connections 1</pre>
         tooltip.style.left = Math.round(left + window.scrollX) + 'px';
       }
 
+      function cancelPendingShow() {
+        if (showTimer) {
+          clearTimeout(showTimer);
+          showTimer = null;
+        }
+        pendingTrigger = null;
+      }
+
       function show(trigger, text) {
         if (!text) return;
-        clearTimeout(warmTimer);
         clearTimeout(hideTimer);
         const tooltip = getTooltipElement();
         tooltip.textContent = text;
         tooltip.style.display = 'block';
-
-        if (isWarm) {
-          tooltip.setAttribute('data-instant', '');
-        } else {
-          tooltip.removeAttribute('data-instant');
-        }
+        tooltip.removeAttribute('data-instant');
 
         positionTooltip(trigger, tooltip);
         tooltip.setAttribute('aria-hidden', 'false');
@@ -17811,6 +17897,7 @@ cricos_active_sse_connections 1</pre>
       }
 
       function hide() {
+        cancelPendingShow();
         if (!activeTooltip) return;
         const tooltip = activeTooltip;
         const trigger = activeTrigger;
@@ -17818,55 +17905,72 @@ cricos_active_sse_connections 1</pre>
         tooltip.setAttribute('aria-hidden', 'true');
         if (trigger) trigger.removeAttribute('aria-describedby');
 
-        // Warm temporal window: 300ms where subsequent tooltips open instantly
-        isWarm = true;
-        clearTimeout(warmTimer);
-        warmTimer = setTimeout(() => {
-          isWarm = false;
-        }, 300);
-
-        const duration = tooltip.hasAttribute('data-instant') ? 0 : 140;
         clearTimeout(hideTimer);
         hideTimer = setTimeout(() => {
           if (!activeTooltip) {
             tooltip.style.display = 'none';
             tooltip.removeAttribute('data-instant');
           }
-        }, duration);
+        }, 140);
 
         activeTooltip = null;
         activeTrigger = null;
       }
 
-      document.addEventListener('mouseenter', (e) => {
-        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
-        if (trigger) show(trigger, trigger.getAttribute('data-tooltip'));
-      }, true);
+      document.addEventListener('pointermove', (e) => {
+        if (e.pointerType) lastPointerType = e.pointerType;
+      }, { passive: true });
 
-      document.addEventListener('mouseleave', (e) => {
-        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
-        if (trigger && trigger === activeTrigger) hide();
-      }, true);
-
-      document.addEventListener('focusin', (e) => {
-        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
-        if (trigger) show(trigger, trigger.getAttribute('data-tooltip'));
-      }, true);
-
-      document.addEventListener('focusout', (e) => {
-        const trigger = e.target.closest && e.target.closest('[data-tooltip]');
-        if (trigger && trigger === activeTrigger) hide();
-      }, true);
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && activeTooltip) hide();
+      // Tooltips appear ONLY on hover after HOVER_DELAY_MS (450ms)
+      document.addEventListener('mouseover', (e) => {
+        if (lastPointerType === 'touch') return;
+        const trigger = e.target && e.target.closest ? e.target.closest('[data-tooltip]') : null;
+        if (!trigger) {
+          cancelPendingShow();
+          if (activeTooltip) hide();
+          return;
+        }
+        if (trigger === activeTrigger || trigger === pendingTrigger) return;
+        if (activeTooltip) hide();
+        cancelPendingShow();
+        const text = trigger.getAttribute('data-tooltip');
+        if (!text) return;
+        pendingTrigger = trigger;
+        showTimer = setTimeout(() => {
+          showTimer = null;
+          if (pendingTrigger === trigger && document.body.contains(trigger)) {
+            pendingTrigger = null;
+            show(trigger, text);
+          }
+        }, HOVER_DELAY_MS);
       });
 
-      document.addEventListener('pointerdown', (e) => {
-        if (activeTooltip && !e.target.closest('[data-tooltip]') && !e.target.closest('#universal-tooltip-popover')) {
+      document.addEventListener('mouseout', (e) => {
+        const related = e.relatedTarget;
+        if (pendingTrigger && (!related || !pendingTrigger.contains(related))) {
+          cancelPendingShow();
+        }
+        if (activeTrigger && (!related || !activeTrigger.contains(related))) {
           hide();
         }
       });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          cancelPendingShow();
+          if (activeTooltip) hide();
+        }
+      });
+
+      document.addEventListener('pointerdown', () => {
+        cancelPendingShow();
+        if (activeTooltip) hide();
+      });
+
+      document.addEventListener('scroll', () => {
+        cancelPendingShow();
+        if (activeTooltip) hide();
+      }, true);
     })();
 
     // ==========================================
