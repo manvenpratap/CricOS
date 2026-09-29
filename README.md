@@ -11,9 +11,26 @@
 
 **A high-performance, modular operating system powering cricket tournaments, certified official & venue marketplaces, MCC Laws ball-by-ball scoring, real-time live match broadcasting, and double-entry financial settlements.**
 
-[Interactive Console](http://localhost:3000/) • [Architecture](#-architecture--monorepo-structure) • [Core Subsystems](#-core-subsystems) • [API Modules](#-api-modules-reference) • [Android APK](#-native-android-mobile-app--apk-generation) • [Getting Started](#-getting-started) • [Pipeline & Testing](#-pipeline--self-healing-workflow)
+[Interactive Console](http://localhost:3000/) • **[📚 Official GitHub Wiki](./wiki/Home.md)** • [Architecture](#-architecture--monorepo-structure) • [Core Subsystems](#-core-subsystems) • [API Modules](#-api-modules-reference) • [Android APK](#-native-android-mobile-app--apk-generation) • [Getting Started](#-getting-started) • [Pipeline & Testing](#-pipeline--self-healing-workflow)
 
 </div>
+
+---
+
+## 📚 Official CricOS GitHub Wiki & Documentation Portal
+
+Browse the complete multi-page **CricOS Engineering & Product Wiki** directly on GitHub (located in [`wiki/`](./wiki/Home.md) and automatically synchronized via [`.github/workflows/publish-wiki.yml`](./.github/workflows/publish-wiki.yml)):
+
+| Wiki Guide | Target Audience | Scope & Contents |
+| :--- | :--- | :--- |
+| **[🏠 Wiki Home (`wiki/Home.md`)](./wiki/Home.md)** | All Users & Engineers | System Architecture Mermaid Diagram, Quick Start Pipeline Commands & Module Index |
+| **[01 — Principal Architecture Guide](./wiki/01-Principal-Architecture-Guide.md)** | Staff / Principal Engineers | Core Architectural Insight, C4 Topology, 19-Migration ER Diagram, GiST Concurrency & Zero-Dependency 3D Engine |
+| **[02 — Zero-to-Hero Onboarding](./wiki/02-Zero-to-Hero-Onboarding.md)** | New Engineers & Contributors | Technology Foundations, Directory Map, `./pipeline.sh` Workflow & 40+ Term Domain Glossary |
+| **[03 — Live Scoring, 3D Stadium & Wagon Wheel](./wiki/03-Live-Scoring-3D-Stadium-and-Wagon-Wheel.md)** | Scoring & Graphics Engineers | Ball-by-Ball Engine, True `OFF-SIDE` vs `ON-SIDE` RHB/LHB Mirroring, 60fps 3D Stadium Pitch & Cricsheet Export |
+| **[04 — 8-Persona RBAC & Clean Focus UX](./wiki/04-8-Persona-RBAC-and-Clean-Focus-UX.md)** | Frontend & Security Engineers | Animated 60fps Hero $\rightarrow$ Login $\rightarrow$ `allowedPersonas` Strict Lock, Clean Focus Decluttering & WCAG AAA Themes |
+| **[05 — Intelligent Weather & Pro Gear Store](./wiki/05-Intelligent-Weather-and-Pro-Gear-Store.md)** | Product & Commerce Engineers | 5-Stadium Micro-Climate Weather, 5-Hr Match Forecast, and Pro Cricket Gear Store with 45-Min Turf Pavilion Delivery |
+| **[06 — Mobile, Native Android APK & iOS](./wiki/06-Mobile-Native-Android-APK-and-iOS-Architecture.md)** | Mobile & Native Engineers | `StandaloneMobileApp`, `WebAppInterface.java` Bridge, Offline SQLite Outbox Queue, Gradle APK & iOS `WKWebView` |
+| **[07 — API Reference, DB Schema & Testing](./wiki/07-API-Reference-Database-Schema-and-Testing.md)** | Backend & QA Engineers | Fastify REST Endpoints, OpenAPI 3.0, Double-Entry Escrow Ledger, 185 Node Domain Tests & 70 Playwright E2E Suites |
 
 ---
 

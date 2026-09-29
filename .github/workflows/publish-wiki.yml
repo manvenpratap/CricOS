@@ -1,0 +1,40 @@
+name: Publish GitHub Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'wiki/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v4
+
+      - name: Sync wiki/ directory to GitHub Wiki (CricOS.wiki.git)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "CricOS Wiki Bot"
+          git config --global user.email "actions@github.com"
+          WIKI_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git"
+          if git ls-remote "${WIKI_URL}" >/dev/null 2>&1; then
+            git clone "${WIKI_URL}" /tmp/cricos-wiki
+            cp -R wiki/*.md /tmp/cricos-wiki/
+            cd /tmp/cricos-wiki
+            git add -A
+            if ! git diff --cached --quiet; then
+              git commit -m "docs(wiki): sync official CricOS wiki pages from main repository"
+              git push origin HEAD:master || git push origin HEAD:main
+            fi
+          else
+            echo "Note: Initialize the first page once at https://github.com/${GITHUB_REPOSITORY}/wiki/_new to enable .wiki.git remote sync."
+          fi
