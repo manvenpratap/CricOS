@@ -1,14 +1,23 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 07:10:00
-**Version:** 1.0.0-phase2bm (Hover-Only Delayed Tooltips & Logical Menu Organization)  
+**Last Updated:** 2026-09-29 08:12:00
+**Version:** 1.0.0-phase2bn (Daylight Themes Surface/Contrast Perfection & Uncluttered Topbar)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BM Completed — Hover-Only Delayed Tooltips (`450ms`) & Logical Menu Organization Across Desktop & Mobile:
+- **Active Phase**: Phase 2BN Completed — Daylight Themes (`🇨🇭 Swiss Minimal` & `🌾 Nordic Editorial`) Surface/Contrast Perfection & Uncluttered Topbar:
+  - **1. Scoreboard, 3D Studio Hub, Sidebar Footer & Sonner Toast Daylight Surface & Contrast Engine (`apps/api/src/ui/dashboard.ts`)**:
+    - Removed `.scoreboard` and `#sonnerToaster` from the dark-viewport exclusion list in `enforceThemeContrastInvariants()`, normalizing all dark-tinted (`rgba(0,0,0,0.25)`, `rgba(10,16,28,0.85)`) inner boxes (`unblendedLum < 0.35` or `l < 0.78`) to crisp daylight surfaces (`#F8FAFC` in Swiss, `#F5F2EB` in Nordic) with `#CBD5E1` / `#D6D0C4` borders.
+    - Added explicit daylight CSS rules for `.target-equation-bar`, `.match-momentum-container`, `.ball-gyro-widget`, `.event-readiness-card` (`#F0FDF4` emerald daylight surface), `.over-strip-container`, `.stat-mini-card` (`Virat K. *`, `Rohit S.`, `Jasprit B.` at `16.5:1` AAA contrast), `.fow-container`, `.fow-pill`, `#threeDExperiencesHub`, `.three-hub-tile`, `.user-profile-header-btn` (`#headerUserName` / `#headerUserRoleBadge`), and `#sonnerToaster .sonner-toast`.
+  - **2. Uncluttered Executive Top Bar (`.app-topbar`) & Auto-Reloading Local Server (`pipeline.sh`)**:
+    - Reduced `.topbar-right` from 14 competing badges down to 6 clean, high-signal controls (`🔍 Search ⌘K`, `⌨️`, `● Online`, `🇨🇭 Swiss Minimal` / `🌾 Nordic Editorial`, `📱 Mobile`, `👑 Captain`, `🔔 3`) while keeping secondary telemetry DOM nodes (`#telemetryEscrow`, `#telemetryCircuit`, `#telemetryLatency`, `#btnOutdoorModeToggle`, `#btnTactilePrototypeToggle`, `#protoPicker`) hidden from the main topbar.
+    - Updated `pipeline.sh` (`package` step) to automatically reload any active `node apps/api/dist/main.js` process on port `3000` so `http://localhost:3000` always serves the latest build immediately.
+  - **3. Automated E2E & Domain Verification (`tests/test_61_daylight_themes_and_clean_topbar.py`)**:
+    - Verified all Swiss Minimal and Nordic Editorial inner card surfaces (`lum >= 0.80`), AAA player/sidebar text contrast (`>= 7.0:1`), and topbar control count (`<= 7`) via Playwright E2E (`test_61`, `test_60`, `test_59` all passing + `185/185` Node tests passing).
+- **Preceding Phase**: Phase 2BM Completed — Hover-Only Delayed Tooltips (`450ms`) & Logical Menu Organization Across Desktop & Mobile:
   - **1. Hover-Only Delayed Tooltip Engine (`HOVER_DELAY_MS = 450` in `apps/api/src/ui/dashboard.ts` & `apps/api/src/ui/mobile-view.ts`)**:
     - Removed `focusin` and `focusout` tooltip listeners so tooltips never pop up unexpectedly on button click, drawer open, or keyboard tab focus.
     - Implemented a pointer/mouse hover controller with `const HOVER_DELAY_MS = 450;` so tooltips only appear after the cursor rests on a `[data-tooltip]` trigger for `450ms`.

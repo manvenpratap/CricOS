@@ -159,6 +159,12 @@ EOF
                 fi
             done
         fi
+        if lsof -ti :3000 >/dev/null 2>&1 && [ -f apps/api/dist/main.js ]; then
+            kill $(lsof -ti :3000) 2>/dev/null || true
+            sleep 0.4
+            nohup node apps/api/dist/main.js >/tmp/cricos-api.log 2>&1 &
+            echo "✓ Reloaded live API server on http://localhost:3000"
+        fi
         ;;
     apk|android|build:apk)
         echo "==> Building Android Native APK..."

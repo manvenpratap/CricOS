@@ -3330,6 +3330,316 @@ export function getDashboardHtml(): string {
       background: #EFE9DF;
       border-color: #15803D;
     }
+
+    /* Clean Uncluttered Topbar Pill Styling */
+    .topbar-breadcrumb .breadcrumb-sub,
+    .topbar-breadcrumb .breadcrumb-sep:last-of-type {
+      display: none !important;
+    }
+    #sonnerToaster {
+      top: auto !important;
+      bottom: 1.25rem !important;
+      right: 1.25rem !important;
+      left: auto !important;
+    }
+    .topbar-clean-pill {
+      font-size: 0.74rem !important;
+      font-weight: 700 !important;
+      gap: 0.35rem !important;
+      padding: 0.32rem 0.68rem !important;
+      border-radius: 999px !important;
+      border: 1px solid var(--border-subtle) !important;
+      background: var(--bg-card) !important;
+      color: var(--text-main) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out) !important;
+    }
+    .topbar-clean-pill:hover {
+      border-color: var(--primary) !important;
+      transform: translateY(-1px);
+    }
+
+    /* Comprehensive Daylight Theme Overrides (Swiss Minimal & Nordic Editorial) */
+    html[data-theme="swiss"] .topbar-clean-pill,
+    body[data-theme="swiss"] .topbar-clean-pill {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+    }
+    html[data-theme="nordic"] .topbar-clean-pill,
+    body[data-theme="nordic"] .topbar-clean-pill {
+      background: #FCFBF8 !important;
+      border: 1px solid #D6D0C4 !important;
+      color: #1C1917 !important;
+      box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04) !important;
+    }
+    html[data-theme="swiss"] #telemetrySyncVal,
+    body[data-theme="swiss"] #telemetrySyncVal,
+    html[data-theme="nordic"] #telemetrySyncVal,
+    body[data-theme="nordic"] #telemetrySyncVal {
+      color: #065F46 !important;
+      font-weight: 800 !important;
+    }
+
+    /* Scoreboard Inner Strips & Cards in Swiss Minimal & Nordic Editorial */
+    html[data-theme="swiss"] .scoreboard,
+    body[data-theme="swiss"] .scoreboard {
+      background: #FFFFFF !important;
+      border: 1.5px solid #CBD5E1 !important;
+      border-left: 6px solid #DC2626 !important;
+      border-radius: 12px !important;
+      color: #0F172A !important;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+    }
+    html[data-theme="nordic"] .scoreboard,
+    body[data-theme="nordic"] .scoreboard {
+      background: #FCFBF8 !important;
+      border: 1.5px solid #D6D0C4 !important;
+      border-left: 6px solid #15803D !important;
+      border-radius: 12px !important;
+      color: #1C1917 !important;
+      box-shadow: 0 4px 16px rgba(28, 25, 23, 0.05) !important;
+    }
+    html[data-theme="swiss"] .scoreboard .main-score,
+    body[data-theme="swiss"] .scoreboard .main-score,
+    html[data-theme="nordic"] .scoreboard .main-score,
+    body[data-theme="nordic"] .scoreboard .main-score {
+      color: #065F46 !important;
+      text-shadow: none !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .overs-score,
+    body[data-theme="swiss"] .scoreboard .overs-score,
+    html[data-theme="nordic"] .scoreboard .overs-score,
+    body[data-theme="nordic"] .scoreboard .overs-score {
+      color: #0C4A6E !important;
+      text-shadow: none !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .rate-badge,
+    body[data-theme="swiss"] .scoreboard .rate-badge,
+    html[data-theme="nordic"] .scoreboard .rate-badge,
+    body[data-theme="nordic"] .scoreboard .rate-badge {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .sse-badge,
+    body[data-theme="swiss"] .scoreboard .sse-badge,
+    html[data-theme="nordic"] .scoreboard .sse-badge,
+    body[data-theme="nordic"] .scoreboard .sse-badge {
+      background: #F0F9FF !important;
+      border: 1px solid #7DD3FC !important;
+      color: #0C4A6E !important;
+      font-weight: 700 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .match-action-toolbar,
+    body[data-theme="swiss"] .scoreboard .match-action-toolbar,
+    html[data-theme="swiss"] .scoreboard .target-equation-bar,
+    body[data-theme="swiss"] .scoreboard .target-equation-bar,
+    html[data-theme="swiss"] .scoreboard .match-momentum-container,
+    body[data-theme="swiss"] .scoreboard .match-momentum-container,
+    html[data-theme="swiss"] .scoreboard .over-strip-container,
+    body[data-theme="swiss"] .scoreboard .over-strip-container,
+    html[data-theme="swiss"] .scoreboard .stat-mini-card,
+    body[data-theme="swiss"] .scoreboard .stat-mini-card,
+    html[data-theme="swiss"] .scoreboard .fow-container,
+    body[data-theme="swiss"] .scoreboard .fow-container {
+      background: #F8FAFC !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="nordic"] .scoreboard .match-action-toolbar,
+    body[data-theme="nordic"] .scoreboard .match-action-toolbar,
+    html[data-theme="nordic"] .scoreboard .target-equation-bar,
+    body[data-theme="nordic"] .scoreboard .target-equation-bar,
+    html[data-theme="nordic"] .scoreboard .match-momentum-container,
+    body[data-theme="nordic"] .scoreboard .match-momentum-container,
+    html[data-theme="nordic"] .scoreboard .over-strip-container,
+    body[data-theme="nordic"] .scoreboard .over-strip-container,
+    html[data-theme="nordic"] .scoreboard .stat-mini-card,
+    body[data-theme="nordic"] .scoreboard .stat-mini-card,
+    html[data-theme="nordic"] .scoreboard .fow-container,
+    body[data-theme="nordic"] .scoreboard .fow-container {
+      background: #F5F2EB !important;
+      border: 1px solid #D6D0C4 !important;
+      color: #1C1917 !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="swiss"] .scoreboard .match-action-toolbar .nav-pill,
+    body[data-theme="swiss"] .scoreboard .match-action-toolbar .nav-pill,
+    html[data-theme="nordic"] .scoreboard .match-action-toolbar .nav-pill,
+    body[data-theme="nordic"] .scoreboard .match-action-toolbar .nav-pill {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      font-weight: 700 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .target-badge,
+    body[data-theme="swiss"] .scoreboard .target-badge,
+    html[data-theme="nordic"] .scoreboard .target-badge,
+    body[data-theme="nordic"] .scoreboard .target-badge {
+      background: #DCFCE7 !important;
+      border: 1px solid #86EFAC !important;
+      color: #065F46 !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .target-progress-track,
+    body[data-theme="swiss"] .scoreboard .target-progress-track,
+    html[data-theme="nordic"] .scoreboard .target-progress-track,
+    body[data-theme="nordic"] .scoreboard .target-progress-track {
+      background: #E2E8F0 !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .ball-gyro-widget,
+    body[data-theme="swiss"] .scoreboard .ball-gyro-widget,
+    html[data-theme="nordic"] .scoreboard .ball-gyro-widget,
+    body[data-theme="nordic"] .scoreboard .ball-gyro-widget {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      padding: 0.2rem 0.55rem !important;
+      border-radius: 999px !important;
+    }
+    html[data-theme="swiss"] .event-readiness-card,
+    body[data-theme="swiss"] .event-readiness-card,
+    html[data-theme="nordic"] .event-readiness-card,
+    body[data-theme="nordic"] .event-readiness-card {
+      background: #F0FDF4 !important;
+      border: 1px solid #86EFAC !important;
+      color: #064E3B !important;
+    }
+    html[data-theme="swiss"] .scoreboard .stat-player-name,
+    body[data-theme="swiss"] .scoreboard .stat-player-name,
+    html[data-theme="swiss"] .scoreboard .stat-player-figures,
+    body[data-theme="swiss"] .scoreboard .stat-player-figures,
+    html[data-theme="swiss"] .scoreboard .over-strip-label,
+    body[data-theme="swiss"] .scoreboard .over-strip-label,
+    html[data-theme="swiss"] .scoreboard .fow-label,
+    body[data-theme="swiss"] .scoreboard .fow-label,
+    html[data-theme="nordic"] .scoreboard .stat-player-name,
+    body[data-theme="nordic"] .scoreboard .stat-player-name,
+    html[data-theme="nordic"] .scoreboard .stat-player-figures,
+    body[data-theme="nordic"] .scoreboard .stat-player-figures,
+    html[data-theme="nordic"] .scoreboard .over-strip-label,
+    body[data-theme="nordic"] .scoreboard .over-strip-label,
+    html[data-theme="nordic"] .scoreboard .fow-label,
+    body[data-theme="nordic"] .scoreboard .fow-label {
+      color: #0F172A !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .stat-mini-title,
+    body[data-theme="swiss"] .scoreboard .stat-mini-title,
+    html[data-theme="nordic"] .scoreboard .stat-mini-title,
+    body[data-theme="nordic"] .scoreboard .stat-mini-title {
+      color: #334155 !important;
+      font-weight: 700 !important;
+    }
+    html[data-theme="swiss"] .scoreboard #bowlerFigures,
+    body[data-theme="swiss"] .scoreboard #bowlerFigures,
+    html[data-theme="nordic"] .scoreboard #bowlerFigures,
+    body[data-theme="nordic"] .scoreboard #bowlerFigures {
+      color: #B45309 !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] .scoreboard .fow-pill,
+    body[data-theme="swiss"] .scoreboard .fow-pill,
+    html[data-theme="nordic"] .scoreboard .fow-pill,
+    body[data-theme="nordic"] .scoreboard .fow-pill {
+      background: #FFE4E6 !important;
+      border: 1px solid #FDA4AF !important;
+      color: #9F1239 !important;
+      font-weight: 700 !important;
+    }
+    html[data-theme="swiss"] #threeDExperiencesHub,
+    body[data-theme="swiss"] #threeDExperiencesHub {
+      background: #FFFFFF !important;
+      border: 1.5px solid #CBD5E1 !important;
+      border-top: 4px solid #059669 !important;
+      color: #0F172A !important;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05) !important;
+    }
+    html[data-theme="nordic"] #threeDExperiencesHub,
+    body[data-theme="nordic"] #threeDExperiencesHub {
+      background: #FCFBF8 !important;
+      border: 1.5px solid #D6D0C4 !important;
+      border-top: 4px solid #15803D !important;
+      color: #1C1917 !important;
+      box-shadow: 0 4px 14px rgba(28, 25, 23, 0.05) !important;
+    }
+    html[data-theme="swiss"] .three-hub-tile,
+    body[data-theme="swiss"] .three-hub-tile {
+      background: #F8FAFC !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+    html[data-theme="nordic"] .three-hub-tile,
+    body[data-theme="nordic"] .three-hub-tile {
+      background: #F5F2EB !important;
+      border: 1px solid #D6D0C4 !important;
+      color: #1C1917 !important;
+    }
+    html[data-theme="swiss"] .sidebar-footer,
+    body[data-theme="swiss"] .sidebar-footer,
+    html[data-theme="nordic"] .sidebar-footer,
+    body[data-theme="nordic"] .sidebar-footer {
+      background: transparent !important;
+      border-top: 1px solid #CBD5E1 !important;
+    }
+    html[data-theme="swiss"] .user-profile-header-btn,
+    body[data-theme="swiss"] .user-profile-header-btn {
+      background: #F8FAFC !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+    html[data-theme="nordic"] .user-profile-header-btn,
+    body[data-theme="nordic"] .user-profile-header-btn {
+      background: #F5F2EB !important;
+      border: 1px solid #D6D0C4 !important;
+      color: #1C1917 !important;
+    }
+    html[data-theme="swiss"] #headerUserName,
+    body[data-theme="swiss"] #headerUserName,
+    html[data-theme="nordic"] #headerUserName,
+    body[data-theme="nordic"] #headerUserName {
+      color: #0F172A !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] #headerUserRoleBadge,
+    body[data-theme="swiss"] #headerUserRoleBadge,
+    html[data-theme="nordic"] #headerUserRoleBadge,
+    body[data-theme="nordic"] #headerUserRoleBadge {
+      color: #065F46 !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] #sonnerToaster .sonner-toast,
+    body[data-theme="swiss"] #sonnerToaster .sonner-toast,
+    html[data-theme="nordic"] #sonnerToaster .sonner-toast,
+    body[data-theme="nordic"] #sonnerToaster .sonner-toast {
+      background: #FFFFFF !important;
+      border: 1.5px solid #0F172A !important;
+      color: #0F172A !important;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16) !important;
+    }
+    html[data-theme="swiss"] #sonnerToaster .sonner-toast-title,
+    body[data-theme="swiss"] #sonnerToaster .sonner-toast-title,
+    html[data-theme="nordic"] #sonnerToaster .sonner-toast-title,
+    body[data-theme="nordic"] #sonnerToaster .sonner-toast-title {
+      color: #0F172A !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="swiss"] #sonnerToaster .sonner-toast-desc,
+    body[data-theme="swiss"] #sonnerToaster .sonner-toast-desc,
+    html[data-theme="nordic"] #sonnerToaster .sonner-toast-desc,
+    body[data-theme="nordic"] #sonnerToaster .sonner-toast-desc {
+      color: #334155 !important;
+    }
     .field-node-circle {
       cursor: pointer;
       transition: transform 0.18s ease, stroke-width 0.18s ease;
@@ -4660,7 +4970,7 @@ export function getDashboardHtml(): string {
 
     <!-- Main Content Area -->
     <div class="app-main-wrapper">
-      <!-- Streamlined, Logically Clustered Top Bar -->
+      <!-- Streamlined, Uncluttered Top Bar -->
       <header class="app-topbar">
         <div class="topbar-left">
           <button type="button" class="mobile-sidebar-toggle" onclick="toggleSidebarMobile()" data-tooltip="Toggle Navigation Menu" aria-label="Toggle Navigation">
@@ -4675,47 +4985,35 @@ export function getDashboardHtml(): string {
           </div>
         </div>
 
-        <!-- Right: 4 Logical Functional Clusters (Search & Help | Telemetry | Appearance | Identity & Alerts) -->
+        <!-- Right: 4 Clean Functional Clusters (Search | Live Status | Theme | Persona & Alerts) -->
         <div class="topbar-right">
           <!-- Cluster 1: Global Omnisearch & Keyboard Shortcuts -->
           <div class="topbar-cluster" aria-label="Global Search and Shortcuts">
-            <button type="button" id="btnCommandPalette" onclick="openCommandPalette()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Universal Command Palette &amp; Omnisearch (Shortcut: Cmd+K or Ctrl+K)" aria-label="Open Command Palette">
+            <button type="button" id="btnCommandPalette" onclick="openCommandPalette()" class="nav-pill topbar-clean-pill" data-tooltip="Open Universal Command Palette &amp; Omnisearch (Shortcut: Cmd+K or Ctrl+K)" aria-label="Open Command Palette">
               <span>🔍</span>
-              <span>Search &amp; Actions</span>
+              <span>Search</span>
               <kbd class="cmd-kbd-badge">⌘K</kbd>
             </button>
-            <button type="button" id="btnKeyboardShortcuts" onclick="openKeyboardShortcutsModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="View Keyboard Shortcuts &amp; Cockpit Cheat Sheet (Shortcut: ?)" aria-label="Keyboard Shortcuts Guide">
+            <button type="button" id="btnKeyboardShortcuts" onclick="openKeyboardShortcutsModal()" class="nav-pill topbar-clean-pill" data-tooltip="View Keyboard Shortcuts &amp; Cockpit Cheat Sheet (Shortcut: ?)" aria-label="Keyboard Shortcuts Guide">
               <span>⌨️</span>
             </button>
           </div>
 
           <div class="topbar-divider" aria-hidden="true"></div>
 
-          <!-- Cluster 2: Live Platform Telemetry & Service Status -->
+          <!-- Cluster 2: Unified Live Sync & Service Health Pill (Secondary telemetry counters hidden from topbar to prevent clutter) -->
           <div class="topbar-cluster" aria-label="Live Platform Telemetry">
-            <div class="topbar-telemetry-group">
-              <div class="topbar-node" data-tooltip="Live matches running across the platform with active SSE stream">
-                <span class="telemetry-pulse"></span>
-                <span class="topbar-node-val" id="telemetryMatches">1 LIVE</span>
-              </div>
-              <div class="topbar-node" data-tooltip="Total platform funds locked in double-entry escrow ledger">
-                <span class="topbar-node-icon">🔒</span>
-                <span class="topbar-node-val" id="telemetryEscrow">₹500,000</span>
-              </div>
-              <div class="topbar-node" data-tooltip="Automated provider circuit breaker: freezes unbooked slots if reliability drops below 65%">
-                <span class="topbar-node-icon">🛡️</span>
-                <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetryCircuit">100% NOMINAL</span>
-              </div>
-              <div class="topbar-node" data-tooltip="Real-time Server-Sent Events delivery latency">
-                <span class="topbar-node-icon">⚡</span>
-                <span class="topbar-node-val" style="color: var(--cyan);" id="telemetryLatency">&lt;10ms</span>
-              </div>
-              <div class="topbar-node" id="telemetrySyncNode" onclick="triggerQueueSync()" data-tooltip="Offline Scoring Queue: Click to flush queued deliveries to Fastify API" style="cursor: pointer;">
-                <span class="telemetry-pulse" id="telemetrySyncPulse" style="background: var(--turf-emerald);"></span>
-                <span class="topbar-node-val" style="color: var(--turf-emerald);" id="telemetrySyncVal">ONLINE (0)</span>
-              </div>
+            <div class="topbar-telemetry-group" style="display: none;" aria-hidden="true">
+              <div class="topbar-node"><span id="telemetryMatches">1 LIVE</span></div>
+              <div class="topbar-node"><span id="telemetryEscrow">₹500,000</span></div>
+              <div class="topbar-node"><span id="telemetryCircuit">100% NOMINAL</span></div>
+              <div class="topbar-node"><span id="telemetryLatency">&lt;10ms</span></div>
             </div>
-            <div class="status-pill" id="healthPill" onclick="openHealthModal()" style="cursor: pointer;" data-tooltip="API Service &amp; Live SSE Connection Status. Click for detailed diagnostics.">
+            <button type="button" class="nav-pill topbar-clean-pill" id="telemetrySyncNode" onclick="openHealthModal()" data-tooltip="Live API &amp; SSE Telemetry Status • Click to inspect system diagnostics &amp; offline queue">
+              <span class="telemetry-pulse" id="telemetrySyncPulse" style="background: var(--turf-emerald);"></span>
+              <span class="topbar-node-val" id="telemetrySyncVal">1 Live • Online</span>
+            </button>
+            <div class="status-pill" id="healthPill" onclick="openHealthModal()" style="display: none;" aria-hidden="true">
               <div class="pulse-dot"></div>
               <span id="healthText">Online</span>
             </div>
@@ -4723,16 +5021,16 @@ export function getDashboardHtml(): string {
 
           <div class="topbar-divider" aria-hidden="true"></div>
 
-          <!-- Cluster 3: Appearance, Theme & Tactile Mode -->
+          <!-- Cluster 3: Theme Selector -->
           <div class="topbar-cluster" aria-label="Theme and Display Controls">
-            <button type="button" id="btnDesignThemeSwitcher" onclick="cycleDesignTheme()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Switch Design Theme: Swiss Minimal, Nordic Editorial, Stadium Night (Shortcut: Alt+T)">
+            <button type="button" id="btnDesignThemeSwitcher" onclick="cycleDesignTheme()" class="nav-pill topbar-clean-pill" data-tooltip="Switch Design Theme: Swiss Minimal, Nordic Editorial, Stadium Night (Shortcut: Alt+T)">
               <span id="designThemeIcon">🇨🇭</span>
-              <span id="designThemeLabel">SWISS MINIMAL</span>
+              <span id="designThemeLabel">Swiss Minimal</span>
             </button>
-            <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" data-tooltip="Toggle High-Contrast Outdoor Mode for sunlight visibility" aria-label="Toggle Outdoor Mode">
+            <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" style="display: none;" aria-hidden="true">
               <span class="pill-icon" id="outdoorModeIcon">☀️</span>
             </button>
-            <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.12); color: var(--cyan); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);" data-tooltip="Tactile Prototype: Switch between Stadium, Minimal, and Kinetic variants (Keys Alt+1-3)">
+            <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="display: none;" aria-hidden="true">
               <span id="tactilePrototypeLabel">⚡ HAPTIC STADIUM</span>
             </button>
           </div>
@@ -4741,11 +5039,12 @@ export function getDashboardHtml(): string {
 
           <!-- Cluster 4: Mobile Companion, Active Persona & Notifications -->
           <div class="topbar-cluster" aria-label="Mobile App, Persona, and Notifications">
-            <button type="button" id="btnMobileQuickLauncher" onclick="openMobilePreviewModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12); color: var(--purple); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Open Mobile App demo, scan live QR code, or download compiled Android APK">
-              <span>📱</span> MOBILE &amp; APK
+            <button type="button" id="btnMobileQuickLauncher" onclick="openMobilePreviewModal()" class="nav-pill topbar-clean-pill" data-tooltip="Open Mobile App demo, scan live QR code, or download compiled Android APK">
+              <span>📱</span>
+              <span>Mobile</span>
             </button>
-            <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill" style="font-size: 0.72rem; font-weight: 700; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.12); color: var(--turf-emerald); display: inline-flex; align-items: center; cursor: pointer; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 CAPTAIN</button>
-            <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
+            <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill topbar-clean-pill" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 Captain</button>
+            <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill topbar-clean-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
               <span class="pill-icon">🔔</span>
               <span id="headerNotifBadge" class="counter-badge emerald">3</span>
             </button>
@@ -8781,7 +9080,7 @@ cricos_active_sse_connections 1</pre>
   <div id="toast">✓ Event completed</div>
 
   <!-- Emil Kowalski Floating Prototype Picker (Skill 11 - prototype) -->
-  <nav class="proto-picker" id="protoPicker" aria-label="Tactile Prototype Selector" data-ready>
+  <nav class="proto-picker" id="protoPicker" aria-label="Tactile Prototype Selector" data-ready style="display: none;">
     <div class="proto-picker-highlight" id="protoPickerHighlight"></div>
     <button type="button" class="proto-picker-item" data-variant="STADIUM_HAPTIC" data-active onclick="selectTactileVariant('STADIUM_HAPTIC')" data-tooltip="Select Stadium Haptic prototype variant" aria-label="Stadium Haptic variant">1 Stadium</button>
     <button type="button" class="proto-picker-item" data-variant="BROADCAST_MINIMAL" onclick="selectTactileVariant('BROADCAST_MINIMAL')" data-tooltip="Select Broadcast Minimal prototype variant" aria-label="Broadcast Minimal variant">2 Minimal</button>
@@ -15061,7 +15360,7 @@ cricos_active_sse_connections 1</pre>
       } else {
         pulse.style.background = 'var(--turf-emerald)';
         val.style.color = 'var(--turf-emerald)';
-        val.textContent = 'ONLINE (0 QUEUED)';
+        val.textContent = 'Online';
       }
     }
 
@@ -18139,7 +18438,7 @@ cricos_active_sse_connections 1</pre>
         const outdoorIcon = document.getElementById('outdoorModeIcon');
 
         if (iconEl) iconEl.textContent = DESIGN_THEMES[themeId].icon;
-        if (labelEl) labelEl.textContent = DESIGN_THEMES[themeId].badge;
+        if (labelEl) labelEl.textContent = DESIGN_THEMES[themeId].name;
         if (outdoorIcon) outdoorIcon.textContent = (themeId === 'stadium') ? '☀️' : '🌙';
       }
 
@@ -18155,6 +18454,8 @@ cricos_active_sse_connections 1</pre>
       }
 
       if (notify) {
+        const toaster = typeof document !== 'undefined' ? document.getElementById('sonnerToaster') : null;
+        if (toaster) toaster.innerHTML = '';
         showToast(DESIGN_THEMES[themeId].icon + ' ' + DESIGN_THEMES[themeId].name + ' Activated');
       }
     }
@@ -18819,7 +19120,7 @@ cricos_active_sse_connections 1</pre>
       const isDaylight = theme === 'swiss' || theme === 'nordic';
 
       // 1. Restore previously adjusted elements so theme switches start from clean CSS cascade
-      const adjustedEls = document.querySelectorAll('[data-cricos-orig-color], [data-cricos-orig-bg]');
+      const adjustedEls = document.querySelectorAll('[data-cricos-orig-color], [data-cricos-orig-bg], [data-cricos-orig-border]');
       for (let i = 0; i < adjustedEls.length; i++) {
         const el = adjustedEls[i];
         if (el.dataset.cricosOrigColor !== undefined) {
@@ -18831,6 +19132,11 @@ cricos_active_sse_connections 1</pre>
           if (el.dataset.cricosOrigBg === '__NONE__') el.style.removeProperty('background-color');
           else el.style.backgroundColor = el.dataset.cricosOrigBg;
           delete el.dataset.cricosOrigBg;
+        }
+        if (el.dataset.cricosOrigBorder !== undefined) {
+          if (el.dataset.cricosOrigBorder === '__NONE__') el.style.removeProperty('border-color');
+          else el.style.borderColor = el.dataset.cricosOrigBorder;
+          delete el.dataset.cricosOrigBorder;
         }
       }
 
@@ -18878,24 +19184,32 @@ cricos_active_sse_connections 1</pre>
 
       const rootBg = theme === 'swiss' ? [248, 249, 250, 1] : (theme === 'nordic' ? [245, 240, 232, 1] : [4, 7, 13, 1]);
 
-      // 2. In daylight themes (swiss / nordic), normalize dark-tinted inline containers (except dark 3D viewports, toaster & proto-picker)
+      // 2. In daylight themes (swiss / nordic), normalize dark-tinted inline containers (except dark 3D viewports & tooltips)
       if (isDaylight) {
-        const allBoxes = document.body.querySelectorAll('div, section, article, aside, header, tr, td, th, ul, li');
+        const allBoxes = document.body.querySelectorAll('div, section, article, aside, header, footer, nav, button, tr, td, th, ul, li');
         for (let i = 0; i < allBoxes.length; i++) {
           const box = allBoxes[i];
-          if (box.closest('#universal-tooltip-popover, #sonnerToaster, #protoPicker, #threeStadiumWrapper, #fieldPlannerSvg, #pitchMapSvg, .scoreboard')) continue;
+          if (box.closest('#universal-tooltip-popover, #protoPicker, #threeStadiumWrapper, #fieldPlannerSvg, #pitchMapSvg')) continue;
+          if (box.classList && (box.classList.contains('btn-primary') || box.classList.contains('counter-badge') || (box.classList.contains('tab-btn') && box.classList.contains('active')) || box.id === 'headerUserAvatar')) continue;
           const st = window.getComputedStyle(box);
           if (st.display === 'none' || st.visibility === 'hidden') continue;
           const bg = parseRgba(st.backgroundColor);
-          if (bg[3] > 0.08) {
+          if (bg[3] > 0.05) {
+            const unblendedLum = relLum(bg);
             const comp = blendColors(bg, rootBg);
             const l = relLum(comp);
-            // If a container has a dark/muddy background in a daylight theme, convert it to clean daylight card surface
-            if (l < 0.45) {
+            // If a container has a dark/muddy background (e.g. rgba(0,0,0,0.25) or #0A101C) in a daylight theme, convert it to clean daylight card surface
+            if (unblendedLum < 0.35 || l < 0.78) {
               if (box.dataset.cricosOrigBg === undefined) {
                 box.dataset.cricosOrigBg = box.style.backgroundColor || '__NONE__';
               }
-              box.style.setProperty('background-color', theme === 'swiss' ? '#FFFFFF' : '#FCFBF8', 'important');
+              box.style.setProperty('background-color', theme === 'swiss' ? '#F8FAFC' : '#F5F2EB', 'important');
+              if (box.style.borderColor || unblendedLum < 0.25) {
+                if (box.dataset.cricosOrigBorder === undefined) {
+                  box.dataset.cricosOrigBorder = box.style.borderColor || '__NONE__';
+                }
+                box.style.setProperty('border-color', theme === 'swiss' ? '#CBD5E1' : '#D6D0C4', 'important');
+              }
             }
           }
         }
