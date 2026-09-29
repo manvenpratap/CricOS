@@ -1,14 +1,26 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 09:50:00
-**Version:** 1.0.0-phase2bp (LHB/RHB Stance, Ball Trajectory & Shot Direction Confirmation Invariants)  
+**Last Updated:** 2026-09-29 11:04:00
+**Version:** 1.0.0-phase2bq (Animated Hero Page -> Login -> Persona-Scoped In-App Access)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BP Completed — LHB/RHB Stance, Ball Trajectory & Shot Direction Confirmation Invariants (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BQ Completed — Animated Hero Landing Page -> Login -> Persona-Scoped In-App Access (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Animated 60fps Hero Landing Page (`STAGE 1: HERO` in `dashboard.ts` & `mobile-view.ts`)**:
+    - Implemented full-screen `#cricosHeroAuthOverlay` (Desktop) and `#mobileHeroAuthOverlay` (Mobile/APK) with a live 60fps HTML5 `<canvas>` (`#heroStadiumCanvas` & `#mobileHeroStadiumCanvas`) rendering sweeping stadium floodlight cones, 3D perspective turf boundary rings, and animated parabolic `SIX`/`FOUR` cricket ball trajectories (`startHeroStadiumCanvasAnimation()` and `initMobileHeroCanvas()`).
+    - Presented kinetic hero headline (`Every Ball. Every Tactic. Every Persona — Unified in 3D.`), feature showcase cards, and primary CTA (`#btnHeroProceedToLogin` / `#btnMobileHeroProceedToLogin` — `⚡ Enter CricOS — Sign In →`) transitioning cleanly to Stage 2 (`LOGIN`).
+  - **2. Verified Account & Custom Persona Entitlement Login (`STAGE 2: LOGIN` in `dashboard.ts` & `mobile-view.ts`)**:
+    - Built Stage 2 (`#heroStageLogin` / `#mobileHeroStageLogin`) with 6 preset verified user accounts, each provisioned with a distinct `allowedPersonas` array (`Virat Sharma: ['CAPTAIN', 'PLAYER']`, `Sunil Gavaskar: ['SCORER']`, `Nitin Menon: ['UMPIRE', 'SCORER']`, `Jay Shah: ['ORGANISER', 'TURF_PROVIDER']`, `Aarav Mehta: ['FAN']`, `System Root: ALL 8`), plus a custom credentials & persona entitlement form (`#heroCustomPersonaCheckboxes` / `.mobile-hero-persona-cb`).
+  - **3. Strict Persona-Scoped In-App Experience & Access Control (`allowedPersonas` & `strictPersonaLock`)**:
+    - Filtered `.persona-pill-btn` in Desktop `#modalUserProfile` (`applyAllowedPersonasFilter()`), Mobile Profile role chips (`renderProfile()`), and Mobile `#mobilePersonaSheet` so **only personas included in the logged-in user's `allowedPersonas` array are rendered/visible** (`display: inline-flex` vs `display: none`).
+    - Hard-guarded `selectPersona(role)` (Desktop) and `switchUserPersona(role)` (Mobile/APK) when `strictPersonaLock === true` so any attempt to switch to a persona outside `allowedPersonas` returns `false` and triggers a security toast (`🔒 Access restricted: <role> is not provisioned for your user account`).
+    - Added `🚪 Sign Out / Switch Account` buttons (`#btnDesktopSignOut`, `#btnMobileProfileSignOut`, `#btnMobileSheetSignOut`) calling `logoutToHero()` to return to the Animated Hero Page -> Login flow at any time.
+  - **4. Automated E2E Verification (`tests/test_65_animated_hero_login_and_persona_access.py`)**:
+    - Verified via Playwright across both Desktop (`index.html?hero=1`) and Mobile/APK (`dist/mobile.html?hero=1`) that the Animated Hero Page renders first with live canvas animation, transitions to Login, restricts `Virat Sharma` strictly to `['CAPTAIN', 'PLAYER']` (blocking `SCORER` and `ADMIN` while hiding the scoring pad), and restricts `Sunil Gavaskar` strictly to `['SCORER']` (unlocking the scoring pad while blocking `CAPTAIN` and `ADMIN`).
+- **Preceding Phase**: Phase 2BP Completed — LHB/RHB Stance, Ball Trajectory & Shot Direction Confirmation Invariants (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. True Cricket OFF-SIDE vs ON-SIDE Semantic Invariant Across RHB & LHB (`dashboard.ts` & `mobile-view.ts`)**:
     - Fixed `selectShotZone()` and `updateWagonTelemetry()` in `apps/api/src/ui/dashboard.ts` where `const isOff = currentStance === 'RHB' ? zoneDef?.side === 'OFF' : zoneDef?.side === 'LEG';` previously inverted the side classification of fielding zones when a Left-Handed Batsman (`LHB`) came on strike (falsely labeling `Cover / Extra Cover`, `Point`, `Third Man`, `Long Off` as `ON-SIDE` and `Deep Mid Wicket`, `Deep Square Leg`, `Fine Leg`, `Long On` as `OFF-SIDE`, and swapping the Off-Side vs On-Side run ratio bar).
     - Replaced with `const isOff = zoneDef?.side === 'OFF';` and mirrored the displayed compass angle (`displayAngle = currentStance === 'LHB' ? (360 - zoneDef.angleDeg) % 360 : zoneDef.angleDeg`) so `Cover / Extra Cover`, `Point`, `Third Man`, `Long Off` are **always `OFF-SIDE`** (`OFF`) and `Fine Leg`, `Deep Square Leg`, `Deep Mid Wicket`, `Long On` are **always `ON-SIDE`** (`ON`) regardless of batter stance, while their physical Left/Right side of the pitch mirrors accurately (`Left = ON-SIDE, Right = OFF-SIDE` for `LHB`).

@@ -2115,6 +2115,24 @@ export function getMobileAppHtml(): string {
         this.identifier = '+91 98765 43210';
         this.code = '';
         this.role = 'CAPTAIN';
+        this.allowedPersonas = ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
+        this.strictPersonaLock = false;
+        var shouldShowMobileHero = Boolean(
+          typeof navigator !== 'undefined' && (
+            !navigator.webdriver ||
+            (typeof window !== 'undefined' && window.location && window.location.search && window.location.search.indexOf('hero=1') !== -1) ||
+            (typeof window !== 'undefined' && window.__FORCE_HERO_GATEWAY__)
+          )
+        );
+        this.heroGatewayStage = shouldShowMobileHero ? 'HERO' : 'AUTHENTICATED';
+        this.presetAccounts = {
+          CAPTAIN_PLAYER: { name: 'Virat Sharma', identifier: 'virat@cricos.io', allowedPersonas: ['CAPTAIN', 'PLAYER'], defaultPersona: 'CAPTAIN' },
+          SCORER_ONLY: { name: 'Sunil Gavaskar', identifier: 'scorer@cricos.io', allowedPersonas: ['SCORER'], defaultPersona: 'SCORER' },
+          UMPIRE_OFFICIAL: { name: 'Nitin Menon', identifier: 'umpire@cricos.io', allowedPersonas: ['UMPIRE', 'SCORER'], defaultPersona: 'UMPIRE' },
+          ORGANISER_TURF: { name: 'Jay Shah', identifier: 'organiser@cricos.io', allowedPersonas: ['ORGANISER', 'TURF_PROVIDER'], defaultPersona: 'ORGANISER' },
+          FAN_ONLY: { name: 'Aarav Mehta', identifier: 'fan@cricos.io', allowedPersonas: ['FAN'], defaultPersona: 'FAN' },
+          ADMIN_SUPERUSER: { name: 'System Root', identifier: 'admin@cricos.io', allowedPersonas: ['ADMIN', 'CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER'], defaultPersona: 'ADMIN' }
+        };
         this.signupData = {
           name: 'Rohit Sharma',
           identifier: '+91 98765 43210',
@@ -3214,6 +3232,15 @@ export function getMobileAppHtml(): string {
       }
 
       switchUserPersona(role) {
+        if (
+          this.strictPersonaLock &&
+          Array.isArray(this.allowedPersonas) &&
+          this.allowedPersonas.length > 0 &&
+          this.allowedPersonas.indexOf(role) === -1
+        ) {
+          this.showToast('🔒 Access restricted: ' + role + ' is not provisioned for your user account.', 'error');
+          return false;
+        }
         this._screenChanged = true;
         this.profile.persona = role;
         this.role = role;
@@ -3247,7 +3274,10 @@ export function getMobileAppHtml(): string {
           this.currentStance = 'RHB';
           this.profile.batting = { runs: 4892, innings: 118, notOuts: 19, ballsFaced: 3624 };
         }
-        if (role === 'UMPIRE' && this.currentScreen !== 'INCIDENTS') {
+        if (role === 'SCORER') {
+          this.currentScreen = 'MATCHES';
+          this.matchSubTab = 'SCORE';
+        } else if (role === 'UMPIRE' && this.currentScreen !== 'INCIDENTS') {
           this.currentScreen = 'INCIDENTS';
         } else if (role === 'ADMIN' && this.currentScreen !== 'ADMIN') {
           this.currentScreen = 'ADMIN';
@@ -3258,6 +3288,203 @@ export function getMobileAppHtml(): string {
         }
         this.showToast('Switched to ' + role + ' persona', 'success');
         this.render();
+      }
+
+      openHeroGateway(stage) {
+        this.heroGatewayStage = stage === 'LOGIN' ? 'LOGIN' : 'HERO';
+        this.personaSheetOpen = false;
+        this.render();
+      }
+
+      showHeroLoginStage() {
+        this.heroGatewayStage = 'LOGIN';
+        this.render();
+      }
+
+      loginWithPresetAccount(accountKey) {
+        var acct = (this.presetAccounts && this.presetAccounts[accountKey]) ? this.presetAccounts[accountKey] : this.presetAccounts.CAPTAIN_PLAYER;
+        this.strictPersonaLock = true;
+        this.allowedPersonas = acct.allowedPersonas.slice();
+        this.heroGatewayStage = 'AUTHENTICATED';
+        this.identifier = acct.identifier;
+        try {
+          localStorage.setItem('cricos_access_token', 'jwt_' + accountKey.toLowerCase());
+        } catch (_) {}
+        this.switchUserPersona(acct.defaultPersona || acct.allowedPersonas[0]);
+        this.showToast('Signed in as ' + acct.name + ' (' + acct.allowedPersonas.join(', ') + ')', 'success');
+      }
+
+      completeCustomHeroLogin() {
+        var nameEl = document.getElementById('mobileHeroLoginName');
+        var idEl = document.getElementById('mobileHeroLoginIdentifier');
+        var cbs = document.querySelectorAll('.mobile-hero-persona-cb:checked');
+        var selected = [];
+        for (var i = 0; i < cbs.length; i++) {
+          if (cbs[i].value) selected.push(cbs[i].value);
+        }
+        if (selected.length === 0) selected.push('FAN');
+        this.strictPersonaLock = true;
+        this.allowedPersonas = selected;
+        this.heroGatewayStage = 'AUTHENTICATED';
+        if (idEl && idEl.value.trim()) this.identifier = idEl.value.trim();
+        try {
+          localStorage.setItem('cricos_access_token', 'jwt_custom_session');
+        } catch (_) {}
+        this.switchUserPersona(selected[0]);
+        if (nameEl && nameEl.value.trim()) {
+          this.profile.name = nameEl.value.trim();
+          this.render();
+        }
+        this.showToast('Signed in • Provisioned: ' + selected.join(', '), 'success');
+      }
+
+      logoutToHero() {
+        this.personaSheetOpen = false;
+        this.heroGatewayStage = 'HERO';
+        try {
+          localStorage.removeItem('cricos_access_token');
+        } catch (_) {}
+        this.showToast('Signed out to Animated Hero Page', 'info');
+        this.render();
+      }
+
+      initMobileHeroCanvas() {
+        var canvas = document.getElementById('mobileHeroStadiumCanvas');
+        if (!canvas || !canvas.getContext) return;
+        var ctx = canvas.getContext('2d');
+        var self = this;
+        var t = 0;
+        if (this._mobileHeroRaf) {
+          window.cancelAnimationFrame(this._mobileHeroRaf);
+        }
+        function drawHeroFrame() {
+          if (self.heroGatewayStage !== 'HERO' && self.heroGatewayStage !== 'LOGIN') {
+            self._mobileHeroRaf = null;
+            return;
+          }
+          var el = document.getElementById('mobileHeroStadiumCanvas');
+          if (!el) return;
+          t += 0.025;
+          var w = el.width = el.clientWidth || 412;
+          var h = el.height = el.clientHeight || 780;
+          ctx.clearRect(0, 0, w, h);
+
+          var grad = ctx.createRadialGradient(w * 0.5, h * 0.22, 20, w * 0.5, h * 0.6, Math.max(w, h) * 0.85);
+          grad.addColorStop(0, 'rgba(0, 229, 153, 0.16)');
+          grad.addColorStop(0.5, 'rgba(0, 210, 255, 0.08)');
+          grad.addColorStop(1, 'rgba(3, 7, 16, 0.95)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+
+          var cx = w * 0.5;
+          var cy = h * 0.76;
+          var rings = [0.44, 0.31, 0.18];
+          for (var r = 0; r < rings.length; r++) {
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, w * rings[r], h * (rings[r] * 0.25), 0, 0, Math.PI * 2);
+            ctx.strokeStyle = r === 0 ? 'rgba(0, 229, 153, 0.34)' : 'rgba(0, 210, 255, 0.18)';
+            ctx.lineWidth = r === 0 ? 1.8 : 1;
+            ctx.stroke();
+          }
+
+          var arcs = [
+            { tx: cx - w * 0.34, ty: cy - h * 0.08, ph: h * 0.34, color: '#00E599', spd: 0.55, off: 0.0 },
+            { tx: cx + w * 0.36, ty: cy - h * 0.06, ph: h * 0.3, color: '#00D2FF', spd: 0.48, off: 0.45 }
+          ];
+          for (var a = 0; a < arcs.length; a++) {
+            var arc = arcs[a];
+            var prog = ((t * arc.spd) + arc.off) % 1;
+            ctx.beginPath();
+            for (var s = 0; s <= prog; s += 0.03) {
+              var px = cx + (arc.tx - cx) * s;
+              var py = cy + (arc.ty - cy) * s - Math.sin(s * Math.PI) * arc.ph;
+              if (s === 0) ctx.moveTo(px, py);
+              else ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = arc.color;
+            ctx.lineWidth = 2.4;
+            ctx.stroke();
+
+            var bx = cx + (arc.tx - cx) * prog;
+            var by = cy + (arc.ty - cy) * prog - Math.sin(prog * Math.PI) * arc.ph;
+            ctx.beginPath();
+            ctx.arc(bx, by, 4.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+          }
+
+          self._mobileHeroRaf = window.requestAnimationFrame(drawHeroFrame);
+        }
+        drawHeroFrame();
+      }
+
+      renderHeroAuthGatewayOverlay() {
+        if (this.heroGatewayStage !== 'HERO' && this.heroGatewayStage !== 'LOGIN') {
+          return '';
+        }
+        var isHero = this.heroGatewayStage === 'HERO';
+        var h = '<div id="mobileHeroAuthOverlay" style="position: fixed; inset: 0; z-index: 9995; background: radial-gradient(circle at 50% 15%, #071d32 0%, #030710 74%); display: flex; flex-direction: column; overflow-y: auto; color: #f8fafc;">';
+        h += '<canvas id="mobileHeroStadiumCanvas" width="412" height="780" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.88;"></canvas>';
+
+        h += '<header style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(4, 9, 18, 0.75); backdrop-filter: blur(12px);">';
+        h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+        h += '<span style="font-size: 1.15rem;">🏏</span>';
+        h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
+        h += '<span style="font-size: 0.6rem; font-weight: 800; padding: 0.12rem 0.42rem; border-radius: 999px; background: rgba(0, 229, 153, 0.16); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">3D OS</span>';
+        h += '</div>';
+        h += '<span id="mobileHeroStageBadge" style="font-size: 0.62rem; font-weight: 700; color: #00D2FF; background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.2rem 0.5rem; border-radius: 5px;">' + (isHero ? 'STAGE 1 • HERO' : 'STAGE 2 • LOGIN') + '</span>';
+        h += '</header>';
+
+        if (isHero) {
+          h += '<section id="mobileHeroStageLanding" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.4rem 1.1rem;">';
+          h += '<div style="font-size: 0.64rem; font-weight: 800; color: #00E599; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.25rem 0.65rem; border-radius: 999px; margin-bottom: 0.85rem;">✨ 60FPS 3D STADIUM • PERSONA-SCOPED ACCESS</div>';
+          h += '<h1 id="mobileHeroKineticHeadline" style="font-family: Space Grotesk, sans-serif; font-size: 1.75rem; font-weight: 800; line-height: 1.12; margin: 0 0 0.7rem 0; color: #f8fafc;">Every Ball. Every Tactic. Every Persona — Unified in 3D.</h1>';
+          h += '<p style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.5; margin: 0 0 1.25rem 0;">Real-time 3D parabolic ball trajectories, LHB/RHB biomechanical wagon wheels, and role-scoped workspaces. Sign in to unlock the personas assigned to your user account.</p>';
+          h += '<button type="button" id="btnMobileHeroProceedToLogin" onclick="window.cricosMobileApp.showHeroLoginStage()" style="width: 100%; max-width: 320px; background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%); color: #04070D; border: none; border-radius: 10px; padding: 0.85rem 1.2rem; font-size: 0.92rem; font-weight: 900; cursor: pointer; box-shadow: 0 10px 26px rgba(0, 229, 153, 0.3); margin-bottom: 1.25rem;" data-tooltip="Proceed from Animated Hero Page to Sign In">⚡ Enter CricOS — Sign In →</button>';
+          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; width: 100%; text-align: left;">';
+          h += '<div style="background: rgba(10, 18, 32, 0.8); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 10px; padding: 0.65rem;"><div style="font-size: 0.74rem; font-weight: 800; color: #00E599;">📋 Scorer Studio</div><div style="font-size: 0.64rem; color: #94a3b8; margin-top: 0.15rem;">Exclusive ball-by-ball pad &amp; LHB/RHB wagon wheel.</div></div>';
+          h += '<div style="background: rgba(10, 18, 32, 0.8); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 10px; padding: 0.65rem;"><div style="font-size: 0.74rem; font-weight: 800; color: #00D2FF;">👑 Captain Hub</div><div style="font-size: 0.64rem; color: #94a3b8; margin-top: 0.15rem;">Playing XI lineup &amp; toss without scorer pad clutter.</div></div>';
+          h += '</div>';
+          h += '</section>';
+        } else {
+          h += '<section id="mobileHeroStageLogin" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 0.9rem 1rem 2rem 1rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">';
+          h += '<button type="button" id="btnMobileLoginBackToHero" onclick="window.cricosMobileApp.openHeroGateway(this.dataset.stage)" data-stage="HERO" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.3rem 0.65rem; font-size: 0.68rem; font-weight: 700; cursor: pointer;" data-tooltip="Return to Animated Hero Page">← Back to Hero</button>';
+          h += '<span style="font-size: 0.65rem; color: #00E599; font-weight: 700;">🔒 Persona-Scoped Access</span>';
+          h += '</div>';
+
+          h += '<div style="background: rgba(8, 15, 28, 0.92); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 14px; padding: 0.95rem;">';
+          h += '<div style="font-size: 1.05rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.2rem;">🔐 Sign In to CricOS</div>';
+          h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.75rem;">Only the personas provisioned to your logged-in user account will be unlocked in-app.</div>';
+
+          h += '<div style="display: grid; grid-template-columns: 1fr; gap: 0.45rem; margin-bottom: 0.85rem;">';
+          h += '<button type="button" id="btnMobileAccountCaptain" data-account="CAPTAIN_PLAYER" onclick="window.cricosMobileApp.loginWithPresetAccount(this.dataset.account)" style="text-align: left; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 9px; padding: 0.6rem 0.75rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Virat Sharma (CAPTAIN, PLAYER)"><div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.78rem;"><span>👑 Virat Sharma</span><span style="color: #00D2FF; font-size: 0.64rem;">Allowed: CAPTAIN, PLAYER</span></div><div style="font-size: 0.64rem; color: #94a3b8;">virat@cricos.io • Tactical Lineup &amp; Player KPIs</div></button>';
+          h += '<button type="button" id="btnMobileAccountScorer" data-account="SCORER_ONLY" onclick="window.cricosMobileApp.loginWithPresetAccount(this.dataset.account)" style="text-align: left; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.4); border-radius: 9px; padding: 0.6rem 0.75rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Sunil Gavaskar (SCORER only)"><div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.78rem;"><span>📋 Sunil Gavaskar</span><span style="color: #00E599; font-size: 0.64rem;">Allowed: SCORER</span></div><div style="font-size: 0.64rem; color: #94a3b8;">scorer@cricos.io • Official Ball-by-Ball Scoring Pad</div></button>';
+          h += '<button type="button" id="btnMobileAccountUmpire" data-account="UMPIRE_OFFICIAL" onclick="window.cricosMobileApp.loginWithPresetAccount(this.dataset.account)" style="text-align: left; background: rgba(255, 184, 0, 0.1); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 9px; padding: 0.6rem 0.75rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Nitin Menon (UMPIRE, SCORER)"><div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.78rem;"><span>⚖️ Nitin Menon</span><span style="color: #FFB800; font-size: 0.64rem;">Allowed: UMPIRE, SCORER</span></div><div style="font-size: 0.64rem; color: #94a3b8;">umpire@cricos.io • Match Officials &amp; Sanctions</div></button>';
+          h += '<button type="button" id="btnMobileAccountFan" data-account="FAN_ONLY" onclick="window.cricosMobileApp.loginWithPresetAccount(this.dataset.account)" style="text-align: left; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.4); border-radius: 9px; padding: 0.6rem 0.75rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Aarav Mehta (FAN only)"><div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.78rem;"><span>🎪 Aarav Mehta</span><span style="color: #f97316; font-size: 0.64rem;">Allowed: FAN</span></div><div style="font-size: 0.64rem; color: #94a3b8;">fan@cricos.io • Live Broadcast &amp; Stadium Pulse</div></button>';
+          h += '<button type="button" id="btnMobileAccountAdmin" data-account="ADMIN_SUPERUSER" onclick="window.cricosMobileApp.loginWithPresetAccount(this.dataset.account)" style="text-align: left; background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.4); border-radius: 9px; padding: 0.6rem 0.75rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as System Root (All 8 Personas)"><div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.78rem;"><span>⚡ System Root</span><span style="color: #ff3366; font-size: 0.64rem;">Allowed: ALL 8</span></div><div style="font-size: 0.64rem; color: #94a3b8;">admin@cricos.io • Full Platform Superuser</div></button>';
+          h += '</div>';
+
+          h += '<div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.65rem;">';
+          h += '<div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Custom Credentials &amp; Personas:</div>';
+          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.45rem;">';
+          h += '<input type="text" id="mobileHeroLoginName" value="KL Rahul" style="padding: 0.4rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.35); color: #fff; font-size: 0.72rem;">';
+          h += '<input type="text" id="mobileHeroLoginIdentifier" value="+91 98765 43210" style="padding: 0.4rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.35); color: #fff; font-size: 0.72rem;">';
+          h += '</div>';
+          h += '<div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.6rem;">';
+          h += '<label style="font-size: 0.65rem; background: rgba(255,255,255,0.05); padding: 0.22rem 0.45rem; border-radius: 4px;"><input type="checkbox" class="mobile-hero-persona-cb" value="CAPTAIN" checked> Captain</label>';
+          h += '<label style="font-size: 0.65rem; background: rgba(255,255,255,0.05); padding: 0.22rem 0.45rem; border-radius: 4px;"><input type="checkbox" class="mobile-hero-persona-cb" value="PLAYER" checked> Player</label>';
+          h += '<label style="font-size: 0.65rem; background: rgba(255,255,255,0.05); padding: 0.22rem 0.45rem; border-radius: 4px;"><input type="checkbox" class="mobile-hero-persona-cb" value="SCORER"> Scorer</label>';
+          h += '<label style="font-size: 0.65rem; background: rgba(255,255,255,0.05); padding: 0.22rem 0.45rem; border-radius: 4px;"><input type="checkbox" class="mobile-hero-persona-cb" value="FAN"> Fan</label>';
+          h += '</div>';
+          h += '<button type="button" id="btnMobileCompleteCustomLogin" onclick="window.cricosMobileApp.completeCustomHeroLogin()" style="width: 100%; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 8px; padding: 0.6rem; font-size: 0.78rem; font-weight: 800; cursor: pointer;" data-tooltip="Verify OTP &amp; Launch Scoped Workspace">🔐 Sign In &amp; Launch Workspace →</button>';
+          h += '</div>';
+          h += '</div>';
+          h += '</section>';
+        }
+
+        h += '</div>';
+        return h;
       }
 
       setTheme(themeId, notify = true) {
@@ -7023,9 +7250,15 @@ export function getMobileAppHtml(): string {
 
         var h = '<div style="padding: 0.65rem 0.75rem;">';
 
-        // 8-Persona Switcher Strip
+        // Scoped Persona Switcher Strip (Filtered by allowedPersonas)
+        var allowedList = (Array.isArray(this.allowedPersonas) && this.allowedPersonas.length > 0)
+          ? this.allowedPersonas
+          : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.55rem 0.65rem; margin-bottom: 0.65rem;">';
-        h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00E599; margin-bottom: 0.3rem;">🔄 Switch Persona Journey</div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">';
+        h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00E599;">🔄 Available Account Personas (' + allowedList.join(', ') + ')</div>';
+        h += '<button type="button" id="btnMobileProfileSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.4); color: #00D2FF; border-radius: 5px; padding: 0.18rem 0.45rem; font-size: 0.6rem; font-weight: 700; cursor: pointer;" data-tooltip="Sign out to Animated Hero Page">🚪 Sign Out</button>';
+        h += '</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">';
         var allRoles = [
           ['CAPTAIN', '🏏 Cpt'],
@@ -7039,6 +7272,7 @@ export function getMobileAppHtml(): string {
         ];
         for (var r = 0; r < allRoles.length; r++) {
           var roleItem = allRoles[r];
+          if (allowedList.indexOf(roleItem[0]) === -1) continue;
           var isAct = this.profile.persona === roleItem[0];
           var st = isAct ? 'background: rgba(0, 229, 153, 0.25); border: 1px solid #00E599; color: #00E599; font-weight: 700;' : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #94a3b8;';
           h += '<button type="button" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona)" data-persona="' + roleItem[0] + '" style="padding: 0.3rem 0.15rem; border-radius: 5px; font-size: 0.62rem; cursor: pointer; ' + st + '" data-tooltip="Switch persona to ' + roleItem[1] + '">' + roleItem[1] + '</button>';
@@ -7372,16 +7606,22 @@ export function getMobileAppHtml(): string {
         }
         h += '</nav>';
 
-        // Persona Sheet Modal & Backdrop
+        // Persona Sheet Modal & Backdrop (Filtered strictly by allowedPersonas)
+        var sheetAllowedList = (Array.isArray(this.allowedPersonas) && this.allowedPersonas.length > 0)
+          ? this.allowedPersonas
+          : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
         var isPersonaActive = this.personaSheetOpen ? 'active' : '';
         h += '<div class="mobile-sheet-backdrop ' + isPersonaActive + '" id="mobileSheetBackdrop" onclick="window.cricosMobileApp.closePersonaSheet()"></div>';
         h += '<div class="mobile-persona-sheet ' + isPersonaActive + '" id="mobilePersonaSheet">';
         h += '<div class="sheet-drag-handle"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
         h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: Space Grotesk, sans-serif; color: #f8fafc;">Switch Persona Experience</div>';
+        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+        h += '<button type="button" id="btnMobileSheetSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.4); color: #00D2FF; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Sign out to Animated Hero Page">🚪 Sign Out</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.closePersonaSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer;" data-tooltip="Close persona switcher">&times;</button>';
         h += '</div>';
-        h += '<div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.75rem;">Select any of the 8 dedicated personas to preview their unique workflow.</div>';
+        h += '</div>';
+        h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.75rem;">Personas provisioned for your account (' + sheetAllowedList.join(', ') + '):</div>';
         h += '<div class="persona-grid-picker">';
         var personaOptions = [
           ['CAPTAIN', '🏏 Captain', 'Squad selection & toss'],
@@ -7395,6 +7635,7 @@ export function getMobileAppHtml(): string {
         ];
         for (var pIdx = 0; pIdx < personaOptions.length; pIdx++) {
           var pOpt = personaOptions[pIdx];
+          if (sheetAllowedList.indexOf(pOpt[0]) === -1) continue;
           var isCur = this.profile.persona === pOpt[0];
           h += '<div class="persona-picker-card ' + (isCur ? 'active' : '') + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.personaChoice)" data-persona-choice="' + pOpt[0] + '">';
           h += '<div style="font-weight: 700; font-size: 0.8rem; color: ' + (isCur ? '#00E599' : '#f8fafc') + ';">' + pOpt[1] + '</div>';
@@ -7430,6 +7671,9 @@ export function getMobileAppHtml(): string {
           h += this.renderWagonPickerSheet();
         }
 
+        // Animated Hero Landing Page -> Login -> Persona-Scoped Access Gateway Overlay
+        h += this.renderHeroAuthGatewayOverlay();
+
         root.innerHTML = h;
 
         if (this.activeActionSheet && typeof this.activeActionSheet.onConfirm === 'function') {
@@ -7444,6 +7688,9 @@ export function getMobileAppHtml(): string {
         this.enforceContrastInvariants();
 
         if (typeof document !== 'undefined') {
+          if (document.getElementById('mobileHeroStadiumCanvas')) {
+            this.initMobileHeroCanvas();
+          }
           if (document.getElementById('mobileThreeStadiumCanvas')) {
             this.initMobileStadiumPitch();
           }

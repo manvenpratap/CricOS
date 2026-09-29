@@ -6379,8 +6379,17 @@ export function getDashboardHtml(): string {
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeUserModal()" data-tooltip="Close modal">✕</button>
       </div>
       <div class="modal-body">
+        <!-- Active User Account & Provisioned Personas Banner -->
+        <div id="userAllowedPersonasBanner" style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 10px; padding: 0.6rem 0.85rem; margin-bottom: 0.85rem;">
+          <div>
+            <div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.04em;" id="userAccountStatusTitle">🔐 Authenticated Session • Provisioned Personas</div>
+            <div style="font-size: 0.74rem; color: #cbd5e1; margin-top: 0.15rem;" id="userAllowedPersonasListLabel">Available to your account: All 8 Personas</div>
+          </div>
+          <button type="button" id="btnDesktopSignOut" class="btn btn-secondary btn-sm" onclick="logoutToHero()" style="width: auto; padding: 0.38rem 0.75rem; font-size: 0.74rem; border-color: rgba(0, 210, 255, 0.45); color: #00D2FF; white-space: nowrap;" data-tooltip="Sign out to Animated Hero Page &amp; Login screen to switch user account">🚪 Sign Out / Switch Account</button>
+        </div>
+
         <!-- Persona Pills -->
-        <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; display: block;">Select Active Persona</label>
+        <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; display: block;">Select Active Persona (Scoped to Your Account)</label>
         <div class="persona-pills-container">
           <button class="persona-pill-btn active" onclick="selectPersona('CAPTAIN')" data-role="CAPTAIN" data-tooltip="Captain persona: Manage Playing XI, toss, declarations, and tactical pad">
             <span class="persona-icon">👑</span>
@@ -6611,6 +6620,182 @@ export function getDashboardHtml(): string {
         <button class="btn" style="width: auto; padding: 0.5rem 1.5rem;" onclick="saveUserProfile()" data-tooltip="Save profile edits and persona selection">Save Profile</button>
       </div>
     </div>
+  </div>
+
+  <!-- =========================================================================
+       ANIMATED HERO LANDING PAGE -> LOGIN -> PERSONA-SCOPED ACCESS GATEWAY
+       ========================================================================= -->
+  <div id="cricosHeroAuthOverlay" style="position: fixed; inset: 0; z-index: 9990; background: radial-gradient(circle at 50% 18%, #071d32 0%, #030710 72%); display: none; flex-direction: column; overflow-y: auto; color: #f8fafc;">
+    <!-- Live 60fps Animated Stadium Floodlight & Parabolic Trajectory Canvas -->
+    <canvas id="heroStadiumCanvas" width="1280" height="720" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.88;"></canvas>
+
+    <!-- Top Navigation Bar inside Hero/Login Gateway -->
+    <header style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(14px); background: rgba(4, 9, 18, 0.65);">
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <span style="font-size: 1.45rem;">🏏</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; color: #f8fafc;">CricOS</span>
+        <span style="font-size: 0.68rem; font-weight: 800; padding: 0.18rem 0.55rem; border-radius: 999px; background: rgba(0, 229, 153, 0.16); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">3D UNIFIED CRICKET OS</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span id="heroStageBadge" style="font-size: 0.72rem; font-weight: 700; color: #00D2FF; background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.28rem 0.65rem; border-radius: 6px;">STAGE 1 OF 2 • ANIMATED HERO</span>
+        <button type="button" id="btnHeroHeaderSignIn" onclick="showHeroLoginStage()" style="background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 8px; padding: 0.45rem 1rem; font-size: 0.8rem; font-weight: 800; cursor: pointer;" data-tooltip="Proceed to Login screen">🔐 Sign In →</button>
+      </div>
+    </header>
+
+    <!-- STAGE 1: ANIMATED HERO LANDING PAGE -->
+    <section id="heroStageLanding" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2.5rem 1.5rem; max-width: 1080px; margin: 0 auto;">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border-radius: 999px; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); color: #00E599; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.25rem;">
+        <span>✨ LIVE 60FPS 3D STADIUM TELEMETRY</span>
+        <span>•</span>
+        <span>PERSONA-GATED RBAC WORKSPACES</span>
+      </div>
+
+      <h1 id="heroKineticHeadline" style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.1rem, 4.5vw, 3.6rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 1rem 0; background: linear-gradient(135deg, #ffffff 15%, #00E599 58%, #00D2FF 95%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Every Ball. Every Tactic. Every Persona — Unified in 3D.
+      </h1>
+
+      <p style="font-size: 1.02rem; color: #cbd5e1; max-width: 740px; line-height: 1.6; margin: 0 auto 1.85rem auto;">
+        Experience real-time 3D parabolic ball trajectories, LHB/RHB biomechanical wagon wheels, and double-entry turf escrow. Sign in to unlock the exact in-app workspace and controls provisioned for your user personas.
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 0.9rem; justify-content: center; margin-bottom: 2.4rem;">
+        <button type="button" id="btnHeroProceedToLogin" onclick="showHeroLoginStage()" style="background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%); color: #04070D; border: none; border-radius: 12px; padding: 0.95rem 2rem; font-size: 1.02rem; font-weight: 900; cursor: pointer; box-shadow: 0 12px 32px rgba(0, 229, 153, 0.32); letter-spacing: 0.01em;" data-tooltip="Proceed from Animated Hero Page to User Login">
+          ⚡ Enter CricOS — Sign In →
+        </button>
+      </div>
+
+      <!-- Animated Feature Showcase Cards -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.9rem; width: 100%;">
+        <div style="background: rgba(10, 18, 32, 0.78); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 14px; padding: 1rem; text-align: left; backdrop-filter: blur(10px);">
+          <div style="font-size: 1.3rem; margin-bottom: 0.35rem;">📋 Scorer Studio</div>
+          <div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc;">Exclusive Ball-by-Ball Pad</div>
+          <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.25rem;">Provisioned strictly to Official Scorers with LHB/RHB dynamic ON/OFF wagon wheel mapping.</div>
+        </div>
+        <div style="background: rgba(10, 18, 32, 0.78); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 14px; padding: 1rem; text-align: left; backdrop-filter: blur(10px);">
+          <div style="font-size: 1.3rem; margin-bottom: 0.35rem;">👑 Captain Command</div>
+          <div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc;">Tactical Lineup &amp; Toss</div>
+          <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.25rem;">Manage Playing XI, coin toss, and bowling matchups without scoring pad clutter.</div>
+        </div>
+        <div style="background: rgba(10, 18, 32, 0.78); border: 1px solid rgba(255, 184, 0, 0.28); border-radius: 14px; padding: 1rem; text-align: left; backdrop-filter: blur(10px);">
+          <div style="font-size: 1.3rem; margin-bottom: 0.35rem;">⚖️ Umpire &amp; Organiser</div>
+          <div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc;">MCC Law 41/42 &amp; Brackets</div>
+          <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.25rem;">Dedicated incident sanctions, DRS Hawk-Eye reviews, and tournament fixture engines.</div>
+        </div>
+        <div style="background: rgba(10, 18, 32, 0.78); border: 1px solid rgba(167, 139, 250, 0.28); border-radius: 14px; padding: 1rem; text-align: left; backdrop-filter: blur(10px);">
+          <div style="font-size: 1.3rem; margin-bottom: 0.35rem;">🔒 Persona Entitlements</div>
+          <div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc;">Strict Role-Based Access</div>
+          <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.25rem;">Only the personas assigned to the logged-in user are visible and accessible in-app.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 2: LOGIN & PERSONA ENTITLEMENT VERIFICATION -->
+    <section id="heroStageLogin" style="position: relative; z-index: 2; flex: 1; display: none; flex-direction: column; align-items: center; justify-content: flex-start; padding: 1.75rem 1.5rem 3rem 1.5rem; max-width: 980px; margin: 0 auto; width: 100%;">
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <button type="button" id="btnLoginBackToHero" onclick="openHeroGateway('HERO')" style="background: rgba(255,255,255,0.07); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.78rem; font-weight: 700; cursor: pointer;" data-tooltip="Return to Animated Hero Landing Page">← Back to Animated Hero</button>
+        <span style="font-size: 0.74rem; color: #00E599; font-weight: 700;">🔒 Persona-Scoped Zero-Trust Session</span>
+      </div>
+
+      <div style="width: 100%; background: rgba(8, 15, 28, 0.88); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 16px; padding: 1.5rem; backdrop-filter: blur(16px); box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; margin: 0 0 0.35rem 0; color: #f8fafc;">🔐 Sign In to CricOS</h2>
+        <p style="font-size: 0.84rem; color: #94a3b8; margin: 0 0 1.25rem 0;">
+          Select a verified user account below or sign in with custom credentials. Your in-app navigation, scoring controls, and persona switcher will be restricted strictly to the personas available to your logged-in user.
+        </p>
+
+        <!-- Preset Verified User Accounts (with Distinct Allowed Personas) -->
+        <div style="font-size: 0.75rem; font-weight: 800; color: #00D2FF; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.65rem;">⚡ Instant Verified Account Sign-In (Select User Account)</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); gap: 0.75rem; margin-bottom: 1.4rem;">
+          <button type="button" id="btnLoginAccountCaptain" class="hero-login-account-card" onclick="loginWithHeroAccount('CAPTAIN_PLAYER')" style="text-align: left; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Virat Sharma (Provisioned Personas: CAPTAIN, PLAYER)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 800; font-size: 0.9rem;">👑 Virat Sharma</span>
+              <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 210, 255, 0.2); color: #00D2FF; font-weight: 800;">2 Personas</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">virat@cricos.io • Squad Leader &amp; Opening Batter</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #00E599;">Allowed: CAPTAIN, PLAYER</div>
+          </button>
+
+          <button type="button" id="btnLoginAccountScorer" class="hero-login-account-card" onclick="loginWithHeroAccount('SCORER_ONLY')" style="text-align: left; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Sunil Gavaskar (Provisioned Persona: SCORER only)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 800; font-size: 0.9rem;">📋 Sunil Gavaskar</span>
+              <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.2); color: #00E599; font-weight: 800;">1 Persona</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">scorer@cricos.io • BCCI Certified Official Scorer</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #00E599;">Allowed: SCORER</div>
+          </button>
+
+          <button type="button" id="btnLoginAccountUmpire" class="hero-login-account-card" onclick="loginWithHeroAccount('UMPIRE_OFFICIAL')" style="text-align: left; background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Nitin Menon (Provisioned Personas: UMPIRE, SCORER)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 800; font-size: 0.9rem;">⚖️ Nitin Menon</span>
+              <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(255, 184, 0, 0.2); color: #FFB800; font-weight: 800;">2 Personas</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">umpire@cricos.io • ICC Elite Match Official</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #FFB800;">Allowed: UMPIRE, SCORER</div>
+          </button>
+
+          <button type="button" id="btnLoginAccountOrganiser" class="hero-login-account-card" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="text-align: left; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Jay Shah (Provisioned Personas: ORGANISER, TURF_PROVIDER)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 800; font-size: 0.9rem;">🏆 Jay Shah</span>
+              <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(167, 139, 250, 0.2); color: #a78bfa; font-weight: 800;">2 Personas</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">organiser@cricos.io • League &amp; Venue Commissioner</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #a78bfa;">Allowed: ORGANISER, TURF_PROVIDER</div>
+          </button>
+
+          <button type="button" id="btnLoginAccountFan" class="hero-login-account-card" onclick="loginWithHeroAccount('FAN_ONLY')" style="text-align: left; background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Aarav Mehta (Provisioned Persona: FAN only)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 800; font-size: 0.9rem;">🎪 Aarav Mehta</span>
+              <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(249, 115, 22, 0.2); color: #f97316; font-weight: 800;">1 Persona</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">fan@cricos.io • Stadium Spectator &amp; Pulse Member</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #f97316;">Allowed: FAN</div>
+          </button>
+
+          <button type="button" id="btnLoginAccountAdmin" class="hero-login-account-card" onclick="loginWithHeroAccount('ADMIN_SUPERUSER')" style="text-align: left; background: rgba(255, 51, 102, 0.08); border: 1px solid rgba(255, 51, 102, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as System Root (All 8 Personas Provisioned)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 800; font-size: 0.9rem;">⚡ System Root</span>
+              <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(255, 51, 102, 0.2); color: #ff3366; font-weight: 800;">All 8 Personas</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">admin@cricos.io • Full Platform Governance</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #ff3366;">Allowed: ALL 8 PERSONAS</div>
+          </button>
+        </div>
+
+        <!-- Custom Credentials & Persona Entitlement Builder -->
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.1rem;">
+          <div style="font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.65rem;">Or Sign In with Custom Credentials &amp; Assigned Personas</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 0.85rem;">
+            <div>
+              <label style="font-size: 0.7rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">Full Name</label>
+              <input type="text" id="heroLoginName" value="KL Rahul" style="width: 100%; padding: 0.5rem 0.65rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.35); color: #fff; font-size: 0.82rem;">
+            </div>
+            <div>
+              <label style="font-size: 0.7rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">Email or Mobile Identifier</label>
+              <input type="text" id="heroLoginIdentifier" value="+91 98765 43210" style="width: 100%; padding: 0.5rem 0.65rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.35); color: #fff; font-size: 0.82rem;">
+            </div>
+            <div>
+              <label style="font-size: 0.7rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">6-Digit Verification OTP</label>
+              <input type="text" id="heroLoginOtp" value="123456" style="width: 100%; padding: 0.5rem 0.65rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.35); color: #00E599; font-weight: 800; font-size: 0.82rem;">
+            </div>
+          </div>
+
+          <label style="font-size: 0.7rem; color: #94a3b8; display: block; margin-bottom: 0.4rem;">Personas Provisioned to This User Account:</label>
+          <div id="heroCustomPersonaCheckboxes" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="CAPTAIN" checked> 👑 Captain</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="PLAYER" checked> 🏏 Player</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="SCORER"> 📋 Scorer</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="FAN"> 🎪 Fan</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="UMPIRE"> ⚖️ Umpire</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ORGANISER"> 🏆 Organiser</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="TURF_PROVIDER"> 🏟️ Provider</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ADMIN"> ⚡ Admin</label>
+          </div>
+
+          <button type="button" id="btnCompleteHeroLogin" onclick="completeCustomHeroLogin()" style="width: 100%; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 10px; padding: 0.75rem 1.25rem; font-size: 0.9rem; font-weight: 800; cursor: pointer;" data-tooltip="Verify OTP and launch workspace restricted to selected personas">
+            🔐 Verify OTP &amp; Launch Scoped Workspace →
+          </button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Dismissal / Wicket Modal -->
@@ -10541,6 +10726,7 @@ cricos_active_sse_connections 1</pre>
         if (bioInput) bioInput.value = currentUser.bio || '';
 
         // Synchronize persona pill buttons visual active state
+        applyAllowedPersonasFilter();
         document.querySelectorAll('.persona-pill-btn').forEach(btn => {
           if (btn.getAttribute('data-role') === currentUser.persona) {
             btn.classList.add('active');
@@ -10555,6 +10741,270 @@ cricos_active_sse_connections 1</pre>
       const modal = document.getElementById('modalUserProfile');
       if (modal) modal.classList.remove('active');
     }
+
+    const HERO_PRESET_ACCOUNTS = {
+      CAPTAIN_PLAYER: {
+        name: 'Virat Sharma',
+        identifier: 'virat@cricos.io',
+        jersey: 18,
+        batting: 'RHB',
+        bowling: 'Right-Arm Fast',
+        allowedPersonas: ['CAPTAIN', 'PLAYER'],
+        defaultPersona: 'CAPTAIN'
+      },
+      SCORER_ONLY: {
+        name: 'Sunil Gavaskar',
+        identifier: 'scorer@cricos.io',
+        jersey: 18,
+        batting: 'RHB',
+        bowling: 'None',
+        allowedPersonas: ['SCORER'],
+        defaultPersona: 'SCORER'
+      },
+      UMPIRE_OFFICIAL: {
+        name: 'Nitin Menon',
+        identifier: 'umpire@cricos.io',
+        jersey: 44,
+        batting: 'RHB',
+        bowling: 'None',
+        allowedPersonas: ['UMPIRE', 'SCORER'],
+        defaultPersona: 'UMPIRE'
+      },
+      ORGANISER_TURF: {
+        name: 'Jay Shah',
+        identifier: 'organiser@cricos.io',
+        jersey: 10,
+        batting: 'RHB',
+        bowling: 'None',
+        allowedPersonas: ['ORGANISER', 'TURF_PROVIDER'],
+        defaultPersona: 'ORGANISER'
+      },
+      FAN_ONLY: {
+        name: 'Aarav Mehta',
+        identifier: 'fan@cricos.io',
+        jersey: 7,
+        batting: 'RHB',
+        bowling: 'None',
+        allowedPersonas: ['FAN'],
+        defaultPersona: 'FAN'
+      },
+      ADMIN_SUPERUSER: {
+        name: 'System Root',
+        identifier: 'admin@cricos.io',
+        jersey: 99,
+        batting: 'RHB',
+        bowling: 'Right-Arm Fast',
+        allowedPersonas: ['ADMIN', 'CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER'],
+        defaultPersona: 'ADMIN'
+      }
+    };
+
+    function applyAllowedPersonasFilter() {
+      const allowed = (Array.isArray(currentUser.allowedPersonas) && currentUser.allowedPersonas.length > 0)
+        ? currentUser.allowedPersonas
+        : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN', 'ORGANISER', 'TURF_PROVIDER'];
+      document.querySelectorAll('.persona-pill-btn').forEach(btn => {
+        const r = btn.getAttribute('data-role');
+        if (allowed.includes(r)) {
+          btn.style.display = 'inline-flex';
+          btn.removeAttribute('disabled');
+        } else {
+          btn.style.display = 'none';
+          btn.setAttribute('disabled', 'disabled');
+        }
+      });
+      const lbl = document.getElementById('userAllowedPersonasListLabel');
+      const titleEl = document.getElementById('userAccountStatusTitle');
+      if (lbl) {
+        lbl.textContent = 'Available to ' + (currentUser.name || 'User') + ': ' + allowed.join(', ');
+      }
+      if (titleEl) {
+        titleEl.textContent = currentUser.strictPersonaLock
+          ? ('🔐 Verified Account (' + (currentUser.identifier || 'Signed In') + ')')
+          : '🔐 Authenticated Session • Provisioned Personas';
+      }
+    }
+
+    let _heroCanvasRaf = null;
+    function startHeroStadiumCanvasAnimation() {
+      const canvas = document.getElementById('heroStadiumCanvas');
+      if (!canvas || !canvas.getContext) return;
+      const ctx = canvas.getContext('2d');
+      let t = 0;
+      function drawFrame() {
+        const overlay = document.getElementById('cricosHeroAuthOverlay');
+        if (!overlay || overlay.style.display === 'none') {
+          _heroCanvasRaf = null;
+          return;
+        }
+        t += 0.022;
+        const w = canvas.width = window.innerWidth || 1280;
+        const h = canvas.height = window.innerHeight || 720;
+        ctx.clearRect(0, 0, w, h);
+
+        const skyGrad = ctx.createRadialGradient(w * 0.5, h * 0.25, 40, w * 0.5, h * 0.6, Math.max(w, h) * 0.85);
+        skyGrad.addColorStop(0, 'rgba(0, 229, 153, 0.14)');
+        skyGrad.addColorStop(0.45, 'rgba(0, 210, 255, 0.08)');
+        skyGrad.addColorStop(1, 'rgba(3, 7, 16, 0.92)');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, w, h);
+
+        for (let i = 0; i < 4; i++) {
+          const beamX = w * (0.15 + i * 0.23);
+          const swing = Math.sin(t * 0.8 + i * 1.4) * (w * 0.08);
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(beamX, 0);
+          ctx.lineTo(beamX + swing - w * 0.14, h * 0.85);
+          ctx.lineTo(beamX + swing + w * 0.14, h * 0.85);
+          ctx.closePath();
+          const beamGrad = ctx.createLinearGradient(beamX, 0, beamX + swing, h * 0.85);
+          beamGrad.addColorStop(0, i % 2 === 0 ? 'rgba(0, 229, 153, 0.12)' : 'rgba(0, 210, 255, 0.12)');
+          beamGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          ctx.fillStyle = beamGrad;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        const cx = w * 0.5;
+        const cy = h * 0.76;
+        [0.42, 0.31, 0.19].forEach((scale, idx) => {
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, w * scale, h * (scale * 0.32), 0, 0, Math.PI * 2);
+          ctx.strokeStyle = idx === 0 ? 'rgba(0, 229, 153, 0.32)' : 'rgba(0, 210, 255, 0.18)';
+          ctx.lineWidth = idx === 0 ? 2 : 1;
+          ctx.stroke();
+        });
+
+        const arcs = [
+          { targetX: cx - w * 0.32, targetY: cy - h * 0.08, peakH: h * 0.38, color: '#00E599', speed: 0.55, offset: 0.0 },
+          { targetX: cx + w * 0.34, targetY: cy - h * 0.05, peakH: h * 0.34, color: '#00D2FF', speed: 0.48, offset: 0.35 },
+          { targetX: cx - w * 0.18, targetY: cy - h * 0.16, peakH: h * 0.44, color: '#FFB800', speed: 0.62, offset: 0.68 }
+        ];
+        arcs.forEach(arc => {
+          const prog = ((t * arc.speed) + arc.offset) % 1;
+          ctx.beginPath();
+          for (let s = 0; s <= prog; s += 0.025) {
+            const px = cx + (arc.targetX - cx) * s;
+            const py = cy + (arc.targetY - cy) * s - Math.sin(s * Math.PI) * arc.peakH;
+            if (s === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.strokeStyle = arc.color;
+          ctx.lineWidth = 2.6;
+          ctx.stroke();
+
+          const bx = cx + (arc.targetX - cx) * prog;
+          const by = cy + (arc.targetY - cy) * prog - Math.sin(prog * Math.PI) * arc.peakH;
+          ctx.beginPath();
+          ctx.arc(bx, by, 5.5, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = arc.color;
+          ctx.shadowBlur = 14;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        });
+
+        _heroCanvasRaf = window.requestAnimationFrame(drawFrame);
+      }
+      if (_heroCanvasRaf) window.cancelAnimationFrame(_heroCanvasRaf);
+      drawFrame();
+    }
+
+    function openHeroGateway(stage) {
+      const overlay = document.getElementById('cricosHeroAuthOverlay');
+      const heroSec = document.getElementById('heroStageLanding');
+      const loginSec = document.getElementById('heroStageLogin');
+      const badge = document.getElementById('heroStageBadge');
+      const headerBtn = document.getElementById('btnHeroHeaderSignIn');
+      if (!overlay) return;
+      overlay.style.display = 'flex';
+      const targetStage = stage === 'LOGIN' ? 'LOGIN' : 'HERO';
+      if (heroSec) heroSec.style.display = targetStage === 'HERO' ? 'flex' : 'none';
+      if (loginSec) loginSec.style.display = targetStage === 'LOGIN' ? 'flex' : 'none';
+      if (badge) {
+        badge.textContent = targetStage === 'HERO'
+          ? 'STAGE 1 OF 2 • ANIMATED HERO'
+          : 'STAGE 2 OF 2 • ACCOUNT SIGN IN';
+      }
+      if (headerBtn) {
+        headerBtn.style.display = targetStage === 'HERO' ? 'inline-block' : 'none';
+      }
+      startHeroStadiumCanvasAnimation();
+    }
+    window.openHeroGateway = openHeroGateway;
+
+    function showHeroLoginStage() {
+      openHeroGateway('LOGIN');
+    }
+    window.showHeroLoginStage = showHeroLoginStage;
+
+    function loginWithHeroAccount(accountKey) {
+      const acct = HERO_PRESET_ACCOUNTS[accountKey] || HERO_PRESET_ACCOUNTS.CAPTAIN_PLAYER;
+      currentUser.isAuthenticated = true;
+      currentUser.strictPersonaLock = true;
+      currentUser.name = acct.name;
+      currentUser.identifier = acct.identifier;
+      currentUser.jerseyNumber = acct.jersey;
+      currentUser.battingStyle = acct.batting;
+      currentUser.bowlingStyle = acct.bowling;
+      currentUser.allowedPersonas = acct.allowedPersonas.slice();
+
+      const overlay = document.getElementById('cricosHeroAuthOverlay');
+      if (overlay) overlay.style.display = 'none';
+
+      applyAllowedPersonasFilter();
+      selectPersona(acct.defaultPersona || acct.allowedPersonas[0]);
+      showToast('Signed in as ' + acct.name + ' • Provisioned Personas: ' + acct.allowedPersonas.join(', '));
+    }
+    window.loginWithHeroAccount = loginWithHeroAccount;
+
+    function completeCustomHeroLogin() {
+      const nameEl = document.getElementById('heroLoginName');
+      const idEl = document.getElementById('heroLoginIdentifier');
+      const cbs = document.querySelectorAll('.hero-custom-persona-cb:checked');
+      const selectedPersonas = [];
+      cbs.forEach(cb => {
+        if (cb.value) selectedPersonas.push(cb.value);
+      });
+      const finalPersonas = selectedPersonas.length > 0 ? selectedPersonas : ['FAN'];
+      currentUser.isAuthenticated = true;
+      currentUser.strictPersonaLock = true;
+      currentUser.name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'KL Rahul';
+      currentUser.identifier = (idEl && idEl.value.trim()) ? idEl.value.trim() : '+91 98765 43210';
+      currentUser.allowedPersonas = finalPersonas;
+
+      const overlay = document.getElementById('cricosHeroAuthOverlay');
+      if (overlay) overlay.style.display = 'none';
+
+      applyAllowedPersonasFilter();
+      selectPersona(finalPersonas[0]);
+      showToast('Signed in as ' + currentUser.name + ' • Provisioned Personas: ' + finalPersonas.join(', '));
+    }
+    window.completeCustomHeroLogin = completeCustomHeroLogin;
+
+    function logoutToHero() {
+      closeUserModal();
+      currentUser.isAuthenticated = false;
+      openHeroGateway('HERO');
+      showToast('Signed out to Animated Hero Page.');
+    }
+    window.logoutToHero = logoutToHero;
+
+    function initHeroAuthGateway() {
+      currentUser.allowedPersonas = ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN', 'ORGANISER', 'TURF_PROVIDER'];
+      currentUser.strictPersonaLock = false;
+      applyAllowedPersonasFilter();
+      const shouldShowHeroOnBoot = Boolean(
+        !navigator.webdriver ||
+        (window.location && window.location.search && window.location.search.indexOf('hero=1') !== -1) ||
+        window.__FORCE_HERO_GATEWAY__
+      );
+      if (shouldShowHeroOnBoot) {
+        openHeroGateway('HERO');
+      }
+    }
+    setTimeout(initHeroAuthGateway, 10);
 
     function applyRolePermissions(role) {
       const perms = ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.FAN;
@@ -10711,6 +11161,15 @@ cricos_active_sse_connections 1</pre>
     }
 
     function selectPersona(role) {
+      if (
+        currentUser.strictPersonaLock &&
+        Array.isArray(currentUser.allowedPersonas) &&
+        currentUser.allowedPersonas.length > 0 &&
+        !currentUser.allowedPersonas.includes(role)
+      ) {
+        showToast('🔒 Access restricted: ' + role + ' persona is not available for your logged-in user account.');
+        return false;
+      }
       currentUser.persona = role;
       const defaultProfiles = {
         CAPTAIN: { name: 'Virat Sharma', jersey: 18, batting: 'RHB', bowling: 'Right-Arm Fast', bio: 'Aggressive top-order batsman & tactical captain. Focused on clinical chases and building unshakeable team culture.', stats: ['48', '1,850', '46.25', '144.5'] },
@@ -10749,6 +11208,8 @@ cricos_active_sse_connections 1</pre>
         if (stat3 && def.stats) stat3.textContent = def.stats[2];
         if (stat4 && def.stats) stat4.textContent = def.stats[3];
       }
+
+      applyAllowedPersonasFilter();
 
       // Update persona pill visual active state immediately
       document.querySelectorAll('.persona-pill-btn').forEach(btn => {
