@@ -1,14 +1,24 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 13:16:00
-**Version:** 1.0.0-phase2bs (Dynamic Wagon Wheel RHB / LHB Orientation Sync with Selected & On-Strike Batsman)  
+**Last Updated:** 2026-09-29 22:16:00
+**Version:** 1.0.0-phase2bt (LHB/RHB & Scoring Notification Deduplication + Theme-Aware High-Contrast Mobile Sidebar)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BS Completed — Dynamic Wagon Wheel RHB / LHB Orientation Synchronization Across Selected & On-Strike Batsmen (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BT Completed — LHB/RHB & Scoring Notification Deduplication + Theme-Aware High-Contrast Mobile Sidebar (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Desktop & Mobile LHB/RHB & Scoring Notification Deduplication (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`)**:
+    - Propagated `silent = true` across internal calls (`setBatterStance` -> `selectShotZone(currentSelectedZone, null, true)`, `filterWagonBatter` -> `setBatterStance(targetStance, false, true)`, `swapStudioStrike` -> `filterWagonBatter(studioStriker.name, null, true)` without duplicate `setBatterStance`, and `recordStudioBall` -> `swapStudioStrike(true)`), eliminating the 6–8 stacked notification cascade in the bottom-right Sonner stack.
+    - Enhanced `createToast()` in `dashboard.ts` to deduplicate/replace existing toasts sharing the same prefix (`Batsman stance:`, `Wagon Zone:`, `Wagon wheel filtered for:`, `Strike swapped!`, `Delivered:`) and cap `#sonnerToaster` to at most 2 visible toasts.
+    - Updated `showToast()` in `mobile-view.ts` to replace the active toast in place (`this.toasts = [{ id, msg, type }]`) so mobile notifications never stack vertically.
+  - **2. Theme-Aware High-Contrast Mobile Sidebar Drawer & Clean Focus Bar (`apps/api/src/ui/mobile-view.ts`)**:
+    - Upgraded `renderMobileSidebarDrawer()` (`#mobileSidebarDrawer`), `renderRoleExperienceBanner()` (`#mobileCleanFocusBar`), and light-theme CSS (`body[data-theme="swiss"]`, `body[data-theme="nordic"]`) so the mobile slide-out sidebar adapts dynamically to `swiss` (`#FFFFFF`/`#F8FAFC` light surface, `#0F172A` primary ink, `#334155` secondary ink, `#065F46` emerald active badges), `nordic` (`#FAF8F5`/`#F3EFEA` warm oat surface, `#1C1917` primary ink, `#44403C` secondary ink), and `stadium` (`#071222`/`#040914` dark floodlight surface, `#F8FAFC` primary ink).
+    - Guaranteed WCAG AAA (`>= 7.5:1`) contrast ratio on every header title, section heading, persona chip, workspace navigation button, 3D/Wagon studio shortcut, and footer action button across all themes.
+  - **3. Automated E2E Verification (`tests/test_68_toast_dedup_and_mobile_sidebar_light_theme_contrast.py`)**:
+    - Verified via Playwright across Desktop (`dist/index.html`) and Mobile/APK (`dist/mobile.html`) that RHB/LHB switching, batter filtering, and ball scoring never produce stacked notification cascades and that `#mobileSidebarDrawer` & `#mobileCleanFocusBar` render with light surfaces (`luminance > 0.85`) and `>= 7.0:1` WCAG AAA contrast across `swiss` and `nordic` themes.
+- **Preceding Phase**: Phase 2BS Completed — Dynamic Wagon Wheel RHB / LHB Orientation Synchronization Across Selected & On-Strike Batsmen (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Desktop Dynamic Wagon Wheel RHB/LHB Sync (`apps/api/src/ui/dashboard.ts`)**:
     - Audited and unified `resolveBatterStance(batterName)`, `filterWagonBatter(batterName, btnEl)`, `swapStudioStrike()`, `updateStudioUI()`, and `filterMcWagon(batterName, btnEl, skipStudioSync)` across the Scoring Studio 2D Wagon Wheel (`#wagonWheelSvg`), 3D Stadium Viewport (`window.stadiumPitch`), and Match Center Analytics Wagon Wheel (`#mcWagonSvg`).
     - Added `#wagonSideLegend` (`◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶` for `RHB` vs `◀ ON-SIDE (Left) | OFF-SIDE (Right) ▶` for `LHB`) and `<select id="wagonBatterSelectDropdown">` (`Virat Sharma (RHB)`, `Hardik Patel (LHB)`, `Rishabh Pant (LHB)`, `Suryakumar Yadav (RHB)`, `Rohit Verma (RHB)`, `Ravindra Jadeja (LHB)`, `ALL`) plus clickable Crease Cards (`#studioStrikerCard`, `#studioNonStrikerCard`).

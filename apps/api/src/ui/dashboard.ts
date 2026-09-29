@@ -10440,6 +10440,23 @@ cricos_active_sse_connections 1</pre>
           return id;
         }
 
+        // Deduplicate by message prefix or identical text so rapid stance/zone/scoring updates replace in-place
+        const prefixMatch = String(title).match(/^(Batsman stance:|Wagon Zone:|Wagon wheel filtered for:|Strike swapped!|Delivered:)/);
+        const existingToasts = Array.from(container.querySelectorAll('.sonner-toast:not(.dismissing)'));
+        for (const prev of existingToasts) {
+          const prevTitleEl = prev.querySelector('.sonner-title');
+          const prevText = prevTitleEl ? (prevTitleEl.textContent || '') : '';
+          if (prevText === String(title) || (prefixMatch && prevText.startsWith(prefixMatch[1]))) {
+            if (prev.parentNode) prev.parentNode.removeChild(prev);
+          }
+        }
+        // Keep at most 1 previous toast visible in the stack (max 2 total) to prevent bottom-right clutter
+        const remainingToasts = Array.from(container.querySelectorAll('.sonner-toast:not(.dismissing)'));
+        while (remainingToasts.length >= 2) {
+          const oldest = remainingToasts.shift();
+          if (oldest && oldest.parentNode) oldest.parentNode.removeChild(oldest);
+        }
+
         const toastEl = document.createElement('div');
         toastEl.className = 'sonner-toast sonner-type-' + type;
         toastEl.id = id;
@@ -11867,7 +11884,7 @@ cricos_active_sse_connections 1</pre>
       });
     }
 
-    function selectShotZone(zone, btnEl) {
+    function selectShotZone(zone, btnEl, silent = false) {
       currentSelectedZone = zone;
       document.querySelectorAll('.field-zone-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.wagon-sector-wedge').forEach(w => w.classList.remove('active'));
@@ -11890,10 +11907,12 @@ cricos_active_sse_connections 1</pre>
       if (window.stadiumPitch && typeof window.stadiumPitch.highlightZone === 'function') {
         window.stadiumPitch.highlightZone(zone);
       }
-      showToast('Wagon Zone: ' + (zoneDef?.label || zone) + ' (' + sideLabel + ')');
+      if (!silent) {
+        showToast('Wagon Zone: ' + (zoneDef?.label || zone) + ' (' + sideLabel + ')');
+      }
     }
 
-    function setBatterStance(stance, updateStriker = false) {
+    function setBatterStance(stance, updateStriker = false, silent = false) {
       currentStance = stance;
       if (updateStriker) {
         studioStriker.battingStyle = stance;
@@ -11949,13 +11968,15 @@ cricos_active_sse_connections 1</pre>
       }
 
       updateZoneElementsForStance(stance);
-      selectShotZone(currentSelectedZone);
+      selectShotZone(currentSelectedZone, null, true);
       renderWagonWheelRays();
       updateWagonTelemetry();
       if (window.stadiumPitch && typeof window.stadiumPitch.updateForStance === 'function') {
         window.stadiumPitch.updateForStance(stance);
       }
-      showToast('Batsman stance: ' + stance + ' (Off-Side & On-Side flipped dynamically)');
+      if (!silent) {
+        showToast('Batsman stance: ' + stance + ' (Off-Side & On-Side flipped dynamically)');
+      }
     }
 
     function filterWagonShots(filterType, btnEl) {
@@ -11965,7 +11986,7 @@ cricos_active_sse_connections 1</pre>
       renderWagonWheelRays();
     }
 
-    function filterWagonBatter(batterName, btnEl) {
+    function filterWagonBatter(batterName, btnEl, silent = false) {
       currentBatterFilter = batterName;
       document.querySelectorAll('.wagon-batter-pill').forEach(p => p.classList.remove('active'));
       if (btnEl && btnEl.classList && btnEl.classList.contains('wagon-batter-pill')) {
@@ -11982,7 +12003,7 @@ cricos_active_sse_connections 1</pre>
         if (hasOpt) selectEl.value = batterName;
       }
 
-      // Automatically select stance based on selected batter
+      // Automatically select stance based on selected batter silently
       let targetStance = 'RHB';
       if (batterName === studioStriker.name) {
         targetStance = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
@@ -11993,7 +12014,7 @@ cricos_active_sse_connections 1</pre>
       } else {
         targetStance = getBatterStanceByName(batterName);
       }
-      setBatterStance(targetStance, false);
+      setBatterStance(targetStance, false, true);
 
       // Update Pitch SVG Badge & Stance
       const svgInitials = document.getElementById('svgPitchBatterInitials');
@@ -12043,7 +12064,9 @@ cricos_active_sse_connections 1</pre>
           renderMcWagonRays(batterName);
         }
       }
-      showToast('Wagon wheel filtered for: ' + (batterName === 'ALL' ? 'Partnership Stand (' + targetStance + ')' : batterName + ' (' + targetStance + ')'));
+      if (!silent) {
+        showToast('Wagon wheel filtered for: ' + (batterName === 'ALL' ? 'Partnership Stand (' + targetStance + ')' : batterName + ' (' + targetStance + ')'));
+      }
     }
 
     function renderWagonWheelRays() {
@@ -12201,18 +12224,19 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
-    function swapStudioStrike() {
+    function swapStudioStrike(silent = false) {
       const temp = { ...studioStriker };
       studioStriker = { ...studioNonStriker };
       studioNonStriker = temp;
       
-      // Update stance dynamically based on new batsman on strike
+      // Update stance & wagon wheel dynamically based on new batsman on strike without duplicate notifications
       const newStance = studioStriker.battingStyle || getBatterStanceByName(studioStriker.name);
       studioStriker.battingStyle = newStance;
-      setBatterStance(newStance, false);
       updateStudioUI();
-      filterWagonBatter(studioStriker.name);
-      showToast('Strike swapped! Now facing: ' + studioStriker.name + ' (' + newStance + ')');
+      filterWagonBatter(studioStriker.name, null, true);
+      if (!silent) {
+        showToast('Strike swapped! Now facing: ' + studioStriker.name + ' (' + newStance + ')');
+      }
     }
 
     function updateStudioUI() {
@@ -12330,7 +12354,7 @@ cricos_active_sse_connections 1</pre>
       const isOddRuns = (batRuns % 2 === 1);
       const isOverEnd = (partnership.balls % 6 === 0);
       if ((isOddRuns && !isOverEnd) || (!isOddRuns && isOverEnd)) {
-        swapStudioStrike();
+        swapStudioStrike(true);
       } else {
         updateStudioUI();
       }

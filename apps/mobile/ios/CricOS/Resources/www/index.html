@@ -160,6 +160,22 @@
       color: #FFFFFF !important;
       border-color: #0F172A !important;
     }
+    body[data-theme="swiss"] #mobileSidebarDrawer {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+      border-right: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      box-shadow: 14px 0 38px rgba(15, 23, 42, 0.16) !important;
+    }
+    body[data-theme="swiss"] #mobileSidebarDrawer .mobile-sidebar-persona-chip.active {
+      background: #065F46 !important;
+      border-color: #047857 !important;
+      color: #FFFFFF !important;
+    }
+    body[data-theme="swiss"] #mobileCleanFocusBar {
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      color: #0F172A !important;
+    }
 
     /* 2. Nordic Editorial Theme (Warm Oat Paper, Curvature, Organic Earth & Pine) */
     body[data-theme="nordic"], html[data-theme="nordic"] {
@@ -241,6 +257,22 @@
       background: #15803D !important;
       color: #FFFFFF !important;
       border-color: #15803D !important;
+    }
+    body[data-theme="nordic"] #mobileSidebarDrawer {
+      background: linear-gradient(180deg, #FAF8F5 0%, #F3EFEA 100%) !important;
+      border-right: 1px solid #D6D0C4 !important;
+      color: #1C1917 !important;
+      box-shadow: 14px 0 38px rgba(28, 25, 23, 0.16) !important;
+    }
+    body[data-theme="nordic"] #mobileSidebarDrawer .mobile-sidebar-persona-chip.active {
+      background: #065F46 !important;
+      border-color: #047857 !important;
+      color: #FFFFFF !important;
+    }
+    body[data-theme="nordic"] #mobileCleanFocusBar {
+      background: #FAF8F5 !important;
+      border-color: #D6D0C4 !important;
+      color: #1C1917 !important;
     }
 
     /* 3. Stadium Night Theme (High-Intensity Broadcast Glassmorphism & Floodlights) */
@@ -2616,9 +2648,10 @@
         ];
       }
 
-      showToast(msg, type = 'info', duration = 2500) {
+      showToast(msg, type = 'info', duration = 2200) {
         var id = 't-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-        this.toasts.push({ id: id, msg: msg, type: type });
+        // Replace active toast in-place so mobile notifications never stack or clutter the screen
+        this.toasts = [{ id: id, msg: msg, type: type }];
         if (window.CricOSSound) window.CricOSSound.playClick();
         try {
           if (window.AndroidBridge && typeof window.AndroidBridge.triggerHaptic === 'function') {
@@ -3272,6 +3305,24 @@
           ? this.allowedPersonas
           : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
 
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var isNordic = (activeTheme === 'nordic');
+
+        // Theme-aware tokens with guaranteed WCAG AAA (>= 7.5:1) contrast
+        var drawerBg = isLight
+          ? (isNordic ? 'linear-gradient(180deg, #FAF8F5 0%, #F3EFEA 100%)' : 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)')
+          : 'linear-gradient(180deg, #071222 0%, #040914 100%)';
+        var drawerBorder = isLight ? (isNordic ? '#D6D0C4' : '#CBD5E1') : 'rgba(0, 229, 153, 0.28)';
+        var drawerShadow = isLight ? '14px 0 38px rgba(15, 23, 42, 0.16)' : '14px 0 38px rgba(0, 0, 0, 0.75)';
+        var primaryInk = isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#F8FAFC';
+        var secondaryInk = isLight ? (isNordic ? '#44403C' : '#334155') : '#CBD5E1';
+        var dividerColor = isLight ? (isNordic ? '#E6DFD5' : '#E2E8F0') : 'rgba(255, 255, 255, 0.1)';
+        var accentBrandInk = isLight ? '#065F46' : '#00E599';
+        var closeBtnStyle = isLight
+          ? 'background: #F1F5F9; border: 1px solid #94A3B8; color: #0F172A; font-weight: 800;'
+          : 'background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #F8FAFC; font-weight: 700;';
+
         var navItems = [];
         if (role === 'CAPTAIN' || role === 'PLAYER') {
           navItems.push(['MATCHES', '🏏', 'Match Center']);
@@ -3314,55 +3365,90 @@
         }
 
         var h = '';
-        h += '<div id="mobileSidebarBackdrop" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="position: fixed; inset: 0; z-index: 9490; background: rgba(2, 6, 14, 0.72); backdrop-filter: blur(4px); display: ' + (isOpen ? 'block' : 'none') + ';"></div>';
-        h += '<aside id="mobileSidebarDrawer" aria-label="Mobile Sidebar Navigation" style="position: fixed; top: 0; left: 0; bottom: 0; width: 282px; max-width: 84vw; z-index: 9500; background: linear-gradient(180deg, #071222 0%, #040914 100%); border-right: 1px solid rgba(0, 229, 153, 0.28); display: ' + (isOpen ? 'flex' : 'none') + '; flex-direction: column; overflow-y: auto; padding: 0.9rem; box-shadow: 14px 0 38px rgba(0,0,0,0.75); color: #f8fafc;">';
+        h += '<div id="mobileSidebarBackdrop" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="position: fixed; inset: 0; z-index: 9490; background: ' + (isLight ? 'rgba(15, 23, 42, 0.42)' : 'rgba(2, 6, 14, 0.72)') + '; backdrop-filter: blur(4px); display: ' + (isOpen ? 'block' : 'none') + ';"></div>';
+        h += '<aside id="mobileSidebarDrawer" data-sidebar-theme="' + activeTheme + '" aria-label="Mobile Sidebar Navigation" style="position: fixed; top: 0; left: 0; bottom: 0; width: 282px; max-width: 84vw; z-index: 9500; background: ' + drawerBg + '; border-right: 1px solid ' + drawerBorder + '; display: ' + (isOpen ? 'flex' : 'none') + '; flex-direction: column; overflow-y: auto; padding: 0.9rem; box-shadow: ' + drawerShadow + '; color: ' + primaryInk + ';">';
 
         // Header
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 0.75rem;">';
+        h += '<div class="mobile-sidebar-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid ' + dividerColor + '; margin-bottom: 0.75rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '<span style="font-size: 1.2rem;">🏏</span>';
-        h += '<div><div style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 0.95rem; color: #f8fafc;">CricOS Navigation</div><div style="font-size: 0.62rem; color: #00E599; font-weight: 700;">' + cfg.icon + ' ' + role + ' WORKSPACE</div></div>';
+        h += '<div><div style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">CricOS Navigation</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800;">' + cfg.icon + ' ' + role + ' WORKSPACE</div></div>';
         h += '</div>';
-        h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); color: #cbd5e1; border-radius: 6px; padding: 0.22rem 0.5rem; font-size: 0.8rem; cursor: pointer;" data-tooltip="Close Sidebar">✕</button>';
+        h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="' + closeBtnStyle + ' border-radius: 6px; padding: 0.22rem 0.5rem; font-size: 0.8rem; cursor: pointer;" data-tooltip="Close Sidebar">✕</button>';
         h += '</div>';
 
         // Section 1: Allowed Account Personas
         h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div style="font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Provisioned Account Personas</div>';
+        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Provisioned Account Personas</div>';
         h += '<div id="mobileSidebarPersonaStrip" style="display: flex; flex-wrap: wrap; gap: 0.3rem;">';
         for (var p = 0; p < allowedList.length; p++) {
           var pKey = allowedList[p];
           var isActRole = pKey === role;
-          var st = isActRole ? 'background: rgba(0, 229, 153, 0.22); border: 1px solid #00E599; color: #00E599; font-weight: 800;' : 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1;';
+          var st = '';
+          if (isActRole) {
+            st = isLight
+              ? 'background: #065F46; border: 1px solid #047857; color: #FFFFFF; font-weight: 800;'
+              : 'background: rgba(0, 229, 153, 0.22); border: 1px solid #00E599; color: #00E599; font-weight: 800;';
+          } else {
+            st = isLight
+              ? 'background: #F1F5F9; border: 1px solid #94A3B8; color: #0F172A; font-weight: 700;'
+              : 'background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: #E2E8F0; font-weight: 700;';
+          }
           h += '<button type="button" class="mobile-sidebar-persona-chip' + (isActRole ? ' active' : '') + '" data-persona="' + pKey + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona); window.cricosMobileApp.closeSidebarDrawer();" style="padding: 0.26rem 0.5rem; border-radius: 6px; font-size: 0.64rem; cursor: pointer; ' + st + '" data-tooltip="Switch to ' + pKey + '">' + pKey + '</button>';
         }
         h += '</div></div>';
 
         // Section 2: Core Workspaces (Scoped to Persona)
         h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div style="font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Core Workspaces</div>';
+        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Core Workspaces</div>';
         h += '<div id="mobileSidebarWorkspaces" style="display: flex; flex-direction: column; gap: 0.28rem;">';
         for (var n = 0; n < navItems.length; n++) {
           var nav = navItems[n];
           var isCurScreen = this.currentScreen === nav[0];
-          var navStyle = isCurScreen ? 'background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.45); color: #00E599; font-weight: 800;' : 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: #f8fafc; font-weight: 600;';
+          var navStyle = '';
+          if (isCurScreen) {
+            navStyle = isLight
+              ? 'background: #ECFDF5; border: 1.5px solid #059669; color: #064E3B; font-weight: 800;'
+              : 'background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.45); color: #00E599; font-weight: 800;';
+          } else {
+            navStyle = isLight
+              ? 'background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A; font-weight: 700;'
+              : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #F8FAFC; font-weight: 600;';
+          }
           h += '<button type="button" class="mobile-sidebar-nav-item' + (isCurScreen ? ' active' : '') + '" data-screen="' + nav[0] + '" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.5rem 0.65rem; border-radius: 8px; font-size: 0.76rem; cursor: pointer; ' + navStyle + '" data-tooltip="Open ' + nav[2] + '"><span>' + nav[1] + '</span><span>' + nav[2] + '</span></button>';
         }
         h += '</div></div>';
 
         // Section 3: 3D & Tactical Studios (Tucked out of Main Area to eliminate clutter)
+        var studio3dStyle = isLight
+          ? 'background: #F0F9FF; border: 1px solid #0284C7; color: #0C4A6E; font-weight: 800;'
+          : 'background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-weight: 700;';
+        var studioWagonStyle = isLight
+          ? 'background: #ECFDF5; border: 1px solid #059669; color: #064E3B; font-weight: 800;'
+          : 'background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-weight: 700;';
+        var studioCmdStyle = isLight
+          ? 'background: #F5F3FF; border: 1px solid #7C3AED; color: #4C1D95; font-weight: 800;'
+          : 'background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.3); color: #C4B5FD; font-weight: 700;';
+
         h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div style="font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D &amp; Tactical Studios</div>';
+        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D &amp; Tactical Studios</div>';
         h += '<div id="mobileSidebarStudios" style="display: flex; flex-direction: column; gap: 0.28rem;">';
-        h += '<button type="button" data-screen="MATCHES" data-subtab="3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.28); color: #00D2FF; font-size: 0.73rem; font-weight: 700; cursor: pointer;" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
-        h += '<button type="button" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.28); color: #00E599; font-size: 0.73rem; font-weight: 700; cursor: pointer;" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.28); color: #a78bfa; font-size: 0.73rem; font-weight: 700; cursor: pointer;" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
+        h += '<button type="button" data-screen="MATCHES" data-subtab="3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
+        h += '<button type="button" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
         h += '</div></div>';
 
         // Section 4: Clutter Control & Sign Out
-        h += '<div style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 0.45rem;">';
-        h += '<button type="button" id="btnMobileSidebarDeclutterToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.38); background: rgba(0, 229, 153, 0.12); color: #00E599; font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle Clean Main Area Focus Mode">' + (this.cleanFocusMode ? '✨ Clean Main View: ON' : '📊 Extended View: ON') + '</button>';
-        h += '<button type="button" id="btnMobileSidebarSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.38); background: rgba(255, 51, 102, 0.12); color: #ff3366; font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Sign Out to Animated Hero Page">🚪 Sign Out / Switch Account</button>';
+        var declutterBtnStyle = isLight
+          ? 'border: 1px solid #059669; background: #ECFDF5; color: #064E3B;'
+          : 'border: 1px solid rgba(0, 229, 153, 0.38); background: rgba(0, 229, 153, 0.12); color: #00E599;';
+        var signOutBtnStyle = isLight
+          ? 'border: 1px solid #E11D48; background: #FFF1F2; color: #881337;'
+          : 'border: 1px solid rgba(255, 51, 102, 0.38); background: rgba(255, 51, 102, 0.12); color: #FF6B8B;';
+
+        h += '<div class="mobile-sidebar-footer" style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid ' + dividerColor + '; display: flex; flex-direction: column; gap: 0.45rem;">';
+        h += '<button type="button" id="btnMobileSidebarDeclutterToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; ' + declutterBtnStyle + ' font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle Clean Main Area Focus Mode">' + (this.cleanFocusMode ? '✨ Clean Main View: ON' : '📊 Extended View: ON') + '</button>';
+        h += '<button type="button" id="btnMobileSidebarSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; ' + signOutBtnStyle + ' font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Sign Out to Animated Hero Page">🚪 Sign Out / Switch Account</button>';
         h += '</div>';
 
         h += '</aside>';
@@ -3373,14 +3459,28 @@
         if (this.cleanFocusMode === undefined) this.cleanFocusMode = true;
         var role = this.profile.persona || 'PLAYER';
         var cfg = this.roleExperienceConfig[role] || this.roleExperienceConfig.FAN;
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var isNordic = (activeTheme === 'nordic');
+
+        var barBg = isLight ? (isNordic ? '#FAF8F5' : '#FFFFFF') : 'rgba(10, 18, 32, 0.85)';
+        var barBorder = isLight ? (isNordic ? '#D6D0C4' : '#CBD5E1') : cfg.badgeColor;
+        var barInk = isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#F8FAFC';
+        var menuBtnStyle = isLight
+          ? 'background: #0F172A; color: #FFFFFF; border: 1px solid #0F172A;'
+          : 'background: ' + cfg.badgeBg + '; color: ' + cfg.badgeColor + '; border: 1px solid ' + cfg.badgeColor + ';';
+        var toggleBtnStyle = isLight
+          ? 'background: #ECFDF5; color: #064E3B; border: 1px solid #059669;'
+          : 'background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);';
+
         var h = '';
         // Sleek 1-line Clean Focus Strip replacing bulky top clutter
-        h += '<div id="mobileCleanFocusBar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; padding: 0.38rem 0.6rem; margin-bottom: 0.5rem; border-radius: 8px; background: rgba(10, 18, 32, 0.85); border: 1px solid ' + cfg.badgeColor + ';">';
+        h += '<div id="mobileCleanFocusBar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; padding: 0.38rem 0.6rem; margin-bottom: 0.5rem; border-radius: 8px; background: ' + barBg + '; border: 1px solid ' + barBorder + '; color: ' + barInk + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.38rem; min-width: 0;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: ' + cfg.badgeBg + '; color: ' + cfg.badgeColor + '; border: 1px solid ' + cfg.badgeColor + '; border-radius: 5px; padding: 0.14rem 0.4rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Open Sidebar Menu">☰ Menu</button>';
-        h += '<span style="font-size: 0.68rem; font-weight: 800; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + cfg.icon + ' ' + cfg.title + '</span>';
+        h += '<button type="button" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="' + menuBtnStyle + ' border-radius: 5px; padding: 0.14rem 0.4rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Open Sidebar Menu">☰ Menu</button>';
+        h += '<span style="font-size: 0.68rem; font-weight: 800; color: ' + barInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + cfg.icon + ' ' + cfg.title + '</span>';
         h += '</div>';
-        h += '<button type="button" id="btnMobileToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Toggle Clean View vs Extended Details">' + (this.cleanFocusMode ? '✨ Clean View' : '📊 Full View') + '</button>';
+        h += '<button type="button" id="btnMobileToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + toggleBtnStyle + ' border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Toggle Clean View vs Extended Details">' + (this.cleanFocusMode ? '✨ Clean View' : '📊 Full View') + '</button>';
         h += '</div>';
 
         h += '<div class="role-exp-hud-banner" id="roleExperienceBanner" style="display: ' + (this.cleanFocusMode ? 'none' : 'flex') + ';">';
@@ -4174,7 +4274,7 @@
         }
       }
 
-      rotateStrike(forceSync) {
+      rotateStrike(forceSync, silent = false) {
         if (!forceSync && this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can swap strike.', 'warning');
           return;
@@ -4183,7 +4283,9 @@
         this.matchState.striker = this.matchState.nonStriker;
         this.matchState.nonStriker = tmp;
         this.syncStanceFromStriker();
-        this.showToast('Strike rotated: ' + this.matchState.striker.name + ' (' + this.currentStance + ') on strike ⚡', 'info', 1500);
+        if (!silent) {
+          this.showToast('Strike rotated: ' + this.matchState.striker.name + ' (' + this.currentStance + ') on strike ⚡', 'info', 1500);
+        }
         this.render();
       }
 
@@ -4241,7 +4343,7 @@
         }
       }
 
-      setBatterStance(stance) {
+      setBatterStance(stance, silent = false) {
         this.currentStance = stance;
         this.analyticsWagonStance = stance;
         if (this.matchState && this.matchState.striker && (this.currentBatterFilter === 'ALL' || this.currentBatterFilter === this.matchState.striker.name)) {
@@ -4252,7 +4354,9 @@
         if (window.mobileStadiumPitch && typeof window.mobileStadiumPitch.setStance === 'function') {
           window.mobileStadiumPitch.setStance(stance);
         }
-        this.showToast('Stance: ' + stance + (stance === 'LHB' ? ' (Field Mirrored)' : ' (Standard)'), 'info', 1200);
+        if (!silent) {
+          this.showToast('Stance: ' + stance + (stance === 'LHB' ? ' (Field Mirrored)' : ' (Standard)'), 'info', 1200);
+        }
         this.render();
       }
 
