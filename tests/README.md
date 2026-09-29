@@ -32,6 +32,7 @@ The test suite has been consolidated into 5 high-cohesion Domain Test Suites alo
 | `tests/test_59_zero_contrast_violations_all_themes.py` | Comprehensive DOM & SVG text contrast auditor asserting 0 WCAG 2.1 AA contrast violations across all 3 themes (`stadium`, `swiss`, `nordic`), all 7 Desktop tabs, all 4 flagship modals, and all 5 Mobile screens |
 | `tests/test_60_hover_delayed_tooltips_and_menu_organization.py` | E2E test verifying hover-only delayed tooltips (`HOVER_DELAY_MS = 450`, never triggered on focus or brief `< 250ms` hover) and logical menu organization across 5 sidebar sections, 4 topbar clusters, 2 scoreboard action groups, and all 8 mobile personas |
 | `tests/test_61_daylight_themes_and_clean_topbar.py` | E2E test verifying uncluttered topbar (`<= 7` visible pills, hidden floating `#protoPicker` & secondary telemetry) and daylight surface luminance (`>= 0.80`) + AAA text contrast (`>= 7.0:1`) across all Scoreboard strips, Striker/Bowler cards, Event Readiness banner, 3D Studio Hub, Sidebar Footer, and Sonner Toasts in Swiss Minimal and Nordic Editorial |
+| `tests/test_62_apk_3d_stadium_non_blank_rendering.py` | E2E test verifying Android APK (`dist/mobile.html`) non-blank 3D Stadium (`#mobileThreeStadiumCanvas`), 3D Trophy Cabinet (`#mobileTrophyCanvas`), and 3D Bat Configurator (`#mobileBatCanvas`) rendering (>5,000 non-blank pixels, 100% offline with external CDNs blocked) across sub-tab switches, Profile tile launch, Camera Presets, Tactical Overlays, and Floodlight Lighting states |
 
 ## Execution Protocol
 ```bash

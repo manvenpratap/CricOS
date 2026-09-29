@@ -7170,7 +7170,7 @@ export function getMobileAppHtml(): string {
         h += '</div>';
         h += '<div style="font-size: 0.68rem; color: #94A3B8; margin-bottom: 0.65rem;">Explore stadium pitch acoustics, championship silverware, custom willow bats, and holographic athlete cards in interactive 3D:</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.45rem;">';
-        h += '<button type="button" class="mobile-three-tile-btn" onclick="window.cricosMobileApp.navigateTo(&apos;MATCHES&apos;); window.cricosMobileApp.activeMatchSubTab = &apos;STADIUM_3D&apos;; window.cricosMobileApp.setWagonDisplayMode(&apos;3D&apos;);" style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.55rem; text-align: left; cursor: pointer;" data-tooltip="Explore 360° interactive 3D stadium pitch with DRS & Hawk-Eye" aria-label="3D Stadium Pitch Viewport">';
+        h += '<button type="button" class="mobile-three-tile-btn" onclick="window.cricosMobileApp.navigateTo(&apos;MATCHES&apos;); window.cricosMobileApp.setWagonDisplayMode(&apos;3D&apos;);" style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.55rem; text-align: left; cursor: pointer;" data-tooltip="Explore 360° interactive 3D stadium pitch with DRS & Hawk-Eye" aria-label="3D Stadium Pitch Viewport">';
         h += '<div style="font-size: 1.1rem; margin-bottom: 0.15rem;">🌐</div>';
         h += '<div style="font-size: 0.75rem; font-weight: 700; color: #F8FAFC;">3D Stadium Pitch</div>';
         h += '<div style="font-size: 0.58rem; color: #00E599;">8 Cameras &amp; DRS Overlays</div>';
@@ -7382,6 +7382,18 @@ export function getMobileAppHtml(): string {
         this.renderToasts();
         this.bindHoldToReset();
         this.enforceContrastInvariants();
+
+        if (typeof document !== 'undefined') {
+          if (document.getElementById('mobileThreeStadiumCanvas')) {
+            this.initMobileStadiumPitch();
+          }
+          if (document.getElementById('mobileTrophyCanvas') && window.mobileTrophyCabinet) {
+            window.mobileTrophyCabinet.init(window.mobileTrophyCabinet.currentTrophy);
+          }
+          if (document.getElementById('mobileBatCanvas') && window.mobileBatConfigurator) {
+            window.mobileBatConfigurator.init();
+          }
+        }
 
         var newScroll = document.getElementById('mobileScrollBody');
         if (newScroll && prevScrollTop > 0) {
@@ -7948,7 +7960,7 @@ export function getMobileAppHtml(): string {
         this.animFrameId = null;
         this.isPaused = false;
         this.isInitialized = false;
-        this.currentPreset = 'AUTO';
+        this.currentPreset = 'AUTO_CAM';
         this.currentMode = 'FUSION';
         this.currentLighting = 'NIGHT';
         this.ambLight = null;
@@ -7964,33 +7976,48 @@ export function getMobileAppHtml(): string {
         this.isPointerDown = false;
         this.lastPointer = { x: 0, y: 0 };
         this.theta = 0.85;
-        this.phi = 0.65; // 0.15 <= phi <= 1.35 rad
-        this.radius = 36;
-        this.target = { x: 0, y: 1.2, z: 0 };
+        this.phi = 0.68; // 0.15 <= phi <= 1.35 rad
+        this.radius = 34;
+        this.target = { x: 0, y: 0.8, z: 0 };
+        this._lookAtTarget = { x: 0, y: 0.8, z: 0 };
         this.autoOrbitSpeed = 0.005;
       }
 
       init() {
-        if (this.isInitialized || !this.canvas) return;
+        const liveCanvas = (typeof document !== 'undefined') ? document.getElementById('mobileThreeStadiumCanvas') : null;
+        if (!liveCanvas) return;
+        if (this.canvas !== liveCanvas) {
+          this.stop();
+          this.canvas = liveCanvas;
+          this.isInitialized = false;
+        }
+        if (this.isInitialized && !this.isPaused) {
+          this.renderScene3D();
+          return;
+        }
+
+        this.fallbackNotice = (typeof document !== 'undefined') ? document.getElementById('mobileThreeFallbackNotice') : null;
+        if (this.fallbackNotice) this.fallbackNotice.style.display = 'none';
+
         initMobileThreeFallback();
         const THREE = window.THREE;
         const rect = (typeof this.canvas.getBoundingClientRect === 'function') ? this.canvas.getBoundingClientRect() : { width: 360, height: 320 };
-        const width = Math.max(rect.width || 360, 240);
-        const height = Math.max(rect.height || 320, 200);
+        const width = Math.max(rect.width || 360, 280);
+        const height = Math.max(rect.height || 320, 240);
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 500);
         this.updateCameraFromOrbit();
 
-        try {
-          this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
-          this.renderer.setSize(width, height);
-          this.renderer.setPixelRatio(Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2));
-          this.renderer.setClearColor(0x04070D, 1);
-        } catch (e) {
-          if (this.fallbackNotice) this.fallbackNotice.style.display = 'block';
-          this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
-        }
+        // Keep renderer decoupled from live 2D canvas context so 3D Projection Canvas engine always has exclusive, non-blocking access
+        this.renderer = {
+          domElement: this.canvas,
+          setSize: (w, h) => {},
+          setPixelRatio: (r) => {},
+          setClearColor: (c, a) => {},
+          render: (s, c) => { this.renderScene3D(); },
+          dispose: () => {}
+        };
 
         // Lighting
         this.ambLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -8001,6 +8028,7 @@ export function getMobileAppHtml(): string {
         this.scene.add(this.sunLight);
 
         // Floodlight towers
+        this.floodlights = [];
         const floodCoords = [[-22, 26, -22], [22, 26, -22], [-22, 26, 22], [22, 26, 22]];
         for (let i = 0; i < floodCoords.length; i++) {
           const fl = new THREE.DirectionalLight(0x00E599, 0.4);
@@ -8013,6 +8041,7 @@ export function getMobileAppHtml(): string {
         this.bindTouchEvents();
         this.isInitialized = true;
         this.isPaused = false;
+        this.renderScene3D();
 
         const animate = () => {
           if (this.isPaused) {
@@ -8020,15 +8049,417 @@ export function getMobileAppHtml(): string {
             return;
           }
           this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
-          if (this.currentPreset === 'AUTO' && !this.isPointerDown) {
+          if ((this.currentPreset === 'AUTO' || this.currentPreset === 'AUTO_CAM') && !this.isPointerDown) {
             this.theta += this.autoOrbitSpeed;
             this.updateCameraFromOrbit();
           }
-          if (this.renderer && this.scene && this.camera) {
-            this.renderer.render(this.scene, this.camera);
-          }
+          this.renderScene3D();
         };
         this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
+      }
+
+      renderScene3D() {
+        if (!this.canvas || typeof this.canvas.getContext !== 'function') return;
+        const ctx = this.canvas.getContext('2d');
+        if (!ctx) return;
+
+        const rect = (typeof this.canvas.getBoundingClientRect === 'function') ? this.canvas.getBoundingClientRect() : { width: 360, height: 320 };
+        const dpr = Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2);
+        const w = Math.max(Math.round(rect.width || 360), 280);
+        const h = Math.max(Math.round(rect.height || 320), 240);
+        if (this.canvas.width !== w * dpr || this.canvas.height !== h * dpr) {
+          this.canvas.width = w * dpr;
+          this.canvas.height = h * dpr;
+        }
+        ctx.save();
+        ctx.scale(dpr, dpr);
+
+        // 1. Sky & Atmosphere Backdrop based on Lighting (DAY / DUSK / NIGHT)
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+        if (this.currentLighting === 'DAY') {
+          skyGrad.addColorStop(0, '#0C3B5E');
+          skyGrad.addColorStop(0.48, '#1E648C');
+          skyGrad.addColorStop(1, '#092B1E');
+        } else if (this.currentLighting === 'DUSK') {
+          skyGrad.addColorStop(0, '#1C0E2E');
+          skyGrad.addColorStop(0.45, '#4A1D3D');
+          skyGrad.addColorStop(1, '#082218');
+        } else {
+          skyGrad.addColorStop(0, '#030711');
+          skyGrad.addColorStop(0.48, '#081426');
+          skyGrad.addColorStop(1, '#041912');
+        }
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, w, h);
+
+        // 2. Compute 3D Perspective Camera Basis
+        const cam = this.camera ? this.camera.position : { x: 20, y: 18, z: 24 };
+        const tgt = this._lookAtTarget || this.target || { x: 0, y: 0.8, z: 0 };
+        let fx = tgt.x - cam.x, fy = tgt.y - cam.y, fz = tgt.z - cam.z;
+        const flen = Math.hypot(fx, fy, fz) || 1;
+        fx /= flen; fy /= flen; fz /= flen;
+
+        // World up vector (handle vertical top-down camera gracefully)
+        const upX = 0, upY = Math.abs(fy) > 0.96 ? 0 : 1, upZ = Math.abs(fy) > 0.96 ? -1 : 0;
+        let rx = fy * upZ - fz * upY;
+        let ry = fz * upX - fx * upZ;
+        let rz = fx * upY - fy * upX;
+        const rlen = Math.hypot(rx, ry, rz) || 1;
+        rx /= rlen; ry /= rlen; rz /= rlen;
+
+        const ux = ry * fz - rz * fy;
+        const uy = rz * fx - rx * fz;
+        const uz = rx * fy - ry * fx;
+
+        const focal = (h * 0.5) / Math.tan((45 * Math.PI / 180) * 0.5);
+        const cx = w * 0.5;
+        const cy = h * 0.52;
+
+        const project = (wx, wy, wz) => {
+          const dx = wx - cam.x, dy = wy - cam.y, dz = wz - cam.z;
+          const cz = dx * fx + dy * fy + dz * fz;
+          if (cz < 0.3) return null;
+          const cxCam = dx * rx + dy * ry + dz * rz;
+          const cyCam = dx * ux + dy * uy + dz * uz;
+          const scale = focal / cz;
+          return { x: cx + cxCam * scale, y: cy - cyCam * scale, z: cz, scale };
+        };
+
+        const drawRing3D = (radius, yVal, segments, strokeStyle, lineWidth, fillStyle, dashed) => {
+          ctx.beginPath();
+          let started = false;
+          for (let i = 0; i <= segments; i++) {
+            const ang = (i / segments) * Math.PI * 2;
+            const p = project(Math.cos(ang) * radius, yVal, Math.sin(ang) * radius);
+            if (!p) continue;
+            if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+            else ctx.lineTo(p.x, p.y);
+          }
+          if (!started) return;
+          if (fillStyle) {
+            ctx.fillStyle = fillStyle;
+            ctx.fill();
+          }
+          if (strokeStyle) {
+            ctx.save();
+            if (dashed) ctx.setLineDash(dashed);
+            ctx.strokeStyle = strokeStyle;
+            ctx.lineWidth = lineWidth || 1.5;
+            ctx.stroke();
+            ctx.restore();
+          }
+        };
+
+        // 3. Stadium Grandstand Bowl & Floodlight Towers
+        drawRing3D(26.5, 3.8, 48, 'rgba(0, 210, 255, 0.28)', 1.5, 'rgba(12, 22, 38, 0.72)', null);
+        drawRing3D(25.0, 1.8, 48, 'rgba(255, 255, 255, 0.15)', 1, 'rgba(15, 28, 46, 0.82)', null);
+
+        // 4 Floodlight Pylons & Beams
+        const towers = [[-22, 22], [22, 22], [-22, -22], [22, -22]];
+        for (let t = 0; t < towers.length; t++) {
+          const tx = towers[t][0], tz = towers[t][1];
+          const pBase = project(tx, 0, tz);
+          const pTop = project(tx, 19, tz);
+          const pCenter = project(0, 0, 0);
+          if (pBase && pTop) {
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.65)';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(pBase.x, pBase.y);
+            ctx.lineTo(pTop.x, pTop.y);
+            ctx.stroke();
+
+            // Glowing Floodlight Head & Beam
+            const beamAlpha = this.currentLighting === 'DAY' ? 0.08 : (this.currentLighting === 'DUSK' ? 0.22 : 0.34);
+            if (pCenter) {
+              const beamGrad = ctx.createLinearGradient(pTop.x, pTop.y, pCenter.x, pCenter.y);
+              beamGrad.addColorStop(0, this.currentLighting === 'DUSK' ? ('rgba(255, 184, 0, ' + beamAlpha + ')') : ('rgba(0, 229, 153, ' + beamAlpha + ')'));
+              beamGrad.addColorStop(1, 'rgba(0, 229, 153, 0)');
+              ctx.fillStyle = beamGrad;
+              ctx.beginPath();
+              ctx.moveTo(pTop.x - 5, pTop.y);
+              ctx.lineTo(pTop.x + 5, pTop.y);
+              ctx.lineTo(pCenter.x + 55, pCenter.y);
+              ctx.lineTo(pCenter.x - 55, pCenter.y);
+              ctx.closePath();
+              ctx.fill();
+            }
+            ctx.fillStyle = this.currentLighting === 'DUSK' ? '#FFB800' : '#F8FAFC';
+            ctx.beginPath();
+            ctx.arc(pTop.x, pTop.y, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        // 4. Lush Turf Outfield & Mowing Stripes
+        const turfColor = this.currentLighting === 'DAY' ? '#135E3B' : (this.currentLighting === 'DUSK' ? '#0F4D30' : '#0A3E27');
+        drawRing3D(23.5, 0, 60, '#1E293B', 2, turfColor, null);
+        drawRing3D(19.5, 0.01, 52, null, 0, 'rgba(0, 229, 153, 0.05)', null);
+        drawRing3D(15.5, 0.02, 48, null, 0, 'rgba(0, 0, 0, 0.14)', null);
+        drawRing3D(11.2, 0.03, 48, 'rgba(255, 255, 255, 0.75)', 1.5, 'rgba(0, 229, 153, 0.06)', [5, 4]); // 30-Yard Restriction Ring
+        drawRing3D(22.2, 0.05, 60, '#00E599', 2.4, null, null); // Glowing Boundary Rope
+
+        // 5. 22-Yard Clay Pitch Strip & Crease Markings
+        const pitchCorners = [
+          project(-1.65, 0.04, -6.5),
+          project(1.65, 0.04, -6.5),
+          project(1.65, 0.04, 6.5),
+          project(-1.65, 0.04, 6.5)
+        ];
+        if (pitchCorners[0] && pitchCorners[1] && pitchCorners[2] && pitchCorners[3]) {
+          ctx.fillStyle = '#C69F6B';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(pitchCorners[0].x, pitchCorners[0].y);
+          ctx.lineTo(pitchCorners[1].x, pitchCorners[1].y);
+          ctx.lineTo(pitchCorners[2].x, pitchCorners[2].y);
+          ctx.lineTo(pitchCorners[3].x, pitchCorners[3].y);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        }
+
+        // Popping Creases & Stumps at both ends (z = -5.8 and z = +5.8)
+        [-5.8, 5.8].forEach(zEnd => {
+          const cL = project(-1.65, 0.06, zEnd * 0.88);
+          const cR = project(1.65, 0.06, zEnd * 0.88);
+          if (cL && cR) {
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(cL.x, cL.y);
+            ctx.lineTo(cR.x, cR.y);
+            ctx.stroke();
+          }
+          [-0.24, 0, 0.24].forEach(sx => {
+            const sb = project(sx, 0.05, zEnd);
+            const st = project(sx, 0.88, zEnd);
+            if (sb && st) {
+              ctx.strokeStyle = '#FDE047';
+              ctx.lineWidth = 2.2;
+              ctx.beginPath();
+              ctx.moveTo(sb.x, sb.y);
+              ctx.lineTo(st.x, st.y);
+              ctx.stroke();
+            }
+          });
+          const bL = project(-0.26, 0.9, zEnd);
+          const bR = project(0.26, 0.9, zEnd);
+          if (bL && bR) {
+            ctx.strokeStyle = '#FEF08A';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(bL.x, bL.y);
+            ctx.lineTo(bR.x, bR.y);
+            ctx.stroke();
+          }
+        });
+
+        const mode = this.currentMode || 'FUSION';
+        const isFusion = mode === 'FUSION';
+
+        // 6. Layer: 11 Fielders (FIELD / FIELDERS / FUSION)
+        if (isFusion || mode === 'FIELD' || mode === 'FIELDERS') {
+          const fielders = [
+            { x: 0, z: 7.4, role: 'WK' },
+            { x: -1.6, z: 7.1, role: 'Slip' },
+            { x: -9.5, z: 3.5, role: 'Point' },
+            { x: -8.5, z: -4.2, role: 'Cover' },
+            { x: -3.8, z: -10.2, role: 'Mid-Off' },
+            { x: 3.8, z: -10.2, role: 'Mid-On' },
+            { x: 8.8, z: -2.5, role: 'Mid-Wkt' },
+            { x: 8.2, z: 4.5, role: 'Sq Leg' },
+            { x: 5.5, z: 16.5, role: 'Fine Leg' },
+            { x: -12.5, z: 15.0, role: '3rd Man' },
+            { x: 11.5, z: -16.5, role: 'Long On' }
+          ];
+          for (let f = 0; f < fielders.length; f++) {
+            const fd = fielders[f];
+            const pf = project(fd.x, 0.1, fd.z);
+            const pt = project(fd.x, 1.15, fd.z);
+            if (pf && pt) {
+              drawRing3D(1.1, 0.06, 16, null, 0, null, null);
+              ctx.fillStyle = 'rgba(0, 229, 153, 0.24)';
+              ctx.beginPath();
+              ctx.arc(pf.x, pf.y, Math.max(4, pf.scale * 0.9), 0, Math.PI * 2);
+              ctx.fill();
+
+              ctx.strokeStyle = '#00E599';
+              ctx.lineWidth = 2.6;
+              ctx.beginPath();
+              ctx.moveTo(pf.x, pf.y);
+              ctx.lineTo(pt.x, pt.y);
+              ctx.stroke();
+
+              ctx.fillStyle = '#F8FAFC';
+              ctx.beginPath();
+              ctx.arc(pt.x, pt.y - 2, 3, 0, Math.PI * 2);
+              ctx.fill();
+
+              ctx.fillStyle = '#E2E8F0';
+              ctx.font = '700 8px "Plus Jakarta Sans", sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText(fd.role, pt.x, pt.y - 7);
+            }
+          }
+        }
+
+        // 7. Layer: 3D Parabolic Wagon Wheel Shot Arcs (WAGON / FUSION)
+        if (isFusion || mode === 'WAGON') {
+          const shots = [
+            { tx: -16, tz: -14, h: 7.5, color: '#00E599', label: '104m SIX' },
+            { tx: 17, tz: -13, h: 8.2, color: '#00E599', label: '108m SIX' },
+            { tx: -19, tz: 4, h: 2.2, color: '#00D2FF', label: '68m FOUR' },
+            { tx: 18, tz: 6, h: 2.0, color: '#00D2FF', label: '66m FOUR' },
+            { tx: 0, tz: -21, h: 8.6, color: '#00E599', label: '112m SIX' },
+            { tx: -10, tz: 12, h: 1.4, color: '#FFB800', label: '2 Runs' },
+            { tx: 11, tz: 11, h: 1.5, color: '#FFB800', label: '2 Runs' }
+          ];
+          const pulseT = ((Date.now() % 2400) / 2400);
+          for (let s = 0; s < shots.length; s++) {
+            const sh = shots[s];
+            ctx.beginPath();
+            let started = false;
+            let endPt = null;
+            for (let step = 0; step <= 24; step++) {
+              const t = step / 24;
+              const wx = sh.tx * t;
+              const wz = 5.6 + (sh.tz - 5.6) * t;
+              const wy = 0.2 + 4 * sh.h * t * (1 - t);
+              const p = project(wx, wy, wz);
+              if (!p) continue;
+              if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+              else ctx.lineTo(p.x, p.y);
+              if (step === 24) endPt = p;
+            }
+            if (started) {
+              ctx.strokeStyle = sh.color;
+              ctx.lineWidth = 2.2;
+              ctx.stroke();
+
+              // Animated glowing ball traveling along the 3D shot arc
+              const bt = (pulseT + s * 0.14) % 1;
+              const bx = sh.tx * bt;
+              const bz = 5.6 + (sh.tz - 5.6) * bt;
+              const by = 0.2 + 4 * sh.h * bt * (1 - bt);
+              const bp = project(bx, by, bz);
+              if (bp) {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.arc(bp.x, bp.y, 3.2, 0, Math.PI * 2);
+                ctx.fill();
+              }
+              if (endPt && s < 3) {
+                ctx.fillStyle = sh.color;
+                ctx.font = '800 8.5px "Chakra Petch", monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(sh.label, endPt.x, endPt.y - 5);
+              }
+            }
+          }
+        }
+
+        // 8. Layer: Hawk-Eye Ball Tracking (HAWKEYE / FUSION)
+        if (isFusion || mode === 'HAWKEYE') {
+          const deliveries = [
+            { bx: 0.08, bz: 2.1, ex: 0.0, ey: 0.68, color: '#FF3366', speed: '144.8 km/h' },
+            { bx: -0.18, bz: 4.6, ex: -0.15, ey: 0.35, color: '#00D2FF', speed: '141.2 km/h' },
+            { bx: 0.22, bz: -0.2, ex: 0.28, ey: 1.05, color: '#FFB800', speed: '138.5 km/h' }
+          ];
+          for (let d = 0; d < deliveries.length; d++) {
+            const dl = deliveries[d];
+            ctx.beginPath();
+            let started = false;
+            for (let step = 0; step <= 20; step++) {
+              const t = step / 20;
+              let wx, wy, wz;
+              if (t < 0.6) {
+                const u = t / 0.6;
+                wx = 0.25 + (dl.bx - 0.25) * u;
+                wz = -5.8 + (dl.bz - (-5.8)) * u;
+                wy = 2.1 * (1 - u * u) + 0.06;
+              } else {
+                const u = (t - 0.6) / 0.4;
+                wx = dl.bx + (dl.ex - dl.bx) * u;
+                wz = dl.bz + (5.8 - dl.bz) * u;
+                wy = 0.06 + dl.ey * u;
+              }
+              const p = project(wx, wy, wz);
+              if (!p) continue;
+              if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+              else ctx.lineTo(p.x, p.y);
+            }
+            if (started) {
+              ctx.strokeStyle = dl.color;
+              ctx.lineWidth = 2.4;
+              ctx.stroke();
+            }
+            const bouncePt = project(dl.bx, 0.06, dl.bz);
+            if (bouncePt) {
+              ctx.fillStyle = dl.color;
+              ctx.beginPath();
+              ctx.arc(bouncePt.x, bouncePt.y, 4, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+
+        // 9. Layer: DRS LBW Zone & Verdict (DRS / FUSION)
+        if (isFusion || mode === 'DRS') {
+          const drsCorners = [
+            project(-0.32, 0.05, -5.8),
+            project(0.32, 0.05, -5.8),
+            project(0.32, 0.05, 5.8),
+            project(-0.32, 0.05, 5.8)
+          ];
+          if (drsCorners[0] && drsCorners[1] && drsCorners[2] && drsCorners[3]) {
+            ctx.fillStyle = 'rgba(0, 229, 153, 0.28)';
+            ctx.beginPath();
+            ctx.moveTo(drsCorners[0].x, drsCorners[0].y);
+            ctx.lineTo(drsCorners[1].x, drsCorners[1].y);
+            ctx.lineTo(drsCorners[2].x, drsCorners[2].y);
+            ctx.lineTo(drsCorners[3].x, drsCorners[3].y);
+            ctx.closePath();
+            ctx.fill();
+          }
+          const stumpHit = project(0, 0.65, 5.8);
+          if (stumpHit) {
+            ctx.fillStyle = '#FF3366';
+            ctx.beginPath();
+            ctx.arc(stumpHit.x, stumpHit.y, 5.5, 0, Math.PI * 2);
+            ctx.fill();
+            if (mode === 'DRS') {
+              ctx.fillStyle = 'rgba(4, 7, 13, 0.88)';
+              ctx.strokeStyle = '#FF3366';
+              ctx.lineWidth = 1.2;
+              ctx.fillRect(w * 0.5 - 105, 36, 210, 24);
+              ctx.strokeRect(w * 0.5 - 105, 36, 210, 24);
+              ctx.fillStyle = '#FF3366';
+              ctx.font = '800 9.5px "Chakra Petch", monospace';
+              ctx.textAlign = 'center';
+              ctx.fillText('DRS LBW: HITTING STUMPS • OUT!', w * 0.5, 52);
+            }
+          }
+        }
+
+        // 10. Top HUD Telemetry Pill Overlay
+        ctx.fillStyle = 'rgba(4, 7, 13, 0.76)';
+        ctx.fillRect(10, 10, w - 20, 22);
+        ctx.strokeStyle = 'rgba(0, 229, 153, 0.35)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(10, 10, w - 20, 22);
+
+        ctx.fillStyle = '#00E599';
+        ctx.font = '800 9px "Chakra Petch", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('CAM: ' + (this.currentPreset || 'AUTO_CAM') + ' • LAYER: ' + mode, 16, 24);
+
+        ctx.fillStyle = '#00D2FF';
+        ctx.textAlign = 'right';
+        ctx.fillText('LIGHT: ' + (this.currentLighting || 'NIGHT') + ' • 60 FPS', w - 16, 24);
+
+        ctx.restore();
       }
 
       buildStadium() {
@@ -8147,6 +8578,7 @@ export function getMobileAppHtml(): string {
           // Clamp polar angle to avoid clipping under the pitch
           this.phi = Math.max(0.15, Math.min(1.35, this.phi));
           this.updateCameraFromOrbit();
+          this.renderScene3D();
         };
         const onUp = () => {
           this.isPointerDown = false;
@@ -8179,6 +8611,7 @@ export function getMobileAppHtml(): string {
         const y = this.target.y + this.radius * Math.cos(this.phi);
         const z = this.target.z + this.radius * Math.sin(this.phi) * Math.cos(this.theta);
         this.camera.position.set(x, y, z);
+        this._lookAtTarget = { x: this.target.x, y: this.target.y, z: this.target.z };
         this.camera.lookAt(this.target.x, this.target.y, this.target.z);
       }
 
@@ -8186,29 +8619,36 @@ export function getMobileAppHtml(): string {
         this.currentPreset = preset;
         if (!this.camera) return;
         if (preset === 'BATSMAN') {
-          this.camera.position.set(0, 3.2, 8.8);
-          this.camera.lookAt(0, 1.2, -6);
+          this.camera.position.set(0, 3.4, 9.2);
+          this._lookAtTarget = { x: 0, y: 0.8, z: -6 };
+          this.camera.lookAt(0, 0.8, -6);
         } else if (preset === 'PITCH') {
-          this.camera.position.set(8.5, 2.5, 0);
+          this.camera.position.set(10.5, 3.2, 0);
+          this._lookAtTarget = { x: 0, y: 0.5, z: 0 };
           this.camera.lookAt(0, 0.5, 0);
         } else if (preset === 'HIGH') {
-          this.camera.position.set(0, 34, 10);
+          this.camera.position.set(0, 36, 8);
+          this._lookAtTarget = { x: 0, y: 0, z: 0 };
           this.camera.lookAt(0, 0, 0);
         } else if (preset === 'GRANDSTAND') {
           this.camera.position.set(18, 16, 22);
+          this._lookAtTarget = { x: 0, y: 1, z: 0 };
           this.camera.lookAt(0, 1, 0);
         } else if (preset === 'PAVILION') {
           this.camera.position.set(0, 12, -26);
+          this._lookAtTarget = { x: 0, y: 0, z: 0 };
           this.camera.lookAt(0, 0, 0);
         } else if (preset === 'UMPIRE') {
-          this.camera.position.set(0, 2.8, -8.5);
-          this.camera.lookAt(0, 1.2, 6);
+          this.camera.position.set(0, 3.0, -9.2);
+          this._lookAtTarget = { x: 0, y: 0.8, z: 6 };
+          this.camera.lookAt(0, 0.8, 6);
         } else {
-          // AUTO / RESET
+          // AUTO / AUTO_CAM / RESET
           this.theta = 0.85;
-          this.phi = 0.65;
+          this.phi = 0.68;
           this.updateCameraFromOrbit();
         }
+        this.renderScene3D();
       }
 
       setVisualMode(mode) {
@@ -8217,7 +8657,8 @@ export function getMobileAppHtml(): string {
         if (this.wagonArcsGroup) this.wagonArcsGroup.visible = isFusion || mode === 'WAGON';
         if (this.hawkEyeGroup) this.hawkEyeGroup.visible = isFusion || mode === 'HAWKEYE';
         if (this.drsGroup) this.drsGroup.visible = isFusion || mode === 'DRS';
-        if (this.fieldersGroup) this.fieldersGroup.visible = isFusion || mode === 'FIELDERS';
+        if (this.fieldersGroup) this.fieldersGroup.visible = isFusion || mode === 'FIELD' || mode === 'FIELDERS';
+        this.renderScene3D();
       }
 
       setLighting(lighting) {
@@ -8237,20 +8678,11 @@ export function getMobileAppHtml(): string {
           this.sunLight.intensity = 0.2;
           for (let i = 0; i < this.floodlights.length; i++) this.floodlights[i].intensity = 0.85;
         }
+        this.renderScene3D();
       }
 
       resize() {
-        if (!this.canvas || !this.camera || !this.renderer) return;
-        const rect = (typeof this.canvas.getBoundingClientRect === 'function') ? this.canvas.getBoundingClientRect() : { width: 360, height: 320 };
-        const width = Math.max(rect.width || 360, 240);
-        const height = Math.max(rect.height || 320, 200);
-        this.camera.aspect = width / height;
-        if (typeof this.camera.updateProjectionMatrix === 'function') {
-          this.camera.updateProjectionMatrix();
-        }
-        if (typeof this.renderer.setSize === 'function') {
-          this.renderer.setSize(width, height);
-        }
+        this.renderScene3D();
       }
 
       stop() {
@@ -8280,45 +8712,33 @@ export function getMobileAppHtml(): string {
       }
 
       init(trophyType) {
-        if (this.isInitialized || !this.canvas) return;
-        initMobileThreeFallback();
-        const THREE = window.THREE;
-        const rect = (typeof this.canvas.getBoundingClientRect === 'function') ? this.canvas.getBoundingClientRect() : { width: 340, height: 210 };
-        const width = Math.max(rect.width || 340, 240);
-        const height = Math.max(rect.height || 210, 160);
-
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-        this.camera.position.set(0, 1.8, 4.8);
-        this.camera.lookAt(0, 1.5, 0);
-
-        try {
-          this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
-          this.renderer.setSize(width, height);
-          this.renderer.setPixelRatio(Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2));
-          this.renderer.setClearColor(0x04070D, 1);
-        } catch (e) {
-          this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+        const liveCanvas = (typeof document !== 'undefined') ? document.getElementById('mobileTrophyCanvas') : null;
+        if (!liveCanvas) return;
+        if (this.canvas !== liveCanvas) {
+          this.stop();
+          this.canvas = liveCanvas;
+          this.isInitialized = false;
+        }
+        if (trophyType) this.currentTrophy = trophyType;
+        if (this.isInitialized && !this.isPaused) {
+          this.buildTrophy(this.currentTrophy);
+          this.renderTrophy3D();
+          return;
         }
 
-        const ambLight = new THREE.AmbientLight(0xffffff, 0.7);
-        this.scene.add(ambLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-        dirLight.position.set(4, 8, 6);
-        this.scene.add(dirLight);
-
-        const ptLight = new THREE.PointLight(0xffb800, 1.2, 10);
-        ptLight.position.set(-3, 3, 3);
-        this.scene.add(ptLight);
-
+        initMobileThreeFallback();
+        const THREE = window.THREE;
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(40, 340 / 210, 0.1, 100);
         this.trophyGroup = new THREE.Group();
         this.scene.add(this.trophyGroup);
+        this.renderer = { domElement: this.canvas, render: () => this.renderTrophy3D() };
 
-        this.buildTrophy(trophyType || this.currentTrophy);
+        this.buildTrophy(this.currentTrophy);
         this.bindTouchEvents();
         this.isInitialized = true;
         this.isPaused = false;
+        this.renderTrophy3D();
 
         const animate = () => {
           if (this.isPaused) {
@@ -8327,16 +8747,86 @@ export function getMobileAppHtml(): string {
           }
           this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
           if (this.autoRotate && !this.isPointerDown) {
-            this.rotY += 0.012;
+            this.rotY += 0.018;
           }
           if (this.trophyGroup) {
             this.trophyGroup.rotation.y = this.rotY;
           }
-          if (this.renderer && this.scene && this.camera) {
-            this.renderer.render(this.scene, this.camera);
-          }
+          this.renderTrophy3D();
         };
         this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
+      }
+
+      renderTrophy3D() {
+        if (!this.canvas || typeof this.canvas.getContext !== 'function') return;
+        const ctx = this.canvas.getContext('2d');
+        if (!ctx) return;
+        const rect = (typeof this.canvas.getBoundingClientRect === 'function') ? this.canvas.getBoundingClientRect() : { width: 340, height: 210 };
+        const dpr = Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2);
+        const w = Math.max(Math.round(rect.width || 340), 240);
+        const h = Math.max(Math.round(rect.height || 210), 160);
+        if (this.canvas.width !== w * dpr || this.canvas.height !== h * dpr) {
+          this.canvas.width = w * dpr;
+          this.canvas.height = h * dpr;
+        }
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        ctx.fillStyle = '#050A14';
+        ctx.fillRect(0, 0, w, h);
+
+        const cx = w * 0.5, cy = h * 0.55;
+        const glow = ctx.createRadialGradient(cx, cy - 15, 8, cx, cy - 15, 110);
+        glow.addColorStop(0, this.currentTrophy === 'MVP_SHIELD' ? 'rgba(0, 210, 255, 0.28)' : 'rgba(255, 184, 0, 0.3)');
+        glow.addColorStop(1, 'rgba(5, 10, 20, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, w, h);
+
+        // Pedestal Base
+        ctx.fillStyle = '#1E293B';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy + 58, 56, 14, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        const sheen = Math.sin(this.rotY * 2) * 18;
+        if (this.currentTrophy === 'MVP_SHIELD') {
+          ctx.fillStyle = '#0EA5E9';
+          ctx.strokeStyle = '#E0F2FE';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.ellipse(cx, cy - 5, Math.max(18, Math.abs(Math.cos(this.rotY)) * 54), 56, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FFB800';
+          ctx.beginPath();
+          ctx.arc(cx + sheen * 0.3, cy - 5, 16, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.currentTrophy === 'GOLDEN_BAT') {
+          const bw = Math.max(10, Math.abs(Math.cos(this.rotY)) * 28);
+          ctx.fillStyle = '#F59E0B';
+          ctx.strokeStyle = '#FEF08A';
+          ctx.lineWidth = 2;
+          ctx.fillRect(cx - bw * 0.5, cy - 42, bw, 88);
+          ctx.strokeRect(cx - bw * 0.5, cy - 42, bw, 88);
+          ctx.fillStyle = '#00E599';
+          ctx.fillRect(cx - 5, cy - 75, 10, 34);
+        } else {
+          // PREMIER_CUP
+          const cw = Math.max(24, Math.abs(Math.cos(this.rotY * 0.5)) * 46);
+          ctx.fillStyle = '#F59E0B';
+          ctx.strokeStyle = '#FEF08A';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(cx - cw, cy - 48);
+          ctx.quadraticCurveTo(cx, cy + 25, cx + cw, cy - 48);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillRect(cx - 10, cy - 5, 20, 52);
+        }
+        ctx.restore();
       }
 
       buildTrophy(type) {
@@ -8345,84 +8835,23 @@ export function getMobileAppHtml(): string {
         while (this.trophyGroup.children.length > 0) {
           this.trophyGroup.remove(this.trophyGroup.children[0]);
         }
-
-        if (this.currentTrophy === 'MVP_SHIELD') {
-          // Shield
-          const silverMat = new THREE.MeshStandardMaterial({ color: 0x00d2ff, metalness: 0.85, roughness: 0.2 });
-          const goldMat = new THREE.MeshStandardMaterial({ color: 0xffb800, metalness: 0.9, roughness: 0.2 });
-          const baseMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.6 });
-
-          const base = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.2, 0.35, 16), baseMat);
-          base.position.set(0, 0.2, 0);
-          this.trophyGroup.add(base);
-
-          const shield = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.12, 24), silverMat);
-          shield.position.set(0, 1.6, 0);
-          shield.rotation.x = Math.PI / 2;
-          this.trophyGroup.add(shield);
-
-          const star = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.16, 8), goldMat);
-          star.position.set(0, 1.6, 0.05);
-          star.rotation.x = Math.PI / 2;
-          this.trophyGroup.add(star);
-        } else if (this.currentTrophy === 'GOLDEN_BAT') {
-          // Golden Bat
-          const goldMat = new THREE.MeshStandardMaterial({ color: 0xffb800, metalness: 0.92, roughness: 0.15 });
-          const baseMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.7 });
-
-          const base = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.3, 1.0), baseMat);
-          base.position.set(0, 0.15, 0);
-          this.trophyGroup.add(base);
-
-          const blade = new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.8, 0.16), goldMat);
-          blade.position.set(0, 1.3, 0);
-          this.trophyGroup.add(blade);
-
-          const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.8, 12), goldMat);
-          handle.position.set(0, 2.5, 0);
-          this.trophyGroup.add(handle);
-        } else {
-          // PREMIER_CUP
-          const goldMat = new THREE.MeshStandardMaterial({ color: 0xffb800, metalness: 0.9, roughness: 0.2 });
-          const baseMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.8 });
-
-          const base = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.3, 0.4, 16), baseMat);
-          base.position.set(0, 0.2, 0);
-          this.trophyGroup.add(base);
-
-          const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.4, 0.7, 16), goldMat);
-          stem.position.set(0, 0.7, 0);
-          this.trophyGroup.add(stem);
-
-          const bowl = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 0.5, 1.2, 16), goldMat);
-          bowl.position.set(0, 1.6, 0);
-          this.trophyGroup.add(bowl);
-
-          // Handles
-          [-1.15, 1.15].forEach(x => {
-            const handle = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.06, 8, 16), goldMat);
-            handle.position.set(x, 1.7, 0);
-            this.trophyGroup.add(handle);
-          });
-        }
+        const goldMat = new THREE.MeshStandardMaterial({ color: 0xffb800, metalness: 0.9, roughness: 0.2 });
+        const bowl = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 0.5, 1.2, 16), goldMat);
+        this.trophyGroup.add(bowl);
+        this.renderTrophy3D();
       }
 
       bindTouchEvents() {
         if (!this.canvas) return;
-        const onDown = (clientX) => {
-          this.isPointerDown = true;
-          this.lastX = clientX;
-        };
+        const onDown = (clientX) => { this.isPointerDown = true; this.lastX = clientX; };
         const onMove = (clientX) => {
           if (!this.isPointerDown) return;
           const dx = clientX - this.lastX;
           this.lastX = clientX;
-          this.rotY += dx * 0.015;
+          this.rotY += dx * 0.018;
+          this.renderTrophy3D();
         };
-        const onUp = () => {
-          this.isPointerDown = false;
-        };
-
+        const onUp = () => { this.isPointerDown = false; };
         this.canvas.addEventListener('pointerdown', e => onDown(e.clientX));
         if (typeof window !== 'undefined') {
           window.addEventListener('pointermove', e => onMove(e.clientX));
@@ -8472,41 +8901,30 @@ export function getMobileAppHtml(): string {
       }
 
       init() {
-        if (this.isInitialized || !this.canvas) return;
+        const liveCanvas = (typeof document !== 'undefined') ? document.getElementById('mobileBatCanvas') : null;
+        if (!liveCanvas) return;
+        if (this.canvas !== liveCanvas) {
+          this.stop();
+          this.canvas = liveCanvas;
+          this.isInitialized = false;
+        }
+        if (this.isInitialized && !this.isPaused) {
+          this.renderBat3D();
+          return;
+        }
         initMobileThreeFallback();
         const THREE = window.THREE;
-        const rect = (typeof this.canvas.getBoundingClientRect === 'function') ? this.canvas.getBoundingClientRect() : { width: 340, height: 210 };
-        const width = Math.max(rect.width || 340, 240);
-        const height = Math.max(rect.height || 210, 160);
-
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-        this.camera.position.set(0, 1.2, 4.4);
-        this.camera.lookAt(0, 1.1, 0);
-
-        try {
-          this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
-          this.renderer.setSize(width, height);
-          this.renderer.setPixelRatio(Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2));
-          this.renderer.setClearColor(0x04070D, 1);
-        } catch (e) {
-          this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
-        }
-
-        const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
-        this.scene.add(ambLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        dirLight.position.set(4, 7, 5);
-        this.scene.add(dirLight);
-
+        this.camera = new THREE.PerspectiveCamera(40, 340 / 210, 0.1, 100);
         this.batGroup = new THREE.Group();
         this.scene.add(this.batGroup);
+        this.renderer = { domElement: this.canvas, render: () => this.renderBat3D() };
 
         this.buildBat();
         this.bindTouchEvents();
         this.isInitialized = true;
         this.isPaused = false;
+        this.renderBat3D();
 
         const animate = () => {
           if (this.isPaused) {
@@ -8514,15 +8932,43 @@ export function getMobileAppHtml(): string {
             return;
           }
           this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
-          if (this.batGroup) {
-            this.batGroup.rotation.y = this.rotY;
-            this.batGroup.rotation.x = this.rotX;
+          if (!this.isPointerDown) {
+            this.rotY += 0.012;
           }
-          if (this.renderer && this.scene && this.camera) {
-            this.renderer.render(this.scene, this.camera);
-          }
+          this.renderBat3D();
         };
         this.animFrameId = (typeof requestAnimationFrame !== 'undefined') ? requestAnimationFrame(animate) : null;
+      }
+
+      renderBat3D() {
+        if (!this.canvas || typeof this.canvas.getContext !== 'function') return;
+        const ctx = this.canvas.getContext('2d');
+        if (!ctx) return;
+        const rect = (typeof this.canvas.getBoundingClientRect === 'function') ? this.canvas.getBoundingClientRect() : { width: 340, height: 210 };
+        const dpr = Math.min((typeof window !== 'undefined' && window.devicePixelRatio) || 1, 2);
+        const w = Math.max(Math.round(rect.width || 340), 240);
+        const h = Math.max(Math.round(rect.height || 210), 160);
+        if (this.canvas.width !== w * dpr || this.canvas.height !== h * dpr) {
+          this.canvas.width = w * dpr;
+          this.canvas.height = h * dpr;
+        }
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        ctx.fillStyle = '#050A14';
+        ctx.fillRect(0, 0, w, h);
+
+        const cx = w * 0.5, cy = h * 0.52;
+        const bladeWidth = Math.max(14, Math.abs(Math.cos(this.rotY)) * 38);
+        ctx.fillStyle = this.currentWillow.indexOf('Kashmir') !== -1 ? '#C69253' : '#E5C494';
+        ctx.strokeStyle = '#F8FAFC';
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(cx - bladeWidth * 0.5, cy - 22, bladeWidth, 92);
+        ctx.strokeRect(cx - bladeWidth * 0.5, cy - 22, bladeWidth, 92);
+
+        // Grip
+        ctx.fillStyle = this.currentGripColor || '#00E599';
+        ctx.fillRect(cx - 6, cy - 76, 12, 54);
+        ctx.restore();
       }
 
       buildBat() {

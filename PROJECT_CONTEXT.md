@@ -1,14 +1,24 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 08:12:00
-**Version:** 1.0.0-phase2bn (Daylight Themes Surface/Contrast Perfection & Uncluttered Topbar)  
+**Last Updated:** 2026-09-29 08:47:00
+**Version:** 1.0.0-phase2bo (Android APK 3D Stadium Non-Blank Perspective Engine & Live DOM Canvas Rebinding)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BN Completed — Daylight Themes (`🇨🇭 Swiss Minimal` & `🌾 Nordic Editorial`) Surface/Contrast Perfection & Uncluttered Topbar:
+- **Active Phase**: Phase 2BO Completed — Android APK 3D Stadium Non-Blank Perspective Engine & Live DOM Canvas Rebinding (`apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Live DOM `<canvas>` Rebinding After Every `StandaloneMobileApp.prototype.render()` (`apps/api/src/ui/mobile-view.ts`)**:
+    - Fixed detached canvas bug where `root.innerHTML = h` inside `StandaloneMobileApp.prototype.render()` destroyed and replaced `<canvas id="mobileThreeStadiumCanvas">`, `<canvas id="mobileTrophyCanvas">`, and `<canvas id="mobileBatCanvas">` while `window.mobileStadiumPitch` / `window.mobileTrophyCabinet` / `window.mobileBatConfigurator` remained bound to the stale DOM element because `this.isInitialized` was `true`.
+    - Added live DOM canvas identity checks (`if (this.canvas !== liveCanvas)`) inside `MobileThreeStadiumPitch.prototype.init()`, `MobileThreeTrophyCabinet.prototype.init()`, `MobileThreeBatConfigurator.prototype.init()`, and `StandaloneMobileApp.prototype.render()` so every camera preset (`BATSMAN`, `PITCH`, `HIGH`, `GRANDSTAND`, `PAVILION`, `UMPIRE`, `RESET`), tactical overlay (`WAGON`, `HAWKEYE`, `DRS`, `FIELD`, `FUSION`), and lighting switch (`DAY`, `DUSK`, `NIGHT`) automatically re-binds and renders to the live DOM `<canvas>`.
+  - **2. Profile -> 3D Stadium Pitch Tile Navigation Fix (`apps/api/src/ui/mobile-view.ts`)**:
+    - Fixed `button[aria-label="3D Stadium Pitch Viewport"]` in the Profile 3D WebGL Studios Hub (`window.cricosMobileApp.navigateTo('MATCHES'); window.cricosMobileApp.setWagonDisplayMode('3D');`) instead of setting the non-existent `activeMatchSubTab` property.
+  - **3. Zero-Dependency 60fps True 3D Perspective Camera Projection Engine (`apps/api/src/ui/mobile-view.ts`)**:
+    - Implemented a built-in 3D Perspective Camera Projection Engine (`renderScene3D()`, `renderTrophy3D()`, `renderBat3D()`) on `canvas.getContext('2d')` alongside the `THREE` scene graph so the Android APK (`dist/cricos-debug.apk`) renders the 3D Stadium bowl, 4 floodlight towers with beams, turf mowing stripes, 22-yard pitch & wickets, 9 labeled 3D fielders, parabolic 3D Wagon Wheel trajectories (`104m SIX`, `68m FOUR`), Hawk-Eye bounce tracks, and DRS inline zone at 60fps 100% offline with zero WebGL driver or external CDN failure modes.
+  - **4. Automated E2E Verification (`tests/test_62_apk_3d_stadium_non_blank_rendering.py`)**:
+    - Verified via Playwright (`test_62`) with external CDNs blocked that `#mobileThreeStadiumCanvas`, `#mobileTrophyCanvas`, and `#mobileBatCanvas` in `dist/mobile.html` remain bound to the live DOM `<canvas>` and render >5,000 non-blank 3D pixels across all sub-tabs, Profile tile launches, Camera Presets, Tactical Overlays, and Lighting states.
+- **Preceding Phase**: Phase 2BN Completed — Daylight Themes (`🇨🇭 Swiss Minimal` & `🌾 Nordic Editorial`) Surface/Contrast Perfection & Uncluttered Topbar:
   - **1. Scoreboard, 3D Studio Hub, Sidebar Footer & Sonner Toast Daylight Surface & Contrast Engine (`apps/api/src/ui/dashboard.ts`)**:
     - Removed `.scoreboard` and `#sonnerToaster` from the dark-viewport exclusion list in `enforceThemeContrastInvariants()`, normalizing all dark-tinted (`rgba(0,0,0,0.25)`, `rgba(10,16,28,0.85)`) inner boxes (`unblendedLum < 0.35` or `l < 0.78`) to crisp daylight surfaces (`#F8FAFC` in Swiss, `#F5F2EB` in Nordic) with `#CBD5E1` / `#D6D0C4` borders.
     - Added explicit daylight CSS rules for `.target-equation-bar`, `.match-momentum-container`, `.ball-gyro-widget`, `.event-readiness-card` (`#F0FDF4` emerald daylight surface), `.over-strip-container`, `.stat-mini-card` (`Virat K. *`, `Rohit S.`, `Jasprit B.` at `16.5:1` AAA contrast), `.fow-container`, `.fow-pill`, `#threeDExperiencesHub`, `.three-hub-tile`, `.user-profile-header-btn` (`#headerUserName` / `#headerUserRoleBadge`), and `#sonnerToaster .sonner-toast`.
