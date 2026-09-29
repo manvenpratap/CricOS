@@ -8471,6 +8471,9 @@ cricos_active_sse_connections 1</pre>
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 0.55rem;">
+            <button type="button" id="btnToggleGearPublisher" class="btn btn-secondary btn-sm" onclick="toggleGearVendorPublisher()" data-tooltip="For Turf Providers, Organisers &amp; Equipment Vendors: Publish a new cricket gear or rental listing to the store" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 800; border-color: rgba(0,229,153,0.45); color: var(--turf-emerald);">
+              ➕ List New Gear / Equipment
+            </button>
             <button type="button" class="btn btn-secondary btn-sm" onclick="open3DBatCustomizerModal()" data-tooltip="Design a custom 3D English/Kashmir willow bat and add it directly to your Gear Bag" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(0,210,255,0.45); color: var(--cyan);">
               🏏 3D Bat Customizer
             </button>
@@ -8480,6 +8483,51 @@ cricos_active_sse_connections 1</pre>
       </div>
 
       <div class="modal-body" style="padding: 1.15rem 1.35rem; max-height: calc(90vh - 130px); overflow-y: auto;">
+        <!-- Collapsible Vendor / Turf Provider Gear Listing Publisher Studio -->
+        <div id="gearVendorPublisherPanel" style="display: none; margin-bottom: 1rem; padding: 0.95rem 1.1rem; border-radius: 10px; background: rgba(0,229,153,0.07); border: 1.5px solid rgba(0,229,153,0.35);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <div style="font-size: 0.85rem; font-weight: 800; color: var(--turf-emerald);">🏪 Vendor &amp; Turf Provider Gear Listing Publisher</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Authorized Personas: <strong>TURF_PROVIDER</strong> (Rental Nets/Machines/Match Balls), <strong>ORGANISER</strong> (Tournament Trophies/Kits), <strong>ADMIN</strong> (Certified Pro Gear)</div>
+            </div>
+            <span class="badge badge-emerald" style="font-size: 0.62rem;">INSTANT CATALOG SYNC</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.65rem; margin-bottom: 0.65rem;">
+            <div>
+              <label for="newGearTitleInput" style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.2rem;">PRODUCT / RENTAL TITLE *</label>
+              <input type="text" id="newGearTitleInput" value="SS Ton Reserve Grade 1 English Willow Bat" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--text-primary); font-size: 0.74rem;" />
+            </div>
+            <div>
+              <label for="newGearBrandInput" style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.2rem;">BRAND / VENDOR PAVILION *</label>
+              <input type="text" id="newGearBrandInput" value="Sareen Sports Pro" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--text-primary); font-size: 0.74rem;" />
+            </div>
+            <div>
+              <label for="newGearCategorySelect" style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.2rem;">CATEGORY *</label>
+              <select id="newGearCategorySelect" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--text-primary); font-size: 0.74rem;">
+                <option value="BATS">🏏 Bats (English / Kashmir Willow)</option>
+                <option value="BALLS">🔴 Match Balls (White / Red / Pink)</option>
+                <option value="PROTECTIVE">🛡️ Protective (Helmets / Pads / Gloves)</option>
+                <option value="NETS_TECH">📡 Nets, Bowling Machines &amp; Sensors</option>
+                <option value="TROPHIES">🏆 Trophies &amp; Engraved Medals</option>
+              </select>
+            </div>
+            <div>
+              <label for="newGearPriceInput" style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.2rem;">SELLING PRICE (₹) *</label>
+              <input type="number" id="newGearPriceInput" value="13499" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--turf-emerald); font-family: var(--font-mono); font-weight: 800; font-size: 0.74rem;" />
+            </div>
+            <div>
+              <label for="newGearVariantsInput" style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.2rem;">VARIANTS / SPECS (COMMA SEPARATED)</label>
+              <input type="text" id="newGearVariantsInput" value="SH (2lb 8oz), LH (2lb 10oz), Harrow" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--text-primary); font-size: 0.74rem;" />
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+            <input type="text" id="newGearDescInput" value="Hand-selected air-dried Grade 1 willow with massive 40mm edges and concaved profile for T20 boundary clearing." placeholder="Short technical description..." style="flex: 1; min-width: 240px; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--text-primary); font-size: 0.73rem;" />
+            <button type="button" id="btnPublishNewGearListing" class="btn btn-primary btn-sm" onclick="publishNewGearCatalogItem()" style="width: auto; padding: 0.42rem 0.95rem; font-size: 0.75rem; font-weight: 800;" data-tooltip="Publish this cricket gear or equipment listing immediately to the store">
+              ⚡ Publish Gear Listing to Store
+            </button>
+          </div>
+        </div>
+
         <!-- Store Search, Category Filter Pills & Sort Controls -->
         <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; padding: 0.75rem 0.9rem; border-radius: 10px; background: rgba(15,23,42,0.55); border: 1px solid var(--border-subtle);">
           <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 240px;">
@@ -17651,7 +17699,57 @@ cricos_active_sse_connections 1</pre>
       renderGearOrderHistory();
     }
 
+    function toggleGearVendorPublisher() {
+      const panel = document.getElementById('gearVendorPublisherPanel');
+      if (!panel) return;
+      panel.style.display = (panel.style.display === 'none' || !panel.style.display) ? 'block' : 'none';
+    }
+
+    function publishNewGearCatalogItem() {
+      const titleEl = document.getElementById('newGearTitleInput');
+      const brandEl = document.getElementById('newGearBrandInput');
+      const catEl = document.getElementById('newGearCategorySelect');
+      const priceEl = document.getElementById('newGearPriceInput');
+      const varsEl = document.getElementById('newGearVariantsInput');
+      const descEl = document.getElementById('newGearDescInput');
+
+      const title = (titleEl ? titleEl.value : '').trim() || 'Pro Cricket Equipment Item';
+      const brand = (brandEl ? brandEl.value : '').trim() || 'Verified Turf Vendor';
+      const category = catEl ? catEl.value : 'BATS';
+      const price = Math.max(100, parseInt(priceEl ? priceEl.value : '4999', 10) || 4999);
+      const variantsRaw = (varsEl ? varsEl.value : '').split(',').map(s => s.trim()).filter(Boolean);
+      const variants = variantsRaw.length > 0 ? variantsRaw : ['Standard Match Spec'];
+      const desc = (descEl ? descEl.value : '').trim() || 'Vendor-published match equipment available for 45-min stadium pavilion delivery.';
+
+      const newId = 'gear-vendor-' + Date.now();
+      GEAR_STORE_CATALOG.unshift({
+        id: newId,
+        title: title,
+        brand: brand,
+        category: category,
+        badge: 'VENDOR LISTED',
+        badgeClass: 'badge-emerald',
+        price: price,
+        mrp: Math.round(price * 1.18),
+        rating: '5.0★ (New)',
+        stock: 'Pavilion Ready',
+        desc: desc,
+        variants: variants
+      });
+
+      const allBtn = document.getElementById('gearCat_ALL');
+      if (allBtn) allBtn.textContent = 'All Gear (' + GEAR_STORE_CATALOG.length + ')';
+
+      const panel = document.getElementById('gearVendorPublisherPanel');
+      if (panel) panel.style.display = 'none';
+
+      setGearStoreCategory('ALL');
+      showToast('✅ Published new gear listing to Store: ' + title + ' (₹' + price.toLocaleString('en-IN') + ')');
+    }
+
     window.openGearStoreModal = openGearStoreModal;
+    window.toggleGearVendorPublisher = toggleGearVendorPublisher;
+    window.publishNewGearCatalogItem = publishNewGearCatalogItem;
     window.setGearStoreCategory = setGearStoreCategory;
     window.filterGearStoreCatalog = filterGearStoreCatalog;
     window.renderGearStoreCatalog = renderGearStoreCatalog;

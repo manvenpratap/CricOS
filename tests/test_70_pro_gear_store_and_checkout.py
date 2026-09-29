@@ -86,6 +86,15 @@ def test_desktop_pro_gear_store_catalog_cart_promo_and_checkout():
         assert "ORD-GEAR-" in latest_order_text
         assert "Wankhede Arena Turf Club" in latest_order_text
 
+        # Test Vendor / Turf Provider Gear Listing Publisher
+        page.click("#btnToggleGearPublisher")
+        page.wait_for_timeout(100)
+        assert page.locator("#gearVendorPublisherPanel").is_visible()
+        page.fill("#newGearTitleInput", "SS Ton Reserve Grade 1 English Willow Bat")
+        page.click("#btnPublishNewGearListing")
+        page.wait_for_timeout(150)
+        assert cards.count() == 11, f"Expected 11 gear products after vendor listing publish, got {cards.count()}"
+
         assert_no_critical_errors(errors)
         browser.close()
 

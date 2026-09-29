@@ -7056,6 +7056,57 @@ export function getMobileAppHtml(): string {
         this.render();
       }
 
+      openPublishGearItemSheet() {
+        var self = this;
+        this.initMobileGearStoreState();
+        this.openActionSheet({
+          title: '🏪 Publish New Cricket Gear / Equipment Listing',
+          bodyHtml: '<div style="margin-bottom: 0.65rem;">' +
+            '<label style="display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.25rem;">Product / Rental Title:</label>' +
+            '<input type="text" id="mobileNewGearTitle" value="SS Ton Reserve Grade 1 English Willow Bat" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 0.55rem; color: #f8fafc; font-size: 0.8rem;" />' +
+            '</div>' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.65rem;">' +
+            '<div><label style="display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.25rem;">Category:</label>' +
+            '<select id="mobileNewGearCat" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 0.55rem; color: #f8fafc; font-size: 0.8rem;">' +
+            '<option value="BATS">🏏 Bats</option><option value="BALLS">🔴 Match Balls</option><option value="PROTECTIVE">🛡️ Protective</option><option value="NETS_TECH">📡 Nets & Tech</option><option value="TROPHIES">🏆 Trophies</option>' +
+            '</select></div>' +
+            '<div><label style="display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.25rem;">Price (₹):</label>' +
+            '<input type="number" id="mobileNewGearPrice" value="13499" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 0.55rem; color: #00E599; font-weight: 800; font-size: 0.8rem;" /></div>' +
+            '</div>' +
+            '<div style="margin-bottom: 0.65rem;">' +
+            '<label style="display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.25rem;">Variants (comma-separated):</label>' +
+            '<input type="text" id="mobileNewGearVariants" value="SH (2lb 8oz), LH (2lb 10oz)" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 0.55rem; color: #f8fafc; font-size: 0.8rem;" />' +
+            '</div>',
+          confirmText: 'Publish Gear Listing ⚡',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          onConfirm: function() {
+            var tEl = document.getElementById('mobileNewGearTitle');
+            var cEl = document.getElementById('mobileNewGearCat');
+            var pEl = document.getElementById('mobileNewGearPrice');
+            var vEl = document.getElementById('mobileNewGearVariants');
+            var title = (tEl && tEl.value) ? tEl.value.trim() : 'Pro Cricket Equipment';
+            var cat = (cEl && cEl.value) ? cEl.value : 'BATS';
+            var price = parseInt((pEl && pEl.value) ? pEl.value : '13499', 10) || 13499;
+            var vars = ((vEl && vEl.value) ? vEl.value : 'SH (2lb 8oz)').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+            self.gearCatalog.unshift({
+              id: 'gear-mobile-vendor-' + Date.now(),
+              title: title,
+              brand: self.profile.name || 'Verified Vendor',
+              category: cat,
+              badge: 'VENDOR LISTED',
+              price: price,
+              rating: '5.0★ (New)',
+              desc: 'Published by ' + (self.profile.name || 'Turf Provider') + ' • Express 45-min Pavilion Delivery.',
+              variants: vars.length ? vars : ['Standard Spec']
+            });
+            self.gearSubCategory = 'ALL';
+            self.closeActionSheet();
+            self.showToast('✓ Published new gear listing: ' + title + ' (₹' + price.toLocaleString('en-IN') + ')', 'success');
+            self.render();
+          }
+        });
+      }
+
       renderMobileGearStoreSection() {
         this.initMobileGearStoreState();
         var theme = this.currentTheme || 'stadium';
@@ -7092,8 +7143,10 @@ export function getMobileAppHtml(): string {
         h += '<div style="font-size: 0.62rem; font-weight: 800; color: ' + emeraldInk + '; text-transform: uppercase; letter-spacing: 0.04em;">🛍️ Pro Cricket Gear &amp; Pavilion Store</div>';
         h += '<div style="font-size: 0.88rem; font-weight: 800; color: ' + primaryInk + ';">Match Balls, English Willow Bats &amp; Kit</div>';
         h += '</div>';
+        h += '<div style="display: flex; gap: 0.3rem; align-items: center;">';
+        h += '<button type="button" id="btnMobileOpenGearPublisher" onclick="window.cricosMobileApp.openPublishGearItemSheet()" style="padding: 0.3rem 0.55rem; border-radius: 7px; border: 1px solid ' + (isLight ? '#059669' : 'rgba(0,229,153,0.45)') + '; background: ' + (isLight ? '#ECFDF5' : 'rgba(0,229,153,0.14)') + '; color: ' + emeraldInk + '; font-size: 0.66rem; font-weight: 800; cursor: pointer;" data-tooltip="Publish a new cricket gear or equipment listing">➕ List Gear</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.openGearCustomizerSheet()" style="padding: 0.3rem 0.6rem; border-radius: 7px; border: 1px solid ' + (isLight ? '#0284C7' : 'rgba(0,210,255,0.45)') + '; background: ' + (isLight ? '#F0F9FF' : 'rgba(0,210,255,0.14)') + '; color: ' + cyanInk + '; font-size: 0.68rem; font-weight: 800; cursor: pointer;" data-tooltip="Configure a 3D Bat and add to Kit Bag">🏏 3D Bat Config</button>';
-        h += '</div>';
+        h += '</div></div>';
 
         // Sub-category chips
         var subCats = [
