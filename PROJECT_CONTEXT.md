@@ -1,14 +1,23 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-29 22:16:00
-**Version:** 1.0.0-phase2bt (LHB/RHB & Scoring Notification Deduplication + Theme-Aware High-Contrast Mobile Sidebar)  
+**Last Updated:** 2026-09-29 22:36:00
+**Version:** 1.0.0-phase2bu (Intelligent Turf/Stadium/Ground Location Weather Conditions & 5-Hour Match Forecast)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BT Completed — LHB/RHB & Scoring Notification Deduplication + Theme-Aware High-Contrast Mobile Sidebar (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BU Completed — Intelligent Turf/Stadium/Ground Location Weather Conditions & 5-Hour Match Forecast (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Desktop Intelligent Venue Weather Strip & 5-Hour Match Window Forecast (`apps/api/src/ui/dashboard.ts`)**:
+    - Added `#matchVenueWeatherBar` and expandable `#venueWeatherForecastPanel` in the Match Center scoreboard header with interactive stadium/turf selector (`<select id="venueWeatherLocationSelect">`), GPS coordinates & altitude badge (`#weatherGpsCoordsBadge`), micro-climate condition headline (`#weatherConditionHeadline`), temperature/feels-like (`#weatherTempBadge`), anemometer wind speed/direction & relative humidity (`#weatherWindHumidityBadge`), swing/seam movement index & evening dew onset (`#weatherSwingDewBadge`), rain probability & DLS interruption risk (`#weatherDlsRiskBadge`), and live satellite sync (`#btnSyncLiveVenueWeather` / `syncLiveGpsVenueWeather()`).
+    - Built `VENUE_WEATHER_PROFILES` across 5 iconic turf/stadium micro-climates (`chinnaswamy_turf_a` — Bengaluru 920m altitude, `wankhede_arena` — Mumbai coastal sea breeze, `eden_gardens_turf` — Kolkata Hooghly riverfront heavy dew, `dharamshala_hpca` — Dharamshala 1,457m thin mountain air & 2.6° swing, `chepauk_marina` — Chennai humid marina & dry spin clay), dynamically recalculating 5-hour match window forecasts (`#weatherHourlyTimelineGrid`), 4 pitch aerodynamics & tactical impact cards (`#weatherPitchImpactGrid`), and Toss & DLS Weather (`#tossWeatherSelect`).
+  - **2. Mobile & Native Android APK Venue Weather & Forecast Engine (`apps/api/src/ui/mobile-view.ts`)**:
+    - Added `renderMobileVenueWeatherCard()` (`#mobileVenueWeatherCard`), `selectVenueWeatherLocation()`, and `toggleMobileWeatherForecast()` across both the `Matches` screen and `Turfs` marketplace screen with 100% theme-aware (`swiss`, `nordic`, `stadium`) WCAG AAA contrast (`>= 7.5:1`).
+    - Displays `<select id="mobileVenueWeatherSelect">`, GPS elevation badge (`#mobileWeatherGpsBadge`), live condition text (`#mobileWeatherConditionText`), 4 micro-climate metric pills (`#mobileWeatherMetricsRow`: Temp/Humidity, Wind, Swing/Dew, Rain/DLS Risk), tactical toss recommendation (`#mobileWeatherTossAdvice`), and an expandable 5-hour match window forecast strip (`#mobileWeatherForecastStrip`).
+  - **3. Automated E2E Verification (`tests/test_69_intelligent_venue_weather_and_forecast.py`)**:
+    - Verified via Playwright across Desktop (`dist/index.html`) and Mobile/APK (`dist/mobile.html`) that switching turf/stadium locations dynamically updates GPS coordinates, micro-climate metrics, swing/dew/DLS indices, pitch aerodynamics cards, and the 5-hour match window forecast timeline with zero console/page errors.
+- **Preceding Phase**: Phase 2BT Completed — LHB/RHB & Scoring Notification Deduplication + Theme-Aware High-Contrast Mobile Sidebar (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Desktop & Mobile LHB/RHB & Scoring Notification Deduplication (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`)**:
     - Propagated `silent = true` across internal calls (`setBatterStance` -> `selectShotZone(currentSelectedZone, null, true)`, `filterWagonBatter` -> `setBatterStance(targetStance, false, true)`, `swapStudioStrike` -> `filterWagonBatter(studioStriker.name, null, true)` without duplicate `setBatterStance`, and `recordStudioBall` -> `swapStudioStrike(true)`), eliminating the 6–8 stacked notification cascade in the bottom-right Sonner stack.
     - Enhanced `createToast()` in `dashboard.ts` to deduplicate/replace existing toasts sharing the same prefix (`Batsman stance:`, `Wagon Zone:`, `Wagon wheel filtered for:`, `Strike swapped!`, `Delivered:`) and cap `#sonnerToaster` to at most 2 visible toasts.

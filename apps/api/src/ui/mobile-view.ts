@@ -6538,6 +6538,230 @@ export function getMobileAppHtml(): string {
         return h;
       }
 
+      getActiveVenueWeather() {
+        if (!this.venueWeatherProfiles) {
+          this.venueWeatherProfiles = {
+            chinnaswamy_turf_a: {
+              id: 'chinnaswamy_turf_a',
+              name: 'M. Chinnaswamy Turf Arena',
+              city: 'Bengaluru, KA • 920m Alt',
+              coords: '12.9788° N, 77.5996° E',
+              icon: '⛅',
+              headline: 'Partly Cloudy • High-Altitude Breeze (+4.2m Six Carry)',
+              tempC: 26,
+              feelsLikeC: 27,
+              wind: '16 km/h ENE',
+              humidity: '64% RH',
+              rainProb: '18%',
+              swingIndex: '6.8/10',
+              dewStatus: 'MODERATE-HIGH (19:30 IST)',
+              dlsRisk: 'LOW',
+              tossAdvice: '🪙 BOWL FIRST (64% Chase Win) — Early breeze aids swing; dew speeds outfield after 19:30 IST.',
+              hourly: [
+                ['18:00', '⛅', '26°C', '15%', 'Swing High'],
+                ['19:00', '🌤️', '25°C', '18%', 'Dew Onset'],
+                ['20:00', '🌙', '24°C', '20%', 'Wet Turf'],
+                ['21:00', '🌙', '23°C', '12%', 'Fast Skid'],
+                ['22:00', '🌙', '22°C', '10%', 'Clear Chase']
+              ]
+            },
+            wankhede_arena: {
+              id: 'wankhede_arena',
+              name: 'Wankhede Arena Turf Club',
+              city: 'South Mumbai, MH • 8m Coast',
+              coords: '18.9389° N, 72.8258° E',
+              icon: '🌬️',
+              headline: 'Humid Arabian Sea Breeze • Sharp Powerplay Late Swing',
+              tempC: 30,
+              feelsLikeC: 34,
+              wind: '22 km/h WSW',
+              humidity: '78% RH',
+              rainProb: '12%',
+              swingIndex: '8.4/10',
+              dewStatus: 'HIGH (19:00 IST)',
+              dlsRisk: 'MINIMAL',
+              tossAdvice: '🪙 BOWL FIRST (68% Chase Win) — 22 km/h sea breeze swings new ball; heavy coastal dew in 2nd innings.',
+              hourly: [
+                ['18:00', '🌬️', '30°C', '10%', 'Sea Swing'],
+                ['19:00', '🌙', '29°C', '12%', 'Heavy Dew'],
+                ['20:00', '🌙', '28°C', '12%', 'Red Bounce'],
+                ['21:00', '🌙', '28°C', '15%', 'Wet Seam'],
+                ['22:00', '🌙', '27°C', '10%', 'Fast Rope']
+              ]
+            },
+            eden_gardens_turf: {
+              id: 'eden_gardens_turf',
+              name: 'Eden Gardens Royal Turf',
+              city: 'Kolkata, WB • 9m Riverfront',
+              coords: '22.5646° N, 88.3433° E',
+              icon: '🌧️',
+              headline: 'Overcast Monsoon Trough • High Seam & DLS Par Alert',
+              tempC: 28,
+              feelsLikeC: 32,
+              wind: '19 km/h SSE',
+              humidity: '84% RH',
+              rainProb: '62%',
+              swingIndex: '8.9/10',
+              dewStatus: 'SEVERE (Damp)',
+              dlsRisk: 'HIGH (62%)',
+              tossAdvice: '🪙 BOWL FIRST (74% DLS Advantage) — 62% shower risk at 19:45 IST; chasing controls DLS par score.',
+              hourly: [
+                ['18:00', '☁️', '28°C', '40%', 'Cloud Seam'],
+                ['19:00', '🌧️', '27°C', '62%', 'DLS Alert'],
+                ['20:00', '🌦️', '26°C', '55%', 'Covers Ready'],
+                ['21:00', '☁️', '26°C', '30%', 'Damp Turf'],
+                ['22:00', '☁️', '25°C', '25%', 'DLS Chase']
+              ]
+            },
+            dharamshala_hpca: {
+              id: 'dharamshala_hpca',
+              name: 'HPCA Himalayan Stadium',
+              city: 'Dharamshala, HP • 1,457m Alt',
+              coords: '32.1976° N, 76.3258° E',
+              icon: '🏔️',
+              headline: 'Crisp Himalayan Valley Wind • Extreme Pace & Carry',
+              tempC: 17,
+              feelsLikeC: 15,
+              wind: '24 km/h NNW',
+              humidity: '52% RH',
+              rainProb: '22%',
+              swingIndex: '9.2/10',
+              dewStatus: 'LOW',
+              dlsRisk: 'LOW',
+              tossAdvice: '🪙 BOWL FIRST (4-Seam Attack) — Cold 17°C valley wind & 1,457m altitude deliver steep bounce.',
+              hourly: [
+                ['18:00', '🌤️', '17°C', '20%', '+6.8m Carry'],
+                ['19:00', '🌙', '15°C', '22%', 'Crisp Seam'],
+                ['20:00', '🌙', '14°C', '18%', 'Hard Ball'],
+                ['21:00', '🌙', '13°C', '15%', 'Fast Deck'],
+                ['22:00', '🌙', '12°C', '10%', 'Cold Clear']
+              ]
+            },
+            chepauk_marina: {
+              id: 'chepauk_marina',
+              name: 'M. A. Chidambaram Marina',
+              city: 'Chennai, TN • 6m Marina Coast',
+              coords: '13.0629° N, 80.2792° E',
+              icon: '☀️',
+              headline: 'Warm Marina Evening • Baked Clay & 4.8° Spin Grip',
+              tempC: 32,
+              feelsLikeC: 37,
+              wind: '18 km/h SE',
+              humidity: '76% RH',
+              rainProb: '14%',
+              swingIndex: '5.4/10',
+              dewStatus: 'MODERATE',
+              dlsRisk: 'LOW',
+              tossAdvice: '🪙 BAT FIRST (61% Spin Choke) — Dry clay offers 4.8° spin turn from Over 7 onwards.',
+              hourly: [
+                ['18:00', '☀️', '32°C', '14%', 'Dry Clay'],
+                ['19:00', '🌙', '31°C', '14%', '4.8° Turn'],
+                ['20:00', '🌙', '30°C', '12%', 'Spin Grip'],
+                ['21:00', '🌙', '29°C', '10%', 'Sea Breeze'],
+                ['22:00', '🌙', '29°C', '10%', 'Spin Choke']
+              ]
+            }
+          };
+        }
+        if (!this.selectedVenueWeatherId) {
+          this.selectedVenueWeatherId = 'chinnaswamy_turf_a';
+        }
+        return this.venueWeatherProfiles[this.selectedVenueWeatherId] || this.venueWeatherProfiles.chinnaswamy_turf_a;
+      }
+
+      selectVenueWeatherLocation(venueId, notify = true) {
+        this.getActiveVenueWeather();
+        var key = venueId || 'chinnaswamy_turf_a';
+        var norm = String(venueId).toLowerCase();
+        if (!this.venueWeatherProfiles[key]) {
+          if (norm.indexOf('wankhede') !== -1 || norm.indexOf('mumbai') !== -1) key = 'wankhede_arena';
+          else if (norm.indexOf('eden') !== -1 || norm.indexOf('kolkata') !== -1) key = 'eden_gardens_turf';
+          else if (norm.indexOf('dharamshala') !== -1 || norm.indexOf('hpca') !== -1) key = 'dharamshala_hpca';
+          else if (norm.indexOf('chepauk') !== -1 || norm.indexOf('chennai') !== -1) key = 'chepauk_marina';
+          else key = 'chinnaswamy_turf_a';
+        }
+        this.selectedVenueWeatherId = key;
+        var w = this.venueWeatherProfiles[key];
+        if (notify) {
+          this.showToast('🌦️ ' + w.name + ': ' + w.tempC + '°C • Rain ' + w.rainProb, 'info', 1600);
+        }
+        this.render();
+        return w;
+      }
+
+      toggleMobileWeatherForecast() {
+        this.weatherForecastExpanded = !this.weatherForecastExpanded;
+        this.render();
+      }
+
+      renderMobileVenueWeatherCard() {
+        var w = this.getActiveVenueWeather();
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var isNordic = (activeTheme === 'nordic');
+
+        var cardBg = isLight ? (isNordic ? '#FAF8F5' : '#FFFFFF') : 'rgba(10, 18, 32, 0.92)';
+        var cardBorder = isLight ? (isNordic ? '#D6D0C4' : '#CBD5E1') : 'rgba(0, 210, 255, 0.32)';
+        var primaryInk = isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#F8FAFC';
+        var secondaryInk = isLight ? (isNordic ? '#44403C' : '#334155') : '#CBD5E1';
+        var selectBg = isLight ? '#F1F5F9' : 'rgba(15, 23, 42, 0.95)';
+        var selectBorder = isLight ? '#64748B' : 'rgba(0, 210, 255, 0.45)';
+        var pillEmerald = isLight
+          ? 'background: #ECFDF5; border: 1px solid #059669; color: #064E3B;'
+          : 'background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); color: #00E599;';
+        var pillCyan = isLight
+          ? 'background: #F0F9FF; border: 1px solid #0284C7; color: #0C4A6E;'
+          : 'background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF;';
+        var pillAmber = isLight
+          ? 'background: #FFFBEB; border: 1px solid #D97706; color: #78350F;'
+          : 'background: rgba(255, 184, 0, 0.14); border: 1px solid rgba(255, 184, 0, 0.35); color: #FFB800;';
+        var slotBg = isLight ? '#F8FAFC' : 'rgba(15, 23, 42, 0.78)';
+        var slotBorder = isLight ? '#CBD5E1' : 'rgba(255, 255, 255, 0.12)';
+        var accentEmeraldInk = isLight ? '#065F46' : '#00E599';
+
+        var h = '<div id="mobileVenueWeatherCard" data-venue-id="' + w.id + '" style="background: ' + cardBg + '; border: 1px solid ' + cardBorder + '; border-radius: 12px; padding: 0.6rem 0.75rem; margin-bottom: 0.55rem; color: ' + primaryInk + ';">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.38rem;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.38rem; flex: 1; min-width: 180px;">';
+        h += '<span style="font-size: 1.15rem;" id="mobileWeatherIcon">' + w.icon + '</span>';
+        h += '<select id="mobileVenueWeatherSelect" aria-label="Select Turf or Stadium Location" onchange="window.cricosMobileApp.selectVenueWeatherLocation(this.value, true)" style="flex: 1; background: ' + selectBg + '; color: ' + primaryInk + '; border: 1px solid ' + selectBorder + '; border-radius: 6px; padding: 0.22rem 0.4rem; font-size: 0.7rem; font-weight: 800;" data-tooltip="Switch Turf or Stadium Location for Weather Forecast">';
+        h += '<option value="chinnaswamy_turf_a"' + (w.id === 'chinnaswamy_turf_a' ? ' selected' : '') + '>📍 Chinnaswamy Turf (Bengaluru)</option>';
+        h += '<option value="wankhede_arena"' + (w.id === 'wankhede_arena' ? ' selected' : '') + '>📍 Wankhede Turf (Mumbai)</option>';
+        h += '<option value="eden_gardens_turf"' + (w.id === 'eden_gardens_turf' ? ' selected' : '') + '>📍 Eden Gardens (Kolkata)</option>';
+        h += '<option value="dharamshala_hpca"' + (w.id === 'dharamshala_hpca' ? ' selected' : '') + '>📍 HPCA Stadium (Dharamshala)</option>';
+        h += '<option value="chepauk_marina"' + (w.id === 'chepauk_marina' ? ' selected' : '') + '>📍 Chepauk Marina (Chennai)</option>';
+        h += '</select>';
+        h += '</div>';
+        h += '<button type="button" id="btnMobileToggleWeatherDetail" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="' + pillCyan + ' border-radius: 6px; padding: 0.2rem 0.48rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle 5-Hour Match Window Forecast">' + (this.weatherForecastExpanded ? '🌦️ Hide ▴' : '🌦️ 5-Hr Forecast ▾') + '</button>';
+        h += '</div>';
+
+        h += '<div id="mobileWeatherConditionText" style="font-size: 0.7rem; font-weight: 800; color: ' + primaryInk + '; margin-bottom: 0.35rem;">' + w.headline + ' <span style="font-weight: 600; color: ' + secondaryInk + ';">(' + w.coords + ')</span></div>';
+
+        h += '<div id="mobileWeatherMetricsRow" style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.35rem;">';
+        h += '<span style="' + pillEmerald + ' padding: 0.14rem 0.42rem; border-radius: 5px; font-size: 0.63rem; font-weight: 800;">🌡️ ' + w.tempC + '°C (Feels ' + w.feelsLikeC + '°C)</span>';
+        h += '<span style="' + pillCyan + ' padding: 0.14rem 0.42rem; border-radius: 5px; font-size: 0.63rem; font-weight: 800;">💨 ' + w.wind + ' • ' + w.humidity + '</span>';
+        h += '<span style="' + pillAmber + ' padding: 0.14rem 0.42rem; border-radius: 5px; font-size: 0.63rem; font-weight: 800;">☔ Rain ' + w.rainProb + ' • Swing ' + w.swingIndex + '</span>';
+        h += '</div>';
+
+        h += '<div id="mobileWeatherTossAdvice" style="font-size: 0.65rem; font-weight: 800; color: ' + accentEmeraldInk + ';">' + w.tossAdvice + '</div>';
+
+        if (this.weatherForecastExpanded) {
+          h += '<div id="mobileWeatherForecastStrip" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.25rem; margin-top: 0.45rem; padding-top: 0.42rem; border-top: 1px solid ' + slotBorder + ';">';
+          for (var i = 0; i < w.hourly.length; i++) {
+            var sl = w.hourly[i];
+            h += '<div style="background: ' + slotBg + '; border: 1px solid ' + slotBorder + '; border-radius: 6px; padding: 0.3rem 0.25rem; text-align: center;">';
+            h += '<div style="font-size: 0.58rem; font-weight: 800; color: ' + secondaryInk + ';">' + sl[0] + '</div>';
+            h += '<div style="font-size: 0.85rem; margin: 0.08rem 0;">' + sl[1] + '</div>';
+            h += '<div style="font-size: 0.66rem; font-weight: 800; color: ' + primaryInk + ';">' + sl[2] + '</div>';
+            h += '<div style="font-size: 0.56rem; font-weight: 800; color: ' + accentEmeraldInk + ';">☔' + sl[3] + '</div>';
+            h += '<div style="font-size: 0.54rem; font-weight: 700; color: ' + secondaryInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + sl[4] + '</div>';
+            h += '</div>';
+          }
+          h += '</div>';
+        }
+        h += '</div>';
+        return h;
+      }
+
       renderMatches() {
         var overs = Math.floor(this.matchState.legalBalls / 6);
         var balls = this.matchState.legalBalls % 6;
@@ -6546,6 +6770,7 @@ export function getMobileAppHtml(): string {
         var remainingBalls = Math.max(0, 120 - this.matchState.legalBalls);
         var rrr = remainingBalls > 0 ? ((remainingRuns / remainingBalls) * 6).toFixed(2) : '0.00';
         var persona = this.profile.persona;
+        var activeWeather = this.getActiveVenueWeather();
 
         var h = '<div class="mobile-subnav">';
         var subTabs = [
@@ -6570,7 +6795,7 @@ export function getMobileAppHtml(): string {
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.35rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
         h += '<span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 9999px;">🔴 LIVE MATCH</span>';
-        h += '<span style="font-size: 0.68rem; color: #94a3b8;">Wankhede Stadium</span>';
+        h += '<span id="mobileActiveVenueBadge" style="font-size: 0.68rem; color: #94a3b8; font-weight: 700;">' + activeWeather.name + ' (' + activeWeather.tempC + '°C)</span>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">';
         h += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); color: #00E599; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open 11-Fielder Tactical Radar & MCC Law 28.4 Engine" aria-label="Field Planner">🎯 Field Radar</button>';
@@ -6589,6 +6814,9 @@ export function getMobileAppHtml(): string {
         h += 'Target Equation: Need ' + remainingRuns + ' runs in ' + remainingBalls + ' balls';
         h += '</div>';
         h += '</div>';
+
+        // Intelligent Turf / Stadium / Ground Weather & Forecast Card
+        h += this.renderMobileVenueWeatherCard();
 
         // SUB-VIEW 0: 3D STADIUM VIEWPORT
         if (this.matchSubTab === 'STADIUM_3D') {
@@ -7282,6 +7510,9 @@ export function getMobileAppHtml(): string {
         h += '</div>';
         h += '<button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="padding: 0.25rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.7rem; font-weight: 700;" data-tooltip="Inspect unified Event Basket">🧺 Basket</button>';
         h += '</div></div>';
+
+        // Intelligent Turf / Ground Location Weather & Forecast
+        h += this.renderMobileVenueWeatherCard();
 
         // Category Filter Chips
         h += '<div class="mobile-chip-row" style="margin-bottom: 0.65rem;">';
