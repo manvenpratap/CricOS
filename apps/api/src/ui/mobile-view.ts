@@ -3431,9 +3431,15 @@ export function getMobileAppHtml(): string {
           ? 'background: #F5F3FF; border: 1px solid #7C3AED; color: #4C1D95; font-weight: 800;'
           : 'background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.3); color: #C4B5FD; font-weight: 700;';
 
+        var studioGearStyle = isLight
+          ? 'background: #FFFBEB; border: 1px solid #D97706; color: #78350F; font-weight: 800;'
+          : 'background: rgba(251, 191, 36, 0.12); border: 1px solid rgba(251, 191, 36, 0.38); color: #FDE68A; font-weight: 700;';
+        var cartCount = this.getMobileGearCartCount ? this.getMobileGearCartCount() : 2;
+
         h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D &amp; Tactical Studios</div>';
+        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D, Gear Store &amp; Studios</div>';
         h += '<div id="mobileSidebarStudios" style="display: flex; flex-direction: column; gap: 0.28rem;">';
+        h += '<button type="button" id="btnMobileSidebarGearStore" onclick="window.cricosMobileApp.openMobileGearStore()" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioGearStyle + '" data-tooltip="Open Pro Cricket Gear Store, Match Kit Bag &amp; Pavilion Delivery"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>🛍️</span><span>Pro Cricket Gear Store</span></span><span id="mobileSidebarGearCartBadge" style="font-family: Chakra Petch, monospace; font-size: 0.65rem; font-weight: 800; padding: 0.05rem 0.38rem; border-radius: 999px; background: rgba(0,0,0,0.18);">' + cartCount + '</span></button>';
         h += '<button type="button" data-screen="MATCHES" data-subtab="3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
         h += '<button type="button" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
         h += '<button type="button" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
@@ -5761,9 +5767,14 @@ export function getMobileAppHtml(): string {
           onConfirm: function() {
             var select = document.getElementById('willowGradeSelect');
             var val = select ? select.value : 'Grade 1 English Willow';
+            var price = val.indexOf('Grade 1') !== -1 ? 14999 : (val.indexOf('Carbon') !== -1 ? 18500 : 6499);
             self.stopMobile3DViewers();
-            self.showToast('✓ ' + val + ' added to CricOS Event Basket!', 'success');
             self.closeActionSheet();
+            if (self.addCustomMobileBatToCart) {
+              self.addCustomMobileBatToCart(val, price);
+            } else {
+              self.showToast('✓ ' + val + ' added to CricOS Kit Bag!', 'success');
+            }
           }
         });
 
@@ -6762,6 +6773,456 @@ export function getMobileAppHtml(): string {
         return h;
       }
 
+      initMobileGearStoreState() {
+        if (!this.gearCatalog) {
+          this.gearCatalog = [
+            {
+              id: 'gear-bat-g1',
+              title: 'Reserve Grade 1+ English Willow Bat',
+              brand: 'CricOS Pro Blade',
+              category: 'BATS',
+              badge: 'PRO GRADE 1+',
+              price: 14999,
+              rating: '4.9★ (142)',
+              desc: '8–10 straight grains, 40mm edges, knocked-in & raw linseed oiled.',
+              variants: ['SH (2lb 8oz)', 'SH Light (2lb 7oz)', 'LH (2lb 10oz)']
+            },
+            {
+              id: 'gear-bat-carbon',
+              title: 'Carbon-Composite Spine Power T20 Blade',
+              brand: 'AeroStrike Lab',
+              category: 'BATS',
+              badge: 'T20 POWER',
+              price: 18500,
+              rating: '4.9★ (89)',
+              desc: 'Carbon-reinforced spine & high sweet spot for boundary clearing.',
+              variants: ['Mid-Low (2lb 8oz)', 'High Sweet Spot (2lb 7oz)']
+            },
+            {
+              id: 'gear-balls-white',
+              title: 'Kookaburra Turf White Match Balls (Box of 6)',
+              brand: 'Kookaburra Official',
+              category: 'BALLS',
+              badge: 'MCC LAW 4',
+              price: 4800,
+              rating: '5.0★ (318)',
+              desc: '4-piece alum-tanned steerhide with dew-resistant PU floodlight coat (156g).',
+              variants: ['4-Piece T20 (156g)', 'Dew-Shield Coat (156g)']
+            },
+            {
+              id: 'gear-balls-red',
+              title: 'SG Test Red Alum-Tanned Leather Balls (Box of 6)',
+              brand: 'SG Sanspareils',
+              category: 'BALLS',
+              badge: '80-OVER TEST',
+              price: 5400,
+              rating: '4.9★ (215)',
+              desc: 'Hand-stitched 80-stitch proud linen seam for conventional & reverse swing.',
+              variants: ['Test Grade A (80 Overs)', 'Club Grade (50 Overs)']
+            },
+            {
+              id: 'gear-pad-helmet',
+              title: 'Titanium Grill BS7928 Pro Batting Helmet',
+              brand: 'Masuri Vision Spec',
+              category: 'PROTECTIVE',
+              badge: 'BS7928:2013',
+              price: 7200,
+              rating: '4.9★ (176)',
+              desc: 'Aerospace titanium faceguard with Halo impact shell & neck stem-guard.',
+              variants: ['Medium (56–58cm)', 'Large (59–62cm)', 'XL (62–64cm)']
+            },
+            {
+              id: 'gear-pad-kit',
+              title: 'Test Batting Legguards & Pittards Gloves Combo',
+              brand: 'CricOS Armour',
+              category: 'PROTECTIVE',
+              badge: 'RHB / LHB SPEC',
+              price: 6800,
+              rating: '4.8★ (128)',
+              desc: 'Ultra-lite 680g HDF & cane rods + English Pittards sheep leather palms.',
+              variants: ['RHB (Right-Handed Batter)', 'LHB (Left-Handed Batter)']
+            },
+            {
+              id: 'gear-tech-smartball',
+              title: 'Smart Telemetry 9-Axis IMU Gyro Cricket Ball',
+              brand: 'CricOS Labs',
+              category: 'NETS_TECH',
+              badge: 'BLUETOOTH 5.3',
+              price: 9500,
+              rating: '4.9★ (67)',
+              desc: '1000Hz MEMS sensor streaming release speed (km/h), spin RPM & seam angle.',
+              variants: ['White Seam (T20)', 'Red Seam (Test)']
+            },
+            {
+              id: 'gear-net-cage',
+              title: 'Pro 12x4m Practice Net Cage & Bowling Machine',
+              brand: 'TurfOps Rental',
+              category: 'NETS_TECH',
+              badge: 'TURF RIGGED',
+              price: 1500,
+              rating: '4.9★ (204)',
+              desc: 'Heavy-duty HDPE practice enclosure + 150 km/h swing/spin bowling machine.',
+              variants: ['Full Match Day (8 Hrs)', 'Floodlight Slot (4 Hrs)']
+            },
+            {
+              id: 'gear-trophy-champ',
+              title: '24-Inch Gold Championship Trophy & 16 Medals',
+              brand: 'Silverware Studio',
+              category: 'TROPHIES',
+              badge: 'LASER ENGRAVED',
+              price: 8500,
+              rating: '5.0★ (112)',
+              desc: '24-inch handcrafted gold cup + 16 die-cast medals with custom engraving.',
+              variants: ['Gold Cup + 16 Medals + MVP', 'Silver Shield + 16 Medals']
+            }
+          ];
+        }
+        if (!this.gearCart) {
+          this.gearCart = [
+            { id: 'gear-balls-white', title: 'Kookaburra Turf White Match Balls (Box of 6)', variant: '4-Piece T20 (156g)', price: 4800, qty: 1 },
+            { id: 'gear-net-cage', title: 'Pro 12x4m Practice Net Cage & Bowling Machine', variant: 'Full Match Day (8 Hrs)', price: 1500, qty: 1 }
+          ];
+        }
+        if (!this.gearOrders) {
+          this.gearOrders = [
+            {
+              orderId: 'ORD-GEAR-8941',
+              summary: '1x Kookaburra White Balls, 1x Practice Net Cage',
+              total: '₹7,434',
+              venue: 'M. Chinnaswamy Turf Arena — Pitch 1 Pavilion',
+              status: '🟢 Delivered to Scorer Desk'
+            }
+          ];
+        }
+        if (!this.gearSubCategory) this.gearSubCategory = 'ALL';
+        if (typeof this.gearSearchQuery !== 'string') this.gearSearchQuery = '';
+        if (typeof this.gearStoreExpanded !== 'boolean') this.gearStoreExpanded = true;
+        if (!this.gearDeliveryVenue) this.gearDeliveryVenue = 'M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)';
+      }
+
+      getMobileGearCartCount() {
+        this.initMobileGearStoreState();
+        var count = 0;
+        for (var i = 0; i < this.gearCart.length; i++) {
+          count += this.gearCart[i].qty;
+        }
+        return count;
+      }
+
+      openMobileGearStore() {
+        this.initMobileGearStoreState();
+        this.closeSidebarDrawer();
+        this.currentScreen = 'MARKETPLACE';
+        this.marketCategory = 'GEAR';
+        this.gearStoreExpanded = true;
+        this.render();
+      }
+
+      setMobileGearSubCat(cat) {
+        this.initMobileGearStoreState();
+        this.gearSubCategory = cat || 'ALL';
+        this.render();
+      }
+
+      setMobileGearSearch(val) {
+        this.initMobileGearStoreState();
+        this.gearSearchQuery = val || '';
+        this.render();
+      }
+
+      addCustomMobileBatToCart(willowTitle, price) {
+        this.initMobileGearStoreState();
+        this.gearCart.push({
+          id: 'gear-custom-3d-bat',
+          title: 'Custom 3D ' + willowTitle,
+          variant: 'Grip: ' + (this.activeGripColor || '#00E599') + ' • SH 2lb 8oz',
+          price: price || 14999,
+          qty: 1
+        });
+        this.currentScreen = 'MARKETPLACE';
+        this.marketCategory = 'GEAR';
+        this.gearStoreExpanded = true;
+        this.showToast('🛒 Added Custom 3D ' + willowTitle + ' to Match Kit Bag!', 'success');
+        this.render();
+      }
+
+      addMobileGearToCart(itemId) {
+        this.initMobileGearStoreState();
+        var found = null;
+        for (var i = 0; i < this.gearCatalog.length; i++) {
+          if (this.gearCatalog[i].id === itemId) {
+            found = this.gearCatalog[i];
+            break;
+          }
+        }
+        if (!found) return;
+        var selEl = document.getElementById('mobileGearVariant_' + itemId);
+        var chosenVar = selEl ? selEl.value : found.variants[0];
+        var existing = null;
+        for (var j = 0; j < this.gearCart.length; j++) {
+          if (this.gearCart[j].id === itemId && this.gearCart[j].variant === chosenVar) {
+            existing = this.gearCart[j];
+            break;
+          }
+        }
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          this.gearCart.push({
+            id: found.id,
+            title: found.title,
+            variant: chosenVar,
+            price: found.price,
+            qty: 1
+          });
+        }
+        this.showToast('🛒 Added ' + found.title + ' (' + chosenVar + ') to Kit Bag!', 'success');
+        this.render();
+      }
+
+      updateMobileGearQty(index, delta) {
+        this.initMobileGearStoreState();
+        if (!this.gearCart[index]) return;
+        this.gearCart[index].qty += delta;
+        if (this.gearCart[index].qty <= 0) {
+          this.gearCart.splice(index, 1);
+        }
+        this.render();
+      }
+
+      clearMobileGearCart() {
+        this.initMobileGearStoreState();
+        this.gearCart = [];
+        this.gearAppliedPromo = null;
+        this.showToast('🧺 Match Kit Bag cleared', 'info');
+        this.render();
+      }
+
+      applyMobileGearPromo(code) {
+        this.initMobileGearStoreState();
+        var c = (code || '').trim().toUpperCase();
+        if (!c) {
+          var inp = document.getElementById('mobileGearPromoInput');
+          c = inp ? inp.value.trim().toUpperCase() : '';
+        }
+        if (c === 'CRIC20') {
+          this.gearAppliedPromo = { code: 'CRIC20', type: 'PERCENT', value: 20 };
+          this.showToast('✓ CRIC20 applied (20% OFF Kit Bag)!', 'success');
+        } else if (c === 'TURF500') {
+          this.gearAppliedPromo = { code: 'TURF500', type: 'FLAT', value: 500 };
+          this.showToast('✓ TURF500 applied (₹500 flat discount)!', 'success');
+        } else {
+          this.showToast('⚠ Invalid promo code: ' + c, 'error');
+        }
+        this.render();
+      }
+
+      setMobileGearDeliveryVenue(val) {
+        this.initMobileGearStoreState();
+        this.gearDeliveryVenue = val || 'M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)';
+        this.render();
+      }
+
+      submitMobileGearCheckout() {
+        this.initMobileGearStoreState();
+        if (!this.gearCart || this.gearCart.length === 0) {
+          this.showToast('⚠ Add at least 1 gear item to your Kit Bag before checkout', 'error');
+          return;
+        }
+        var subtotal = 0;
+        var summaryParts = [];
+        for (var i = 0; i < this.gearCart.length; i++) {
+          subtotal += this.gearCart[i].price * this.gearCart[i].qty;
+          summaryParts.push(this.gearCart[i].qty + 'x ' + this.gearCart[i].title.split('(')[0].trim());
+        }
+        var discount = 0;
+        if (this.gearAppliedPromo) {
+          discount = this.gearAppliedPromo.type === 'PERCENT'
+            ? Math.round(subtotal * (this.gearAppliedPromo.value / 100))
+            : Math.min(subtotal, this.gearAppliedPromo.value);
+        }
+        var net = Math.max(0, subtotal - discount);
+        var gst = Math.round(net * 0.18);
+        var grandTotal = net + gst;
+        var ordId = 'ORD-GEAR-' + Math.floor(1000 + Math.random() * 8999);
+        this.gearOrders.unshift({
+          orderId: ordId,
+          summary: summaryParts.join(', '),
+          total: '₹' + grandTotal.toLocaleString('en-IN'),
+          venue: this.gearDeliveryVenue,
+          status: '🚀 Express Runner Dispatched to ' + this.gearDeliveryVenue + ' (ETA 42m)'
+        });
+        this.showToast('✅ Order ' + ordId + ' (' + '₹' + grandTotal.toLocaleString('en-IN') + ') Dispatched to Turf Pavilion!', 'success');
+        this.render();
+      }
+
+      renderMobileGearStoreSection() {
+        this.initMobileGearStoreState();
+        var theme = this.currentTheme || 'stadium';
+        var isLight = theme === 'swiss' || theme === 'nordic';
+        var cardBg = isLight ? (theme === 'nordic' ? '#FAF8F5' : '#FFFFFF') : 'rgba(10, 16, 28, 0.92)';
+        var cardBorder = isLight ? '#CBD5E1' : 'rgba(0, 229, 153, 0.35)';
+        var primaryInk = isLight ? '#0F172A' : '#F8FAFC';
+        var secondaryInk = isLight ? '#334155' : '#94A3B8';
+        var emeraldInk = isLight ? '#065F46' : '#00E599';
+        var cyanInk = isLight ? '#0C4A6E' : '#00D2FF';
+        var subCardBg = isLight ? '#F8FAFC' : 'rgba(15, 23, 42, 0.78)';
+        var subCardBorder = isLight ? '#CBD5E1' : 'rgba(255, 255, 255, 0.12)';
+
+        var subtotal = 0;
+        var totalQty = 0;
+        for (var i = 0; i < this.gearCart.length; i++) {
+          subtotal += this.gearCart[i].price * this.gearCart[i].qty;
+          totalQty += this.gearCart[i].qty;
+        }
+        var discount = 0;
+        if (this.gearAppliedPromo && subtotal > 0) {
+          discount = this.gearAppliedPromo.type === 'PERCENT'
+            ? Math.round(subtotal * (this.gearAppliedPromo.value / 100))
+            : Math.min(subtotal, this.gearAppliedPromo.value);
+        }
+        var net = Math.max(0, subtotal - discount);
+        var gst = Math.round(net * 0.18);
+        var grandTotal = net + gst;
+
+        var h = '<div id="mobileGearStoreContainer" style="background: ' + cardBg + '; border: 1.5px solid ' + cardBorder + '; border-radius: 12px; padding: 0.75rem; margin-bottom: 0.75rem;">';
+        // Store Header
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.62rem; font-weight: 800; color: ' + emeraldInk + '; text-transform: uppercase; letter-spacing: 0.04em;">🛍️ Pro Cricket Gear &amp; Pavilion Store</div>';
+        h += '<div style="font-size: 0.88rem; font-weight: 800; color: ' + primaryInk + ';">Match Balls, English Willow Bats &amp; Kit</div>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.openGearCustomizerSheet()" style="padding: 0.3rem 0.6rem; border-radius: 7px; border: 1px solid ' + (isLight ? '#0284C7' : 'rgba(0,210,255,0.45)') + '; background: ' + (isLight ? '#F0F9FF' : 'rgba(0,210,255,0.14)') + '; color: ' + cyanInk + '; font-size: 0.68rem; font-weight: 800; cursor: pointer;" data-tooltip="Configure a 3D Bat and add to Kit Bag">🏏 3D Bat Config</button>';
+        h += '</div>';
+
+        // Sub-category chips
+        var subCats = [
+          { id: 'ALL', label: 'All (9)' },
+          { id: 'BATS', label: '🏏 Bats' },
+          { id: 'BALLS', label: '🔴 Balls' },
+          { id: 'PROTECTIVE', label: '🛡️ Pads/Helmets' },
+          { id: 'NETS_TECH', label: '📡 Nets/Gyro' },
+          { id: 'TROPHIES', label: '🏆 Trophies' }
+        ];
+        h += '<div id="mobileGearSubCatRow" style="display: flex; gap: 0.3rem; overflow-x: auto; padding-bottom: 0.35rem; margin-bottom: 0.55rem;">';
+        for (var sc = 0; sc < subCats.length; sc++) {
+          var isAct = this.gearSubCategory === subCats[sc].id;
+          var chipStyle = isAct
+            ? (isLight ? 'background: #059669; color: #FFFFFF; border: 1px solid #047857;' : 'background: #00E599; color: #04070D; border: 1px solid #00E599;')
+            : (isLight ? 'background: #F1F5F9; color: #0F172A; border: 1px solid #CBD5E1;' : 'background: rgba(255,255,255,0.07); color: #F8FAFC; border: 1px solid rgba(255,255,255,0.16);');
+          h += '<button type="button" id="mobileGearCat_' + subCats[sc].id + '" data-subcat="' + subCats[sc].id + '" onclick="window.cricosMobileApp.setMobileGearSubCat(this.dataset.subcat)" style="padding: 0.25rem 0.55rem; border-radius: 999px; font-size: 0.66rem; font-weight: 800; white-space: nowrap; cursor: pointer; ' + chipStyle + '">' + subCats[sc].label + '</button>';
+        }
+        h += '</div>';
+
+        // Product Cards List
+        var filteredGear = [];
+        var q = (this.gearSearchQuery || '').trim().toLowerCase();
+        for (var g = 0; g < this.gearCatalog.length; g++) {
+          var item = this.gearCatalog[g];
+          if (this.gearSubCategory !== 'ALL' && item.category !== this.gearSubCategory) continue;
+          if (q && (item.title + ' ' + item.brand + ' ' + item.desc).toLowerCase().indexOf(q) === -1) continue;
+          filteredGear.push(item);
+        }
+
+        h += '<div id="mobileGearCatalogList" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem;">';
+        for (var k = 0; k < filteredGear.length; k++) {
+          var prod = filteredGear[k];
+          var varOpts = '';
+          for (var v = 0; v < prod.variants.length; v++) {
+            varOpts += '<option value="' + prod.variants[v] + '">' + prod.variants[v] + '</option>';
+          }
+          h += '<div class="mobile-gear-product-card" data-gear-id="' + prod.id + '" style="background: ' + subCardBg + '; border: 1px solid ' + subCardBorder + '; border-radius: 10px; padding: 0.6rem 0.7rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">';
+          h += '<div>';
+          h += '<span style="font-size: 0.58rem; font-weight: 800; color: ' + emeraldInk + '; text-transform: uppercase;">' + prod.badge + ' &bull; ' + prod.brand + '</span>';
+          h += '<div style="font-size: 0.8rem; font-weight: 800; color: ' + primaryInk + '; margin: 0.1rem 0;">' + prod.title + '</div>';
+          h += '<div style="font-size: 0.66rem; color: ' + secondaryInk + '; line-height: 1.3;">' + prod.desc + '</div>';
+          h += '</div>';
+          h += '<div style="text-align: right; flex-shrink: 0;">';
+          h += '<div style="font-family: Chakra Petch, monospace; font-size: 0.88rem; font-weight: 800; color: ' + emeraldInk + ';">₹' + prod.price.toLocaleString('en-IN') + '</div>';
+          h += '<div style="font-size: 0.6rem; font-weight: 700; color: ' + (isLight ? '#B45309' : '#FBBF24') + ';">' + prod.rating + '</div>';
+          h += '</div></div>';
+          h += '<div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 0.45rem;">';
+          h += '<select id="mobileGearVariant_' + prod.id + '" aria-label="Select spec for ' + prod.title + '" style="flex: 1; padding: 0.3rem 0.45rem; border-radius: 6px; background: ' + (isLight ? '#FFFFFF' : '#0F172A') + '; border: 1px solid ' + subCardBorder + '; color: ' + primaryInk + '; font-size: 0.66rem; font-weight: 700;">' + varOpts + '</select>';
+          h += '<button type="button" id="btnMobileAddGear_' + prod.id + '" data-gear-id="' + prod.id + '" onclick="window.cricosMobileApp.addMobileGearToCart(this.dataset.gearId)" style="padding: 0.34rem 0.68rem; border-radius: 6px; border: none; background: ' + (isLight ? '#059669' : '#00E599') + '; color: ' + (isLight ? '#FFFFFF' : '#04070D') + '; font-size: 0.68rem; font-weight: 800; cursor: pointer;" data-tooltip="Add ' + prod.title + ' to Kit Bag">+ Add to Bag</button>';
+          h += '</div></div>';
+        }
+        h += '</div>';
+
+        // Live Mobile Kit Bag & Pavilion Checkout Card
+        h += '<div id="mobileGearCartSummaryCard" style="background: ' + subCardBg + '; border: 1.5px solid ' + (isLight ? '#059669' : 'rgba(0,229,153,0.4)') + '; border-radius: 10px; padding: 0.65rem 0.75rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">';
+        h += '<div style="font-size: 0.78rem; font-weight: 800; color: ' + primaryInk + ';">🧺 Your Match Kit Bag (<span id="mobileGearCartCountText">' + totalQty + '</span> items)</div>';
+        if (this.gearCart.length > 0) {
+          h += '<button type="button" onclick="window.cricosMobileApp.clearMobileGearCart()" style="padding: 0.15rem 0.45rem; border-radius: 5px; border: 1px solid ' + subCardBorder + '; background: transparent; color: ' + secondaryInk + '; font-size: 0.62rem; font-weight: 700;">Clear</button>';
+        }
+        h += '</div>';
+
+        if (this.gearCart.length === 0) {
+          h += '<div style="font-size: 0.68rem; color: ' + secondaryInk + '; padding: 0.5rem 0;">Your Match Kit Bag is empty. Tap + Add to Bag on any item above.</div>';
+        } else {
+          h += '<div id="mobileGearCartItemsList" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.55rem;">';
+          for (var c = 0; c < this.gearCart.length; c++) {
+            var ci = this.gearCart[c];
+            h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.35rem; padding: 0.35rem 0.5rem; border-radius: 6px; background: ' + cardBg + '; border: 1px solid ' + subCardBorder + ';">';
+            h += '<div style="min-width: 0; flex: 1;"><div style="font-size: 0.7rem; font-weight: 800; color: ' + primaryInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + ci.title + '</div><div style="font-size: 0.6rem; color: ' + cyanInk + '; font-weight: 700;">' + ci.variant + '</div></div>';
+            h += '<div style="display: flex; align-items: center; gap: 0.28rem;">';
+            h += '<button type="button" onclick="window.cricosMobileApp.updateMobileGearQty(' + c + ', -1)" style="width: 22px; height: 22px; border-radius: 4px; border: 1px solid ' + subCardBorder + '; background: transparent; color: ' + primaryInk + '; font-weight: 800;">−</button>';
+            h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.72rem; font-weight: 800; color: ' + primaryInk + ';">' + ci.qty + '</span>';
+            h += '<button type="button" onclick="window.cricosMobileApp.updateMobileGearQty(' + c + ', 1)" style="width: 22px; height: 22px; border-radius: 4px; border: 1px solid ' + subCardBorder + '; background: transparent; color: ' + emeraldInk + '; font-weight: 800;">+</button>';
+            h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.72rem; font-weight: 800; color: ' + emeraldInk + '; min-width: 48px; text-align: right;">₹' + (ci.price * ci.qty).toLocaleString('en-IN') + '</span>';
+            h += '</div></div>';
+          }
+          h += '</div>';
+        }
+
+        // Delivery Venue & Promo Chips
+        h += '<div style="margin-bottom: 0.45rem;">';
+        h += '<label for="mobileGearDeliveryVenueSelect" style="font-size: 0.6rem; font-weight: 800; color: ' + secondaryInk + '; display: block; margin-bottom: 0.2rem;">🏟️ EXPRESS 45-MIN TURF PAVILION DROP (FREE):</label>';
+        h += '<select id="mobileGearDeliveryVenueSelect" onchange="window.cricosMobileApp.setMobileGearDeliveryVenue(this.value)" style="width: 100%; padding: 0.32rem 0.45rem; border-radius: 6px; background: ' + (isLight ? '#FFFFFF' : '#0F172A') + '; border: 1px solid ' + subCardBorder + '; color: ' + primaryInk + '; font-size: 0.66rem; font-weight: 700;">';
+        var venues = [
+          'M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)',
+          'Wankhede Arena Turf Club (North Stand Dugout)',
+          'Eden Gardens Royal Turf (Clubhouse Gate 2)',
+          'HPCA Himalayan Stadium (Practice Nets Bay A)',
+          'M. A. Chidambaram Marina (Pavilion Locker 4)'
+        ];
+        for (var vn = 0; vn < venues.length; vn++) {
+          h += '<option value="' + venues[vn] + '"' + (this.gearDeliveryVenue === venues[vn] ? ' selected' : '') + '>📍 ' + venues[vn] + '</option>';
+        }
+        h += '</select></div>';
+
+        h += '<div style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.45rem;">';
+        h += '<button type="button" id="btnMobilePromoCric20" data-promo="CRIC20" onclick="window.cricosMobileApp.applyMobileGearPromo(this.dataset.promo)" style="padding: 0.18rem 0.45rem; border-radius: 5px; font-size: 0.6rem; font-family: Chakra Petch, monospace; font-weight: 800; background: ' + (isLight ? '#ECFDF5' : 'rgba(0,229,153,0.14)') + '; border: 1px solid ' + (isLight ? '#059669' : 'rgba(0,229,153,0.38)') + '; color: ' + emeraldInk + '; cursor: pointer;">CRIC20 (20% OFF)</button>';
+        h += '<button type="button" id="btnMobilePromoTurf500" data-promo="TURF500" onclick="window.cricosMobileApp.applyMobileGearPromo(this.dataset.promo)" style="padding: 0.18rem 0.45rem; border-radius: 5px; font-size: 0.6rem; font-family: Chakra Petch, monospace; font-weight: 800; background: ' + (isLight ? '#F0F9FF' : 'rgba(0,210,255,0.14)') + '; border: 1px solid ' + (isLight ? '#0284C7' : 'rgba(0,210,255,0.38)') + '; color: ' + cyanInk + '; cursor: pointer;">TURF500 (₹500 OFF)</button>';
+        h += '</div>';
+
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.68rem; color: ' + secondaryInk + '; margin-bottom: 0.2rem;"><span>Subtotal: ₹' + subtotal.toLocaleString('en-IN') + ' &bull; Discount: -₹' + discount.toLocaleString('en-IN') + ' &bull; GST: ₹' + gst.toLocaleString('en-IN') + '</span></div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding-top: 0.3rem; border-top: 1px solid ' + subCardBorder + ';">';
+        h += '<span style="font-size: 0.78rem; font-weight: 800; color: ' + primaryInk + ';">Grand Total (Incl. GST):</span>';
+        h += '<span id="mobileGearGrandTotalText" style="font-family: Chakra Petch, monospace; font-size: 0.92rem; font-weight: 800; color: ' + emeraldInk + ';">₹' + grandTotal.toLocaleString('en-IN') + '</span>';
+        h += '</div>';
+
+        h += '<button type="button" id="btnMobileGearCheckout" onclick="window.cricosMobileApp.submitMobileGearCheckout()" style="width: 100%; padding: 0.55rem; border-radius: 8px; border: none; background: ' + (isLight ? '#059669' : 'linear-gradient(135deg, #00E599, #00D2FF)') + '; color: ' + (isLight ? '#FFFFFF' : '#04070D') + '; font-weight: 800; font-size: 0.76rem; cursor: pointer;" data-tooltip="Complete gear order and dispatch to stadium pavilion">⚡ Checkout &amp; Dispatch to Turf Pavilion →</button>';
+
+        // Active Orders List
+        if (this.gearOrders && this.gearOrders.length > 0) {
+          h += '<div id="mobileGearOrdersList" style="margin-top: 0.55rem; padding-top: 0.45rem; border-top: 1px solid ' + subCardBorder + '; display: flex; flex-direction: column; gap: 0.3rem;">';
+          for (var o = 0; o < Math.min(2, this.gearOrders.length); o++) {
+            var ord = this.gearOrders[o];
+            h += '<div style="font-size: 0.64rem; padding: 0.35rem 0.5rem; border-radius: 6px; background: ' + cardBg + '; border: 1px solid ' + subCardBorder + ';">';
+            h += '<div style="display: flex; justify-content: space-between; font-weight: 800; color: ' + primaryInk + ';"><span>' + ord.orderId + '</span><span style="color: ' + emeraldInk + ';">' + ord.total + '</span></div>';
+            h += '<div style="color: ' + secondaryInk + ';">' + ord.summary + '</div>';
+            h += '<div style="color: ' + emeraldInk + '; font-weight: 700;">' + ord.status + '</div>';
+            h += '</div>';
+          }
+          h += '</div>';
+        }
+
+        h += '</div></div>';
+        return h;
+      }
+
       renderMatches() {
         var overs = Math.floor(this.matchState.legalBalls / 6);
         var balls = this.matchState.legalBalls % 6;
@@ -7502,14 +7963,17 @@ export function getMobileAppHtml(): string {
         h += this.renderRoleExperienceBanner();
 
         // Marketplace Header
+        var gearCount = this.getMobileGearCartCount ? this.getMobileGearCartCount() : 2;
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">';
         h += '<div>';
-        h += '<h2 style="margin: 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">' + (isProvider ? '🏟️ Turf Provider Storefront' : '🛒 Cricket Marketplace') + '</h2>';
-        h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.15rem;">GiST Slot Hold • Escrow Settlement</div>';
+        h += '<h2 style="margin: 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">' + (isProvider ? '🏟️ Turf Provider Storefront' : '🛒 Cricket Marketplace &amp; Gear Store') + '</h2>';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.15rem;">GiST Slot Hold • Pro Cricket Gear &amp; Pavilion Drop</div>';
         h += '</div>';
+        h += '<div style="display: flex; gap: 0.35rem; align-items: center;">';
+        h += '<button type="button" id="btnMobileOpenGearStore" onclick="window.cricosMobileApp.openMobileGearStore()" style="padding: 0.25rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.45); background: rgba(0, 210, 255, 0.16); color: #00D2FF; font-size: 0.68rem; font-weight: 800;" data-tooltip="Open Pro Cricket Gear Store &amp; Kit Bag">🛍️ Gear Bag (' + gearCount + ')</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="padding: 0.25rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.7rem; font-weight: 700;" data-tooltip="Inspect unified Event Basket">🧺 Basket</button>';
-        h += '</div></div>';
+        h += '</div></div></div>';
 
         // Intelligent Turf / Ground Location Weather & Forecast
         h += this.renderMobileVenueWeatherCard();
@@ -7525,6 +7989,11 @@ export function getMobileAppHtml(): string {
           h += '</button>';
         }
         h += '</div>';
+
+        // Render Pro Cricket Gear Store & Kit Bag when in ALL or GEAR category
+        if (this.marketCategory === 'ALL' || this.marketCategory === 'GEAR') {
+          h += this.renderMobileGearStoreSection();
+        }
 
         // Official Officiating / Scorer Storefront Tools
         var isOfficial = this.profile.persona === 'UMPIRE' || this.profile.persona === 'SCORER' || this.profile.persona === 'ADMIN';

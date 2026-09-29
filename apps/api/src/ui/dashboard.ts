@@ -4921,9 +4921,12 @@ export function getDashboardHtml(): string {
               <span class="tab-icon">📑</span>
               <span class="sidebar-nav-label">RFQ Desk</span>
             </button>
-            <button type="button" onclick="openModal('modalCommerce')" class="sidebar-nav-item" data-tooltip="Cricket gear, match leather balls, practice nets, and trophies">
+            <button type="button" id="sidebarBtnGearStore" onclick="openGearStoreModal()" class="sidebar-nav-item" data-tooltip="Pro Cricket Gear Store: English willow bats, match leather balls, protective kit, smart sensors &amp; 45-min turf pavilion delivery">
               <span class="tab-icon">🛍️</span>
-              <span class="sidebar-nav-label">Gear Store</span>
+              <span class="sidebar-nav-label" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <span>Gear Store</span>
+                <span id="sidebarGearCartBadge" style="font-size: 0.62rem; font-family: var(--font-mono); font-weight: 800; padding: 0.08rem 0.38rem; border-radius: 999px; background: rgba(0,229,153,0.2); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.4);">2</span>
+              </span>
             </button>
           </div>
         </div>
@@ -5711,6 +5714,9 @@ export function getDashboardHtml(): string {
     <!-- TAB 2: MARKETPLACE & BOOKING -->
     <div id="tab-marketplace" class="tab-pane">
       <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; gap: 0.5rem; flex-wrap: wrap;">
+        <button type="button" id="btnOpenGearStoreFromMarketplace" class="btn btn-primary" onclick="openGearStoreModal()" data-tooltip="Open Pro Cricket Gear Store: English willow bats, Kookaburra/SG match balls, protective kit &amp; express pavilion delivery" style="width: auto; padding: 0.35rem 0.9rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.45rem; font-weight: 800;">
+          <span>🛍️</span> Pro Gear Store &amp; Kit Bag <span id="marketplaceGearCartBadge" style="font-family: var(--font-mono); background: rgba(4,9,20,0.35); padding: 0.05rem 0.4rem; border-radius: 999px; font-size: 0.72rem;">2</span>
+        </button>
         <button type="button" class="btn btn-secondary" onclick="open3DBatCustomizerModal()" data-tooltip="Interactive 3D Cricket Bat &amp; Gear Configurator" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
           <span>🏏</span> 3D Bat Customizer
         </button>
@@ -8447,66 +8453,173 @@ cricos_active_sse_connections 1</pre>
     </div>
   </div>
 
-  <!-- P1-002: Modal Commerce & Cricket Gear -->
+  <!-- P1-002: Modal Commerce & Cricket Gear Store (Full-Featured E-Commerce & Pavilion Dispatch) -->
   <div class="modal-backdrop as-drawer" id="modalCommerce">
-    <div class="modal-card" style="max-width: 720px;">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">🛒</span>
+    <div class="modal-card" style="max-width: 1120px; width: 96vw;">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border-subtle); padding: 1rem 1.35rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 1rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.7rem;">
+            <span style="font-size: 1.55rem; background: rgba(0,229,153,0.14); border: 1px solid rgba(0,229,153,0.35); width: 42px; height: 42px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;">🛍️</span>
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div class="modal-title" style="font-size: 1.1rem; font-weight: 800;">CricOS Pro Gear, Match Balls &amp; Pavilion Equipment Store</div>
+                <span class="badge badge-emerald" style="font-size: 0.62rem; padding: 0.15rem 0.5rem;">MCC LAW 4 &amp; 5 CERTIFIED</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;">
+                English Willow Bats &bull; Alum-Tanned Match Balls &bull; BS7928 Protective Kit &bull; Smart Telemetry Sensors &bull; 45-Min Express Turf Pavilion Drop
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.55rem;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="open3DBatCustomizerModal()" data-tooltip="Design a custom 3D English/Kashmir willow bat and add it directly to your Gear Bag" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(0,210,255,0.45); color: var(--cyan);">
+              🏏 3D Bat Customizer
+            </button>
+            <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalCommerce')" data-tooltip="Close gear store">×</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body" style="padding: 1.15rem 1.35rem; max-height: calc(90vh - 130px); overflow-y: auto;">
+        <!-- Store Search, Category Filter Pills & Sort Controls -->
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; padding: 0.75rem 0.9rem; border-radius: 10px; background: rgba(15,23,42,0.55); border: 1px solid var(--border-subtle);">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 240px;">
+            <span style="font-size: 0.9rem; opacity: 0.8;">🔍</span>
+            <input type="text" id="gearStoreSearchInput" oninput="filterGearStoreCatalog()" placeholder="Search bats, Kookaburra balls, LHB/RHB pads, smart sensors, trophies..." aria-label="Search cricket gear catalog" style="flex: 1; padding: 0.45rem 0.75rem; border-radius: 7px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.78rem;" />
+          </div>
+          <div id="gearCategoryFilterBar" style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+            <button type="button" id="gearCat_ALL" class="btn btn-primary btn-sm" onclick="setGearStoreCategory('ALL')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Show all 10 cricket gear &amp; equipment products">All Gear (10)</button>
+            <button type="button" id="gearCat_BATS" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('BATS')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter English Willow &amp; Carbon T20 Bats">🏏 Bats</button>
+            <button type="button" id="gearCat_BALLS" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('BALLS')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter White, Red &amp; Pink Leather Match Balls">🔴 Match Balls</button>
+            <button type="button" id="gearCat_PROTECTIVE" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('PROTECTIVE')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter Helmets, Batting Pads &amp; Gloves (RHB/LHB)">🛡️ Protective</button>
+            <button type="button" id="gearCat_NETS_TECH" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('NETS_TECH')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter Smart Gyro Balls &amp; Practice Net Cages">📡 Nets &amp; Tech</button>
+            <button type="button" id="gearCat_TROPHIES" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('TROPHIES')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter Tournament Trophies &amp; Engraved Medals">🏆 Trophies</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <label for="gearStoreSortSelect" style="font-size: 0.68rem; color: var(--text-muted); font-weight: 700;">SORT:</label>
+            <select id="gearStoreSortSelect" onchange="filterGearStoreCatalog()" aria-label="Sort gear catalog" style="padding: 0.35rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.72rem; font-weight: 600;">
+              <option value="FEATURED">Featured &amp; Match Ready</option>
+              <option value="PRICE_ASC">Price: Low to High</option>
+              <option value="PRICE_DESC">Price: High to Low</option>
+              <option value="RATING">Top Player Rated (4.9★+)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Two-Column Store Layout: Left = Product Catalog Grid, Right = Interactive Shopping Bag & Checkout -->
+        <div style="display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(320px, 1fr); gap: 1.15rem; align-items: start;">
+          <!-- LEFT COLUMN: Dynamic Product Grid -->
           <div>
-            <div class="modal-title">Cricket Gear, Match Balls &amp; Equipment Store</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Match Balls &bull; Practice Cages &bull; Trophies &bull; Free Venue Delivery</div>
+            <div id="gearStoreCatalogStatsBar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.73rem; color: var(--text-muted);">
+              <span id="gearStoreResultCount">Showing <strong>10</strong> certified match &amp; training items</span>
+              <span style="color: var(--turf-emerald); font-weight: 700;">✓ Instant GST Input Tax Credit Invoice Included</span>
+            </div>
+            <div id="gearStoreCatalogGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 0.85rem;">
+              <!-- Populated dynamically by renderGearStoreCatalog() with static fallback for zero-latency boot -->
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: Live Shopping Bag, Pavilion Delivery, Promo Code & Checkout -->
+          <div id="gearStoreCartPanel" class="glass-panel" style="padding: 1rem; border-radius: 12px; background: rgba(10,16,28,0.82); border: 1px solid rgba(0,229,153,0.28); position: sticky; top: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <span style="font-size: 1.1rem;">🧺</span>
+                <div>
+                  <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary);">Your Match Kit Bag</div>
+                  <div id="gearCartCountSubtext" style="font-size: 0.68rem; color: var(--text-muted);">2 items selected &bull; Ready for dispatch</div>
+                </div>
+              </div>
+              <button type="button" id="btnClearGearCart" class="btn btn-secondary btn-sm" onclick="clearGearStoreCart()" style="width: auto; padding: 0.22rem 0.55rem; font-size: 0.66rem;" data-tooltip="Remove all items from your kit bag">Clear Bag</button>
+            </div>
+
+            <!-- Itemized Cart Items Container -->
+            <div id="gearCartItemsList" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 220px; overflow-y: auto; margin-bottom: 0.8rem; padding-right: 0.15rem;">
+              <!-- Populated dynamically by renderGearStoreCart() -->
+            </div>
+
+            <!-- Delivery Mode & Stadium/Turf Pavilion Selector -->
+            <div style="padding: 0.65rem; border-radius: 8px; background: rgba(0,210,255,0.06); border: 1px solid rgba(0,210,255,0.2); margin-bottom: 0.75rem;">
+              <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--cyan); margin-bottom: 0.35rem;">🚚 Delivery &amp; Turf Drop Destination</div>
+              <select id="gearDeliveryModeSelect" onchange="updateGearDeliveryMode()" aria-label="Select gear delivery mode" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.72rem; font-weight: 600; margin-bottom: 0.4rem;">
+                <option value="PAVILION_DROP" selected>🏟️ Express Stadium / Turf Pavilion Drop (45 mins • FREE)</option>
+                <option value="CLUBHOUSE_COURIER">📦 Clubhouse / Home Courier Delivery (₹199 • Free &gt; ₹5,000)</option>
+              </select>
+              <select id="gearDeliveryVenueSelect" onchange="updateGearDeliveryMode()" aria-label="Select target stadium or turf pavilion" style="width: 100%; padding: 0.36rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.71rem; font-weight: 700;">
+                <option value="M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)">📍 M. Chinnaswamy Turf Arena — Pitch 1 Umpire &amp; Scorer Desk</option>
+                <option value="Wankhede Arena Turf Club (North Stand Dugout)">📍 Wankhede Arena Turf Club — North Stand Dugout</option>
+                <option value="Eden Gardens Royal Turf (Clubhouse Gate 2)">📍 Eden Gardens Royal Turf — Clubhouse Gate 2</option>
+                <option value="HPCA Himalayan Stadium (Practice Nets Bay A)">📍 HPCA Himalayan Stadium — Practice Nets Bay A</option>
+                <option value="M. A. Chidambaram Marina (Pavilion Locker 4)">📍 M. A. Chidambaram Marina — Pavilion Locker 4</option>
+              </select>
+            </div>
+
+            <!-- Promo / Coupon Bar with Quick-Apply Chips -->
+            <div style="margin-bottom: 0.75rem; background: rgba(255,255,255,0.03); padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+              <div style="display: flex; gap: 0.4rem; margin-bottom: 0.4rem;">
+                <input type="text" id="promoCodeInput" placeholder="Promo code (CRIC20, TURF500, CAPTAIN10)" style="flex: 1; padding: 0.4rem 0.65rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: var(--font-mono); font-size: 0.74rem; text-transform: uppercase;" />
+                <button type="button" class="btn btn-primary btn-sm" onclick="applyPromoCode()" style="width: auto; padding: 0.38rem 0.75rem; font-size: 0.72rem;" data-tooltip="Apply discount code to order">Apply Code</button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+                <span style="font-size: 0.63rem; color: var(--text-muted);">Tap to apply:</span>
+                <button type="button" id="btnQuickPromoCric20" onclick="quickApplyGearPromo('CRIC20')" style="padding: 0.12rem 0.42rem; border-radius: 4px; font-size: 0.62rem; font-family: var(--font-mono); font-weight: 700; background: rgba(0,229,153,0.14); border: 1px solid rgba(0,229,153,0.35); color: var(--turf-emerald); cursor: pointer;" data-tooltip="Apply 20% OFF entire gear bag">CRIC20 (20% OFF)</button>
+                <button type="button" id="btnQuickPromoTurf500" onclick="quickApplyGearPromo('TURF500')" style="padding: 0.12rem 0.42rem; border-radius: 4px; font-size: 0.62rem; font-family: var(--font-mono); font-weight: 700; background: rgba(0,210,255,0.14); border: 1px solid rgba(0,210,255,0.35); color: var(--cyan); cursor: pointer;" data-tooltip="Apply flat ₹500 OFF">TURF500 (₹500 OFF)</button>
+                <button type="button" id="btnQuickPromoCaptain10" onclick="quickApplyGearPromo('CAPTAIN10')" style="padding: 0.12rem 0.42rem; border-radius: 4px; font-size: 0.62rem; font-family: var(--font-mono); font-weight: 700; background: rgba(245,158,11,0.14); border: 1px solid rgba(245,158,11,0.35); color: #FBBF24; cursor: pointer;" data-tooltip="Apply 10% Captain &amp; Squad discount">CAPTAIN10 (10% OFF)</button>
+              </div>
+            </div>
+
+            <!-- Financial Summary Breakdown -->
+            <div style="display: flex; flex-direction: column; gap: 0.32rem; font-size: 0.74rem; padding: 0.65rem 0.75rem; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); margin-bottom: 0.75rem;">
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Bag Subtotal:</span>
+                <span id="gearCartSubtotal" style="font-family: var(--font-mono); font-weight: 700;">₹6,300</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Promo Discount <span id="gearCartPromoTag" style="color: var(--turf-emerald); font-weight: 700;">(None)</span>:</span>
+                <span id="gearCartDiscount" style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">-₹0</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">GST (18% Sports Goods Invoice):</span>
+                <span id="gearCartGst" style="font-family: var(--font-mono); font-weight: 600;">₹1,134</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Pavilion / Courier Delivery:</span>
+                <span id="gearCartShipping" style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">FREE</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.45rem; margin-top: 0.25rem; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.88rem; font-weight: 800;">
+                <span>Total Payable:</span>
+                <span id="gearCartGrandTotal" style="font-family: var(--font-mono); color: var(--turf-emerald); font-size: 1rem;">₹7,434</span>
+              </div>
+            </div>
+
+            <!-- Payment Method & Checkout Button -->
+            <div style="margin-bottom: 0.75rem;">
+              <label for="gearPaymentMethodSelect" style="font-size: 0.66rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.28rem;">PAYMENT &amp; SETTLEMENT METHOD:</label>
+              <select id="gearPaymentMethodSelect" aria-label="Select gear payment method" style="width: 100%; padding: 0.4rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.72rem; font-weight: 600; margin-bottom: 0.55rem;">
+                <option value="TEAM_ESCROW">⚡ Team Escrow Wallet (Instant Settlement • ₹42,500 Avail)</option>
+                <option value="UPI_INSTANT">📱 UPI Instant Pay / QR Scan</option>
+                <option value="CLUB_GST_CARD">💳 Club / Corporate GST Credit Card</option>
+                <option value="PAY_AT_PAVILION">🏟️ Pay at Turf Pavilion Desk on Delivery</option>
+              </select>
+              <button type="button" id="btnGearCheckoutSubmit" class="btn btn-primary" onclick="submitGearStoreCheckout()" style="width: 100%; padding: 0.6rem 1rem; font-size: 0.82rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 0.45rem;" data-tooltip="Place gear order and dispatch to selected venue pavilion">
+                <span>⚡ Complete Gear Order &amp; Dispatch</span>
+              </button>
+            </div>
+
+            <!-- Recent / Active Gear Orders & Live Dispatch Tracker -->
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
+              <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.4rem;">📦 Active Pavilion Dispatch &amp; Order History</div>
+              <div id="gearOrderHistoryList" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 150px; overflow-y: auto;">
+                <!-- Populated dynamically by renderGearOrderHistory() -->
+              </div>
+            </div>
           </div>
         </div>
-        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalCommerce')" data-tooltip="Close gear store">×</button>
       </div>
-      <div class="modal-body" style="padding: 1.25rem;">
-        <!-- Coupon Bar -->
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
-          <input type="text" id="promoCodeInput" placeholder="Promo code (try CRIC20 or TURF500)" style="flex: 1; padding: 0.5rem 0.75rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: var(--font-mono); text-transform: uppercase;" />
-          <button class="btn btn-primary btn-sm" onclick="applyPromoCode()" data-tooltip="Apply discount code to order">Apply Code</button>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.35rem;">
+        <div style="font-size: 0.72rem; color: var(--text-muted);">
+          🛡️ Covered by CricOS Authentic Willow &amp; MCC Leather Replacement Guarantee
         </div>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;">
-          <div class="glass-panel" style="padding: 1rem; border-radius: 10px; background: rgba(10,16,28,0.7); border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <span class="badge badge-purple" style="font-size: 0.65rem;">BALLS</span>
-              <h4 style="margin: 0.5rem 0 0.25rem; font-size: 0.95rem; color: #fff;">Match Leather Balls (Box of 6)</h4>
-              <p style="font-size: 0.75rem; color: #94A3B8; line-height: 1.3;">4-piece alum tanned English leather, MCC Law 4 compliant.</p>
-            </div>
-            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹4,800</span>
-              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Box of Match Balls to Basket!')" data-tooltip="Add match balls to basket" aria-label="Add match balls">Add</button>
-            </div>
-          </div>
-
-          <div class="glass-panel" style="padding: 1rem; border-radius: 10px; background: rgba(10,16,28,0.7); border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <span class="badge badge-cyan" style="font-size: 0.65rem;">EQUIPMENT</span>
-              <h4 style="margin: 0.5rem 0 0.25rem; font-size: 0.95rem; color: #fff;">Pro Practice Net (Day Rental)</h4>
-              <p style="font-size: 0.75rem; color: #94A3B8; line-height: 1.3;">Heavy duty 12x4m cricket practice cage with frame.</p>
-            </div>
-            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹1,500</span>
-              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Practice Net Rental to Basket!')" data-tooltip="Add practice net rental to basket" aria-label="Add practice net rental">Add</button>
-            </div>
-          </div>
-
-          <div class="glass-panel" style="padding: 1rem; border-radius: 10px; background: rgba(10,16,28,0.7); border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <span class="badge badge-amber" style="font-size: 0.65rem;">TROPHIES</span>
-              <h4 style="margin: 0.5rem 0 0.25rem; font-size: 0.95rem; color: #fff;">Championship Trophy Set</h4>
-              <p style="font-size: 0.75rem; color: #94A3B8; line-height: 1.3;">24-inch gold-plated trophy plus 16 embossed medals.</p>
-            </div>
-            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald);">₹8,500</span>
-              <button class="btn btn-primary btn-sm" onclick="showToast('🛒 Added Trophy Set to Basket!')" data-tooltip="Add championship trophy set to basket" aria-label="Add trophy set">Add</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalCommerce')" data-tooltip="Close cricket commerce store" aria-label="Close gear store">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('modalCommerce')" data-tooltip="Close cricket commerce store" aria-label="Close gear store">Close Store</button>
       </div>
     </div>
   </div>
@@ -14924,19 +15037,45 @@ cricos_active_sse_connections 1</pre>
 
     function addCustomBatToBasket() {
       const select = (typeof document !== 'undefined') ? document.getElementById('batWillowSelect') : null;
-      const willow = select ? select.options[select.selectedIndex].text : 'Grade 2 Kashmir Willow';
+      const val = select ? select.value : 'KASHMIR_G2';
+      const willow = select ? select.options[select.selectedIndex].text : 'Grade 2 Kashmir Willow (Match Ready) • ₹6,499';
+      let price = 6499;
+      let cleanTitle = 'Custom 3D Grade 2 Kashmir Willow Bat';
+      if (val === 'ENGLISH_G1') {
+        price = 14999;
+        cleanTitle = 'Custom 3D Grade 1 English Willow Bat';
+      } else if (val === 'CARBON_HYBRID') {
+        price = 18500;
+        cleanTitle = 'Custom 3D Carbon-Composite Spine Bat';
+      }
+      const activeGripBtn = (typeof document !== 'undefined') ? document.querySelector('#modal3DBatCustomizer .three-cam-btn.active') : null;
+      const gripLabel = activeGripBtn ? (activeGripBtn.textContent || 'Emerald').trim() : '🟢 Emerald';
+
       closeModal('modal3DBatCustomizer');
 
       const basketList = (typeof document !== 'undefined') ? document.getElementById('eventBasketItemsList') : null;
       if (basketList) {
         const itemDiv = document.createElement('div');
         itemDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: rgba(0,229,153,0.08); border: 1px solid rgba(0,229,153,0.3); padding: 0.75rem 1rem; border-radius: 8px;';
-        itemDiv.innerHTML = '<div><div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">🏏 Custom 3D Engineered Bat</div><div style="font-size: 0.72rem; color: var(--turf-emerald);">' + willow + '</div></div><div style="text-align: right;"><div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.88rem;">CONFIGURED</div><span style="font-size: 0.65rem; color: var(--cyan); font-weight: 700;">IN BASKET</span></div>';
+        itemDiv.innerHTML = '<div><div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">🏏 ' + cleanTitle + '</div><div style="font-size: 0.72rem; color: var(--turf-emerald);">' + willow + ' • Grip: ' + gripLabel + '</div></div><div style="text-align: right;"><div style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.88rem;">₹' + price.toLocaleString('en-IN') + '</div><span style="font-size: 0.65rem; color: var(--cyan); font-weight: 700;">IN BASKET</span></div>';
         basketList.appendChild(itemDiv);
       }
 
-      if (typeof showToast === 'function') {
-        showToast('🧺 Customized Cricket Bat added to Event Basket!');
+      if (typeof addToGearStoreCart === 'function') {
+        addToGearStoreCart('gear-custom-3d-' + val.toLowerCase(), 'Grip: ' + gripLabel + ' • SH 2lb 8oz', {
+          id: 'gear-custom-3d-' + val.toLowerCase(),
+          title: cleanTitle,
+          category: 'BATS',
+          badge: '3D BESPOKE',
+          price: price,
+          rating: '5.0★',
+          stock: 'Custom Built',
+          desc: 'Bespoke 3D configured blade (' + willow + ') with ' + gripLabel + ' pro grip.',
+          variants: ['Grip: ' + gripLabel + ' • SH 2lb 8oz']
+        });
+        openGearStoreModal();
+      } else if (typeof showToast === 'function') {
+        showToast('🧺 Customized Cricket Bat added to Gear Kit Bag!');
       }
     }
 
@@ -16921,6 +17060,9 @@ cricos_active_sse_connections 1</pre>
 
     // Universal Modal Handlers
     function openModal(modalId) {
+      if (modalId === 'modalCommerce' && typeof initGearStore === 'function') {
+        initGearStore();
+      }
       const m = document.getElementById(modalId);
       if (m) m.classList.add('active');
     }
@@ -17017,6 +17159,342 @@ cricos_active_sse_connections 1</pre>
       closeModal('modalRfq');
     }
 
+    // =========================================================================
+    // PRO CRICKET GEAR, MATCH BALLS & PAVILION EQUIPMENT STORE ENGINE
+    // =========================================================================
+    const GEAR_STORE_CATALOG = [
+      {
+        id: 'gear-bat-g1',
+        title: 'Reserve Grade 1+ English Willow Bat',
+        brand: 'CricOS Pro Blade',
+        category: 'BATS',
+        badge: 'PRO GRADE 1+',
+        badgeClass: 'badge-emerald',
+        price: 14999,
+        mrp: 17999,
+        rating: '4.9★ (142)',
+        stock: 'In Stock (8 blades)',
+        desc: '8–10 straight even grains, 40mm power edges, 65mm spine, pre-knocked 10,000 mallet strikes & raw linseed oiled.',
+        variants: ['SH (Short Handle • 2lb 8oz)', 'SH Light (2lb 7oz)', 'LH (Long Handle • 2lb 10oz)', 'Harrow (2lb 6oz)']
+      },
+      {
+        id: 'gear-bat-carbon',
+        title: 'Carbon-Composite Spine Power T20 Blade',
+        brand: 'AeroStrike Lab',
+        category: 'BATS',
+        badge: 'T20 POWER',
+        badgeClass: 'badge-cyan',
+        price: 18500,
+        mrp: 21000,
+        rating: '4.9★ (89)',
+        stock: 'In Stock (5 blades)',
+        desc: 'Carbon-fiber reinforced spine & ultra-high sweet spot engineered for death-over clearing and high-altitude carry.',
+        variants: ['Mid-Low Sweet Spot (2lb 8oz)', 'High Sweet Spot (2lb 7oz)', 'Long Blade Power (2lb 10oz)']
+      },
+      {
+        id: 'gear-balls-white',
+        title: 'Kookaburra Turf White Match Balls (Box of 6)',
+        brand: 'Kookaburra Official',
+        category: 'BALLS',
+        badge: 'MCC LAW 4',
+        badgeClass: 'badge-purple',
+        price: 4800,
+        mrp: 5400,
+        rating: '5.0★ (318)',
+        stock: 'Pavilion Stock (24 boxes)',
+        desc: '4-piece alum-tanned English steerhide with 5-layer quilted center & dew-resistant PU floodlight finish (156g).',
+        variants: ['4-Piece Official T20 (156g)', 'Dew-Shield Nano Coat (156g)', 'Youth 142g Match Spec']
+      },
+      {
+        id: 'gear-balls-red',
+        title: 'SG Test Red Alum-Tanned Leather Balls (Box of 6)',
+        brand: 'SG Sanspareils',
+        category: 'BALLS',
+        badge: '80-OVER TEST',
+        badgeClass: 'badge-amber',
+        price: 5400,
+        mrp: 6000,
+        rating: '4.9★ (215)',
+        stock: 'Pavilion Stock (18 boxes)',
+        desc: 'Hand-stitched 80-stitch proud linen seam for prolonged conventional swing, bite off the pitch, and late reverse swing.',
+        variants: ['Test Grade A (80 Overs)', 'Club League Grade (50 Overs)']
+      },
+      {
+        id: 'gear-balls-pink',
+        title: 'Pink Twilight Day/Night Match Balls (Box of 6)',
+        brand: 'Kookaburra Turf',
+        category: 'BALLS',
+        badge: 'TWILIGHT UV',
+        badgeClass: 'badge-purple',
+        price: 5200,
+        mrp: 5800,
+        rating: '4.8★ (94)',
+        stock: 'In Stock (12 boxes)',
+        desc: 'High-visibility fluorescent pink lacquer with extra black seam contrast for dusk-to-floodlight transition sessions.',
+        variants: ['4-Piece Day/Night (156g)', 'Extra-Seam High Contrast']
+      },
+      {
+        id: 'gear-pad-helmet',
+        title: 'Titanium Grill BS7928 Pro Batting Helmet',
+        brand: 'Masuri Vision Spec',
+        category: 'PROTECTIVE',
+        badge: 'BS7928:2013',
+        badgeClass: 'badge-cyan',
+        price: 7200,
+        mrp: 8500,
+        rating: '4.9★ (176)',
+        stock: 'In Stock (14 units)',
+        desc: 'Aerospace grade titanium faceguard with dual-density Halo impact shell and rear occipital stem-guard included.',
+        variants: ['Medium (56–58cm • Navy)', 'Large (59–62cm • Navy)', 'XL (62–64cm • Emerald Crest)']
+      },
+      {
+        id: 'gear-pad-kit',
+        title: 'Test Batting Legguards & Pittards Gloves Combo',
+        brand: 'CricOS Armour',
+        category: 'PROTECTIVE',
+        badge: 'RHB / LHB SPEC',
+        badgeClass: 'badge-emerald',
+        price: 6800,
+        mrp: 7900,
+        rating: '4.8★ (128)',
+        stock: 'In Stock (16 sets)',
+        desc: 'Ultra-lite 680g HDF & cane rods with 3-piece knee roll + English Pittards sheep leather ventilated batting gloves.',
+        variants: ['RHB (Right-Handed Batter)', 'LHB (Left-Handed Batter)']
+      },
+      {
+        id: 'gear-tech-smartball',
+        title: 'Smart Telemetry 9-Axis IMU Gyro Cricket Ball',
+        brand: 'CricOS Labs',
+        category: 'NETS_TECH',
+        badge: 'BLUETOOTH 5.3',
+        badgeClass: 'badge-cyan',
+        price: 9500,
+        mrp: 11500,
+        rating: '4.9★ (67)',
+        stock: 'In Stock (9 sensors)',
+        desc: 'Embedded 1000Hz MEMS sensor streaming live release speed (km/h), spin RPM, and seam wobble angle to CricOS Studio.',
+        variants: ['White Seam (T20 Analytics)', 'Red Seam (Bowler Workload)']
+      },
+      {
+        id: 'gear-net-cage',
+        title: 'Pro 12x4m Practice Net Cage & Bowling Machine',
+        brand: 'TurfOps Rental',
+        category: 'NETS_TECH',
+        badge: 'TURF RIGGED',
+        badgeClass: 'badge-emerald',
+        price: 1500,
+        mrp: 2200,
+        rating: '4.9★ (204)',
+        stock: 'Instant Venue Setup',
+        desc: 'Heavy-duty UV-stabilized HDPE practice enclosure + dual-wheel 150 km/h swing/spin bowling machine rigged at your turf.',
+        variants: ['Full Match Day (8 Hours)', 'Evening Floodlight Slot (4 Hours)']
+      },
+      {
+        id: 'gear-trophy-champ',
+        title: '24-Inch Gold-Plated Championship Trophy & 16 Medals',
+        brand: 'Silverware Studio',
+        category: 'TROPHIES',
+        badge: 'LASER ENGRAVED',
+        badgeClass: 'badge-amber',
+        price: 8500,
+        mrp: 9999,
+        rating: '5.0★ (112)',
+        stock: 'Same-Day Engraving',
+        desc: '24-inch handcrafted gold-plated presentation cup + 16 die-cast Winner/Runner-Up medals with custom tournament plaque.',
+        variants: ['Gold Cup + 16 Medals + MVP Award', 'Silver Shield + 16 Medals']
+      }
+    ];
+
+    window.gearStoreSelectedCategory = 'ALL';
+    window.gearStoreAppliedPromo = null;
+    window.gearStoreCart = [
+      {
+        id: 'gear-balls-white',
+        title: 'Kookaburra Turf White Match Balls (Box of 6)',
+        category: 'BALLS',
+        variant: '4-Piece Official T20 (156g)',
+        price: 4800,
+        qty: 1
+      },
+      {
+        id: 'gear-net-cage',
+        title: 'Pro 12x4m Practice Net Cage & Bowling Machine',
+        category: 'NETS_TECH',
+        variant: 'Full Match Day (8 Hours)',
+        price: 1500,
+        qty: 1
+      }
+    ];
+    window.gearStoreOrders = [
+      {
+        orderId: 'ORD-GEAR-8941',
+        itemsSummary: '1x Kookaburra White Balls (Box of 6), 1x Titanium Helmet',
+        totalFormatted: '₹14,160',
+        venue: 'M. Chinnaswamy Turf Arena — Pitch 1 Pavilion',
+        status: '🟢 Delivered to Scorer Desk (Signed by Match Referee)',
+        timestamp: 'Today, 17:40 IST'
+      }
+    ];
+
+    function openGearStoreModal() {
+      initGearStore();
+      if (typeof openModal === 'function') {
+        openModal('modalCommerce');
+      }
+    }
+
+    function setGearStoreCategory(category) {
+      window.gearStoreSelectedCategory = category || 'ALL';
+      const cats = ['ALL', 'BATS', 'BALLS', 'PROTECTIVE', 'NETS_TECH', 'TROPHIES'];
+      cats.forEach(c => {
+        const btn = document.getElementById('gearCat_' + c);
+        if (btn) {
+          btn.className = (c === window.gearStoreSelectedCategory) ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+        }
+      });
+      renderGearStoreCatalog();
+    }
+
+    function filterGearStoreCatalog() {
+      renderGearStoreCatalog();
+    }
+
+    function renderGearStoreCatalog() {
+      const grid = document.getElementById('gearStoreCatalogGrid');
+      if (!grid) return;
+
+      const searchEl = document.getElementById('gearStoreSearchInput');
+      const sortEl = document.getElementById('gearStoreSortSelect');
+      const query = (searchEl ? searchEl.value : '').trim().toLowerCase();
+      const sortBy = sortEl ? sortEl.value : 'FEATURED';
+      const activeCat = window.gearStoreSelectedCategory || 'ALL';
+
+      let filtered = GEAR_STORE_CATALOG.filter(item => {
+        if (activeCat !== 'ALL' && item.category !== activeCat) return false;
+        if (!query) return true;
+        const hay = (item.title + ' ' + item.brand + ' ' + item.desc + ' ' + item.category + ' ' + item.variants.join(' ')).toLowerCase();
+        return hay.indexOf(query) !== -1;
+      });
+
+      if (sortBy === 'PRICE_ASC') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortBy === 'PRICE_DESC') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sortBy === 'RATING') {
+        filtered.sort((a, b) => b.rating.localeCompare(a.rating));
+      }
+
+      const countEl = document.getElementById('gearStoreResultCount');
+      if (countEl) {
+        countEl.innerHTML = 'Showing <strong>' + filtered.length + '</strong> of ' + GEAR_STORE_CATALOG.length + ' certified match &amp; training items';
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; padding: 2rem; text-align: center; border-radius: 10px; background: rgba(15,23,42,0.5); border: 1px dashed var(--border-subtle); color: var(--text-muted);">No cricket gear matched your search filter. <button type="button" class="btn btn-secondary btn-sm" style="margin-left: 0.5rem; width: auto;" data-cat="ALL" onclick="setGearStoreCategory(this.dataset.cat)">Reset Filters</button></div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const cartEntries = (window.gearStoreCart || []).filter(c => c.id === item.id);
+        const totalQtyInCart = cartEntries.reduce((acc, c) => acc + c.qty, 0);
+        const variantOptionsHtml = item.variants.map(v => '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>').join('');
+
+        return '<div class="glass-panel gear-product-card" data-product-id="' + item.id + '" style="padding: 0.9rem; border-radius: 10px; background: rgba(10,16,28,0.78); border: 1px solid ' + (totalQtyInCart > 0 ? 'rgba(0,229,153,0.45)' : 'rgba(255,255,255,0.09)') + '; display: flex; flex-direction: column; justify-content: space-between; gap: 0.55rem;">' +
+          '<div>' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">' +
+              '<span class="badge ' + (item.badgeClass || 'badge-emerald') + '" style="font-size: 0.6rem; padding: 0.12rem 0.45rem;">' + item.badge + '</span>' +
+              '<span style="font-size: 0.66rem; font-weight: 700; color: #FBBF24;">' + item.rating + '</span>' +
+            '</div>' +
+            '<div style="font-size: 0.64rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">' + item.brand + ' &bull; ' + item.stock + '</div>' +
+            '<h4 style="margin: 0.2rem 0 0.28rem; font-size: 0.88rem; font-weight: 800; color: var(--text-primary); line-height: 1.28;">' + item.title + '</h4>' +
+            '<p style="font-size: 0.71rem; color: var(--text-secondary); line-height: 1.35; margin: 0 0 0.5rem;">' + item.desc + '</p>' +
+            '<div>' +
+              '<label for="gearVariant_' + item.id + '" style="font-size: 0.62rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.18rem;">SPEC / VARIANT:</label>' +
+              '<select id="gearVariant_' + item.id + '" aria-label="Select variant for ' + item.title + '" style="width: 100%; padding: 0.32rem 0.48rem; border-radius: 6px; background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.69rem; font-weight: 600;">' +
+                variantOptionsHtml +
+              '</select>' +
+            '</div>' +
+          '</div>' +
+          '<div style="margin-top: 0.35rem; padding-top: 0.55rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">' +
+            '<div>' +
+              '<div style="font-family: var(--font-mono); font-weight: 800; font-size: 0.92rem; color: var(--turf-emerald);">₹' + item.price.toLocaleString('en-IN') + '</div>' +
+              '<div style="font-size: 0.62rem; color: var(--text-muted); text-decoration: line-through;">MRP ₹' + item.mrp.toLocaleString('en-IN') + '</div>' +
+            '</div>' +
+            '<div style="display: flex; align-items: center; gap: 0.35rem;">' +
+              (totalQtyInCart > 0
+                ? '<span style="font-size: 0.65rem; font-weight: 800; color: var(--turf-emerald); background: rgba(0,229,153,0.14); border: 1px solid rgba(0,229,153,0.35); padding: 0.2rem 0.45rem; border-radius: 6px;">In Bag: ' + totalQtyInCart + '</span>'
+                : '') +
+              '<button type="button" id="btnAddGear_' + item.id + '" data-item-id="' + item.id + '" class="btn btn-primary btn-sm" onclick="addCatalogItemToGearCart(this.dataset.itemId)" style="width: auto; padding: 0.36rem 0.72rem; font-size: 0.72rem; font-weight: 800;" data-tooltip="Add ' + item.title + ' with selected spec to your Match Kit Bag">' +
+                '+ Add to Bag' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      if (typeof window.enforceThemeContrastInvariants === 'function') {
+        window.enforceThemeContrastInvariants();
+      }
+    }
+
+    function addCatalogItemToGearCart(itemId) {
+      const item = GEAR_STORE_CATALOG.find(i => i.id === itemId);
+      if (!item) return;
+      const variantSel = document.getElementById('gearVariant_' + itemId);
+      const chosenVariant = variantSel ? variantSel.value : item.variants[0];
+      addToGearStoreCart(item.id, chosenVariant, item);
+    }
+
+    function addToGearStoreCart(itemId, variant, customItemMeta) {
+      const item = customItemMeta || GEAR_STORE_CATALOG.find(i => i.id === itemId);
+      if (!item) return;
+      const chosenVariant = variant || (item.variants && item.variants[0]) || 'Standard Spec';
+      const existing = window.gearStoreCart.find(c => c.id === itemId && c.variant === chosenVariant);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        window.gearStoreCart.push({
+          id: item.id,
+          title: item.title,
+          category: item.category || 'GEAR',
+          variant: chosenVariant,
+          price: item.price,
+          qty: 1
+        });
+      }
+      renderGearStoreCatalog();
+      renderGearStoreCart();
+      showToast('🛒 Added to Kit Bag: ' + item.title + ' (' + chosenVariant + ')');
+    }
+
+    function updateGearCartQty(index, delta) {
+      if (!window.gearStoreCart[index]) return;
+      window.gearStoreCart[index].qty += delta;
+      if (window.gearStoreCart[index].qty <= 0) {
+        window.gearStoreCart.splice(index, 1);
+      }
+      renderGearStoreCatalog();
+      renderGearStoreCart();
+    }
+
+    function clearGearStoreCart() {
+      window.gearStoreCart = [];
+      window.gearStoreAppliedPromo = null;
+      renderGearStoreCatalog();
+      renderGearStoreCart();
+      showToast('🧺 Match Kit Bag cleared');
+    }
+
+    function updateGearDeliveryMode() {
+      renderGearStoreCart();
+    }
+
+    function quickApplyGearPromo(code) {
+      const input = document.getElementById('promoCodeInput');
+      if (input) input.value = code;
+      applyPromoCode();
+    }
+
     function applyPromoCode() {
       const input = document.getElementById('promoCodeInput');
       const val = (input ? input.value : '').trim().toUpperCase();
@@ -17025,13 +17503,166 @@ cricos_active_sse_connections 1</pre>
         return;
       }
       if (val === 'CRIC20') {
+        window.gearStoreAppliedPromo = { code: 'CRIC20', type: 'PERCENT', value: 20, label: 'CRIC20 (20% OFF)' };
+        renderGearStoreCart();
         showToast('✓ Coupon CRIC20 applied! 20% discount applied to basket.');
       } else if (val === 'TURF500') {
+        window.gearStoreAppliedPromo = { code: 'TURF500', type: 'FLAT', value: 500, label: 'TURF500 (₹500 OFF)' };
+        renderGearStoreCart();
         showToast('✓ Coupon TURF500 applied! ₹500 flat discount applied.');
+      } else if (val === 'CAPTAIN10') {
+        window.gearStoreAppliedPromo = { code: 'CAPTAIN10', type: 'PERCENT', value: 10, label: 'CAPTAIN10 (10% OFF)' };
+        renderGearStoreCart();
+        showToast('✓ Coupon CAPTAIN10 applied! 10% squad bulk discount applied.');
       } else {
         showToast('⚠ Invalid or expired promo code: ' + val);
       }
     }
+
+    function calculateGearCartTotals() {
+      const cart = window.gearStoreCart || [];
+      const totalItems = cart.reduce((acc, c) => acc + c.qty, 0);
+      const subtotal = cart.reduce((acc, c) => acc + (c.price * c.qty), 0);
+      let discount = 0;
+      if (window.gearStoreAppliedPromo && subtotal > 0) {
+        if (window.gearStoreAppliedPromo.type === 'PERCENT') {
+          discount = Math.round(subtotal * (window.gearStoreAppliedPromo.value / 100));
+        } else if (window.gearStoreAppliedPromo.type === 'FLAT') {
+          discount = Math.min(subtotal, window.gearStoreAppliedPromo.value);
+        }
+      }
+      const discountedSubtotal = Math.max(0, subtotal - discount);
+      const gst = Math.round(discountedSubtotal * 0.18);
+      const deliveryModeEl = document.getElementById('gearDeliveryModeSelect');
+      const deliveryMode = deliveryModeEl ? deliveryModeEl.value : 'PAVILION_DROP';
+      const shipping = (totalItems === 0 || deliveryMode === 'PAVILION_DROP' || discountedSubtotal >= 5000) ? 0 : 199;
+      const grandTotal = discountedSubtotal + gst + shipping;
+      return { totalItems, subtotal, discount, gst, shipping, grandTotal, deliveryMode };
+    }
+
+    function renderGearStoreCart() {
+      const listEl = document.getElementById('gearCartItemsList');
+      const totals = calculateGearCartTotals();
+
+      // Update Sidebar & Marketplace Badges
+      const sbBadge = document.getElementById('sidebarGearCartBadge');
+      if (sbBadge) sbBadge.textContent = String(totals.totalItems);
+      const mpBadge = document.getElementById('marketplaceGearCartBadge');
+      if (mpBadge) mpBadge.textContent = String(totals.totalItems);
+
+      const countSub = document.getElementById('gearCartCountSubtext');
+      if (countSub) {
+        countSub.textContent = totals.totalItems + (totals.totalItems === 1 ? ' item selected' : ' items selected') + ' • Ready for dispatch';
+      }
+
+      if (listEl) {
+        if (window.gearStoreCart.length === 0) {
+          listEl.innerHTML = '<div style="padding: 1.15rem; text-align: center; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px dashed var(--border-subtle); font-size: 0.74rem; color: var(--text-muted);">Your Match Kit Bag is empty. Add bats, match leather balls, protective gear, or practice nets from the catalog.</div>';
+        } else {
+          listEl.innerHTML = window.gearStoreCart.map((c, idx) => {
+            const lineTotal = c.price * c.qty;
+            return '<div class="gear-cart-line-item" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.5rem 0.65rem; border-radius: 8px; background: rgba(15,23,42,0.68); border: 1px solid rgba(255,255,255,0.09);">' +
+              '<div style="min-width: 0; flex: 1;">' +
+                '<div style="font-size: 0.76rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + c.title + '</div>' +
+                '<div style="font-size: 0.65rem; color: var(--cyan); font-weight: 600;">' + c.variant + ' &bull; ₹' + c.price.toLocaleString('en-IN') + '/unit</div>' +
+              '</div>' +
+              '<div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">' +
+                '<button type="button" onclick="updateGearCartQty(' + idx + ', -1)" aria-label="Decrease quantity" style="width: 24px; height: 24px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); color: var(--text-primary); font-weight: 800; cursor: pointer;">−</button>' +
+                '<span style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 800; min-width: 18px; text-align: center;">' + c.qty + '</span>' +
+                '<button type="button" onclick="updateGearCartQty(' + idx + ', 1)" aria-label="Increase quantity" style="width: 24px; height: 24px; border-radius: 5px; border: 1px solid rgba(0,229,153,0.4); background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-weight: 800; cursor: pointer;">+</button>' +
+                '<span style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald); min-width: 58px; text-align: right;">₹' + lineTotal.toLocaleString('en-IN') + '</span>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+        }
+      }
+
+      const setTxt = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+      setTxt('gearCartSubtotal', '₹' + totals.subtotal.toLocaleString('en-IN'));
+      setTxt('gearCartPromoTag', window.gearStoreAppliedPromo ? '(' + window.gearStoreAppliedPromo.code + ')' : '(None)');
+      setTxt('gearCartDiscount', '-₹' + totals.discount.toLocaleString('en-IN'));
+      setTxt('gearCartGst', '₹' + totals.gst.toLocaleString('en-IN'));
+      setTxt('gearCartShipping', totals.shipping === 0 ? 'FREE' : '₹' + totals.shipping);
+      setTxt('gearCartGrandTotal', '₹' + totals.grandTotal.toLocaleString('en-IN'));
+    }
+
+    function renderGearOrderHistory() {
+      const container = document.getElementById('gearOrderHistoryList');
+      if (!container) return;
+      container.innerHTML = (window.gearStoreOrders || []).map(ord => {
+        return '<div class="gear-order-card" style="padding: 0.5rem 0.65rem; border-radius: 7px; background: rgba(0,229,153,0.07); border: 1px solid rgba(0,229,153,0.28); font-size: 0.69rem;">' +
+          '<div style="display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--text-primary); margin-bottom: 0.15rem;">' +
+            '<span style="font-family: var(--font-mono); color: var(--cyan);">' + ord.orderId + '</span>' +
+            '<span style="font-family: var(--font-mono); color: var(--turf-emerald);">' + ord.totalFormatted + '</span>' +
+          '</div>' +
+          '<div style="color: var(--text-secondary); margin-bottom: 0.15rem;">' + ord.itemsSummary + '</div>' +
+          '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.63rem; color: var(--turf-emerald); font-weight: 700;">' +
+            '<span>' + ord.status + '</span>' +
+            '<span style="color: var(--text-muted);">' + ord.timestamp + '</span>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function submitGearStoreCheckout() {
+      if (!window.gearStoreCart || window.gearStoreCart.length === 0) {
+        showToast('⚠ Your Match Kit Bag is empty. Add at least 1 gear item before checkout.');
+        return;
+      }
+      const totals = calculateGearCartTotals();
+      const venueEl = document.getElementById('gearDeliveryVenueSelect');
+      const venueName = venueEl ? venueEl.value : 'M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)';
+      const payEl = document.getElementById('gearPaymentMethodSelect');
+      const payMethod = payEl ? payEl.options[payEl.selectedIndex].text.split('(')[0].trim() : 'Team Escrow Wallet';
+
+      const orderNum = 'ORD-GEAR-' + Math.floor(1000 + Math.random() * 8999);
+      const summaryText = window.gearStoreCart.map(c => c.qty + 'x ' + c.title.split('(')[0].trim() + ' [' + c.variant.split('•')[0].trim() + ']').join(', ');
+
+      const newOrder = {
+        orderId: orderNum,
+        itemsSummary: summaryText,
+        totalFormatted: '₹' + totals.grandTotal.toLocaleString('en-IN'),
+        venue: venueName,
+        status: totals.deliveryMode === 'PAVILION_DROP'
+          ? '🚀 Express Runner Dispatched to ' + venueName + ' (ETA 42 mins)'
+          : '📦 Dispatched via Priority Sports Courier (' + payMethod + ')',
+        timestamp: 'Just now'
+      };
+
+      window.gearStoreOrders.unshift(newOrder);
+      renderGearOrderHistory();
+      showToast('✅ Order ' + orderNum + ' Confirmed (' + newOrder.totalFormatted + ')! Dispatched to ' + venueName);
+    }
+
+    function initGearStore() {
+      // Sync delivery venue with selected match weather stadium if available
+      const weatherVenueSel = document.getElementById('venueWeatherLocationSelect');
+      const gearVenueSel = document.getElementById('gearDeliveryVenueSelect');
+      if (weatherVenueSel && gearVenueSel) {
+        const val = weatherVenueSel.value;
+        if (val === 'wankhede_arena') gearVenueSel.selectedIndex = 1;
+        else if (val === 'eden_gardens_turf') gearVenueSel.selectedIndex = 2;
+        else if (val === 'dharamshala_hpca') gearVenueSel.selectedIndex = 3;
+        else if (val === 'chepauk_marina') gearVenueSel.selectedIndex = 4;
+        else gearVenueSel.selectedIndex = 0;
+      }
+      renderGearStoreCatalog();
+      renderGearStoreCart();
+      renderGearOrderHistory();
+    }
+
+    window.openGearStoreModal = openGearStoreModal;
+    window.setGearStoreCategory = setGearStoreCategory;
+    window.filterGearStoreCatalog = filterGearStoreCatalog;
+    window.renderGearStoreCatalog = renderGearStoreCatalog;
+    window.addCatalogItemToGearCart = addCatalogItemToGearCart;
+    window.addToGearStoreCart = addToGearStoreCart;
+    window.updateGearCartQty = updateGearCartQty;
+    window.clearGearStoreCart = clearGearStoreCart;
+    window.updateGearDeliveryMode = updateGearDeliveryMode;
+    window.quickApplyGearPromo = quickApplyGearPromo;
+    window.submitGearStoreCheckout = submitGearStoreCheckout;
+    window.initGearStore = initGearStore;
 
     function showBulkImportPrompt() {
       showToast('📤 Bulk fixture schedule imported: 4 matches scheduled with 0 conflicts!');
@@ -17470,6 +18101,9 @@ cricos_active_sse_connections 1</pre>
     // Event Operational Readiness Renderer
     function initEventReadiness() {
       selectVenueWeatherLocation(window.currentVenueWeatherId || 'chinnaswamy_turf_a', false);
+      if (typeof initGearStore === 'function') {
+        initGearStore();
+      }
       const container = document.getElementById('eventReadinessBanner');
       if (!container) return;
       container.innerHTML = '<div class="event-readiness-card" style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.85rem 1.15rem; margin-bottom: 0.75rem;">' +
