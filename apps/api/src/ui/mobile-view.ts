@@ -1,3 +1,5 @@
+import { ICC_CRICKET_LAWS_DIRECTORY } from '@cricket-platform/scoring';
+
 export function getMobileAppHtml(): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -3208,6 +3210,12 @@ export function getMobileAppHtml(): string {
       clearSession() { this.session = null; }
     }
 
+    const ICC_CRICKET_LAWS_DIRECTORY = ${JSON.stringify(ICC_CRICKET_LAWS_DIRECTORY)};
+
+    if (typeof window !== 'undefined') {
+      window.ICC_CRICKET_LAWS_DIRECTORY = ICC_CRICKET_LAWS_DIRECTORY;
+    }
+
     class StandaloneMobileApp {
       constructor() {
         this.client = new StandaloneMobileClient();
@@ -3610,6 +3618,12 @@ export function getMobileAppHtml(): string {
         this.selectedNextBowlerId = 'bw-2';
         this.completedOversHistory = [];
         this.dismissalHistory = [];
+        this.freeHitActive = false;
+        this.iccLawsSheetOpen = false;
+        this.iccLawsSearchQuery = '';
+        this.iccLawsFilterCategory = 'ALL';
+        this.penaltyRunsSheetOpen = false;
+        this.selectedPenaltyType = 'HELMET_28_3';
 
         this.bowlingSquad = [
           { id: 'bw-1', name: 'Jasprit Bumrah', role: 'Right-arm Fast', overs: 3.4, maidens: 0, runsConceded: 24, wickets: 2, econ: '6.55' },
@@ -5894,6 +5908,22 @@ export function getMobileAppHtml(): string {
         });
       }
 
+      get selectedDismissalMode() {
+        return this.pendingDismissalMode;
+      }
+
+      set selectedDismissalMode(val) {
+        this.pendingDismissalMode = val;
+      }
+
+      get selectedDismissalOutRole() {
+        return this.pendingDismissalOutRole;
+      }
+
+      set selectedDismissalOutRole(val) {
+        this.pendingDismissalOutRole = val;
+      }
+
       promptWicketModal() {
         this.openMobileDismissalSheet();
       }
@@ -5911,7 +5941,7 @@ export function getMobileAppHtml(): string {
         var availableBench = this.getAvailableIncomingBatters();
         var isFinalWicket = (this.matchState.totalWickets === 9) || (availableBench.length === 0);
 
-        this.pendingDismissalMode = 'CAUGHT';
+        this.pendingDismissalMode = this.freeHitActive ? 'RUN_OUT' : 'CAUGHT';
         this.pendingDismissalFielder = '';
         this.pendingDismissalOutRole = 'STRIKER';
         this.pendingIncomingBatter = isFinalWicket ? '' : (availableBench.length > 0 ? availableBench[0].name : '');
@@ -5927,11 +5957,23 @@ export function getMobileAppHtml(): string {
       selectMobileDismissalOutRole(role) {
         if (window.CricOSSound) window.CricOSSound.playClick();
         this.pendingDismissalOutRole = role;
+        if (this.freeHitActive && role === 'STRIKER') {
+          var mode = this.pendingDismissalMode;
+          if (mode !== 'RUN_OUT' && mode !== 'OBSTRUCTING' && mode !== 'HIT_BALL_TWICE' && mode !== 'RETIRED_HURT' && mode !== 'RETIRED_OUT') {
+            this.pendingDismissalMode = 'RUN_OUT';
+          }
+        }
         this.render();
       }
 
       selectMobileDismissalMode(mode) {
         if (window.CricOSSound) window.CricOSSound.playClick();
+        if (this.freeHitActive && this.pendingDismissalOutRole === 'STRIKER') {
+          if (mode !== 'RUN_OUT' && mode !== 'OBSTRUCTING' && mode !== 'HIT_BALL_TWICE' && mode !== 'RETIRED_HURT' && mode !== 'RETIRED_OUT') {
+            this.showToast('🛑 Free Hit Active: Striker can ONLY be dismissed Run Out, Obstructing, or Hit Ball Twice (ICC Clause 21.19).', 'error', 3500);
+            return;
+          }
+        }
         this.pendingDismissalMode = mode;
         if (mode !== 'CAUGHT' && mode !== 'STUMPED' && mode !== 'RUN_OUT') {
           this.pendingDismissalFielder = '';
@@ -5961,19 +6003,27 @@ export function getMobileAppHtml(): string {
           this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets).', 'warning');
           return;
         }
+
+        var isStrikerOut = (this.pendingDismissalOutRole === 'STRIKER');
+        var outBatter = isStrikerOut ? this.matchState.striker : this.matchState.nonStriker;
+        var outBatterName = outBatter.name;
+        var mode = this.pendingDismissalMode || 'CAUGHT';
+
+        // ICC Standard Playing Conditions Clause 21.19: Free Hit Dismissal Restrictions
+        if (this.freeHitActive && isStrikerOut) {
+          if (mode !== 'RUN_OUT' && mode !== 'OBSTRUCTING' && mode !== 'HIT_BALL_TWICE' && mode !== 'RETIRED_HURT' && mode !== 'RETIRED_OUT') {
+            this.showToast('🛑 Free Hit Active: Striker can ONLY be dismissed Run Out, Obstructing, or Hit Ball Twice (ICC Clause 21.19).', 'error', 4000);
+            return;
+          }
+        }
+
         if (window.CricOSSound) window.CricOSSound.playWicket();
         if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
           window.CricOSMotionFX.triggerCelebration('WICKET');
         }
 
-        var isStrikerOut = (this.pendingDismissalOutRole === 'STRIKER');
-        var outBatter = isStrikerOut ? this.matchState.striker : this.matchState.nonStriker;
-        var outBatterName = outBatter.name;
-
         var availableBench = this.getAvailableIncomingBatters();
         var isFinalWicket = (this.matchState.totalWickets === 9) || (availableBench.length === 0);
-
-        var mode = this.pendingDismissalMode || 'CAUGHT';
         var fielder = (this.pendingDismissalFielder || '').trim();
 
         var desc = mode;
@@ -5983,14 +6033,28 @@ export function getMobileAppHtml(): string {
         else if (mode === 'LBW') desc = 'lbw b ' + this.matchState.currentBowlerName;
         else if (mode === 'BOWLED') desc = 'b ' + this.matchState.currentBowlerName;
         else if (mode === 'HIT_WICKET') desc = 'hit wicket b ' + this.matchState.currentBowlerName;
+        else if (mode === 'OBSTRUCTING') desc = 'obstructing the field (Law 37)';
+        else if (mode === 'HIT_BALL_TWICE') desc = 'hit ball twice (Law 34)';
+        else if (mode === 'HANDLED_BALL') desc = 'handled ball (Law 37)';
+        else if (mode === 'TIMED_OUT') desc = 'timed out (Law 40)';
+        else if (mode === 'RETIRED_OUT') desc = 'retired out (Law 25.4)';
+        else if (mode === 'RETIRED_HURT') desc = 'retired hurt (not out - Law 25.4)';
 
-        this.matchState.totalWickets += 1;
+        var isRetiredHurt = (mode === 'RETIRED_HURT');
+        var isBowlerCredited = (mode === 'BOWLED' || mode === 'CAUGHT' || mode === 'LBW' || mode === 'STUMPED' || mode === 'HIT_WICKET');
+
+        if (!isRetiredHurt) {
+          this.matchState.totalWickets += 1;
+          this.matchState.currentOverDeliveries.push('W');
+        } else {
+          this.matchState.currentOverDeliveries.push('RH');
+        }
+
         this.matchState.legalBalls += 1;
         this.matchState.bowler.ballsThisOver += 1;
-        if (mode !== 'RUN_OUT') {
+        if (isBowlerCredited) {
           this.matchState.bowler.wickets += 1;
         }
-        this.matchState.currentOverDeliveries.push('W');
 
         if (!this.matchState.dismissedBatters) this.matchState.dismissedBatters = [];
         this.matchState.dismissedBatters.push({
@@ -5999,19 +6063,25 @@ export function getMobileAppHtml(): string {
           runs: outBatter.runs,
           balls: outBatter.balls,
           fours: outBatter.fours || 0,
-          sixes: outBatter.sixes || 0
+          sixes: outBatter.sixes || 0,
+          isNotOut: isRetiredHurt
         });
 
-        if (!this.matchState.fallOfWickets) this.matchState.fallOfWickets = [];
-        var fowOver = Math.floor(this.matchState.legalBalls / 6) + '.' + (this.matchState.legalBalls % 6);
-        this.matchState.fallOfWickets.push({
-          wicket: this.matchState.totalWickets,
-          runs: this.matchState.totalRuns,
-          batter: outBatter.name,
-          over: fowOver
-        });
+        if (!isRetiredHurt) {
+          if (!this.matchState.fallOfWickets) this.matchState.fallOfWickets = [];
+          var fowOver = Math.floor(this.matchState.legalBalls / 6) + '.' + (this.matchState.legalBalls % 6);
+          this.matchState.fallOfWickets.push({
+            wicket: this.matchState.totalWickets,
+            runs: this.matchState.totalRuns,
+            batter: outBatter.name,
+            over: fowOver
+          });
+        }
 
-        if (isFinalWicket || this.matchState.totalWickets >= 10) {
+        // Reset Free Hit on legal delivery
+        this.freeHitActive = false;
+
+        if (isFinalWicket || (this.matchState.totalWickets >= 10 && !isRetiredHurt)) {
           // Team is ALL OUT!
           this.matchState.totalWickets = Math.min(10, this.matchState.totalWickets);
           this.matchState.isAllOut = true;
@@ -6063,7 +6133,7 @@ export function getMobileAppHtml(): string {
         // Validate incoming batter is NOT already dismissed
         var nextBatterName = this.pendingIncomingBatter;
         var isAlreadyOut = (this.matchState.dismissedBatters || []).some(function(d) {
-          return d.name === nextBatterName;
+          return d.name === nextBatterName && !d.isNotOut;
         });
         if (isAlreadyOut || !nextBatterName) {
           nextBatterName = availableBench.length > 0 ? availableBench[0].name : 'Rishabh P.';
@@ -6091,34 +6161,47 @@ export function getMobileAppHtml(): string {
           ballNumber: this.matchState.legalBalls
         });
 
+        // ICC Standard Playing Conditions Clause 18.11 (amended Oct 2022):
+        // On ANY Caught dismissal, incoming new batter MUST take strike at striker's end!
+        var takesStrike = isStrikerOut;
+        if (mode === 'CAUGHT') {
+          takesStrike = true;
+        }
+
         var newBatter = {
           name: nextBatterName,
           runs: 0,
           balls: 0,
           fours: 0,
           sixes: 0,
-          isStriker: isStrikerOut,
+          isStriker: takesStrike,
           stance: nextStance
         };
-        if (isStrikerOut) {
+
+        if (takesStrike) {
           this.matchState.striker = newBatter;
+          if (!isStrikerOut) {
+            // Non-striker was out, existing striker becomes non-striker under Caught rule
+            this.matchState.nonStriker = this.matchState.striker;
+          }
         } else {
           this.matchState.nonStriker = newBatter;
         }
 
         var ballNum = Math.floor(this.matchState.legalBalls / 6) + '.' + (this.matchState.legalBalls % 6);
+        var toastBadge = isRetiredHurt ? 'RETIRED HURT' : 'WICKET';
         this.matchState.commentary.unshift({
           ball: ballNum,
-          category: 'WICKET',
-          badge: 'WICKET 🚨',
-          badgeColor: '#ff3366',
+          category: isRetiredHurt ? 'INFO' : 'WICKET',
+          badge: isRetiredHurt ? 'RETIRED HURT 🏥' : 'WICKET 🚨',
+          badgeColor: isRetiredHurt ? '#38bdf8' : '#ff3366',
           duel: this.matchState.currentBowlerName + ' ➔ ' + outBatterName,
-          text: 'OUT! ' + outBatterName + ' ' + desc + ' (' + outBatter.runs + ' off ' + outBatter.balls + 'b). In walks ' + nextBatterName + ' (' + nextStance + ') to the crease.',
-          telemetry: ['Wicket ' + this.matchState.totalWickets + ': ' + this.matchState.totalRuns + '/' + this.matchState.totalWickets, 'Overs: ' + ballNum, desc]
+          text: (isRetiredHurt ? 'BATTER RETIRED: ' : 'OUT! ') + outBatterName + ' ' + desc + ' (' + outBatter.runs + ' off ' + outBatter.balls + 'b). In walks ' + nextBatterName + ' (' + nextStance + ') to the crease.',
+          telemetry: [toastBadge + ': ' + this.matchState.totalRuns + '/' + this.matchState.totalWickets, 'Overs: ' + ballNum, desc]
         });
 
         this.dismissalSheetOpen = false;
-        this.showToast('WICKET! ' + outBatterName + ' ' + desc + '. New: ' + nextBatterName, 'error', 3000);
+        this.showToast((isRetiredHurt ? '🏥 ' : '🚨 ') + outBatterName + ' ' + desc + '. New: ' + nextBatterName, isRetiredHurt ? 'info' : 'error', 3000);
         this.syncStanceFromStriker();
 
         if (this.matchState.bowler.ballsThisOver >= 6) {
@@ -6140,13 +6223,13 @@ export function getMobileAppHtml(): string {
 
         var striker = this.matchState.striker;
         var nonStriker = this.matchState.nonStriker;
-        var mode = this.pendingDismissalMode || 'CAUGHT';
+        var mode = this.pendingDismissalMode || (this.freeHitActive ? 'RUN_OUT' : 'CAUGHT');
         var outRole = this.pendingDismissalOutRole || 'STRIKER';
         var needsFielder = (mode === 'CAUGHT' || mode === 'STUMPED' || mode === 'RUN_OUT');
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="dismissalSheetBackdrop" onclick="window.cricosMobileApp.closeMobileDismissalSheet()"></div>';
-        h += '<div class="mobile-dismissal-sheet active" id="mobileDismissalSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(255, 51, 102, 0.45);">';
+        h += '<div class="mobile-dismissal-sheet active" id="mobileDismissalSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(255, 51, 102, 0.45); max-height: 88vh; overflow-y: auto;">';
         
         h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
@@ -6156,6 +6239,18 @@ export function getMobileAppHtml(): string {
         h += '</div>';
         h += '<button type="button" onclick="window.cricosMobileApp.closeMobileDismissalSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Cancel dismissal">✕</button>';
         h += '</div>';
+
+        // Free Hit Active Warning Banner (ICC Standard Playing Conditions Clause 21.19)
+        if (this.freeHitActive) {
+          h += '<div id="mobileDismissalFreeHitAlert" style="background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.55rem 0.75rem; margin-bottom: 0.75rem;">';
+          h += '<div style="font-weight: 800; font-size: 0.8rem; color: #ff3366; display: flex; align-items: center; gap: 0.35rem;">';
+          h += '<span>⚡</span> FREE HIT IN EFFECT (ICC Clause 21.19)';
+          h += '</div>';
+          h += '<div style="font-size: 0.7rem; color: ' + (isLight ? '#475569' : '#cbd5e1') + '; margin-top: 0.2rem; line-height: 1.35;">';
+          h += 'Striker CANNOT be dismissed Bowled, Caught, LBW, Stumped, or Hit Wicket. Only <strong>Run Out (Law 38)</strong>, <strong>Obstructing (Law 37)</strong>, or <strong>Hit Ball Twice (Law 34)</strong> are legally permitted.';
+          h += '</div>';
+          h += '</div>';
+        }
 
         h += '<div style="font-size: 0.72rem; font-weight: 800; color: #ff3366; text-transform: uppercase; margin-bottom: 0.35rem;">1. Dismissed Batter</div>';
         h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin-bottom: 0.75rem;">';
@@ -6181,23 +6276,46 @@ export function getMobileAppHtml(): string {
         h += '</button>';
         h += '</div>';
 
-        h += '<div style="font-size: 0.72rem; font-weight: 800; color: #ff3366; text-transform: uppercase; margin-bottom: 0.35rem;">2. Mode of Dismissal</div>';
+        h += '<div style="font-size: 0.72rem; font-weight: 800; color: #ff3366; text-transform: uppercase; margin-bottom: 0.35rem;">2. Mode of Dismissal (MCC Laws 30–39 &amp; 25)</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.75rem;">';
+        
         var modes = [
-          ['CAUGHT', 'Caught', 'c Fielder b Bowler'],
-          ['BOWLED', 'Bowled', 'Clean bowled'],
-          ['LBW', 'LBW', 'Leg before wicket'],
-          ['RUN_OUT', 'Run Out', 'Run out at stumps'],
-          ['STUMPED', 'Stumped', 'st Keeper b Bowler'],
-          ['HIT_WICKET', 'Hit Wkt', 'Broken wicket']
+          ['CAUGHT', 'Caught', 'c Fielder b Bowler (Law 33)'],
+          ['BOWLED', 'Bowled', 'Clean bowled (Law 32)'],
+          ['LBW', 'LBW', 'Leg before wicket (Law 36)'],
+          ['RUN_OUT', 'Run Out', 'Run out at stumps (Law 38)'],
+          ['STUMPED', 'Stumped', 'st Keeper b Bowler (Law 39)'],
+          ['HIT_WICKET', 'Hit Wkt', 'Broken wicket (Law 35)'],
+          ['OBSTRUCTING', 'Obstructing', 'Obstructing field (Law 37)'],
+          ['HIT_BALL_TWICE', 'Hit 2x', 'Hit ball twice (Law 34)'],
+          ['HANDLED_BALL', 'Handled', 'Handled ball (Law 37)'],
+          ['TIMED_OUT', 'Timed Out', 'Timed out (Law 40)'],
+          ['RETIRED_OUT', 'Retired Out', 'Tactical retirement (Law 25.4)'],
+          ['RETIRED_HURT', 'Retired Hurt', 'Injury/Illness not out (Law 25.4)']
         ];
+
         for (var m = 0; m < modes.length; m++) {
           var md = modes[m];
           var isM = (mode === md[0]);
-          var btnStyle = isM
-            ? 'background: #ff3366; border: 1px solid #ff3366; color: #fff; font-weight: 800;'
-            : 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; font-weight: 600;';
-          h += '<button type="button" onclick="window.cricosMobileApp.selectMobileDismissalMode(&apos;' + md[0] + '&apos;)" style="padding: 0.45rem 0.2rem; border-radius: 8px; font-size: 0.75rem; text-align: center; cursor: pointer; ' + btnStyle + '" data-tooltip="' + md[2] + '">' + md[1] + '</button>';
+          var isProhibitedOnFreeHit = (this.freeHitActive && isStrikerActive && (
+            md[0] === 'BOWLED' || md[0] === 'CAUGHT' || md[0] === 'LBW' || md[0] === 'STUMPED' || md[0] === 'HIT_WICKET' || md[0] === 'HANDLED_BALL' || md[0] === 'TIMED_OUT'
+          ));
+
+          var btnStyle = '';
+          var disAttr = '';
+          var tooltip = md[2];
+
+          if (isProhibitedOnFreeHit) {
+            btnStyle = 'background: ' + cardBg + '; border: 1px dashed rgba(255,51,102,0.3); color: ' + muted + '; opacity: 0.35; cursor: not-allowed;';
+            disAttr = ' disabled';
+            tooltip = 'Prohibited on Free Hit (ICC Clause 21.19)';
+          } else if (isM) {
+            btnStyle = 'background: #ff3366; border: 1px solid #ff3366; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(255,51,102,0.4);';
+          } else {
+            btnStyle = 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; font-weight: 600;';
+          }
+
+          h += '<button type="button"' + disAttr + ' data-mode="' + md[0] + '" onclick="window.cricosMobileApp.selectMobileDismissalMode(&apos;' + md[0] + '&apos;)" style="padding: 0.42rem 0.2rem; border-radius: 8px; font-size: 0.72rem; text-align: center; cursor: pointer; ' + btnStyle + '" data-tooltip="' + tooltip + '">' + md[1] + '</button>';
         }
         h += '</div>';
 
@@ -6264,6 +6382,303 @@ export function getMobileAppHtml(): string {
         h += '<div style="display: flex; gap: 0.5rem;">';
         h += '<button type="button" onclick="window.cricosMobileApp.closeMobileDismissalSheet()" style="flex: 1; padding: 0.65rem; border-radius: 8px; border: 1px solid ' + bdrColor + '; background: transparent; color: ' + ink + '; font-weight: 600; font-size: 0.8rem;" data-tooltip="Cancel dismissal">Cancel</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.confirmMobileDismissal()" style="flex: 2; padding: 0.65rem; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; background: #ff3366; color: #fff; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 51, 102, 0.4);" data-tooltip="Confirm dismissal and send new batter">Dismiss Batter (W) ✓</button>';
+        h += '</div>';
+
+        h += '</div>';
+        return h;
+      }
+
+      // ICC & MCC Cricket Laws Directory Sheet Controllers & Renderers
+      openIccLawsSheet(filterCategory) {
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.iccLawsSheetOpen = true;
+        if (filterCategory) {
+          this.iccLawsFilterCategory = filterCategory;
+        }
+        this.render();
+      }
+
+      closeIccLawsSheet() {
+        this.iccLawsSheetOpen = false;
+        this.render();
+      }
+
+      searchMobileIccLaws(query) {
+        this.iccLawsSearchQuery = (query || '').toLowerCase().trim();
+        this.render();
+      }
+
+      setMobileIccLawsCategory(category) {
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.iccLawsFilterCategory = category || 'ALL';
+        this.render();
+      }
+
+      executeLawQuickAction(action) {
+        this.closeIccLawsSheet();
+        if (action === 'NO_BALL') {
+          this.openExtraPickerSheet('NO_BALL');
+        } else if (action === 'WIDE') {
+          this.openExtraPickerSheet('WIDE');
+        } else if (action === 'BYE') {
+          this.openExtraPickerSheet('BYE');
+        } else if (action === 'LEG_BYE') {
+          this.openExtraPickerSheet('LEG_BYE');
+        } else if (action === 'WICKET') {
+          this.openMobileDismissalSheet();
+        } else if (action === 'PENALTY_RUNS' || action === 'PENALTY_5') {
+          this.openPenaltyRunsSheet();
+        } else if (action === 'BOWLER_CHANGE') {
+          this.openMobileBowlerRotationSheet(true);
+        } else if (action === 'SWAP_STRIKE') {
+          var tmp = this.matchState.striker;
+          this.matchState.striker = this.matchState.nonStriker;
+          this.matchState.nonStriker = tmp;
+          this.syncStanceFromStriker();
+          this.showToast('Strike rotated between batters', 'info');
+          this.render();
+        } else if (action === 'SCORE_4') {
+          this.onPadNumberSelect(4);
+        }
+      }
+
+      renderMobileIccLawsSheet() {
+        if (!this.iccLawsSheetOpen) return '';
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var sheetBg = isLight ? (activeTheme === 'nordic' ? '#FAF8F5' : '#FFFFFF') : '#0A1220';
+        var cardBg = isLight ? (activeTheme === 'nordic' ? '#F2ECE4' : '#F1F5F9') : 'rgba(255,255,255,0.04)';
+        var bdrColor = isLight ? (activeTheme === 'nordic' ? '#D6D0C4' : '#CBD5E1') : 'rgba(255,255,255,0.1)';
+        var ink = isLight ? '#0F172A' : '#F8FAFC';
+        var muted = isLight ? '#475569' : '#94A3B8';
+
+        var query = (this.iccLawsSearchQuery || '').toLowerCase().trim();
+        var cat = this.iccLawsFilterCategory || 'ALL';
+        var dir = (typeof window !== 'undefined' && window.ICC_CRICKET_LAWS_DIRECTORY) || [];
+
+        var filteredLaws = dir.filter(function(law) {
+          if (cat !== 'ALL' && law.category !== cat) return false;
+          if (!query) return true;
+          return law.title.toLowerCase().indexOf(query) !== -1 ||
+                 law.law.toLowerCase().indexOf(query) !== -1 ||
+                 law.summary.toLowerCase().indexOf(query) !== -1 ||
+                 (law.scorerRules && law.scorerRules.some(function(r) { return r.toLowerCase().indexOf(query) !== -1; }));
+        });
+
+        var h = '';
+        h += '<div class="mobile-sheet-backdrop active" id="iccLawsSheetBackdrop" onclick="window.cricosMobileApp.closeIccLawsSheet()"></div>';
+        h += '<div class="mobile-icc-laws-sheet active" id="mobileIccLawsSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(56, 189, 248, 0.45); max-height: 88vh; overflow-y: auto; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; border-radius: 16px 16px 0 0; padding: 1rem; box-shadow: 0 -8px 32px rgba(0,0,0,0.6);">';
+
+        h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
+        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+        h += '<span style="font-size: 1.15rem;">📖</span>';
+        h += '<span style="font-family: Space Grotesk, sans-serif; font-size: 0.95rem; font-weight: 800; color: #38bdf8;">ICC Laws &amp; Playing Conditions</span>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeIccLawsSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Close laws rulebook">✕</button>';
+        h += '</div>';
+
+        // Search Input
+        h += '<div style="margin-bottom: 0.65rem;">';
+        h += '<input type="text" id="mobileIccLawSearchInput" placeholder="Search laws (e.g. Free Hit, Wide, LBW, Helmet)..." value="' + (this.iccLawsSearchQuery || '') + '" oninput="window.cricosMobileApp.searchMobileIccLaws(this.value)" style="width: 100%; box-sizing: border-box; background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 8px; padding: 0.55rem 0.75rem; color: ' + ink + '; font-size: 0.8rem; outline: none;" data-tooltip="Search cricket laws directory" />';
+        h += '</div>';
+
+        // Category Filter Chips
+        var categories = [
+          ['ALL', 'All Laws'],
+          ['EXTRAS', '⚡ Extras'],
+          ['DISMISSALS', '🚨 Dismissals'],
+          ['FAIR_PLAY', '⚖️ Fair Play'],
+          ['MATCH_OPS', '⏱️ Match Ops'],
+          ['FIELDING', '🛡️ Fielding']
+        ];
+        h += '<div style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.4rem; margin-bottom: 0.75rem;">';
+        for (var c = 0; c < categories.length; c++) {
+          var cKey = categories[c][0];
+          var cLabel = categories[c][1];
+          var isCatActive = (cat === cKey);
+          var chipStyle = isCatActive
+            ? 'background: rgba(56, 189, 248, 0.25); border: 1.5px solid #38bdf8; color: #38bdf8; font-weight: 800;'
+            : 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; color: ' + muted + ';';
+          h += '<button type="button" onclick="window.cricosMobileApp.setMobileIccLawsCategory(&apos;' + cKey + '&apos;)" style="padding: 0.25rem 0.55rem; border-radius: 9999px; font-size: 0.68rem; white-space: nowrap; cursor: pointer; ' + chipStyle + '" data-tooltip="Filter by ' + cLabel + '">' + cLabel + '</button>';
+        }
+        h += '</div>';
+
+        // Law Cards Container
+        h += '<div id="mobileIccLawsList" style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 0.85rem;">';
+        if (filteredLaws.length === 0) {
+          h += '<div style="text-align: center; padding: 1.5rem 0.5rem; color: ' + muted + '; font-size: 0.78rem;">No cricket laws found matching your search. Try "Free Hit", "Wide", or "Caught".</div>';
+        } else {
+          for (var l = 0; l < filteredLaws.length; l++) {
+            var item = filteredLaws[l];
+            h += '<div class="mobile-icc-law-card" style="background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 10px; padding: 0.75rem;">';
+            h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem;">';
+            h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+            h += '<span style="font-size: 1rem;">' + item.icon + '</span>';
+            h += '<span style="font-weight: 800; font-size: 0.82rem; color: #38bdf8;">' + item.title + '</span>';
+            h += '</div>';
+            h += '<span style="font-size: 0.6rem; font-weight: 700; color: #00E599; background: rgba(0,229,153,0.12); padding: 0.12rem 0.4rem; border-radius: 4px;">' + item.law + '</span>';
+            h += '</div>';
+
+            h += '<div style="font-size: 0.72rem; color: ' + (isLight ? '#334155' : '#cbd5e1') + '; line-height: 1.4; margin-bottom: 0.45rem;">' + item.summary + '</div>';
+
+            if (item.scorerRules && item.scorerRules.length > 0) {
+              h += '<div style="font-size: 0.68rem; font-weight: 800; color: #ffb800; margin-bottom: 0.2rem;">📋 Scorer Directives:</div>';
+              h += '<ul style="margin: 0 0 0.45rem 1rem; padding: 0; font-size: 0.68rem; color: ' + (isLight ? '#475569' : '#94a3b8') + '; line-height: 1.35;">';
+              for (var r = 0; r < item.scorerRules.length; r++) {
+                h += '<li>' + item.scorerRules[r] + '</li>';
+              }
+              h += '</ul>';
+            }
+
+            if (item.systemEnforcement) {
+              h += '<div style="font-size: 0.65rem; color: var(--turf-emerald); background: rgba(0,229,153,0.06); border-radius: 4px; padding: 0.3rem 0.45rem; margin-bottom: 0.45rem;">';
+              h += '<strong>⚙️ CricOS Automation:</strong> ' + item.systemEnforcement;
+              h += '</div>';
+            }
+
+            if (item.quickAction) {
+              h += '<button type="button" onclick="window.cricosMobileApp.executeLawQuickAction(&apos;' + item.quickAction + '&apos;)" style="width: 100%; padding: 0.35rem 0.5rem; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.12); color: #38bdf8; font-weight: 700; font-size: 0.72rem; cursor: pointer;" data-tooltip="' + (item.quickActionText || 'Apply action') + '">' + (item.quickActionText || 'Apply Quick Action') + ' ➔</button>';
+            }
+
+            h += '</div>';
+          }
+        }
+        h += '</div>';
+
+        h += '<button type="button" onclick="window.cricosMobileApp.closeIccLawsSheet()" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid ' + bdrColor + '; background: transparent; color: ' + ink + '; font-weight: 600; font-size: 0.8rem;" data-tooltip="Close laws rulebook">Close Rulebook</button>';
+        h += '</div>';
+        return h;
+      }
+
+      // Penalty Runs Award Sheet (+5 Runs under MCC Laws 41, 42 & 28.3)
+      openPenaltyRunsSheet() {
+        if (this.profile.persona !== 'SCORER') {
+          this.showToast('🔒 Only official Scorers can award penalty runs.', 'warning');
+          return;
+        }
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.penaltyRunsSheetOpen = true;
+        this.selectedPenaltyType = 'HELMET_28_3';
+        this.render();
+      }
+
+      closePenaltyRunsSheet() {
+        this.penaltyRunsSheetOpen = false;
+        this.render();
+      }
+
+      selectPenaltyType(type) {
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.selectedPenaltyType = type;
+        this.render();
+      }
+
+      confirmPenaltyRunsAward() {
+        if (this.profile.persona !== 'SCORER') {
+          this.showToast('🔒 Only official Scorers can award penalty runs.', 'warning');
+          return;
+        }
+        var type = this.selectedPenaltyType || 'HELMET_28_3';
+        var descriptions = {
+          'HELMET_28_3': 'Law 28.3: Ball struck fielder helmet on ground (+5 penalty runs)',
+          'UNFAIR_PLAY_41': 'Law 41: Unfair Play / Fake fielding or deliberate distraction (+5 penalty runs)',
+          'PLAYER_CONDUCT_42': 'Law 42: Level 3/4 Player Conduct penalty (+5 penalty runs)'
+        };
+        var label = descriptions[type] || 'MCC Law Penalty runs (+5 runs)';
+
+        if (window.CricOSSound) window.CricOSSound.playCheer();
+        this.matchState.totalRuns += 5;
+        if (!this.matchState.extras) {
+          this.matchState.extras = { wides: 5, noBalls: 1, byes: 4, legByes: 2, penalty: 0 };
+        }
+        this.matchState.extras.penalty = (this.matchState.extras.penalty || 0) + 5;
+        this.matchState.currentOverDeliveries.push('+5Pen');
+
+        var ballNum = Math.floor(this.matchState.legalBalls / 6) + '.' + (this.matchState.legalBalls % 6);
+        this.matchState.commentary.unshift({
+          ball: ballNum,
+          badge: 'PENALTY ⚠️',
+          badgeColor: '#eab308',
+          text: label + ' awarded to ' + this.matchState.battingTeam + '. Ball called dead, bowler not charged.'
+        });
+
+        this.penaltyRunsSheetOpen = false;
+        this.showToast('⚖️ ' + label, 'warning', 3500);
+        this.render();
+      }
+
+      renderMobilePenaltyRunsSheet() {
+        if (!this.penaltyRunsSheetOpen) return '';
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var sheetBg = isLight ? (activeTheme === 'nordic' ? '#FAF8F5' : '#FFFFFF') : '#0A1220';
+        var cardBg = isLight ? (activeTheme === 'nordic' ? '#F2ECE4' : '#F1F5F9') : 'rgba(255,255,255,0.04)';
+        var bdrColor = isLight ? (activeTheme === 'nordic' ? '#D6D0C4' : '#CBD5E1') : 'rgba(255,255,255,0.1)';
+        var ink = isLight ? '#0F172A' : '#F8FAFC';
+        var muted = isLight ? '#475569' : '#94A3B8';
+
+        var penaltyTypes = [
+          {
+            id: 'HELMET_28_3',
+            title: 'Law 28.3: Ball Struck Fielder Helmet',
+            law: 'MCC Law 28.3',
+            desc: 'Ball in play struck a protective helmet placed on the ground behind the wicketkeeper. Ball is immediately dead.',
+            color: '#00D2FF'
+          },
+          {
+            id: 'UNFAIR_PLAY_41',
+            title: 'Law 41: Unfair Play / Fake Fielding',
+            law: 'MCC Law 41',
+            desc: 'Deliberate distraction, deception, or obstruction of batter (Law 41.5), or damaging the pitch surface.',
+            color: '#FFB800'
+          },
+          {
+            id: 'PLAYER_CONDUCT_42',
+            title: 'Law 42: Player Conduct Infraction',
+            law: 'MCC Law 42',
+            desc: 'Level 3 or 4 code breach (intimidation, physical contact, or dissent) penalized by the lead umpire.',
+            color: '#ff3366'
+          }
+        ];
+
+        var h = '';
+        h += '<div class="mobile-sheet-backdrop active" id="penaltyRunsSheetBackdrop" onclick="window.cricosMobileApp.closePenaltyRunsSheet()"></div>';
+        h += '<div class="mobile-penalty-runs-sheet active" id="mobilePenaltyRunsSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(234, 179, 8, 0.45); max-height: 85vh; overflow-y: auto; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; border-radius: 16px 16px 0 0; padding: 1rem; box-shadow: 0 -8px 32px rgba(0,0,0,0.6);">';
+
+        h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
+        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+        h += '<span style="font-size: 1.15rem;">⚖️</span>';
+        h += '<span style="font-family: Space Grotesk, sans-serif; font-size: 0.95rem; font-weight: 800; color: #eab308;">Award +5 Penalty Runs</span>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closePenaltyRunsSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Cancel penalty award">✕</button>';
+        h += '</div>';
+
+        h += '<div style="font-size: 0.72rem; color: ' + (isLight ? '#475569' : '#cbd5e1') + '; line-height: 1.4; margin-bottom: 0.75rem;">';
+        h += '5 penalty runs are credited to team extras (Penalties). Ball is called dead; delivery does not count towards the over, and the bowler is not debited.';
+        h += '</div>';
+
+        h += '<div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.85rem;">';
+        for (var p = 0; p < penaltyTypes.length; p++) {
+          var pt = penaltyTypes[p];
+          var isPtActive = (this.selectedPenaltyType === pt.id);
+          var ptStyle = isPtActive
+            ? 'background: rgba(234, 179, 8, 0.15); border: 1.5px solid #eab308;'
+            : 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + ';';
+          h += '<div onclick="window.cricosMobileApp.selectPenaltyType(&apos;' + pt.id + '&apos;)" style="padding: 0.65rem 0.75rem; border-radius: 8px; cursor: pointer; ' + ptStyle + '" data-tooltip="Select ' + pt.title + '">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">';
+          h += '<span style="font-weight: 800; font-size: 0.78rem; color: ' + pt.color + ';">' + pt.title + '</span>';
+          h += '<span style="font-size: 0.62rem; font-weight: 700; color: ' + muted + ';">' + pt.law + '</span>';
+          h += '</div>';
+          h += '<div style="font-size: 0.68rem; color: ' + (isLight ? '#334155' : '#94a3b8') + '; line-height: 1.35;">' + pt.desc + '</div>';
+          h += '</div>';
+        }
+        h += '</div>';
+
+        h += '<div style="display: flex; gap: 0.5rem;">';
+        h += '<button type="button" onclick="window.cricosMobileApp.closePenaltyRunsSheet()" style="flex: 1; padding: 0.65rem; border-radius: 8px; border: 1px solid ' + bdrColor + '; background: transparent; color: ' + ink + '; font-weight: 600; font-size: 0.8rem;" data-tooltip="Cancel penalty award">Cancel</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.confirmPenaltyRunsAward()" style="flex: 2; padding: 0.65rem; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; background: #eab308; color: #000; cursor: pointer; box-shadow: 0 4px 12px rgba(234, 179, 8, 0.4);" data-tooltip="Confirm +5 penalty runs award">Award +5 Penalty Runs ✓</button>';
         h += '</div>';
 
         h += '</div>';
@@ -10448,10 +10863,21 @@ export function getMobileAppHtml(): string {
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">';
             h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
             h += '<span style="font-size: 0.8rem;">🎯</span>';
-            h += '<span style="font-size: 0.78rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">Scorer Studio & Tactical Pad</span>';
+            h += '<span style="font-size: 0.78rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">Scorer Studio &amp; Tactical Pad</span>';
             h += '</div>';
+            h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+            h += '<button type="button" id="btnMobileIccLawsHeader" class="btn btn-secondary" onclick="window.cricosMobileApp.openIccLawsSheet()" style="padding: 0.12rem 0.45rem; font-size: 0.62rem; font-weight: 800; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.12); border-radius: 9999px;" data-tooltip="Open ICC Playing Conditions &amp; MCC Laws Rulebook">📖 LAWS</button>';
             h += '<span style="font-size: 0.6rem; color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">TACTICAL SCORER</span>';
             h += '</div>';
+            h += '</div>';
+
+            // Free Hit Active Status Badge
+            if (this.freeHitActive) {
+              h += '<div id="mobileFreeHitBadge" style="background: rgba(255, 51, 102, 0.2); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.4rem 0.65rem; margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; color: #ff3366; font-weight: 800;">';
+              h += '<span style="display: flex; align-items: center; gap: 0.25rem;"><span>⚡</span> FREE HIT IN EFFECT (ICC 21.19)</span>';
+              h += '<span style="font-size: 0.64rem; color: #cbd5e1; font-weight: 600;">No Bowled/Caught/LBW</span>';
+              h += '</div>';
+            }
 
             var isAllOut = this.matchState.isAllOut || this.matchState.totalWickets >= 10;
             if (isAllOut) {
@@ -10475,16 +10901,22 @@ export function getMobileAppHtml(): string {
             h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="3" onclick="window.cricosMobileApp.onPadNumberSelect(3)" data-tooltip="Three runs (+3 runs, choose direction)"' + padDis + '>3<span class="mobile-studio-sublabel">Triple</span></button>';
             h += '<button type="button" class="mobile-studio-btn pad-btn boundary-four" data-runs="4" onclick="window.cricosMobileApp.onPadNumberSelect(4)" data-tooltip="Boundary Four (+4 runs, choose direction)"' + padDis + '>4<span class="mobile-studio-sublabel" style="color: #00D2FF;">Four</span></button>';
             h += '<button type="button" class="mobile-studio-btn pad-btn maximum-six" data-runs="6" onclick="window.cricosMobileApp.onPadNumberSelect(6)" data-tooltip="Maximum Six (+6 runs, choose direction)"' + padDis + '>6<span class="mobile-studio-sublabel" style="color: #00E599;">Six</span></button>';
-            h += '<button type="button" class="mobile-studio-btn pad-btn wicket-out" onclick="window.cricosMobileApp.promptWicketModal()" data-tooltip="Wicket Dismissal Dialog"' + padDis + '>W<span class="mobile-studio-sublabel" style="color: #ff3366;">Wicket</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn wicket-out" onclick="window.cricosMobileApp.promptWicketModal()" data-tooltip="Wicket Dismissal Dialog (MCC Laws 30-39 &amp; 25)"' + padDis + '>W<span class="mobile-studio-sublabel" style="color: #ff3366;">Wicket</span></button>';
             h += '<button type="button" class="mobile-studio-btn pad-btn undo-btn" onclick="window.cricosMobileApp.undoLastDelivery()" data-tooltip="Undo last delivery">↺<span class="mobile-studio-sublabel" style="color: #ffb800;">Undo</span></button>';
             h += '</div>';
 
-            // Quick Extras Strip with Generic Labels (Opens wider extra runs menu)
+            // Quick Extras Strip with Law Citations (Opens wider extra runs menu)
             h += '<div style="display: flex; gap: 0.3rem; margin-bottom: 0.45rem;">';
-            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="WIDE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Wide delivery (opens extra runs picker)">Wide</button>';
-            h += '<button type="button" class="btn btn-secondary"' + extNbDis + ' data-extra="NO_BALL" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="No Ball delivery (opens extra runs picker, Free Hit)">No Ball</button>';
-            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="LEG_BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Leg Bye delivery (opens extra runs picker)">Leg Bye</button>';
-            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Bye delivery (opens extra runs picker)">Bye</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="WIDE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Wide delivery [MCC Law 22] (opens extra runs picker)">Wide <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 22]</span></button>';
+            h += '<button type="button" class="btn btn-secondary"' + extNbDis + ' data-extra="NO_BALL" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="No Ball delivery [MCC Law 21 &amp; ICC 21.19 Free Hit]">No Ball <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 21⚡]</span></button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="LEG_BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Leg Bye delivery [MCC Law 23]">Leg Bye <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 23]</span></button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Bye delivery [MCC Law 23]">Bye <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 23]</span></button>';
+            h += '</div>';
+
+            // Dedicated Penalty Runs & Laws Reference Bar
+            h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.45rem;">';
+            h += '<button type="button" class="btn btn-secondary" id="btnMobileStudioPenaltyRuns" onclick="window.cricosMobileApp.openPenaltyRunsSheet()" style="flex: 1.2; padding: 0.38rem 0.3rem; font-size: 0.7rem; font-weight: 700; color: #eab308; border-color: rgba(234, 179, 8, 0.4); background: rgba(234, 179, 8, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.25rem;" data-tooltip="Award +5 Penalty Runs (MCC Laws 41/42 &amp; 28.3 Helmet Penalty)"><span style="font-size: 0.82rem;">⚖️</span> +5 Penalty Runs</button>';
+            h += '<button type="button" class="btn btn-secondary" id="btnMobileIccLaws" onclick="window.cricosMobileApp.openIccLawsSheet()" style="flex: 1; padding: 0.38rem 0.3rem; font-size: 0.7rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.25rem;" data-tooltip="Open ICC Playing Conditions &amp; MCC Laws Rulebook"><span style="font-size: 0.82rem;">📖</span> ICC Laws Rulebook</button>';
             h += '</div>';
 
             // Dedicated Undo Last Ball Button (Replaced redundant compound extras & hold-to-reset)
@@ -11868,6 +12300,16 @@ export function getMobileAppHtml(): string {
         // Mobile Fall of Wicket Dismissal Bottom Sheet
         if (this.dismissalSheetOpen) {
           h += this.renderMobileDismissalSheet();
+        }
+
+        // Mobile ICC Cricket Laws Rulebook Reference Bottom Sheet
+        if (this.iccLawsSheetOpen) {
+          h += this.renderMobileIccLawsSheet();
+        }
+
+        // Mobile Penalty Runs Award Bottom Sheet (MCC Laws 41, 42 & 28.3)
+        if (this.penaltyRunsSheetOpen) {
+          h += this.renderMobilePenaltyRunsSheet();
         }
 
         // Slide-Out Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios & Clean Focus Toggle)
@@ -13603,7 +14045,12 @@ export function getMobileAppHtml(): string {
         } else if (window.cricosMobileApp.bowlerRotationSheetOpen) {
           window.cricosMobileApp.closeMobileBowlerRotationSheet();
         } else if (window.cricosMobileApp.dismissalSheetOpen) {
-          window.cricosMobileApp.closeMobileDismissalSheet();        }
+          window.cricosMobileApp.closeMobileDismissalSheet();
+        } else if (window.cricosMobileApp.iccLawsSheetOpen) {
+          window.cricosMobileApp.closeIccLawsSheet();
+        } else if (window.cricosMobileApp.penaltyRunsSheetOpen) {
+          window.cricosMobileApp.closePenaltyRunsSheet();
+        }
       }
     });
 

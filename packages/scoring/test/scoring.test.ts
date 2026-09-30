@@ -338,6 +338,178 @@ describe('Scoring Package', () => {
       /SCORE_INNINGS_ALREADY_CLOSED/
     );
   });
+
+  it('enforces ICC Clause 21.19 Free Hit dismissal restrictions (rejects Bowled/Caught, permits Run Out)', () => {
+    let state = createInitialScoreState(undefined, 'b-1', 'b-2', 'bowler-1');
+
+    // Deliver a No Ball -> triggers Free Hit
+    state = applyDelivery(state, {
+      client_event_id: 'nb-1',
+      sequence: 1,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 1,
+      extra_type: 'NO_BALL',
+      legal_ball: false
+    });
+    assert.equal(state.is_free_hit, true, 'Next ball must be Free Hit after No Ball');
+
+    // Attempting Bowled on Free Hit must throw SCORE_FREE_HIT_DISMISSAL_INVALID
+    assert.throws(
+      () => applyDelivery(state, {
+        client_event_id: 'fh-bowled-invalid',
+        sequence: 2,
+        event_type: 'DELIVERY',
+        bat_runs: 0,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true,
+        is_wicket: true,
+        wicket_type: 'BOWLED',
+        player_out_id: 'b-1',
+        next_batter_id: 'b-3'
+      }),
+      /SCORE_FREE_HIT_DISMISSAL_INVALID/
+    );
+
+    // Attempting Caught on Free Hit must throw
+    assert.throws(
+      () => applyDelivery(state, {
+        client_event_id: 'fh-caught-invalid',
+        sequence: 2,
+        event_type: 'DELIVERY',
+        bat_runs: 0,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true,
+        is_wicket: true,
+        wicket_type: 'CAUGHT',
+        player_out_id: 'b-1',
+        next_batter_id: 'b-3'
+      }),
+      /SCORE_FREE_HIT_DISMISSAL_INVALID/
+    );
+
+    // Run Out on Free Hit is valid per ICC Clause 21.19 / MCC Law 21.18
+    const runOutState = applyDelivery(state, {
+      client_event_id: 'fh-runout-valid',
+      sequence: 2,
+      event_type: 'DELIVERY',
+      bat_runs: 1,
+      extra_runs: 0,
+      extra_type: 'NONE',
+      legal_ball: true,
+      is_wicket: true,
+      wicket_type: 'RUN_OUT',
+      player_out_id: 'b-1',
+      next_batter_id: 'b-3'
+    });
+    assert.equal(runOutState.wickets, 1, 'Run Out is permitted on Free Hit');
+    assert.equal(runOutState.bowlers['bowler-1']?.wickets, 0, 'Bowler must NOT receive credit for Run Out');
+    assert.equal(runOutState.is_free_hit, false, 'Free Hit completes after legal ball');
+  });
+
+  it('continues Free Hit when subsequent delivery is an illegal ball (Wide or No Ball)', () => {
+    let state = createInitialScoreState(undefined, 'b-1', 'b-2', 'bowler-1');
+    state = applyDelivery(state, {
+      client_event_id: 'nb-step-1',
+      sequence: 1,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 1,
+      extra_type: 'NO_BALL',
+      legal_ball: false
+    });
+    assert.equal(state.is_free_hit, true);
+
+    // Bowler bowls a Wide on Free Hit
+    state = applyDelivery(state, {
+      client_event_id: 'wide-on-fh',
+      sequence: 2,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 1,
+      extra_type: 'WIDE',
+      legal_ball: false
+    });
+    assert.equal(state.is_free_hit, true, 'Free Hit must CONTINUE after a Wide per ICC 21.19.2');
+
+    // Bowler bowls a legal ball -> Free Hit concludes
+    state = applyDelivery(state, {
+      client_event_id: 'dot-on-fh',
+      sequence: 3,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 0,
+      extra_type: 'NONE',
+      legal_ball: true
+    });
+    assert.equal(state.is_free_hit, false, 'Free Hit concludes after legal delivery');
+  });
+
+  it('enforces ICC October 2022 Caught strike rotation rule: incoming batter takes striker end', () => {
+    let state = createInitialScoreState(undefined, 'b-striker', 'b-nonstriker', 'bowler-1');
+    // Batter is caught, odd runs attempted or not, new batter must be striker
+    state = applyDelivery(state, {
+      client_event_id: 'caught-rot',
+      sequence: 1,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 0,
+      extra_type: 'NONE',
+      legal_ball: true,
+      is_wicket: true,
+      wicket_type: 'CAUGHT',
+      player_out_id: 'b-striker',
+      next_batter_id: 'b-incoming'
+    });
+
+    assert.equal(state.striker_id, 'b-incoming', 'Incoming batter MUST take strike on Caught dismissal (ICC Oct 2022 Law 18.11 amendment)');
+    assert.equal(state.non_striker_id, 'b-nonstriker');
+  });
+
+  it('handles Retired Hurt vs Retired Out per MCC Law 25.4', () => {
+    let state = createInitialScoreState(undefined, 'b-1', 'b-2', 'bowler-1');
+
+    // Retired Hurt: not out, does NOT count against team wickets
+    state = applyDelivery(state, {
+      client_event_id: 'ret-hurt',
+      sequence: 1,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 0,
+      extra_type: 'NONE',
+      legal_ball: true,
+      is_wicket: true,
+      wicket_type: 'RETIRED_HURT',
+      player_out_id: 'b-1',
+      next_batter_id: 'b-3'
+    });
+
+    assert.equal(state.wickets, 0, 'Retired Hurt does not increment team wickets fallen');
+    assert.equal(state.fall_of_wickets.length, 0, 'Retired Hurt does not add to fall of wickets');
+    assert.equal(state.batters['b-1']?.isOut, false, 'Retired Hurt batter is recorded as not out');
+    assert.equal(state.striker_id, 'b-3', 'Incoming batter takes crease');
+
+    // Retired Out: counts as a wicket fallen
+    state = applyDelivery(state, {
+      client_event_id: 'ret-out',
+      sequence: 2,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 0,
+      extra_type: 'NONE',
+      legal_ball: true,
+      is_wicket: true,
+      wicket_type: 'RETIRED_OUT',
+      player_out_id: 'b-3',
+      next_batter_id: 'b-4'
+    });
+
+    assert.equal(state.wickets, 1, 'Retired Out increments team wickets fallen');
+    assert.equal(state.fall_of_wickets.length, 1, 'Retired Out records fall of wicket');
+    assert.equal(state.bowlers['bowler-1']?.wickets, 0, 'Bowler must NOT receive wicket credit for Retired Out');
+  });
 });
 
 

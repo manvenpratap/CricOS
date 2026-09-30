@@ -401,11 +401,11 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
   describe('Suite 6 — Scoring Pad Generic Extras, Undo & Scorer Strike Swap Gating', () => {
     it('6.1 should provide generic extras buttons on mobile & dashboard pads opening extra picker sheets', () => {
       // Mobile
-      assert.ok(mobileSrc.includes('>Wide</button>'), 'Mobile pad has generic Wide button');
-      assert.ok(mobileSrc.includes('>No Ball</button>'), 'Mobile pad has generic No Ball button');
-      assert.ok(mobileSrc.includes('>Leg Bye</button>'), 'Mobile pad has generic Leg Bye button');
-      assert.ok(mobileSrc.includes('>Bye</button>'), 'Mobile pad has generic Bye button');
-      assert.ok(!mobileSrc.includes('>+1 Wd</button>'), 'Mobile pad avoids +1 prefix');
+      assert.ok(mobileSrc.includes('data-extra="WIDE"') && mobileSrc.includes('>Wide'), 'Mobile pad has generic Wide button');
+      assert.ok(mobileSrc.includes('data-extra="NO_BALL"') && mobileSrc.includes('>No Ball'), 'Mobile pad has generic No Ball button');
+      assert.ok(mobileSrc.includes('data-extra="LEG_BYE"') && mobileSrc.includes('>Leg Bye'), 'Mobile pad has generic Leg Bye button');
+      assert.ok(mobileSrc.includes('data-extra="BYE"') && mobileSrc.includes('>Bye'), 'Mobile pad has generic Bye button');
+      assert.ok(!mobileSrc.includes('>+1 Wd'), 'Mobile pad avoids +1 prefix');
 
       // Dashboard
       assert.ok(dashboardSrc.includes('openStudioExtraPicker'), 'Dashboard opens extra picker modal');
@@ -705,6 +705,77 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       // Desktop Undo
       assert.ok(dashboardSrc.includes("btn.removeAttribute('disabled')"), 'Desktop pad buttons must be re-enabled when not all out');
       assert.ok(dashboardSrc.includes("banner.style.display = 'none'"), 'Desktop all out banner must be hidden when undone below 10 wickets');
+    });
+  });
+
+  // =========================================================================
+  // 12. Exhaustive ICC & MCC Cricket Laws Directory, Free Hit Restrictions, Caught Strike Rule & Penalty Runs
+  // =========================================================================
+  describe('12. Exhaustive ICC & MCC Cricket Laws Directory, Free Hit Restrictions, Caught Strike Rule & Penalty Runs', () => {
+    it('12.1 should codify complete ICC & MCC Cricket Laws Directory across mobile-view.ts and dashboard.ts', () => {
+      // Mobile Laws Directory checks
+      assert.ok(mobileSrc.includes('ICC_CRICKET_LAWS_DIRECTORY'), 'Mobile must define ICC_CRICKET_LAWS_DIRECTORY');
+      assert.ok(mobileSrc.includes('window.ICC_CRICKET_LAWS_DIRECTORY = ICC_CRICKET_LAWS_DIRECTORY'), 'Mobile must expose laws directory to window');
+      assert.ok((mobileSrc.includes('icc-free-hit') || mobileSrc.includes('ICC_CRICKET_LAWS_DIRECTORY')) && mobileSrc.includes('ICC Clause 21.19'), 'Mobile laws must codify ICC Clause 21.19 Free Hit');
+      assert.ok(mobileSrc.includes('MCC Law 21') && mobileSrc.includes('MCC Law 22'), 'Mobile laws must codify No Ball (Law 21) and Wide Ball (Law 22)');
+      assert.ok(mobileSrc.includes('MCC Law 28.3') || mobileSrc.includes('Helmet Penalty'), 'Mobile laws must codify Helmet Penalty');
+      assert.ok(mobileSrc.includes('openIccLawsSheet'), 'Mobile must provide openIccLawsSheet() controller');
+      assert.ok(mobileSrc.includes('renderMobileIccLawsSheet'), 'Mobile must provide renderMobileIccLawsSheet() renderer');
+      assert.ok(mobileSrc.includes('id="mobileIccLawSearchInput"'), 'Mobile must have live law keyword search input');
+
+      // Desktop Laws Directory checks
+      assert.ok(dashboardSrc.includes('ICC_CRICKET_LAWS_DIRECTORY'), 'Desktop must define ICC_CRICKET_LAWS_DIRECTORY');
+      assert.ok(dashboardSrc.includes('id="modalIccLawsReference"'), 'Desktop must provide modalIccLawsReference modal');
+      assert.ok(dashboardSrc.includes('openIccLawsModal'), 'Desktop must provide openIccLawsModal() controller');
+      assert.ok(dashboardSrc.includes('id="desktopIccLawSearchInput"'), 'Desktop must have live law keyword search input');
+      assert.ok(dashboardSrc.includes('id="desktopIccLawsContainer"'), 'Desktop must have container for law cards');
+    });
+
+    it('12.2 should strictly enforce ICC Standard Playing Conditions Clause 21.19 Free Hit dismissal restrictions', () => {
+      // Mobile Free Hit enforcement
+      assert.ok(mobileSrc.includes('freeHitActive'), 'Mobile must track freeHitActive state');
+      assert.ok(mobileSrc.includes('id="mobileFreeHitBadge"'), 'Mobile must render Free Hit active badge on studio pad');
+      assert.ok(mobileSrc.includes('id="mobileDismissalFreeHitAlert"'), 'Mobile must render Free Hit warning alert in dismissal sheet');
+      assert.ok(mobileSrc.includes('ICC Clause 21.19'), 'Mobile must cite ICC Clause 21.19');
+      assert.ok(mobileSrc.includes("mode !== 'RUN_OUT' && mode !== 'OBSTRUCTING' && mode !== 'HIT_BALL_TWICE'"), 'Mobile must restrict striker dismissals to Run Out, Obstructing, and Hit Twice on Free Hit');
+
+      // Desktop Free Hit enforcement
+      assert.ok(dashboardSrc.includes('id="studioFreeHitBanner"'), 'Desktop must render studioFreeHitBanner on keypad');
+      assert.ok(dashboardSrc.includes('id="dismissalFreeHitAlert"'), 'Desktop must render dismissalFreeHitAlert in modalDismissal');
+      assert.ok(dashboardSrc.includes("kind !== 'RUN_OUT' && kind !== 'OBSTRUCTING' && kind !== 'HIT_BALL_TWICE'"), 'Desktop must restrict striker dismissals to Run Out, Obstructing, and Hit Twice on Free Hit');
+      assert.ok(dashboardSrc.includes('window.desktopFreeHitActive'), 'Desktop must track desktopFreeHitActive');
+    });
+
+    it('12.3 should enforce ICC October 2022 Caught strike rotation rule and distinguish Retired Hurt vs Retired Out', () => {
+      // Mobile strike rotation & retirement
+      assert.ok(mobileSrc.includes("mode === 'CAUGHT'"), 'Mobile must detect Caught dismissals');
+      assert.ok(mobileSrc.includes("takesStrike = true"), 'Mobile Caught dismissal must enforce incoming batter takes strike (ICC Oct 2022 rule)');
+      assert.ok(mobileSrc.includes("mode === 'RETIRED_HURT'"), 'Mobile must support RETIRED_HURT mode');
+      assert.ok(mobileSrc.includes("mode === 'RETIRED_OUT'"), 'Mobile must support RETIRED_OUT mode');
+      assert.ok(mobileSrc.includes("isRetiredHurt"), 'Mobile must flag isRetiredHurt');
+
+      // Desktop strike rotation & retirement
+      assert.ok(dashboardSrc.includes("kind === 'CAUGHT'"), 'Desktop must detect Caught dismissals');
+      assert.ok(dashboardSrc.includes("studioStriker.name = nextBatter"), 'Desktop Caught dismissal must put incoming batter on strike (ICC Oct 2022 rule)');
+      assert.ok(dashboardSrc.includes("value=\"RETIRED_HURT\""), 'Desktop must have RETIRED_HURT option in dismissal select');
+      assert.ok(dashboardSrc.includes("value=\"RETIRED_OUT\""), 'Desktop must have RETIRED_OUT option in dismissal select');
+    });
+
+    it('12.4 should provide dedicated +5 Penalty Runs award modals and Law badges across Mobile & Desktop', () => {
+      // Mobile Penalty runs
+      assert.ok(mobileSrc.includes('openPenaltyRunsSheet'), 'Mobile must have openPenaltyRunsSheet()');
+      assert.ok(mobileSrc.includes('renderMobilePenaltyRunsSheet'), 'Mobile must have renderMobilePenaltyRunsSheet()');
+      assert.ok(mobileSrc.includes('id="btnMobileStudioPenaltyRuns"'), 'Mobile pad must have +5 Penalty Runs button');
+      assert.ok(mobileSrc.includes('[Law 21⚡]'), 'Mobile No Ball button must have Law 21 citation');
+      assert.ok(mobileSrc.includes('[Law 22]'), 'Mobile Wide button must have Law 22 citation');
+
+      // Desktop Penalty runs
+      assert.ok(dashboardSrc.includes('id="modalPenaltyRuns"'), 'Desktop must have modalPenaltyRuns modal');
+      assert.ok(dashboardSrc.includes('openPenaltyRunsModal'), 'Desktop must have openPenaltyRunsModal()');
+      assert.ok(dashboardSrc.includes('confirmDesktopPenaltyRuns'), 'Desktop must have confirmDesktopPenaltyRuns()');
+      assert.ok(dashboardSrc.includes('id="btnStudioPenaltyRuns"'), 'Desktop keypad must have +5 Penalty Runs button');
+      assert.ok(dashboardSrc.includes('[Law 21⚡]'), 'Desktop No Ball button must have Law 21 citation');
+      assert.ok(dashboardSrc.includes('[Law 22]'), 'Desktop Wide button must have Law 22 citation');
     });
   });
 });

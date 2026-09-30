@@ -1,5 +1,5 @@
 export type ExtraType = 'NONE' | 'WIDE' | 'NO_BALL' | 'BYE' | 'LEG_BYE' | 'PENALTY';
-export type DismissalKind = 'BOWLED' | 'CAUGHT' | 'LBW' | 'RUN_OUT' | 'STUMPED' | 'HIT_WICKET' | 'RETIRED_OUT' | 'OBSTRUCTING';
+export type DismissalKind = 'BOWLED' | 'CAUGHT' | 'LBW' | 'RUN_OUT' | 'STUMPED' | 'HIT_WICKET' | 'RETIRED_OUT' | 'RETIRED_HURT' | 'OBSTRUCTING' | 'HIT_BALL_TWICE' | 'TIMED_OUT';
 export interface ScoreEvent {
     client_event_id: string;
     sequence: number;
@@ -98,4 +98,18 @@ export declare function undoDelivery(events: ScoreEvent[], initial?: ScoreState)
 export declare function swapStrike(state: ScoreState): ScoreState;
 export declare function changeBowler(state: ScoreState, nextBowlerId: string, enforceConsecutiveRule?: boolean): ScoreState;
 export declare function closeInnings(state: ScoreState, target?: number): ScoreState;
+export interface IccCricketLawItem {
+    id: string;
+    law: string;
+    title: string;
+    category: string;
+    icon: string;
+    badge: string;
+    summary: string;
+    scorerRules: string[];
+    systemEnforcement: string;
+    quickActionText?: string;
+    quickAction?: string;
+}
+export declare const ICC_CRICKET_LAWS_DIRECTORY: IccCricketLawItem[];
 //# sourceMappingURL=index.d.ts.map

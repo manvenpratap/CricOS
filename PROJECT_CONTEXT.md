@@ -1,14 +1,44 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 00:10:00
-**Version:** 1.0.0-phase2cn (Dismissed Batsmen Exclusion & 10-Wicket All Out Innings Closure)  
+**Last Updated:** 2026-10-01 01:35:00
+**Version:** 1.0.0-phase2co (Exhaustive ICC Cricket Laws Enforcement & Interactive Scorer Rulebook)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CN Completed — Dismissed Batsmen Exclusion & 10-Wicket All Out Innings Closure (`packages/scoring/src/index.ts`, `packages/scoring/test/scoring.test.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_60_all_out_and_dismissed_batters_exclusion.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CO Completed — Exhaustive ICC Cricket Laws Enforcement & Interactive Scorer Rulebook (`packages/scoring/src/index.ts`, `packages/scoring/test/scoring.test.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Complete Codification of Official MCC Laws & ICC Standard Playing Conditions**:
+    - **Core Scoring Package (`packages/scoring/src/index.ts`)**:
+      - Codified `ICC_CRICKET_LAWS_DIRECTORY` array and exported `IccCricketLawItem` interface covering 22 official laws and playing conditions with clauses, titles, legal summaries, scorer directives, CricOS automation notes, category tags, and quick actions.
+      - Attached directory directly to `window.ICC_CRICKET_LAWS_DIRECTORY` in both Mobile Scorer Studio and Desktop Match Center runtimes.
+  - **2. ICC Clause 21.19 Free Hit Strict Dismissal Restrictions**:
+    - **Engine Enforcement**: Core engine throws `SCORE_FREE_HIT_DISMISSAL_INVALID` if striker is dismissed via Bowled, Caught, LBW, Stumped, Hit Wicket, Handled Ball, or Timed Out on a Free Hit.
+    - Permitted dismissal modes on Free Hit for striker: `RUN_OUT`, `OBSTRUCTING`, `HIT_BALL_TWICE` (plus voluntary retirements `RETIRED_HURT` / `RETIRED_OUT`).
+    - Illegal deliveries (Wide, No Ball) on Free Hit re-bowl the delivery and preserve Free Hit status.
+    - **Mobile Scorer UI**: Displays prominent `#mobileFreeHitBadge` banner on Scorer Studio pad and `#mobileDismissalFreeHitAlert` inside Fall of Wicket sheet. Prohibited dismissal mode buttons (`data-mode="BOWLED"`, `CAUGHT`, `LBW`, `STUMPED`, `HIT_WICKET`) are disabled (`disabled` attribute, opacity 0.35, cursor `not-allowed`) for striker and mode automatically defaults to `RUN_OUT`.
+    - **Desktop Match Center UI**: Displays `#studioFreeHitBanner` on scoring keypad and `#dismissalFreeHitAlert` in `#modalDismissal`. Syncs mode options in `#dismissalKind` via `syncDismissalOptionsForFreeHit()`, cleanly disabling illegal modes for striker.
+  - **3. ICC October 2022 Caught Strike Rotation Rule (MCC Law 18.11 Amendment)**:
+    - On Caught dismissals, incoming batter always takes strike at striker's end, regardless of whether the batters had crossed prior to the catch being taken.
+  - **4. MCC Law 25.4 Retired Hurt vs Retired Out**:
+    - Supported 10 official dismissal modes + `RETIRED_HURT`.
+    - Retired Hurt does not increment team wickets, does not record a Fall of Wickets milestone, and marks batter as not out (`isOut: false`).
+    - Bowler credit attribution strictly restricted to Bowled, Caught, LBW, Stumped, and Hit Wicket.
+  - **5. Dedicated +5 Penalty Runs Award Modals & In-Context Law Badges**:
+    - Mobile `#mobilePenaltyRunsSheet` and Desktop `#modalPenaltyRuns` award +5 penalty runs for Helmet strikes (MCC Law 28.3), Unfair Play (MCC Law 41), and Player Conduct (MCC Law 42) directly to `extras.penalty` and total runs without advancing legal ball count or debiting bowler figures.
+    - Added in-context Law Badges on scoring controls: Wide `[Law 22]`, No Ball `[Law 21⚡]`, Bye / Leg Bye `[Law 23]`.
+  - **6. Interactive Scorer Laws Rulebook Modal & Sheet**:
+    - Mobile `#mobileIccLawsSheet` and Desktop `#modalIccLawsReference` with live search filtering (`#mobileIccLawSearchInput`, `#desktopIccLawSearchInput`) and category filtering chips (`ALL`, `EXTRAS`, `DISMISSALS`, `FAIR_PLAY`, `MATCH_OPS`, `FIELDING`), scorer directives, and 1-tap quick actions.
+  - **7. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 458ms via `./pipeline.sh test --summary`.
+    - Verified all 21 unit tests in `packages/scoring/test/scoring.test.ts` pass in 84ms.
+    - Created Playwright E2E suite `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`:
+      - `test_mobile_icc_laws_scorer_reference_and_enforcement_flow PASSED`
+      - `test_desktop_icc_laws_scorer_reference_and_enforcement_flow PASSED`
+      - Verified zero critical console errors across all flows.
+      - Captured verified visual screenshots: `test_61_mobile_icc_laws_sheet.png` (92 KB), `test_61_mobile_free_hit_enforcement.png` (82 KB), `test_61_desktop_icc_laws_modal.png` (189 KB), and `test_61_desktop_free_hit_enforcement.png` (204 KB).
+- **Preceding Phase**: Phase 2CN Completed — Dismissed Batsmen Exclusion & 10-Wicket All Out Innings Closure (`packages/scoring/src/index.ts`, `packages/scoring/test/scoring.test.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_60_all_out_and_dismissed_batters_exclusion.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Dismissed Batsman Exclusion from Incoming Selection**:
     - **Core Scoring Package (`packages/scoring/src/index.ts`)**:
       - Throws `SCORE_BATTER_ALREADY_DISMISSED` error when an incoming batter (`event.next_batter_id`) has already been marked out (`batters[next_batter_id]?.isOut`) in the current innings.

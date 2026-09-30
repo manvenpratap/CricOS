@@ -31,6 +31,7 @@ The test suite has been consolidated into 5 high-cohesion Domain Test Suites alo
 | `tests/test_58_over_completion_and_dismissal_flow.py` | **Over Completion Bowler Rotation, Fall of Wicket Dismissal & Undo Flow (`58`)**<br>E2E verification for Over Completion bowler rotation prompt with MCC Law 21 enforcement, Fall of Wicket modal/sheet with 6 dismissal modes, dynamic caught/stumped/run-out fielder chips & bench batter selection, and seamless undo delivery across over boundaries and dismissals |
 | `tests/test_59_live_scorecard_synchronization.py` | **Official Match Scorecard Live Synchronization & Light Theme Contrast (`59`)**<br>E2E verification for mobile scorecard live updates (runs, overs, CRR, RRR, extras breakdown, dynamic fall of wickets, live batter figures, bowler figures), desktop scorecard dynamic updates, Swiss Minimalist and Nordic Editorial daylight card surfaces, deep typography, and zero console errors |
 | `tests/test_60_all_out_and_dismissed_batters_exclusion.py` | **Dismissed Batter Selection Exclusion & 10-Wicket All Out Innings Closure (`60`)**<br>E2E verification for excluding already dismissed and active batsmen from incoming batter dropdowns on mobile and desktop, enforcing 10-wicket limit per MCC Law 12, declaring team ALL OUT on 10th wicket dismissal, disabling scoring keypad buttons, displaying ALL OUT and `Did Not Bat: None (All out)` on official scorecards, and cleanly unwinding 10th wicket dismissal via Undo Last Ball |
+| `tests/test_61_icc_laws_scorer_reference_and_enforcement.py` | **Exhaustive ICC Cricket Laws Enforcement & Interactive Scorer Rulebook (`61`)**<br>E2E verification for Mobile & Desktop Scorer Rulebook Reference Sheet/Modal (`#mobileIccLawsSheet` & `#modalIccLawsReference`) with live keyword search and category filtering, dedicated +5 Penalty Runs award sheet/modal (Helmet penalty Law 28.3, Unfair play Law 41, Player conduct Law 42), Free Hit delivery activation with prominent warning banners (`#mobileFreeHitBadge` & `#studioFreeHitBanner`), Free Hit striker dismissal mode restrictions disabling prohibited modes (Bowled, Caught, LBW, Stumped, Hit Wicket), ICC Oct 2022 Caught strike rotation rule (incoming batter takes strike), MCC Law 25.4 Retired Hurt vs Out, and zero console errors |
 
 ## Execution Protocol
 ```bash
@@ -38,7 +39,7 @@ The test suite has been consolidated into 5 high-cohesion Domain Test Suites alo
 ./pipeline.sh test --summary
 
 # Consolidated Playwright E2E Verification
-python3 -m pytest tests/test_54_playwright_theme_verification.py tests/test_55_teams_roster_modals.py tests/test_56_3d_stadium_ui_fix.py tests/test_57_ui_ux_contrast_and_accessibility.py tests/test_58_over_completion_and_dismissal_flow.py tests/test_59_live_scorecard_synchronization.py tests/test_60_all_out_and_dismissed_batters_exclusion.py -q
+python3 -m pytest tests/test_54_playwright_theme_verification.py tests/test_55_teams_roster_modals.py tests/test_56_3d_stadium_ui_fix.py tests/test_57_ui_ux_contrast_and_accessibility.py tests/test_58_over_completion_and_dismissal_flow.py tests/test_59_live_scorecard_synchronization.py tests/test_60_all_out_and_dismissed_batters_exclusion.py tests/test_61_icc_laws_scorer_reference_and_enforcement.py -q
 ```
 
 
