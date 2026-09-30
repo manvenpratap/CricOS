@@ -853,6 +853,11 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(mobileSrc.includes('body[data-clean-view="true"] #roleExperienceBanner'), 'Mobile clean view must suppress #roleExperienceBanner');
       assert.ok(mobileSrc.includes('body[data-clean-view="true"] .clean-view-hide-label'), 'Mobile clean view must suppress .clean-view-hide-label');
       assert.ok(mobileSrc.includes('body[data-clean-view="true"] .mobile-card'), 'Mobile clean view must apply compact card padding');
+      assert.ok(mobileSrc.includes('.mobile-section-subtitle'), 'Mobile view must tag subtitles with .mobile-section-subtitle for clean view suppression');
+      assert.ok(mobileSrc.includes('.mobile-secondary-clutter'), 'Mobile view must tag guidance boxes with .mobile-secondary-clutter');
+      assert.ok(mobileSrc.includes('Clean View: High-density mode'), 'toggleCleanFocusMode must announce Clean View activation');
+      assert.ok(mobileSrc.includes('Full View: Detailed mode'), 'toggleCleanFocusMode must announce Full View activation');
+      assert.ok(mobileSrc.includes('Switch to Clean'), 'Full View clean focus bar must offer Switch to Clean CTA');
     });
   });
 });

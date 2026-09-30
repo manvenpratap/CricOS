@@ -1,14 +1,30 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 22:25:00
-**Version:** 1.0.0-phase2ci (Commentary Tab Decluttering: Redundant Broadcast Commentary Voice selector buttons removed from mobile commentary tab in favor of centralized App Settings pane)  
+**Last Updated:** 2026-09-30 22:30:00
+**Version:** 1.0.0-phase2cj (Clean View vs Full View Distinction: High-density Match Focus vs Detailed Guidance Mode with responsive subtitles, guidance card suppression, and informative toast feedback)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CI Completed — Commentary Tab Decluttering & Broadcast Voice Consolidation in Settings (`apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CJ Completed — Clean View vs Full View Visual Distinction & Guidance Subtitle Suppression (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Purposeful Visual Contrast Between Clean View and Full View**:
+    - **Clean View (`✨ Clean View / Match Focus`)**: Tailored for scorers and match officials during live games. Strips all decorative role banners (`#roleExperienceBanner`), top navigation strips (`#mobileCleanFocusBar`), section subtitles (`.mobile-section-subtitle`), and secondary guidance cards (`.mobile-secondary-clutter`, `[data-clean-hide="true"]`), tightening card padding (`0.5rem 0.65rem`) so the scoring pad, radar, and figures fit without scrolling.
+    - **Full View (`📊 Full View / Detailed Guidance`)**: Tailored for spectators, fans, and organizers. Displays the prominent **Role Experience HUD Banner** at the top of every screen (showing persona badge, description, and primary CTA), exposes section subtitles and educational guides across all screens, and provides a clear 1-tap `✨ Switch to Clean` CTA in the top focus bar.
+  - **2. Subtitle & Guidance Elements Tagged Across All Screens**:
+    - Tagged section subtitles with `class="mobile-section-subtitle"` across `renderMatches()` (commentary header), `renderTeams()` (captain hub & playing XI list), `renderTournaments()` (championship hub), `renderMarketplace()` (storefront header), `renderIncidents()` (disputes desk, umpire desk & conduct ledger), `renderAdmin()` (platform admin desk), and `renderProfile()` (app settings hub).
+    - Tagged educational tactical cards with `.mobile-secondary-clutter` and `data-clean-hide="true"` (Captain tactical directive, Umpire playing conditions note, Turf Provider facility notice, and Umpire authority clearance note).
+    - Added Swiss & Nordic theme-aware contrast styling for `.role-exp-hud-banner` and `.mobile-section-subtitle` ensuring WCAG 2.2 AA compliance.
+  - **3. Tactile & Visual Feedback on View Mode Toggle**:
+    - Added instant audio click feedback via `window.CricOSSound.playClick()`.
+    - Added informative toast announcement upon toggle: `✨ Clean View: High-density mode (role banners & subtitles hidden)` vs `📊 Full View: Detailed mode (role banners & explanatory guides visible)`.
+    - Refined sidebar drawer button tooltip to clearly explain state and action.
+  - **4. Test Verification & Release Parity**:
+    - Verified all 207 unit/domain tests in 59 suites pass via `./pipeline.sh test --summary`.
+    - Added Clean vs Full View live DOM toggle assertions to `tests/test_55_teams_roster_modals.py` (2 passed in 9.19s) and verified `tests/domain-identity-personas-and-themes.test.ts`.
+    - Recompiled and signed Play-Protect-compliant Android 15 release APK (`dist/cricos-release.apk`) and debug APK (`dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CI Completed — Commentary Tab Decluttering & Broadcast Voice Consolidation in Settings (`apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Streamlined Commentary Tab View (`this.matchSubTab === 'COMMENTARY'`)**:
     - Removed the redundant broadcast voice selector button strip (`🎙️ Analytical (Harsha)`, `🔥 High-Octane (Ravi)`, `🧠 Dugout (Nasser)`) from the mobile commentary sub-view.
     - Added an unobtrusive, accessible active voice badge (`#mobileActiveVoiceIndicator` displaying `🎙️ Harsha` / `🔥 Ravi` / `🧠 Nasser`) in the studio header row with contextual tooltip explaining that voice configuration is managed in App Settings.

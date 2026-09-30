@@ -484,6 +484,58 @@ async def test_flagship_studios_weather_and_gear_store():
         assert mobile_closed_ok, "#mobileSettingsSheet must close cleanly"
         await save_screenshot_async(m_page, "mobile_theme_clean_settings_hub.png")
 
+        # Verify Toggle between Clean View and Full View
+        clean_toggle_res = await m_page.evaluate("""() => {
+            const app = window.cricosMobileApp;
+            // 1. Switch to Full View (cleanFocusMode = false)
+            app.toggleCleanFocusMode(false);
+            const fullBodyAttr = document.body.getAttribute('data-clean-view');
+            const roleBanner = document.getElementById('roleExperienceBanner');
+            const cleanBar = document.getElementById('mobileCleanFocusBar');
+            const subtitles = document.querySelectorAll('.mobile-section-subtitle');
+            const roleBannerFullVisible = roleBanner ? window.getComputedStyle(roleBanner).display !== 'none' : false;
+            const cleanBarFullVisible = cleanBar ? window.getComputedStyle(cleanBar).display !== 'none' : false;
+            let subFullVisible = true;
+            if (subtitles.length > 0) {
+                subFullVisible = window.getComputedStyle(subtitles[0]).display !== 'none';
+            }
+
+            // 2. Switch back to Clean View (cleanFocusMode = true)
+            app.toggleCleanFocusMode(true);
+            const cleanBodyAttr = document.body.getAttribute('data-clean-view');
+            const cleanRoleBanner = document.getElementById('roleExperienceBanner');
+            const cleanFocusBar = document.getElementById('mobileCleanFocusBar');
+            const cleanSubtitles = document.querySelectorAll('.mobile-section-subtitle');
+            const roleBannerCleanHidden = cleanRoleBanner ? window.getComputedStyle(cleanRoleBanner).display === 'none' : true;
+            const cleanBarCleanHidden = cleanFocusBar ? window.getComputedStyle(cleanFocusBar).display === 'none' : true;
+            let subCleanHidden = true;
+            if (cleanSubtitles.length > 0) {
+                subCleanHidden = window.getComputedStyle(cleanSubtitles[0]).display === 'none';
+            }
+
+            return {
+                fullBodyAttr,
+                roleBannerFullVisible,
+                cleanBarFullVisible,
+                subFullVisible,
+                cleanBodyAttr,
+                roleBannerCleanHidden,
+                cleanBarCleanHidden,
+                subCleanHidden,
+                subtitlesCount: subtitles.length
+            };
+        }""")
+
+        assert clean_toggle_res["fullBodyAttr"] == "false", "Full View must set data-clean-view='false'"
+        assert clean_toggle_res["roleBannerFullVisible"], "Full View must show #roleExperienceBanner"
+        assert clean_toggle_res["cleanBarFullVisible"], "Full View must show #mobileCleanFocusBar"
+        assert clean_toggle_res["subFullVisible"], "Full View must show section subtitles"
+        assert clean_toggle_res["cleanBodyAttr"] == "true", "Clean View must set data-clean-view='true'"
+        assert clean_toggle_res["roleBannerCleanHidden"], "Clean View must hide #roleExperienceBanner"
+        assert clean_toggle_res["cleanBarCleanHidden"], "Clean View must hide #mobileCleanFocusBar"
+        assert clean_toggle_res["subCleanHidden"], "Clean View must hide section subtitles"
+        assert clean_toggle_res["subtitlesCount"] >= 1, "Must have .mobile-section-subtitle elements in DOM"
+
         assert_no_critical_errors(page)
         assert_no_critical_errors(m_page)
         await browser.close()

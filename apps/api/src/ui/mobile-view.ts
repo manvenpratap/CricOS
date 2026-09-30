@@ -191,6 +191,14 @@ export function getMobileAppHtml(): string {
       border-color: #CBD5E1 !important;
       color: #0F172A !important;
     }
+    body[data-theme="swiss"] .role-exp-hud-banner {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+    }
+    body[data-theme="swiss"] .role-exp-hud-desc {
+      color: #475569 !important;
+    }
 
     /* 2. Nordic Editorial Theme (Warm Oat Paper, Curvature, Organic Earth & Pine) */
     body[data-theme="nordic"], html[data-theme="nordic"] {
@@ -291,6 +299,14 @@ export function getMobileAppHtml(): string {
       border-color: #D6D0C4 !important;
       color: #1C1917 !important;
     }
+    body[data-theme="nordic"] .role-exp-hud-banner {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      box-shadow: 0 2px 8px rgba(68, 64, 60, 0.06) !important;
+    }
+    body[data-theme="nordic"] .role-exp-hud-desc {
+      color: #57534E !important;
+    }
 
     /* 3. Stadium Night Theme (High-Intensity Broadcast Glassmorphism & Floodlights) */
     body[data-theme="stadium"], html[data-theme="stadium"] {
@@ -358,11 +374,24 @@ export function getMobileAppHtml(): string {
     body[data-clean-view="true"] .mobile-obvious-header,
     body[data-clean-view="true"] .mobile-section-subtitle,
     body[data-clean-view="true"] .preview-desc,
-    body[data-clean-view="true"] [data-clean-hide="true"] {
+    body[data-clean-view="true"] [data-clean-hide="true"],
+    body[data-clean-view="true"] .mobile-secondary-clutter {
       display: none !important;
     }
     body[data-clean-view="true"] .clean-view-hide-label {
       display: none !important;
+    }
+    .mobile-section-subtitle {
+      font-size: 0.66rem;
+      color: #94a3b8;
+      line-height: 1.3;
+      margin-top: 0.15rem;
+    }
+    body[data-theme="swiss"] .mobile-section-subtitle {
+      color: #64748B !important;
+    }
+    body[data-theme="nordic"] .mobile-section-subtitle {
+      color: #78716C !important;
     }
     body[data-clean-view="true"] .mobile-card,
     body[data-clean-view="true"] .theme-selection-card {
@@ -3654,6 +3683,17 @@ export function getMobileAppHtml(): string {
             }
           } catch (_) {}
         }
+        if (window.CricOSSound && typeof window.CricOSSound.playClick === 'function') {
+          window.CricOSSound.playClick();
+        }
+        if (typeof this.showToast === 'function') {
+          this.showToast(
+            this.cleanFocusMode
+              ? '✨ Clean View: High-density mode (role banners & subtitles hidden)'
+              : '📊 Full View: Detailed mode (role banners & explanatory guides visible)',
+            'info'
+          );
+        }
         this.render();
       }
 
@@ -3805,10 +3845,10 @@ export function getMobileAppHtml(): string {
         // Clean View Toggle
         h += '<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.45rem; border-top: 1px solid ' + bdrColor + ';">';
         h += '<div>';
-        h += '<div style="font-size: 0.78rem; font-weight: 700; color: ' + ink + ';">✨ Clean View Mode</div>';
-        h += '<div style="font-size: 0.68rem; color: ' + muted + ';">Hide obvious headers, use compact cards</div>';
+        h += '<div style="font-size: 0.78rem; font-weight: 700; color: ' + ink + ';">✨ Clean View (Match Focus)</div>';
+        h += '<div style="font-size: 0.66rem; color: ' + muted + ';">Hide role banners &amp; guide subtitles for high-density match focus; turn OFF for Full View with guides</div>';
         h += '</div>';
-        h += '<button type="button" id="btnMobileSettingsCleanToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="padding: 0.28rem 0.65rem; border-radius: 6px; font-size: 0.7rem; font-weight: 800; cursor: pointer; ' + (this.cleanFocusMode ? 'background: rgba(0, 229, 153, 0.2); border: 1px solid var(--turf-emerald); color: var(--turf-emerald);' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '">' + (this.cleanFocusMode ? 'ON ✓' : 'OFF') + '</button>';
+        h += '<button type="button" id="btnMobileSettingsCleanToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="padding: 0.28rem 0.65rem; border-radius: 6px; font-size: 0.7rem; font-weight: 800; cursor: pointer; ' + (this.cleanFocusMode ? 'background: rgba(0, 229, 153, 0.2); border: 1px solid var(--turf-emerald); color: var(--turf-emerald);' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '" data-tooltip="Toggle Clean View (high density) vs Full View (detailed guides)">' + (this.cleanFocusMode ? 'ON ✓' : 'OFF') + '</button>';
         h += '</div>';
         h += '</div>';
 
@@ -4039,7 +4079,7 @@ export function getMobileAppHtml(): string {
         h += '<div class="mobile-sidebar-footer" style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid ' + dividerColor + '; display: flex; flex-direction: column; gap: 0.45rem;">';
         h += '<div id="mobileSidebarThemeAndCleanRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">';
         h += '<button type="button" id="btnMobileSidebarThemeCycle" onclick="window.cricosMobileApp.cycleTheme()" style="padding: 0.45rem 0.5rem; border-radius: 8px; ' + themeBtnStyle + ' font-size: 0.68rem; font-weight: 700; cursor: pointer; text-align: center;" data-tooltip="Cycle Theme: Swiss, Nordic, Stadium">' + (themeNameMap[this.currentTheme || 'swiss'] || 'Theme') + '</button>';
-        h += '<button type="button" id="btnMobileSidebarDeclutterToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="padding: 0.45rem 0.5rem; border-radius: 8px; ' + declutterBtnStyle + ' font-size: 0.68rem; font-weight: 800; cursor: pointer; text-align: center;" data-tooltip="Toggle Clean View (Remove obvious headers &amp; compact cards)">' + (this.cleanFocusMode ? '✨ Clean: ON' : '📊 Full: ON') + '</button>';
+        h += '<button type="button" id="btnMobileSidebarDeclutterToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="padding: 0.45rem 0.5rem; border-radius: 8px; ' + declutterBtnStyle + ' font-size: 0.68rem; font-weight: 800; cursor: pointer; text-align: center;" data-tooltip="' + (this.cleanFocusMode ? 'Clean View active (compact layout, banners hidden). Tap to switch to Full View.' : 'Full View active (role banners &amp; guides visible). Tap to switch to Clean View.') + '">' + (this.cleanFocusMode ? '✨ Clean: ON' : '📊 Full: ON') + '</button>';
         h += '</div>';
         h += '<button type="button" id="btnMobileSidebarSettings" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openSettingsSheet();" style="width: 100%; padding: 0.46rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.12); color: #00D2FF; font-size: 0.7rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Configure all app settings in one place"><span>⚙️</span><span>App Settings</span></button>';
         h += '<button type="button" id="btnMobileSidebarSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.46rem 0.65rem; border-radius: 8px; ' + signOutBtnStyle + ' font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Sign Out to Animated Hero Page">🚪 Sign Out / Switch Account</button>';
@@ -4074,7 +4114,7 @@ export function getMobileAppHtml(): string {
         h += '<button type="button" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="' + menuBtnStyle + ' border-radius: 5px; padding: 0.14rem 0.4rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Open Sidebar Menu">☰ Menu</button>';
         h += '<span style="font-size: 0.68rem; font-weight: 800; color: ' + barInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + cfg.icon + ' ' + cfg.title + '</span>';
         h += '</div>';
-        h += '<button type="button" id="btnMobileBannerToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + toggleBtnStyle + ' border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Toggle Clean View vs Extended Details">' + (this.cleanFocusMode ? '✨ Clean View' : '📊 Full View') + '</button>';
+        h += '<button type="button" id="btnMobileBannerToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + toggleBtnStyle + ' border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Switch to Clean View (compact cards &amp; hide banners)">' + (this.cleanFocusMode ? '📊 Full View' : '✨ Switch to Clean') + '</button>';
         h += '</div>';
 
         h += '<div class="role-exp-hud-banner" id="roleExperienceBanner" style="display: ' + (this.cleanFocusMode ? 'none' : 'flex') + ';">';
@@ -9198,7 +9238,7 @@ export function getMobileAppHtml(): string {
               h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.36rem 0.4rem; font-size: 0.68rem; font-weight: 700; color: #FFB800; border-color: rgba(255, 184, 0, 0.35);" data-screen="TEAMS" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-tooltip="Manage Playing XI &amp; Toss">🏏 Playing XI</button>';
               h += '</div>';
             }
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
+            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
             h += '<strong>Tactical Directive:</strong> Target deep mid-wicket &amp; cover corridors against spin. Official ball-by-ball scoring is managed exclusively by the match Scorer.';
             h += '</div>';
             h += '</div>';
@@ -9216,7 +9256,7 @@ export function getMobileAppHtml(): string {
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">DRS Retained</div><div style="font-weight: 800; font-size: 0.82rem; color: #00D2FF; font-family: Chakra Petch, monospace;">' + (this.drsState.battingReviewsLeft + this.drsState.bowlingReviewsLeft) + ' Left</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Fair Play</div><div style="font-weight: 800; font-size: 0.82rem; color: #FFB800; font-family: Chakra Petch, monospace;">' + (10 - this.incidents.length) + '/10 Pts</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #38BDF8;">';
+            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #38BDF8;">';
             h += '<strong>MCC Playing Conditions:</strong> 20-minute innings break scheduled at 18:45 IST. Ball tracking camera arrays calibrated with 100% telemetry sync.';
             h += '</div>';
             h += '</div>';
@@ -9234,7 +9274,7 @@ export function getMobileAppHtml(): string {
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Slot Window</div><div style="font-weight: 800; font-size: 0.82rem; color: #00D2FF; font-family: Chakra Petch, monospace;">Until 22:00</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Pitch Wear</div><div style="font-weight: 800; font-size: 0.82rem; color: #FFB800; font-family: Chakra Petch, monospace;">Grade A True</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
+            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
             h += '<strong>Facility Invariants:</strong> Natural clay pitch holding firm with consistent bounce. GiST slot reservation active with zero double-booking overlap.';
             h += '</div>';
             h += '</div>';
@@ -9472,7 +9512,7 @@ export function getMobileAppHtml(): string {
           h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">';
           h += '<div>';
           h += '<div style="font-size: 0.82rem; font-weight: 800; color: #f8fafc;">🎙️ Broadcast Commentary Studio</div>';
-          h += '<div style="font-size: 0.64rem; color: #94a3b8;">Hawk-Eye speed, shot sector &amp; captaincy field shifts</div>';
+          h += '<div class="mobile-section-subtitle" style="font-size: 0.64rem; color: #94a3b8;">Hawk-Eye speed, shot sector &amp; captaincy field shifts</div>';
           h += '</div>';
           h += '<div style="display: flex; gap: 0.3rem; align-items: center;">';
           var voiceName = activeVoice === 'HYPE' ? 'Ravi' : (activeVoice === 'TACTICAL' ? 'Nasser' : 'Harsha');
@@ -9562,6 +9602,7 @@ export function getMobileAppHtml(): string {
         h += '<div>';
         h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00E599; text-transform: uppercase;">Captain &amp; Squad Hub</div>';
         h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.2rem; font-family: Space Grotesk, sans-serif;">' + this.profile.teamName + '</h2>';
+        h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.2rem;">Official Playing XI squad roster, 3D equipment customization &amp; career telemetry</div>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">';
         h += '<button type="button" onclick="window.cricosMobileApp.openGearCustomizerSheet()" style="padding: 0.22rem 0.45rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.68rem; font-weight: 700;" data-tooltip="Customise 3D bat blade and grips" aria-label="3D Gear Configurator">🏏 3D Gear</button>';
@@ -9604,9 +9645,12 @@ export function getMobileAppHtml(): string {
         h += this.renderAthleticCard(activeTeamPlayerId);
 
         // Playing XI List
-        h += '<div style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem; display: flex; justify-content: space-between;">';
+        h += '<div style="margin-bottom: 0.4rem;">';
+        h += '<div style="font-size: 0.8rem; font-weight: 700; display: flex; justify-content: space-between;">';
         h += '<span>Playing XI (' + this.playingXI.length + ')</span>';
         h += '<span style="font-size: 0.7rem; color: #00E599;">Match Ready</span>';
+        h += '</div>';
+        h += '<div class="mobile-section-subtitle" style="font-size: 0.64rem; color: #94a3b8; margin-top: 0.15rem;">Tap any player to inspect holographic 3D card, career strike rate, and wagon wheel distribution</div>';
         h += '</div>';
 
         h += '<div style="display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.65rem;">';
@@ -9653,6 +9697,7 @@ export function getMobileAppHtml(): string {
         h += '<div>';
         h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">Championship Hub</div>';
         h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">' + (this.activeTournamentName || 'Club Premier League 2026') + '</h2>';
+        h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.2rem;">Multi-division standings, automated NRR progression matrix &amp; knockout brackets</div>';
         h += '</div>';
         h += '<button type="button" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet()" style="padding: 0.22rem 0.5rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #FFB800; font-size: 0.68rem; font-weight: 700;" data-tooltip="Inspect 3D Tournament Championship Silverware" aria-label="3D Silverware">🏆 Silverware</button>';
         h += '</div>';
@@ -9790,7 +9835,7 @@ export function getMobileAppHtml(): string {
         h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">';
         h += '<div>';
         h += '<h2 style="margin: 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">' + (isProvider ? '🏟️ Turf Provider Storefront' : '🛒 Cricket Marketplace &amp; Gear Store') + '</h2>';
-        h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.15rem;">GiST Slot Hold • Pro Cricket Gear &amp; Pavilion Drop</div>';
+        h += '<div class="mobile-section-subtitle" style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.15rem;">GiST Slot Hold • Pro Cricket Gear &amp; Pavilion Drop</div>';
         h += '</div>';
         var mktWeather = this.getActiveVenueWeather();
         h += '<div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">';
@@ -9902,7 +9947,7 @@ export function getMobileAppHtml(): string {
           h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
           h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00E599; text-transform: uppercase;">Facility &amp; Ground Operations</div>';
           h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">Venue Disputes &amp; Damage Desk</h2>';
-          h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Pitch Condition Reports &amp; Escrow Holds</div>';
+          h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Pitch Condition Reports &amp; Escrow Holds</div>';
           h += '</div>';
 
           // Facility Security & Escrow Claims
@@ -9935,7 +9980,7 @@ export function getMobileAppHtml(): string {
           h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
           h += '<div style="font-size: 0.65rem; font-weight: 700; color: #ff3366; text-transform: uppercase;">MCC Laws &amp; Trust Desk</div>';
           h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">Lead Umpire Desk</h2>';
-          h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">DRS Reviews, Fair Play Log &amp; Official Sign-off</div>';
+          h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">DRS Reviews, Fair Play Log &amp; Official Sign-off</div>';
           h += '</div>';
 
           // DRS Status
@@ -9984,7 +10029,7 @@ export function getMobileAppHtml(): string {
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
         h += '<div style="font-size: 0.65rem; font-weight: 700; color: #38BDF8; text-transform: uppercase;">Fair Play &amp; Conduct Ledger</div>';
         h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">Match Disciplinary Desk</h2>';
-        h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Official MCC Law 41/42 Conduct Register</div>';
+        h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Official MCC Law 41/42 Conduct Register</div>';
         h += '</div>';
 
         // Fair Play Scorecard
@@ -10009,7 +10054,7 @@ export function getMobileAppHtml(): string {
         h += '</div>';
 
         // Match Official Clearance Note
-        h += '<div style="background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.68rem; color: #cbd5e1; line-height: 1.35;">';
+        h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.68rem; color: #cbd5e1; line-height: 1.35;">';
         h += '<strong style="color: #00D2FF;">Official Authority Notice:</strong> Code of Conduct breaches, DRS reviews, and Law 41/42 penalty run awards are reserved strictly for certified match umpires. To access officiating controls, switch to the UMPIRE persona.';
         h += '</div></div>';
         return h;
@@ -10033,7 +10078,7 @@ export function getMobileAppHtml(): string {
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
         h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00D2FF; text-transform: uppercase;">Governance &amp; Ledger</div>';
         h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">Platform Admin Desk</h2>';
-        h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Double-Entry Ledger Integrity &amp; Disputes</div>';
+        h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Double-Entry Ledger Integrity &amp; Disputes</div>';
         h += '</div>';
 
         // Cluster Operational Pulse
@@ -10097,6 +10142,7 @@ export function getMobileAppHtml(): string {
         var sr = ((this.profile.batting.runs / this.profile.batting.ballsFaced) * 100).toFixed(1);
 
         var h = '<div style="padding: 0.65rem 0.75rem;">';
+        h += this.renderRoleExperienceBanner();
 
         // Scoped Persona Switcher Strip & Active Session Status (Filtered by allowedPersonas)
         var allowedList = (Array.isArray(this.allowedPersonas) && this.allowedPersonas.length > 0)
@@ -10150,7 +10196,7 @@ export function getMobileAppHtml(): string {
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; display: flex; justify-content: space-between; align-items: center;">';
         h += '<div>';
         h += '<div style="font-size: 0.78rem; font-weight: 800; color: #00D2FF; display: flex; align-items: center; gap: 0.35rem;"><span>⚙️</span><span>CricOS App Settings</span></div>';
-        h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Theme, Clean View, Audio, Stance &amp; Units</div>';
+        h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Theme, Clean View, Audio, Stance &amp; Units</div>';
         h += '</div>';
         h += '<button type="button" id="btnMobileProfileSettings" onclick="window.cricosMobileApp.openSettingsSheet()" style="padding: 0.35rem 0.75rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.72rem; font-weight: 800; cursor: pointer;" data-tooltip="Open App Settings">Configure →</button>';
         h += '</div>';
