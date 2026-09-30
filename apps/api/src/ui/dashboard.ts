@@ -5461,6 +5461,14 @@ export function getDashboardHtml(): string {
         <div class="sidebar-nav-section">
           <div class="sidebar-section-title">Tactical &amp; 3D Studios</div>
           <div class="sidebar-nav-list">
+            <button type="button" id="sidebarBtn3DStadium" onclick="openDesktop3DStadiumFromSidebar()" class="sidebar-nav-item" data-tooltip="Interactive 60fps WebGL 3D Stadium &amp; Pitch Studio with Orbit Camera Controls">
+              <span class="tab-icon">🌐</span>
+              <span class="sidebar-nav-label">3D Stadium Pitch</span>
+            </button>
+            <button type="button" id="sidebarBtnWagonWheel" onclick="openDesktopWagonWheelFromSidebar()" class="sidebar-nav-item" data-tooltip="Interactive 8-Zone Precision Wagon Wheel &amp; Outfield Shot Distribution">
+              <span class="tab-icon">🎯</span>
+              <span class="sidebar-nav-label">8-Zone Wagon Wheel</span>
+            </button>
             <button type="button" id="sidebarBtnFieldPlanner" onclick="openFieldPlannerModal()" class="sidebar-nav-item" data-tooltip="Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Restriction Engine (Shortcut: Shift+F)">
               <span class="tab-icon">🎯</span>
               <span class="sidebar-nav-label">Field Placement Radar</span>
@@ -11336,7 +11344,7 @@ cricos_active_sse_connections 1</pre>
         fanCheerConsole: false
       },
       PLAYER: {
-        allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace'],
+        allowedTabs: ['scoring', 'teams', 'tournaments', 'marketplace', 'studio'],
         defaultTab: 'teams',
         badgeColor: '#00D2FF',
         badgeBg: 'rgba(0, 210, 255, 0.15)',
@@ -11384,7 +11392,7 @@ cricos_active_sse_connections 1</pre>
         fanCheerConsole: true
       },
       UMPIRE: {
-        allowedTabs: ['scoring', 'incidents', 'tournaments'],
+        allowedTabs: ['scoring', 'incidents', 'tournaments', 'studio'],
         defaultTab: 'incidents',
         badgeColor: '#38BDF8',
         badgeBg: 'rgba(56, 189, 248, 0.15)',
@@ -11416,7 +11424,7 @@ cricos_active_sse_connections 1</pre>
         fanCheerConsole: false
       },
       ORGANISER: {
-        allowedTabs: ['tournaments', 'marketplace', 'teams', 'scoring', 'incidents'],
+        allowedTabs: ['tournaments', 'marketplace', 'teams', 'scoring', 'studio', 'incidents'],
         defaultTab: 'tournaments',
         badgeColor: '#A855F7',
         badgeBg: 'rgba(168, 85, 247, 0.15)',
@@ -11432,7 +11440,7 @@ cricos_active_sse_connections 1</pre>
         fanCheerConsole: false
       },
       TURF_PROVIDER: {
-        allowedTabs: ['marketplace', 'scoring', 'incidents'],
+        allowedTabs: ['marketplace', 'scoring', 'studio', 'incidents'],
         defaultTab: 'marketplace',
         badgeColor: '#34D399',
         badgeBg: 'rgba(52, 211, 153, 0.15)',
@@ -24062,6 +24070,38 @@ cricos_active_sse_connections 1</pre>
       document.addEventListener('pointerup', endFielderDrag);
     }
 
+    function openDesktop3DStadiumFromSidebar() {
+      if (typeof switchTab === 'function') {
+        switchTab('studio');
+      }
+      if (typeof setWagonDisplayMode === 'function') {
+        setWagonDisplayMode('3D');
+      }
+      const card = document.getElementById('wagonWheelCard') || document.getElementById('threeJsStadiumViewport');
+      if (card && typeof card.scrollIntoView === 'function') {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if (typeof showToast === 'function') {
+        showToast('🌐 Switched to 3D WebGL Floodlit Stadium Pitch');
+      }
+    }
+
+    function openDesktopWagonWheelFromSidebar() {
+      if (typeof switchTab === 'function') {
+        switchTab('studio');
+      }
+      if (typeof setWagonDisplayMode === 'function') {
+        setWagonDisplayMode('2D');
+      }
+      const card = document.getElementById('wagonWheelCard');
+      if (card && typeof card.scrollIntoView === 'function') {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if (typeof showToast === 'function') {
+        showToast('🎯 Switched to 8-Zone Precision Wagon Wheel');
+      }
+    }
+
     function openFieldPlannerModal() {
       openModal('modalFieldPlanner');
       renderFieldPlannerRadar();
@@ -24267,6 +24307,8 @@ cricos_active_sse_connections 1</pre>
     window.filterCommandPalette = filterCommandPalette;
     window.filterCommandPaletteByCategory = filterCommandPaletteByCategory;
     window.executeCommandPaletteItem = executeCommandPaletteItem;
+    window.openDesktop3DStadiumFromSidebar = openDesktop3DStadiumFromSidebar;
+    window.openDesktopWagonWheelFromSidebar = openDesktopWagonWheelFromSidebar;
     window.openFieldPlannerModal = openFieldPlannerModal;
     window.setFieldPlannerPhase = setFieldPlannerPhase;
     window.setFieldPlannerHand = setFieldPlannerHand;
@@ -24522,6 +24564,8 @@ cricos_active_sse_connections 1</pre>
       'renderRoster',
       'updateAthleticStatsCard',
       'openCommandPalette',
+      'openDesktop3DStadiumFromSidebar',
+      'openDesktopWagonWheelFromSidebar',
       'openFieldPlannerModal',
       'renderFieldPlannerSvg',
       'openPitchMapSimulatorModal',

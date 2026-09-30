@@ -3079,7 +3079,7 @@
     <div class="home-indicator"></div>
   </div>
 
-  <script>
+  <script type="module">
     // Auto-detect native mobile app / standalone mode to strip emulator framing
     (function initNativePlatformMode() {
       const isNative = window.location.protocol === 'file:' ||
@@ -4057,14 +4057,27 @@
         this.navigateTo(screen);
       }
 
+      switchMatchSubTab(subTab) {
+        this.setMatchSubTab(subTab);
+      }
+
       setMatchSubTab(subTab) {
-        if (this.matchSubTab === 'STADIUM_3D' && subTab !== 'STADIUM_3D') {
+        var normSubTab = subTab;
+        if (subTab === '3D') normSubTab = 'STADIUM_3D';
+        if (subTab === 'WAGON_WHEEL') normSubTab = 'WAGON';
+
+        if (this.matchSubTab === 'STADIUM_3D' && normSubTab !== 'STADIUM_3D') {
           this.stopMobile3DViewers();
         }
-        this.matchSubTab = subTab;
+        this.matchSubTab = normSubTab;
+        if (normSubTab === 'STADIUM_3D') {
+          this.wagonDisplayMode = '3D';
+        } else if (normSubTab === 'WAGON' || normSubTab === 'SCORE') {
+          this.wagonDisplayMode = '2D';
+        }
         if (window.CricOSSound) window.CricOSSound.playClick();
         this.render();
-        if (subTab === 'STADIUM_3D') {
+        if (normSubTab === 'STADIUM_3D') {
           var self = this;
           setTimeout(function() {
             self.initMobileStadiumPitch();
@@ -4078,7 +4091,7 @@
         if (m === '3D') {
           this.setMatchSubTab('STADIUM_3D');
         } else {
-          this.setMatchSubTab('SCORE');
+          this.setMatchSubTab('WAGON');
         }
       }
 
@@ -4561,10 +4574,22 @@
 
       navigateToFromSidebar(screenId, subTab) {
         this.sidebarDrawerOpen = false;
-        if (subTab) {
-          this.matchSubTab = subTab;
+        var screen = screenId || 'MATCHES';
+        var normSubTab = subTab;
+        if (subTab === '3D') normSubTab = 'STADIUM_3D';
+        if (subTab === 'WAGON_WHEEL') normSubTab = 'WAGON';
+
+        if (this.currentScreen !== screen) {
+          this.stopMobile3DViewers();
+          this._screenChanged = true;
+          this.currentScreen = screen;
         }
-        this.navigateTo(screenId);
+
+        if (screen === 'MATCHES' && normSubTab) {
+          this.setMatchSubTab(normSubTab);
+        } else {
+          this.render();
+        }
       }
 
       toggleCleanFocusMode(forceState) {
@@ -4965,8 +4990,8 @@
         h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D, Gear Store &amp; Studios</div>';
         h += '<div id="mobileSidebarStudios" style="display: flex; flex-direction: column; gap: 0.28rem;">';
         h += '<button type="button" id="btnMobileSidebarGearStore" onclick="window.cricosMobileApp.openMobileGearStore()" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioGearStyle + '" data-tooltip="Open Pro Cricket Gear Store, Match Kit Bag &amp; Pavilion Delivery"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>🛍️</span><span>Pro Cricket Gear Store</span></span><span id="mobileSidebarGearCartBadge" style="font-family: Chakra Petch, monospace; font-size: 0.65rem; font-weight: 800; padding: 0.05rem 0.38rem; border-radius: 999px; background: rgba(0,0,0,0.18);">' + cartCount + '</span></button>';
-        h += '<button type="button" data-screen="MATCHES" data-subtab="3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
-        h += '<button type="button" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
+        h += '<button type="button" id="btnMobileSidebar3DStadium" data-screen="MATCHES" data-subtab="STADIUM_3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
+        h += '<button type="button" id="btnMobileSidebarWagonWheel" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
         h += '<button type="button" id="btnMobileSidebarCommandSearch" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
         h += '<button type="button" id="btnMobileSidebarCheckIn" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openProviderCheckInSheet();" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open Provider Arrival OTP &amp; 3-Party Match Sign-Off"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>📍</span><span>Provider Check-In &amp; Sign-Off</span></span><span style="font-family: Chakra Petch, monospace; font-size: 0.6rem; font-weight: 800; padding: 0.08rem 0.38rem; border-radius: 999px; background: rgba(0, 229, 153, 0.22);">3/3</span></button>';
         h += '</div></div>';
@@ -8003,6 +8028,193 @@
         return h;
       }
 
+      toggleMobileChart(chart) {
+        this.toggleChart(chart);
+      }
+
+      renderMobile8ZoneWagonWheel() {
+        var self = this;
+        var activeZoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === self.currentSelectedZone; });
+        var activeZoneLabel = activeZoneDef ? activeZoneDef.label : 'Cover / Extra Cover';
+        var activeZoneSide = activeZoneDef ? activeZoneDef.side : 'OFF';
+
+        var h = '<div id="mobilePrecisionWagonWheel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
+        
+        // Header: Title, Stance Switcher, Selected Zone Badge
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.35rem;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+        h += '<span style="font-size: 0.78rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">8-Zone Precision Wagon Wheel</span>';
+        h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px;">';
+        h += '<button type="button" data-stance="RHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'RHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'RHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Right-handed batter stance">RHB</button>';
+        h += '<button type="button" data-stance="LHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'LHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'LHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Left-handed batter stance">LHB</button>';
+        h += '</div>';
+        h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px; margin-left: 0.25rem;">';
+        h += '<button type="button" data-mode="2D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: #00E599; color: #04070D; cursor: pointer;" data-tooltip="2D Outfield Map">2D Map</button>';
+        h += '<button type="button" data-mode="3D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: transparent; color: #94a3b8; cursor: pointer;" data-tooltip="Switch to 3D stadium viewport">🌐 3D Stadium</button>';
+        h += '</div></div>';
+        h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.65rem; color: #00E599; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 5px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25);" id="mobileWagonSelectedZone">ZONE: ' + activeZoneLabel.toUpperCase() + ' (' + activeZoneSide + '-SIDE)</span>';
+        h += '</div>';
+
+        // Batter Filter Row
+        var viratBatterObj = (this.matchState.striker.name === 'Virat K.') ? this.matchState.striker : ((this.matchState.nonStriker.name === 'Virat K.') ? this.matchState.nonStriker : { name: 'Virat K.', runs: 54 });
+        var rohitBatterObj = (this.matchState.striker.name === 'Rohit S.') ? this.matchState.striker : ((this.matchState.nonStriker.name === 'Rohit S.') ? this.matchState.nonStriker : { name: 'Rohit S.', runs: 22 });
+        var viratIsOnStrike = (this.matchState.striker.name === 'Virat K.');
+        var rohitIsOnStrike = (this.matchState.striker.name === 'Rohit S.');
+        h += '<div id="mobileWagonBatterRow" style="display: flex; gap: 0.3rem; margin-bottom: 0.4rem; overflow-x: auto; padding-bottom: 0.15rem; align-items: center;">';
+        h += '<button type="button" id="mobileWagonBtn_Virat" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Virat K.' ? 'active' : '') + '" data-batter="Virat K." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Virat K. (RHB)">Virat K. (' + viratBatterObj.runs + (viratIsOnStrike ? '* ⚡' : '') + ') [RHB]</button>';
+        h += '<button type="button" id="mobileWagonBtn_Rohit" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Rohit S.' ? 'active' : '') + '" data-batter="Rohit S." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Rohit S. (LHB)">Rohit S. (' + rohitBatterObj.runs + (rohitIsOnStrike ? '* ⚡' : '') + ') [LHB]</button>';
+        h += '<button type="button" id="mobileWagonBtn_All" class="wagon-pill-btn ' + (this.currentBatterFilter === 'ALL' ? 'active' : '') + '" data-batter="ALL" onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Partnership">🤝 Partnership (' + this.partnership.runs + ')</button>';
+        h += '<select id="mobileWagonBatterSelect" aria-label="Select batsman for Wagon Wheel" onchange="window.cricosMobileApp.filterWagonBatter(this.value)" style="background: rgba(15,23,42,0.9); color: #f8fafc; border: 1px solid rgba(0,229,153,0.35); border-radius: 9999px; font-size: 0.62rem; font-weight: 700; padding: 0.18rem 0.45rem; cursor: pointer;" data-tooltip="Select any squad batsman to dynamically switch Wagon Wheel between RHB and LHB">';
+        h += '<option value="Virat K."' + (this.currentBatterFilter === 'Virat K.' ? ' selected' : '') + '>🏏 Virat K. (RHB)' + (viratIsOnStrike ? ' ⚡' : '') + '</option>';
+        h += '<option value="Rohit S."' + (this.currentBatterFilter === 'Rohit S.' ? ' selected' : '') + '>🏏 Rohit S. (LHB)' + (rohitIsOnStrike ? ' ⚡' : '') + '</option>';
+        h += '<option value="Rishabh P."' + (this.currentBatterFilter === 'Rishabh P.' ? ' selected' : '') + '>🏏 Rishabh P. (LHB)</option>';
+        h += '<option value="Hardik P."' + (this.currentBatterFilter === 'Hardik P.' ? ' selected' : '') + '>🏏 Hardik P. (LHB)</option>';
+        h += '<option value="Surya Y."' + (this.currentBatterFilter === 'Surya Y.' ? ' selected' : '') + '>🏏 Surya Y. (RHB)</option>';
+        h += '<option value="ALL"' + (this.currentBatterFilter === 'ALL' ? ' selected' : '') + '>🤝 Partnership Stand (ALL)</option>';
+        h += '</select>';
+        h += '</div>';
+
+        // Shot Filter Row
+        h += '<div style="display: flex; gap: 0.25rem; margin-bottom: 0.55rem; overflow-x: auto; padding-bottom: 0.15rem;">';
+        h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'ALL' ? 'active' : '') + '" data-filter="ALL" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show all shots">All Shots</button>';
+        h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'BOUNDARIES' ? 'active' : '') + '" data-filter="BOUNDARIES" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show boundaries only">4s & 6s</button>';
+        h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'SINGLES' ? 'active' : '') + '" data-filter="SINGLES" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show singles only">Singles</button>';
+        h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'DOTS' ? 'active' : '') + '" data-filter="DOTS" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show dot balls only">Dots</button>';
+        h += '</div>';
+
+        // 8 Sector Wedges definition (stance-aware)
+        var wedges = this.getWedgesForStance(this.currentStance);
+
+        var wedgesSvg = '';
+        for (var w = 0; w < wedges.length; w++) {
+          var isSel = this.currentSelectedZone === wedges[w].id;
+          wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" data-side="' + wedges[w].side + '" onclick="window.cricosMobileApp.selectWagonZone(this.dataset.zone)" data-tooltip="Select ' + wedges[w].name + ' (' + wedges[w].side + '-SIDE)"/>';
+        }
+
+        // SVG Stadium Outfield
+        h += '<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 0.5rem;">';
+        h += '<svg viewBox="0 0 360 360" style="width: 100%; max-width: 270px; height: auto;" xmlns="http://www.w3.org/2000/svg">';
+        h += '<defs>';
+        h += '<radialGradient id="mobileTurfGrad" cx="50%" cy="50%" r="50%">';
+        h += '<stop offset="0%" stop-color="#0E3324"/>';
+        h += '<stop offset="60%" stop-color="#092418"/>';
+        h += '<stop offset="90%" stop-color="#05170F"/>';
+        h += '<stop offset="100%" stop-color="#030C08"/>';
+        h += '</radialGradient>';
+        h += '<linearGradient id="mobilePitchGrad" x1="0%" y1="0%" x2="100%" y2="0%">';
+        h += '<stop offset="0%" stop-color="#8C6E3D"/>';
+        h += '<stop offset="50%" stop-color="#A38350"/>';
+        h += '<stop offset="100%" stop-color="#8C6E3D"/>';
+        h += '</linearGradient>';
+        h += '<filter id="mobileBoundaryGlow" x="-20%" y="-20%" width="140%" height="140%">';
+        h += '<feGaussianBlur stdDeviation="3" result="blur"/>';
+        h += '<feComposite in="SourceGraphic" in2="blur" operator="over"/>';
+        h += '</filter>';
+        h += '</defs>';
+
+        // Ground Circle & Mower Rings
+        h += '<circle cx="180" cy="180" r="168" fill="url(#mobileTurfGrad)" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" filter="url(#mobileBoundaryGlow)"/>';
+        h += '<circle cx="180" cy="180" r="140" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+        h += '<circle cx="180" cy="180" r="110" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+        h += '<circle cx="180" cy="180" r="80" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+        h += '<circle cx="180" cy="180" r="50" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
+
+        // 30-Yard Circle
+        h += '<circle cx="180" cy="180" r="88" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.2" stroke-dasharray="4,4"/>';
+        h += '<text x="180" y="98" fill="rgba(0, 210, 255, 0.6)" font-size="6.5" font-family="Chakra Petch, monospace" text-anchor="middle" letter-spacing="1">30 YD CIRCLE</text>';
+
+        // 75m Boundary Rope
+        h += '<circle cx="180" cy="180" r="162" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5"/>';
+        h += '<text x="180" y="26" fill="rgba(255, 255, 255, 0.45)" font-size="7" font-family="Chakra Petch, monospace" text-anchor="middle">75m BOUNDARY ROPE</text>';
+
+        // Radial sector lines
+        h += '<line x1="180" y1="18" x2="180" y2="342" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+        h += '<line x1="18" y1="180" x2="342" y2="180" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+        h += '<line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+        h += '<line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
+
+        // Sector Wedges
+        h += wedgesSvg;
+
+        // Pitch Strip in Center
+        h += '<rect x="168" y="140" width="24" height="80" rx="3" fill="url(#mobilePitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>';
+        h += '<line x1="164" y1="150" x2="196" y2="150" stroke="#FFFFFF" stroke-width="1.2"/>';
+        h += '<line x1="168" y1="156" x2="192" y2="156" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
+        h += '<circle cx="177" cy="148" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="180" cy="148" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="183" cy="148" r="1" fill="#FFFFFF"/>';
+
+        h += '<line x1="164" y1="210" x2="196" y2="210" stroke="#FFFFFF" stroke-width="1.2"/>';
+        h += '<line x1="168" y1="204" x2="192" y2="204" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
+        h += '<circle cx="177" cy="212" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="180" cy="212" r="1" fill="#FFFFFF"/>';
+        h += '<circle cx="183" cy="212" r="1" fill="#FFFFFF"/>';
+
+        // Striker Crease Indicator (dynamic striker & stance)
+        var strikerStanceTag = this.matchState.striker.stance || this.currentStance || 'RHB';
+        h += '<circle cx="180" cy="156" r="4.5" fill="#00E599" stroke="#FFFFFF" stroke-width="1.5"/>';
+        h += '<g transform="translate(180, 134)">';
+        h += '<rect x="-62" y="-8" width="124" height="16" rx="8" fill="rgba(4, 7, 13, 0.92)" stroke="rgba(0, 229, 153, 0.5)" stroke-width="1.2"/>';
+        h += '<text x="-52" y="2.5" fill="#00E599" font-size="5.8" font-family="Chakra Petch, monospace" font-weight="800">' + strikerStanceTag + '</text>';
+        h += '<text x="-34" y="2.5" fill="#FFFFFF" font-size="6" font-family="Space Grotesk, sans-serif" font-weight="700">' + this.matchState.striker.name + '</text>';
+        h += '<text x="54" y="2.5" fill="#00E599" font-size="6" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end">' + this.matchState.striker.runs + '*</text>';
+        h += '</g>';
+
+        // Non-Striker Crease Indicator
+        h += '<g transform="translate(180, 226)">';
+        h += '<circle cx="0" cy="-22" r="3" fill="#64748B" stroke="#FFFFFF" stroke-width="1"/>';
+        h += '<rect x="-44" y="-7" width="88" height="14" rx="7" fill="rgba(4, 7, 13, 0.85)" stroke="rgba(255, 255, 255, 0.18)" stroke-width="0.8"/>';
+        h += '<text x="0" y="2.5" fill="#94A3B8" font-size="5.5" font-family="Space Grotesk, sans-serif" font-weight="600" text-anchor="middle">' + this.matchState.nonStriker.name + ' ' + this.matchState.nonStriker.runs + '</text>';
+        h += '</g>';
+
+        // Off-Side / On-Side Direction Labels with Pill Backdrops
+        var offLabel = this.currentStance === 'RHB' ? '◀ OFF' : '◀ ON';
+        var legLabel = this.currentStance === 'RHB' ? 'ON ▶' : 'OFF ▶';
+        var offColor = this.currentStance === 'RHB' ? '#00D2FF' : '#00E599';
+        var legColor = this.currentStance === 'RHB' ? '#00E599' : '#00D2FF';
+        h += '<g transform="translate(42, 174)">' +
+             '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + offColor + '60" stroke-width="0.8"/>' +
+             '<text x="0" y="3" fill="' + offColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle" letter-spacing="0.5">' + offLabel + '</text>' +
+             '</g>';
+        h += '<g transform="translate(318, 174)">' +
+             '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + legColor + '60" stroke-width="0.8"/>' +
+             '<text x="0" y="3" fill="' + legColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle" letter-spacing="0.5">' + legLabel + '</text>' +
+             '</g>';
+
+        // Dynamic Shot Rays
+        h += '<g id="mobileWagonRays">';
+        h += this.renderMobileWagonRays();
+        h += '</g>';
+        h += '</svg></div>';
+
+        // Shot Distribution Ratio Bar (Off-Side vs On-Side)
+        var offRuns = 0;
+        var legRuns = 0;
+        for (var sh = 0; sh < this.shotHistory.length; sh++) {
+          var sItem = this.shotHistory[sh];
+          var zMatch = this.SHOT_ZONES_DATA.find(function(z) { return z.id === sItem.zone; });
+          if (zMatch) {
+            if (zMatch.side === 'OFF') offRuns += sItem.runs;
+            else legRuns += sItem.runs;
+          }
+        }
+        var totalShotRuns = Math.max(1, offRuns + legRuns);
+        var offPct = Math.round((offRuns / totalShotRuns) * 100);
+        var legPct = 100 - offPct;
+
+        h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.35rem 0.55rem; margin-bottom: 0.55rem;">';
+        h += '<div style="display: flex; justify-content: space-between; font-size: 0.65rem; margin-bottom: 0.2rem;">';
+        h += '<span style="color: #00D2FF; font-weight: 700;">Off-Side: ' + offRuns + 'r (' + offPct + '%)</span>';
+        h += '<span style="color: #00E599; font-weight: 700;">On-Side: ' + legRuns + 'r (' + legPct + '%)</span>';
+        h += '</div>';
+        h += '<div style="height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; display: flex; overflow: hidden;">';
+        h += '<div style="width: ' + offPct + '%; background: #00D2FF;"></div>';
+        h += '<div style="width: ' + legPct + '%; background: #00E599;"></div>';
+        h += '</div></div>';
+        h += '</div>';
+        return h;
+      }
+
       renderDynamicAnalyticsWagon() {
         var self = this;
         var isLhb = this.analyticsWagonStance === 'LHB';
@@ -10714,6 +10926,7 @@
         var subTabs = [
           ['SCORE', '⚡ Live Score'],
           ['STADIUM_3D', '🌐 3D Stadium'],
+          ['WAGON', '🎯 Wagon Wheel'],
           ['TELEMETRY', '📡 Pitch & DRS'],
           ['COMMENTARY', '🎙️ Commentary'],
           ['ANALYTICS', '📊 Analytics & Card']
@@ -10768,6 +10981,8 @@
         // SUB-VIEW 0: 3D STADIUM VIEWPORT
         if (this.matchSubTab === 'STADIUM_3D') {
           h += this.renderMobile3DStadium();
+        } else if (this.matchSubTab === 'WAGON') {
+          h += this.renderMobile8ZoneWagonWheel();
         } else if (this.matchSubTab === 'SCORE') {
           // 1. Free Hit In-Play Banner (if active)
           if (this.freeHitActive) {
@@ -10985,185 +11200,7 @@
           }
 
           // 6. Full Interactive Precision 8-Zone Wagon Wheel
-          var self = this;
-          var activeZoneDef = this.SHOT_ZONES_DATA.find(function(z) { return z.id === self.currentSelectedZone; });
-          var activeZoneLabel = activeZoneDef ? activeZoneDef.label : 'Cover / Extra Cover';
-          var activeZoneSide = activeZoneDef ? activeZoneDef.side : 'OFF';
-
-          h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
-          
-          // Header: Title, Stance Switcher, Selected Zone Badge
-          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.35rem;">';
-          h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
-          h += '<span style="font-size: 0.78rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">8-Zone Precision Wagon Wheel</span>';
-          h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px;">';
-          h += '<button type="button" data-stance="RHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'RHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'RHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Right-handed batter stance">RHB</button>';
-          h += '<button type="button" data-stance="LHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'LHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'LHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Left-handed batter stance">LHB</button>';
-          h += '</div>';
-          h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px; margin-left: 0.25rem;">';
-          h += '<button type="button" data-mode="2D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: #00E599; color: #04070D; cursor: pointer;" data-tooltip="2D Outfield Map">2D Map</button>';
-          h += '<button type="button" data-mode="3D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: transparent; color: #94a3b8; cursor: pointer;" data-tooltip="Switch to 3D stadium viewport">🌐 3D Stadium</button>';
-          h += '</div></div>';
-          h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.65rem; color: #00E599; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 5px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25);" id="mobileWagonSelectedZone">ZONE: ' + activeZoneLabel.toUpperCase() + ' (' + activeZoneSide + '-SIDE)</span>';
-          h += '</div>';
-
-          // Batter Filter Row
-          var viratBatterObj = (this.matchState.striker.name === 'Virat K.') ? this.matchState.striker : ((this.matchState.nonStriker.name === 'Virat K.') ? this.matchState.nonStriker : { name: 'Virat K.', runs: 54 });
-          var rohitBatterObj = (this.matchState.striker.name === 'Rohit S.') ? this.matchState.striker : ((this.matchState.nonStriker.name === 'Rohit S.') ? this.matchState.nonStriker : { name: 'Rohit S.', runs: 22 });
-          var viratIsOnStrike = (this.matchState.striker.name === 'Virat K.');
-          var rohitIsOnStrike = (this.matchState.striker.name === 'Rohit S.');
-          h += '<div id="mobileWagonBatterRow" style="display: flex; gap: 0.3rem; margin-bottom: 0.4rem; overflow-x: auto; padding-bottom: 0.15rem; align-items: center;">';
-          h += '<button type="button" id="mobileWagonBtn_Virat" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Virat K.' ? 'active' : '') + '" data-batter="Virat K." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Virat K. (RHB)">Virat K. (' + viratBatterObj.runs + (viratIsOnStrike ? '* ⚡' : '') + ') [RHB]</button>';
-          h += '<button type="button" id="mobileWagonBtn_Rohit" class="wagon-pill-btn ' + (this.currentBatterFilter === 'Rohit S.' ? 'active' : '') + '" data-batter="Rohit S." onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Rohit S. (LHB)">Rohit S. (' + rohitBatterObj.runs + (rohitIsOnStrike ? '* ⚡' : '') + ') [LHB]</button>';
-          h += '<button type="button" id="mobileWagonBtn_All" class="wagon-pill-btn ' + (this.currentBatterFilter === 'ALL' ? 'active' : '') + '" data-batter="ALL" onclick="window.cricosMobileApp.filterWagonBatter(this.dataset.batter)" data-tooltip="Filter shots for Partnership">🤝 Partnership (' + this.partnership.runs + ')</button>';
-          h += '<select id="mobileWagonBatterSelect" aria-label="Select batsman for Wagon Wheel" onchange="window.cricosMobileApp.filterWagonBatter(this.value)" style="background: rgba(15,23,42,0.9); color: #f8fafc; border: 1px solid rgba(0,229,153,0.35); border-radius: 9999px; font-size: 0.62rem; font-weight: 700; padding: 0.18rem 0.45rem; cursor: pointer;" data-tooltip="Select any squad batsman to dynamically switch Wagon Wheel between RHB and LHB">';
-          h += '<option value="Virat K."' + (this.currentBatterFilter === 'Virat K.' ? ' selected' : '') + '>🏏 Virat K. (RHB)' + (viratIsOnStrike ? ' ⚡' : '') + '</option>';
-          h += '<option value="Rohit S."' + (this.currentBatterFilter === 'Rohit S.' ? ' selected' : '') + '>🏏 Rohit S. (LHB)' + (rohitIsOnStrike ? ' ⚡' : '') + '</option>';
-          h += '<option value="Rishabh P."' + (this.currentBatterFilter === 'Rishabh P.' ? ' selected' : '') + '>🏏 Rishabh P. (LHB)</option>';
-          h += '<option value="Hardik P."' + (this.currentBatterFilter === 'Hardik P.' ? ' selected' : '') + '>🏏 Hardik P. (LHB)</option>';
-          h += '<option value="Surya Y."' + (this.currentBatterFilter === 'Surya Y.' ? ' selected' : '') + '>🏏 Surya Y. (RHB)</option>';
-          h += '<option value="ALL"' + (this.currentBatterFilter === 'ALL' ? ' selected' : '') + '>🤝 Partnership Stand (ALL)</option>';
-          h += '</select>';
-          h += '</div>';
-
-          // Shot Filter Row
-          h += '<div style="display: flex; gap: 0.25rem; margin-bottom: 0.55rem; overflow-x: auto; padding-bottom: 0.15rem;">';
-          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'ALL' ? 'active' : '') + '" data-filter="ALL" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show all shots">All Shots</button>';
-          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'BOUNDARIES' ? 'active' : '') + '" data-filter="BOUNDARIES" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show boundaries only">4s & 6s</button>';
-          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'SINGLES' ? 'active' : '') + '" data-filter="SINGLES" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show singles only">Singles</button>';
-          h += '<button type="button" class="wagon-pill-btn ' + (this.currentShotFilter === 'DOTS' ? 'active' : '') + '" data-filter="DOTS" onclick="window.cricosMobileApp.filterWagonShots(this.dataset.filter)" data-tooltip="Show dot balls only">Dots</button>';
-          h += '</div>';
-
-          // 8 Sector Wedges definition (stance-aware)
-          var wedges = this.getWedgesForStance(this.currentStance);
-
-          var wedgesSvg = '';
-          for (var w = 0; w < wedges.length; w++) {
-            var isSel = this.currentSelectedZone === wedges[w].id;
-            wedgesSvg += '<path class="wagon-sector-wedge ' + (isSel ? 'active' : '') + '" d="' + wedges[w].d + '" data-zone="' + wedges[w].id + '" data-side="' + wedges[w].side + '" onclick="window.cricosMobileApp.selectWagonZone(this.dataset.zone)" data-tooltip="Select ' + wedges[w].name + ' (' + wedges[w].side + '-SIDE)"/>';
-          }
-
-          // SVG Stadium Outfield
-          h += '<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 0.5rem;">';
-          h += '<svg viewBox="0 0 360 360" style="width: 100%; max-width: 270px; height: auto;" xmlns="http://www.w3.org/2000/svg">';
-          h += '<defs>';
-          h += '<radialGradient id="mobileTurfGrad" cx="50%" cy="50%" r="50%">';
-          h += '<stop offset="0%" stop-color="#0E3324"/>';
-          h += '<stop offset="60%" stop-color="#092418"/>';
-          h += '<stop offset="90%" stop-color="#05170F"/>';
-          h += '<stop offset="100%" stop-color="#030C08"/>';
-          h += '</radialGradient>';
-          h += '<linearGradient id="mobilePitchGrad" x1="0%" y1="0%" x2="100%" y2="0%">';
-          h += '<stop offset="0%" stop-color="#8C6E3D"/>';
-          h += '<stop offset="50%" stop-color="#A38350"/>';
-          h += '<stop offset="100%" stop-color="#8C6E3D"/>';
-          h += '</linearGradient>';
-          h += '<filter id="mobileBoundaryGlow" x="-20%" y="-20%" width="140%" height="140%">';
-          h += '<feGaussianBlur stdDeviation="3" result="blur"/>';
-          h += '<feComposite in="SourceGraphic" in2="blur" operator="over"/>';
-          h += '</filter>';
-          h += '</defs>';
-
-          // Ground Circle & Mower Rings
-          h += '<circle cx="180" cy="180" r="168" fill="url(#mobileTurfGrad)" stroke="rgba(0, 229, 153, 0.4)" stroke-width="2" filter="url(#mobileBoundaryGlow)"/>';
-          h += '<circle cx="180" cy="180" r="140" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
-          h += '<circle cx="180" cy="180" r="110" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
-          h += '<circle cx="180" cy="180" r="80" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
-          h += '<circle cx="180" cy="180" r="50" fill="none" stroke="rgba(255, 255, 255, 0.025)" stroke-width="14"/>';
-
-          // 30-Yard Circle
-          h += '<circle cx="180" cy="180" r="88" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.2" stroke-dasharray="4,4"/>';
-          h += '<text x="180" y="98" fill="rgba(0, 210, 255, 0.6)" font-size="6.5" font-family="Chakra Petch, monospace" text-anchor="middle" letter-spacing="1">30 YD CIRCLE</text>';
-
-          // 75m Boundary Rope
-          h += '<circle cx="180" cy="180" r="162" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5"/>';
-          h += '<text x="180" y="26" fill="rgba(255, 255, 255, 0.45)" font-size="7" font-family="Chakra Petch, monospace" text-anchor="middle">75m BOUNDARY ROPE</text>';
-
-          // Radial sector lines
-          h += '<line x1="180" y1="18" x2="180" y2="342" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
-          h += '<line x1="18" y1="180" x2="342" y2="180" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
-          h += '<line x1="65" y1="65" x2="295" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
-          h += '<line x1="295" y1="65" x2="65" y2="295" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1"/>';
-
-          // Sector Wedges
-          h += wedgesSvg;
-
-          // Pitch Strip in Center
-          h += '<rect x="168" y="140" width="24" height="80" rx="3" fill="url(#mobilePitchGrad)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>';
-          h += '<line x1="164" y1="150" x2="196" y2="150" stroke="#FFFFFF" stroke-width="1.2"/>';
-          h += '<line x1="168" y1="156" x2="192" y2="156" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
-          h += '<circle cx="177" cy="148" r="1" fill="#FFFFFF"/>';
-          h += '<circle cx="180" cy="148" r="1" fill="#FFFFFF"/>';
-          h += '<circle cx="183" cy="148" r="1" fill="#FFFFFF"/>';
-
-          h += '<line x1="164" y1="210" x2="196" y2="210" stroke="#FFFFFF" stroke-width="1.2"/>';
-          h += '<line x1="168" y1="204" x2="192" y2="204" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.8"/>';
-          h += '<circle cx="177" cy="212" r="1" fill="#FFFFFF"/>';
-          h += '<circle cx="180" cy="212" r="1" fill="#FFFFFF"/>';
-          h += '<circle cx="183" cy="212" r="1" fill="#FFFFFF"/>';
-
-          // Striker Crease Indicator (dynamic striker & stance)
-          var strikerStanceTag = this.matchState.striker.stance || this.currentStance || 'RHB';
-          h += '<circle cx="180" cy="156" r="4.5" fill="#00E599" stroke="#FFFFFF" stroke-width="1.5"/>';
-          h += '<g transform="translate(180, 134)">';
-          h += '<rect x="-62" y="-8" width="124" height="16" rx="8" fill="rgba(4, 7, 13, 0.92)" stroke="rgba(0, 229, 153, 0.5)" stroke-width="1.2"/>';
-          h += '<text x="-52" y="2.5" fill="#00E599" font-size="5.8" font-family="Chakra Petch, monospace" font-weight="800">' + strikerStanceTag + '</text>';
-          h += '<text x="-34" y="2.5" fill="#FFFFFF" font-size="6" font-family="Space Grotesk, sans-serif" font-weight="700">' + this.matchState.striker.name + '</text>';
-          h += '<text x="54" y="2.5" fill="#00E599" font-size="6" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="end">' + this.matchState.striker.runs + '*</text>';
-          h += '</g>';
-
-          // Non-Striker Crease Indicator
-          h += '<g transform="translate(180, 226)">';
-          h += '<circle cx="0" cy="-22" r="3" fill="#64748B" stroke="#FFFFFF" stroke-width="1"/>';
-          h += '<rect x="-44" y="-7" width="88" height="14" rx="7" fill="rgba(4, 7, 13, 0.85)" stroke="rgba(255, 255, 255, 0.18)" stroke-width="0.8"/>';
-          h += '<text x="0" y="2.5" fill="#94A3B8" font-size="5.5" font-family="Space Grotesk, sans-serif" font-weight="600" text-anchor="middle">' + this.matchState.nonStriker.name + ' ' + this.matchState.nonStriker.runs + '</text>';
-          h += '</g>';
-
-          // Off-Side / On-Side Direction Labels with Pill Backdrops
-          var offLabel = this.currentStance === 'RHB' ? '◀ OFF' : '◀ ON';
-          var legLabel = this.currentStance === 'RHB' ? 'ON ▶' : 'OFF ▶';
-          var offColor = this.currentStance === 'RHB' ? '#00D2FF' : '#00E599';
-          var legColor = this.currentStance === 'RHB' ? '#00E599' : '#00D2FF';
-          h += '<g transform="translate(42, 174)">' +
-               '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + offColor + '60" stroke-width="0.8"/>' +
-               '<text x="0" y="3" fill="' + offColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle" letter-spacing="0.5">' + offLabel + '</text>' +
-               '</g>';
-          h += '<g transform="translate(318, 174)">' +
-               '<rect x="-22" y="-7" width="44" height="14" rx="4" fill="rgba(4,7,13,0.88)" stroke="' + legColor + '60" stroke-width="0.8"/>' +
-               '<text x="0" y="3" fill="' + legColor + '" font-size="7" font-family="Chakra Petch, monospace" font-weight="700" text-anchor="middle" letter-spacing="0.5">' + legLabel + '</text>' +
-               '</g>';
-
-          // Dynamic Shot Rays
-          h += '<g id="mobileWagonRays">';
-          h += this.renderMobileWagonRays();
-          h += '</g>';
-          h += '</svg></div>';
-
-          // Shot Distribution Ratio Bar (Off-Side vs On-Side)
-          var offRuns = 0;
-          var legRuns = 0;
-          for (var sh = 0; sh < this.shotHistory.length; sh++) {
-            var sItem = this.shotHistory[sh];
-            var zMatch = this.SHOT_ZONES_DATA.find(function(z) { return z.id === sItem.zone; });
-            if (zMatch) {
-              if (zMatch.side === 'OFF') offRuns += sItem.runs;
-              else legRuns += sItem.runs;
-            }
-          }
-          var totalShotRuns = Math.max(1, offRuns + legRuns);
-          var offPct = Math.round((offRuns / totalShotRuns) * 100);
-          var legPct = 100 - offPct;
-
-          h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.35rem 0.55rem; margin-bottom: 0.55rem;">';
-          h += '<div style="display: flex; justify-content: space-between; font-size: 0.65rem; margin-bottom: 0.2rem;">';
-          h += '<span style="color: #00D2FF; font-weight: 700;">Off-Side: ' + offRuns + 'r (' + offPct + '%)</span>';
-          h += '<span style="color: #00E599; font-weight: 700;">On-Side: ' + legRuns + 'r (' + legPct + '%)</span>';
-          h += '</div>';
-          h += '<div style="height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; display: flex; overflow: hidden;">';
-          h += '<div style="width: ' + offPct + '%; background: #00D2FF;"></div>';
-          h += '<div style="width: ' + legPct + '%; background: #00E599;"></div>';
-          h += '</div></div>';
-          h += '</div>';
+          h += this.renderMobile8ZoneWagonWheel();
 
           // 7. Fan Stadium Pulse (Visible to Spectators & Admin Monitoring only)
           if (persona === 'FAN' || persona === 'ADMIN') {

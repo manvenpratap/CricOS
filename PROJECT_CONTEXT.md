@@ -1,14 +1,39 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 01:35:00
-**Version:** 1.0.0-phase2co (Exhaustive ICC Cricket Laws Enforcement & Interactive Scorer Rulebook)  
+**Last Updated:** 2026-10-01 01:52:00
+**Version:** 1.0.0-phase2cp (3D Stadium Pitch & 8-Zone Wagon Wheel Sidebar Navigation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CO Completed — Exhaustive ICC Cricket Laws Enforcement & Interactive Scorer Rulebook (`packages/scoring/src/index.ts`, `packages/scoring/test/scoring.test.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CP Completed — 3D Stadium Pitch & 8-Zone Wagon Wheel Sidebar Navigation (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_62_sidebar_3d_stadium_and_wagon_wheel.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Mobile Sidebar Navigation & Subtab Normalization**:
+    - Resolved issue where tapping "3D Stadium Pitch" (`#btnMobileSidebar3DStadium`) and "8-Zone Wagon Wheel" (`#btnMobileSidebarWagonWheel`) in the mobile sidebar drawer opened an empty/blank view:
+      - Normalization: `navigateToFromSidebar` and `setMatchSubTab` now normalize `'3D'` to `'STADIUM_3D'` and `'WAGON_WHEEL'` to `'WAGON'`.
+      - Extracted `renderMobile8ZoneWagonWheel()`: creates a dedicated reusable method rendering `#mobilePrecisionWagonWheel` with all interactive SVG sectors, stance toggles (RHB/LHB), dynamic striker indicators, batter filters, and outfield shot rays.
+      - Integrated `'WAGON'` subtab directly into `renderMatches()`: added `['WAGON', '🎯 Wagon Wheel']` to top subnav tabs, rendered dedicated `this.matchSubTab === 'WAGON'` view, and replaced inline duplicate wagon wheel in `'SCORE'` with `this.renderMobile8ZoneWagonWheel()`.
+      - Added missing `switchMatchSubTab(subTab)` alias method on `window.cricosMobileApp`.
+      - Automatically triggers `initMobileStadiumPitch()` when `'STADIUM_3D'` is activated, launching 60fps WebGL pitch canvas (`#mobileThreeStadiumCanvas`).
+  - **2. Desktop Sidebar Section 2 ("Tactical & 3D Studios")**:
+    - Added `#sidebarBtn3DStadium` ("3D Stadium Pitch") and `#sidebarBtnWagonWheel` ("8-Zone Wagon Wheel") with accessible `data-tooltip` attributes.
+    - Implemented `openDesktop3DStadiumFromSidebar()` and `openDesktopWagonWheelFromSidebar()`:
+      - Automatically switches workspace tab to `#tab-studio` via `switchTab('studio')`.
+      - Invokes `setWagonDisplayMode('3D')` or `setWagonDisplayMode('2D')`.
+      - Smoothly scrolls `#wagonWheelCard` into view and triggers toast confirmation.
+      - Updated `ROLE_PERMISSIONS`: added `'studio'` to `allowedTabs` for `PLAYER`, `ORGANISER`, `UMPIRE`, and `TURF_PROVIDER`, ensuring all personas can view the 3D stadium pitch and 8-zone wagon wheel without RBAC blockage.
+      - Hooked functions into `enforceThemeContrastInvariants` for WCAG 2.1 AA/AAA compliance across Stadium Night, Swiss Minimalist, and Nordic Editorial themes.
+  - **3. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 508ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Verified all 16 unit tests in `packages/scoring/test/scoring.test.ts` pass in 82ms.
+    - Created Playwright E2E suite `tests/test_62_sidebar_3d_stadium_and_wagon_wheel.py`:
+      - `test_mobile_sidebar_3d_stadium_and_wagon_wheel_flow PASSED`
+      - `test_desktop_sidebar_3d_stadium_and_wagon_wheel_flow PASSED`
+      - Verified zero critical console errors across all flows.
+      - Captured verified visual screenshots: `test_62_mobile_sidebar_3d_stadium.png` (113 KB), `test_62_mobile_sidebar_wagon_wheel.png` (138 KB), `test_62_desktop_sidebar_3d_stadium.png` (311 KB), and `test_62_desktop_sidebar_wagon_wheel.png` (333 KB).
+    - Built Android native release & debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CO Completed — Exhaustive ICC Cricket Laws Enforcement & Interactive Scorer Rulebook (`packages/scoring/src/index.ts`, `packages/scoring/test/scoring.test.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Complete Codification of Official MCC Laws & ICC Standard Playing Conditions**:
     - **Core Scoring Package (`packages/scoring/src/index.ts`)**:
       - Codified `ICC_CRICKET_LAWS_DIRECTORY` array and exported `IccCricketLawItem` interface covering 22 official laws and playing conditions with clauses, titles, legal summaries, scorer directives, CricOS automation notes, category tags, and quick actions.
