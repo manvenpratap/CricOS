@@ -9175,7 +9175,7 @@ export function getMobileAppHtml() {
           var styledBgEls = document.querySelectorAll('div, section, article, aside, header, button, span');
           for (var b = 0; b < styledBgEls.length; b++) {
             var bgEl = styledBgEls[b];
-            if (bgEl.closest('#universal-tooltip-popover, #mobile3DCanvas, #mobileFieldPlannerSvg, #mobilePitchMapSvg, #cricosCelebrationCanvas, svg, canvas')) continue;
+            if (bgEl.closest('#mobileHeroAuthOverlay, #mobileToastContainer, #universal-tooltip-popover, #mobile3DCanvas, #mobileFieldPlannerSvg, #mobilePitchMapSvg, #cricosCelebrationCanvas, svg, canvas')) continue;
             var csBg = window.getComputedStyle(bgEl).backgroundColor;
             var parsedBg = parseRgba(csBg);
             if (parsedBg[3] > 0.06) {
@@ -9203,7 +9203,9 @@ export function getMobileAppHtml() {
             }
             curr = curr.parentElement;
           }
-          var composite = pageBgRgb;
+          var composite = (node && node.closest && node.closest('#mobileHeroAuthOverlay, #mobileToastContainer, #universal-tooltip-popover'))
+            ? [4, 9, 18, 1.0]
+            : pageBgRgb;
           for (var j = chain.length - 1; j >= 0; j--) {
             composite = blendRgba(chain[j], composite);
           }

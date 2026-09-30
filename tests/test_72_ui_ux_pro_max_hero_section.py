@@ -42,19 +42,57 @@ def test_desktop_ui_ux_pro_max_hero_section():
         page.goto(DESKTOP_HERO_URL, wait_until="domcontentloaded")
         page.wait_for_timeout(400)
 
-        # 1. Verify UI/UX Pro Max Hero architecture & interactive elements
-        initial = page.evaluate("""() => ({
-            ribbonExists: Boolean(document.getElementById('heroLiveBroadcastRibbon')),
-            splitGridExists: Boolean(document.getElementById('heroSplitGrid')),
-            hudExists: Boolean(document.getElementById('heroInteractivePreviewHud')),
-            svgExists: Boolean(document.getElementById('heroInteractivePitchSvg')),
-            quickLaunchExists: Boolean(document.getElementById('heroQuickPersonaLaunchBar')),
-            trustMetricsExists: Boolean(document.getElementById('heroTrustMetricsStrip')),
-            bentoGridExists: Boolean(document.getElementById('heroBentoFeatureGrid')),
-            offLabel: document.getElementById('heroSvgOffSideLabel')?.textContent?.trim() || '',
-            impactLabel: document.getElementById('heroSvgImpactLabel')?.textContent?.trim() || '',
-            hudTitle: document.getElementById('heroHudActiveModeTitle')?.textContent?.trim() || ''
-        })""")
+        # 1. Verify UI/UX Pro Max Hero architecture, dark stadium surface preservation & WCAG AAA text contrast
+        initial = page.evaluate("""() => {
+            function parseRgb(str) {
+                const m = (str || '').match(/rgba?\\((\\d+),\\s*(\\d+),\\s*(\\d+)/);
+                return m ? [+m[1], +m[2], +m[3]] : [0, 0, 0];
+            }
+            function relLum(rgb) {
+                const ch = c => {
+                    const v = c / 255;
+                    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+                };
+                return 0.2126 * ch(rgb[0]) + 0.7152 * ch(rgb[1]) + 0.0722 * ch(rgb[2]);
+            }
+            function contrast(rgb1, rgb2) {
+                const l1 = relLum(rgb1), l2 = relLum(rgb2);
+                return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+            }
+            const checkIds = [
+                'btnHeroCyclePreview',
+                'heroQuickPersonaLaunchBar',
+                'btnHeroQuickCaptain',
+                'btnHeroQuickScorer',
+                'btnHeroQuickUmpire',
+                'btnHeroQuickOrganiser',
+                'btnHeroQuickAdmin'
+            ];
+            const surfaceChecks = checkIds.map(id => {
+                const el = document.getElementById(id);
+                const st = window.getComputedStyle(el);
+                const bg = parseRgb(st.backgroundColor);
+                const fg = parseRgb(st.color);
+                return {
+                    id,
+                    bgLum: relLum(bg),
+                    ratio: contrast(fg, bg)
+                };
+            });
+            return {
+                ribbonExists: Boolean(document.getElementById('heroLiveBroadcastRibbon')),
+                splitGridExists: Boolean(document.getElementById('heroSplitGrid')),
+                hudExists: Boolean(document.getElementById('heroInteractivePreviewHud')),
+                svgExists: Boolean(document.getElementById('heroInteractivePitchSvg')),
+                quickLaunchExists: Boolean(document.getElementById('heroQuickPersonaLaunchBar')),
+                trustMetricsExists: Boolean(document.getElementById('heroTrustMetricsStrip')),
+                bentoGridExists: Boolean(document.getElementById('heroBentoFeatureGrid')),
+                offLabel: document.getElementById('heroSvgOffSideLabel')?.textContent?.trim() || '',
+                impactLabel: document.getElementById('heroSvgImpactLabel')?.textContent?.trim() || '',
+                hudTitle: document.getElementById('heroHudActiveModeTitle')?.textContent?.trim() || '',
+                surfaceChecks
+            };
+        }""")
         assert initial["ribbonExists"] is True
         assert initial["splitGridExists"] is True
         assert initial["hudExists"] is True
@@ -65,6 +103,9 @@ def test_desktop_ui_ux_pro_max_hero_section():
         assert "OFF-SIDE" in initial["offLabel"]
         assert "RHB EXTRA COVER" in initial["impactLabel"]
         assert "Scorer 3D" in initial["hudTitle"]
+        for chk in initial["surfaceChecks"]:
+            assert chk["bgLum"] < 0.08, f"Hero element #{chk['id']} surface was bleached to light bgLum={chk['bgLum']}"
+            assert chk["ratio"] >= 7.5, f"Hero element #{chk['id']} contrast ratio {chk['ratio']} < 7.5 AAA"
 
         page.screenshot(path=os.path.join(SCREENSHOT_DIR, "test_72_desktop_pro_max_hero_rhb.png"))
 
