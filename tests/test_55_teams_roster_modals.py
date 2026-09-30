@@ -370,7 +370,109 @@ async def test_flagship_studios_weather_and_gear_store():
         assert m_brand_check["hasHeaderSvg"], "Mobile top bar must render svg.cricos-brand-svg inside #mobileHeaderBrandLogo"
         assert m_brand_check["hasSidebarSvg"], "Mobile sidebar drawer must render svg.cricos-brand-svg inside #mobileSidebarBrandLogo"
 
+        # Close any lingering modals before opening App Settings
+        await page.evaluate("""() => {
+            const modals = document.querySelectorAll('.modal-backdrop.active');
+            modals.forEach(m => m.classList.remove('active'));
+        }""")
+
+        # 9. Verify Co-located Theme Switcher, Clean View Toggle & Unified App Settings Hub (Desktop)
+        desktop_settings_check = await page.evaluate("""() => {
+            const cluster = document.getElementById('themeAndCleanViewCluster');
+            const themeBtn = document.getElementById('btnDesignThemeSwitcher');
+            const cleanBtn = document.getElementById('btnToggleMainAreaDeclutter');
+            const settingsBtn = document.getElementById('btnAppSettings');
+            const settingsModal = document.getElementById('modalAppSettings');
+            
+            // Open App Settings modal
+            if (typeof window.openAppSettingsModal === 'function') {
+                window.openAppSettingsModal();
+            }
+            const modalVisibleAfterOpen = settingsModal && settingsModal.classList.contains('active');
+            
+            // Switch tabs in modal
+            const broadcastTab = document.getElementById('tabBtn_audio');
+            if (broadcastTab) broadcastTab.click();
+            const broadcastSectionActive = Boolean(document.querySelector('#settingsPanel_audio.active')) ||
+                                           (document.getElementById('settingsPanel_audio') && window.getComputedStyle(document.getElementById('settingsPanel_audio')).display !== 'none');
+            
+            return {
+                hasCluster: Boolean(cluster),
+                hasThemeBtn: Boolean(themeBtn),
+                hasCleanBtn: Boolean(cleanBtn),
+                hasSettingsBtn: Boolean(settingsBtn),
+                hasSettingsModal: Boolean(settingsModal),
+                modalVisibleAfterOpen,
+                broadcastSectionActive,
+                isCleanView: document.body.getAttribute('data-clean-view') === 'true'
+            };
+        }""")
+        assert desktop_settings_check["hasCluster"], "Desktop topbar must contain #themeAndCleanViewCluster"
+        assert desktop_settings_check["hasThemeBtn"], "Desktop cluster must contain #btnDesignThemeSwitcher"
+        assert desktop_settings_check["hasCleanBtn"], "Desktop cluster must contain #btnToggleMainAreaDeclutter"
+        assert desktop_settings_check["hasSettingsBtn"], "Desktop cluster must contain #btnAppSettings"
+        assert desktop_settings_check["hasSettingsModal"], "Desktop must contain #modalAppSettings"
+        assert desktop_settings_check["modalVisibleAfterOpen"], "#modalAppSettings must open when openAppSettingsModal() is invoked"
+        assert desktop_settings_check["broadcastSectionActive"], "Category tabs in #modalAppSettings must switch active panel"
+        assert desktop_settings_check["isCleanView"], "Desktop document.body must have data-clean-view='true'"
+        await save_screenshot_async(page, "desktop_app_settings_modal_open.png")
+
+        # Close modal and verify
+        modal_closed_ok = await page.evaluate("""() => {
+            if (typeof window.closeAppSettingsModal === 'function') {
+                window.closeAppSettingsModal();
+            }
+            const settingsModal = document.getElementById('modalAppSettings');
+            return settingsModal && !settingsModal.classList.contains('active');
+        }""")
+        assert modal_closed_ok, "#modalAppSettings must close cleanly"
+        await save_screenshot_async(page, "desktop_theme_clean_settings_hub.png")
+
+        # 10. Verify Co-located Theme Switcher, Clean View Toggle & Unified App Settings Bottom Sheet (Mobile)
+        mobile_settings_check = await m_page.evaluate("""() => {
+            const cluster = document.getElementById('mobileThemeAndCleanCluster');
+            const themeBtn = document.getElementById('btnMobileHeaderThemeCycle');
+            const cleanBtn = document.getElementById('btnMobileToggleDeclutter');
+            const settingsBtn = document.getElementById('btnMobileHeaderSettings');
+            
+            // Open mobile settings sheet
+            const app = window.cricosMobileApp;
+            if (app && app.openSettingsSheet) {
+                app.openSettingsSheet();
+            }
+            const sheet = document.getElementById('mobileSettingsSheet');
+            const sheetVisible = Boolean(sheet && sheet.classList.contains('active'));
+            
+            return {
+                hasCluster: Boolean(cluster),
+                hasThemeBtn: Boolean(themeBtn),
+                hasCleanBtn: Boolean(cleanBtn),
+                hasSettingsBtn: Boolean(settingsBtn),
+                sheetVisible,
+                isCleanView: document.body.getAttribute('data-clean-view') === 'true'
+            };
+        }""")
+        assert mobile_settings_check["hasCluster"], "Mobile header must contain #mobileThemeAndCleanCluster"
+        assert mobile_settings_check["hasThemeBtn"], "Mobile cluster must contain #btnMobileHeaderThemeCycle"
+        assert mobile_settings_check["hasCleanBtn"], "Mobile cluster must contain #btnMobileToggleDeclutter"
+        assert mobile_settings_check["hasSettingsBtn"], "Mobile cluster must contain #btnMobileHeaderSettings"
+        assert mobile_settings_check["sheetVisible"], "#mobileSettingsSheet must render and become active"
+        assert mobile_settings_check["isCleanView"], "Mobile document.body must have data-clean-view='true'"
+        await save_screenshot_async(m_page, "mobile_app_settings_sheet_open.png")
+
+        # Close mobile settings sheet and verify
+        mobile_closed_ok = await m_page.evaluate("""() => {
+            const app = window.cricosMobileApp;
+            if (app && app.closeSettingsSheet) {
+                app.closeSettingsSheet();
+            }
+            return !document.getElementById('mobileSettingsSheet');
+        }""")
+        assert mobile_closed_ok, "#mobileSettingsSheet must close cleanly"
+        await save_screenshot_async(m_page, "mobile_theme_clean_settings_hub.png")
+
         assert_no_critical_errors(page)
+        assert_no_critical_errors(m_page)
         await browser.close()
 
 

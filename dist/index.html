@@ -3421,6 +3421,160 @@
       transform: translateY(-1px);
     }
 
+    /* Ultra-Clean View Mode: Remove Obvious Headers, Icon-Only Controls & Compact Cards */
+    body[data-clean-view="true"] #workspaceCleanFocusBar,
+    body[data-clean-view="true"] .brand-subtitle,
+    body[data-clean-view="true"] .card-header p,
+    body[data-clean-view="true"] .card-subtitle,
+    body[data-clean-view="true"] .section-subtitle,
+    body[data-clean-view="true"] .comm-tactical-sub,
+    body[data-clean-view="true"] .obvious-header,
+    body[data-clean-view="true"] [data-clean-hide="true"] {
+      display: none !important;
+    }
+    body[data-clean-view="true"] .clean-view-hide-label,
+    body[data-clean-view="true"] #designThemeLabel,
+    body[data-clean-view="true"] #cleanViewToggleLabel,
+    body[data-clean-view="true"] #appSettingsLabel,
+    body[data-clean-view="true"] #btnCommandPalette > span:nth-child(2),
+    body[data-clean-view="true"] #btnMobileQuickLauncher > span:nth-child(2),
+    body[data-clean-view="true"] .match-action-toolbar button.nav-pill > span:nth-child(2) {
+      display: none !important;
+    }
+    body[data-clean-view="true"] .topbar-clean-pill,
+    body[data-clean-view="true"] .match-action-toolbar button.nav-pill {
+      padding: 0.3rem 0.52rem !important;
+      gap: 0.2rem !important;
+      min-width: 32px !important;
+      justify-content: center !important;
+    }
+    body[data-clean-view="true"] .card,
+    body[data-clean-view="true"] .glass-panel,
+    body[data-clean-view="true"] .scoreboard,
+    body[data-clean-view="true"] .stat-tile,
+    body[data-clean-view="true"] .metric-card,
+    body[data-clean-view="true"] .feed-item,
+    body[data-clean-view="true"] .gear-product-card {
+      padding: 0.65rem 0.85rem !important;
+      border-radius: 10px !important;
+    }
+    body[data-clean-view="true"] .grid-2,
+    body[data-clean-view="true"] .grid-3,
+    body[data-clean-view="true"] .grid-4,
+    body[data-clean-view="true"] .dashboard-grid {
+      gap: 0.65rem !important;
+    }
+    body[data-clean-view="true"] .gear-product-image-wrap {
+      height: 92px !important;
+      margin-bottom: 0.4rem !important;
+    }
+
+    /* CricOS Unified App Settings Hub Styling */
+    #modalAppSettings {
+      z-index: 20000;
+    }
+    #modalAppSettings .modal-card {
+      max-width: 900px;
+      width: 96vw;
+      background: var(--bg-card, #0a101c);
+      border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+    }
+    .settings-layout {
+      display: flex;
+      min-height: 490px;
+      max-height: 72vh;
+    }
+    .settings-nav {
+      width: 220px;
+      background: rgba(255, 255, 255, 0.02);
+      border-right: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+      padding: 0.85rem 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+    .settings-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted, #94a3b8);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .settings-nav-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary, #f8fafc);
+    }
+    .settings-nav-item.active {
+      background: rgba(0, 229, 153, 0.14);
+      border-color: rgba(0, 229, 153, 0.35);
+      color: var(--turf-emerald, #00e599);
+    }
+    .settings-content-body {
+      flex: 1;
+      padding: 1.25rem 1.4rem;
+      overflow-y: auto;
+    }
+    .settings-section-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.55rem 0;
+    }
+    .settings-row:not(:last-child) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .settings-row-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-primary, #f8fafc);
+    }
+    .settings-row-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted, #94a3b8);
+      margin-top: 0.1rem;
+    }
+    .settings-theme-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+      margin-top: 0.55rem;
+    }
+    .settings-theme-card {
+      border-radius: 10px;
+      padding: 0.75rem 0.65rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .settings-theme-card.active {
+      border-color: var(--turf-emerald, #00e599);
+      background: rgba(0, 229, 153, 0.12);
+    }
+
     /* Comprehensive Daylight Theme Overrides (Swiss Minimal & Nordic Editorial) */
     html[data-theme="swiss"] .topbar-clean-pill,
     body[data-theme="swiss"] .topbar-clean-pill {
@@ -5011,6 +5165,10 @@
         <div class="sidebar-nav-section">
           <div class="sidebar-section-title">Developer &amp; Platform</div>
           <div class="sidebar-nav-list">
+            <button type="button" id="sidebarBtnAppSettings" onclick="openAppSettingsModal()" class="sidebar-nav-item" data-tooltip="Configure all app settings: Theme, Clean View, Audio, Stance, Units &amp; Diagnostics in one place (Shortcut: Alt+S)">
+              <span class="tab-icon">⚙️</span>
+              <span class="sidebar-nav-label">App Settings</span>
+            </button>
             <button type="button" onclick="openMobilePreviewModal()" class="sidebar-nav-item" data-tooltip="Launch Standalone Consumer Mobile App (iOS &amp; Android Preview) with OTP &amp; Profile">
               <span class="tab-icon">📱</span>
               <span class="sidebar-nav-label">Mobile App</span>
@@ -5111,11 +5269,19 @@
 
           <div class="topbar-divider" aria-hidden="true"></div>
 
-          <!-- Cluster 3: Theme Selector -->
-          <div class="topbar-cluster" aria-label="Theme and Display Controls">
+          <!-- Cluster 3: Theme & Clean View Controls (Co-located) -->
+          <div class="topbar-cluster" id="themeAndCleanViewCluster" aria-label="Theme and Clean View Controls">
             <button type="button" id="btnDesignThemeSwitcher" onclick="cycleDesignTheme()" class="nav-pill topbar-clean-pill" data-tooltip="Switch Design Theme: Swiss Minimal, Nordic Editorial, Stadium Night (Shortcut: Alt+T)">
               <span id="designThemeIcon">🇨🇭</span>
-              <span id="designThemeLabel">Swiss Minimal</span>
+              <span id="designThemeLabel" class="clean-view-hide-label">Swiss Minimal</span>
+            </button>
+            <button type="button" id="btnToggleMainAreaDeclutter" onclick="toggleMainAreaDeclutter()" class="nav-pill topbar-clean-pill" style="border-color: rgba(0, 229, 153, 0.45) !important; background: rgba(0, 229, 153, 0.14) !important; color: var(--turf-emerald) !important;" data-tooltip="Clean View Active (Obvious headers hidden, icon-only controls, compact cards) — Click to toggle Extended Telemetry View">
+              <span id="cleanViewToggleIcon">✨</span>
+              <span id="cleanViewToggleLabel" class="clean-view-hide-label">Clean View</span>
+            </button>
+            <button type="button" id="btnAppSettings" onclick="openAppSettingsModal()" class="nav-pill topbar-clean-pill" data-tooltip="Configure all app settings in one place: Theme, Clean View, Audio, Stance, Units &amp; Diagnostics (Shortcut: Alt+S)">
+              <span id="appSettingsIcon">⚙️</span>
+              <span id="appSettingsLabel" class="clean-view-hide-label">Settings</span>
             </button>
             <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" style="display: none;" aria-hidden="true">
               <span class="pill-icon" id="outdoorModeIcon">☀️</span>
@@ -5131,9 +5297,9 @@
           <div class="topbar-cluster" aria-label="Mobile App, Persona, and Notifications">
             <button type="button" id="btnMobileQuickLauncher" onclick="openMobilePreviewModal()" class="nav-pill topbar-clean-pill" data-tooltip="Open Mobile App demo, scan live QR code, or download compiled Android APK">
               <span>📱</span>
-              <span>Mobile</span>
+              <span class="clean-view-hide-label">Mobile</span>
             </button>
-            <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill topbar-clean-pill" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile">👑 Captain</button>
+            <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill topbar-clean-pill" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile"><span id="activePersonaIcon">👑</span><span id="activePersonaTextLabel" class="clean-view-hide-label">Captain</span></button>
             <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill topbar-clean-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
               <span class="pill-icon">🔔</span>
               <span id="headerNotifBadge" class="counter-badge emerald">3</span>
@@ -5143,14 +5309,11 @@
       </header>
 
       <main id="appMainContent">
-        <!-- Persona-Scoped Clean Workspace & Clutter Control Bar -->
-        <div id="workspaceCleanFocusBar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.5rem 0.9rem; margin-bottom: 0.95rem; border-radius: 10px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.28); flex-wrap: wrap;">
+        <!-- Persona-Scoped Extended Workspace Banner (Hidden in Clean View) -->
+        <div id="workspaceCleanFocusBar" style="display: none; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.45rem 0.85rem; margin-bottom: 0.75rem; border-radius: 10px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.28); flex-wrap: wrap;">
           <div style="display: flex; align-items: center; gap: 0.55rem;">
-            <span id="cleanFocusPersonaTitle" style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald);">👑 Captain Focused Workspace</span>
-            <span style="color: var(--text-muted); font-size: 0.72rem;" id="cleanFocusPersonaSummary">• Main area decluttered (secondary tools &amp; studios organized in Left Sidebar)</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.45rem;">
-            <button type="button" id="btnToggleMainAreaDeclutter" onclick="toggleMainAreaDeclutter()" style="background: rgba(0, 210, 255, 0.14); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35); border-radius: 6px; padding: 0.26rem 0.65rem; font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle between Focused Clean View and Full Extended Telemetry View">✨ Clean View: ON (Show All Panels)</button>
+            <span id="cleanFocusPersonaTitle" style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald);">👑 Captain Extended Workspace</span>
+            <span style="color: var(--text-muted); font-size: 0.72rem;" id="cleanFocusPersonaSummary">• Extended Telemetry View active</span>
           </div>
         </div>
 
@@ -6846,6 +7009,312 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" style="width: auto;" onclick="closeUserModal()" data-tooltip="Cancel user profile edit" aria-label="Cancel user edit">Cancel</button>
         <button class="btn" style="width: auto; padding: 0.5rem 1.5rem;" onclick="saveUserProfile()" data-tooltip="Save profile edits and persona selection">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CricOS Unified App Settings Hub Modal -->
+  <div class="modal-backdrop" id="modalAppSettings" role="dialog" aria-modal="true" aria-labelledby="appSettingsTitle">
+    <div class="modal-dialog modal-card" style="max-width: 920px; width: 96vw;">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border-subtle); padding: 0.9rem 1.4rem; display: flex; align-items: center; justify-content: space-between;">
+        <div class="modal-title" id="appSettingsTitle" style="display: flex; align-items: center; gap: 0.55rem; font-size: 1.05rem; font-weight: 800;">
+          <span style="font-size: 1.25rem;">⚙️</span>
+          <span>CricOS Unified App Settings</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeAppSettingsModal()" data-tooltip="Close settings dialog (Esc)">✕</button>
+      </div>
+
+      <div class="settings-layout">
+        <!-- Vertical Category Nav -->
+        <nav class="settings-nav" aria-label="Settings Categories">
+          <button type="button" class="settings-nav-item active" id="tabBtn_appearance" onclick="switchAppSettingsTab('appearance')" data-tooltip="Visual themes, clean view declutter, and display options">
+            <span>🎨</span>
+            <span>Appearance &amp; Theme</span>
+          </button>
+          <button type="button" class="settings-nav-item" id="tabBtn_audio" onclick="switchAppSettingsTab('audio')" data-tooltip="Broadcast commentary style, audio readout &amp; match sound effects">
+            <span>🎙️</span>
+            <span>Broadcast &amp; Audio</span>
+          </button>
+          <button type="button" class="settings-nav-item" id="tabBtn_scoring" onclick="switchAppSettingsTab('scoring')" data-tooltip="Default batter stance, 3D stadium mode &amp; strike rotation">
+            <span>🏏</span>
+            <span>Scoring &amp; 3D Radar</span>
+          </button>
+          <button type="button" class="settings-nav-item" id="tabBtn_locale" onclick="switchAppSettingsTab('locale')" data-tooltip="Currency, speed units, distance units &amp; venue weather">
+            <span>🌍</span>
+            <span>Locale &amp; Units</span>
+          </button>
+          <button type="button" class="settings-nav-item" id="tabBtn_system" onclick="switchAppSettingsTab('system')" data-tooltip="Notification alerts, offline storage cache &amp; reset defaults">
+            <span>🔔</span>
+            <span>Alerts &amp; Reset</span>
+          </button>
+        </nav>
+
+        <!-- Dynamic Content Body -->
+        <div class="settings-content-body" id="settingsContentBody">
+          <!-- 1. Appearance & Theme Panel -->
+          <div class="settings-tab-panel" id="settingsPanel_appearance">
+            <div class="settings-section-card">
+              <div style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">🎨 Design Theme &amp; Visual Language</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">Select your preferred atmosphere. CricOS dynamically enforces WCAG AAA contrast across all surfaces.</div>
+              <div class="settings-theme-grid">
+                <div class="settings-theme-card" id="themeCard_swiss" onclick="selectSettingsTheme('swiss')" data-tooltip="Swiss Minimalist: High-contrast daylight paper with 7.09:1 WCAG AAA readability">
+                  <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🇨🇭</div>
+                  <div style="font-weight: 800; font-size: 0.8rem; color: #0F172A;">Swiss Minimal</div>
+                  <div style="font-size: 0.68rem; color: #475569; margin-top: 0.2rem;">Daylight Paper #F8F9FA</div>
+                </div>
+                <div class="settings-theme-card" id="themeCard_nordic" onclick="selectSettingsTheme('nordic')" data-tooltip="Nordic Editorial: Warm Scandinavian oat canvas with forest accents">
+                  <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🌾</div>
+                  <div style="font-weight: 800; font-size: 0.8rem; color: #1C1917;">Nordic Editorial</div>
+                  <div style="font-size: 0.68rem; color: #57534E; margin-top: 0.2rem;">Warm Canvas #FCFBF8</div>
+                </div>
+                <div class="settings-theme-card" id="themeCard_stadium" onclick="selectSettingsTheme('stadium')" data-tooltip="Stadium Night: Obsidian floodlit broadcast glassmorphism">
+                  <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🌙</div>
+                  <div style="font-weight: 800; font-size: 0.8rem; color: #00E599;">Stadium Night</div>
+                  <div style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.2rem;">Obsidian Glass #04070D</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section-card">
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">✨ Clean View Mode (Decluttered Focus)</div>
+                  <div class="settings-row-desc">Removes obvious headers, hides verbose text labels in favor of crisp icons, and applies compact cards.</div>
+                </div>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: var(--turf-emerald);">
+                  <input type="checkbox" id="settingCbCleanView" onchange="updateAppSetting('cleanView', this.checked)">
+                  <span id="settingCleanViewStatusLabel">Enabled</span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">☀️ Outdoor / High-Contrast Sunlight Mode</div>
+                  <div class="settings-row-desc">Instantly toggles between high-contrast daylight Swiss Minimalist and Obsidian Floodlit stadium mode.</div>
+                </div>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.82rem; font-weight: 700;">
+                  <input type="checkbox" id="settingCbOutdoor" onchange="updateAppSetting('outdoorMode', this.checked)">
+                  <span id="settingOutdoorStatusLabel">Off</span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">📐 Card &amp; Scoreboard Density</div>
+                  <div class="settings-row-desc">Control padding and gaps across cards, scoreboards, and product listings.</div>
+                </div>
+                <select id="settingSelectDensity" onchange="updateAppSetting('cardDensity', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="compact">Compact (Clean View Default)</option>
+                  <option value="standard">Standard (Extended)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Broadcast & Audio Panel -->
+          <div class="settings-tab-panel" id="settingsPanel_audio" style="display: none;">
+            <div class="settings-section-card">
+              <div style="font-size: 0.76rem; font-weight: 800; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">🎙️ Broadcast Commentary Narrative Engine</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">Switch live commentator voice persona to change tactical analysis and ball-by-ball narrative style.</div>
+              <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                <label style="display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); cursor: pointer;">
+                  <input type="radio" name="settingsCommentaryVoice" value="ANALYTICAL" onchange="updateAppSetting('commentaryVoice', 'ANALYTICAL')">
+                  <div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--turf-emerald);">📊 Analytical (Harsha)</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Data-driven win probability, pitch microclimate seam analysis &amp; field-restriction math.</div>
+                  </div>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); cursor: pointer;">
+                  <input type="radio" name="settingsCommentaryVoice" value="HYPE" onchange="updateAppSetting('commentaryVoice', 'HYPE')">
+                  <div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: #A855F7;">⚡ High-Octane (Ravi)</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Electric maximums, stadium crowd roar, tracer-bullet boundaries &amp; climax moments.</div>
+                  </div>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); cursor: pointer;">
+                  <input type="radio" name="settingsCommentaryVoice" value="TACTICAL" onchange="updateAppSetting('commentaryVoice', 'TACTICAL')">
+                  <div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--cyan);">👑 Captain's Dugout (Nasser)</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Captaincy rationale, 30-yard ring single-choking, slip cordons &amp; batting traps.</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-section-card">
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🔊 Web Audio Sound FX &amp; Sirens</div>
+                  <div class="settings-row-desc">Synthesized sound effects for boundaries (4s/6s), wickets, and DRS appeals.</div>
+                </div>
+                <input type="checkbox" id="settingCbSoundFx" onchange="updateAppSetting('audioEnabled', this.checked)">
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🗣️ Speech Synthesis TTS Commentary Readout</div>
+                  <div class="settings-row-desc">Automatically read live ball-by-ball commentary aloud via Web Speech API.</div>
+                </div>
+                <input type="checkbox" id="settingCbCommentaryTts" onchange="updateAppSetting('commentaryTts', this.checked)">
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">⏩ TTS Speech Rate</div>
+                  <div class="settings-row-desc">Adjust the speed of synthetic speech narration.</div>
+                </div>
+                <select id="settingSelectSpeechRate" onchange="updateAppSetting('speechRate', parseFloat(this.value))" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="0.9">0.9x (Deliberate)</option>
+                  <option value="1.0">1.0x (Normal)</option>
+                  <option value="1.15">1.15x (Brisk)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Scoring & 3D Radar Panel -->
+          <div class="settings-tab-panel" id="settingsPanel_scoring" style="display: none;">
+            <div class="settings-section-card">
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🏏 Default Batter Stance Orientation</div>
+                  <div class="settings-row-desc">Mirrors pitch maps, wagon wheels, and fielding coordinates for right-handed vs left-handed batters.</div>
+                </div>
+                <div style="display: flex; gap: 0.4rem;">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnStanceSettingRHB" onclick="updateAppSetting('batterStance', 'RHB')" style="padding: 0.32rem 0.75rem; font-weight: 800;">RHB</button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnStanceSettingLHB" onclick="updateAppSetting('batterStance', 'LHB')" style="padding: 0.32rem 0.75rem; font-weight: 800;">LHB</button>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🌐 3D Stadium &amp; Radar Simulation Mode</div>
+                  <div class="settings-row-desc">Default visualizer mode on match dashboard and interactive broadcast HUD.</div>
+                </div>
+                <select id="settingSelectCanvasMode" onchange="updateAppSetting('canvasVisualMode', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="WAGON">3D Wagon Wheel Arcs</option>
+                  <option value="HAWKEYE">Hawk-Eye DRS Trajectory</option>
+                  <option value="RADAR">11-Fielder Tactical Radar</option>
+                </select>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🔄 Auto-Rotate Strike on Odd Runs (1, 3, 5)</div>
+                  <div class="settings-row-desc">Automatically swap striker and non-striker in compliance with MCC Law 18.</div>
+                </div>
+                <input type="checkbox" id="settingCbAutoStrike" onchange="updateAppSetting('autoRotateStrike', this.checked)">
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🎯 Default Tactical Field Formation Preset</div>
+                  <div class="settings-row-desc">Initial 11-player formation when launching the Tactical Field Planner.</div>
+                </div>
+                <select id="settingSelectFieldPreset" onchange="updateAppSetting('defaultFieldPreset', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="POWERPLAY_ATTACK">⚡ PP1 Attack (2 Slips + Gully)</option>
+                  <option value="OFFSIDE_RING_SQUEEZE">🔒 7-2 Off-Side Squeeze</option>
+                  <option value="DEATH_YORKER_DEFENSE">🔥 Death Wide Yorker (5 Out)</option>
+                  <option value="MIDDLE_SPIN_TRAP">🛡️ Middle Spin Web (Short Leg)</option>
+                  <option value="SUPER_OVER_UMBRELLA">🏆 Super Over Umbrella</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Locale & Units Panel -->
+          <div class="settings-tab-panel" id="settingsPanel_locale" style="display: none;">
+            <div class="settings-section-card">
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">💰 Currency Display</div>
+                  <div class="settings-row-desc">Used across double-entry ledger, provider escrows, and pro gear store.</div>
+                </div>
+                <select id="settingSelectCurrency" onchange="updateAppSetting('currency', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="INR">INR (₹) — Indian Rupee</option>
+                  <option value="USD">USD ($) — US Dollar</option>
+                  <option value="GBP">GBP (£) — British Pound</option>
+                  <option value="EUR">EUR (€) — Euro</option>
+                  <option value="AUD">AUD (A$) — Australian Dollar</option>
+                </select>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">⚡ Delivery Speed Units</div>
+                  <div class="settings-row-desc">Units for radar gun and ball telemetry (km/h vs mph).</div>
+                </div>
+                <select id="settingSelectSpeedUnit" onchange="updateAppSetting('speedUnit', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="km/h">Kilometers per hour (km/h)</option>
+                  <option value="mph">Miles per hour (mph)</option>
+                </select>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">📏 Boundary &amp; Pitch Distance Units</div>
+                  <div class="settings-row-desc">Units for boundary distance, trajectory arcs, and pitch lengths.</div>
+                </div>
+                <select id="settingSelectDistanceUnit" onchange="updateAppSetting('distanceUnit', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="m">Meters (m)</option>
+                  <option value="yd">Yards (yd)</option>
+                </select>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🏟️ Default Match Venue Microclimate</div>
+                  <div class="settings-row-desc">Location profile for live GPS weather forecasts and pitch aerodynamics.</div>
+                </div>
+                <select id="settingSelectVenueWeather" onchange="updateAppSetting('venueWeather', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
+                  <option value="chinnaswamy_turf_a">Chinnaswamy Turf A (Bengaluru • 920m Alt)</option>
+                  <option value="wankhede_arena">Wankhede Arena (Mumbai • Sea Breeze)</option>
+                  <option value="eden_gardens_turf">Eden Gardens Turf (Kolkata • Riverfront Dew)</option>
+                  <option value="dharamshala_hpca">Dharamshala HPCA (1,457m Thin Air &amp; Swing)</option>
+                  <option value="chepauk_marina">Chepauk Marina (Chennai • Humid Clay Spin)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Alerts & Storage Panel -->
+          <div class="settings-tab-panel" id="settingsPanel_system" style="display: none;">
+            <div class="settings-section-card">
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">🔔 Real-Time Match Alerts</div>
+                  <div class="settings-row-desc">Toasts for wickets, boundaries (4s/6s), milestones, and DRS outcomes.</div>
+                </div>
+                <input type="checkbox" id="settingCbMatchAlerts" onchange="updateAppSetting('matchAlerts', this.checked)">
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <div class="settings-row-label">💳 Financial &amp; Escrow Ledger Alerts</div>
+                  <div class="settings-row-desc">Notifications for 5-account balance releases, player purse deductions, and payouts.</div>
+                </div>
+                <input type="checkbox" id="settingCbFinancialAlerts" onchange="updateAppSetting('financialAlerts', this.checked)">
+              </div>
+            </div>
+
+            <div class="settings-section-card">
+              <div style="font-size: 0.76rem; font-weight: 800; color: var(--rose); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">💾 Diagnostics &amp; Configuration Management</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">Export your complete application setup or reset all preferences back to factory defaults.</div>
+              <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btnExportAppSettings" onclick="exportAppSettings()" style="width: auto; padding: 0.4rem 0.85rem;" data-tooltip="Copy entire settings JSON schema to clipboard">📋 Export Settings JSON</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnResetAppSettings" onclick="resetAppSettings()" style="width: auto; padding: 0.4rem 0.85rem; color: var(--rose); border-color: rgba(255, 51, 102, 0.4);" data-tooltip="Restore all application preferences back to defaults">↺ Reset to Defaults</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="border-top: 1px solid var(--border-subtle); padding: 0.75rem 1.4rem; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.72rem; color: var(--text-muted);">Auto-saved to local browser storage (<code style="font-family: var(--font-mono); color: var(--turf-emerald);">cricos_app_settings_v1</code>)</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="btn btn-secondary btn-sm" style="width: auto; padding: 0.38rem 0.85rem;" onclick="resetAppSettings()" data-tooltip="Reset all settings to initial defaults">Reset</button>
+          <button type="button" class="btn btn-sm" style="width: auto; padding: 0.38rem 1.25rem;" onclick="closeAppSettingsModal()" data-tooltip="Close settings and return to active workspace">Done</button>
+        </div>
       </div>
     </div>
   </div>
@@ -11605,22 +12074,46 @@ cricos_active_sse_connections 1</pre>
         });
       });
 
-      // 4. Update #workspaceCleanFocusBar status banner
+      // 4. Update body data-clean-view attribute, class, and #workspaceCleanFocusBar status banner
+      if (typeof document !== 'undefined') {
+        if (document.body && typeof document.body.setAttribute === 'function') {
+          document.body.setAttribute('data-clean-view', window.desktopCleanFocusMode ? 'true' : 'false');
+        }
+        if (document.body && document.body.classList) {
+          document.body.classList.toggle('clean-view-mode', Boolean(window.desktopCleanFocusMode));
+        }
+      }
+
+      const focusBar = document.getElementById('workspaceCleanFocusBar');
+      if (focusBar) {
+        focusBar.style.display = window.desktopCleanFocusMode ? 'none' : 'flex';
+      }
+
       const titleEl = document.getElementById('cleanFocusPersonaTitle');
       const sumEl = document.getElementById('cleanFocusPersonaSummary');
       const btnEl = document.getElementById('btnToggleMainAreaDeclutter');
+      const iconEl = document.getElementById('cleanViewToggleIcon');
+      const labelEl = document.getElementById('cleanViewToggleLabel');
       if (titleEl) {
-        titleEl.innerHTML = perms.icon + ' ' + perms.label + ' Focused Workspace';
+        titleEl.innerHTML = perms.icon + ' ' + perms.label + ' Extended Workspace';
       }
       if (sumEl) {
         sumEl.textContent = window.desktopCleanFocusMode
-          ? '• Clutter reduced: showing core ' + perms.label + ' modules (secondary studios & tools accessible in Left Sidebar)'
+          ? '• Clean View active: core modules shown, secondary panels hidden'
           : '• Extended Telemetry View active (showing all secondary panels)';
       }
-      if (btnEl) {
+      if (iconEl && labelEl) {
+        iconEl.textContent = window.desktopCleanFocusMode ? '✨' : '📊';
+        labelEl.textContent = window.desktopCleanFocusMode ? 'Clean View' : 'Extended View';
+      } else if (btnEl) {
         btnEl.textContent = window.desktopCleanFocusMode
-          ? '✨ Clean View: ON (Show Extended Panels)'
-          : '📊 Extended View: ON (Switch to Clean View)';
+          ? '✨ Clean View: ON'
+          : '📊 Extended View: ON';
+      }
+      if (btnEl) {
+        btnEl.setAttribute('data-tooltip', window.desktopCleanFocusMode
+          ? 'Clean View Active (Obvious headers hidden, icons instead of labels, compact cards) — Click to toggle Extended View'
+          : 'Extended Telemetry View Active — Click to switch to Clean View (Compact cards, icons instead of labels)');
       }
     }
     window.applySidebarAndMainAreaDeclutter = applySidebarAndMainAreaDeclutter;
@@ -11631,9 +12124,267 @@ cricos_active_sse_connections 1</pre>
       } else {
         window.desktopCleanFocusMode = !window.desktopCleanFocusMode;
       }
-      applySidebarAndMainAreaDeclutter(currentUser.persona);
+      applySidebarAndMainAreaDeclutter(currentUser ? currentUser.persona : 'CAPTAIN');
+      if (window.cricosAppSettings) {
+        window.cricosAppSettings.cleanView = window.desktopCleanFocusMode;
+        try {
+          if (typeof localStorage !== 'undefined' && localStorage.setItem) {
+            localStorage.setItem('cricos_app_settings_v1', JSON.stringify(window.cricosAppSettings));
+          }
+        } catch (_) {}
+      }
+      if (typeof syncAppSettingsModalUI === 'function') {
+        syncAppSettingsModalUI();
+      }
     }
     window.toggleMainAreaDeclutter = toggleMainAreaDeclutter;
+
+    // ==========================================
+    // CricOS Unified App Settings Hub
+    // ==========================================
+    const DEFAULT_APP_SETTINGS = {
+      theme: 'swiss',
+      cleanView: true,
+      outdoorMode: false,
+      cardDensity: 'compact',
+      commentaryVoice: 'ANALYTICAL',
+      audioEnabled: true,
+      commentaryTts: false,
+      speechRate: 1.0,
+      batterStance: 'RHB',
+      canvasVisualMode: 'WAGON',
+      autoRotateStrike: true,
+      defaultFieldPreset: 'POWERPLAY_ATTACK',
+      currency: 'INR',
+      speedUnit: 'km/h',
+      distanceUnit: 'm',
+      venueWeather: 'chinnaswamy_turf_a',
+      matchAlerts: true,
+      financialAlerts: true
+    };
+
+    function loadSavedAppSettings() {
+      let s = Object.assign({}, DEFAULT_APP_SETTINGS);
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem) {
+          const raw = localStorage.getItem('cricos_app_settings_v1');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            Object.assign(s, parsed);
+          }
+          const savedTheme = localStorage.getItem('cricos_design_theme');
+          if (savedTheme) s.theme = savedTheme;
+          const outdoor = localStorage.getItem('cricos_outdoor_mode');
+          if (outdoor !== null) s.outdoorMode = (outdoor === '1');
+        }
+      } catch (_) {}
+      return s;
+    }
+
+    window.cricosAppSettings = loadSavedAppSettings();
+
+    function getAppSettings() {
+      return Object.assign({}, window.cricosAppSettings);
+    }
+    window.getAppSettings = getAppSettings;
+
+    function saveAppSettingsToStorage() {
+      try {
+        if (typeof localStorage !== 'undefined' && localStorage.setItem) {
+          localStorage.setItem('cricos_app_settings_v1', JSON.stringify(window.cricosAppSettings));
+        }
+      } catch (_) {}
+    }
+
+    function updateAppSetting(key, val, notify = true) {
+      if (!window.cricosAppSettings) window.cricosAppSettings = Object.assign({}, DEFAULT_APP_SETTINGS);
+      window.cricosAppSettings[key] = val;
+      saveAppSettingsToStorage();
+
+      // Reactive runtime updates
+      if (key === 'theme') {
+        if (typeof setDesignTheme === 'function') setDesignTheme(val, notify);
+      } else if (key === 'cleanView') {
+        window.desktopCleanFocusMode = Boolean(val);
+        applySidebarAndMainAreaDeclutter(currentUser ? currentUser.persona : 'CAPTAIN');
+      } else if (key === 'outdoorMode') {
+        if (val) {
+          if (typeof setDesignTheme === 'function' && activeDesignTheme === 'stadium') setDesignTheme('swiss', notify);
+        } else {
+          if (typeof setDesignTheme === 'function' && activeDesignTheme !== 'stadium') setDesignTheme('stadium', notify);
+        }
+      } else if (key === 'commentaryVoice') {
+        if (typeof setCommentaryBroadcastVoice === 'function') setCommentaryBroadcastVoice(val);
+      } else if (key === 'audioEnabled') {
+        window.commentaryAudioEnabled = Boolean(val);
+        if (notify && typeof showToast === 'function') showToast(val ? '🔊 Web Audio Sound FX Enabled' : '🔇 Web Audio Muted');
+      } else if (key === 'commentaryTts') {
+        window.commentaryTtsEnabled = Boolean(val);
+        if (notify && typeof showToast === 'function') showToast(val ? '🗣️ Speech TTS Commentary Readout Enabled' : '🗣️ Speech TTS Readout Disabled');
+      } else if (key === 'batterStance') {
+        if (typeof setBatterStance === 'function') setBatterStance(val);
+        if (typeof setHeroStance === 'function') setHeroStance(val);
+      } else if (key === 'canvasVisualMode') {
+        if (typeof setHeroCanvasVisualMode === 'function') setHeroCanvasVisualMode(val);
+      } else if (key === 'venueWeather') {
+        if (typeof selectVenueWeatherLocation === 'function') selectVenueWeatherLocation(val);
+      } else if (key === 'currency') {
+        if (notify && typeof showToast === 'function') showToast('💰 Currency set to ' + val);
+      } else if (key === 'speedUnit') {
+        if (notify && typeof showToast === 'function') showToast('⚡ Ball speed units set to ' + val);
+      } else if (key === 'defaultFieldPreset') {
+        if (typeof applyFieldPlacementPreset === 'function') applyFieldPlacementPreset(val);
+      }
+
+      syncAppSettingsModalUI();
+      if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+        window.dispatchEvent(new CustomEvent('cricos:settingschange', { detail: { settings: window.cricosAppSettings, key, val } }));
+      }
+    }
+    window.updateAppSetting = updateAppSetting;
+
+    function selectSettingsTheme(themeId) {
+      updateAppSetting('theme', themeId, true);
+    }
+    window.selectSettingsTheme = selectSettingsTheme;
+
+    function switchAppSettingsTab(tabId) {
+      const tabs = ['appearance', 'audio', 'scoring', 'locale', 'system'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tabBtn_' + t);
+        const panel = document.getElementById('settingsPanel_' + t);
+        if (btn) btn.classList.toggle('active', t === tabId);
+        if (panel) {
+          panel.classList.toggle('active', t === tabId);
+          panel.style.display = (t === tabId) ? 'block' : 'none';
+        }
+      });
+    }
+    window.switchAppSettingsTab = switchAppSettingsTab;
+
+    function syncAppSettingsModalUI() {
+      const s = window.cricosAppSettings || DEFAULT_APP_SETTINGS;
+      const theme = s.theme || (typeof activeDesignTheme !== 'undefined' ? activeDesignTheme : 'swiss');
+
+      // Theme cards
+      ['swiss', 'nordic', 'stadium'].forEach(t => {
+        const card = document.getElementById('themeCard_' + t);
+        if (card) card.classList.toggle('active', t === theme);
+      });
+
+      // Clean view checkbox
+      const cbClean = document.getElementById('settingCbCleanView');
+      const lblClean = document.getElementById('settingCleanViewStatusLabel');
+      if (cbClean) cbClean.checked = Boolean(s.cleanView);
+      if (lblClean) lblClean.textContent = s.cleanView ? 'Active (Clean Focus)' : 'Extended Panels';
+
+      // Outdoor checkbox
+      const cbOutdoor = document.getElementById('settingCbOutdoor');
+      const lblOutdoor = document.getElementById('settingOutdoorStatusLabel');
+      if (cbOutdoor) cbOutdoor.checked = Boolean(s.outdoorMode);
+      if (lblOutdoor) lblOutdoor.textContent = s.outdoorMode ? 'Daylight Boosted' : 'Standard Contrast';
+
+      // Density
+      const selDensity = document.getElementById('settingSelectDensity');
+      if (selDensity) selDensity.value = s.cardDensity || 'compact';
+
+      // Commentary Voice
+      document.querySelectorAll('input[name="settingsCommentaryVoice"]').forEach(r => {
+        r.checked = (r.value === s.commentaryVoice);
+      });
+
+      // Audio & Speech
+      const cbSound = document.getElementById('settingCbSoundFx');
+      if (cbSound) cbSound.checked = Boolean(s.audioEnabled);
+      const cbTts = document.getElementById('settingCbCommentaryTts');
+      if (cbTts) cbTts.checked = Boolean(s.commentaryTts);
+      const selRate = document.getElementById('settingSelectSpeechRate');
+      if (selRate) selRate.value = String(s.speechRate || 1.0);
+
+      // Stance buttons
+      const btnRhb = document.getElementById('btnStanceSettingRHB');
+      const btnLhb = document.getElementById('btnStanceSettingLHB');
+      if (btnRhb && btnLhb) {
+        if (s.batterStance === 'LHB') {
+          btnLhb.style.background = 'var(--turf-emerald)';
+          btnLhb.style.color = '#04070D';
+          btnRhb.style.background = '';
+          btnRhb.style.color = '';
+        } else {
+          btnRhb.style.background = 'var(--turf-emerald)';
+          btnRhb.style.color = '#04070D';
+          btnLhb.style.background = '';
+          btnLhb.style.color = '';
+        }
+      }
+
+      // Canvas mode
+      const selCanvas = document.getElementById('settingSelectCanvasMode');
+      if (selCanvas) selCanvas.value = s.canvasVisualMode || 'WAGON';
+
+      // Auto strike
+      const cbStrike = document.getElementById('settingCbAutoStrike');
+      if (cbStrike) cbStrike.checked = Boolean(s.autoRotateStrike);
+
+      // Field preset
+      const selPreset = document.getElementById('settingSelectFieldPreset');
+      if (selPreset) selPreset.value = s.defaultFieldPreset || 'POWERPLAY_ATTACK';
+
+      // Locale selects
+      const selCurr = document.getElementById('settingSelectCurrency');
+      if (selCurr) selCurr.value = s.currency || 'INR';
+      const selSpeed = document.getElementById('settingSelectSpeedUnit');
+      if (selSpeed) selSpeed.value = s.speedUnit || 'km/h';
+      const selDist = document.getElementById('settingSelectDistanceUnit');
+      if (selDist) selDist.value = s.distanceUnit || 'm';
+      const selVenue = document.getElementById('settingSelectVenueWeather');
+      if (selVenue) selVenue.value = s.venueWeather || 'chinnaswamy_turf_a';
+
+      // Alerts
+      const cbMatchAlerts = document.getElementById('settingCbMatchAlerts');
+      if (cbMatchAlerts) cbMatchAlerts.checked = Boolean(s.matchAlerts);
+      const cbFinAlerts = document.getElementById('settingCbFinancialAlerts');
+      if (cbFinAlerts) cbFinAlerts.checked = Boolean(s.financialAlerts);
+    }
+    window.syncAppSettingsModalUI = syncAppSettingsModalUI;
+
+    function openAppSettingsModal(tabId) {
+      if (tabId) switchAppSettingsTab(tabId);
+      syncAppSettingsModalUI();
+      openModal('modalAppSettings');
+    }
+    window.openAppSettingsModal = openAppSettingsModal;
+
+    function closeAppSettingsModal() {
+      closeModal('modalAppSettings');
+    }
+    window.closeAppSettingsModal = closeAppSettingsModal;
+
+    function resetAppSettings() {
+      window.cricosAppSettings = Object.assign({}, DEFAULT_APP_SETTINGS);
+      saveAppSettingsToStorage();
+      window.desktopCleanFocusMode = DEFAULT_APP_SETTINGS.cleanView;
+      setDesignTheme(DEFAULT_APP_SETTINGS.theme, false);
+      applySidebarAndMainAreaDeclutter(currentUser ? currentUser.persona : 'CAPTAIN');
+      syncAppSettingsModalUI();
+      if (typeof showToast === 'function') showToast('↺ App Settings reset to factory defaults.');
+    }
+    window.resetAppSettings = resetAppSettings;
+
+    function exportAppSettings() {
+      const json = JSON.stringify(window.cricosAppSettings || DEFAULT_APP_SETTINGS, null, 2);
+      try {
+        if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(json);
+          if (typeof showToast === 'function') showToast('📋 App settings JSON copied to clipboard!');
+        } else {
+          prompt('CricOS Configuration JSON:', json);
+        }
+      } catch (_) {
+        prompt('CricOS Configuration JSON:', json);
+      }
+    }
+    window.exportAppSettings = exportAppSettings;
 
     let _heroCanvasRaf = null;
     function startHeroStadiumCanvasAnimation() {
@@ -12101,7 +12852,7 @@ cricos_active_sse_connections 1</pre>
         badge.style.color = perms.badgeColor;
         badge.style.background = perms.badgeBg;
         badge.style.borderColor = perms.badgeColor;
-        badge.innerHTML = perms.icon + ' ' + perms.label.toUpperCase();
+        badge.innerHTML = '<span id="activePersonaIcon">' + perms.icon + '</span> <span id="activePersonaTextLabel" class="clean-view-hide-label">' + perms.label.toUpperCase() + '</span>';
         badge.setAttribute('data-tooltip', 'Active Persona: ' + perms.label + ' • ' + (perms.description || ''));
       }
 
@@ -17860,6 +18611,9 @@ cricos_active_sse_connections 1</pre>
       if (modalId === 'modalCommerce' && typeof initGearStore === 'function') {
         initGearStore();
       }
+      if (modalId === 'modalAppSettings' && typeof syncAppSettingsModalUI === 'function') {
+        syncAppSettingsModalUI();
+      }
       const m = document.getElementById(modalId);
       if (m) m.classList.add('active');
     }
@@ -21664,7 +22418,9 @@ cricos_active_sse_connections 1</pre>
       { id: 'cmd-player-hardik', title: 'Inspect Hardik Patel — Holographic 3D Card & Radar', subtitle: 'Elite All-Rounder • RHB / Fast-Medium • SR 174.2', category: 'PLAYERS', shortcut: 'P5', icon: '🃏', fn: function() { if (typeof open3DPlayerCardModal === 'function') open3DPlayerCardModal('p-5'); } },
       { id: 'cmd-theme-stadium', title: 'Activate Theme: 🌙 Stadium Night (Broadcast Obsidian)', subtitle: 'Floodlit obsidian pitch (#04070D) with Turf Emerald & Electric Cyan LEDs', category: 'THEMES_PERSONAS', shortcut: 'Alt+1', icon: '🌙', fn: function() { if (typeof applyDesignTheme === 'function') applyDesignTheme('stadium'); } },
       { id: 'cmd-theme-swiss', title: 'Activate Theme: 🇨🇭 Swiss Minimalist (Daylight Grid)', subtitle: 'High-contrast daylight paper (#F8F9FA) with 7.09:1 WCAG AAA contrast', category: 'THEMES_PERSONAS', shortcut: 'Alt+2', icon: '🇨🇭', fn: function() { if (typeof applyDesignTheme === 'function') applyDesignTheme('swiss'); } },
-      { id: 'cmd-theme-nordic', title: 'Activate Theme: 🌾 Nordic Editorial (Warm Parchment)', subtitle: 'Scandinavian warm oat canvas (#F5F0E8) with forest pine accents', category: 'THEMES_PERSONAS', shortcut: 'Alt+3', icon: '🌾', fn: function() { if (typeof applyDesignTheme === 'function') applyDesignTheme('nordic'); } }
+      { id: 'cmd-theme-nordic', title: 'Activate Theme: 🌾 Nordic Editorial (Warm Parchment)', subtitle: 'Scandinavian warm oat canvas (#F5F0E8) with forest pine accents', category: 'THEMES_PERSONAS', shortcut: 'Alt+3', icon: '🌾', fn: function() { if (typeof applyDesignTheme === 'function') applyDesignTheme('nordic'); } },
+      { id: 'cmd-app-settings', title: 'Open CricOS Unified App Settings', subtitle: 'Configure visual themes, clean focus mode, commentary voice, stance & units in one place', category: 'THEMES_PERSONAS', shortcut: 'Alt+S', icon: '⚙️', fn: function() { openAppSettingsModal(); } },
+      { id: 'cmd-clean-view-toggle', title: 'Toggle Clean View Mode', subtitle: 'Hide obvious headers, collapse labels to icons, and activate compact cards', category: 'THEMES_PERSONAS', shortcut: 'Alt+C', icon: '✨', fn: function() { toggleMainAreaDeclutter(); } }
     ];
 
     let _activeCmdCategory = 'ALL';
@@ -22373,7 +23129,13 @@ cricos_active_sse_connections 1</pre>
       }
       if (isInput) return;
 
-      if (ev.shiftKey && ev.key.toUpperCase() === 'F') {
+      if (ev.altKey && (ev.key.toLowerCase() === 's')) {
+        ev.preventDefault();
+        openAppSettingsModal();
+      } else if (ev.altKey && (ev.key.toLowerCase() === 'c')) {
+        ev.preventDefault();
+        toggleMainAreaDeclutter();
+      } else if (ev.shiftKey && ev.key.toUpperCase() === 'F') {
         ev.preventDefault();
         openFieldPlannerModal();
       } else if (ev.shiftKey && ev.key.toUpperCase() === 'P') {

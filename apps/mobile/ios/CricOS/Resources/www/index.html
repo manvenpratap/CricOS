@@ -344,6 +344,41 @@
       color: #00E599 !important;
     }
 
+    /* Mobile Ultra-Clean View Mode: Remove Obvious Headers, Icon-Only Controls & Compact Cards */
+    body[data-clean-view="true"] #mobileCleanFocusBar,
+    body[data-clean-view="true"] #roleExperienceBanner,
+    body[data-clean-view="true"] .role-exp-hud-banner,
+    body[data-clean-view="true"] .mobile-obvious-header,
+    body[data-clean-view="true"] .mobile-section-subtitle,
+    body[data-clean-view="true"] .preview-desc,
+    body[data-clean-view="true"] [data-clean-hide="true"] {
+      display: none !important;
+    }
+    body[data-clean-view="true"] .clean-view-hide-label {
+      display: none !important;
+    }
+    body[data-clean-view="true"] .mobile-card,
+    body[data-clean-view="true"] .theme-selection-card {
+      padding: 0.5rem 0.65rem !important;
+      margin-bottom: 0.45rem !important;
+      border-radius: 8px !important;
+    }
+    body[data-clean-view="true"] .striker-card,
+    body[data-clean-view="true"] .non-striker-card,
+    body[data-clean-view="true"] .bowler-card {
+      padding: 0.4rem 0.55rem !important;
+      border-radius: 8px !important;
+    }
+    body[data-clean-view="true"] .mobile-gear-product-card {
+      padding: 0.45rem 0.55rem !important;
+      margin-bottom: 0.4rem !important;
+      border-radius: 8px !important;
+    }
+    body[data-clean-view="true"] .mobile-gear-product-image-wrap {
+      height: 72px !important;
+      margin-bottom: 0.35rem !important;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -799,7 +834,8 @@
     .mobile-persona-sheet,
     .mobile-action-sheet,
     .mobile-wagon-picker-sheet,
-    .mobile-extra-picker-sheet {
+    .mobile-extra-picker-sheet,
+    .mobile-settings-sheet {
       position: absolute;
       bottom: 0;
       left: 0;
@@ -819,7 +855,8 @@
     .mobile-persona-sheet.active,
     .mobile-action-sheet.active,
     .mobile-wagon-picker-sheet.active,
-    .mobile-extra-picker-sheet.active {
+    .mobile-extra-picker-sheet.active,
+    .mobile-settings-sheet.active {
       transform: translateY(0);
     }
     .extra-run-option-card {
@@ -3534,22 +3571,239 @@
         } else {
           this.cleanFocusMode = !this.cleanFocusMode;
         }
+        if (typeof document !== 'undefined') {
+          if (document.body && typeof document.body.setAttribute === 'function') {
+            document.body.setAttribute('data-clean-view', this.cleanFocusMode ? 'true' : 'false');
+          }
+          if (document.body && document.body.classList) {
+            document.body.classList.toggle('clean-view-mode', Boolean(this.cleanFocusMode));
+          }
+        }
+        if (this.appSettings) {
+          this.appSettings.cleanView = this.cleanFocusMode;
+          try {
+            if (typeof localStorage !== 'undefined' && localStorage.setItem) {
+              localStorage.setItem('cricos_app_settings_v1', JSON.stringify(this.appSettings));
+            }
+          } catch (_) {}
+        }
         this.render();
       }
 
       applyMobileMainAreaDeclutter() {
         if (this.cleanFocusMode === undefined) this.cleanFocusMode = true;
+        if (typeof document !== 'undefined') {
+          if (document.body && typeof document.body.setAttribute === 'function') {
+            document.body.setAttribute('data-clean-view', this.cleanFocusMode ? 'true' : 'false');
+          }
+          if (document.body && document.body.classList) {
+            document.body.classList.toggle('clean-view-mode', Boolean(this.cleanFocusMode));
+          }
+        }
         var scrollBody = document.getElementById('mobileScrollBody');
         if (!scrollBody) return;
         var banner = document.getElementById('roleExperienceBanner');
         if (banner) {
           banner.style.display = this.cleanFocusMode ? 'none' : 'flex';
         }
+        var cleanBar = document.getElementById('mobileCleanFocusBar');
+        if (cleanBar) {
+          cleanBar.style.display = this.cleanFocusMode ? 'none' : 'flex';
+        }
         // Hide secondary excess cards inside main scroll area when cleanFocusMode is active
         var topLevelCards = scrollBody.querySelectorAll('.mobile-secondary-clutter');
         for (var i = 0; i < topLevelCards.length; i++) {
           topLevelCards[i].style.display = this.cleanFocusMode ? 'none' : '';
         }
+      }
+
+      openSettingsSheet() {
+        this.settingsSheetOpen = true;
+        this.sidebarDrawerOpen = false;
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.render();
+      }
+
+      closeSettingsSheet() {
+        this.settingsSheetOpen = false;
+        this.render();
+      }
+
+      cycleTheme() {
+        var themes = ['swiss', 'nordic', 'stadium'];
+        var current = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var idx = themes.indexOf(current);
+        var next = themes[(idx + 1) % themes.length];
+        this.setTheme(next, true);
+      }
+
+      updateMobileSetting(key, val, notify = true) {
+        if (!this.appSettings) this.appSettings = {};
+        this.appSettings[key] = val;
+        try {
+          if (typeof localStorage !== 'undefined' && localStorage.setItem) {
+            localStorage.setItem('cricos_app_settings_v1', JSON.stringify(this.appSettings));
+          }
+        } catch (_) {}
+
+        if (key === 'theme') {
+          this.setTheme(val, notify);
+        } else if (key === 'cleanView') {
+          this.toggleCleanFocusMode(val);
+        } else if (key === 'commentaryVoice') {
+          this.broadcastCommentaryVoice = val;
+          if (notify) this.showToast('Commentator: ' + val, 'info');
+          this.render();
+        } else if (key === 'soundEnabled') {
+          this.soundEnabled = Boolean(val);
+          if (notify) this.showToast(val ? 'Sound Effects Enabled 🔊' : 'Sound Muted 🔇', 'info');
+          this.render();
+        } else if (key === 'batterStance') {
+          this.setBatterStance(val);
+          if (notify) this.showToast('Batter Stance: ' + val, 'info');
+          this.render();
+        } else if (key === 'speedUnit') {
+          if (notify) this.showToast('Speed unit: ' + val, 'info');
+          this.render();
+        } else if (key === 'currency') {
+          if (notify) this.showToast('Currency: ' + val, 'info');
+          this.render();
+        }
+      }
+
+      resetMobileSettings() {
+        this.appSettings = {
+          theme: 'swiss',
+          cleanView: true,
+          commentaryVoice: 'ANALYTICAL',
+          soundEnabled: true,
+          commentaryTts: false,
+          batterStance: 'RHB',
+          speedUnit: 'km/h',
+          currency: 'INR'
+        };
+        try {
+          if (typeof localStorage !== 'undefined' && localStorage.setItem) {
+            localStorage.setItem('cricos_app_settings_v1', JSON.stringify(this.appSettings));
+          }
+        } catch (_) {}
+        this.setTheme('swiss', false);
+        this.toggleCleanFocusMode(true);
+        this.showToast('↺ Settings reset to defaults', 'success');
+      }
+
+      renderMobileSettingsSheet() {
+        if (!this.settingsSheetOpen) return '';
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var sheetBg = isLight ? (activeTheme === 'nordic' ? '#FAF8F5' : '#FFFFFF') : '#0A1220';
+        var cardBg = isLight ? (activeTheme === 'nordic' ? '#F2ECE4' : '#F1F5F9') : 'rgba(255,255,255,0.04)';
+        var bdrColor = isLight ? (activeTheme === 'nordic' ? '#D6D0C4' : '#CBD5E1') : 'rgba(255,255,255,0.1)';
+        var ink = isLight ? '#0F172A' : '#F8FAFC';
+        var muted = isLight ? '#475569' : '#94A3B8';
+
+        var h = '';
+        h += '<div class="mobile-sheet-backdrop active" id="settingsSheetBackdrop" onclick="window.cricosMobileApp.closeSettingsSheet()"></div>';
+        h += '<div class="mobile-settings-sheet active" id="mobileSettingsSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid ' + bdrColor + ';">';
+        
+        // Drag Indicator & Header
+        h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
+        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+        h += '<span style="font-size: 1.15rem;">⚙️</span>';
+        h += '<span style="font-family: Space Grotesk, sans-serif; font-size: 1rem; font-weight: 800; color: ' + ink + ';">App Settings</span>';
+        h += '</div>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeSettingsSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Close Settings">✕</button>';
+        h += '</div>';
+
+        // 1. Appearance & Themes Card
+        h += '<div class="mobile-settings-card" style="background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
+        h += '<div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; margin-bottom: 0.45rem;">🎨 Design Theme</div>';
+        h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 0.75rem;">';
+        var themes = [
+          ['swiss', '🇨🇭 Swiss', '#0F172A'],
+          ['nordic', '🌾 Nordic', '#1C1917'],
+          ['stadium', '🌙 Stadium', '#00E599']
+        ];
+        for (var t = 0; t < themes.length; t++) {
+          var th = themes[t];
+          var isAct = activeTheme === th[0];
+          var chipStyle = isAct
+            ? 'background: rgba(0, 229, 153, 0.2); border: 1.5px solid var(--turf-emerald); color: var(--turf-emerald); font-weight: 800;'
+            : 'background: rgba(255,255,255,0.04); border: 1px solid ' + bdrColor + '; color: ' + muted + ';';
+          h += '<button type="button" onclick="window.cricosMobileApp.setTheme(&apos;' + th[0] + '&apos;)" style="padding: 0.45rem 0.3rem; border-radius: 8px; font-size: 0.72rem; cursor: pointer; ' + chipStyle + '">' + th[1] + '</button>';
+        }
+        h += '</div>';
+
+        // Clean View Toggle
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.45rem; border-top: 1px solid ' + bdrColor + ';">';
+        h += '<div>';
+        h += '<div style="font-size: 0.78rem; font-weight: 700; color: ' + ink + ';">✨ Clean View Mode</div>';
+        h += '<div style="font-size: 0.68rem; color: ' + muted + ';">Hide obvious headers, use compact cards</div>';
+        h += '</div>';
+        h += '<button type="button" id="btnMobileSettingsCleanToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="padding: 0.28rem 0.65rem; border-radius: 6px; font-size: 0.7rem; font-weight: 800; cursor: pointer; ' + (this.cleanFocusMode ? 'background: rgba(0, 229, 153, 0.2); border: 1px solid var(--turf-emerald); color: var(--turf-emerald);' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '">' + (this.cleanFocusMode ? 'ON ✓' : 'OFF') + '</button>';
+        h += '</div>';
+        h += '</div>';
+
+        // 2. Broadcast & Audio Card
+        h += '<div class="mobile-settings-card" style="background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
+        h += '<div style="font-size: 0.72rem; font-weight: 800; color: var(--cyan); text-transform: uppercase; margin-bottom: 0.45rem;">🎙️ Broadcast &amp; Commentary</div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.55rem;">';
+        h += '<span style="font-size: 0.76rem; font-weight: 700;">Voice Style</span>';
+        h += '<select onchange="window.cricosMobileApp.updateMobileSetting(&apos;commentaryVoice&apos;, this.value)" style="background: ' + sheetBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; border-radius: 6px; padding: 0.24rem 0.45rem; font-size: 0.72rem;">';
+        var voices = [['ANALYTICAL', '📊 Harsha (Data)'], ['HYPE', '⚡ Ravi (Energy)'], ['TACTICAL', '👑 Nasser (Tactics)']];
+        var curVoice = this.broadcastCommentaryVoice || 'ANALYTICAL';
+        for (var v = 0; v < voices.length; v++) {
+          h += '<option value="' + voices[v][0] + '"' + (curVoice === voices[v][0] ? ' selected' : '') + '>' + voices[v][1] + '</option>';
+        }
+        h += '</select>';
+        h += '</div>';
+
+        // Audio Effects Toggle
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.45rem; border-top: 1px solid ' + bdrColor + ';">';
+        h += '<span style="font-size: 0.76rem; font-weight: 700;">🔊 Sound FX (Web Audio)</span>';
+        h += '<button type="button" onclick="window.cricosMobileApp.toggleSound()" style="padding: 0.26rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 800; cursor: pointer; ' + (this.soundEnabled ? 'background: rgba(0, 229, 153, 0.2); border: 1px solid var(--turf-emerald); color: var(--turf-emerald);' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '">' + (this.soundEnabled ? 'ON 🔊' : 'OFF 🔇') + '</button>';
+        h += '</div>';
+        h += '</div>';
+
+        // 3. Scoring & Stance Card
+        h += '<div class="mobile-settings-card" style="background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
+        h += '<div style="font-size: 0.72rem; font-weight: 800; color: var(--amber); text-transform: uppercase; margin-bottom: 0.45rem;">🏏 Scoring &amp; Stance</div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div><span style="font-size: 0.76rem; font-weight: 700;">Batter Stance</span><div style="font-size: 0.68rem; color: ' + muted + ';">Mirrors pitch &amp; wagon wheel</div></div>';
+        h += '<div style="display: flex; gap: 0.35rem;">';
+        var isLhb = (this.currentStance === 'LHB' || (this.matchState && this.matchState.striker && this.matchState.striker.batting === 'LHB'));
+        h += '<button type="button" onclick="window.cricosMobileApp.setBatterStance(&apos;RHB&apos;)" style="padding: 0.26rem 0.55rem; border-radius: 6px; font-size: 0.72rem; font-weight: 800; cursor: pointer; ' + (!isLhb ? 'background: var(--turf-emerald); color: #04070D; border: none;' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '">RHB</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.setBatterStance(&apos;LHB&apos;)" style="padding: 0.26rem 0.55rem; border-radius: 6px; font-size: 0.72rem; font-weight: 800; cursor: pointer; ' + (isLhb ? 'background: var(--turf-emerald); color: #04070D; border: none;' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '">LHB</button>';
+        h += '</div>';
+        h += '</div>';
+        h += '</div>';
+
+        // 4. Units & Localization Card
+        h += '<div class="mobile-settings-card" style="background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.75rem;">';
+        h += '<div style="font-size: 0.72rem; font-weight: 800; color: #A855F7; text-transform: uppercase; margin-bottom: 0.45rem;">🌍 Units &amp; Currency</div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">';
+        h += '<span style="font-size: 0.76rem; font-weight: 700;">Currency</span>';
+        h += '<select onchange="window.cricosMobileApp.updateMobileSetting(&apos;currency&apos;, this.value)" style="background: ' + sheetBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; border-radius: 6px; padding: 0.22rem 0.45rem; font-size: 0.72rem;">';
+        h += '<option value="INR" selected>INR (₹)</option><option value="USD">USD ($)</option><option value="GBP">GBP (£)</option><option value="EUR">EUR (€)</option>';
+        h += '</select>';
+        h += '</div>';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<span style="font-size: 0.76rem; font-weight: 700;">Speed Units</span>';
+        h += '<select onchange="window.cricosMobileApp.updateMobileSetting(&apos;speedUnit&apos;, this.value)" style="background: ' + sheetBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; border-radius: 6px; padding: 0.22rem 0.45rem; font-size: 0.72rem;">';
+        h += '<option value="km/h" selected>km/h</option><option value="mph">mph</option>';
+        h += '</select>';
+        h += '</div>';
+        h += '</div>';
+
+        // Footer buttons
+        h += '<div style="display: flex; gap: 0.5rem;">';
+        h += '<button type="button" id="btnMobileResetSettings" onclick="window.cricosMobileApp.resetMobileSettings()" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.4); background: rgba(255, 51, 102, 0.1); color: var(--rose); font-size: 0.75rem; font-weight: 700; cursor: pointer;" data-tooltip="Reset settings to defaults">↺ Reset</button>';
+        h += '<button type="button" id="btnMobileCloseSettings" onclick="window.cricosMobileApp.closeSettingsSheet()" style="flex: 2; padding: 0.6rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-size: 0.8rem; font-weight: 800; cursor: pointer;" data-tooltip="Save and return">Done ✓</button>';
+        h += '</div>';
+
+        h += '</div>';
+        return h;
       }
 
       renderMobileSidebarDrawer() {
@@ -3701,17 +3955,25 @@
         h += '<button type="button" id="btnMobileSidebarCheckIn" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openProviderCheckInSheet();" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open Provider Arrival OTP &amp; 3-Party Match Sign-Off"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>📍</span><span>Provider Check-In &amp; Sign-Off</span></span><span style="font-family: Chakra Petch, monospace; font-size: 0.6rem; font-weight: 800; padding: 0.08rem 0.38rem; border-radius: 999px; background: rgba(0, 229, 153, 0.22);">3/3</span></button>';
         h += '</div></div>';
 
-        // Section 4: Clutter Control & Sign Out
+        // Section 4: Theme, Clean View & App Settings Controls (Co-located)
         var declutterBtnStyle = isLight
           ? 'border: 1px solid #059669; background: #ECFDF5; color: #064E3B;'
           : 'border: 1px solid rgba(0, 229, 153, 0.38); background: rgba(0, 229, 153, 0.12); color: #00E599;';
         var signOutBtnStyle = isLight
           ? 'border: 1px solid #E11D48; background: #FFF1F2; color: #881337;'
           : 'border: 1px solid rgba(255, 51, 102, 0.38); background: rgba(255, 51, 102, 0.12); color: #FF6B8B;';
+        var themeBtnStyle = isLight
+          ? 'border: 1px solid #CBD5E1; background: #FFFFFF; color: #0F172A;'
+          : 'border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #F8FAFC;';
+        var themeNameMap = { swiss: '🇨🇭 Swiss', nordic: '🌾 Nordic', stadium: '🌙 Stadium' };
 
         h += '<div class="mobile-sidebar-footer" style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid ' + dividerColor + '; display: flex; flex-direction: column; gap: 0.45rem;">';
-        h += '<button type="button" id="btnMobileSidebarDeclutterToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; ' + declutterBtnStyle + ' font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle Clean Main Area Focus Mode">' + (this.cleanFocusMode ? '✨ Clean Main View: ON' : '📊 Extended View: ON') + '</button>';
-        h += '<button type="button" id="btnMobileSidebarSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.48rem 0.65rem; border-radius: 8px; ' + signOutBtnStyle + ' font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Sign Out to Animated Hero Page">🚪 Sign Out / Switch Account</button>';
+        h += '<div id="mobileSidebarThemeAndCleanRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">';
+        h += '<button type="button" id="btnMobileSidebarThemeCycle" onclick="window.cricosMobileApp.cycleTheme()" style="padding: 0.45rem 0.5rem; border-radius: 8px; ' + themeBtnStyle + ' font-size: 0.68rem; font-weight: 700; cursor: pointer; text-align: center;" data-tooltip="Cycle Theme: Swiss, Nordic, Stadium">' + (themeNameMap[this.currentTheme || 'swiss'] || 'Theme') + '</button>';
+        h += '<button type="button" id="btnMobileSidebarDeclutterToggle" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="padding: 0.45rem 0.5rem; border-radius: 8px; ' + declutterBtnStyle + ' font-size: 0.68rem; font-weight: 800; cursor: pointer; text-align: center;" data-tooltip="Toggle Clean View (Remove obvious headers &amp; compact cards)">' + (this.cleanFocusMode ? '✨ Clean: ON' : '📊 Full: ON') + '</button>';
+        h += '</div>';
+        h += '<button type="button" id="btnMobileSidebarSettings" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openSettingsSheet();" style="width: 100%; padding: 0.46rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.12); color: #00D2FF; font-size: 0.7rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Configure all app settings in one place"><span>⚙️</span><span>App Settings</span></button>';
+        h += '<button type="button" id="btnMobileSidebarSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.46rem 0.65rem; border-radius: 8px; ' + signOutBtnStyle + ' font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Sign Out to Animated Hero Page">🚪 Sign Out / Switch Account</button>';
         h += '</div>';
 
         h += '</aside>';
@@ -3737,13 +3999,13 @@
           : 'background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);';
 
         var h = '';
-        // Sleek 1-line Clean Focus Strip replacing bulky top clutter
-        h += '<div id="mobileCleanFocusBar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; padding: 0.38rem 0.6rem; margin-bottom: 0.5rem; border-radius: 8px; background: ' + barBg + '; border: 1px solid ' + barBorder + '; color: ' + barInk + ';">';
+        // Sleek 1-line Clean Focus Strip (hidden when cleanFocusMode is active to remove obvious headers)
+        h += '<div id="mobileCleanFocusBar" style="display: ' + (this.cleanFocusMode ? 'none' : 'flex') + '; justify-content: space-between; align-items: center; gap: 0.4rem; padding: 0.38rem 0.6rem; margin-bottom: 0.5rem; border-radius: 8px; background: ' + barBg + '; border: 1px solid ' + barBorder + '; color: ' + barInk + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.38rem; min-width: 0;">';
         h += '<button type="button" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="' + menuBtnStyle + ' border-radius: 5px; padding: 0.14rem 0.4rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Open Sidebar Menu">☰ Menu</button>';
         h += '<span style="font-size: 0.68rem; font-weight: 800; color: ' + barInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + cfg.icon + ' ' + cfg.title + '</span>';
         h += '</div>';
-        h += '<button type="button" id="btnMobileToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + toggleBtnStyle + ' border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Toggle Clean View vs Extended Details">' + (this.cleanFocusMode ? '✨ Clean View' : '📊 Full View') + '</button>';
+        h += '<button type="button" id="btnMobileBannerToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + toggleBtnStyle + ' border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Toggle Clean View vs Extended Details">' + (this.cleanFocusMode ? '✨ Clean View' : '📊 Full View') + '</button>';
         h += '</div>';
 
         h += '<div class="role-exp-hud-banner" id="roleExperienceBanner" style="display: ' + (this.cleanFocusMode ? 'none' : 'flex') + ';">';
@@ -9365,6 +9627,15 @@
         }
         h += '</div></div>';
 
+        // CricOS Unified App Settings Hub Card
+        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div>';
+        h += '<div style="font-size: 0.78rem; font-weight: 800; color: #00D2FF; display: flex; align-items: center; gap: 0.35rem;"><span>⚙️</span><span>CricOS App Settings</span></div>';
+        h += '<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Theme, Clean View, Audio, Stance &amp; Units</div>';
+        h += '</div>';
+        h += '<button type="button" id="btnMobileProfileSettings" onclick="window.cricosMobileApp.openSettingsSheet()" style="padding: 0.35rem 0.75rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.72rem; font-weight: 800; cursor: pointer;" data-tooltip="Open App Settings">Configure →</button>';
+        h += '</div>';
+
         // Profile Identity Card with Avatar Upload
         h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.75rem;">';
@@ -9632,10 +9903,32 @@
         h += '<span id="mobileHeaderBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(25) + '</span>';
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">Cric<span style="color: #00E599;">OS</span></span>';
         h += '</div>';
-        h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
-        h += '<button type="button" id="btnMobileCommandSearch" onclick="window.cricosMobileApp.openCommandPaletteSheet()" style="background: rgba(0, 210, 255, 0.12); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35); padding: 0.2rem 0.45rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Open Mobile Command Palette & Omnisearch (⌘K)" aria-label="Open Command Palette">🔍 ⌘K</button>';
-        h += '<button type="button" id="btnMobileSoundToggle" onclick="window.cricosMobileApp.toggleSound()" style="background: rgba(255,255,255,0.06); color: ' + (this.soundEnabled ? '#00E599' : '#64748b') + '; border: 1px solid rgba(255,255,255,0.12); padding: 0.2rem 0.45rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;" data-tooltip="Toggle Web Audio synthesized sound FX">' + (this.soundEnabled ? '🔊' : '🔇') + '</button>';
-        h += '<button type="button" id="btnMobilePersonaSwitch" onclick="window.cricosMobileApp.openPersonaSheet()" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch persona sheet">' + this.profile.persona + ' ▾</button>';
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var themeIcon = (activeTheme === 'nordic' ? '🌾' : (activeTheme === 'stadium' ? '🌙' : '🇨🇭'));
+        var cleanIcon = this.cleanFocusMode ? '✨' : '📊';
+        var personaIconMap = {
+          CAPTAIN: '🏏',
+          PLAYER: '👤',
+          SCORER: '⚡',
+          FAN: '🎪',
+          UMPIRE: '⚖️',
+          ORGANISER: '🏆',
+          TURF_PROVIDER: '🏟️',
+          ADMIN: '🛡️'
+        };
+        var currentPersonaIcon = personaIconMap[this.profile.persona] || '👤';
+
+        h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+        // Co-located Theme, Clean View & App Settings Cluster
+        h += '<div id="mobileThemeAndCleanCluster" style="display: flex; align-items: center; gap: 0.25rem;">';
+        h += '<button type="button" id="btnMobileHeaderThemeCycle" onclick="window.cricosMobileApp.cycleTheme()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;" data-tooltip="Cycle Theme: Swiss 🇨🇭, Nordic 🌾, Stadium 🌙" aria-label="Cycle Design Theme"><span id="mobileHeaderThemeIcon">' + themeIcon + '</span></button>';
+        h += '<button type="button" id="btnMobileToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + (this.cleanFocusMode ? 'background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.45); color: #00E599;' : 'background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #94A3B8;') + ' border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;" data-tooltip="Clean View (Obvious headers hidden, icons only, compact cards) — Tap to toggle" aria-label="Toggle Clean View"><span id="mobileCleanViewToggleIcon">' + cleanIcon + '</span></button>';
+        h += '<button type="button" id="btnMobileHeaderSettings" onclick="window.cricosMobileApp.openSettingsSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;" data-tooltip="App Settings — Customize theme, clean view, audio, stance &amp; units" aria-label="Open App Settings"><span>⚙️</span></button>';
+        h += '</div>';
+
+        h += '<button type="button" id="btnMobileCommandSearch" onclick="window.cricosMobileApp.openCommandPaletteSheet()" style="background: rgba(0, 210, 255, 0.12); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35); padding: 0.2rem 0.4rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Open Mobile Command Palette &amp; Omnisearch (⌘K)" aria-label="Open Command Palette">🔍 ⌘K</button>';
+        h += '<button type="button" id="btnMobileSoundToggle" onclick="window.cricosMobileApp.toggleSound()" style="background: rgba(255,255,255,0.06); color: ' + (this.soundEnabled ? '#00E599' : '#64748b') + '; border: 1px solid rgba(255,255,255,0.12); padding: 0.2rem 0.35rem; border-radius: 6px; font-size: 0.72rem; cursor: pointer;" data-tooltip="Toggle Web Audio synthesized sound FX">' + (this.soundEnabled ? '🔊' : '🔇') + '</button>';
+        h += '<button type="button" id="btnMobilePersonaSwitch" onclick="window.cricosMobileApp.openPersonaSheet()" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.18rem 0.4rem; border-radius: 6px; font-size: 0.65rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Switch persona sheet"><span>' + currentPersonaIcon + '</span><span class="clean-view-hide-label">' + this.profile.persona + '</span><span>▾</span></button>';
         h += '</div></header>';
 
         // Dedicated Toast Container
@@ -9769,6 +10062,11 @@
         // Wagon Wheel Shot Direction Picker Sheet (slides in from bottom when pad number is chosen)
         if (this.wagonPickerOpen) {
           h += this.renderWagonPickerSheet();
+        }
+
+        // Mobile App Settings Bottom Sheet
+        if (this.settingsSheetOpen) {
+          h += this.renderMobileSettingsSheet();
         }
 
         // Slide-Out Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios & Clean Focus Toggle)

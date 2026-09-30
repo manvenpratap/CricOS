@@ -809,6 +809,43 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(mobileHtml.includes('id="mobileHeroAuthOverlay"'), 'Mobile Hero overlay must exist');
       assert.ok(mobileHtml.includes('mobileHeroAuthOverlay'), 'Mobile contrast enforcer must exclude #mobileHeroAuthOverlay from daylight bleaching');
     });
+
+    it('9. Co-located Themes, Clean View & Unified App Settings Hub across Desktop & Mobile', () => {
+      // Desktop checks
+      assert.ok(dashboardHtml.includes('id="themeAndCleanViewCluster"'), 'Desktop must co-locate Theme & Clean View in #themeAndCleanViewCluster');
+      assert.ok(dashboardHtml.includes('id="btnDesignThemeSwitcher"'), 'Desktop must feature #btnDesignThemeSwitcher');
+      assert.ok(dashboardHtml.includes('id="btnToggleMainAreaDeclutter"'), 'Desktop must feature #btnToggleMainAreaDeclutter');
+      assert.ok(dashboardHtml.includes('id="btnAppSettings"'), 'Desktop must feature #btnAppSettings');
+      assert.ok(dashboardHtml.includes('id="modalAppSettings"'), 'Desktop must include #modalAppSettings hub');
+      assert.ok(dashboardHtml.includes('tabBtn_appearance'), 'App settings must include Appearance category');
+      assert.ok(dashboardHtml.includes('tabBtn_audio'), 'App settings must include Broadcast & Audio category');
+      assert.ok(dashboardHtml.includes('tabBtn_scoring'), 'App settings must include Scoring & 3D Radar category');
+      assert.ok(dashboardHtml.includes('tabBtn_locale'), 'App settings must include Locale & Units category');
+      assert.ok(dashboardHtml.includes('tabBtn_system'), 'App settings must include Alerts & Reset category');
+      assert.ok(dashboardHtml.includes('window.cricosAppSettings'), 'Desktop must expose window.cricosAppSettings');
+      assert.ok(dashboardHtml.includes('openAppSettingsModal'), 'Desktop must expose openAppSettingsModal()');
+
+      // Desktop Ultra-Clean View CSS invariants
+      assert.ok(dashboardSrc.includes('body[data-clean-view="true"] #workspaceCleanFocusBar'), 'Clean view must suppress #workspaceCleanFocusBar');
+      assert.ok(dashboardSrc.includes('body[data-clean-view="true"] .clean-view-hide-label'), 'Clean view must suppress .clean-view-hide-label');
+      assert.ok(dashboardSrc.includes('body[data-clean-view="true"] .card'), 'Clean view must apply compact card padding');
+
+      // Mobile checks
+      assert.ok(mobileHtml.includes('id="mobileThemeAndCleanCluster"'), 'Mobile header must co-locate Theme, Clean View & Settings in #mobileThemeAndCleanCluster');
+      assert.ok(mobileHtml.includes('id="btnMobileHeaderThemeCycle"'), 'Mobile header must feature #btnMobileHeaderThemeCycle');
+      assert.ok(mobileHtml.includes('id="btnMobileToggleDeclutter"'), 'Mobile header must feature #btnMobileToggleDeclutter');
+      assert.ok(mobileHtml.includes('id="btnMobileHeaderSettings"'), 'Mobile header must feature #btnMobileHeaderSettings');
+      assert.ok(mobileHtml.includes('id="mobileSidebarThemeAndCleanRow"'), 'Mobile sidebar drawer must co-locate theme and clean view');
+      assert.ok(mobileSrc.includes('renderMobileSettingsSheet()'), 'Mobile view must include renderMobileSettingsSheet()');
+      assert.ok(mobileSrc.includes('openSettingsSheet()'), 'Mobile app must include openSettingsSheet()');
+      assert.ok(mobileSrc.includes('closeSettingsSheet()'), 'Mobile app must include closeSettingsSheet()');
+
+      // Mobile Ultra-Clean View CSS invariants
+      assert.ok(mobileSrc.includes('body[data-clean-view="true"] #mobileCleanFocusBar'), 'Mobile clean view must suppress #mobileCleanFocusBar');
+      assert.ok(mobileSrc.includes('body[data-clean-view="true"] #roleExperienceBanner'), 'Mobile clean view must suppress #roleExperienceBanner');
+      assert.ok(mobileSrc.includes('body[data-clean-view="true"] .clean-view-hide-label'), 'Mobile clean view must suppress .clean-view-hide-label');
+      assert.ok(mobileSrc.includes('body[data-clean-view="true"] .mobile-card'), 'Mobile clean view must apply compact card padding');
+    });
   });
 });
 

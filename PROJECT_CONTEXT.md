@@ -1,14 +1,26 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 11:36:00
-**Version:** 1.0.0-phase2ce (Unified CricOS Brand Logo Crest + Pro Cricket Gear Store Product Images + Broadcast Commentary Studio & 8-Preset Tactical Field Planner)  
+**Last Updated:** 2026-09-30 21:15:00
+**Version:** 1.0.0-phase2cf (Ultra-Clean View Mode with Header Removal & Compact Cards + Co-located Theme/Clean View/Settings Cluster + Unified App Settings Hub on Desktop & Mobile)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CE Completed — Unified CricOS Brand Identity & Telemetry Shield Logo Crest (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/mobile/android/app/src/main/res/drawable/ic_launcher_foreground.xml`, `apps/mobile/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`, `tests/domain-commerce-tournaments-and-marketplace.test.ts`, `tests/test_55_teams_roster_modals.py`):
+- **Active Phase**: Phase 2CF Completed — Ultra-Clean View Mode & Unified App Settings Hub (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Ultra-Clean View Mode (`body[data-clean-view="true"]`)**:
+    - **Header Removal & Declutter**: Completely suppresses redundant obvious header strips (`#workspaceCleanFocusBar`, `#mobileCleanFocusBar`, `#roleExperienceBanner`, `.role-exp-hud-banner`, `.mobile-obvious-header`, `.section-subtitle`, `.card-subtitle`, `.comm-tactical-sub`, and `[data-clean-hide="true"]`), expanding data viewport area for match actions.
+    - **Icon-Driven Controls**: Automatically hides `.clean-view-hide-label` text labels across top navigation, header actions, and persona switcher pills while preserving accessible icons and rich `data-tooltip` contextual tooltips.
+    - **Compact Cards & High Density**: Applies compact padding (`0.65rem 0.85rem` on desktop cards, `.mobile-card`, `.striker-card`, `.bowler-card`, `.mobile-gear-product-card`, `.feed-item`, `.stat-tile`, `.metric-card`), smaller grid gaps (`0.65rem`), and streamlined hero banners.
+  - **2. Co-located Themes, Clean View & App Settings Controls**:
+    - **Desktop Topbar**: Co-locates Design Theme Switcher (`#btnDesignThemeSwitcher`), Clean View Toggle (`#btnToggleMainAreaDeclutter`), and App Settings Hub launcher (`#btnAppSettings`) into unified `#themeAndCleanViewCluster`.
+    - **Mobile Header & Drawer**: Co-locates Design Theme Cycle (`#btnMobileHeaderThemeCycle`), Clean View Toggle (`#btnMobileToggleDeclutter`), and App Settings launcher (`#btnMobileHeaderSettings`) into `#mobileThemeAndCleanCluster` in the top viewport bar and `#mobileSidebarThemeAndCleanRow` in the navigation drawer.
+  - **3. Unified App Settings Hub (`#modalAppSettings` & `#mobileSettingsSheet`)**:
+    - **Desktop Modal (`#modalAppSettings`)**: 5-category tabbed hub (`🎨 Appearance & Theme`, `🎙️ Broadcast & Audio`, `🏏 Scoring & 3D Radar`, `🌍 Locale & Units`, `🔔 Alerts & Reset`) enabling users to configure themes (Swiss, Nordic, Stadium), Clean View mode, Outdoor high-contrast mode, Commentator narrative voice (Harsha, Ravi, Nasser), Web Audio sound FX, Web Speech TTS commentary readout with rate slider, default batter stance (RHB/LHB), 3D canvas visual modes (Wagon, Hawkeye, Radar), units (INR/USD/GBP/EUR, km/h vs mph), and export configuration JSON or reset factory defaults.
+    - **Mobile Bottom Sheet (`#mobileSettingsSheet`)**: Slide-up sheet with instant interactive chips for Themes, Clean View switch, Commentator dropdown, Sound toggle, RHB/LHB stance switcher, Currency & Speed units, and Reset/Done actions.
+    - **Persistent Settings Store**: Centralized in `localStorage` under `cricos_app_settings_v1` with automatic synchronization across desktop and mobile controllers (`window.cricosAppSettings`, `getAppSettings`, `updateAppSetting`, `updateMobileSetting`).
+- **Preceding Phase**: Phase 2CE Completed — Unified CricOS Brand Identity & Telemetry Shield Logo Crest (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/mobile/android/app/src/main/res/drawable/ic_launcher_foreground.xml`, `apps/mobile/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`, `tests/domain-commerce-tournaments-and-marketplace.test.ts`, `tests/test_55_teams_roster_modals.py`):
   - **1. Designed Official "CricOS Telemetry Shield & Trajectory Crest" (`svg.cricos-brand-svg` / `window.getCricOSBrandLogoSvg`)**:
     - Combines the **Obsidian Nocturne Stadium Shield (`#06101E` with `#00E599` ➔ `#00D2FF` bevel border)**, **30-Yard Telemetry Radar Ring**, **Three Illuminated Emerald Wickets & Bails**, **Diagonal English Willow Blade**, and **Sweeping Parabolic Hawk-Eye Trajectory Arc** culminating in a crimson-gold seam-stitched cricket ball (`#EF4444` / `#FDE68A`).
   - **2. Deployed Consistently Across Web, Mobile, Favicons & Android 15 Adaptive Launcher Icon**:
