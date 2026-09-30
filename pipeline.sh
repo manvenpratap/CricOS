@@ -165,6 +165,12 @@ EOF
             nohup node apps/api/dist/main.js >/tmp/cricos-api.log 2>&1 &
             echo "✓ Reloaded live API server on http://localhost:3000"
         fi
+        if lsof -ti :8080 >/dev/null 2>&1 && [ -f apps/api/dist/main.js ]; then
+            kill $(lsof -ti :8080) 2>/dev/null || true
+            sleep 0.4
+            PORT=8080 nohup node apps/api/dist/main.js >/tmp/cricos-api-8080.log 2>&1 &
+            echo "✓ Reloaded live API server on http://localhost:8080"
+        fi
         ;;
     apk|android|build:apk)
         echo "==> Building Android Native APK..."

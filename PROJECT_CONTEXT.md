@@ -1,14 +1,19 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 08:00:00
-**Version:** 1.0.0-phase2by (Test Suite Re-Consolidation across 5 Domain Suites, 4 Baseline Suites & 4 Canonical Playwright E2E Suites)  
+**Last Updated:** 2026-09-30 08:50:00
+**Version:** 1.0.0-phase2bz (Provider Check-In & 3-Party Match Sign-Off Window UI Fix & Enhancement across Web & Mobile/APK)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BY Completed — Test Suite Re-Consolidation (`tests/domain-*.test.ts`, `tests/test_54_*.py`..`tests/test_57_*.py`, `tests/README.md`):
+- **Active Phase**: Phase 2BZ Completed — Provider Check-In & 3-Party Match Sign-Off Window UI Fix & Enhancement (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `scripts/package-distribution.mjs`, `pipeline.sh`, `tests/domain-commerce-tournaments-and-marketplace.test.ts`, `tests/test_55_teams_roster_modals.py`):
+  - **Root Cause & Global CSS Fix**: Fixed global `input { width: 100%; }` rule in `apps/api/src/ui/dashboard.ts` and `apps/api/src/ui/mobile-view.ts` to `input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"])` and enforced `input[type="checkbox"], input[type="radio"] { width: 18px !important; height: 18px !important; min-width: 18px !important; flex: 0 0 18px !important; }` so checkboxes inside flex labels never expand to 50% row width or float in the center of cards.
+  - **Desktop `#modalCheckIn` Redesign & Enhancement**: Added `#checkinVenueContextStrip` (Active Venue `🏟️ Chinnaswamy Turf A`, Geofence Telemetry `🟢 12.97°N (±4m)`, 5-Account Escrow Pool `₹12,500 Locked`), Step 1 official role PIN selector chips (`#btnCheckinPinUmpire` `4821`, `#btnCheckinPinScorer` `7390`, `#btnCheckinPinGroundsman` `9104` via `selectCheckinRolePin()`), `verifyProviderArrivalOtp()`, facility readiness micro-checklist, and Step 2 theme-aware 3-party stakeholder sign-off cards (`.checkin-stakeholder-card`: `#signoffRow_HOME`, `#signoffRow_AWAY`, `#signoffRow_UMPIRE`) with live `3 / 3 SIGNED` quorum counter (`#checkinSignatureCountBadge`) and Automated Escrow Split summary (`#checkinEscrowSummaryStrip`).
+  - **Mobile & Android APK Provider Check-In Sheet (`#mobileCheckInSheetRoot`)**: Added `#btnMobileSidebarCheckIn` in the mobile navigation drawer and `openProviderCheckInSheet()`, `selectMobileCheckinRolePin()`, `verifyMobileProviderArrival()`, `updateMobileSignoffState()`, and `completeMobileDigitalSignOff()` in `StandaloneMobileApp`.
+  - **Live API Probe Guard (`safeFetchProbeJson`)**: Hardened `runProbe()` in `apps/api/src/ui/dashboard.ts` with `safeFetchProbeJson()` so static-file servers returning HTML fall back to deterministic JSON payloads instead of throwing `Unexpected token '<', "<!DOCTYPE "... is not valid JSON`.
+- **Preceding Phase**: Phase 2BY Completed — Test Suite Re-Consolidation (`tests/domain-*.test.ts`, `tests/test_54_*.py`..`tests/test_57_*.py`, `tests/README.md`):
   - Re-consolidated the 15 sequential Playwright E2E suites (`test_58` through `test_72`) into:
     - **5 High-Cohesion TypeScript Domain Suites (`194` assertions running in `~400ms`)**: `domain-scoring-and-match-ops.test.ts`, `domain-commerce-tournaments-and-marketplace.test.ts`, `domain-identity-personas-and-themes.test.ts`, `domain-mobile-journeys-and-native.test.ts`, and `domain-3d-stadium-and-visual-graphics.test.ts`.
     - **4 Canonical Playwright Visual/E2E Suites (`9` end-to-end Chromium verification scenarios)**: `test_54_playwright_theme_verification.py`, `test_55_teams_roster_modals.py`, `test_56_3d_stadium_ui_fix.py`, and `test_57_ui_ux_contrast_and_accessibility.py`.

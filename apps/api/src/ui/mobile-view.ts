@@ -42,6 +42,16 @@ export function getMobileAppHtml(): string {
     input, select, textarea {
       font-size: 16px;
     }
+    input[type="checkbox"], input[type="radio"] {
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      flex: 0 0 18px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      accent-color: #00E599;
+      cursor: pointer;
+    }
     .sheet-drag-handle {
       width: 36px;
       height: 4px;
@@ -602,6 +612,37 @@ export function getMobileAppHtml(): string {
       border-color: #00E599 !important;
       outline: none !important;
       box-shadow: 0 0 12px rgba(0, 229, 153, 0.35) !important;
+    }
+
+    .mobile-checkin-stakeholder {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.55rem;
+      padding: 0.55rem 0.65rem;
+      border-radius: 9px;
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(0, 229, 153, 0.32);
+      cursor: pointer;
+    }
+    .mobile-checkin-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+    .mobile-checkin-sub {
+      font-size: 0.62rem;
+      color: #94A3B8;
+    }
+    [data-theme="light"] .mobile-checkin-stakeholder {
+      background: #F8FAFC !important;
+      border-color: rgba(16, 185, 129, 0.42) !important;
+    }
+    [data-theme="light"] .mobile-checkin-title {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .mobile-checkin-sub {
+      color: #475569 !important;
     }
     body[data-theme="swiss"] input:focus,
     body[data-theme="swiss"] select:focus,
@@ -3613,6 +3654,7 @@ export function getMobileAppHtml(): string {
         h += '<button type="button" data-screen="MATCHES" data-subtab="3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
         h += '<button type="button" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
         h += '<button type="button" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
+        h += '<button type="button" id="btnMobileSidebarCheckIn" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openProviderCheckInSheet();" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open Provider Arrival OTP &amp; 3-Party Match Sign-Off"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>📍</span><span>Provider Check-In &amp; Sign-Off</span></span><span style="font-family: Chakra Petch, monospace; font-size: 0.6rem; font-weight: 800; padding: 0.08rem 0.38rem; border-radius: 999px; background: rgba(0, 229, 153, 0.22);">3/3</span></button>';
         h += '</div></div>';
 
         // Section 4: Clutter Control & Sign Out
@@ -6071,6 +6113,140 @@ export function getMobileAppHtml(): string {
             }
           }
         }, 60);
+      }
+
+      openProviderCheckInSheet() {
+        var html = '<div id="mobileCheckInSheetRoot" style="display: flex; flex-direction: column; gap: 0.85rem;">' +
+          // Venue & Escrow Telemetry Ribbon
+          '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; padding: 0.55rem 0.65rem; border-radius: 10px; background: rgba(15, 23, 42, 0.78); border: 1px solid rgba(255,255,255,0.08);">' +
+            '<div><div style="font-size: 0.58rem; color: #94A3B8; font-weight: 700; text-transform: uppercase;">Venue</div><div style="font-size: 0.72rem; font-weight: 800; color: #F8FAFC;">🏟️ Turf A</div></div>' +
+            '<div><div style="font-size: 0.58rem; color: #94A3B8; font-weight: 700; text-transform: uppercase;">Geofence</div><div style="font-size: 0.72rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">🟢 ±4m Lock</div></div>' +
+            '<div><div style="font-size: 0.58rem; color: #94A3B8; font-weight: 700; text-transform: uppercase;">Escrow Pool</div><div id="mobileCheckinEscrowBadge" style="font-size: 0.72rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">₹12,500</div></div>' +
+          '</div>' +
+
+          // Step 1: Provider Arrival OTP
+          '<div style="padding: 0.85rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 210, 255, 0.25);">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">' +
+              '<div style="font-size: 0.72rem; font-weight: 800; color: #00D2FF; letter-spacing: 0.04em;">STEP 1: PROVIDER ARRIVAL OTP</div>' +
+              '<span id="mobileCheckinOtpStatusBadge" style="font-size: 0.62rem; font-weight: 800; padding: 0.14rem 0.45rem; border-radius: 999px; background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">✓ PIN Ready</span>' +
+            '</div>' +
+            '<p style="font-size: 0.72rem; color: #94A3B8; margin: 0 0 0.55rem 0;">Select arriving match official or enter 4-digit venue PIN.</p>' +
+            '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem;">' +
+              '<button type="button" id="btnMobilePin_UMPIRE" onclick="window.cricosMobileApp.selectMobileCheckinRolePin(&apos;UMPIRE&apos;, &apos;4821&apos;)" style="flex: 1; padding: 0.26rem 0.35rem; border-radius: 6px; font-size: 0.65rem; font-weight: 800; border: 1px solid rgba(0, 229, 153, 0.45); background: rgba(0, 229, 153, 0.15); color: #00E599; cursor: pointer;" data-tooltip="Select Umpire PIN 4821">👨‍⚖️ 4821</button>' +
+              '<button type="button" id="btnMobilePin_SCORER" onclick="window.cricosMobileApp.selectMobileCheckinRolePin(&apos;SCORER&apos;, &apos;7390&apos;)" style="flex: 1; padding: 0.26rem 0.35rem; border-radius: 6px; font-size: 0.65rem; font-weight: 700; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); color: #CBD5E1; cursor: pointer;" data-tooltip="Select Scorer PIN 7390">📝 7390</button>' +
+              '<button type="button" id="btnMobilePin_CURATOR" onclick="window.cricosMobileApp.selectMobileCheckinRolePin(&apos;CURATOR&apos;, &apos;9104&apos;)" style="flex: 1; padding: 0.26rem 0.35rem; border-radius: 6px; font-size: 0.65rem; font-weight: 700; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); color: #CBD5E1; cursor: pointer;" data-tooltip="Select Curator PIN 9104">🌿 9104</button>' +
+            '</div>' +
+            '<div style="display: grid; grid-template-columns: 112px 1fr; gap: 0.5rem;">' +
+              '<input type="text" id="mobileProviderOtpInput" maxlength="6" value="4821" aria-label="Mobile Provider Arrival OTP" style="width: 100%; text-align: center; font-family: Chakra Petch, monospace; font-size: 1.15rem; font-weight: 800; letter-spacing: 0.22rem; padding: 0.45rem 0.35rem; border-radius: 8px; background: rgba(4, 9, 20, 0.8); border: 1px solid rgba(0, 229, 153, 0.45); color: #00E599;" />' +
+              '<button type="button" id="btnMobileVerifyArrival" onclick="window.cricosMobileApp.verifyMobileProviderArrival()" style="width: 100%; border-radius: 8px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #040914; font-weight: 800; font-size: 0.8rem; cursor: pointer;" data-tooltip="Verify provider arrival OTP">✓ Verify Arrival</button>' +
+            '</div>' +
+          '</div>' +
+
+          // Step 2: 3-Party Digital Match Sign-Off
+          '<div style="padding: 0.85rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 229, 153, 0.25);">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">' +
+              '<div style="font-size: 0.72rem; font-weight: 800; color: #00E599; letter-spacing: 0.04em;">STEP 2: OFFICIAL 3-PARTY SIGN-OFF</div>' +
+              '<span id="mobileCheckinSignCountBadge" style="font-size: 0.62rem; font-weight: 800; font-family: Chakra Petch, monospace; padding: 0.14rem 0.45rem; border-radius: 999px; background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">3 / 3 SIGNED</span>' +
+            '</div>' +
+            '<p style="font-size: 0.72rem; color: #94A3B8; margin: 0 0 0.6rem 0;">All 3 stakeholders digitally sign to unlock ₹12,500 escrow payouts.</p>' +
+            '<div style="display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 0.75rem;">' +
+              '<label for="chkMobileSignHome" id="mobileSignoffRow_HOME" class="mobile-checkin-stakeholder">' +
+                '<div style="display: flex; align-items: center; gap: 0.55rem; min-width: 0;">' +
+                  '<input type="checkbox" id="chkMobileSignHome" checked onchange="window.cricosMobileApp.updateMobileSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />' +
+                  '<div style="min-width: 0;"><div class="mobile-checkin-title">Home Captain (Virat Sharma)</div><div class="mobile-checkin-sub">Bengaluru Strikers XI</div></div>' +
+                '</div>' +
+                '<span id="mobileSignBadge_HOME" style="font-size: 0.6rem; font-weight: 800; color: #059669; background: rgba(0, 229, 153, 0.15); border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.15rem 0.42rem; border-radius: 5px; white-space: nowrap;">✓ Signed</span>' +
+              '</label>' +
+              '<label for="chkMobileSignAway" id="mobileSignoffRow_AWAY" class="mobile-checkin-stakeholder">' +
+                '<div style="display: flex; align-items: center; gap: 0.55rem; min-width: 0;">' +
+                  '<input type="checkbox" id="chkMobileSignAway" checked onchange="window.cricosMobileApp.updateMobileSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />' +
+                  '<div style="min-width: 0;"><div class="mobile-checkin-title">Away Captain (David Warner)</div><div class="mobile-checkin-sub">Mumbai Titans XI</div></div>' +
+                '</div>' +
+                '<span id="mobileSignBadge_AWAY" style="font-size: 0.6rem; font-weight: 800; color: #059669; background: rgba(0, 229, 153, 0.15); border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.15rem 0.42rem; border-radius: 5px; white-space: nowrap;">✓ Signed</span>' +
+              '</label>' +
+              '<label for="chkMobileSignUmpire" id="mobileSignoffRow_UMPIRE" class="mobile-checkin-stakeholder">' +
+                '<div style="display: flex; align-items: center; gap: 0.55rem; min-width: 0;">' +
+                  '<input type="checkbox" id="chkMobileSignUmpire" checked onchange="window.cricosMobileApp.updateMobileSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />' +
+                  '<div style="min-width: 0;"><div class="mobile-checkin-title">Lead Umpire (Rajesh Sharma)</div><div class="mobile-checkin-sub">MCC Level-2 Certified Official</div></div>' +
+                '</div>' +
+                '<span id="mobileSignBadge_UMPIRE" style="font-size: 0.6rem; font-weight: 800; color: #059669; background: rgba(0, 229, 153, 0.15); border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.15rem 0.42rem; border-radius: 5px; white-space: nowrap;">✓ Signed</span>' +
+              '</label>' +
+            '</div>' +
+            '<button type="button" id="btnMobileCompleteSignOff" onclick="window.cricosMobileApp.completeMobileDigitalSignOff()" style="width: 100%; padding: 0.65rem; border-radius: 9px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #040914; font-weight: 800; font-size: 0.82rem; cursor: pointer;" data-tooltip="Complete 3-party digital sign-off">✍ Complete Digital Sign-Off</button>' +
+          '</div>' +
+        '</div>';
+
+        var self = this;
+        this.openActionSheet({
+          title: '📍 Provider Check-In & Match Sign-Off',
+          bodyHtml: html,
+          confirmText: 'Close Check-In Desk ✓',
+          confirmStyle: 'background: linear-gradient(135deg, #00D2FF, #00E599); color: #04070D;',
+          onConfirm: function() {
+            self.closeActionSheet();
+          }
+        });
+      }
+
+      selectMobileCheckinRolePin(role, pin) {
+        var inp = document.getElementById('mobileProviderOtpInput');
+        if (inp) inp.value = pin;
+        var badge = document.getElementById('mobileCheckinOtpStatusBadge');
+        if (badge) badge.textContent = 'PIN ' + pin;
+        var roles = ['UMPIRE', 'SCORER', 'CURATOR'];
+        for (var i = 0; i < roles.length; i++) {
+          var btn = document.getElementById('btnMobilePin_' + roles[i]);
+          if (!btn) continue;
+          if (roles[i] === role) {
+            btn.style.border = '1px solid rgba(0, 229, 153, 0.55)';
+            btn.style.background = 'rgba(0, 229, 153, 0.16)';
+            btn.style.color = '#059669';
+          } else {
+            btn.style.border = '1px solid rgba(148, 163, 184, 0.25)';
+            btn.style.background = 'rgba(148, 163, 184, 0.08)';
+            btn.style.color = '#64748B';
+          }
+        }
+      }
+
+      verifyMobileProviderArrival() {
+        var inp = document.getElementById('mobileProviderOtpInput');
+        var pin = inp ? inp.value.trim() : '4821';
+        var badge = document.getElementById('mobileCheckinOtpStatusBadge');
+        if (badge) badge.textContent = '✓ Verified (' + pin + ')';
+        var btn = document.getElementById('btnMobileVerifyArrival');
+        if (btn) btn.textContent = '✓ Arrival Locked (' + pin + ')';
+        this.showToast('✓ Provider Check-In Verified via OTP ' + pin + '!');
+      }
+
+      updateMobileSignoffState() {
+        var ids = [['chkMobileSignHome', 'mobileSignBadge_HOME'], ['chkMobileSignAway', 'mobileSignBadge_AWAY'], ['chkMobileSignUmpire', 'mobileSignBadge_UMPIRE']];
+        var cnt = 0;
+        for (var i = 0; i < ids.length; i++) {
+          var c = document.getElementById(ids[i][0]);
+          var b = document.getElementById(ids[i][1]);
+          var ok = Boolean(c && c.checked);
+          if (ok) cnt++;
+          if (b) {
+            b.textContent = ok ? '✓ Signed' : '⏳ Pending';
+            b.style.color = ok ? '#00E599' : '#F59E0B';
+          }
+        }
+        var sb = document.getElementById('mobileCheckinSignCountBadge');
+        if (sb) sb.textContent = cnt + ' / 3 SIGNED';
+      }
+
+      completeMobileDigitalSignOff() {
+        var c1 = document.getElementById('chkMobileSignHome');
+        var c2 = document.getElementById('chkMobileSignAway');
+        var c3 = document.getElementById('chkMobileSignUmpire');
+        if ((c1 && !c1.checked) || (c2 && !c2.checked) || (c3 && !c3.checked)) {
+          this.showToast('⚠ All 3 stakeholders must sign to unlock escrow.');
+          return;
+        }
+        var btn = document.getElementById('btnMobileCompleteSignOff');
+        if (btn) btn.textContent = '✓ 3-Party Sign-Off Complete • ₹12,500 Disbursed';
+        this.showToast('✍ 3-Party Sign-Off Complete! Escrow Payouts Unlocked.');
       }
 
       open3DPlayerCardSheet(playerName) {

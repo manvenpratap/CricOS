@@ -194,6 +194,55 @@ async def test_flagship_studios_weather_and_gear_store():
         }""")
         assert weather_collapsed, "Mobile 5-hour weather forecast toggle handler must exist"
 
+        # 3. Verify Desktop #modalCheckIn UI & Checkbox Geometry Fix
+        checkin_desktop = await page.evaluate("""() => {
+            const modal = document.getElementById('modalCheckIn');
+            if (modal) modal.classList.add('active');
+            const chk = document.getElementById('chkSignoffHomeCaptain');
+            const row = document.getElementById('signoffRow_HOME');
+            const chkRect = chk ? chk.getBoundingClientRect() : { width: 999, left: 0 };
+            const rowRect = row ? row.getBoundingClientRect() : { left: 0 };
+            window.selectCheckinRolePin && window.selectCheckinRolePin('SCORER', '7390', 'Ananya Verma (Official Scorer)');
+            window.verifyProviderArrivalOtp && window.verifyProviderArrivalOtp();
+            window.updateCheckinSignoffState && window.updateCheckinSignoffState();
+            return {
+                modalVisible: modal && window.getComputedStyle(modal).display !== 'none',
+                checkboxWidth: Math.round(chkRect.width),
+                checkboxLeftOffsetFromRow: Math.round(chkRect.left - rowRect.left),
+                otpVal: document.getElementById('providerOtpInput')?.value,
+                badgeCountText: document.getElementById('checkinSignatureCountBadge')?.textContent?.trim(),
+                hasVenueRibbon: !!document.getElementById('checkinVenueContextStrip')
+            };
+        }""")
+        assert checkin_desktop["modalVisible"], "#modalCheckIn must become visible when active"
+        assert checkin_desktop["checkboxWidth"] <= 24, f"Checkbox width must be <= 24px (fixed 18px), got {checkin_desktop['checkboxWidth']}px"
+        assert checkin_desktop["checkboxLeftOffsetFromRow"] <= 32, f"Checkbox must be left-aligned inside stakeholder card, got offset {checkin_desktop['checkboxLeftOffsetFromRow']}px"
+        assert checkin_desktop["otpVal"] == "7390", "Selecting official role PIN chip must populate #providerOtpInput"
+        assert checkin_desktop["badgeCountText"] == "3 / 3 SIGNED", f"Expected 3 / 3 SIGNED badge, got {checkin_desktop['badgeCountText']}"
+        assert checkin_desktop["hasVenueRibbon"], "#checkinVenueContextStrip must exist in #modalCheckIn"
+        await save_screenshot_async(page, "checkin_modal_desktop.png")
+
+        # 4. Verify Mobile Provider Check-In & Sign-Off Sheet (#mobileCheckInSheetRoot)
+        checkin_mobile = await m_page.evaluate("""() => {
+            window.cricosMobileApp?.openProviderCheckInSheet();
+            const sheet = document.getElementById('mobileCheckInSheetRoot');
+            const chk = document.getElementById('chkMobileSignHome');
+            const chkRect = chk ? chk.getBoundingClientRect() : { width: 999 };
+            window.cricosMobileApp?.selectMobileCheckinRolePin('CURATOR', '9104');
+            window.cricosMobileApp?.verifyMobileProviderArrival();
+            return {
+                sheetVisible: !!sheet && window.getComputedStyle(sheet).display !== 'none',
+                checkboxWidth: Math.round(chkRect.width),
+                otpVal: document.getElementById('mobileProviderOtpInput')?.value,
+                arrivalText: document.getElementById('mobileCheckinOtpStatusBadge')?.textContent?.trim()
+            };
+        }""")
+        assert checkin_mobile["sheetVisible"], "#mobileCheckInSheetRoot must open on mobile"
+        assert checkin_mobile["checkboxWidth"] <= 24, f"Mobile checkbox width must be <= 24px, got {checkin_mobile['checkboxWidth']}px"
+        assert checkin_mobile["otpVal"] == "9104", "Mobile PIN preset must populate #mobileProviderOtpInput"
+        assert "Verified" in (checkin_mobile["arrivalText"] or ""), "Mobile arrival status must update to Verified"
+        await save_screenshot_async(m_page, "checkin_sheet_mobile.png")
+
         assert_no_critical_errors(page)
         await browser.close()
 
@@ -201,5 +250,6 @@ async def test_flagship_studios_weather_and_gear_store():
 if __name__ == "__main__":
     asyncio.run(test_teams_roster_modals_and_interactive_desks())
     asyncio.run(test_flagship_studios_weather_and_gear_store())
-    print("✅ All Teams, Flagship Studios, Weather & Gear Store checks passed successfully!")
+    print("✅ All Teams, Flagship Studios, Weather, Gear Store & Check-In checks passed successfully!")
+
 

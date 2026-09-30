@@ -38,14 +38,16 @@ async function runPackaging() {
   fs.mkdirSync(distDir, { recursive: true });
   fs.mkdirSync(distPublicDir, { recursive: true });
 
-  // 2. Import compiled modules
+  // 2. Compile latest TypeScript UI & API modules before importing
+  try {
+    execSync('npx tsc -p apps/api/tsconfig.json', { cwd: rootDir, stdio: 'pipe' });
+  } catch (buildErr) {
+    console.error('⚠️ tsc build warning/error:', buildErr.stdout?.toString() || buildErr.message);
+    execSync('pnpm --filter @cricket-platform/api build', { cwd: rootDir, stdio: 'inherit' });
+  }
+
   const dashboardModulePath = path.join(rootDir, 'apps/api/dist/ui/dashboard.js');
   const openapiModulePath = path.join(rootDir, 'apps/api/dist/platform/openapi.js');
-
-  if (!fs.existsSync(dashboardModulePath) || !fs.existsSync(openapiModulePath)) {
-    console.error('❌ Compiled artifacts not found. Running pnpm -r build first...');
-    execSync('pnpm -r build', { cwd: rootDir, stdio: 'inherit' });
-  }
 
   const { getDashboardHtml } = await import(dashboardModulePath);
   const { getApiDocsHtml, generateOpenApiSpec } = await import(openapiModulePath);

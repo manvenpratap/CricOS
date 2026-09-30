@@ -1517,7 +1517,7 @@ export function getDashboardHtml() {
       margin-bottom: 0.35rem;
     }
 
-    input, select, textarea {
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]), select, textarea {
       width: 100%;
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid var(--border-subtle);
@@ -1527,6 +1527,54 @@ export function getDashboardHtml() {
       font-family: inherit;
       font-size: 0.9rem;
       transition: border-color 0.2s;
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      flex: 0 0 18px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      accent-color: var(--turf-emerald, #00E599);
+      cursor: pointer;
+      vertical-align: middle;
+    }
+
+    .checkin-stakeholder-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 0.8rem;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(0, 229, 153, 0.32);
+      cursor: pointer;
+      margin: 0;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .checkin-stakeholder-title {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: #F8FAFC;
+      line-height: 1.25;
+    }
+    .checkin-stakeholder-sub {
+      font-size: 0.68rem;
+      color: #94A3B8;
+      margin-top: 0.1rem;
+    }
+    [data-theme="light"] .checkin-stakeholder-card {
+      background: #F8FAFC !important;
+      border-color: rgba(16, 185, 129, 0.42) !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    }
+    [data-theme="light"] .checkin-stakeholder-title {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .checkin-stakeholder-sub {
+      color: #475569 !important;
     }
 
     input:focus, select:focus, textarea:focus {
@@ -8963,50 +9011,132 @@ cricos_active_sse_connections 1</pre>
 
   <!-- P1-011: Modal Provider Check-In & Match Sign-Off -->
   <div class="modal-backdrop as-drawer" id="modalCheckIn">
-    <div class="modal-card" style="max-width: 520px;">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">📍</span>
+    <div class="modal-card" style="max-width: 560px;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.9rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">📍</div>
           <div>
-            <div class="modal-title">Provider Check-In &amp; Match Sign-Off</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Arrival OTP Verification &bull; 3-Party Digital Sign-Off</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <div class="modal-title" style="font-size: 1.05rem;">Provider Check-In &amp; Match Sign-Off</div>
+              <span id="checkinHeaderStatusPill" style="font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; padding: 0.18rem 0.5rem; border-radius: 999px; background: rgba(0, 210, 255, 0.14); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35);">ESCROW ACTIVE</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;">Arrival OTP Verification &bull; GPS Geofence Lock &bull; 3-Party Digital Sign-Off</div>
           </div>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalCheckIn')" data-tooltip="Close check-in">×</button>
       </div>
-      <div class="modal-body" style="padding: 1.25rem;">
-        <!-- Provider OTP Verification -->
-        <div style="padding: 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); margin-bottom: 1.25rem;">
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.5rem;">STEP 1: PROVIDER ARRIVAL OTP</div>
-          <p style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 0.75rem;">Official enters 4-digit PIN upon arrival at the venue.</p>
-          <div style="display: flex; gap: 0.5rem;">
-            <input type="text" id="providerOtpInput" maxlength="6" value="4821" style="width: 140px; text-align: center; font-family: var(--font-mono); font-size: 1.2rem; letter-spacing: 0.2rem; padding: 0.4rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: var(--turf-emerald);" />
-            <button class="btn btn-primary btn-sm" onclick="showToast('✓ Provider Check-In Verified via OTP 4821!')" data-tooltip="Verify provider arrival OTP" aria-label="Verify Arrival">Verify Arrival</button>
+
+      <div class="modal-body" style="padding: 1.15rem; display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Live Venue & Escrow Telemetry Ribbon -->
+        <div id="checkinVenueContextStrip" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; padding: 0.65rem 0.75rem; border-radius: 10px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08);">
+          <div>
+            <div style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8; font-weight: 700;">Active Venue</div>
+            <div style="font-size: 0.76rem; font-weight: 700; color: #F8FAFC; margin-top: 0.1rem;">🏟️ Chinnaswamy Turf A</div>
+          </div>
+          <div>
+            <div style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8; font-weight: 700;">Geofence Telemetry</div>
+            <div id="checkinGeofenceBadge" style="font-size: 0.75rem; font-weight: 700; color: #00E599; font-family: var(--font-mono); margin-top: 0.1rem;">🟢 12.97°N (±4m)</div>
+          </div>
+          <div>
+            <div style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8; font-weight: 700;">5-Acct Escrow Pool</div>
+            <div style="font-size: 0.78rem; font-weight: 800; color: #00D2FF; font-family: var(--font-mono); margin-top: 0.1rem;">₹12,500 Locked</div>
           </div>
         </div>
 
-        <!-- 3-Party Sign-Off -->
-        <div style="padding: 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--turf-emerald); margin-bottom: 0.5rem;">STEP 2: OFFICIAL MATCH SIGN-OFF</div>
-          <p style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 0.75rem;">All 3 stakeholders digitally sign to unlock escrow payouts.</p>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #fff; cursor: pointer;">
-              <input type="checkbox" checked /> Home Captain (Virat Sharma) Digitally Signed
+        <!-- STEP 1: Provider OTP Verification -->
+        <div id="checkinStep1Card" style="padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 210, 255, 0.22);">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.45rem;">
+            <div style="font-size: 0.76rem; font-weight: 800; letter-spacing: 0.05em; color: var(--cyan);">STEP 1: PROVIDER ARRIVAL OTP</div>
+            <span id="checkinArrivalStatusBadge" style="font-size: 0.68rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 999px; background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">✓ PIN Ready (4821)</span>
+          </div>
+          <p style="font-size: 0.78rem; color: #94A3B8; margin: 0 0 0.65rem 0;">Select arriving match official or enter 4-digit venue PIN to lock attendance &amp; turf readiness.</p>
+
+          <!-- Quick Official PIN Selector Pills -->
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem;">
+            <button type="button" class="checkin-role-chip active" id="btnCheckinPinUmpire" onclick="window.selectCheckinRolePin('UMPIRE', '4821', 'Rajesh Sharma (MCC L2 Umpire)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(0, 229, 153, 0.45); background: rgba(0, 229, 153, 0.14); color: #00E599; cursor: pointer;" data-tooltip="Load Lead Umpire PIN 4821">👨‍⚖️ Umpire • 4821</button>
+            <button type="button" class="checkin-role-chip" id="btnCheckinPinScorer" onclick="window.selectCheckinRolePin('SCORER', '7390', 'Ananya Verma (Official Scorer)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: #CBD5E1; cursor: pointer;" data-tooltip="Load Official Scorer PIN 7390">📝 Scorer • 7390</button>
+            <button type="button" class="checkin-role-chip" id="btnCheckinPinGroundsman" onclick="window.selectCheckinRolePin('GROUNDSMAN', '9104', 'K. Gowda (Head Curator)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: #CBD5E1; cursor: pointer;" data-tooltip="Load Turf Curator PIN 9104">🌿 Curator • 9104</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 148px 1fr; gap: 0.65rem; align-items: stretch;">
+            <input type="text" id="providerOtpInput" maxlength="6" value="4821" aria-label="4-digit Provider Arrival OTP" style="width: 100%; text-align: center; font-family: var(--font-mono); font-size: 1.25rem; font-weight: 800; letter-spacing: 0.28rem; padding: 0.55rem 0.5rem; border-radius: 8px; background: rgba(4, 9, 20, 0.75); border: 1px solid rgba(0, 229, 153, 0.45); color: var(--turf-emerald);" />
+            <button type="button" class="btn btn-primary" id="btnVerifyProviderArrival" onclick="window.verifyProviderArrivalOtp()" style="width: 100%; font-weight: 800; font-size: 0.85rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Verify provider arrival OTP and lock GPS attendance" aria-label="Verify Arrival">
+              <span>✓ Verify Arrival</span>
+            </button>
+          </div>
+
+          <!-- Facility Readiness Micro-Checklist -->
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; padding-top: 0.65rem; border-top: 1px dashed rgba(255,255,255,0.08); font-size: 0.68rem; color: #94A3B8;">
+            <span style="padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.1); color: #00E599; font-weight: 600;">✓ Crease &amp; 30yd Marked</span>
+            <span style="padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.1); color: #00E599; font-weight: 600;">✓ 2x Grade-A Leather Balls</span>
+            <span style="padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.1); color: #00E599; font-weight: 600;">✓ Sightscreen &amp; Floodlights</span>
+          </div>
+        </div>
+
+        <!-- STEP 2: 3-Party Digital Match Sign-Off -->
+        <div id="checkinStep2Card" style="padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 229, 153, 0.24);">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.4rem;">
+            <div style="font-size: 0.76rem; font-weight: 800; letter-spacing: 0.05em; color: var(--turf-emerald);">STEP 2: OFFICIAL 3-PARTY MATCH SIGN-OFF</div>
+            <span id="checkinSignatureCountBadge" style="font-size: 0.68rem; font-weight: 800; padding: 0.18rem 0.55rem; border-radius: 999px; background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); font-family: var(--font-mono);">3 / 3 SIGNED</span>
+          </div>
+          <p style="font-size: 0.78rem; color: #94A3B8; margin: 0 0 0.75rem 0;">All 3 match stakeholders digitally countersign the official result to unlock instant 5-account escrow settlement.</p>
+
+          <!-- Structured Stakeholder Sign-Off Cards (Zero Checkbox Alignment Issues) -->
+          <div style="display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 0.85rem;">
+            <!-- Stakeholder 1: Home Captain -->
+            <label for="chkSignoffHomeCaptain" id="signoffRow_HOME" class="checkin-stakeholder-card">
+              <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
+                <input type="checkbox" id="chkSignoffHomeCaptain" checked onchange="window.updateCheckinSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(0, 229, 153, 0.15); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">🏏</div>
+                <div style="min-width: 0;">
+                  <div class="checkin-stakeholder-title">Home Captain (Virat Sharma)</div>
+                  <div class="checkin-stakeholder-sub">Bengaluru Strikers XI &bull; Playing XI &amp; NRR Verified</div>
+                </div>
+              </div>
+              <span id="signoffBadge_HOME" style="font-size: 0.65rem; font-weight: 800; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: 6px; background: rgba(0, 229, 153, 0.15); color: #059669; border: 1px solid rgba(0, 229, 153, 0.35); white-space: nowrap; flex-shrink: 0;">✓ Digitally Signed</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #fff; cursor: pointer;">
-              <input type="checkbox" checked /> Away Captain (David Warner) Digitally Signed
+
+            <!-- Stakeholder 2: Away Captain -->
+            <label for="chkSignoffAwayCaptain" id="signoffRow_AWAY" class="checkin-stakeholder-card">
+              <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
+                <input type="checkbox" id="chkSignoffAwayCaptain" checked onchange="window.updateCheckinSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">🛡️</div>
+                <div style="min-width: 0;">
+                  <div class="checkin-stakeholder-title">Away Captain (David Warner)</div>
+                  <div class="checkin-stakeholder-sub">Mumbai Titans XI &bull; Innings Totals &amp; Extras Confirmed</div>
+                </div>
+              </div>
+              <span id="signoffBadge_AWAY" style="font-size: 0.65rem; font-weight: 800; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: 6px; background: rgba(0, 229, 153, 0.15); color: #059669; border: 1px solid rgba(0, 229, 153, 0.35); white-space: nowrap; flex-shrink: 0;">✓ Digitally Signed</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #fff; cursor: pointer;">
-              <input type="checkbox" checked /> Lead Umpire (Certified Official) Digitally Signed
+
+            <!-- Stakeholder 3: Lead Umpire -->
+            <label for="chkSignoffLeadUmpire" id="signoffRow_UMPIRE" class="checkin-stakeholder-card">
+              <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
+                <input type="checkbox" id="chkSignoffLeadUmpire" checked onchange="window.updateCheckinSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.16); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">👨‍⚖️</div>
+                <div style="min-width: 0;">
+                  <div class="checkin-stakeholder-title">Lead Umpire (Certified Official)</div>
+                  <div class="checkin-stakeholder-sub">Rajesh Sharma (MCC Level-2) &bull; Zero Code-of-Conduct Holds</div>
+                </div>
+              </div>
+              <span id="signoffBadge_UMPIRE" style="font-size: 0.65rem; font-weight: 800; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: 6px; background: rgba(0, 229, 153, 0.15); color: #059669; border: 1px solid rgba(0, 229, 153, 0.35); white-space: nowrap; flex-shrink: 0;">✓ Digitally Signed</span>
             </label>
           </div>
-          <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="showToast('✍ 3-Party Sign-Off Complete! Escrow Payouts Unlocked.')" data-tooltip="Submit 3-party scorecard sign-off and unlock escrow" aria-label="Sign off match and unlock escrow">
+
+          <!-- Escrow Disbursement Breakdown Strip -->
+          <div id="checkinEscrowSummaryStrip" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.22); margin-bottom: 0.8rem; font-size: 0.7rem; color: #CBD5E1;">
+            <span style="font-weight: 700; color: #00E599;">💸 Automated Escrow Split:</span>
+            <span style="font-family: var(--font-mono);">Turf ₹8,500 &bull; Umpire ₹2,500 &bull; Scorer ₹1,000 &bull; Platform ₹500</span>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="btnCompleteDigitalSignOff" style="width: 100%; font-weight: 800; padding: 0.7rem 1rem; border-radius: 9px;" onclick="window.completeMatchDigitalSignOff()" data-tooltip="Submit 3-party scorecard sign-off and unlock escrow" aria-label="Sign off match and unlock escrow">
             ✍ Complete Digital Sign-Off
           </button>
         </div>
       </div>
-      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('modalCheckIn')" data-tooltip="Close provider check-in desk" aria-label="Close check-in desk">Close</button>
+      <div class="modal-footer" style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
+        <span id="checkinFooterReceiptText" style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Ledger Ref: #ESC-BLR-4821-99A</span>
+        <button class="btn btn-secondary" style="min-width: 110px;" onclick="closeModal('modalCheckIn')" data-tooltip="Close provider check-in desk" aria-label="Close check-in desk">Close</button>
       </div>
     </div>
   </div>
@@ -20660,6 +20790,120 @@ cricos_active_sse_connections 1</pre>
         }
       }
     }
+
+    // Provider Check-In & 3-Party Match Sign-Off Controllers
+    let activeCheckinOfficialLabel = 'Rajesh Sharma (MCC L2 Umpire)';
+    function selectCheckinRolePin(role, pin, label) {
+      activeCheckinOfficialLabel = label || role;
+      const inp = document.getElementById('providerOtpInput');
+      if (inp) inp.value = pin;
+      const badge = document.getElementById('checkinArrivalStatusBadge');
+      if (badge) {
+        badge.textContent = 'PIN Loaded (' + pin + ')';
+        badge.style.background = 'rgba(0, 210, 255, 0.14)';
+        badge.style.color = '#00D2FF';
+        badge.style.borderColor = 'rgba(0, 210, 255, 0.35)';
+      }
+      const btnIds = { UMPIRE: 'btnCheckinPinUmpire', SCORER: 'btnCheckinPinScorer', GROUNDSMAN: 'btnCheckinPinGroundsman' };
+      Object.keys(btnIds).forEach(k => {
+        const b = document.getElementById(btnIds[k]);
+        if (!b) return;
+        if (k === role) {
+          b.style.border = '1px solid rgba(0, 229, 153, 0.45)';
+          b.style.background = 'rgba(0, 229, 153, 0.14)';
+          b.style.color = '#00E599';
+        } else {
+          b.style.border = '1px solid rgba(255, 255, 255, 0.14)';
+          b.style.background = 'rgba(255, 255, 255, 0.04)';
+          b.style.color = '#CBD5E1';
+        }
+      });
+    }
+    window.selectCheckinRolePin = selectCheckinRolePin;
+
+    function verifyProviderArrivalOtp() {
+      const inp = document.getElementById('providerOtpInput');
+      const pin = inp ? inp.value.trim() : '4821';
+      if (!pin || pin.length < 4) {
+        showToast('⚠ Please enter a valid 4-digit arrival PIN');
+        return;
+      }
+      const badge = document.getElementById('checkinArrivalStatusBadge');
+      if (badge) {
+        badge.textContent = '✓ Verified (' + pin + ')';
+        badge.style.background = 'rgba(0, 229, 153, 0.18)';
+        badge.style.color = '#00E599';
+        badge.style.borderColor = 'rgba(0, 229, 153, 0.45)';
+      }
+      const btn = document.getElementById('btnVerifyProviderArrival');
+      if (btn) {
+        btn.innerHTML = '<span>✓ Arrival Locked (' + pin + ')</span>';
+      }
+      showToast('✓ Provider Check-In Verified (' + activeCheckinOfficialLabel + ' • OTP ' + pin + ')');
+    }
+    window.verifyProviderArrivalOtp = verifyProviderArrivalOtp;
+
+    function updateCheckinSignoffState() {
+      const pairs = [
+        { chk: 'chkSignoffHomeCaptain', row: 'signoffRow_HOME', badge: 'signoffBadge_HOME' },
+        { chk: 'chkSignoffAwayCaptain', row: 'signoffRow_AWAY', badge: 'signoffBadge_AWAY' },
+        { chk: 'chkSignoffLeadUmpire', row: 'signoffRow_UMPIRE', badge: 'signoffBadge_UMPIRE' }
+      ];
+      let signedCount = 0;
+      pairs.forEach(p => {
+        const c = document.getElementById(p.chk);
+        const r = document.getElementById(p.row);
+        const b = document.getElementById(p.badge);
+        const isChecked = Boolean(c && c.checked);
+        if (isChecked) signedCount++;
+        if (r) {
+          r.style.borderColor = isChecked ? 'rgba(0, 229, 153, 0.35)' : 'rgba(245, 158, 11, 0.35)';
+        }
+        if (b) {
+          b.textContent = isChecked ? '✓ Digitally Signed' : '⏳ Awaiting Sign';
+          b.style.color = isChecked ? '#00E599' : '#F59E0B';
+          b.style.background = isChecked ? 'rgba(0, 229, 153, 0.15)' : 'rgba(245, 158, 11, 0.15)';
+          b.style.borderColor = isChecked ? 'rgba(0, 229, 153, 0.35)' : 'rgba(245, 158, 11, 0.35)';
+        }
+      });
+      const countBadge = document.getElementById('checkinSignatureCountBadge');
+      if (countBadge) {
+        countBadge.textContent = signedCount + ' / 3 SIGNED';
+        countBadge.style.color = signedCount === 3 ? '#00E599' : '#F59E0B';
+        countBadge.style.background = signedCount === 3 ? 'rgba(0, 229, 153, 0.15)' : 'rgba(245, 158, 11, 0.15)';
+        countBadge.style.borderColor = signedCount === 3 ? 'rgba(0, 229, 153, 0.35)' : 'rgba(245, 158, 11, 0.35)';
+      }
+      const cta = document.getElementById('btnCompleteDigitalSignOff');
+      if (cta) {
+        cta.textContent = signedCount === 3
+          ? '✍ Complete Digital Sign-Off'
+          : '⏳ Collect All 3 Signatures (' + signedCount + '/3)';
+      }
+    }
+    window.updateCheckinSignoffState = updateCheckinSignoffState;
+
+    function completeMatchDigitalSignOff() {
+      const c1 = document.getElementById('chkSignoffHomeCaptain');
+      const c2 = document.getElementById('chkSignoffAwayCaptain');
+      const c3 = document.getElementById('chkSignoffLeadUmpire');
+      if ((c1 && !c1.checked) || (c2 && !c2.checked) || (c3 && !c3.checked)) {
+        showToast('⚠ All 3 stakeholders (Home Captain, Away Captain, Lead Umpire) must sign to unlock escrow.');
+        return;
+      }
+      const headerPill = document.getElementById('checkinHeaderStatusPill');
+      if (headerPill) {
+        headerPill.textContent = '✓ ESCROW DISBURSED';
+        headerPill.style.background = 'rgba(0, 229, 153, 0.18)';
+        headerPill.style.color = '#00E599';
+        headerPill.style.borderColor = 'rgba(0, 229, 153, 0.45)';
+      }
+      const cta = document.getElementById('btnCompleteDigitalSignOff');
+      if (cta) {
+        cta.textContent = '✓ 3-Party Sign-Off Complete • ₹12,500 Disbursed';
+      }
+      showToast('✍ 3-Party Sign-Off Complete! ₹12,500 Escrow Payouts Unlocked.');
+    }
+    window.completeMatchDigitalSignOff = completeMatchDigitalSignOff;
 
     // Operational Metrics Modal
     async function openMetricsModal() {

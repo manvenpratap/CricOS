@@ -943,6 +943,26 @@ describe('Domain: Commerce, Tournaments, Marketplace & Media Operations', () => 
       assert.ok(dashHtml.includes('filterGearStore') && dashHtml.includes('addToGearStoreCart'), 'Desktop Gear Store filter and cart functions must exist');
       assert.ok(mobHtml.includes('addMobileGearToCart'), 'Mobile Gear Store cart handler must exist');
     });
+
+    it('2. Provider Check-In & 3-Party Match Sign-Off Window (Desktop & Mobile) with Fixed Checkbox Geometry', () => {
+      const dashSrc = readFile('apps/api/src/ui/dashboard.ts');
+      const mobSrc = readFile('apps/api/src/ui/mobile-view.ts');
+
+      // Global checkbox/radio width exclusion & 18px lock
+      assert.ok(dashSrc.includes('input:not([type="checkbox"]):not([type="radio"])'), 'Desktop CSS must exclude checkbox/radio from width: 100%');
+      assert.ok(dashSrc.includes('input[type="checkbox"], input[type="radio"]') && dashSrc.includes('width: 18px !important'), 'Desktop checkbox must lock to 18px width');
+      assert.ok(mobSrc.includes('input[type="checkbox"], input[type="radio"]') && mobSrc.includes('width: 18px !important'), 'Mobile checkbox must lock to 18px width');
+
+      // Desktop #modalCheckIn structure & handlers
+      assert.ok(dashSrc.includes('id="checkinVenueContextStrip"'), 'Desktop Check-In must include Live Venue & Escrow Telemetry Ribbon');
+      assert.ok(dashSrc.includes('id="signoffRow_HOME"') && dashSrc.includes('id="signoffRow_AWAY"') && dashSrc.includes('id="signoffRow_UMPIRE"'), 'Desktop Check-In must render structured 3-party stakeholder cards');
+      assert.ok(dashSrc.includes('window.selectCheckinRolePin') && dashSrc.includes('window.verifyProviderArrivalOtp') && dashSrc.includes('window.updateCheckinSignoffState'), 'Desktop Check-In interactive handlers must be exported');
+
+      // Mobile #mobileCheckInSheetRoot & handlers
+      assert.ok(mobSrc.includes('openProviderCheckInSheet()'), 'Mobile Check-In sheet opener must exist');
+      assert.ok(mobSrc.includes('id="mobileCheckInSheetRoot"'), 'Mobile Check-In sheet container must exist');
+      assert.ok(mobSrc.includes('verifyMobileProviderArrival()') && mobSrc.includes('updateMobileSignoffState()') && mobSrc.includes('completeMobileDigitalSignOff()'), 'Mobile Check-In interactive handlers must exist');
+    });
   });
 });
 
