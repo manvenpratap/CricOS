@@ -6912,7 +6912,10 @@ export function getMobileAppHtml() {
         var slotBorder = isLight ? '#CBD5E1' : 'rgba(255, 255, 255, 0.12)';
         var accentEmeraldInk = isLight ? '#065F46' : '#00E599';
 
-        var h = '<div id="mobileVenueWeatherCard" data-venue-id="' + w.id + '" style="background: ' + cardBg + '; border: 1px solid ' + cardBorder + '; border-radius: 12px; padding: 0.6rem 0.75rem; margin-bottom: 0.55rem; color: ' + primaryInk + ';">';
+        var isExpanded = Boolean(this.weatherForecastExpanded);
+        var cardDisplay = isExpanded ? 'block' : 'none';
+
+        var h = '<div id="mobileVenueWeatherCard" data-venue-id="' + w.id + '" data-expanded="' + (isExpanded ? 'true' : 'false') + '" style="display: ' + cardDisplay + '; background: ' + cardBg + '; border: 1px solid ' + cardBorder + '; border-radius: 12px; padding: 0.6rem 0.75rem; margin-bottom: 0.55rem; color: ' + primaryInk + ';">';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.38rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.38rem; flex: 1; min-width: 180px;">';
         h += '<span style="font-size: 1.15rem;" id="mobileWeatherIcon">' + w.icon + '</span>';
@@ -6924,7 +6927,7 @@ export function getMobileAppHtml() {
         h += '<option value="chepauk_marina"' + (w.id === 'chepauk_marina' ? ' selected' : '') + '>📍 Chepauk Marina (Chennai)</option>';
         h += '</select>';
         h += '</div>';
-        h += '<button type="button" id="btnMobileToggleWeatherDetail" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="' + pillCyan + ' border-radius: 6px; padding: 0.2rem 0.48rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle 5-Hour Match Window Forecast">' + (this.weatherForecastExpanded ? '🌦️ Hide ▴' : '🌦️ 5-Hr Forecast ▾') + '</button>';
+        h += '<button type="button" id="btnMobileToggleWeatherDetail" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="' + pillCyan + ' border-radius: 6px; padding: 0.2rem 0.48rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Close 5-Hour Match Window Forecast">✕ Hide ▴</button>';
         h += '</div>';
 
         h += '<div id="mobileWeatherConditionText" style="font-size: 0.7rem; font-weight: 800; color: ' + primaryInk + '; margin-bottom: 0.35rem;">' + w.headline + ' <span style="font-weight: 600; color: ' + secondaryInk + ';">(' + w.coords + ')</span></div>';
@@ -6937,20 +6940,18 @@ export function getMobileAppHtml() {
 
         h += '<div id="mobileWeatherTossAdvice" style="font-size: 0.65rem; font-weight: 800; color: ' + accentEmeraldInk + ';">' + w.tossAdvice + '</div>';
 
-        if (this.weatherForecastExpanded) {
-          h += '<div id="mobileWeatherForecastStrip" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.25rem; margin-top: 0.45rem; padding-top: 0.42rem; border-top: 1px solid ' + slotBorder + ';">';
-          for (var i = 0; i < w.hourly.length; i++) {
-            var sl = w.hourly[i];
-            h += '<div style="background: ' + slotBg + '; border: 1px solid ' + slotBorder + '; border-radius: 6px; padding: 0.3rem 0.25rem; text-align: center;">';
-            h += '<div style="font-size: 0.58rem; font-weight: 800; color: ' + secondaryInk + ';">' + sl[0] + '</div>';
-            h += '<div style="font-size: 0.85rem; margin: 0.08rem 0;">' + sl[1] + '</div>';
-            h += '<div style="font-size: 0.66rem; font-weight: 800; color: ' + primaryInk + ';">' + sl[2] + '</div>';
-            h += '<div style="font-size: 0.56rem; font-weight: 800; color: ' + accentEmeraldInk + ';">☔' + sl[3] + '</div>';
-            h += '<div style="font-size: 0.54rem; font-weight: 700; color: ' + secondaryInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + sl[4] + '</div>';
-            h += '</div>';
-          }
+        h += '<div id="mobileWeatherForecastStrip" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.25rem; margin-top: 0.45rem; padding-top: 0.42rem; border-top: 1px solid ' + slotBorder + ';">';
+        for (var i = 0; i < w.hourly.length; i++) {
+          var sl = w.hourly[i];
+          h += '<div style="background: ' + slotBg + '; border: 1px solid ' + slotBorder + '; border-radius: 6px; padding: 0.3rem 0.25rem; text-align: center;">';
+          h += '<div style="font-size: 0.58rem; font-weight: 800; color: ' + secondaryInk + ';">' + sl[0] + '</div>';
+          h += '<div style="font-size: 0.85rem; margin: 0.08rem 0;">' + sl[1] + '</div>';
+          h += '<div style="font-size: 0.66rem; font-weight: 800; color: ' + primaryInk + ';">' + sl[2] + '</div>';
+          h += '<div style="font-size: 0.56rem; font-weight: 800; color: ' + accentEmeraldInk + ';">☔' + sl[3] + '</div>';
+          h += '<div style="font-size: 0.54rem; font-weight: 700; color: ' + secondaryInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + sl[4] + '</div>';
           h += '</div>';
         }
+        h += '</div>';
         h += '</div>';
         return h;
       }
@@ -7491,7 +7492,7 @@ export function getMobileAppHtml() {
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.35rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
         h += '<span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 9999px;">🔴 LIVE MATCH</span>';
-        h += '<span id="mobileActiveVenueBadge" style="font-size: 0.68rem; color: #94a3b8; font-weight: 700;">' + activeWeather.name + ' (' + activeWeather.tempC + '°C)</span>';
+        h += '<button type="button" id="mobileActiveVenueBadge" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 9999px; padding: 0.12rem 0.48rem; font-size: 0.66rem; color: #38bdf8; font-weight: 700; cursor: pointer;" data-tooltip="Tap to toggle 5-Hour Turf Weather Forecast">' + activeWeather.icon + ' ' + activeWeather.name + ' (' + activeWeather.tempC + '°C) ' + (this.weatherForecastExpanded ? '▴' : '▾') + '</button>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">';
         h += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); color: #00E599; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open 11-Fielder Tactical Radar & MCC Law 28.4 Engine" aria-label="Field Planner">🎯 Field Radar</button>';
@@ -8205,12 +8206,14 @@ export function getMobileAppHtml() {
         h += '<h2 style="margin: 0; font-size: 1.15rem; font-family: Space Grotesk, sans-serif;">' + (isProvider ? '🏟️ Turf Provider Storefront' : '🛒 Cricket Marketplace &amp; Gear Store') + '</h2>';
         h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.15rem;">GiST Slot Hold • Pro Cricket Gear &amp; Pavilion Drop</div>';
         h += '</div>';
-        h += '<div style="display: flex; gap: 0.35rem; align-items: center;">';
+        var mktWeather = this.getActiveVenueWeather();
+        h += '<div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">';
+        h += '<button type="button" id="btnMobileMarketplaceWeatherToggle" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="padding: 0.25rem 0.48rem; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(14, 165, 233, 0.14); color: #38BDF8; font-size: 0.66rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle Turf Location Weather &amp; 5-Hour Forecast">' + mktWeather.icon + ' ' + mktWeather.tempC + '°C ' + (this.weatherForecastExpanded ? '▴' : '▾') + '</button>';
         h += '<button type="button" id="btnMobileOpenGearStore" onclick="window.cricosMobileApp.openMobileGearStore()" style="padding: 0.25rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.45); background: rgba(0, 210, 255, 0.16); color: #00D2FF; font-size: 0.68rem; font-weight: 800;" data-tooltip="Open Pro Cricket Gear Store &amp; Kit Bag">🛍️ Gear Bag (' + gearCount + ')</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="padding: 0.25rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.7rem; font-weight: 700;" data-tooltip="Inspect unified Event Basket">🧺 Basket</button>';
         h += '</div></div></div>';
 
-        // Intelligent Turf / Ground Location Weather & Forecast
+        // Intelligent Turf / Ground Location Weather & Forecast (collapsed by default)
         h += this.renderMobileVenueWeatherCard();
 
         // Category Filter Chips

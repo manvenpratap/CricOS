@@ -96,6 +96,13 @@ def test_mobile_venue_weather_intelligence_and_forecast():
         page.goto(MOBILE_HTML, wait_until="domcontentloaded")
         page.wait_for_timeout(400)
 
+        # Verify weather forecast card is hidden by default (taking 0px vertical space on mobile)
+        default_collapsed = page.evaluate("""() => {
+            const card = document.getElementById('mobileVenueWeatherCard');
+            return card ? window.getComputedStyle(card).display === 'none' : true;
+        }""")
+        assert default_collapsed is True, "Mobile weather card must be hidden (display: none) by default"
+
         # Expand 5-hour forecast on mobile and switch to Chepauk Marina (Chennai)
         page.evaluate("""() => {
             const app = window.cricosMobileApp;
@@ -107,11 +114,13 @@ def test_mobile_venue_weather_intelligence_and_forecast():
 
         mobile_state = page.evaluate("""() => ({
             venueId: document.getElementById('mobileVenueWeatherCard')?.getAttribute('data-venue-id'),
+            displayAfterExpand: window.getComputedStyle(document.getElementById('mobileVenueWeatherCard')).display,
             badge: document.getElementById('mobileActiveVenueBadge')?.textContent,
             condition: document.getElementById('mobileWeatherConditionText')?.textContent,
             toss: document.getElementById('mobileWeatherTossAdvice')?.textContent,
             forecastCount: document.querySelectorAll('#mobileWeatherForecastStrip > div').length
         })""")
+        assert mobile_state["displayAfterExpand"] == "block"
         assert mobile_state["venueId"] == "chepauk_marina"
         assert "Chidambaram Marina" in mobile_state["badge"]
         assert "32°C" in mobile_state["badge"]
