@@ -18073,10 +18073,14 @@ cricos_active_sse_connections 1</pre>
 
     function openGearStoreModal() {
       initGearStore();
+      document.querySelectorAll('.modal-backdrop.active').forEach(function(el) {
+        if (el.id !== 'modalCommerce') el.classList.remove('active');
+      });
       if (typeof openModal === 'function') {
         openModal('modalCommerce');
       }
     }
+    window.openGearStoreModal = openGearStoreModal;
 
     function setGearStoreCategory(category) {
       window.gearStoreSelectedCategory = category || 'ALL';
@@ -18093,6 +18097,99 @@ cricos_active_sse_connections 1</pre>
     function filterGearStoreCatalog() {
       renderGearStoreCatalog();
     }
+
+    function getGearProductImageDataUri(item) {
+      if (item && item.imageUrl && item.imageUrl.startsWith('data:image/')) return item.imageUrl;
+      const id = (item && item.id) || '';
+      const cat = (item && item.category) || 'BATS';
+      let artSvg = '';
+      if (id === 'gear-bat-carbon') {
+        artSvg = '<rect x="132" y="12" width="16" height="44" rx="4" fill="#00D2FF" stroke="#0F172A" stroke-width="2"/>' +
+          '<path d="M126 54 L154 54 L158 134 L122 134 Z" fill="#1E293B" stroke="#00E599" stroke-width="2.2"/>' +
+          '<line x1="140" y1="56" x2="140" y2="132" stroke="#00D2FF" stroke-width="3"/>' +
+          '<circle cx="140" cy="102" r="14" fill="none" stroke="#00E599" stroke-width="1.5" stroke-dasharray="3 2"/>' +
+          '<text x="20" y="126" fill="#00D2FF" font-size="10" font-weight="800" font-family="monospace">CARBON SPINE T20</text>';
+      } else if (id.indexOf('bat') !== -1 || cat === 'BATS') {
+        artSvg = '<rect x="133" y="10" width="14" height="42" rx="4" fill="#EF4444" stroke="#F8FAFC" stroke-width="1.5"/>' +
+          '<path d="M124 52 L156 52 L160 134 L120 134 Z" fill="#E8C896" stroke="#B45309" stroke-width="2"/>' +
+          '<line x1="132" y1="54" x2="132" y2="132" stroke="#C99E67" stroke-width="1.2"/>' +
+          '<line x1="140" y1="54" x2="140" y2="132" stroke="#B45309" stroke-width="1.8"/>' +
+          '<line x1="148" y1="54" x2="148" y2="132" stroke="#C99E67" stroke-width="1.2"/>' +
+          '<rect x="126" y="74" width="28" height="14" rx="3" fill="#00E599"/>' +
+          '<text x="20" y="126" fill="#FBBF24" font-size="10" font-weight="800" font-family="monospace">ENGLISH WILLOW G1+</text>';
+      } else if (id === 'gear-balls-white') {
+        artSvg = '<circle cx="140" cy="72" r="42" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2.5"/>' +
+          '<path d="M112 42 C132 62, 132 82, 112 102" fill="none" stroke="#059669" stroke-width="3" stroke-dasharray="4 2"/>' +
+          '<path d="M168 42 C148 62, 148 82, 168 102" fill="none" stroke="#059669" stroke-width="3" stroke-dasharray="4 2"/>' +
+          '<circle cx="126" cy="56" r="10" fill="rgba(255,255,255,0.85)"/>' +
+          '<text x="20" y="126" fill="#00E599" font-size="10" font-weight="800" font-family="monospace">KOOKABURRA WHITE 6x</text>';
+      } else if (id === 'gear-balls-pink') {
+        artSvg = '<circle cx="140" cy="72" r="42" fill="#F43F5E" stroke="#FB7185" stroke-width="2.5"/>' +
+          '<path d="M112 42 C132 62, 132 82, 112 102" fill="none" stroke="#0F172A" stroke-width="3" stroke-dasharray="4 2"/>' +
+          '<path d="M168 42 C148 62, 148 82, 168 102" fill="none" stroke="#F8FAFC" stroke-width="2.5" stroke-dasharray="4 2"/>' +
+          '<text x="20" y="126" fill="#FB7185" font-size="10" font-weight="800" font-family="monospace">TWILIGHT PINK D/N</text>';
+      } else if (id === 'gear-tech-smartball') {
+        artSvg = '<circle cx="140" cy="72" r="42" fill="#0F172A" stroke="#00D2FF" stroke-width="2.5"/>' +
+          '<circle cx="140" cy="72" r="22" fill="rgba(0,210,255,0.18)" stroke="#00E599" stroke-width="1.8" stroke-dasharray="3 2"/>' +
+          '<rect x="131" y="63" width="18" height="18" rx="3" fill="#00E599"/>' +
+          '<path d="M84 52 Q72 72 84 92 M196 52 Q208 72 196 92" fill="none" stroke="#00D2FF" stroke-width="2"/>' +
+          '<text x="20" y="126" fill="#00D2FF" font-size="10" font-weight="800" font-family="monospace">9-AXIS IMU 1000Hz</text>';
+      } else if (id.indexOf('ball') !== -1 || cat === 'BALLS') {
+        artSvg = '<circle cx="140" cy="72" r="42" fill="#DC2626" stroke="#FCA5A5" stroke-width="2"/>' +
+          '<path d="M112 42 C132 62, 132 82, 112 102" fill="none" stroke="#F8FAFC" stroke-width="3" stroke-dasharray="4 2"/>' +
+          '<path d="M168 42 C148 62, 148 82, 168 102" fill="none" stroke="#F8FAFC" stroke-width="3" stroke-dasharray="4 2"/>' +
+          '<text x="20" y="126" fill="#FCA5A5" font-size="10" font-weight="800" font-family="monospace">SG TEST RED LEATHER</text>';
+      } else if (id === 'gear-pad-helmet') {
+        artSvg = '<path d="M95 82 C95 40, 185 40, 185 82 L195 88 L90 88 Z" fill="#1E3A8A" stroke="#00D2FF" stroke-width="2.2"/>' +
+          '<path d="M148 76 L194 76 L188 108 L144 108 Z" fill="none" stroke="#E2E8F0" stroke-width="2.5"/>' +
+          '<line x1="146" y1="86" x2="192" y2="86" stroke="#94A3B8" stroke-width="2"/>' +
+          '<line x1="145" y1="96" x2="190" y2="96" stroke="#94A3B8" stroke-width="2"/>' +
+          '<text x="20" y="126" fill="#38BDF8" font-size="10" font-weight="800" font-family="monospace">TITANIUM BS7928</text>';
+      } else if (cat === 'PROTECTIVE') {
+        artSvg = '<rect x="104" y="24" width="32" height="86" rx="8" fill="#F8FAFC" stroke="#00E599" stroke-width="2"/>' +
+          '<line x1="106" y1="48" x2="134" y2="48" stroke="#94A3B8" stroke-width="2"/>' +
+          '<line x1="106" y1="68" x2="134" y2="68" stroke="#94A3B8" stroke-width="2"/>' +
+          '<rect x="144" y="24" width="32" height="86" rx="8" fill="#F8FAFC" stroke="#00D2FF" stroke-width="2"/>' +
+          '<line x1="146" y1="48" x2="174" y2="48" stroke="#94A3B8" stroke-width="2"/>' +
+          '<line x1="146" y1="68" x2="174" y2="68" stroke="#94A3B8" stroke-width="2"/>' +
+          '<text x="20" y="126" fill="#00E599" font-size="10" font-weight="800" font-family="monospace">PRO LEGGUARDS + GLOVES</text>';
+      } else if (cat === 'NETS_TECH') {
+        artSvg = '<rect x="68" y="30" width="144" height="72" rx="4" fill="rgba(0,229,153,0.12)" stroke="#00E599" stroke-width="2" stroke-dasharray="5 3"/>' +
+          '<circle cx="96" cy="76" r="14" fill="#00D2FF" stroke="#0F172A" stroke-width="2"/>' +
+          '<path d="M110 72 Q150 48 196 68" fill="none" stroke="#FBBF24" stroke-width="2.5" stroke-dasharray="4 2"/>' +
+          '<circle cx="196" cy="68" r="5" fill="#EF4444"/>' +
+          '<text x="20" y="126" fill="#00E599" font-size="10" font-weight="800" font-family="monospace">12x4m NET + 150 KMH</text>';
+      } else {
+        artSvg = '<path d="M114 30 L166 30 L158 76 C154 92, 126 92, 122 76 Z" fill="#FBBF24" stroke="#F59E0B" stroke-width="2"/>' +
+          '<rect x="133" y="88" width="14" height="18" fill="#D97706"/>' +
+          '<rect x="116" y="106" width="48" height="12" rx="3" fill="#1E293B" stroke="#FBBF24" stroke-width="1.5"/>' +
+          '<circle cx="92" cy="68" r="12" fill="#FDE047" stroke="#B45309" stroke-width="1.5"/>' +
+          '<circle cx="188" cy="68" r="12" fill="#E2E8F0" stroke="#64748B" stroke-width="1.5"/>' +
+          '<text x="20" y="126" fill="#FBBF24" font-size="10" font-weight="800" font-family="monospace">24-IN GOLD CUP + MEDALS</text>';
+      }
+
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 140" width="280" height="140">' +
+        '<defs>' +
+          '<linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">' +
+            '<stop offset="0%" stop-color="#07111E"/>' +
+            '<stop offset="55%" stop-color="#0F2238"/>' +
+            '<stop offset="100%" stop-color="#062824"/>' +
+          '</linearGradient>' +
+          '<radialGradient id="spotGlow" cx="50%" cy="50%" r="50%">' +
+            '<stop offset="0%" stop-color="rgba(0,229,153,0.28)"/>' +
+            '<stop offset="100%" stop-color="rgba(0,229,153,0)"/>' +
+          '</radialGradient>' +
+        '</defs>' +
+        '<rect width="280" height="140" rx="8" fill="url(#bgGrad)"/>' +
+        '<circle cx="140" cy="70" r="64" fill="url(#spotGlow)"/>' +
+        artSvg +
+      '</svg>';
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
+    window.getGearProductImageDataUri = getGearProductImageDataUri;
+    GEAR_STORE_CATALOG.forEach(function(item) {
+      item.imageUrl = getGearProductImageDataUri(item);
+    });
 
     function renderGearStoreCatalog() {
       const grid = document.getElementById('gearStoreCatalogGrid');
@@ -18130,18 +18227,20 @@ cricos_active_sse_connections 1</pre>
       }
 
       grid.innerHTML = filtered.map(item => {
+        if (!item.imageUrl) item.imageUrl = getGearProductImageDataUri(item);
         const cartEntries = (window.gearStoreCart || []).filter(c => c.id === item.id);
         const totalQtyInCart = cartEntries.reduce((acc, c) => acc + c.qty, 0);
         const variantOptionsHtml = item.variants.map(v => '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>').join('');
 
-        return '<div class="glass-panel gear-product-card" data-product-id="' + item.id + '" style="padding: 0.9rem; border-radius: 10px; background: rgba(10,16,28,0.78); border: 1px solid ' + (totalQtyInCart > 0 ? 'rgba(0,229,153,0.45)' : 'rgba(255,255,255,0.09)') + '; display: flex; flex-direction: column; justify-content: space-between; gap: 0.55rem;">' +
+        return '<div class="glass-panel gear-product-card" data-product-id="' + item.id + '" style="padding: 0.85rem; border-radius: 12px; background: rgba(10,16,28,0.82); border: 1px solid ' + (totalQtyInCart > 0 ? 'rgba(0,229,153,0.48)' : 'rgba(255,255,255,0.09)') + '; display: flex; flex-direction: column; justify-content: space-between; gap: 0.55rem;">' +
           '<div>' +
-            '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">' +
-              '<span class="badge ' + (item.badgeClass || 'badge-emerald') + '" style="font-size: 0.6rem; padding: 0.12rem 0.45rem;">' + item.badge + '</span>' +
-              '<span style="font-size: 0.66rem; font-weight: 700; color: #FBBF24;">' + item.rating + '</span>' +
+            '<div class="gear-product-image-wrap" style="position: relative; width: 100%; height: 124px; border-radius: 9px; overflow: hidden; margin-bottom: 0.55rem; border: 1px solid rgba(255,255,255,0.1); background: #07111E;">' +
+              '<img class="gear-product-img" src="' + item.imageUrl + '" alt="' + item.title.replace(/"/g, '&quot;') + '" style="width: 100%; height: 100%; object-fit: cover; display: block;" />' +
+              '<span class="badge ' + (item.badgeClass || 'badge-emerald') + '" style="position: absolute; top: 7px; left: 7px; font-size: 0.58rem; padding: 0.14rem 0.48rem; backdrop-filter: blur(6px);">' + item.badge + '</span>' +
+              '<span style="position: absolute; top: 7px; right: 7px; font-size: 0.64rem; font-weight: 800; color: #FBBF24; background: rgba(4,7,13,0.82); padding: 0.12rem 0.42rem; border-radius: 5px; border: 1px solid rgba(251,191,36,0.35);">' + item.rating + '</span>' +
             '</div>' +
-            '<div style="font-size: 0.64rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">' + item.brand + ' &bull; ' + item.stock + '</div>' +
-            '<h4 style="margin: 0.2rem 0 0.28rem; font-size: 0.88rem; font-weight: 800; color: var(--text-primary); line-height: 1.28;">' + item.title + '</h4>' +
+            '<div style="font-size: 0.63rem; color: var(--cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">' + item.brand + ' &bull; ' + item.stock + '</div>' +
+            '<h4 style="margin: 0.18rem 0 0.25rem; font-size: 0.88rem; font-weight: 800; color: var(--text-primary); line-height: 1.28;">' + item.title + '</h4>' +
             '<p style="font-size: 0.71rem; color: var(--text-secondary); line-height: 1.35; margin: 0 0 0.5rem;">' + item.desc + '</p>' +
             '<div>' +
               '<label for="gearVariant_' + item.id + '" style="font-size: 0.62rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.18rem;">SPEC / VARIANT:</label>' +
@@ -18296,7 +18395,9 @@ cricos_active_sse_connections 1</pre>
         } else {
           listEl.innerHTML = window.gearStoreCart.map((c, idx) => {
             const lineTotal = c.price * c.qty;
-            return '<div class="gear-cart-line-item" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.5rem 0.65rem; border-radius: 8px; background: rgba(15,23,42,0.68); border: 1px solid rgba(255,255,255,0.09);">' +
+            const thumbSrc = c.imageUrl || getGearProductImageDataUri(c);
+            return '<div class="gear-cart-line-item" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem; border-radius: 8px; background: rgba(15,23,42,0.68); border: 1px solid rgba(255,255,255,0.09);">' +
+              '<img class="gear-cart-thumb" src="' + thumbSrc + '" alt="' + c.title.replace(/"/g, '&quot;') + '" style="width: 38px; height: 38px; border-radius: 6px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(0,229,153,0.35);" />' +
               '<div style="min-width: 0; flex: 1;">' +
                 '<div style="font-size: 0.76rem; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + c.title + '</div>' +
                 '<div style="font-size: 0.65rem; color: var(--cyan); font-weight: 600;">' + c.variant + ' &bull; ₹' + c.price.toLocaleString('en-IN') + '/unit</div>' +

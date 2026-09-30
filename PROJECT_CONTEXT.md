@@ -1,14 +1,20 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 10:36:00
-**Version:** 1.0.0-phase2cc (Broadcast Commentary Studio Content & UI-UX Overhaul + 8-Preset Tactical Field Planner & 360° Drag-and-Drop)  
+**Last Updated:** 2026-09-30 11:14:00
+**Version:** 1.0.0-phase2cd (Pro Cricket Gear Store Studio Product Images & Cart Thumbnails + Broadcast Commentary Studio & 8-Preset Tactical Field Planner)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CC Completed — Broadcast Commentary Studio Content & UI/UX Enhancement (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`):
+- **Active Phase**: Phase 2CD Completed — Pro Cricket Gear Store Studio Product Images & Cart Thumbnails (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-commerce-tournaments-and-marketplace.test.ts`, `tests/test_55_teams_roster_modals.py`):
+  - **1. Desktop Pro Cricket Gear Store Product Images (`#gearStoreCatalogGrid` & `#gearCartItemsList` in `apps/api/src/ui/dashboard.ts`)**:
+    - Implemented `getGearProductImageDataUri(item)` (`window.getGearProductImageDataUri`) generating high-resolution, offline-safe SVG studio product illustrations (`data:image/svg+xml;charset=utf-8,...`) for all 10+ items in `GEAR_STORE_CATALOG` (Reserve Grade 1+ English Willow Bat, Carbon-Composite Spine Power T20 Blade, Kookaburra Turf White Match Balls, SG Test Red Alum-Tanned Leather Balls, Day-Night Pink Floodlight Leather Balls, Titanium Grill BS7928 Batting Helmet, Test Batting Legguards & Pittards Gloves Combo, Smart Telemetry 9-Axis IMU Gyro Cricket Ball, Pro 12x4m Practice Net Cage & Bowling Machine, 24-Inch Gold Championship Trophy & 16 Medals, plus vendor-published gear).
+    - Upgraded every `.gear-product-card` in `renderGearStoreCatalog()` with a top `.gear-product-image-wrap` banner (`height: 124px`) containing `<img class="gear-product-img" ... />` with overlaid category badge and star rating pill, and added `38x38px` `<img class="gear-cart-thumb" ... />` product thumbnails to `#gearCartItemsList`.
+  - **2. Mobile & Android APK Pro Cricket Gear Store Product Images (`#mobileGearCatalogList` & `#mobileGearCartItemsList` in `apps/api/src/ui/mobile-view.ts`)**:
+    - Added `getMobileGearProductImage(item)` in `StandaloneMobileApp`, populated `imageUrl` across `this.gearCatalog`, `this.gearCart`, custom 3D bats, and vendor-listed gear, and updated `renderMobileGearStoreSection()` so every `.mobile-gear-product-card` renders `<img class="mobile-gear-product-img" ... />` inside `.mobile-gear-product-image-wrap` and every cart item renders `<img class="mobile-gear-cart-thumb" ... />`.
+- **Preceding Phase**: Phase 2CC Completed — Broadcast Commentary Studio Content & UI/UX Enhancement (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`):
   - **1. Multi-Persona Broadcast Commentary Engine (`ANALYTICAL` / `HYPE` / `TACTICAL`)**:
     - Added live commentator voice switching (`#commentaryVoiceSelect` / `window.setCommentaryBroadcastVoice` on Web; `setMobileCommentaryVoice()` on Mobile) supporting **Analytical (Harsha)**, **High-Octane (Ravi)**, and **Captain's Dugout (Nasser)** narrative styles.
     - Upgraded `emitFieldChangeCommentary()` and `emitMobileFieldCommentary()` to generate rich multi-sentence captaincy rationale explaining boundary rope protection, bat-pad catching cordons, 30-yard ring single-choking, expected run-suppression (`xR/ball`), and MCC Law 28.4 circle status.

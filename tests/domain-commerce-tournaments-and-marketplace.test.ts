@@ -963,6 +963,21 @@ describe('Domain: Commerce, Tournaments, Marketplace & Media Operations', () => 
       assert.ok(mobSrc.includes('id="mobileCheckInSheetRoot"'), 'Mobile Check-In sheet container must exist');
       assert.ok(mobSrc.includes('verifyMobileProviderArrival()') && mobSrc.includes('updateMobileSignoffState()') && mobSrc.includes('completeMobileDigitalSignOff()'), 'Mobile Check-In interactive handlers must exist');
     });
+
+    it('3. Pro Cricket Gear Store Product Images (Desktop & Mobile SVG Studio Illustrations & Cart Thumbnails)', () => {
+      const dashSrc = readFile('apps/api/src/ui/dashboard.ts');
+      const mobSrc = readFile('apps/api/src/ui/mobile-view.ts');
+
+      // Desktop gear product images
+      assert.ok(dashSrc.includes('getGearProductImageDataUri') && dashSrc.includes('window.getGearProductImageDataUri'), 'Desktop must define getGearProductImageDataUri helper');
+      assert.ok(dashSrc.includes('class="gear-product-img"') && dashSrc.includes('class="gear-product-image-wrap"'), 'Desktop gear catalog cards must render .gear-product-img inside .gear-product-image-wrap');
+      assert.ok(dashSrc.includes('class="gear-cart-thumb"'), 'Desktop gear cart line items must render .gear-cart-thumb');
+
+      // Mobile gear product images
+      assert.ok(mobSrc.includes('getMobileGearProductImage(item)'), 'Mobile must define getMobileGearProductImage(item) helper');
+      assert.ok(mobSrc.includes('class="mobile-gear-product-img"') && mobSrc.includes('class="mobile-gear-product-image-wrap"'), 'Mobile gear catalog cards must render .mobile-gear-product-img inside .mobile-gear-product-image-wrap');
+      assert.ok(mobSrc.includes('class="mobile-gear-cart-thumb"'), 'Mobile gear cart line items must render .mobile-gear-cart-thumb');
+    });
   });
 });
 

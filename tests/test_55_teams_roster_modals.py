@@ -308,6 +308,43 @@ async def test_flagship_studios_weather_and_gear_store():
         assert comm_studio_check["allVisibleCards"] > comm_studio_check["visibleFieldCards"], "ALL filter must show more cards than FIELD filter alone"
         assert comm_studio_check["hasTelemetryPills"], "#scoringFeed cards must render .comm-telemetry-pill badges"
 
+        # 7. Verify Pro Cricket Gear Store Product Images & Cart Thumbnails (Desktop & Mobile)
+        gear_img_desktop = await page.evaluate("""() => {
+            window.openGearStoreModal && window.openGearStoreModal();
+            const imgs = Array.from(document.querySelectorAll('#gearStoreCatalogGrid .gear-product-img'));
+            const thumbs = Array.from(document.querySelectorAll('#gearCartItemsList .gear-cart-thumb'));
+            return {
+                imgCount: imgs.length,
+                allValidSvg: imgs.length > 0 && imgs.every(el => (el.getAttribute('src') || '').startsWith('data:image/svg+xml')),
+                thumbCount: thumbs.length,
+                allThumbsValid: thumbs.length > 0 && thumbs.every(el => (el.getAttribute('src') || '').startsWith('data:image/svg+xml'))
+            };
+        }""")
+        assert gear_img_desktop["imgCount"] >= 10, f"Expected >= 10 gear product images on Desktop, got {gear_img_desktop['imgCount']}"
+        assert gear_img_desktop["allValidSvg"], "Every Desktop .gear-product-img must have a valid SVG data-URI src"
+        assert gear_img_desktop["thumbCount"] >= 2, "Desktop #gearCartItemsList must render .gear-cart-thumb thumbnails"
+        assert gear_img_desktop["allThumbsValid"], "Every Desktop .gear-cart-thumb must have a valid SVG data-URI src"
+        await save_screenshot_async(page, "gear_store_product_images_desktop.png")
+
+        gear_img_mobile = await m_page.evaluate("""() => {
+            const app = window.cricosMobileApp;
+            if (app && app.closeActionSheet) app.closeActionSheet();
+            if (app && app.openMobileGearStore) app.openMobileGearStore();
+            const imgs = Array.from(document.querySelectorAll('#mobileGearCatalogList .mobile-gear-product-img'));
+            const thumbs = Array.from(document.querySelectorAll('#mobileGearCartItemsList .mobile-gear-cart-thumb'));
+            return {
+                imgCount: imgs.length,
+                allValidSvg: imgs.length > 0 && imgs.every(el => (el.getAttribute('src') || '').startsWith('data:image/svg+xml')),
+                thumbCount: thumbs.length,
+                allThumbsValid: thumbs.length > 0 && thumbs.every(el => (el.getAttribute('src') || '').startsWith('data:image/svg+xml'))
+            };
+        }""")
+        assert gear_img_mobile["imgCount"] >= 9, f"Expected >= 9 gear product images on Mobile, got {gear_img_mobile['imgCount']}"
+        assert gear_img_mobile["allValidSvg"], "Every Mobile .mobile-gear-product-img must have a valid SVG data-URI src"
+        assert gear_img_mobile["thumbCount"] >= 2, "Mobile #mobileGearCartItemsList must render .mobile-gear-cart-thumb thumbnails"
+        assert gear_img_mobile["allThumbsValid"], "Every Mobile .mobile-gear-cart-thumb must have a valid SVG data-URI src"
+        await save_screenshot_async(m_page, "gear_store_product_images_mobile.png")
+
         assert_no_critical_errors(page)
         await browser.close()
 

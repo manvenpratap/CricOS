@@ -7734,11 +7734,21 @@ export function getMobileAppHtml(): string {
             }
           ];
         }
+        for (var gIdx = 0; gIdx < this.gearCatalog.length; gIdx++) {
+          if (!this.gearCatalog[gIdx].imageUrl) {
+            this.gearCatalog[gIdx].imageUrl = this.getMobileGearProductImage(this.gearCatalog[gIdx]);
+          }
+        }
         if (!this.gearCart) {
           this.gearCart = [
             { id: 'gear-balls-white', title: 'Kookaburra Turf White Match Balls (Box of 6)', variant: '4-Piece T20 (156g)', price: 4800, qty: 1 },
             { id: 'gear-net-cage', title: 'Pro 12x4m Practice Net Cage & Bowling Machine', variant: 'Full Match Day (8 Hrs)', price: 1500, qty: 1 }
           ];
+        }
+        for (var cIdx = 0; cIdx < this.gearCart.length; cIdx++) {
+          if (!this.gearCart[cIdx].imageUrl) {
+            this.gearCart[cIdx].imageUrl = this.getMobileGearProductImage(this.gearCart[cIdx]);
+          }
         }
         if (!this.gearOrders) {
           this.gearOrders = [
@@ -7755,6 +7765,54 @@ export function getMobileAppHtml(): string {
         if (typeof this.gearSearchQuery !== 'string') this.gearSearchQuery = '';
         if (typeof this.gearStoreExpanded !== 'boolean') this.gearStoreExpanded = true;
         if (!this.gearDeliveryVenue) this.gearDeliveryVenue = 'M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)';
+      }
+
+      getMobileGearProductImage(item) {
+        if (typeof window.getGearProductImageDataUri === 'function') {
+          return window.getGearProductImageDataUri(item);
+        }
+        var id = (item && item.id) ? String(item.id) : '';
+        var cat = (item && item.category) ? String(item.category) : 'BATS';
+        var brand = (item && item.brand) ? String(item.brand) : 'CRICOS PRO';
+        var badge = (item && item.badge) ? String(item.badge) : 'PRO SPEC';
+        var art = '';
+        var accent = '#00E599';
+        if (id === 'gear-bat-carbon') {
+          accent = '#00D2FF';
+          art = '<g transform="translate(160,90) rotate(-32)"><rect x="-12" y="-76" width="24" height="52" rx="4" fill="#0F172A" stroke="#00D2FF" stroke-width="2"/><rect x="-18" y="-24" width="36" height="96" rx="5" fill="#1E293B" stroke="#00D2FF" stroke-width="2.5"/><polygon points="0,-20 8,68 -8,68" fill="#00D2FF" opacity="0.45"/></g>';
+        } else if (id.indexOf('bat') !== -1 || cat === 'BATS') {
+          accent = '#F59E0B';
+          art = '<g transform="translate(160,90) rotate(-32)"><rect x="-11" y="-76" width="22" height="50" rx="4" fill="#00E599" stroke="#047857" stroke-width="1.8"/><rect x="-18" y="-26" width="36" height="98" rx="5" fill="#FDE68A" stroke="#D97706" stroke-width="2.2"/><polygon points="0,-20 6,66 -6,66" fill="#B45309" opacity="0.45"/></g>';
+        } else if (id === 'gear-balls-white') {
+          accent = '#38BDF8';
+          art = '<g transform="translate(160,90)"><circle cx="-26" cy="4" r="26" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/><path d="M-26,-22 C-20,-6 -20,14 -26,30" fill="none" stroke="#10B981" stroke-width="2.5" stroke-dasharray="3,2"/><circle cx="24" cy="-2" r="28" fill="#FFFFFF" stroke="#64748B" stroke-width="2.2"/><path d="M24,-30 C30,-10 30,10 24,26" fill="none" stroke="#059669" stroke-width="2.8" stroke-dasharray="3,2"/></g>';
+        } else if (id.indexOf('ball') !== -1 || cat === 'BALLS') {
+          accent = '#EF4444';
+          art = '<g transform="translate(160,90)"><circle cx="-24" cy="4" r="25" fill="#991B1B" stroke="#F87171" stroke-width="1.8"/><circle cx="22" cy="-2" r="28" fill="#DC2626" stroke="#FCA5A5" stroke-width="2.2"/><path d="M22,-30 C28,-10 28,10 22,26" fill="none" stroke="#FEF3C7" stroke-width="2.8" stroke-dasharray="3,2"/></g>';
+        } else if (id === 'gear-pad-helmet' || (cat === 'PROTECTIVE' && id.indexOf('pad-kit') === -1)) {
+          accent = '#38BDF8';
+          art = '<g transform="translate(160,92)"><path d="M-42,6 C-42,-32 34,-36 42,4 L48,14 L-44,14 Z" fill="#1E3A8A" stroke="#38BDF8" stroke-width="2.4"/><path d="M12,6 L48,6 L42,28 L10,26 Z" fill="none" stroke="#E2E8F0" stroke-width="2.2"/></g>';
+        } else if (id === 'gear-pad-kit' || cat === 'PROTECTIVE') {
+          accent = '#10B981';
+          art = '<g transform="translate(160,90)"><rect x="-34" y="-36" width="28" height="72" rx="7" fill="#F8FAFC" stroke="#10B981" stroke-width="2.2"/><rect x="6" y="-36" width="28" height="72" rx="7" fill="#F8FAFC" stroke="#10B981" stroke-width="2.2"/></g>';
+        } else if (id === 'gear-tech-smartball') {
+          accent = '#00E599';
+          art = '<g transform="translate(160,90)"><circle cx="0" cy="0" r="38" fill="none" stroke="#00D2FF" stroke-width="1.5" stroke-dasharray="4,3"/><circle cx="0" cy="0" r="24" fill="#0F172A" stroke="#00E599" stroke-width="2.4"/></g>';
+        } else if (id === 'gear-net-cage' || cat === 'NETS_TECH') {
+          accent = '#00D2FF';
+          art = '<g transform="translate(160,90)"><rect x="-56" y="-32" width="112" height="64" rx="4" fill="rgba(15,23,42,0.6)" stroke="#00E599" stroke-width="2.2"/><line x1="-28" y1="-32" x2="-28" y2="32" stroke="#38BDF8" stroke-width="1"/><line x1="0" y1="-32" x2="0" y2="32" stroke="#38BDF8" stroke-width="1"/><line x1="28" y1="-32" x2="28" y2="32" stroke="#38BDF8" stroke-width="1"/></g>';
+        } else {
+          accent = '#FBBF24';
+          art = '<g transform="translate(160,90)"><path d="M-22,-32 L22,-32 L16,6 C14,20 -14,20 -16,6 Z" fill="#F59E0B" stroke="#FEF08A" stroke-width="2.2"/><rect x="-18" y="24" width="36" height="12" rx="3" fill="#1E293B" stroke="#F59E0B" stroke-width="1.8"/></g>';
+        }
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">' +
+          '<rect width="320" height="180" rx="12" fill="#071120"/>' +
+          '<ellipse cx="160" cy="145" rx="78" ry="12" fill="' + accent + '" opacity="0.2"/>' +
+          art +
+          '<text x="14" y="24" fill="#94A3B8" font-family="sans-serif" font-size="10" font-weight="800">' + brand.replace(/&/g, 'and') + '</text>' +
+          '<text x="14" y="166" fill="' + accent + '" font-family="monospace" font-size="10" font-weight="800">' + badge.replace(/&/g, 'and') + '</text>' +
+          '</svg>';
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
       }
 
       getMobileGearCartCount() {
@@ -7789,13 +7847,18 @@ export function getMobileAppHtml(): string {
 
       addCustomMobileBatToCart(willowTitle, price) {
         this.initMobileGearStoreState();
-        this.gearCart.push({
+        var itemObj = {
           id: 'gear-custom-3d-bat',
           title: 'Custom 3D ' + willowTitle,
+          category: 'BATS',
+          brand: 'CricOS 3D Lab',
+          badge: 'CUSTOM 3D',
           variant: 'Grip: ' + (this.activeGripColor || '#00E599') + ' • SH 2lb 8oz',
           price: price || 14999,
           qty: 1
-        });
+        };
+        itemObj.imageUrl = this.getMobileGearProductImage(itemObj);
+        this.gearCart.push(itemObj);
         this.currentScreen = 'MARKETPLACE';
         this.marketCategory = 'GEAR';
         this.gearStoreExpanded = true;
@@ -7830,6 +7893,7 @@ export function getMobileAppHtml(): string {
             title: found.title,
             variant: chosenVar,
             price: found.price,
+            imageUrl: found.imageUrl || this.getMobileGearProductImage(found),
             qty: 1
           });
         }
@@ -7945,7 +8009,7 @@ export function getMobileAppHtml(): string {
             var cat = (cEl && cEl.value) ? cEl.value : 'BATS';
             var price = parseInt((pEl && pEl.value) ? pEl.value : '13499', 10) || 13499;
             var vars = ((vEl && vEl.value) ? vEl.value : 'SH (2lb 8oz)').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
-            self.gearCatalog.unshift({
+            var newGearObj = {
               id: 'gear-mobile-vendor-' + Date.now(),
               title: title,
               brand: self.profile.name || 'Verified Vendor',
@@ -7955,7 +8019,9 @@ export function getMobileAppHtml(): string {
               rating: '5.0★ (New)',
               desc: 'Published by ' + (self.profile.name || 'Turf Provider') + ' • Express 45-min Pavilion Delivery.',
               variants: vars.length ? vars : ['Standard Spec']
-            });
+            };
+            newGearObj.imageUrl = self.getMobileGearProductImage(newGearObj);
+            self.gearCatalog.unshift(newGearObj);
             self.gearSubCategory = 'ALL';
             self.closeActionSheet();
             self.showToast('✓ Published new gear listing: ' + title + ' (₹' + price.toLocaleString('en-IN') + ')', 'success');
@@ -8037,13 +8103,17 @@ export function getMobileAppHtml(): string {
         h += '<div id="mobileGearCatalogList" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem;">';
         for (var k = 0; k < filteredGear.length; k++) {
           var prod = filteredGear[k];
+          var prodImg = prod.imageUrl || this.getMobileGearProductImage(prod);
           var varOpts = '';
           for (var v = 0; v < prod.variants.length; v++) {
             varOpts += '<option value="' + prod.variants[v] + '">' + prod.variants[v] + '</option>';
           }
           h += '<div class="mobile-gear-product-card" data-gear-id="' + prod.id + '" style="background: ' + subCardBg + '; border: 1px solid ' + subCardBorder + '; border-radius: 10px; padding: 0.6rem 0.7rem;">';
-          h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">';
-          h += '<div>';
+          h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.55rem;">';
+          h += '<div class="mobile-gear-product-image-wrap" style="width: 74px; height: 58px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #071120; border: 1px solid ' + subCardBorder + ';">';
+          h += '<img class="mobile-gear-product-img" src="' + prodImg + '" alt="' + prod.title + '" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;" />';
+          h += '</div>';
+          h += '<div style="flex: 1; min-width: 0;">';
           h += '<span style="font-size: 0.58rem; font-weight: 800; color: ' + emeraldInk + '; text-transform: uppercase;">' + prod.badge + ' &bull; ' + prod.brand + '</span>';
           h += '<div style="font-size: 0.8rem; font-weight: 800; color: ' + primaryInk + '; margin: 0.1rem 0;">' + prod.title + '</div>';
           h += '<div style="font-size: 0.66rem; color: ' + secondaryInk + '; line-height: 1.3;">' + prod.desc + '</div>';
@@ -8074,7 +8144,9 @@ export function getMobileAppHtml(): string {
           h += '<div id="mobileGearCartItemsList" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.55rem;">';
           for (var c = 0; c < this.gearCart.length; c++) {
             var ci = this.gearCart[c];
-            h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.35rem; padding: 0.35rem 0.5rem; border-radius: 6px; background: ' + cardBg + '; border: 1px solid ' + subCardBorder + ';">';
+            var ciThumb = ci.imageUrl || this.getMobileGearProductImage(ci);
+            h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; padding: 0.35rem 0.5rem; border-radius: 6px; background: ' + cardBg + '; border: 1px solid ' + subCardBorder + ';">';
+            h += '<img class="mobile-gear-cart-thumb" src="' + ciThumb + '" alt="' + ci.title + '" style="width: 34px; height: 34px; border-radius: 5px; object-fit: cover; flex-shrink: 0; border: 1px solid ' + subCardBorder + '; background: #071120;" />';
             h += '<div style="min-width: 0; flex: 1;"><div style="font-size: 0.7rem; font-weight: 800; color: ' + primaryInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + ci.title + '</div><div style="font-size: 0.6rem; color: ' + cyanInk + '; font-weight: 700;">' + ci.variant + '</div></div>';
             h += '<div style="display: flex; align-items: center; gap: 0.28rem;">';
             h += '<button type="button" onclick="window.cricosMobileApp.updateMobileGearQty(' + c + ', -1)" style="width: 22px; height: 22px; border-radius: 4px; border: 1px solid ' + subCardBorder + '; background: transparent; color: ' + primaryInk + '; font-weight: 800;">−</button>';
