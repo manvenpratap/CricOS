@@ -28,6 +28,7 @@ The test suite has been consolidated into 5 high-cohesion Domain Test Suites alo
 | `tests/test_55_teams_roster_modals.py` | **Teams/Rosters Modals, Flagship Studios, Venue Weather, Pro Gear Store, Clean View & App Settings Hub (`55, 58, 69, 70, 73`)**<br>E2E verification for 3D Player Card modal, Join Team prompt, Expand Analytics drawer, Create Team modal, Command Palette (`⌘K`), Tactical Field Planner, Pitch Simulator, Live Player Auction, Intelligent Venue Weather & Collapsed Mobile 5-Hour Forecast, Pro Cricket Gear Store & Pavilion Checkout, Co-located Theme & Clean View controls, and Desktop/Mobile Unified App Settings Hub (`#modalAppSettings` & `#mobileSettingsSheet`) |
 | `tests/test_56_3d_stadium_ui_fix.py` | **3D Stadium Geometry, Offline APK Fallback & Dynamic RHB/LHB Wagon Wheel (`56, 62, 63, 67`)**<br>E2E verification for 3D stadium pitch visibility, 440px geometry, single-strip toolbars, 2D button suppression, offline non-blank 3D rendering, and dynamic RHB/LHB `OFF-SIDE` vs `ON-SIDE` trajectory/button mirroring |
 | `tests/test_57_ui_ux_contrast_and_accessibility.py` | **WCAG AA/AAA Contrast Sweeps, Delayed Tooltips, Clean Focus Declutter & Spring Toast (`57, 59, 60, 64, 66, 68`)**<br>WCAG contrast ratio verification across all 3 themes, touch target ergonomics, high-contrast focus rings, hover-delayed non-blocking tooltips, Captain scoring pad suppression, sidebar navigation declutter, and single bottom-docked spring physics toast (`#mobileToastContainer`) |
+| `tests/test_58_over_completion_and_dismissal_flow.py` | **Over Completion Bowler Rotation, Fall of Wicket Dismissal & Undo Flow (`58`)**<br>E2E verification for Over Completion bowler rotation prompt with MCC Law 21 enforcement, Fall of Wicket modal/sheet with 6 dismissal modes, dynamic caught/stumped/run-out fielder chips & bench batter selection, and seamless undo delivery across over boundaries and dismissals |
 
 ## Execution Protocol
 ```bash
@@ -35,6 +36,7 @@ The test suite has been consolidated into 5 high-cohesion Domain Test Suites alo
 ./pipeline.sh test --summary
 
 # Consolidated Playwright E2E Verification
-python3 -m pytest tests/test_54_playwright_theme_verification.py tests/test_55_teams_roster_modals.py tests/test_56_3d_stadium_ui_fix.py tests/test_57_ui_ux_contrast_and_accessibility.py -q
+python3 -m pytest tests/test_54_playwright_theme_verification.py tests/test_55_teams_roster_modals.py tests/test_56_3d_stadium_ui_fix.py tests/test_57_ui_ux_contrast_and_accessibility.py tests/test_58_over_completion_and_dismissal_flow.py -q
 ```
+
 

@@ -7695,24 +7695,33 @@ export function getDashboardHtml(): string {
         </div>
 
         <div class="form-group" id="fielderGroup" style="display: none;">
-          <label>Fielder Involved</label>
-          <input type="text" id="dismissalFielder" placeholder="e.g. Ravindra Jadeja">
+          <label id="dismissalFielderLabel">Fielder Involved</label>
+          <input type="text" id="dismissalFielder" placeholder="e.g. Ravindra Jadeja or KL Rahul (WK)" style="width: 100%; box-sizing: border-box;">
+          <div id="dismissalFielderQuickChips" style="display: flex; gap: 0.35rem; margin-top: 0.35rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Ravindra Jadeja'">Ravindra Jadeja</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='KL Rahul (WK)'">KL Rahul (WK)</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Hardik Pandya'">Hardik Pandya</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Sub Fielder'">Sub Fielder</button>
+          </div>
         </div>
 
         <div class="grid-2">
           <div class="form-group">
-            <label>Out Batter</label>
+            <label>Out Batter (Dismissed)</label>
             <select id="dismissalOutBatter">
               <option value="STRIKER" id="outStrikerOption">Virat Sharma (Striker)</option>
               <option value="NON_STRIKER" id="outNonStrikerOption">Hardik Patel (Non-Striker)</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Incoming Batter</label>
+            <label>Incoming Next Batter</label>
             <select id="dismissalNextBatter">
-              <option value="Rishabh Pant" data-stance="LHB">Rishabh Pant (LHB)</option>
-              <option value="Ravindra Jadeja" data-stance="LHB">Ravindra Jadeja (LHB)</option>
-              <option value="Jasprit Bumrah" data-stance="RHB">Jasprit Bumrah (RHB)</option>
+              <option value="Rishabh Pant" data-stance="LHB">Rishabh Pant (LHB • WK)</option>
+              <option value="Sanju Samson" data-stance="RHB">Sanju Samson (RHB • WK)</option>
+              <option value="Suryakumar Yadav" data-stance="RHB">Suryakumar Yadav (RHB • BAT)</option>
+              <option value="Shivam Dube" data-stance="LHB">Shivam Dube (LHB • ALL)</option>
+              <option value="Ravindra Jadeja" data-stance="LHB">Ravindra Jadeja (LHB • ALL)</option>
+              <option value="Axar Patel" data-stance="LHB">Axar Patel (LHB • ALL)</option>
             </select>
           </div>
         </div>
@@ -16825,6 +16834,8 @@ cricos_active_sse_connections 1</pre>
     // ==========================================
     // Dismissal / Wicket Flow
     // ==========================================
+    const desktopDismissalHistory = [];
+
     function openDismissalModal() {
       if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
         showToast('🔒 Only official Scorers can record dismissals.');
@@ -16839,6 +16850,31 @@ cricos_active_sse_connections 1</pre>
         const currentNonStriker = document.getElementById('nonStrikerName')?.textContent?.trim() || studioNonStriker.name;
         if (strikerOpt) strikerOpt.textContent = currentStriker + ' (Striker)';
         if (nonStrikerOpt) nonStrikerOpt.textContent = currentNonStriker + ' (Non-Striker)';
+
+        // Dynamically populate available bench batters
+        const nextSel = document.getElementById('dismissalNextBatter');
+        if (nextSel) {
+          const availableBench = [
+            { name: 'Rishabh Pant', stance: 'LHB', role: 'WK' },
+            { name: 'Sanju Samson', stance: 'RHB', role: 'WK' },
+            { name: 'Suryakumar Yadav', stance: 'RHB', role: 'BAT' },
+            { name: 'Shivam Dube', stance: 'LHB', role: 'ALL' },
+            { name: 'Ravindra Jadeja', stance: 'LHB', role: 'ALL' },
+            { name: 'Axar Patel', stance: 'LHB', role: 'ALL' },
+            { name: 'Kuldeep Yadav', stance: 'LHB', role: 'BOWL' },
+            { name: 'Jasprit Bumrah', stance: 'RHB', role: 'BOWL' },
+            { name: 'Mohammed Siraj', stance: 'RHB', role: 'BOWL' }
+          ];
+          const activeNames = [currentStriker, currentNonStriker];
+          nextSel.innerHTML = availableBench
+            .filter(b => !activeNames.includes(b.name))
+            .map(b => '<option value="' + b.name + '" data-stance="' + b.stance + '">' + b.name + ' (' + b.stance + ' • ' + b.role + ')</option>')
+            .join('');
+        }
+
+        const fielderInput = document.getElementById('dismissalFielder');
+        if (fielderInput) fielderInput.value = '';
+        toggleFielderField();
       }
     }
 
@@ -16848,11 +16884,24 @@ cricos_active_sse_connections 1</pre>
     }
 
     function toggleFielderField() {
-      const kind = document.getElementById('dismissalKind').value;
+      const kindSelect = document.getElementById('dismissalKind');
+      const kind = kindSelect ? kindSelect.value : 'BOWLED';
       const group = document.getElementById('fielderGroup');
+      const label = document.getElementById('dismissalFielderLabel');
+      const input = document.getElementById('dismissalFielder');
       if (group) {
-        if (kind === 'CAUGHT' || kind === 'RUN_OUT' || kind === 'STUMPED') {
+        if (kind === 'CAUGHT') {
           group.style.display = 'block';
+          if (label) label.textContent = 'Caught by (Fielder / Wicketkeeper)';
+          if (input) input.placeholder = 'e.g. Ravindra Jadeja or KL Rahul (WK)';
+        } else if (kind === 'STUMPED') {
+          group.style.display = 'block';
+          if (label) label.textContent = 'Stumped by (Wicketkeeper)';
+          if (input) input.placeholder = 'e.g. KL Rahul (WK)';
+        } else if (kind === 'RUN_OUT') {
+          group.style.display = 'block';
+          if (label) label.textContent = 'Run Out by / Thrower Assist';
+          if (input) input.placeholder = 'e.g. Ravindra Jadeja / Direct Hit';
         } else {
           group.style.display = 'none';
         }
@@ -16874,13 +16923,33 @@ cricos_active_sse_connections 1</pre>
       const currentStriker = document.getElementById('strikerName')?.textContent?.replace(' *', '').trim() || studioStriker.name;
       const currentNonStriker = document.getElementById('nonStrikerName')?.textContent?.trim() || studioNonStriker.name;
       const outName = outRole === 'STRIKER' ? currentStriker : currentNonStriker;
+      const currentBowler = document.getElementById('bowlerName')?.textContent?.split('*')[0].trim() || 'Bowler';
 
       let dismissalDesc = kind;
-      if (kind === 'CAUGHT') dismissalDesc = 'c ' + (fielder || 'Sub') + ' b Bowler';
+      if (kind === 'CAUGHT') dismissalDesc = 'c ' + (fielder || 'Sub') + ' b ' + currentBowler;
       else if (kind === 'RUN_OUT') dismissalDesc = 'run out (' + (fielder || 'Direct Hit') + ')';
-      else if (kind === 'LBW') dismissalDesc = 'lbw b Bowler';
-      else if (kind === 'BOWLED') dismissalDesc = 'b Bowler';
-      else if (kind === 'STUMPED') dismissalDesc = 'st ' + (fielder || 'Keeper') + ' b Bowler';
+      else if (kind === 'LBW') dismissalDesc = 'lbw b ' + currentBowler;
+      else if (kind === 'BOWLED') dismissalDesc = 'b ' + currentBowler;
+      else if (kind === 'STUMPED') dismissalDesc = 'st ' + (fielder || 'Keeper') + ' b ' + currentBowler;
+      else if (kind === 'HIT_WICKET') dismissalDesc = 'hit wicket b ' + currentBowler;
+
+      // Preserve snapshot for undo
+      desktopDismissalHistory.push({
+        outName,
+        outRole,
+        wasStriker: outRole === 'STRIKER',
+        previousBatterState: {
+          name: outName,
+          battingStyle: outRole === 'STRIKER' ? (studioStriker.battingStyle || 'RHB') : (studioNonStriker.battingStyle || 'LHB'),
+          runs: outRole === 'STRIKER' ? studioStriker.runs : studioNonStriker.runs,
+          balls: outRole === 'STRIKER' ? studioStriker.balls : studioNonStriker.balls,
+          fours: outRole === 'STRIKER' ? studioStriker.fours : studioNonStriker.fours,
+          sixes: outRole === 'STRIKER' ? studioStriker.sixes : studioNonStriker.sixes
+        },
+        incomingBatterName: nextBatter,
+        kind,
+        fielder
+      });
 
       scoreDelivery(0, 0, 'NONE', true, true, {
         wicket_type: kind,
@@ -21011,6 +21080,8 @@ cricos_active_sse_connections 1</pre>
         showToast('🔒 Only official Scorers can undo deliveries.');
         return;
       }
+      closeBowlerModal();
+      closeDismissalModal();
       try {
         const res = await fetch('/api/v1/scoring/matches/' + matchId + '/undo', {
           method: 'POST',
@@ -21031,6 +21102,25 @@ cricos_active_sse_connections 1</pre>
             if (fowStrip && fowStrip.lastElementChild) {
               fowStrip.removeChild(fowStrip.lastElementChild);
             }
+            if (typeof desktopDismissalHistory !== 'undefined' && desktopDismissalHistory.length > 0) {
+              const lastDismissal = desktopDismissalHistory.pop();
+              if (lastDismissal) {
+                if (lastDismissal.wasStriker) {
+                  Object.assign(studioStriker, lastDismissal.previousBatterState);
+                  setBatterStance(studioStriker.battingStyle || 'RHB', true);
+                } else {
+                  Object.assign(studioNonStriker, lastDismissal.previousBatterState);
+                }
+                updateStudioUI();
+                filterWagonBatter(studioStriker.name);
+              }
+            }
+          }
+          if (data.state && data.state.legal_balls % 6 === 5) {
+            // Undone delivery was an over-ending ball (reverted back to 5th ball of previous over)
+            if (typeof swapStudioStrike === 'function') {
+              swapStudioStrike(true);
+            }
           }
           const feed = document.getElementById('scoringFeed');
           if (feed) {
@@ -21046,6 +21136,8 @@ cricos_active_sse_connections 1</pre>
           showToast('⚠️ ' + (err.error || 'Cannot undo delivery'));
         }
       } catch (e) {
+        closeBowlerModal();
+        closeDismissalModal();
         showToast('⚠️ Error undoing delivery: Network error');
       }
     }

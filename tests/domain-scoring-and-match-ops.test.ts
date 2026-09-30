@@ -566,6 +566,65 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(mobileSrc.includes('id="btnMobileMarketplaceWeatherToggle"'), 'Marketplace weather toggle button must exist');
     });
   });
+
+  // =========================================================================
+  // 9. Over Completion Bowler Rotation, Fall of Wicket Dismissal Flow & Undo Integrity
+  // =========================================================================
+  describe('9. Over Completion Bowler Rotation, Fall of Wicket Dismissal Flow & Undo Integrity', () => {
+    it('9.1 should prompt scorer for next bowler on over completion and enforce MCC Law 21 on Desktop & Mobile', () => {
+      // Desktop Bowler Rotation checks
+      assert.ok(dashboardSrc.includes('id="modalBowlerRotation"'), 'Desktop Bowler Rotation modal must exist');
+      assert.ok(dashboardSrc.includes('promptBowlerChange'), 'Desktop promptBowlerChange function must exist');
+      assert.ok(dashboardSrc.includes('MCC Law 21'), 'Desktop Bowler modal must cite MCC Law 21');
+      assert.ok(dashboardSrc.includes('nextBowlerSelect'), 'Desktop next bowler selector must exist');
+      assert.ok(dashboardSrc.includes('confirmBowlerChange'), 'Desktop confirmBowlerChange must exist');
+
+      // Mobile Bowler Rotation checks
+      assert.ok(mobileSrc.includes('openMobileBowlerRotationSheet'), 'Mobile openMobileBowlerRotationSheet handler must exist');
+      assert.ok(mobileSrc.includes('renderMobileBowlerRotationSheet'), 'Mobile renderMobileBowlerRotationSheet renderer must exist');
+      assert.ok(mobileSrc.includes('mobile-bowler-sheet'), 'Mobile bowler sheet CSS class must exist');
+      assert.ok(mobileSrc.includes('MCC Law 21'), 'Mobile Bowler sheet must enforce MCC Law 21 consecutive overs prohibition');
+      assert.ok(mobileSrc.includes('selectMobileNextBowler'), 'Mobile selectMobileNextBowler handler must exist');
+      assert.ok(mobileSrc.includes('confirmMobileBowler'), 'Mobile confirmMobileBowler handler must exist');
+    });
+
+    it('9.2 should prompt scorer for dismissal mode, fielders involved (caught/stumped/run out), and incoming batter on Desktop & Mobile', () => {
+      // Desktop Dismissal modal checks
+      assert.ok(dashboardSrc.includes('id="modalDismissal"'), 'Desktop Fall of Wicket modal must exist');
+      assert.ok(dashboardSrc.includes('openDismissalModal'), 'Desktop openDismissalModal function must exist');
+      assert.ok(dashboardSrc.includes('dismissalKind'), 'Desktop dismissal kind selector must exist');
+      assert.ok(dashboardSrc.includes('dismissalFielder'), 'Desktop fielder input must exist');
+      assert.ok(dashboardSrc.includes('dismissalOutBatter'), 'Desktop out batter selector (Striker vs Non-Striker) must exist');
+      assert.ok(dashboardSrc.includes('dismissalNextBatter'), 'Desktop incoming batter selector must exist');
+      assert.ok(dashboardSrc.includes('toggleFielderField'), 'Desktop toggleFielderField must dynamically display fielder input');
+
+      // Mobile Dismissal sheet checks
+      assert.ok(mobileSrc.includes('openMobileDismissalSheet'), 'Mobile openMobileDismissalSheet must exist');
+      assert.ok(mobileSrc.includes('renderMobileDismissalSheet'), 'Mobile renderMobileDismissalSheet must exist');
+      assert.ok(mobileSrc.includes('selectMobileDismissalMode'), 'Mobile selectMobileDismissalMode must support 6 dismissal modes');
+      assert.ok(mobileSrc.includes('selectMobileDismissalOutRole'), 'Mobile selectMobileDismissalOutRole must allow selecting Striker vs Non-Striker');
+      assert.ok(mobileSrc.includes('setMobileDismissalFielder'), 'Mobile setMobileDismissalFielder must record fielder involved');
+      assert.ok(mobileSrc.includes('selectMobileIncomingBatter'), 'Mobile selectMobileIncomingBatter must set next batter');
+      assert.ok(mobileSrc.includes('confirmMobileDismissal'), 'Mobile confirmMobileDismissal must complete dismissal');
+      assert.ok(mobileSrc.includes('mobile-dismissal-sheet'), 'Mobile dismissal sheet CSS class must exist');
+    });
+
+    it('9.3 should handle undo last ball across over completion and dismissal states seamlessly', () => {
+      // Desktop Undo checks
+      assert.ok(dashboardSrc.includes('undoLastDelivery'), 'Desktop undoLastDelivery must exist');
+      assert.ok(dashboardSrc.includes('closeBowlerModal()'), 'Desktop undo must close bowler rotation modal');
+      assert.ok(dashboardSrc.includes('closeDismissalModal()'), 'Desktop undo must close dismissal modal');
+      assert.ok(dashboardSrc.includes('desktopDismissalHistory'), 'Desktop must track dismissal history for batter restoration');
+
+      // Mobile Undo checks
+      assert.ok(mobileSrc.includes('completedOversHistory'), 'Mobile completedOversHistory must track completed overs for seamless over boundary undo');
+      assert.ok(mobileSrc.includes('dismissalHistory'), 'Mobile dismissalHistory must track dismissed batters for full stat restoration');
+      assert.ok(mobileSrc.includes('this.bowlerRotationSheetOpen = false'), 'Mobile undo must dismiss bowler rotation sheet');
+      assert.ok(mobileSrc.includes('this.dismissalSheetOpen = false'), 'Mobile undo must dismiss fall of wicket sheet');
+      assert.ok(mobileSrc.includes('overSnap.deliveries'), 'Mobile undo must restore previous over deliveries when unwinding over boundary');
+    });
+  });
 });
+
 
 

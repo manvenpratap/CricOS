@@ -1,14 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 21:15:00
-**Version:** 1.0.0-phase2cf (Ultra-Clean View Mode with Header Removal & Compact Cards + Co-located Theme/Clean View/Settings Cluster + Unified App Settings Hub on Desktop & Mobile)  
+**Last Updated:** 2026-09-30 22:00:00
+**Version:** 1.0.0-phase2cg (Over Completion Bowler Rotation with MCC Law 21 + Fall of Wicket Dismissal Flow with Fielder Involvement & Next Batter + Seamless Over Boundary & Wicket Undo Integrity on Desktop & Mobile)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CF Completed — Ultra-Clean View Mode & Unified App Settings Hub (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CG Completed — Over Completion Bowler Rotation, Fall of Wicket Dismissal Flow & Undo Last Ball Integrity (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_58_over_completion_and_dismissal_flow.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Bowler Rotation Prompt on Over Completion (MCC Law 21)**:
+    - **Desktop Modal (`#modalBowlerRotation`)**: Automatically triggers `promptBowlerChange()` on 6th legal delivery; explicitly cites MCC Law 21 prohibiting consecutive overs by the same bowler; dynamically populates playing squad bowling figures, overs bowled, and quota limits (max 4.0 ov in T20); disables previous bowler and exhausted quota bowlers.
+    - **Mobile Bottom Sheet (`#mobileBowlerRotationSheet` / `.mobile-bowler-sheet`)**: Automatically launches on 6th legal ball or on manual scorer request (`Change Bowler ↺`); renders interactive `.mobile-bowler-card` elements with live figures (`overs • wickets/runs • econ`), MCC Law 21 warning banner, and disabled states; saves completed over snapshot in `this.completedOversHistory` and rotates ends per MCC Law 18.
+  - **2. Fall of Wicket Dismissal Flow (Modes, Fielders & Next Batter)**:
+    - **6 Dismissal Modes**: Supports `CAUGHT`, `BOWLED`, `LBW`, `RUN_OUT`, `STUMPED`, and `HIT_WICKET` across desktop and mobile.
+    - **Dismissed Batter Role Selection**: Scorer selects whether Striker or Non-Striker was dismissed (critical for Run Out scenarios).
+    - **Dynamic Fielder Involvement**: Conditionally displays fielder label and input for `CAUGHT` ("Caught by (Fielder / Wicketkeeper)"), `STUMPED` ("Stumped by (Wicketkeeper)"), and `RUN_OUT` ("Run Out by / Thrower Assist"), with 1-tap quick chips (`Ravindra Jadeja`, `KL Rahul (WK)`, `Hardik Pandya`, `Mohammed Siraj`, `Substitute`, `Direct Hit`).
+    - **Incoming Next Batter & Dynamic Stance**: Populates available squad bench excluding active batters, displays batting role and stance (`RHB` / `LHB`), and synchronizes the 360° tactical wagon wheel and 3D stadium pitch.
+    - **Complete Commentary & Telemetry**: Generates official dismissal strings (`c Fielder b Bowler`, `st Keeper b Bowler`, `run out (Fielder)`, `b Bowler`, `lbw b Bowler`, `hit wicket b Bowler`) with FOW metrics.
+  - **3. Undo Last Delivery Integrity across Over Boundaries & Dismissals**:
+    - **Modal/Sheet Clean Dismissal**: `undoLastDelivery()` immediately closes any active bowler rotation or dismissal modal/sheet.
+    - **Over Boundary Unwinding**: When current over deliveries is empty, undo pops `completedOversHistory`, restores previous bowler name, overs, figures, maidens, and 6 balls in `currentOverDeliveries`, reverses the end-of-over strike swap, and decrements ball 6 to ball 5.
+    - **Wicket Restoration**: Undoing a wicket pops `dismissalHistory`, restores the dismissed batter with their exact runs, balls, fours, sixes, and stance, decrements total wickets and bowler wickets (unless run out), and removes the wicket commentary card.
+  - **4. Complete Test Verification & Artifact Packaging**:
+    - Added Suite 9 to `tests/domain-scoring-and-match-ops.test.ts` (all 207 tests passing in 428ms).
+    - Created dedicated Playwright visual E2E suite `tests/test_58_over_completion_and_dismissal_flow.py` (2 passed in 12s with zero console errors).
+    - Recompiled and signed Play-Protect-compliant Android 15 release APK (`dist/cricos-release.apk`) and debug APK (`dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CF Completed — Ultra-Clean View Mode & Unified App Settings Hub (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Ultra-Clean View Mode (`body[data-clean-view="true"]`)**:
     - **Header Removal & Declutter**: Completely suppresses redundant obvious header strips (`#workspaceCleanFocusBar`, `#mobileCleanFocusBar`, `#roleExperienceBanner`, `.role-exp-hud-banner`, `.mobile-obvious-header`, `.section-subtitle`, `.card-subtitle`, `.comm-tactical-sub`, and `[data-clean-hide="true"]`), expanding data viewport area for match actions.
     - **Icon-Driven Controls**: Automatically hides `.clean-view-hide-label` text labels across top navigation, header actions, and persona switcher pills while preserving accessible icons and rich `data-tooltip` contextual tooltips.
