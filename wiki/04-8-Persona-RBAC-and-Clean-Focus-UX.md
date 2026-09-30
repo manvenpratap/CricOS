@@ -2,11 +2,13 @@
 
 ---
 
-## 1. Two-Stage Animated Hero Landing $\rightarrow$ Persona-Scoped Login
+## 1. UI/UX Pro Max Split Hero Section, Interactive 3D HUD & JWT Session Persistence
 
-1. **Stage 1 — 60fps Animated Stadium Hero (`#cricosHeroAuthOverlay` / `#mobileHeroAuthOverlay`)**:
-   - Full-screen HTML5 `<canvas>` (`#heroStadiumCanvas` / `#mobileHeroStadiumCanvas`) rendering sweeping floodlight cones, 3D perspective turf boundary rings, and parabolic `SIX` / `FOUR` trajectories.
-2. **Stage 2 — Verified Account & Entitlement Login (`#heroStageLogin` / `#mobileHeroStageLogin`)**:
+1. **Stage 1 — `/ui-ux-pro-max` Asymmetric 2-Column Split Hero (`#cricosHeroAuthOverlay` & `#mobileHeroAuthOverlay`)**:
+   - **Top Live Broadcast Telemetry Ribbon (`#heroLiveBroadcastRibbon`)**: Live match score (`BLR 186/4 (18.2 ov) vs MUM`), Chinnaswamy Turf A micro-climate (`26°C | 920m Alt | 1.8° Out-Swing`), `0.8ms` GiST slot lock, and `5-Account Balanced` escrow ledger, plus a **60fps Canvas Visual Mode Switcher (`#heroCanvasModeBar`: `3D Wagon Arcs`, `Hawk-Eye DRS`, `Field Radar`)**.
+   - **Left Column**: Kinetic headline (`#heroKineticHeadline`), dual primary/secondary CTAs (`#btnHeroProceedToLogin` + `#btnHeroCyclePreview`), **Instant 1-Click Demo Persona Quick-Launch Bar (`#heroQuickPersonaLaunchBar` & `#mobileHeroQuickLaunchRow`)** launching directly into the authenticated workspace with 1 click, and a **4-Pillar Tabular Telemetry Strip (`#heroTrustMetricsStrip`)**.
+   - **Right Column (`#heroInteractivePreviewHud` & `#mobileHeroInteractiveHud`)**: Multi-layer glassmorphic **Interactive 3D Broadcast Command Preview HUD** with 4 live tabs (`🏏 3D Wagon`, `🛡️ Field Radar`, `🎯 Hawk-Eye DRS`, `🏟️ Turf & Gear`), live **`RHB ↔ LHB` Stance Mirror Toggle (`#btnHeroPreviewStanceToggle`)**, and interactive 360° SVG pitch viewport (`#heroInteractivePitchSvg`).
+2. **Stage 2 — Verified Account Login & Unified JWT Session Persistence (`cricos_session_v1`)**:
    - 6 verified preset accounts with strict `allowedPersonas` arrays (`strictPersonaLock = true`):
      - **Virat Sharma**: `['CAPTAIN', 'PLAYER']`
      - **Sunil Gavaskar**: `['SCORER']`
@@ -14,6 +16,7 @@
      - **Jay Shah**: `['ORGANISER', 'TURF_PROVIDER']`
      - **Aarav Mehta**: `['FAN']`
      - **System Root**: All 8 personas (`CAPTAIN`, `PLAYER`, `SCORER`, `FAN`, `UMPIRE`, `ORGANISER`, `TURF_PROVIDER`, `ADMIN`)
+   - Sessions are persisted across reloads in `localStorage` (`cricos_session_v1` & `cricos_access_token`) and synchronized with `this.client.setSession(...)`. When authenticated, the redundant `🔑 Sign In` tab (`button[data-screen="AUTH"]`) is completely removed from `#mobileBottomNav`, and the active session badge (`#mobileActiveSessionBadge`) is shown in `Profile`.
 
 ---
 
