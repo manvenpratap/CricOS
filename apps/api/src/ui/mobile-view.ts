@@ -3804,32 +3804,105 @@ export function getMobileAppHtml(): string {
         drawHeroFrame();
       }
 
+      switchMobileHeroPreviewMode(mode) {
+        this._mobileHeroPreviewMode = mode || 'WAGON';
+        this.render();
+      }
+
+      toggleMobileHeroStance() {
+        this._mobileHeroStance = (this._mobileHeroStance === 'LHB') ? 'RHB' : 'LHB';
+        this.render();
+      }
+
       renderHeroAuthGatewayOverlay() {
         if (this.heroGatewayStage !== 'HERO' && this.heroGatewayStage !== 'LOGIN') {
           return '';
         }
         var isHero = this.heroGatewayStage === 'HERO';
-        var h = '<div id="mobileHeroAuthOverlay" style="position: fixed; inset: 0; z-index: 9995; background: radial-gradient(circle at 50% 15%, #071d32 0%, #030710 74%); display: flex; flex-direction: column; overflow-y: auto; color: #f8fafc;">';
-        h += '<canvas id="mobileHeroStadiumCanvas" width="412" height="780" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.88;"></canvas>';
+        var hMode = this._mobileHeroPreviewMode || 'WAGON';
+        var hStance = this._mobileHeroStance || 'RHB';
+        var isLhb = (hStance === 'LHB');
+        var h = '<div id="mobileHeroAuthOverlay" style="position: fixed; inset: 0; z-index: 9995; background: radial-gradient(circle at 20% 15%, rgba(0, 229, 153, 0.14) 0%, transparent 45%), radial-gradient(circle at 80% 25%, rgba(0, 210, 255, 0.14) 0%, transparent 45%), linear-gradient(180deg, #040B16 0%, #02060D 100%); display: flex; flex-direction: column; overflow-y: auto; color: #f8fafc;">';
+        h += '<canvas id="mobileHeroStadiumCanvas" width="412" height="780" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.9;"></canvas>';
 
-        h += '<header style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(4, 9, 18, 0.75); backdrop-filter: blur(12px);">';
-        h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
-        h += '<span style="font-size: 1.15rem;">🏏</span>';
-        h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
-        h += '<span style="font-size: 0.6rem; font-weight: 800; padding: 0.12rem 0.42rem; border-radius: 999px; background: rgba(0, 229, 153, 0.16); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">3D OS</span>';
+        // Live Broadcast Telemetry Strip
+        h += '<div id="mobileHeroBroadcastStrip" style="position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; padding: 0.32rem 0.85rem; background: rgba(2, 6, 14, 0.9); border-bottom: 1px solid rgba(0, 229, 153, 0.22); font-family: JetBrains Mono, monospace; font-size: 0.58rem; color: #cbd5e1;">';
+        h += '<span style="color: #00E599; font-weight: 800;">● LIVE • BLR 186/4 (18.2)</span>';
+        h += '<span style="color: #38bdf8;">26°C • 1.8° Out-Swing • 0.8ms GiST</span>';
         h += '</div>';
-        h += '<span id="mobileHeroStageBadge" style="font-size: 0.62rem; font-weight: 700; color: #00D2FF; background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.2rem 0.5rem; border-radius: 5px;">' + (isHero ? 'STAGE 1 • HERO' : 'STAGE 2 • LOGIN') + '</span>';
+
+        h += '<header style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.09); background: rgba(4, 10, 20, 0.78); backdrop-filter: blur(16px);">';
+        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+        h += '<div style="width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, rgba(0, 229, 153, 0.22), rgba(0, 210, 255, 0.22)); border: 1px solid rgba(0, 229, 153, 0.45); display: flex; align-items: center; justify-content: center;"><span style="font-size: 0.95rem;">🏏</span></div>';
+        h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
+        h += '<span style="font-size: 0.56rem; font-weight: 800; padding: 0.12rem 0.42rem; border-radius: 999px; background: rgba(0, 229, 153, 0.16); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">PRO MAX 3D</span>';
+        h += '</div>';
+        h += '<span id="mobileHeroStageBadge" style="font-size: 0.6rem; font-weight: 700; color: #00D2FF; background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.18rem 0.48rem; border-radius: 5px;">' + (isHero ? 'STAGE 1 • HERO' : 'STAGE 2 • LOGIN') + '</span>';
         h += '</header>';
 
         if (isHero) {
-          h += '<section id="mobileHeroStageLanding" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.4rem 1.1rem;">';
-          h += '<div style="font-size: 0.64rem; font-weight: 800; color: #00E599; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.25rem 0.65rem; border-radius: 999px; margin-bottom: 0.85rem;">✨ 60FPS 3D STADIUM • PERSONA-SCOPED ACCESS</div>';
-          h += '<h1 id="mobileHeroKineticHeadline" style="font-family: Space Grotesk, sans-serif; font-size: 1.75rem; font-weight: 800; line-height: 1.12; margin: 0 0 0.7rem 0; color: #f8fafc;">Every Ball. Every Tactic. Every Persona — Unified in 3D.</h1>';
-          h += '<p style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.5; margin: 0 0 1.25rem 0;">Real-time 3D parabolic ball trajectories, LHB/RHB biomechanical wagon wheels, and role-scoped workspaces. Sign in to unlock the personas assigned to your user account.</p>';
-          h += '<button type="button" id="btnMobileHeroProceedToLogin" onclick="window.cricosMobileApp.showHeroLoginStage()" style="width: 100%; max-width: 320px; background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%); color: #04070D; border: none; border-radius: 10px; padding: 0.85rem 1.2rem; font-size: 0.92rem; font-weight: 900; cursor: pointer; box-shadow: 0 10px 26px rgba(0, 229, 153, 0.3); margin-bottom: 1.25rem;" data-tooltip="Proceed from Animated Hero Page to Sign In">⚡ Enter CricOS — Sign In →</button>';
-          h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; width: 100%; text-align: left;">';
-          h += '<div style="background: rgba(10, 18, 32, 0.8); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 10px; padding: 0.65rem;"><div style="font-size: 0.74rem; font-weight: 800; color: #00E599;">📋 Scorer Studio</div><div style="font-size: 0.64rem; color: #94a3b8; margin-top: 0.15rem;">Exclusive ball-by-ball pad &amp; LHB/RHB wagon wheel.</div></div>';
-          h += '<div style="background: rgba(10, 18, 32, 0.8); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 10px; padding: 0.65rem;"><div style="font-size: 0.74rem; font-weight: 800; color: #00D2FF;">👑 Captain Hub</div><div style="font-size: 0.64rem; color: #94a3b8; margin-top: 0.15rem;">Playing XI lineup &amp; toss without scorer pad clutter.</div></div>';
+          h += '<section id="mobileHeroStageLanding" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; padding: 1rem 0.95rem 1.8rem 0.95rem;">';
+          h += '<div style="font-size: 0.6rem; font-weight: 800; color: #00E599; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.22rem 0.65rem; border-radius: 999px; margin-bottom: 0.65rem;">✨ 60FPS 3D STADIUM • RHB/LHB BIOMECHANICS • RBAC</div>';
+          h += '<h1 id="mobileHeroKineticHeadline" style="font-family: Space Grotesk, sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1.1; margin: 0 0 0.55rem 0; background: linear-gradient(135deg, #ffffff 15%, #00E599 58%, #00D2FF 95%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Every Ball. Every Tactic. Every Persona — Unified in 3D.</h1>';
+          h += '<p style="font-size: 0.74rem; color: #cbd5e1; line-height: 1.48; margin: 0 0 0.9rem 0;">Real-time 3D parabolic ball trajectories, LHB/RHB biomechanical wagon wheels, and role-scoped workspaces.</p>';
+
+          // Interactive Mobile 3D Broadcast Command Preview HUD (#mobileHeroInteractiveHud)
+          h += '<div id="mobileHeroInteractiveHud" style="width: 100%; background: rgba(10, 18, 32, 0.9); border: 1.5px solid rgba(0, 229, 153, 0.38); border-radius: 14px; padding: 0.7rem; margin-bottom: 0.9rem; text-align: left; box-shadow: 0 12px 32px rgba(0,0,0,0.55);">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">';
+          h += '<div style="display: flex; gap: 0.25rem;">';
+          var mModes = [['WAGON', '🏏 3D Wagon'], ['DRS', '🎯 DRS'], ['RADAR', '🛡️ XI Radar']];
+          for (var mi = 0; mi < mModes.length; mi++) {
+            var mm = mModes[mi];
+            var isAct = (hMode === mm[0]);
+            var mSt = isAct
+              ? 'background: rgba(0, 229, 153, 0.22); border: 1px solid #00E599; color: #00E599; font-weight: 800;'
+              : 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-weight: 700;';
+            h += '<button type="button" id="btnMobileHeroMode_' + mm[0] + '" onclick="window.cricosMobileApp.switchMobileHeroPreviewMode(&apos;' + mm[0] + '&apos;)" style="padding: 0.22rem 0.45rem; border-radius: 6px; font-size: 0.6rem; cursor: pointer; ' + mSt + '" data-tooltip="Switch mobile Hero 3D preview to ' + mm[1] + '">' + mm[1] + '</button>';
+          }
+          h += '</div>';
+          h += '<button type="button" id="btnMobileHeroStanceToggle" onclick="window.cricosMobileApp.toggleMobileHeroStance()" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.38); color: #00D2FF; border-radius: 6px; padding: 0.22rem 0.45rem; font-size: 0.6rem; font-weight: 800; cursor: pointer;" data-tooltip="Toggle RHB vs LHB batter stance">' + hStance + ' ⇄</button>';
+          h += '</div>';
+
+          h += '<div style="background: radial-gradient(circle at 50% 52%, #0a2e24 0%, #030912 100%); border: 1px solid rgba(0, 229, 153, 0.26); border-radius: 10px; padding: 0.4rem;">';
+          h += '<div style="display: flex; justify-content: space-between; font-family: JetBrains Mono, monospace; font-size: 0.54rem; margin-bottom: 0.2rem;">';
+          h += '<span id="mobileHeroSideLeft" style="color: ' + (isLhb ? '#FFB800' : '#00D2FF') + '; font-weight: 800;">' + (isLhb ? '◀ ON-SIDE' : '◀ OFF-SIDE') + '</span>';
+          h += '<span style="color: #00E599; font-weight: 800;">' + hMode + ' • ' + hStance + '</span>';
+          h += '<span id="mobileHeroSideRight" style="color: ' + (isLhb ? '#00D2FF' : '#FFB800') + '; font-weight: 800;">' + (isLhb ? 'OFF-SIDE ▶' : 'ON-SIDE ▶') + '</span>';
+          h += '</div>';
+          var arcTargetX = isLhb ? 268 : 42;
+          var arcCtrlX = isLhb ? 220 : 90;
+          h += '<svg id="mobileHeroPitchSvg" viewBox="0 0 310 120" style="width: 100%; height: 105px; display: block;">';
+          h += '<ellipse cx="155" cy="64" rx="135" ry="50" fill="rgba(0, 229, 153, 0.08)" stroke="rgba(0, 229, 153, 0.4)" stroke-width="1.4"/>';
+          h += '<ellipse cx="155" cy="64" rx="82" ry="31" fill="none" stroke="rgba(0, 210, 255, 0.28)" stroke-width="1" stroke-dasharray="3 2"/>';
+          h += '<rect x="147" y="42" width="16" height="44" rx="2" fill="#c2a675" fill-opacity="0.3" stroke="#eab308" stroke-width="1"/>';
+          if (hMode === 'DRS') {
+            h += '<path d="M 155 96 Q 154 68 155 44" fill="none" stroke="#FF3366" stroke-width="3"/>';
+            h += '<circle cx="155" cy="45" r="4.5" fill="#FF3366" stroke="#fff" stroke-width="1.2"/>';
+          } else {
+            h += '<path d="M 155 52 Q ' + arcCtrlX + ' 12 ' + arcTargetX + ' 44" fill="none" stroke="#00E599" stroke-width="2.6" stroke-linecap="round"/>';
+            h += '<circle cx="' + arcTargetX + '" cy="44" r="4.5" fill="#00E599" stroke="#fff" stroke-width="1.2"/>';
+          }
+          h += '</svg>';
+          h += '</div></div>';
+
+          h += '<button type="button" id="btnMobileHeroProceedToLogin" onclick="window.cricosMobileApp.showHeroLoginStage()" style="width: 100%; background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%); color: #04070D; border: none; border-radius: 10px; padding: 0.82rem 1.2rem; font-size: 0.9rem; font-weight: 900; cursor: pointer; box-shadow: 0 10px 26px rgba(0, 229, 153, 0.3); margin-bottom: 0.75rem;" data-tooltip="Proceed from Animated Hero Page to Sign In">⚡ Enter CricOS — Sign In →</button>';
+
+          // Instant 1-Tap Quick Launch Chips (#mobileHeroQuickLaunchRow)
+          h += '<div id="mobileHeroQuickLaunchRow" style="width: 100%; background: rgba(10, 18, 32, 0.82); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.55rem; margin-bottom: 0.75rem; text-align: left;">';
+          h += '<div style="font-size: 0.58rem; font-weight: 800; color: #00D2FF; text-transform: uppercase; margin-bottom: 0.35rem;">🚀 Instant 1-Tap Demo Persona Sign-In:</div>';
+          h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;">';
+          h += '<button type="button" id="btnMobileHeroQuickCaptain" onclick="window.cricosMobileApp.loginWithPresetAccount(&apos;CAPTAIN_PLAYER&apos;)" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.38); color: #f8fafc; border-radius: 6px; padding: 0.32rem 0.2rem; font-size: 0.62rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant sign-in as Captain Virat Sharma">👑 Captain</button>';
+          h += '<button type="button" id="btnMobileHeroQuickScorer" onclick="window.cricosMobileApp.loginWithPresetAccount(&apos;SCORER_ONLY&apos;)" style="background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.38); color: #f8fafc; border-radius: 6px; padding: 0.32rem 0.2rem; font-size: 0.62rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant sign-in as Official Scorer Sunil Gavaskar">📋 Scorer</button>';
+          h += '<button type="button" id="btnMobileHeroQuickUmpire" onclick="window.cricosMobileApp.loginWithPresetAccount(&apos;UMPIRE_OFFICIAL&apos;)" style="background: rgba(255, 184, 0, 0.14); border: 1px solid rgba(255, 184, 0, 0.38); color: #f8fafc; border-radius: 6px; padding: 0.32rem 0.2rem; font-size: 0.62rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant sign-in as Elite Umpire Nitin Menon">⚖️ Umpire</button>';
+          h += '<button type="button" id="btnMobileHeroQuickAdmin" onclick="window.cricosMobileApp.loginWithPresetAccount(&apos;ADMIN_SUPERUSER&apos;)" style="background: rgba(255, 51, 102, 0.14); border: 1px solid rgba(255, 51, 102, 0.38); color: #f8fafc; border-radius: 6px; padding: 0.32rem 0.2rem; font-size: 0.62rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant sign-in as System Root Admin">⚡ Root</button>';
+          h += '</div></div>';
+
+          // 2x2 Bento Grid
+          h += '<div id="mobileHeroBentoGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; width: 100%; text-align: left;">';
+          h += '<div style="background: rgba(10, 18, 32, 0.82); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 10px; padding: 0.6rem;"><div style="font-size: 0.72rem; font-weight: 800; color: #00E599;">📋 Scorer Studio</div><div style="font-size: 0.62rem; color: #94a3b8; margin-top: 0.15rem;">Exclusive ball-by-ball pad &amp; LHB/RHB wagon wheel.</div></div>';
+          h += '<div style="background: rgba(10, 18, 32, 0.82); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 10px; padding: 0.6rem;"><div style="font-size: 0.72rem; font-weight: 800; color: #00D2FF;">👑 Captain Hub</div><div style="font-size: 0.62rem; color: #94a3b8; margin-top: 0.15rem;">Playing XI lineup, field radar &amp; coin toss.</div></div>';
+          h += '<div style="background: rgba(10, 18, 32, 0.82); border: 1px solid rgba(255, 184, 0, 0.28); border-radius: 10px; padding: 0.6rem;"><div style="font-size: 0.72rem; font-weight: 800; color: #FFB800;">⚖️ DRS &amp; Weather</div><div style="font-size: 0.62rem; color: #94a3b8; margin-top: 0.15rem;">Hawk-Eye review &amp; 5-hr turf micro-climate.</div></div>';
+          h += '<div style="background: rgba(10, 18, 32, 0.82); border: 1px solid rgba(167, 139, 250, 0.28); border-radius: 10px; padding: 0.6rem;"><div style="font-size: 0.72rem; font-weight: 800; color: #a78bfa;">🛍️ Gear &amp; Turfs</div><div style="font-size: 0.62rem; color: #94a3b8; margin-top: 0.15rem;">15m GiST slot lock &amp; 45m pavilion delivery.</div></div>';
           h += '</div>';
           h += '</section>';
         } else {

@@ -1,14 +1,27 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 00:20:00
-**Version:** 1.0.0-phase2bw (Unified JWT Session Persistence & Removal of Redundant Sign In Tab When Authenticated)  
+**Last Updated:** 2026-09-30 06:15:00
+**Version:** 1.0.0-phase2bx (UI/UX Pro Max Split Hero Section with Interactive 3D Broadcast HUD & 1-Click Persona Sandbox)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BW Completed — Unified JWT Session Persistence & Removal of Redundant `🔑 Sign In` Tab When Authenticated (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BX Completed — UI/UX Pro Max Split Hero Section with Interactive 3D Broadcast HUD & 1-Click Persona Sandbox (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+  - **1. Desktop UI/UX Pro Max Split Hero Section (`#cricosHeroAuthOverlay` in `apps/api/src/ui/dashboard.ts`)**:
+    - Redesigned `#heroStageLanding` using `/ui-ux-pro-max` architectural guidelines (**Interactive 3D Configurator ("Show, Don't Tell")**, **Asymmetric 2-Column Split Hero**, **Multi-Layer Glassmorphism**, **Live Broadcast Telemetry**, **1-Click Zero-Friction Persona Sandbox**, and **Apple-Style Modular Bento Grid**):
+      - **Live Broadcast Telemetry Ribbon (`#heroLiveBroadcastRibbon`)**: Real-time match ticker (`BLR 186/4 (18.2 ov) vs MUM`), Chinnaswamy Turf A micro-climate (`26°C | 920m Alt | 1.8° Out-Swing`), `0.8ms` GiST slot lock, and `5-Account Balanced` escrow ledger.
+      - **Interactive Canvas Visual Mode Switcher (`#heroCanvasModeBar`)**: `#btnHeroCanvasModeWagon` (`3D Wagon Arcs`), `#btnHeroCanvasModeHawkeye` (`Hawk-Eye DRS`), and `#btnHeroCanvasModeRadar` (`Field Radar`) controlling the live 60fps `#heroStadiumCanvas` via `setHeroCanvasVisualMode(mode)`.
+      - **Left Column**: Pulsing live status pill, kinetic gradient headline (`#heroKineticHeadline`), dual primary/secondary CTAs (`#btnHeroProceedToLogin` + `#btnHeroCyclePreview`), **Instant 1-Click Demo Persona Quick-Launch Bar (`#heroQuickPersonaLaunchBar`)** (`#btnHeroQuickCaptain`, `#btnHeroQuickScorer`, `#btnHeroQuickUmpire`, `#btnHeroQuickOrganiser`, `#btnHeroQuickAdmin`) launching directly into the authenticated workspace without extra modal steps, and **4-Pillar Tabular Telemetry Strip (`#heroTrustMetricsStrip`)** (`60 FPS`, `8 Roles`, `0.8 ms`, `₹0.00`).
+      - **Right Column (`#heroInteractivePreviewHud`)**: Multi-layer glassmorphic **Live 3D Broadcast Command Preview HUD** with 4 interactive tabs (`#heroPreviewTab_SCORER`, `#heroPreviewTab_CAPTAIN`, `#heroPreviewTab_UMPIRE`, `#heroPreviewTab_COMMERCE`), live **RHB ↔ LHB Stance Mirror Toggle (`#btnHeroPreviewStanceToggle`)**, interactive 360° Biomechanical SVG Viewport (`#heroInteractivePitchSvg`), and live telemetry footer (`#heroPreviewTelemetryFooter`).
+      - **Bottom 4-Card Apple-Style Bento Grid (`#heroBentoFeatureGrid`)**.
+  - **2. Mobile & Native Android APK UI/UX Pro Max Hero Gateway (`apps/api/src/ui/mobile-view.ts`)**:
+    - Upgraded `renderHeroAuthGatewayOverlay()` and added `switchMobileHeroPreviewMode()` / `toggleMobileHeroStance()`:
+      - Added `#mobileHeroBroadcastStrip`, `#mobileHeroInteractiveHud` (with `🏏 3D Wagon`, `🎯 DRS`, `🛡️ XI Radar` mode pills + `#btnMobileHeroStanceToggle` `RHB ⇄ LHB` mirroring and `#mobileHeroPitchSvg`), `#btnMobileHeroProceedToLogin`, **Instant 1-Tap Demo Persona Sign-In Chips (`#mobileHeroQuickLaunchRow`: `#btnMobileQuickCaptain`, `#btnMobileQuickScorer`, `#btnMobileQuickUmpire`, `#btnMobileQuickOrganiser`)**, and `#mobileHeroBentoGrid`.
+  - **3. Automated E2E Verification (`tests/test_72_ui_ux_pro_max_hero_section.py`)**:
+    - Verified via Playwright across Desktop (`index.html?hero=1`) and Mobile/APK (`dist/mobile.html?hero=1`) that the asymmetric split layout, 4-tab interactive 3D HUD preview, RHB/LHB stance mirroring, 60fps canvas mode switching, and 1-click persona quick-launch operate cleanly with zero console/page errors.
+- **Preceding Phase**: Phase 2BW Completed — Unified JWT Session Persistence & Removal of Redundant `🔑 Sign In` Tab When Authenticated (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Mobile & Android APK Session Synchronization & Removal of `🔑 Sign In` Tab (`apps/api/src/ui/mobile-view.ts`)**:
     - Fixed `loginWithPresetAccount()`, `completeCustomHeroLogin()`, `finalizeAuthAndApplyRole()`, `switchUserPersona()`, and `StandaloneMobileApp` constructor so `this.client.setSession(...)` and `localStorage.setItem('cricos_session_v1', ...)` are always synchronized upon Hero login, OTP login, and default authenticated boot.
     - Updated `render()` so `isAuth = Boolean(session || this.heroGatewayStage === 'AUTHENTICATED')` guarantees the `['AUTH', '🔑', 'Sign In']` tab (`button[data-screen="AUTH"]`) is **never** rendered in `#mobileBottomNav` when the user is logged in, and automatically redirects `this.currentScreen === 'AUTH'` to the active persona's default screen (`TEAMS` / `MATCHES`).
