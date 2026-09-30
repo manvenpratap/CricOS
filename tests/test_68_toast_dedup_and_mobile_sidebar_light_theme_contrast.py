@@ -95,17 +95,37 @@ def test_mobile_sidebar_light_theme_awareness_and_legibility():
         page.goto(MOBILE_HTML, wait_until="domcontentloaded")
         page.wait_for_timeout(400)
 
-        # Sign in as Scorer and verify mobile toast cap on RHB/LHB switch + strike rotate
-        page.evaluate("""() => {
+        # Sign in as Scorer and verify mobile toast cap + bottom position + zero duplicate AndroidBridge.showToast call
+        toast_telemetry = page.evaluate("""() => {
+            let nativeToastCalls = 0;
+            window.AndroidBridge = {
+                showToast: () => { nativeToastCalls++; },
+                triggerHaptic: () => {}
+            };
             const app = window.cricosMobileApp;
             app.switchUserPersona('SCORER');
             app.setBatterStance('LHB');
             app.rotateStrike(true);
+            app.showToast('Bottom glassmorphic toast active', 'success', 3000);
+            const container = document.getElementById('mobileToastContainer');
+            const toastEl = container ? container.querySelector('.mobile-toast') : null;
+            const rect = container ? container.getBoundingClientRect() : null;
+            const animName = toastEl ? window.getComputedStyle(toastEl).animationName : '';
+            return {
+                count: document.querySelectorAll('#mobileToastContainer .mobile-toast').length,
+                nativeToastCalls,
+                isBottomHalf: rect ? rect.top > window.innerHeight * 0.65 : false,
+                hasIconBadge: Boolean(toastEl && toastEl.querySelector('.mobile-toast-icon')),
+                hasProgressBar: Boolean(toastEl && toastEl.querySelector('.mobile-toast-progress')),
+                animName
+            };
         }""")
-        mobile_toast_count = page.evaluate("""() => {
-            return document.querySelectorAll('#mobileToastContainer .mobile-toast').length;
-        }""")
-        assert mobile_toast_count <= 1, f"Expected <= 1 mobile toast, got {mobile_toast_count}"
+        assert toast_telemetry["count"] == 1, f"Expected 1 mobile toast, got {toast_telemetry['count']}"
+        assert toast_telemetry["nativeToastCalls"] == 0, "AndroidBridge.showToast must not fire duplicate native OS toast"
+        assert toast_telemetry["isBottomHalf"] is True, "Mobile toast container must be positioned in the bottom section of the screen"
+        assert toast_telemetry["hasIconBadge"] is True
+        assert toast_telemetry["hasProgressBar"] is True
+        assert "toastSpringIn" in toast_telemetry["animName"]
 
         # Helper to compute WCAG contrast ratio in browser for all elements inside #mobileSidebarDrawer & #mobileCleanFocusBar
         contrast_check_js = """(expectedLight) => {

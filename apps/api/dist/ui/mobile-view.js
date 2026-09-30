@@ -635,41 +635,107 @@ export function getMobileAppHtml() {
       }
     }
 
-    /* In-App Toast System */
+    /* In-App Toast System (Unified Bottom-Docked Glassmorphic Pill with Spring Physics) */
     .mobile-toast-container {
       position: absolute;
-      top: 54px;
-      left: 12px;
-      right: 12px;
-      z-index: 150;
+      bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+      left: 14px;
+      right: 14px;
+      z-index: 240;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      gap: 8px;
       pointer-events: none;
     }
     .mobile-toast {
       pointer-events: auto;
-      background: rgba(10, 16, 28, 0.96);
-      border: 1px solid rgba(0, 229, 153, 0.4);
-      border-radius: 12px;
-      padding: 0.65rem 0.85rem;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(10, 16, 28, 0.96), rgba(6, 11, 20, 0.98));
+      border: 1px solid rgba(0, 229, 153, 0.48);
+      border-radius: 14px;
+      padding: 0.68rem 0.85rem 0.76rem 0.85rem;
       font-size: 0.78rem;
       color: #f8fafc;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      animation: toastSlideDown 0.22s var(--ease-spring) forwards;
+      gap: 0.6rem;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.78), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      transform-origin: center bottom;
+      will-change: transform, opacity;
+      animation: toastSpringIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    .mobile-toast.success { border-color: rgba(0, 229, 153, 0.6); }
-    .mobile-toast.error { border-color: rgba(255, 51, 102, 0.6); color: #ff8099; }
-    .mobile-toast.warning { border-color: rgba(255, 184, 0, 0.6); color: #ffca40; }
-    .mobile-toast.info { border-color: rgba(0, 210, 255, 0.6); }
-    @keyframes toastSlideDown {
-      from { transform: translateY(-16px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .mobile-toast.is-exiting {
+      animation: toastSpringOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
+    .mobile-toast-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.78rem;
+      flex-shrink: 0;
+      background: rgba(0, 229, 153, 0.16);
+      border: 1px solid rgba(0, 229, 153, 0.42);
+      color: #00E599;
+    }
+    .mobile-toast-progress {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2.5px;
+      width: 100%;
+      transform-origin: left center;
+      background: linear-gradient(90deg, #00E599, #00D2FF);
+      animation: toastProgressShrink var(--toast-duration, 2200ms) linear forwards;
+    }
+    .mobile-toast.success { border-color: rgba(0, 229, 153, 0.62); }
+    .mobile-toast.success .mobile-toast-icon { background: rgba(0, 229, 153, 0.18); border-color: rgba(0, 229, 153, 0.48); color: #00E599; }
+    .mobile-toast.success .mobile-toast-progress { background: linear-gradient(90deg, #00E599, #10B981); }
+    .mobile-toast.error { border-color: rgba(255, 51, 102, 0.65); color: #fecdd3; }
+    .mobile-toast.error .mobile-toast-icon { background: rgba(255, 51, 102, 0.2); border-color: rgba(255, 51, 102, 0.5); color: #ff3366; }
+    .mobile-toast.error .mobile-toast-progress { background: linear-gradient(90deg, #ff3366, #fb7185); }
+    .mobile-toast.warning { border-color: rgba(255, 184, 0, 0.65); color: #fef3c7; }
+    .mobile-toast.warning .mobile-toast-icon { background: rgba(255, 184, 0, 0.2); border-color: rgba(255, 184, 0, 0.5); color: #ffb800; }
+    .mobile-toast.warning .mobile-toast-progress { background: linear-gradient(90deg, #ffb800, #f59e0b); }
+    .mobile-toast.info { border-color: rgba(0, 210, 255, 0.62); }
+    .mobile-toast.info .mobile-toast-icon { background: rgba(0, 210, 255, 0.18); border-color: rgba(0, 210, 255, 0.48); color: #00D2FF; }
+    .mobile-toast.info .mobile-toast-progress { background: linear-gradient(90deg, #00D2FF, #38BDF8); }
+    @keyframes toastSpringIn {
+      0% {
+        transform: translate3d(0, 28px, 0) scale(0.92);
+        opacity: 0;
+      }
+      65% {
+        transform: translate3d(0, -3px, 0) scale(1.015);
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1;
+      }
+    }
+    @keyframes toastSpringOut {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(0, 20px, 0) scale(0.94);
+        opacity: 0;
+      }
+    }
+    @keyframes toastProgressShrink {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
     }
 
     /* In-App Modal / Action Sheet System */
@@ -2700,8 +2766,16 @@ export function getMobileAppHtml() {
 
       showToast(msg, type = 'info', duration = 2200) {
         var id = 't-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+        if (this._toastCleanupTimer) {
+          clearTimeout(this._toastCleanupTimer);
+          this._toastCleanupTimer = null;
+        }
+        if (this._toastExitTimer) {
+          clearTimeout(this._toastExitTimer);
+          this._toastExitTimer = null;
+        }
         // Replace active toast in-place so mobile notifications never stack or clutter the screen
-        this.toasts = [{ id: id, msg: msg, type: type }];
+        this.toasts = [{ id: id, msg: msg, type: type, duration: duration, exiting: false }];
         if (window.CricOSSound) window.CricOSSound.playClick();
         try {
           if (window.AndroidBridge && typeof window.AndroidBridge.triggerHaptic === 'function') {
@@ -2710,17 +2784,37 @@ export function getMobileAppHtml() {
             navigator.vibrate(type === 'error' ? [80, 50, 80] : 30);
           }
         } catch (_) {}
-        try {
-          if (window.AndroidBridge && typeof window.AndroidBridge.showToast === 'function') {
-            window.AndroidBridge.showToast(msg);
-          }
-        } catch (_) {}
+        // Note: Do NOT invoke window.AndroidBridge.showToast(msg) here so the APK never displays a duplicate native OS toast at the same time
         this.renderToasts();
         var self = this;
-        setTimeout(function() {
+        var exitDelay = Math.max(250, duration - 220);
+        this._toastExitTimer = setTimeout(function() {
+          for (var i = 0; i < self.toasts.length; i++) {
+            if (self.toasts[i].id === id) {
+              self.toasts[i].exiting = true;
+            }
+          }
+          var toastEl = document.querySelector('#mobileToastContainer .mobile-toast[data-toast-id="' + id + '"]');
+          if (toastEl) {
+            toastEl.classList.add('is-exiting');
+          }
+        }, exitDelay);
+        this._toastCleanupTimer = setTimeout(function() {
           self.toasts = self.toasts.filter(function(t) { return t.id !== id; });
           self.renderToasts();
         }, duration);
+      }
+
+      dismissToast(id) {
+        var self = this;
+        var toastEl = document.querySelector('#mobileToastContainer .mobile-toast' + (id ? '[data-toast-id="' + id + '"]' : ''));
+        if (toastEl) {
+          toastEl.classList.add('is-exiting');
+        }
+        setTimeout(function() {
+          self.toasts = id ? self.toasts.filter(function(t) { return t.id !== id; }) : [];
+          self.renderToasts();
+        }, 200);
       }
 
       renderToasts() {
@@ -2729,15 +2823,18 @@ export function getMobileAppHtml() {
         var icons = {
           success: '✓',
           error: '✕',
-          warning: '⚠️',
+          warning: '!',
           info: 'ℹ'
         };
         var h = '';
         for (var i = 0; i < this.toasts.length; i++) {
           var t = this.toasts[i];
-          h += '<div class="mobile-toast ' + (t.type || 'info') + '">';
-          h += '<span style="font-weight: 800; font-size: 0.85rem;">' + (icons[t.type] || 'ℹ') + '</span>';
-          h += '<span style="flex: 1; font-weight: 600;">' + t.msg + '</span>';
+          var dur = (t.duration || 2200) + 'ms';
+          h += '<div class="mobile-toast ' + (t.type || 'info') + (t.exiting ? ' is-exiting' : '') + '" data-toast-id="' + t.id + '" style="--toast-duration: ' + dur + ';" onclick="window.cricosMobileApp.dismissToast(this.dataset.toastId)">';
+          h += '<span class="mobile-toast-icon">' + (icons[t.type] || 'ℹ') + '</span>';
+          h += '<span style="flex: 1; font-weight: 700; line-height: 1.3; letter-spacing: 0.01em;">' + t.msg + '</span>';
+          h += '<span style="font-size: 0.72rem; opacity: 0.65; font-weight: 800; padding-left: 0.25rem;">✕</span>';
+          h += '<span class="mobile-toast-progress"></span>';
           h += '</div>';
         }
         container.innerHTML = h;

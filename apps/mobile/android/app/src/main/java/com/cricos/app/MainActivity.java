@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void showToast(String toast) {
-            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+            // Native OS Toast.makeText suppressed so only the unified bottom-docked WebView toast renders
+            Log.d(TAG, "[InAppToast] " + toast);
         }
 
         @JavascriptInterface
