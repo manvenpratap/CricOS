@@ -1,14 +1,26 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 22:15:00
-**Version:** 1.0.0-phase2ch (Declutter Mobile App Top Bar: Redundant Switch Persona, Settings, Theme Change, Clean ON, Sound FX & Command Search controls streamlined to Left Navigation Drawer & Settings Sheet)  
+**Last Updated:** 2026-09-30 22:25:00
+**Version:** 1.0.0-phase2ci (Commentary Tab Decluttering: Redundant Broadcast Commentary Voice selector buttons removed from mobile commentary tab in favor of centralized App Settings pane)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CH Completed — Declutter Mobile App Top Bar & Sidebar Drawer Consolidation (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CI Completed — Commentary Tab Decluttering & Broadcast Voice Consolidation in Settings (`apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Streamlined Commentary Tab View (`this.matchSubTab === 'COMMENTARY'`)**:
+    - Removed the redundant broadcast voice selector button strip (`🎙️ Analytical (Harsha)`, `🔥 High-Octane (Ravi)`, `🧠 Dugout (Nasser)`) from the mobile commentary sub-view.
+    - Added an unobtrusive, accessible active voice badge (`#mobileActiveVoiceIndicator` displaying `🎙️ Harsha` / `🔥 Ravi` / `🧠 Nasser`) in the studio header row with contextual tooltip explaining that voice configuration is managed in App Settings.
+    - Expanded vertical viewport area for category filter chips (`All Stream`, `🎯 Field Shifts`, `🏏 4s & 6s`, `🛑 Wickets`) and live commentary cards without unnecessary scrolling.
+  - **2. Centralized Voice Style Choice in Settings Pane (`#mobileSettingsSheet`)**:
+    - Preserved full voice selection (`ANALYTICAL`, `HYPE`, `TACTICAL`) inside the App Settings pane under `🎙️ Broadcast & Commentary`.
+    - Synchronized `setMobileCommentaryVoice(voice)` and `updateMobileSetting('commentaryVoice', val)` with `localStorage` (`cricos_app_settings_v1`) and dynamic card commentary badges.
+  - **3. Verification & Artifact Release Parity**:
+    - Verified all 207 tests in 59 suites pass in 393ms via `./pipeline.sh test --summary`.
+    - Verified Playwright visual regression suite `tests/test_55_teams_roster_modals.py` passes (2 passed in 13s) and `test_58_over_completion_and_dismissal_flow.py` passes (2 passed in 12s).
+    - Recompiled and signed Play-Protect-compliant Android 15 release APK (`dist/cricos-release.apk`) and debug APK (`dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CH Completed — Declutter Mobile App Top Bar & Sidebar Drawer Consolidation (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Streamlined Decluttered Mobile Top Bar (`.mobile-header`)**:
     - Removed all 6 redundant, viewport-cramping buttons from the fixed mobile top bar:
       1. Switch persona button (`#btnMobilePersonaSwitch`)

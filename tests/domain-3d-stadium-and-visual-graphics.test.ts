@@ -635,6 +635,8 @@ describe('Domain: 3D WebGL Stadium, Visual Graphics, Motion & Precision Layouts'
       assert.ok(dashboardHtml.includes('window.speakLatestCommentary = speakLatestCommentary'));
       assert.ok(mobileHtml.includes('id="mobileCommentaryStudioRoot"'));
       assert.ok(mobileHtml.includes('id="mobileCommentaryFilterBar"'));
+      assert.ok(mobileHtml.includes('id="mobileActiveVoiceIndicator"'));
+      assert.ok(mobileHtml.includes("&apos;commentaryVoice&apos;"), 'Settings pane must configure commentaryVoice');
       assert.ok(mobileHtml.includes('setMobileCommentaryVoice(voice)'));
       assert.ok(mobileHtml.includes('setMobileCommentaryFilter(filter)'));
       assert.ok(mobileHtml.includes('speakMobileCommentary()'));

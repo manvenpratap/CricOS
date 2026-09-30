@@ -9474,23 +9474,11 @@
           h += '<div style="font-size: 0.64rem; color: #94a3b8;">Hawk-Eye speed, shot sector &amp; captaincy field shifts</div>';
           h += '</div>';
           h += '<div style="display: flex; gap: 0.3rem; align-items: center;">';
+          var voiceName = activeVoice === 'HYPE' ? 'Ravi' : (activeVoice === 'TACTICAL' ? 'Nasser' : 'Harsha');
+          h += '<span id="mobileActiveVoiceIndicator" style="font-size: 0.62rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.16rem 0.45rem; border-radius: 999px;" data-tooltip="Voice: ' + voiceName + ' (Configured in App Settings)">🎙️ ' + voiceName + '</span>';
           h += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="padding: 0.24rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.4); background: rgba(0,229,153,0.14); color: #00E599; font-size: 0.64rem; font-weight: 800;" data-tooltip="Open 11-Fielder Tactical Radar">🎯 + Field</button>';
           h += '<button type="button" onclick="window.cricosMobileApp.speakMobileCommentary()" style="padding: 0.24rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,210,255,0.4); background: rgba(0,210,255,0.14); color: #00D2FF; font-size: 0.64rem; font-weight: 800;" data-tooltip="Audio readout of latest commentary">🔊 Audio</button>';
           h += '</div>';
-          h += '</div>';
-
-          // Broadcast Voice Selector Strip
-          h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">';
-          var voices = [
-            ['ANALYTICAL', '🎙️ Analytical (Harsha)'],
-            ['HYPE', '🔥 High-Octane (Ravi)'],
-            ['TACTICAL', '🧠 Dugout (Nasser)']
-          ];
-          for (var v = 0; v < voices.length; v++) {
-            var vKey = voices[v][0];
-            var isV = activeVoice === vKey;
-            h += '<button type="button" onclick="window.cricosMobileApp.setMobileCommentaryVoice(&apos;' + vKey + '&apos;)" style="padding: 0.2rem 0.48rem; border-radius: 6px; font-size: 0.62rem; font-weight: 700; border: 1px solid ' + (isV ? '#00D2FF' : 'rgba(255,255,255,0.1)') + '; background: ' + (isV ? 'rgba(0,210,255,0.18)' : 'rgba(255,255,255,0.04)') + '; color: ' + (isV ? '#00D2FF' : '#94a3b8') + ';" data-tooltip="Switch commentary style">' + voices[v][1] + '</button>';
-          }
           h += '</div>';
 
           // Category Filter Chips
