@@ -308,6 +308,178 @@ export function getMobileAppHtml() {
       box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16) !important;
     }
 
+    /* Swiss Minimalist — Player Profile & Holographic Overrides */
+    body[data-theme="swiss"] .profile-hero-card,
+    html[data-theme="swiss"] .profile-hero-card,
+    body[data-theme="swiss"] .profile-identity-card,
+    html[data-theme="swiss"] .profile-identity-card,
+    body[data-theme="swiss"] .profile-bio-card,
+    html[data-theme="swiss"] .profile-bio-card,
+    body[data-theme="swiss"] .profile-settings-card,
+    html[data-theme="swiss"] .profile-settings-card,
+    body[data-theme="swiss"] .profile-dossier-card,
+    html[data-theme="swiss"] .profile-dossier-card,
+    body[data-theme="swiss"] .profile-tournament-card,
+    html[data-theme="swiss"] .profile-tournament-card,
+    body[data-theme="swiss"] .athletic-stats-card,
+    html[data-theme="swiss"] .athletic-stats-card,
+    body[data-theme="swiss"] .profile-stat-box,
+    html[data-theme="swiss"] .profile-stat-box,
+    body[data-theme="swiss"] .profile-badge-item,
+    html[data-theme="swiss"] .profile-badge-item {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05) !important;
+    }
+    body[data-theme="swiss"] .profile-bio-quote-icon,
+    html[data-theme="swiss"] .profile-bio-quote-icon {
+      color: #059669 !important;
+      opacity: 0.8 !important;
+    }
+    body[data-theme="swiss"] .profile-bio-text,
+    html[data-theme="swiss"] .profile-bio-text {
+      color: #334155 !important;
+    }
+    body[data-theme="swiss"] .profile-bio-tag,
+    html[data-theme="swiss"] .profile-bio-tag {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #334155 !important;
+    }
+    body[data-theme="swiss"] #btnEditProfileBio,
+    html[data-theme="swiss"] #btnEditProfileBio {
+      background: #ECFDF5 !important;
+      border-color: #059669 !important;
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] .profile-hero-name,
+    html[data-theme="swiss"] .profile-hero-name {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .profile-hero-subtitle,
+    html[data-theme="swiss"] .profile-hero-subtitle {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .profile-stat-lbl,
+    html[data-theme="swiss"] .profile-stat-lbl {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .profile-stat-val,
+    html[data-theme="swiss"] .profile-stat-val {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .athletic-player-name,
+    html[data-theme="swiss"] .athletic-player-name {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .athletic-player-sub,
+    html[data-theme="swiss"] .athletic-player-sub {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .athletic-momentum-title,
+    html[data-theme="swiss"] .athletic-momentum-title {
+      color: #334155 !important;
+    }
+    body[data-theme="swiss"] .athletic-hero-section,
+    html[data-theme="swiss"] .athletic-hero-section {
+      background: #F8FAFC !important;
+      border-bottom: 1px solid #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .athletic-rating-val,
+    html[data-theme="swiss"] .athletic-rating-val {
+      background: linear-gradient(135deg, #059669 0%, #0284C7 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+    body[data-theme="swiss"] .athletic-stat-pill,
+    html[data-theme="swiss"] .athletic-stat-pill,
+    body[data-theme="swiss"] .profile-dossier-stat,
+    html[data-theme="swiss"] .profile-dossier-stat {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .athletic-stat-lbl,
+    html[data-theme="swiss"] .athletic-stat-lbl {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .athletic-stat-num,
+    html[data-theme="swiss"] .athletic-stat-num {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .athletic-momentum-section,
+    html[data-theme="swiss"] .athletic-momentum-section {
+      background: #F8FAFC !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .athletic-ranking-ribbon,
+    html[data-theme="swiss"] .athletic-ranking-ribbon {
+      background: #FEF3C7 !important;
+      border: 1px solid #FCD34D !important;
+      color: #92400E !important;
+    }
+    body[data-theme="swiss"] #mobileHoloCard,
+    html[data-theme="swiss"] #mobileHoloCard,
+    body[data-theme="swiss"] .mobile-holo-card,
+    html[data-theme="swiss"] .mobile-holo-card {
+      background-color: #FFFFFF !important;
+      background-image: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 60%, #EEF2F6 100%) !important;
+      border: 2px solid #059669 !important;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12), 0 0 16px rgba(5, 150, 105, 0.25) !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-sheen,
+    html[data-theme="swiss"] .mobile-holo-sheen {
+      background: radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.22) 0%, rgba(2, 132, 199, 0.18) 40%, rgba(124, 58, 237, 0.14) 70%, transparent 85%) !important;
+      opacity: 0.45 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-badge,
+    html[data-theme="swiss"] .mobile-holo-badge {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-name,
+    html[data-theme="swiss"] .mobile-holo-name {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-role,
+    html[data-theme="swiss"] .mobile-holo-role {
+      color: #334155 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-jersey,
+    html[data-theme="swiss"] .mobile-holo-jersey {
+      color: #0284C7 !important;
+      text-shadow: none !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-stats-grid,
+    html[data-theme="swiss"] .mobile-holo-stats-grid {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-stat-lbl,
+    html[data-theme="swiss"] .mobile-holo-stat-lbl {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-stat-val.val-avg,
+    html[data-theme="swiss"] .mobile-holo-stat-val.val-avg {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-stat-val.val-sr,
+    html[data-theme="swiss"] .mobile-holo-stat-val.val-sr {
+      color: #0284C7 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-stat-val.val-wkts,
+    html[data-theme="swiss"] .mobile-holo-stat-val.val-wkts {
+      color: #D97706 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-stat-val.val-power,
+    html[data-theme="swiss"] .mobile-holo-stat-val.val-power {
+      color: #DC2626 !important;
+    }
+    body[data-theme="swiss"] .mobile-holo-hint,
+    html[data-theme="swiss"] .mobile-holo-hint {
+      color: #059669 !important;
+    }
+
     /* 2. Nordic Editorial Theme (Warm Oat Paper, Curvature, Organic Earth & Pine) */
     body[data-theme="nordic"], html[data-theme="nordic"] {
       --bg-pitch: #F5F0E8;
@@ -522,6 +694,178 @@ export function getMobileAppHtml() {
       border: 2px solid #15803D !important;
       color: #1C1917 !important;
       box-shadow: 0 16px 40px rgba(28, 25, 23, 0.14) !important;
+    }
+
+    /* Nordic Editorial — Player Profile & Holographic Overrides */
+    body[data-theme="nordic"] .profile-hero-card,
+    html[data-theme="nordic"] .profile-hero-card,
+    body[data-theme="nordic"] .profile-identity-card,
+    html[data-theme="nordic"] .profile-identity-card,
+    body[data-theme="nordic"] .profile-bio-card,
+    html[data-theme="nordic"] .profile-bio-card,
+    body[data-theme="nordic"] .profile-settings-card,
+    html[data-theme="nordic"] .profile-settings-card,
+    body[data-theme="nordic"] .profile-dossier-card,
+    html[data-theme="nordic"] .profile-dossier-card,
+    body[data-theme="nordic"] .profile-tournament-card,
+    html[data-theme="nordic"] .profile-tournament-card,
+    body[data-theme="nordic"] .athletic-stats-card,
+    html[data-theme="nordic"] .athletic-stats-card,
+    body[data-theme="nordic"] .profile-stat-box,
+    html[data-theme="nordic"] .profile-stat-box,
+    body[data-theme="nordic"] .profile-badge-item,
+    html[data-theme="nordic"] .profile-badge-item {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #1C1917 !important;
+      box-shadow: 0 4px 14px rgba(28, 25, 23, 0.05) !important;
+    }
+    body[data-theme="nordic"] .profile-bio-quote-icon,
+    html[data-theme="nordic"] .profile-bio-quote-icon {
+      color: #15803D !important;
+      opacity: 0.8 !important;
+    }
+    body[data-theme="nordic"] .profile-bio-text,
+    html[data-theme="nordic"] .profile-bio-text {
+      color: #44403C !important;
+    }
+    body[data-theme="nordic"] .profile-bio-tag,
+    html[data-theme="nordic"] .profile-bio-tag {
+      background: #F0ECE1 !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #44403C !important;
+    }
+    body[data-theme="nordic"] #btnEditProfileBio,
+    html[data-theme="nordic"] #btnEditProfileBio {
+      background: #F0FDF4 !important;
+      border-color: #15803D !important;
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .profile-hero-name,
+    html[data-theme="nordic"] .profile-hero-name {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .profile-hero-subtitle,
+    html[data-theme="nordic"] .profile-hero-subtitle {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .profile-stat-lbl,
+    html[data-theme="nordic"] .profile-stat-lbl {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .profile-stat-val,
+    html[data-theme="nordic"] .profile-stat-val {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .athletic-player-name,
+    html[data-theme="nordic"] .athletic-player-name {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .athletic-player-sub,
+    html[data-theme="nordic"] .athletic-player-sub {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .athletic-momentum-title,
+    html[data-theme="nordic"] .athletic-momentum-title {
+      color: #44403C !important;
+    }
+    body[data-theme="nordic"] .athletic-hero-section,
+    html[data-theme="nordic"] .athletic-hero-section {
+      background: #F5F2EB !important;
+      border-bottom: 1px solid #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] .athletic-rating-val,
+    html[data-theme="nordic"] .athletic-rating-val {
+      background: linear-gradient(135deg, #15803D 0%, #0369A1 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+    body[data-theme="nordic"] .athletic-stat-pill,
+    html[data-theme="nordic"] .athletic-stat-pill,
+    body[data-theme="nordic"] .profile-dossier-stat,
+    html[data-theme="nordic"] .profile-dossier-stat {
+      background: #F0ECE1 !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] .athletic-stat-lbl,
+    html[data-theme="nordic"] .athletic-stat-lbl {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .athletic-stat-num,
+    html[data-theme="nordic"] .athletic-stat-num {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .athletic-momentum-section,
+    html[data-theme="nordic"] .athletic-momentum-section {
+      background: #F5F2EB !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] .athletic-ranking-ribbon,
+    html[data-theme="nordic"] .athletic-ranking-ribbon {
+      background: #FEF3C7 !important;
+      border: 1px solid #FDE68A !important;
+      color: #78350F !important;
+    }
+    body[data-theme="nordic"] #mobileHoloCard,
+    html[data-theme="nordic"] #mobileHoloCard,
+    body[data-theme="nordic"] .mobile-holo-card,
+    html[data-theme="nordic"] .mobile-holo-card {
+      background-color: #FCFBF8 !important;
+      background-image: linear-gradient(145deg, #FCFBF8 0%, #F5F2EB 60%, #EAE5DC 100%) !important;
+      border: 2px solid #15803D !important;
+      box-shadow: 0 12px 30px rgba(28, 25, 23, 0.10), 0 0 16px rgba(21, 128, 61, 0.22) !important;
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-sheen,
+    html[data-theme="nordic"] .mobile-holo-sheen {
+      background: radial-gradient(circle at 50% 50%, rgba(21, 128, 61, 0.20) 0%, rgba(3, 105, 161, 0.18) 40%, rgba(109, 40, 217, 0.14) 70%, transparent 85%) !important;
+      opacity: 0.45 !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-badge,
+    html[data-theme="nordic"] .mobile-holo-badge {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-name,
+    html[data-theme="nordic"] .mobile-holo-name {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-role,
+    html[data-theme="nordic"] .mobile-holo-role {
+      color: #44403C !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-jersey,
+    html[data-theme="nordic"] .mobile-holo-jersey {
+      color: #0369A1 !important;
+      text-shadow: none !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-stats-grid,
+    html[data-theme="nordic"] .mobile-holo-stats-grid {
+      background: #F0ECE1 !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-stat-lbl,
+    html[data-theme="nordic"] .mobile-holo-stat-lbl {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-stat-val.val-avg,
+    html[data-theme="nordic"] .mobile-holo-stat-val.val-avg {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-stat-val.val-sr,
+    html[data-theme="nordic"] .mobile-holo-stat-val.val-sr {
+      color: #0369A1 !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-stat-val.val-wkts,
+    html[data-theme="nordic"] .mobile-holo-stat-val.val-wkts {
+      color: #C2410C !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-stat-val.val-power,
+    html[data-theme="nordic"] .mobile-holo-stat-val.val-power {
+      color: #BE123C !important;
+    }
+    body[data-theme="nordic"] .mobile-holo-hint,
+    html[data-theme="nordic"] .mobile-holo-hint {
+      color: #15803D !important;
     }
 
     /* 3. Stadium Night Theme (High-Intensity Broadcast Glassmorphism & Floodlights) */
@@ -2198,6 +2542,174 @@ export function getMobileAppHtml() {
       box-shadow: 0 0 22px rgba(0, 229, 153, 0.55);
     }
 
+    /* Mobile Profile Cards & Dossiers */
+    .profile-hero-card {
+      background: rgba(10, 16, 28, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 0.65rem 0.85rem;
+      margin-bottom: 0.65rem;
+    }
+    .profile-settings-card {
+      background: rgba(10, 16, 28, 0.9);
+      border: 1px solid rgba(0, 210, 255, 0.28);
+      border-radius: 12px;
+      padding: 0.65rem 0.85rem;
+      margin-bottom: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .profile-stat-box {
+      background: rgba(10, 16, 28, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 0.45rem;
+      text-align: center;
+    }
+    .profile-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: rgba(10, 16, 28, 0.7);
+      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
+    }
+    .profile-tournament-card {
+      background: rgba(10, 16, 28, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 0.5rem 0.65rem;
+    }
+    .profile-dossier-card {
+      background: rgba(10, 16, 28, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 0.75rem 0.85rem;
+      margin-bottom: 0.65rem;
+    }
+    .profile-dossier-stat {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.4rem;
+      border-radius: 6px;
+    }
+    .profile-hero-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+    .profile-hero-subtitle {
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+    .profile-stat-val {
+      font-family: 'Chakra Petch', monospace;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .profile-stat-lbl {
+      font-size: 0.6rem;
+      color: #94a3b8;
+    }
+    .athletic-player-name {
+      color: #f8fafc;
+    }
+    .athletic-player-sub {
+      color: #94a3b8;
+    }
+    .athletic-momentum-title {
+      color: #cbd5e1;
+    }
+
+    /* Mobile 3D Holographic Player Card */
+    .mobile-holo-card {
+      background: linear-gradient(145deg, rgba(16, 24, 40, 0.95), rgba(4, 7, 13, 0.98));
+      border: 2px solid rgba(0, 229, 153, 0.4);
+      border-radius: 14px;
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      transform-style: preserve-3d;
+      transition: transform 120ms var(--ease-out);
+      touch-action: none;
+      cursor: grab;
+    }
+    .mobile-holo-sheen {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 229, 153, 0.3) 0%, rgba(0, 210, 255, 0.2) 40%, rgba(168, 85, 247, 0.15) 70%, transparent 85%);
+      opacity: 0.35;
+      pointer-events: none;
+      transition: opacity 150ms ease;
+    }
+    .mobile-holo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .mobile-holo-badge {
+      font-size: 0.65rem;
+      color: #00E599;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .mobile-holo-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #F8FAFC;
+    }
+    .mobile-holo-role {
+      font-size: 0.72rem;
+      color: #94A3B8;
+    }
+    .mobile-holo-jersey {
+      font-family: 'Chakra Petch', monospace;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #00D2FF;
+      text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+    }
+    .mobile-holo-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 0.6rem;
+      border-radius: 8px;
+      margin-bottom: 0.65rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .mobile-holo-stat-lbl {
+      font-size: 0.58rem;
+      color: #94A3B8;
+    }
+    .mobile-holo-stat-val {
+      font-size: 0.95rem;
+      font-weight: 800;
+      font-family: 'Chakra Petch', monospace;
+    }
+    .mobile-holo-stat-val.val-avg { color: #00E599; }
+    .mobile-holo-stat-val.val-sr { color: #00D2FF; }
+    .mobile-holo-stat-val.val-wkts { color: #FFB800; }
+    .mobile-holo-stat-val.val-power { color: #FF3366; }
+    .mobile-holo-hint {
+      font-size: 0.68rem;
+      color: #00E599;
+      text-align: center;
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+    }
+
     /* ==========================================================================
        Mobile 3D WebGL Viewport, Toolbars & Touch Ergonomics
        ========================================================================== */
@@ -3327,8 +3839,8 @@ export function getMobileAppHtml() {
         h += '<div class="athletic-player-meta">';
         h += '<div class="athletic-avatar">#' + p.jersey + '</div>';
         h += '<div>';
-        h += '<div style="font-size: 0.95rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">' + p.name + '</div>';
-        h += '<div style="font-size: 0.7rem; color: #94a3b8;">' + p.role + ' • ' + p.form + '</div>';
+        h += '<div class="athletic-player-name" style="font-size: 0.95rem; font-weight: 800; font-family: Space Grotesk, sans-serif;">' + p.name + '</div>';
+        h += '<div class="athletic-player-sub" style="font-size: 0.7rem;">' + p.role + ' • ' + p.form + '</div>';
         h += '<div class="athletic-ranking-ribbon">';
         h += '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>';
         h += '<span>' + p.rank + '</span>';
@@ -3352,7 +3864,7 @@ export function getMobileAppHtml() {
 
         h += '<div class="athletic-momentum-section">';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem;">';
-        h += '<span style="font-weight: 700; color: #cbd5e1;">⚡ 20-Match Momentum Spectrum</span>';
+        h += '<span class="athletic-momentum-title" style="font-weight: 700;">⚡ 20-Match Momentum Spectrum</span>';
         h += '<span style="color: #00E599; font-weight: 800;">Surging +14%</span>';
         h += '</div>';
         h += '<div class="athletic-spectrum-track">' + barsHtml + '</div>';
@@ -3472,7 +3984,15 @@ export function getMobileAppHtml() {
         if (sheen) {
           var px = ((x / rect.width) * 100).toFixed(0);
           var py = ((y / rect.height) * 100).toFixed(0);
-          sheen.style.background = 'radial-gradient(circle at ' + px + '% ' + py + '%, rgba(0, 229, 153, 0.45) 0%, rgba(0, 210, 255, 0.25) 35%, rgba(168, 85, 247, 0.2) 65%, transparent 85%)';
+          var isSwiss = (document.body.getAttribute('data-theme') === 'swiss' || document.documentElement.getAttribute('data-theme') === 'swiss');
+          var isNordic = (document.body.getAttribute('data-theme') === 'nordic' || document.documentElement.getAttribute('data-theme') === 'nordic');
+          if (isSwiss) {
+            sheen.style.background = 'radial-gradient(circle at ' + px + '% ' + py + '%, rgba(5, 150, 105, 0.35) 0%, rgba(2, 132, 199, 0.22) 35%, rgba(124, 58, 237, 0.18) 65%, transparent 85%)';
+          } else if (isNordic) {
+            sheen.style.background = 'radial-gradient(circle at ' + px + '% ' + py + '%, rgba(21, 128, 61, 0.35) 0%, rgba(3, 105, 161, 0.22) 35%, rgba(109, 40, 217, 0.18) 65%, transparent 85%)';
+          } else {
+            sheen.style.background = 'radial-gradient(circle at ' + px + '% ' + py + '%, rgba(0, 229, 153, 0.45) 0%, rgba(0, 210, 255, 0.25) 35%, rgba(168, 85, 247, 0.2) 65%, transparent 85%)';
+          }
           sheen.style.opacity = '1';
         }
       }
@@ -7359,23 +7879,23 @@ export function getMobileAppHtml() {
         chipsHtml += '</div>';
 
         var cardHtml = '<div style="perspective: 900px; padding: 0.5rem 0;">' +
-          '<div id="mobileHoloCard" onpointermove="window.cricosMobileApp.onHoloCardMove(event)" onpointerleave="window.cricosMobileApp.onHoloCardLeave(event)" ontouchmove="window.cricosMobileApp.onHoloCardMove(event)" ontouchend="window.cricosMobileApp.onHoloCardLeave(event)" style="background: linear-gradient(145deg, rgba(16, 24, 40, 0.95), rgba(4, 7, 13, 0.98)); border: 2px solid rgba(0, 229, 153, 0.4); border-radius: 14px; padding: 1rem; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); transform-style: preserve-3d; transition: transform 120ms var(--ease-out); touch-action: none; cursor: grab;">' +
-            '<div id="mobileHoloSheen" style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,229,153,0.3) 0%, rgba(0,210,255,0.2) 40%, rgba(168,85,247,0.15) 70%, transparent 85%); opacity: 0.35; pointer-events: none; transition: opacity 150ms ease;"></div>' +
-            '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; position: relative; z-index: 2;">' +
+          '<div id="mobileHoloCard" class="mobile-holo-card holographic-card" onpointermove="window.cricosMobileApp.onHoloCardMove(event)" onpointerleave="window.cricosMobileApp.onHoloCardLeave(event)" ontouchmove="window.cricosMobileApp.onHoloCardMove(event)" ontouchend="window.cricosMobileApp.onHoloCardLeave(event)">' +
+            '<div id="mobileHoloSheen" class="mobile-holo-sheen"></div>' +
+            '<div class="mobile-holo-header">' +
               '<div>' +
-                '<div style="font-size: 0.65rem; color: #00E599; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">CricOS Holographic Athlete Card</div>' +
-                '<div style="font-size: 1.25rem; font-weight: 800; font-family: Space Grotesk, sans-serif; color: #F8FAFC;">' + activeName + '</div>' +
-                '<div style="font-size: 0.72rem; color: #94A3B8;">' + p.role.replace('_', ' ') + '</div>' +
+                '<div class="mobile-holo-badge">CricOS Holographic Athlete Card</div>' +
+                '<div class="mobile-holo-name">' + activeName + '</div>' +
+                '<div class="mobile-holo-role">' + p.role.replace('_', ' ') + '</div>' +
               '</div>' +
-              '<div style="font-family: Chakra Petch, monospace; font-size: 1.5rem; font-weight: 800; color: #00D2FF; text-shadow: 0 0 10px rgba(0,210,255,0.4);">' + p.jersey + '</div>' +
+              '<div class="mobile-holo-jersey">' + p.jersey + '</div>' +
             '</div>' +
-            '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; background: rgba(0,0,0,0.5); padding: 0.6rem; border-radius: 8px; margin-bottom: 0.65rem; border: 1px solid rgba(255,255,255,0.06); text-align: center; position: relative; z-index: 2;">' +
-              '<div><div style="font-size: 0.58rem; color: #94A3B8;">AVG</div><div style="font-size: 0.95rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">' + p.avg + '</div></div>' +
-              '<div><div style="font-size: 0.58rem; color: #94A3B8;">S/R</div><div style="font-size: 0.95rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">' + p.sr + '</div></div>' +
-              '<div><div style="font-size: 0.58rem; color: #94A3B8;">WKTS</div><div style="font-size: 0.95rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">' + p.wkts + '</div></div>' +
-              '<div><div style="font-size: 0.58rem; color: #94A3B8;">POWER</div><div style="font-size: 0.95rem; font-weight: 800; color: #FF3366; font-family: Chakra Petch, monospace;">' + p.power + '</div></div>' +
+            '<div class="mobile-holo-stats-grid">' +
+              '<div class="mobile-holo-stat-cell"><div class="mobile-holo-stat-lbl">AVG</div><div class="mobile-holo-stat-val val-avg">' + p.avg + '</div></div>' +
+              '<div class="mobile-holo-stat-cell"><div class="mobile-holo-stat-lbl">S/R</div><div class="mobile-holo-stat-val val-sr">' + p.sr + '</div></div>' +
+              '<div class="mobile-holo-stat-cell"><div class="mobile-holo-stat-lbl">WKTS</div><div class="mobile-holo-stat-val val-wkts">' + p.wkts + '</div></div>' +
+              '<div class="mobile-holo-stat-cell"><div class="mobile-holo-stat-lbl">POWER</div><div class="mobile-holo-stat-val val-power">' + p.power + '</div></div>' +
             '</div>' +
-            '<div style="font-size: 0.68rem; color: #00E599; text-align: center; font-weight: 700; position: relative; z-index: 2;">👆 Touch & Drag to Tilt 3D Hologram</div>' +
+            '<div class="mobile-holo-hint">👆 Touch & Drag to Tilt 3D Hologram</div>' +
           '</div>' +
         '</div>';
 
@@ -10409,7 +10929,7 @@ export function getMobileAppHtml() {
         h += '</div></div>';
 
         // CricOS Unified App Settings Hub Card
-        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div class="profile-settings-card" style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; display: flex; justify-content: space-between; align-items: center;">';
         h += '<div>';
         h += '<div style="font-size: 0.78rem; font-weight: 800; color: #00D2FF; display: flex; align-items: center; gap: 0.35rem;"><span>⚙️</span><span>CricOS App Settings</span></div>';
         h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Theme, Clean View, Audio, Stance &amp; Units</div>';
@@ -10418,7 +10938,7 @@ export function getMobileAppHtml() {
         h += '</div>';
 
         // Profile Identity Card with Avatar Upload
-        h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem;">';
+        h += '<div class="profile-hero-card" style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.75rem;">';
 
         // Avatar with upload support
@@ -10435,8 +10955,8 @@ export function getMobileAppHtml() {
         h += '<input type="file" id="mobileProfilePhotoInput" accept="image/*" style="display: none;" onchange="window.cricosMobileApp.handleMobileProfilePhoto(event)">';
 
         h += '<div style="flex: 1;">';
-        h += '<div style="font-size: 1.05rem; font-weight: 700;">' + this.profile.name + '</div>';
-        h += '<div style="font-size: 0.7rem; color: #94a3b8;"><span style="color: #00E599; font-weight: 600;">' + this.profile.persona + '</span> • ' + this.profile.role + ' • ' + this.profile.teamName + '</div>';
+        h += '<div class="profile-hero-name" style="font-size: 1.05rem; font-weight: 700;">' + this.profile.name + '</div>';
+        h += '<div class="profile-hero-subtitle" style="font-size: 0.7rem;"><span style="color: #00E599; font-weight: 600;">' + this.profile.persona + '</span> • ' + this.profile.role + ' • ' + this.profile.teamName + '</div>';
         h += '</div></div></div>';
 
         // Custom Cricket Bio & Profile Specifications Card
@@ -10462,9 +10982,9 @@ export function getMobileAppHtml() {
           // Career Figures
           h += '<div style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.35rem;">🏏 Career Batting Figures</div>';
           h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.65rem;">';
-          h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.45rem; text-align: center;" data-tooltip="Total Career Runs"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">' + this.profile.batting.runs + '</div><div style="font-size: 0.6rem; color: #94a3b8;">Runs</div></div>';
-          h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.45rem; text-align: center;" data-tooltip="Batting Average"><div style="font-size: 1rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + avg + '</div><div style="font-size: 0.6rem; color: #94a3b8;">Average</div></div>';
-          h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.45rem; text-align: center;" data-tooltip="Batting Strike Rate"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">' + sr + '</div><div style="font-size: 0.6rem; color: #94a3b8;">Strike Rate</div></div>';
+          h += '<div class="profile-stat-box" style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.45rem; text-align: center;" data-tooltip="Total Career Runs"><div class="profile-stat-val" style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">' + this.profile.batting.runs + '</div><div class="profile-stat-lbl" style="font-size: 0.6rem; color: #94a3b8;">Runs</div></div>';
+          h += '<div class="profile-stat-box" style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.45rem; text-align: center;" data-tooltip="Batting Average"><div class="profile-stat-val" style="font-size: 1rem; font-weight: 800; font-family: Chakra Petch, monospace;">' + avg + '</div><div class="profile-stat-lbl" style="font-size: 0.6rem; color: #94a3b8;">Average</div></div>';
+          h += '<div class="profile-stat-box" style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.45rem; text-align: center;" data-tooltip="Batting Strike Rate"><div class="profile-stat-val" style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">' + sr + '</div><div class="profile-stat-lbl" style="font-size: 0.6rem; color: #94a3b8;">Strike Rate</div></div>';
           h += '</div>';
 
           // Career Milestone Badges
@@ -10475,7 +10995,7 @@ export function getMobileAppHtml() {
               var bg = this.profile.badges[b];
               var borderClr = bg.rarity === 'LEGENDARY' ? '#FFB800' : (bg.rarity === 'RARE' ? '#00D2FF' : 'rgba(255,255,255,0.08)');
               var badgeClr = bg.rarity === 'LEGENDARY' ? '#FFB800' : (bg.rarity === 'RARE' ? '#00D2FF' : '#00E599');
-              h += '<div style="display: flex; align-items: center; gap: 0.65rem; background: rgba(10, 16, 28, 0.7); border: 1px solid ' + borderClr + '; border-radius: 8px; padding: 0.45rem 0.65rem;" data-tooltip="' + bg.description + '">';
+              h += '<div class="profile-badge-item" style="display: flex; align-items: center; gap: 0.65rem; background: rgba(10, 16, 28, 0.7); border: 1px solid ' + borderClr + '; border-radius: 8px; padding: 0.45rem 0.65rem;" data-tooltip="' + bg.description + '">';
               h += '<div style="font-size: 1.2rem;">' + bg.icon + '</div>';
               h += '<div style="flex: 1;">';
               h += '<div style="font-size: 0.78rem; font-weight: 700; color: #f8fafc;">' + bg.title + '</div>';
@@ -10493,7 +11013,7 @@ export function getMobileAppHtml() {
             h += '<div style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.65rem;">';
             for (var t = 0; t < this.profile.tournaments.length; t++) {
               var tr = this.profile.tournaments[t];
-              h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.5rem 0.65rem;" data-tooltip="' + tr.tournamentName + ': ' + tr.runs + ' runs @ avg ' + tr.average + '">';
+              h += '<div class="profile-tournament-card" style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.5rem 0.65rem;" data-tooltip="' + tr.tournamentName + ': ' + tr.runs + ' runs @ avg ' + tr.average + '">';
               h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">';
               h += '<span style="font-size: 0.78rem; font-weight: 700; color: #f8fafc;">' + tr.tournamentName + '</span>';
               h += '<span style="font-size: 0.65rem; color: #00D2FF; font-weight: 600;">' + tr.year + '</span>';
@@ -10511,51 +11031,51 @@ export function getMobileAppHtml() {
         } else {
           // Dedicated Operational & Credential Dossier for Non-Athletes
           var roleRole = this.profile.persona;
-          h += '<div style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
+          h += '<div class="profile-dossier-card" style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
           h += '<div style="font-size: 0.65rem; font-weight: 700; color: ' + expCfg.badgeColor + '; text-transform: uppercase;">Professional Dossier &amp; Accreditation</div>';
           h += '<h3 style="margin: 0.15rem 0 0.5rem; font-size: 1rem; font-family: Space Grotesk, sans-serif;">' + expCfg.title + '</h3>';
 
           if (roleRole === 'UMPIRE') {
             h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.65rem; text-align: center;">';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">48</div><div style="font-size: 0.58rem; color: #94a3b8;">Matches</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">99.2%</div><div style="font-size: 0.58rem; color: #94a3b8;">DRS Accuracy</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">14</div><div style="font-size: 0.58rem; color: #94a3b8;">Sanctions</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">48</div><div style="font-size: 0.58rem; color: #94a3b8;">Matches</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">99.2%</div><div style="font-size: 0.58rem; color: #94a3b8;">DRS Accuracy</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">14</div><div style="font-size: 0.58rem; color: #94a3b8;">Sanctions</div></div>';
             h += '</div>';
             h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,210,255,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00D2FF;">';
             h += '<strong>Accreditation:</strong> ICC Elite Panel Level 3 Official. Certified for Hawk-Eye DRS telemetry review, Law 41/42 sanctions, and cryptographic match card signing.';
             h += '</div>';
           } else if (roleRole === 'SCORER') {
             h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.65rem; text-align: center;">';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">112</div><div style="font-size: 0.58rem; color: #94a3b8;">Matches</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">99.9%</div><div style="font-size: 0.58rem; color: #94a3b8;">Sync Accuracy</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">0</div><div style="font-size: 0.58rem; color: #94a3b8;">DNB Errors</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">112</div><div style="font-size: 0.58rem; color: #94a3b8;">Matches</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">99.9%</div><div style="font-size: 0.58rem; color: #94a3b8;">Sync Accuracy</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">0</div><div style="font-size: 0.58rem; color: #94a3b8;">DNB Errors</div></div>';
             h += '</div>';
             h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00E599;">';
             h += '<strong>Accreditation:</strong> BCCI Grade-A Certified Digital Scorer. Sub-second delivery telemetry, 8-zone wagon wheel precision, and Cricsheet JSON / XML export certified.';
             h += '</div>';
           } else if (roleRole === 'TURF_PROVIDER') {
             h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.65rem; text-align: center;">';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">3</div><div style="font-size: 0.58rem; color: #94a3b8;">Pitches</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">1,420h</div><div style="font-size: 0.58rem; color: #94a3b8;">Hours Booked</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">98.4%</div><div style="font-size: 0.58rem; color: #94a3b8;">True Bounce</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">3</div><div style="font-size: 0.58rem; color: #94a3b8;">Pitches</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">1,420h</div><div style="font-size: 0.58rem; color: #94a3b8;">Hours Booked</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">98.4%</div><div style="font-size: 0.58rem; color: #94a3b8;">True Bounce</div></div>';
             h += '</div>';
             h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00E599;">';
             h += '<strong>Operations:</strong> Commercial Turf Operator with authoritative 15-min GiST double-booking immunity, floodlight telemetry, and automated escrow payout settlement.';
             h += '</div>';
           } else if (roleRole === 'ORGANISER') {
             h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.65rem; text-align: center;">';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">8</div><div style="font-size: 0.58rem; color: #94a3b8;">Tournaments</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">64</div><div style="font-size: 0.58rem; color: #94a3b8;">Clubs</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">₹4.5M</div><div style="font-size: 0.58rem; color: #94a3b8;">Prize Purse</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">8</div><div style="font-size: 0.58rem; color: #94a3b8;">Tournaments</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">64</div><div style="font-size: 0.58rem; color: #94a3b8;">Clubs</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">₹4.5M</div><div style="font-size: 0.58rem; color: #94a3b8;">Prize Purse</div></div>';
             h += '</div>';
             h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,210,255,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00D2FF;">';
             h += '<strong>Organiser Directorate:</strong> Tournament Organiser managing Multi-Division promotion &amp; relegation ladders, NRR computations, and automated fixture calendars.';
             h += '</div>';
           } else if (roleRole === 'ADMIN') {
             h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.65rem; text-align: center;">';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">26</div><div style="font-size: 0.58rem; color: #94a3b8;">Services</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">99.99%</div><div style="font-size: 0.58rem; color: #94a3b8;">Uptime</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">₹0.00</div><div style="font-size: 0.58rem; color: #94a3b8;">Imbalance</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">26</div><div style="font-size: 0.58rem; color: #94a3b8;">Services</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">99.99%</div><div style="font-size: 0.58rem; color: #94a3b8;">Uptime</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: Chakra Petch, monospace;">₹0.00</div><div style="font-size: 0.58rem; color: #94a3b8;">Imbalance</div></div>';
             h += '</div>';
             h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00E599;">';
             h += '<strong>Governance:</strong> Root platform authority supervising 5-account double-entry journals, dispute arbitration, and microservice cluster health.';
@@ -10563,9 +11083,9 @@ export function getMobileAppHtml() {
           } else {
             // FAN
             h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.65rem; text-align: center;">';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #f97316; font-family: Chakra Petch, monospace;">24</div><div style="font-size: 0.58rem; color: #94a3b8;">Matches</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">1,450</div><div style="font-size: 0.58rem; color: #94a3b8;">Live Cheers</div></div>';
-            h += '<div style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">88%</div><div style="font-size: 0.58rem; color: #94a3b8;">Poll Win Rate</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #f97316; font-family: Chakra Petch, monospace;">24</div><div style="font-size: 0.58rem; color: #94a3b8;">Matches</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">1,450</div><div style="font-size: 0.58rem; color: #94a3b8;">Live Cheers</div></div>';
+            h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: Chakra Petch, monospace;">88%</div><div style="font-size: 0.58rem; color: #94a3b8;">Poll Win Rate</div></div>';
             h += '</div>';
             h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(249,115,22,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #f97316;">';
             h += '<strong>Supporter Pass:</strong> Verified Stadium Ultra member. Real-time broadcast telemetry, live cheer participation, and match prediction voting enabled.';
@@ -10573,39 +11093,6 @@ export function getMobileAppHtml() {
           }
           h += '</div>';
         }
-
-        // 🌐 3D Visualization Studio Hub (Universal parity for all 8 personas)
-        h += '<div class="mobile-three-studio-card" style="background: rgba(10, 16, 28, 0.9); border: 1.5px solid rgba(0, 229, 153, 0.35); border-radius: 12px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">';
-        h += '<div>';
-        h += '<div style="font-size: 0.65rem; font-weight: 700; color: #00E599; text-transform: uppercase; letter-spacing: 0.5px;">Immersive Graphics</div>';
-        h += '<div style="font-size: 0.95rem; font-weight: 800; color: #F8FAFC; font-family: Space Grotesk, sans-serif;">🌐 3D Visualization Studio</div>';
-        h += '</div>';
-        h += '<span style="font-size: 0.62rem; color: #00D2FF; background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.15rem 0.45rem; border-radius: 9999px; font-weight: 700;">WebGL Active</span>';
-        h += '</div>';
-        h += '<div style="font-size: 0.68rem; color: #94A3B8; margin-bottom: 0.65rem;">Explore stadium pitch acoustics, championship silverware, custom willow bats, and holographic athlete cards in interactive 3D:</div>';
-        h += '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.45rem;">';
-        h += '<button type="button" class="mobile-three-tile-btn" onclick="window.cricosMobileApp.navigateTo(&apos;MATCHES&apos;); window.cricosMobileApp.setWagonDisplayMode(&apos;3D&apos;);" style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.55rem; text-align: left; cursor: pointer;" data-tooltip="Explore 360° interactive 3D stadium pitch with DRS & Hawk-Eye" aria-label="3D Stadium Pitch Viewport">';
-        h += '<div style="font-size: 1.1rem; margin-bottom: 0.15rem;">🌐</div>';
-        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #F8FAFC;">3D Stadium Pitch</div>';
-        h += '<div style="font-size: 0.58rem; color: #00E599;">8 Cameras &amp; DRS Overlays</div>';
-        h += '</button>';
-        h += '<button type="button" class="mobile-three-tile-btn" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet()" style="background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.25); border-radius: 8px; padding: 0.55rem; text-align: left; cursor: pointer;" data-tooltip="Inspect 3D Championship Trophy Cabinet and silverware" aria-label="3D Championship Trophy Cabinet">';
-        h += '<div style="font-size: 1.1rem; margin-bottom: 0.15rem;">🏆</div>';
-        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #F8FAFC;">Trophy Cabinet</div>';
-        h += '<div style="font-size: 0.58rem; color: #FFB800;">360° Silverware &amp; Shield</div>';
-        h += '</button>';
-        h += '<button type="button" class="mobile-three-tile-btn" onclick="window.cricosMobileApp.openGearCustomizerSheet()" style="background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 8px; padding: 0.55rem; text-align: left; cursor: pointer;" data-tooltip="Customise 3D willow blade, spine profile and grip" aria-label="3D Cricket Bat Configurator">';
-        h += '<div style="font-size: 1.1rem; margin-bottom: 0.15rem;">🏏</div>';
-        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #F8FAFC;">Bat Configurator</div>';
-        h += '<div style="font-size: 0.58rem; color: #00D2FF;">Willow Grade &amp; Grip Chips</div>';
-        h += '</button>';
-        h += '<button type="button" class="mobile-three-tile-btn" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 0.55rem; text-align: left; cursor: pointer;" data-tooltip="Interact with 3D Holographic Player Card with gyro & touch tilt" aria-label="3D Holographic Player Card">';
-        h += '<div style="font-size: 1.1rem; margin-bottom: 0.15rem;">🃏</div>';
-        h += '<div style="font-size: 0.75rem; font-weight: 700; color: #F8FAFC;">Holo Player Card</div>';
-        h += '<div style="font-size: 0.58rem; color: #C084FC;">Touch / Gyro Tilt Sheen</div>';
-        h += '</button>';
-        h += '</div></div>';
 
         // Compliance & App Store Safety
         h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.65rem 0.75rem;">';

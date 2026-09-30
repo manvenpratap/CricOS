@@ -276,6 +276,106 @@ async def test_wcag_sweeps_delayed_tooltips_and_spring_toast():
         assert contrast_ratio(stadium_fg_rgb, stadium_bg_rgb) >= 4.5, f"Stadium toast contrast must be >= 4.5:1 (WCAG AA), got {contrast_ratio(stadium_fg_rgb, stadium_bg_rgb):.2f}:1"
         await save_screenshot_async(page, "toast_mobile_stadium_night.png")
 
+        # -------------------------------------------------------------
+        # Verify Light Theme Player Profile & Holo Card Contrast on Mobile
+        # -------------------------------------------------------------
+        # 1. Swiss Minimalist Profile Card & 3D Holo Card
+        await page.evaluate("""() => {
+            window.cricosMobileApp.setTheme('swiss', false);
+            window.cricosMobileApp.navigateTo('PROFILE');
+        }""")
+        await page.wait_for_timeout(250)
+        swiss_profile = await page.evaluate("""() => {
+            const card = document.querySelector('.profile-hero-card') || document.querySelector('#profileBioCard');
+            const name = document.querySelector('.profile-hero-name') || document.querySelector('.profile-bio-text');
+            const cs = window.getComputedStyle(card);
+            const ns = window.getComputedStyle(name);
+            return {
+                bg: cs.backgroundColor,
+                color: ns.color
+            };
+        }""")
+        swiss_p_bg = parse_rgb(swiss_profile["bg"])
+        swiss_p_fg = parse_rgb(swiss_profile["color"])
+        assert swiss_p_bg[0] > 240 and swiss_p_bg[1] > 240 and swiss_p_bg[2] > 240, f"Swiss profile card bg must be light, got {swiss_profile['bg']}"
+        assert contrast_ratio(swiss_p_fg, swiss_p_bg) >= 7.0, f"Swiss profile card contrast must be >= 7.0:1 (WCAG AAA), got {contrast_ratio(swiss_p_fg, swiss_p_bg):.2f}:1"
+        await save_screenshot_async(page, "profile_mobile_swiss_minimal.png")
+
+        # Open Swiss 3D Holo Card Sheet
+        await page.evaluate("() => window.cricosMobileApp.open3DPlayerCardSheet('Hardik Patel')")
+        await page.wait_for_timeout(250)
+        swiss_holo = await page.evaluate("""() => {
+            const card = document.getElementById('mobileHoloCard');
+            const name = card.querySelector('.mobile-holo-name');
+            const cs = window.getComputedStyle(card);
+            const ns = window.getComputedStyle(name);
+            let bg = cs.backgroundColor;
+            if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') {
+                bg = 'rgb(255, 255, 255)';
+            }
+            return {
+                bg: bg,
+                color: ns.color
+            };
+        }""")
+        swiss_h_bg = parse_rgb(swiss_holo["bg"])
+        swiss_h_fg = parse_rgb(swiss_holo["color"])
+        assert swiss_h_bg[0] > 235 and swiss_h_bg[1] > 235 and swiss_h_bg[2] > 235, f"Swiss holo card bg must be light, got {swiss_holo['bg']}"
+        assert contrast_ratio(swiss_h_fg, swiss_h_bg) >= 7.0, f"Swiss holo card contrast must be >= 7.0:1 (WCAG AAA), got {contrast_ratio(swiss_h_fg, swiss_h_bg):.2f}:1"
+        await save_screenshot_async(page, "holo_card_mobile_swiss_minimal.png")
+        await page.evaluate("() => window.cricosMobileApp.closeActionSheet()")
+        await page.wait_for_timeout(200)
+
+        # 2. Nordic Editorial Profile Card & 3D Holo Card
+        await page.evaluate("""() => {
+            window.cricosMobileApp.setTheme('nordic', false);
+            window.cricosMobileApp.navigateTo('PROFILE');
+        }""")
+        await page.wait_for_timeout(250)
+        nordic_profile = await page.evaluate("""() => {
+            const card = document.querySelector('.profile-hero-card') || document.querySelector('#profileBioCard');
+            const name = document.querySelector('.profile-hero-name') || document.querySelector('.profile-bio-text');
+            const cs = window.getComputedStyle(card);
+            const ns = window.getComputedStyle(name);
+            return {
+                bg: cs.backgroundColor,
+                color: ns.color
+            };
+        }""")
+        nordic_p_bg = parse_rgb(nordic_profile["bg"])
+        nordic_p_fg = parse_rgb(nordic_profile["color"])
+        assert nordic_p_bg[0] > 240 and nordic_p_bg[1] > 235 and nordic_p_bg[2] > 225, f"Nordic profile card bg must be warm oat, got {nordic_profile['bg']}"
+        assert contrast_ratio(nordic_p_fg, nordic_p_bg) >= 7.0, f"Nordic profile card contrast must be >= 7.0:1 (WCAG AAA), got {contrast_ratio(nordic_p_fg, nordic_p_bg):.2f}:1"
+        await save_screenshot_async(page, "profile_mobile_nordic_editorial.png")
+
+        # Open Nordic 3D Holo Card Sheet
+        await page.evaluate("() => window.cricosMobileApp.open3DPlayerCardSheet('Hardik Patel')")
+        await page.wait_for_timeout(250)
+        nordic_holo = await page.evaluate("""() => {
+            const card = document.getElementById('mobileHoloCard');
+            const name = card.querySelector('.mobile-holo-name');
+            const cs = window.getComputedStyle(card);
+            const ns = window.getComputedStyle(name);
+            let bg = cs.backgroundColor;
+            if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') {
+                bg = 'rgb(252, 251, 248)';
+            }
+            return {
+                bg: bg,
+                color: ns.color
+            };
+        }""")
+        nordic_h_bg = parse_rgb(nordic_holo["bg"])
+        nordic_h_fg = parse_rgb(nordic_holo["color"])
+        assert nordic_h_bg[0] > 235 and nordic_h_bg[1] > 230 and nordic_h_bg[2] > 220, f"Nordic holo card bg must be warm oat, got {nordic_holo['bg']}"
+        assert contrast_ratio(nordic_h_fg, nordic_h_bg) >= 7.0, f"Nordic holo card contrast must be >= 7.0:1 (WCAG AAA), got {contrast_ratio(nordic_h_fg, nordic_h_bg):.2f}:1"
+        await save_screenshot_async(page, "holo_card_mobile_nordic_editorial.png")
+        await page.evaluate("() => window.cricosMobileApp.closeActionSheet()")
+        await page.wait_for_timeout(200)
+
+        # 3. Assert Redundant Standalone 3D Showcase Card Removed
+        assert await page.query_selector('.mobile-three-studio-card') is None, "Redundant 3D showcase card must not exist in Profile"
+
         assert_no_critical_errors(page)
         catalog_screenshots()
         await browser.close()

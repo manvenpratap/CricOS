@@ -769,6 +769,34 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(dashboardSrc.includes('body[data-theme="swiss"] #toast'), 'Dashboard must define Swiss legacy toast');
       assert.ok(dashboardSrc.includes('body[data-theme="nordic"] #toast'), 'Dashboard must define Nordic legacy toast');
     });
+
+    it('5. Player Profile Cards & Holographic Cards define authentic high-contrast light theme styling on Swiss and Nordic across Mobile and Desktop', () => {
+      // Mobile Swiss Minimalist Profile & Holo Card Invariant Verification
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .profile-hero-card'), 'Mobile view must define Swiss .profile-hero-card');
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .profile-bio-card'), 'Mobile view must define Swiss .profile-bio-card');
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .athletic-stats-card'), 'Mobile view must define Swiss .athletic-stats-card');
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] #mobileHoloCard'), 'Mobile view must define Swiss #mobileHoloCard');
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .profile-hero-name'), 'Mobile view must define Swiss profile hero name');
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .athletic-player-name'), 'Mobile view must define Swiss athletic player name');
+
+      // Mobile Nordic Editorial Profile & Holo Card Invariant Verification
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .profile-hero-card'), 'Mobile view must define Nordic .profile-hero-card');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .profile-bio-card'), 'Mobile view must define Nordic .profile-bio-card');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .athletic-stats-card'), 'Mobile view must define Nordic .athletic-stats-card');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] #mobileHoloCard'), 'Mobile view must define Nordic #mobileHoloCard');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .profile-hero-name'), 'Mobile view must define Nordic profile hero name');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .athletic-player-name'), 'Mobile view must define Nordic athletic player name');
+
+      // Desktop Swiss & Nordic Profile & Holo Card Invariant Verification
+      assert.ok(dashboardSrc.includes('html[data-theme="swiss"] .athletic-stats-card'), 'Dashboard must define Swiss .athletic-stats-card');
+      assert.ok(dashboardSrc.includes('html[data-theme="nordic"] .athletic-stats-card'), 'Dashboard must define Nordic .athletic-stats-card');
+      assert.ok(dashboardSrc.includes('html[data-theme="swiss"] #modal3DPlayerCard'), 'Dashboard must define Swiss #modal3DPlayerCard');
+      assert.ok(dashboardSrc.includes('html[data-theme="nordic"] #modal3DPlayerCard'), 'Dashboard must define Nordic #modal3DPlayerCard');
+      assert.ok(dashboardSrc.includes('html[data-theme="swiss"] .holo-foil-card'), 'Dashboard must define Swiss .holo-foil-card');
+      assert.ok(dashboardSrc.includes('html[data-theme="nordic"] .holo-foil-card'), 'Dashboard must define Nordic .holo-foil-card');
+      assert.ok(dashboardSrc.includes('html[data-theme="swiss"] #modalPlayerStatsDrawer'), 'Dashboard must define Swiss #modalPlayerStatsDrawer');
+      assert.ok(dashboardSrc.includes('html[data-theme="nordic"] #modalPlayerStatsDrawer'), 'Dashboard must define Nordic #modalPlayerStatsDrawer');
+    });
   });
 
   // ---- Suite 9: UI/UX Color Contrast, Focus Rings & WCAG 2.2 AA Accessibility ----

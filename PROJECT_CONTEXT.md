@@ -1,14 +1,47 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 22:50:00
-**Version:** 1.0.0-phase2ck (Authentic High-Contrast Light Theme Backgrounds & Typography for In-App Notifications on Swiss and Nordic Themes across Mobile and Desktop)  
+**Last Updated:** 2026-09-30 23:25:00
+**Version:** 1.0.0-phase2cl (Authentic Light Theme Contrast for Player Profile & Holographic Cards, and Organic 3D Feature Integration)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CK Completed — Authentic High-Contrast Light Theme Backgrounds & Typography for In-App Notifications (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_57_ui_ux_contrast_and_accessibility.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CL Completed — Authentic Light Theme Contrast for Player Profile & Holographic Cards, and Organic 3D Feature Integration (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_57_ui_ux_contrast_and_accessibility.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Player Profile Cards Light Theme Contrast & Legibility**:
+    - **Swiss Minimalist (`body[data-theme="swiss"]` / `html[data-theme="swiss"]`)**: Converted mobile and desktop player cards (`.profile-hero-card`, `.profile-settings-card`, `.profile-bio-card`, `.athletic-stats-card`, `.profile-stat-box`, `.profile-dossier-card`, `.profile-tournament-card`) to clean, high-contrast daylight card surfaces (`background-color: #FFFFFF !important; background-image: linear-gradient(...) !important; border: 1px solid #E2E8F0 !important; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05) !important`).
+    - **Nordic Editorial (`body[data-theme="nordic"]` / `html[data-theme="nordic"]`)**: Converted profile cards to tactile warm oat paper surfaces (`background-color: #FCFBF8 !important; background-image: linear-gradient(...) !important; border: 1px solid #E6DFD5 !important; box-shadow: 0 4px 6px -1px rgba(28, 25, 23, 0.05), 0 2px 4px -2px rgba(28, 25, 23, 0.04) !important`).
+    - **High-Contrast Dark Typography**:
+      - Name & Header titles: `.profile-hero-name`, `.athletic-player-name`, `.profile-stat-val`, `.profile-dossier-stat` set to `#0F172A` (Swiss) / `#1C1917` (Nordic) achieving WCAG AAA contrast (>7.0:1).
+      - Subtitles & Meta labels: `.profile-hero-subtitle`, `.athletic-player-sub`, `.profile-stat-lbl` set to `#475569` (Swiss) / `#57534E` (Nordic) achieving WCAG AA contrast (>4.5:1).
+    - **Daylight Stat Boxes & Badges**:
+      - Styled `.profile-stat-box` with daylight container backgrounds (`#F8FAFC` on Swiss, `#F5F2EB` on Nordic) and subtle borders (`#E2E8F0` / `#E6DFD5`).
+      - Styled achievement badges `.profile-badge-item` and tournament cards `.profile-tournament-card` with crisp daylight borders and deep typography.
+  - **2. 3D Holographic Card Authentic Light Theme Refinement**:
+    - Converted `#mobileHoloCard`, `.mobile-holo-card`, `.holo-foil-card`, `#modal3DPlayerCard`, and `#modalPlayerStatsDrawer` to daylight card backgrounds (`#FFFFFF` on Swiss, `#FCFBF8` on Nordic) with subtle specular sheen gradients (`.mobile-holo-sheen`).
+    - Updated Three.js WebGL card canvas with dynamic theme-aware background (`0xFFFFFF` Swiss / `0xFCFBF8` Nordic), card mesh body (`0xF8FAFC` / `0xF5F2EB`), and vibrant green border accents (`0x059669` / `0x15803D`).
+    - Explicitly set `background-color` alongside `background-image` linear gradients so computed styles evaluate accurately in browser style inspection.
+  - **3. Elimination of Redundant 3D Showpiece Cards**:
+    - Completely removed the artificial `.mobile-three-studio-card` block from the mobile Profile screen.
+    - Completely removed `#threeDExperiencesHub` banner and its tiles from desktop Match Center.
+    - Ensured 100% of 3D capabilities are organically integrated directly into functional user workflows:
+      - 3D Stadium Pitch in Match Center & Scoring Studio (`MATCHES` -> `STADIUM_3D` tab / 3D Wagon Wheel mode).
+      - 3D Bat Configurator in Gear Store & Cart (`MARKETPLACE` -> Gear Store sheet/modal).
+      - 3D Holographic Player Card in Playing XI roster & squad inspection (`TEAMS` -> Playing XI card tap).
+      - 3D Championship Trophy Cabinet in Tournament Hub (`TOURNAMENTS` -> Championship Hub).
+  - **4. Verification & Testing Health**:
+    - Verified all 209 unit/domain tests in 59 suites pass in 437ms via `./pipeline.sh test --summary`.
+    - Added Suite 8 test 5 in `tests/domain-identity-personas-and-themes.test.ts` asserting light theme contrast invariants for profile cards and holo cards.
+    - Updated test 7 in `tests/domain-mobile-journeys-and-native.test.ts` verifying absence of showpiece cards in Profile and organic 3D integration.
+    - Enhanced `tests/test_57_ui_ux_contrast_and_accessibility.py` with Playwright assertions for Swiss Minimalist (>7.0:1 WCAG AAA) and Nordic Editorial (>7.0:1 WCAG AAA) profile and holographic cards, verifying absence of `.mobile-three-studio-card` and capturing visual screenshots:
+      - `profile_mobile_swiss_minimal.png` (108 KB)
+      - `holo_card_mobile_swiss_minimal.png` (69 KB)
+      - `profile_mobile_nordic_editorial.png` (110 KB)
+      - `holo_card_mobile_nordic_editorial.png` (70 KB)
+    - Verified Playwright visual test passes with zero critical console errors.
+    - Recompiled and signed Play-Protect-compliant Android 15 release APK (`dist/cricos-release.apk`) and debug APK (`dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CK Completed — Authentic High-Contrast Light Theme Backgrounds & Typography for In-App Notifications (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_57_ui_ux_contrast_and_accessibility.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Mobile In-App Toast System (`.mobile-toast` & `.mobile-toast-container`)**:
     - **Swiss Minimalist (`body[data-theme="swiss"]` / `html[data-theme="swiss"]`)**: Converted mobile notifications to crisp pure white card surfaces (`background: #FFFFFF !important`, `border: 1px solid #CBD5E1 !important`, `color: #0F172A !important`, `box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08) !important`).
     - **Nordic Editorial (`body[data-theme="nordic"]` / `html[data-theme="nordic"]`)**: Converted mobile notifications to warm oat paper surfaces (`background: #FCFBF8 !important`, `border: 1px solid #E6DFD5 !important`, `color: #1C1917 !important`, `box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.10), 0 8px 10px -6px rgba(28, 25, 23, 0.06) !important`).
@@ -1384,7 +1417,9 @@
 - [x] Phase 2AA: Three.js Interaction & 3D WebGL Stadium Architecture
 - [x] Phase 2AB: 3D Web Experience & Hawkeye Ball-Tracking Pitch Map
 - [x] Phase 2AC: Complete 3D Web Experiences (8 Experiences Suite: Virtual POVs, Dynamic Lighting, Field Placement Editor, Procedural LBW DRS Review, Fusion Trajectory, 3D Trophy Cabinet, Holographic Player Card, 3D Bat Configurator)
+- [x] Phase 2CL: Light Theme Contrast for Player Profile & Holographic Cards, Organic 3D Feature Integration
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
+
 
 
 

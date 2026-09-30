@@ -356,11 +356,20 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('perspective: 900px') || mobileHtml.includes('perspective(900px)'), '3D perspective style must exist');
     });
 
-    it('7. Universal 3D Visualization Studio card in Profile screen for all personas', () => {
-      assert.ok(mobileHtml.includes('mobile-three-studio-card'), 'Studio card container must exist');
-      assert.ok(mobileHtml.includes('🌐 3D Visualization Studio'), 'Studio card heading must exist');
-      assert.ok(mobileHtml.includes('mobile-three-tile-btn'), 'Studio launch tiles must exist');
-      assert.ok(mobileHtml.includes('3D Stadium Pitch') && mobileHtml.includes('Trophy Cabinet') && mobileHtml.includes('Bat Configurator') && mobileHtml.includes('Holo Player Card'), 'All 4 launch tiles must exist in profile');
+    it('7. Organic 3D features integrated across core product workflows without redundant showpiece cards', () => {
+      // Redundant standalone showpiece card removed from Profile
+      assert.ok(!mobileHtml.includes('mobile-three-studio-card'), 'Redundant 3D showpiece card removed from profile');
+      assert.ok(!mobileHtml.includes('🌐 3D Visualization Studio'), 'Redundant 3D showpiece heading removed');
+
+      // Functional 3D features organically integrated into their respective workflows:
+      // 1. 3D Stadium Pitch in Match Center (Scoring & Tactical Studio)
+      assert.ok(mobileHtml.includes('initMobileStadiumPitch') && mobileHtml.includes('STADIUM_3D'), '3D Stadium Pitch organically integrated into Match Center');
+      // 2. 3D Championship Trophy Cabinet in Tournaments Hub
+      assert.ok(mobileHtml.includes('open3DTrophyCabinetSheet'), '3D Trophy Cabinet organically integrated into Tournaments Hub');
+      // 3. 3D Cricket Bat Configurator in Gear Store & Cart
+      assert.ok(mobileHtml.includes('openGearCustomizerSheet'), '3D Cricket Bat Configurator organically integrated into Gear Store');
+      // 4. 3D Holographic Player Card in Squad & Playing XI
+      assert.ok(mobileHtml.includes('open3DPlayerCardSheet'), '3D Holographic Player Card organically integrated into Playing XI / Squads');
     });
 
     it('8. Clean lifecycle management and memory leak prevention', () => {

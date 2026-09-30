@@ -3899,33 +3899,216 @@
       color: #9F1239 !important;
       font-weight: 700 !important;
     }
-    html[data-theme="swiss"] #threeDExperiencesHub,
-    body[data-theme="swiss"] #threeDExperiencesHub {
+    /* ==========================================================================
+       Swiss Minimalist — Player Profile Cards & Holographic Inspector Overrides
+       ========================================================================== */
+    html[data-theme="swiss"] .athletic-stats-card,
+    body[data-theme="swiss"] .athletic-stats-card {
       background: #FFFFFF !important;
-      border: 1.5px solid #CBD5E1 !important;
-      border-top: 4px solid #059669 !important;
+      border: 1px solid #CBD5E1 !important;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
       color: #0F172A !important;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05) !important;
     }
-    html[data-theme="nordic"] #threeDExperiencesHub,
-    body[data-theme="nordic"] #threeDExperiencesHub {
-      background: #FCFBF8 !important;
-      border: 1.5px solid #D6D0C4 !important;
-      border-top: 4px solid #15803D !important;
-      color: #1C1917 !important;
-      box-shadow: 0 4px 14px rgba(28, 25, 23, 0.05) !important;
+    html[data-theme="swiss"] .athletic-stats-card::before,
+    body[data-theme="swiss"] .athletic-stats-card::before {
+      background: linear-gradient(90deg, #059669, #0284C7, #D97706) !important;
     }
-    html[data-theme="swiss"] .three-hub-tile,
-    body[data-theme="swiss"] .three-hub-tile {
+    html[data-theme="swiss"] #athleticHeroName,
+    body[data-theme="swiss"] #athleticHeroName,
+    html[data-theme="swiss"] .athletic-hero-kpi,
+    body[data-theme="swiss"] .athletic-hero-kpi,
+    html[data-theme="swiss"] #athleticHeroKpi,
+    body[data-theme="swiss"] #athleticHeroKpi {
+      color: #0F172A !important;
+    }
+    html[data-theme="swiss"] #athleticPlayerMeta,
+    body[data-theme="swiss"] #athleticPlayerMeta {
+      color: #475569 !important;
+    }
+    html[data-theme="swiss"] .athletic-hero-section,
+    body[data-theme="swiss"] .athletic-hero-section {
       background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    html[data-theme="swiss"] .athletic-substat-box,
+    body[data-theme="swiss"] .athletic-substat-box {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    html[data-theme="swiss"] .athletic-substat-value,
+    body[data-theme="swiss"] .athletic-substat-value {
+      color: #0F172A !important;
+    }
+    html[data-theme="swiss"] .athletic-substat-label,
+    body[data-theme="swiss"] .athletic-substat-label {
+      color: #475569 !important;
+    }
+    html[data-theme="swiss"] .athletic-momentum-section,
+    body[data-theme="swiss"] .athletic-momentum-section {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    html[data-theme="swiss"] .athletic-ranking-ribbon,
+    body[data-theme="swiss"] .athletic-ranking-ribbon {
+      background: #FEF3C7 !important;
+      border: 1px solid #FCD34D !important;
+      color: #92400E !important;
+    }
+    html[data-theme="swiss"] .holo-foil-card::before,
+    body[data-theme="swiss"] .holo-foil-card::before {
+      background: linear-gradient(
+        115deg,
+        transparent 20%,
+        rgba(5, 150, 105, 0.12) 38%,
+        rgba(2, 132, 199, 0.20) 48%,
+        rgba(217, 119, 6, 0.16) 58%,
+        transparent 75%
+      ) !important;
+      opacity: 0.6 !important;
+    }
+    html[data-theme="swiss"] #modal3DPlayerCard .modal-dialog,
+    body[data-theme="swiss"] #modal3DPlayerCard .modal-dialog {
+      background: #FFFFFF !important;
       border: 1px solid #CBD5E1 !important;
       color: #0F172A !important;
     }
-    html[data-theme="nordic"] .three-hub-tile,
-    body[data-theme="nordic"] .three-hub-tile {
-      background: #F5F2EB !important;
-      border: 1px solid #D6D0C4 !important;
+    html[data-theme="swiss"] #modal3DPlayerCard .holo-stat-cell,
+    body[data-theme="swiss"] #modal3DPlayerCard .holo-stat-cell {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    html[data-theme="swiss"] #modal3DPlayerCard #cardStatAvg,
+    body[data-theme="swiss"] #modal3DPlayerCard #cardStatAvg {
+      color: #0F172A !important;
+    }
+    html[data-theme="swiss"] #modalPlayerStatsDrawer .modal-dialog,
+    body[data-theme="swiss"] #modalPlayerStatsDrawer .modal-dialog {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+    }
+    html[data-theme="swiss"] .drawer-hero-card,
+    body[data-theme="swiss"] .drawer-hero-card {
+      background: #F8FAFC !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    html[data-theme="swiss"] #drawerPlayerName,
+    body[data-theme="swiss"] #drawerPlayerName {
+      color: #0F172A !important;
+    }
+    html[data-theme="swiss"] #drawerMetaDetails,
+    body[data-theme="swiss"] #drawerMetaDetails {
+      color: #475569 !important;
+    }
+    html[data-theme="swiss"] .drawer-radar-card,
+    body[data-theme="swiss"] .drawer-radar-card {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+
+    /* ==========================================================================
+       Nordic Editorial — Player Profile Cards & Holographic Inspector Overrides
+       ========================================================================== */
+    html[data-theme="nordic"] .athletic-stats-card,
+    body[data-theme="nordic"] .athletic-stats-card {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      box-shadow: 0 4px 16px rgba(28, 25, 23, 0.05) !important;
       color: #1C1917 !important;
+    }
+    html[data-theme="nordic"] .athletic-stats-card::before,
+    body[data-theme="nordic"] .athletic-stats-card::before {
+      background: linear-gradient(90deg, #15803D, #0369A1, #C2410C) !important;
+    }
+    html[data-theme="nordic"] #athleticHeroName,
+    body[data-theme="nordic"] #athleticHeroName,
+    html[data-theme="nordic"] .athletic-hero-kpi,
+    body[data-theme="nordic"] .athletic-hero-kpi,
+    html[data-theme="nordic"] #athleticHeroKpi,
+    body[data-theme="nordic"] #athleticHeroKpi {
+      color: #1C1917 !important;
+    }
+    html[data-theme="nordic"] #athleticPlayerMeta,
+    body[data-theme="nordic"] #athleticPlayerMeta {
+      color: #57534E !important;
+    }
+    html[data-theme="nordic"] .athletic-hero-section,
+    body[data-theme="nordic"] .athletic-hero-section {
+      background: #F5F2EB !important;
+      border: 1px solid #EAE5DC !important;
+    }
+    html[data-theme="nordic"] .athletic-substat-box,
+    body[data-theme="nordic"] .athletic-substat-box {
+      background: #F0ECE1 !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    html[data-theme="nordic"] .athletic-substat-value,
+    body[data-theme="nordic"] .athletic-substat-value {
+      color: #1C1917 !important;
+    }
+    html[data-theme="nordic"] .athletic-substat-label,
+    body[data-theme="nordic"] .athletic-substat-label {
+      color: #57534E !important;
+    }
+    html[data-theme="nordic"] .athletic-momentum-section,
+    body[data-theme="nordic"] .athletic-momentum-section {
+      background: #F5F2EB !important;
+      border: 1px solid #EAE5DC !important;
+    }
+    html[data-theme="nordic"] .athletic-ranking-ribbon,
+    body[data-theme="nordic"] .athletic-ranking-ribbon {
+      background: #FEF3C7 !important;
+      border: 1px solid #FDE68A !important;
+      color: #78350F !important;
+    }
+    html[data-theme="nordic"] .holo-foil-card::before,
+    body[data-theme="nordic"] .holo-foil-card::before {
+      background: linear-gradient(
+        115deg,
+        transparent 20%,
+        rgba(21, 128, 61, 0.12) 38%,
+        rgba(3, 105, 161, 0.20) 48%,
+        rgba(194, 65, 12, 0.16) 58%,
+        transparent 75%
+      ) !important;
+      opacity: 0.6 !important;
+    }
+    html[data-theme="nordic"] #modal3DPlayerCard .modal-dialog,
+    body[data-theme="nordic"] #modal3DPlayerCard .modal-dialog {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #1C1917 !important;
+    }
+    html[data-theme="nordic"] #modal3DPlayerCard .holo-stat-cell,
+    body[data-theme="nordic"] #modal3DPlayerCard .holo-stat-cell {
+      background: #F0ECE1 !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    html[data-theme="nordic"] #modal3DPlayerCard #cardStatAvg,
+    body[data-theme="nordic"] #modal3DPlayerCard #cardStatAvg {
+      color: #1C1917 !important;
+    }
+    html[data-theme="nordic"] #modalPlayerStatsDrawer .modal-dialog,
+    body[data-theme="nordic"] #modalPlayerStatsDrawer .modal-dialog {
+      background: #FCFBF8 !important;
+      color: #1C1917 !important;
+    }
+    html[data-theme="nordic"] .drawer-hero-card,
+    body[data-theme="nordic"] .drawer-hero-card {
+      background: #F5F2EB !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    html[data-theme="nordic"] #drawerPlayerName,
+    body[data-theme="nordic"] #drawerPlayerName {
+      color: #1C1917 !important;
+    }
+    html[data-theme="nordic"] #drawerMetaDetails,
+    body[data-theme="nordic"] #drawerMetaDetails {
+      color: #57534E !important;
+    }
+    html[data-theme="nordic"] .drawer-radar-card,
+    body[data-theme="nordic"] .drawer-radar-card {
+      background: #F5F2EB !important;
+      border: 1px solid #EAE5DC !important;
     }
     html[data-theme="swiss"] .sidebar-footer,
     body[data-theme="swiss"] .sidebar-footer,
@@ -5647,62 +5830,7 @@
         </div>
       </div>
 
-      <!-- ===== 3D EXPERIENCES HUB BANNER ===== -->
-      <div id="threeDExperiencesHub" style="margin-bottom: 1.25rem; background: rgba(8, 14, 24, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(0, 229, 153, 0.35); border-radius: 12px; padding: 1rem 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
-          <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <span style="font-size: 1.35rem;">🌐</span>
-            <div>
-              <div style="font-weight: 800; color: #F8FAFC; font-size: 0.95rem; letter-spacing: -0.01em; font-family: var(--font-display);">3D Visualization Studio</div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">WebGL-powered stadium telemetry &amp; interactive tactical viewports</div>
-            </div>
-          </div>
-          <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.3rem 0.75rem; font-size: 0.75rem; border-color: rgba(0,229,153,0.35); color: var(--turf-emerald);" onclick="switchTab('studio'); setTimeout(()=>setWagonDisplayMode('3D'),200);" data-tooltip="Open full 3D Stadium with Camera, Hawkeye, Fielders, DRS & Lighting controls">🏟 Open Full 3D Stadium →</button>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.55rem;">
-          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('WAGON'); }, 200);" data-tooltip="Interactive 3D Stadium with shot trajectory arcs and wagon wheel">
-            <span style="font-size: 1.4rem;">🏟</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald);">3D Stadium</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">Wagon Wheel</span>
-          </button>
-          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('HAWKEYE'); }, 200);" data-tooltip="3D Hawkeye ball-tracking pitch length heatmap with delivery trajectories">
-            <span style="font-size: 1.4rem;">🎯</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--cyan);">Hawkeye</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">Pitch Map</span>
-          </button>
-          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('DRS'); }, 200);" data-tooltip="Procedural LBW DRS review with 3-stage ball trajectory and MCC Law 36 stumps verdict">
-            <span style="font-size: 1.4rem;">⚖️</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--rose);">DRS Review</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">LBW Tracker</span>
-          </button>
-          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FIELD'); }, 200);" data-tooltip="11 3D tactical fielder figurines with dynamic catch probability cones">
-            <span style="font-size: 1.4rem;">👥</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--purple-light);">Fielders</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">Field Editor</span>
-          </button>
-          <button type="button" class="three-hub-tile" onclick="switchTab('studio'); setTimeout(()=>{ setWagonDisplayMode('3D'); setThreeVisualMode('FUSION'); }, 200);" data-tooltip="Simultaneous delivery pitch bounce fused with outfield six trajectory">
-            <span style="font-size: 1.4rem;">🔀</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Fusion</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">Pitch + Shot</span>
-          </button>
-          <button type="button" id="btn3DTrophyCabinet" class="three-hub-tile" onclick="open3DTrophyCabinetModal();" data-tooltip="Inspect 3D Championship Trophy Cabinet — Premier Cup, MVP Shield, Golden Bat">
-            <span style="font-size: 1.4rem;">🏆</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--amber);">Trophies</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">3D Cabinet</span>
-          </button>
-          <button type="button" id="btn3DPlayerCard" class="three-hub-tile" onclick="open3DPlayerCardModal('Hardik Patel','#33','ALL_ROUNDER');" data-tooltip="Holographic 3D Player Card Inspector with pointer tilt physics and specular sheen">
-            <span style="font-size: 1.4rem;">🃏</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald);">Player Card</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">Holographic</span>
-          </button>
-          <button type="button" id="btn3DBatCustomizer" class="three-hub-tile" onclick="open3DBatCustomizerModal();" data-tooltip="3D Cricket Bat configurator — willow grade selector and grip color switcher">
-            <span style="font-size: 1.4rem;">🏏</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--cyan);">Bat Config</span>
-            <span style="font-size: 0.63rem; color: var(--text-muted);">3D Gear</span>
-          </button>
-        </div>
-      </div>
-      <!-- ===== END 3D EXPERIENCES HUB ===== -->
+
 
       <div class="grid-2">
         <!-- Match Phase & Key Metrics Hub -->
@@ -10317,19 +10445,19 @@ cricos_active_sse_connections 1</pre>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center;">
-          <div style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+          <div class="holo-stat-cell" style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
             <div style="font-size: 0.65rem; color: var(--text-muted);">ROLE</div>
             <div style="font-weight: 700; font-size: 0.8rem; color: var(--turf-emerald);" id="cardStatRole">ALL_ROUNDER</div>
           </div>
-          <div style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+          <div class="holo-stat-cell" style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
             <div style="font-size: 0.65rem; color: var(--text-muted);">BATTING AVG</div>
             <div style="font-weight: 700; font-size: 0.8rem; color: #FFF;" id="cardStatAvg">48.2</div>
           </div>
-          <div style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+          <div class="holo-stat-cell" style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
             <div style="font-size: 0.65rem; color: var(--text-muted);">STRIKE RATE</div>
             <div style="font-weight: 700; font-size: 0.8rem; color: var(--cyan);" id="cardStatSr">162.4</div>
           </div>
-          <div style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+          <div class="holo-stat-cell" style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
             <div style="font-size: 0.65rem; color: var(--text-muted);">BAYESIAN TRUST</div>
             <div style="font-weight: 700; font-size: 0.8rem; color: #FFB800;">98.4%</div>
           </div>
@@ -10406,7 +10534,7 @@ cricos_active_sse_connections 1</pre>
       </div>
       <div class="modal-body" style="padding: 1.25rem;">
         <!-- Drawer Hero Identity -->
-        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+        <div class="drawer-hero-card" style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
           <div style="display: flex; align-items: center; gap: 1rem;">
             <div class="athletic-avatar" id="drawerAvatar" style="width: 58px; height: 58px; font-size: 1.35rem;">
               <span id="drawerAvatarInitials">HP</span>
@@ -10428,7 +10556,7 @@ cricos_active_sse_connections 1</pre>
         </div>
 
         <!-- 6-Axis Radar Capability Polygon & Key Attributes -->
-        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 1.25rem; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
+        <div class="drawer-radar-card" style="display: grid; grid-template-columns: 280px 1fr; gap: 1.25rem; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
           <div style="display: flex; flex-direction: column; align-items: center;">
             <div style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">6-Axis Radar Capability</div>
             <div id="drawerRadarContainer">
@@ -12180,8 +12308,7 @@ cricos_active_sse_connections 1</pre>
       const secondarySelectors = [
         '#matchMomentumWaveContainer',
         '#eventReadinessBanner',
-        '.fow-container',
-        '#threeDExperiencesHub'
+        '.fow-container'
       ];
       secondarySelectors.forEach(sel => {
         document.querySelectorAll(sel).forEach(panel => {
@@ -16092,18 +16219,23 @@ cricos_active_sse_connections 1</pre>
         this.camera.position.set(0, 0, 4.2);
         this.camera.lookAt(0, 0, 0);
 
+        const isSwiss = (typeof document !== 'undefined') && (document.body.getAttribute('data-theme') === 'swiss' || document.documentElement.getAttribute('data-theme') === 'swiss');
+        const isNordic = (typeof document !== 'undefined') && (document.body.getAttribute('data-theme') === 'nordic' || document.documentElement.getAttribute('data-theme') === 'nordic');
+        const clearClr = isSwiss ? 0xFFFFFF : (isNordic ? 0xFCFBF8 : 0x04070D);
+
         try {
           this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
           this.renderer.setSize(width, height);
-          this.renderer.setClearColor(0x04070D, 1);
+          this.renderer.setClearColor(clearClr, 1);
         } catch (e) {
           this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
         }
 
-        const ambLight = new THREE.AmbientLight(0xffffff, 0.8);
+        const ambLight = new THREE.AmbientLight(0xffffff, (isSwiss || isNordic) ? 1.0 : 0.8);
         this.scene.add(ambLight);
 
-        this.specLight = new THREE.DirectionalLight(0x00E599, 1.2);
+        const specInitColor = isSwiss ? 0x059669 : (isNordic ? 0x15803D : 0x00E599);
+        this.specLight = new THREE.DirectionalLight(specInitColor, 1.2);
         this.specLight.position.set(2, 3, 5);
         this.scene.add(this.specLight);
 
@@ -16157,20 +16289,26 @@ cricos_active_sse_connections 1</pre>
         const THREE = window.THREE;
         this.cardGroup = new THREE.Group();
 
+        const isSwiss = (typeof document !== 'undefined') && (document.body.getAttribute('data-theme') === 'swiss' || document.documentElement.getAttribute('data-theme') === 'swiss');
+        const isNordic = (typeof document !== 'undefined') && (document.body.getAttribute('data-theme') === 'nordic' || document.documentElement.getAttribute('data-theme') === 'nordic');
+        const cardColor = isSwiss ? 0xF8FAFC : (isNordic ? 0xF5F2EB : 0x0A101C);
+        const borderInitColor = isSwiss ? 0x059669 : (isNordic ? 0x15803D : 0x00E599);
+        const crestInitColor = isSwiss ? 0x0284C7 : (isNordic ? 0x0369A1 : 0x00D2FF);
+
         const cardGeo = new THREE.BoxGeometry(2.2, 3.2, 0.06);
         const cardMat = new THREE.MeshStandardMaterial({
-          color: 0x0A101C,
-          roughness: 0.25,
-          metalness: 0.6,
-          emissive: 0x00E599,
-          emissiveIntensity: 0.15
+          color: cardColor,
+          roughness: (isSwiss || isNordic) ? 0.35 : 0.25,
+          metalness: (isSwiss || isNordic) ? 0.4 : 0.6,
+          emissive: borderInitColor,
+          emissiveIntensity: (isSwiss || isNordic) ? 0.04 : 0.15
         });
         this.cardBody = new THREE.Mesh(cardGeo, cardMat);
         this.cardGroup.add(this.cardBody);
 
         const borderGeo = new THREE.BoxGeometry(2.28, 3.28, 0.04);
         const borderMat = new THREE.MeshStandardMaterial({
-          color: 0x00E599,
+          color: borderInitColor,
           roughness: 0.2,
           metalness: 0.8
         });
@@ -16180,10 +16318,10 @@ cricos_active_sse_connections 1</pre>
 
         const crestGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.03, 24);
         const crestMat = new THREE.MeshStandardMaterial({
-          color: 0x00D2FF,
+          color: crestInitColor,
           roughness: 0.1,
           metalness: 0.9,
-          emissive: 0x00D2FF,
+          emissive: crestInitColor,
           emissiveIntensity: 0.4
         });
         this.cardCrest = new THREE.Mesh(crestGeo, crestMat);
@@ -16195,9 +16333,11 @@ cricos_active_sse_connections 1</pre>
       }
 
       updatePlayer(name, jersey, role, avg, sr) {
-        let roleColor = 0x00E599;
-        if (role === 'BATTER' || role === 'BAT') roleColor = 0x00D2FF;
-        else if (role === 'BOWLER' || role === 'BOWL') roleColor = 0xFF3366;
+        const isSwiss = (typeof document !== 'undefined') && (document.body.getAttribute('data-theme') === 'swiss' || document.documentElement.getAttribute('data-theme') === 'swiss');
+        const isNordic = (typeof document !== 'undefined') && (document.body.getAttribute('data-theme') === 'nordic' || document.documentElement.getAttribute('data-theme') === 'nordic');
+        let roleColor = (isSwiss ? 0x059669 : (isNordic ? 0x15803D : 0x00E599));
+        if (role === 'BATTER' || role === 'BAT') roleColor = (isSwiss ? 0x0284C7 : (isNordic ? 0x0369A1 : 0x00D2FF));
+        else if (role === 'BOWLER' || role === 'BOWL') roleColor = (isSwiss ? 0xDC2626 : (isNordic ? 0xBE123C : 0xFF3366));
 
         if (this.cardBorder && this.cardBorder.material && this.cardBorder.material.color && this.cardBorder.material.color.set) {
           this.cardBorder.material.color.set(roleColor);
