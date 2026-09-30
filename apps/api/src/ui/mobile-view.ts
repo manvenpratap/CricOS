@@ -6429,31 +6429,343 @@ export function getMobileAppHtml(): string {
         });
       }
 
+      getMobileFieldPresets() {
+        var presets = {
+          POWERPLAY_ATTACK: {
+            label: '⚡ PP1 Attack (2 Slips + Gully)',
+            maxOut: 2,
+            plan: 'Outswing 4th Stump',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+              { code: 'BWL', name: 'Fast Bowler', angle: 0, radius: 0.22, locked: true },
+              { code: '1SL', name: 'First Slip', angle: 164, radius: 0.24 },
+              { code: '2SL', name: 'Second Slip', angle: 154, radius: 0.25 },
+              { code: 'GUL', name: 'Gully', angle: 132, radius: 0.30 },
+              { code: 'PT', name: 'Backward Point', angle: 108, radius: 0.42 },
+              { code: 'COV', name: 'Extra Cover', angle: 68, radius: 0.45 },
+              { code: 'MOFF', name: 'Mid-Off', angle: 28, radius: 0.46 },
+              { code: 'MON', name: 'Mid-On', angle: 332, radius: 0.46 },
+              { code: '3M', name: 'Third Man (Deep)', angle: 142, radius: 0.86 },
+              { code: 'FLEG', name: 'Fine Leg (Deep)', angle: 215, radius: 0.86 }
+            ]
+          },
+          POWERPLAY_SWING_TRAP: {
+            label: '🎯 PP1 Inswing Pad Trap',
+            maxOut: 2,
+            plan: 'Inswing Middle & Leg',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+              { code: 'BWL', name: 'Swing Bowler', angle: 0, radius: 0.22, locked: true },
+              { code: '1SL', name: 'First Slip', angle: 164, radius: 0.23 },
+              { code: 'LSL', name: 'Leg Slip', angle: 196, radius: 0.23 },
+              { code: 'SMW', name: 'Short Mid-Wicket', angle: 298, radius: 0.34 },
+              { code: 'PT', name: 'Point', angle: 92, radius: 0.42 },
+              { code: 'COV', name: 'Cover', angle: 64, radius: 0.44 },
+              { code: 'MOFF', name: 'Mid-Off', angle: 26, radius: 0.45 },
+              { code: 'MON', name: 'Mid-On', angle: 334, radius: 0.45 },
+              { code: 'DSQ', name: 'Deep Square Leg', angle: 268, radius: 0.88 },
+              { code: '3M', name: 'Third Man (Deep)', angle: 140, radius: 0.86 }
+            ]
+          },
+          MIDDLE_SPIN_TRAP: {
+            label: '🛡️ Middle Spin Web (Short Leg)',
+            maxOut: 4,
+            plan: 'Flighted Off/Leg Spin',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper (Up)', angle: 180, radius: 0.12, locked: true },
+              { code: 'BWL', name: 'Lead Spinner', angle: 0, radius: 0.20, locked: true },
+              { code: 'SLG', name: 'Short Leg', angle: 245, radius: 0.18 },
+              { code: 'SPT', name: 'Silly Point', angle: 112, radius: 0.18 },
+              { code: 'SLIP', name: 'First Slip', angle: 162, radius: 0.20 },
+              { code: 'COV', name: 'Cover', angle: 65, radius: 0.44 },
+              { code: 'MWK', name: 'Short Mid-Wicket', angle: 292, radius: 0.38 },
+              { code: 'LOFF', name: 'Long-Off (Deep)', angle: 24, radius: 0.88 },
+              { code: 'LON', name: 'Long-On (Deep)', angle: 336, radius: 0.88 },
+              { code: 'DMW', name: 'Deep Mid-Wicket', angle: 288, radius: 0.88 },
+              { code: 'DCV', name: 'Deep Extra Cover', angle: 62, radius: 0.86 }
+            ]
+          },
+          BOUNCER_SHORT_TRAP: {
+            label: '💥 Bodyline Bouncer Trap',
+            maxOut: 4,
+            plan: 'Short Bumper Barrage',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.24, locked: true },
+              { code: 'BWL', name: 'Enforcer Pacer', angle: 0, radius: 0.22, locked: true },
+              { code: 'LGL', name: 'Leg Gully', angle: 222, radius: 0.26 },
+              { code: 'SMW', name: 'Short Mid-Wicket', angle: 296, radius: 0.36 },
+              { code: 'PT', name: 'Backward Point', angle: 104, radius: 0.42 },
+              { code: 'MOFF', name: 'Mid-Off', angle: 28, radius: 0.45 },
+              { code: 'MON', name: 'Mid-On', angle: 334, radius: 0.45 },
+              { code: 'FLEG', name: 'Deep Fine Leg', angle: 214, radius: 0.90 },
+              { code: 'DBS', name: 'Deep Backward Sq', angle: 254, radius: 0.90 },
+              { code: 'DMW', name: 'Deep Mid-Wicket', angle: 286, radius: 0.88 },
+              { code: 'DPT', name: 'Deep Point', angle: 94, radius: 0.88 }
+            ]
+          },
+          OFFSIDE_RING_SQUEEZE: {
+            label: '🔒 7-2 Off-Side Squeeze',
+            maxOut: 4,
+            plan: 'Dry 5th-Stump Channel',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+              { code: 'BWL', name: 'Seam Bowler', angle: 0, radius: 0.22, locked: true },
+              { code: 'GUL', name: 'Gully', angle: 132, radius: 0.30 },
+              { code: 'BPT', name: 'Backward Point', angle: 106, radius: 0.42 },
+              { code: 'PT', name: 'Point', angle: 88, radius: 0.43 },
+              { code: 'COV', name: 'Cover', angle: 66, radius: 0.44 },
+              { code: 'XCV', name: 'Extra Cover', angle: 46, radius: 0.45 },
+              { code: 'MOFF', name: 'Mid-Off', angle: 24, radius: 0.46 },
+              { code: 'MON', name: 'Mid-On', angle: 334, radius: 0.46 },
+              { code: 'DPT', name: 'Deep Point', angle: 96, radius: 0.88 },
+              { code: 'DCV', name: 'Deep Cover', angle: 56, radius: 0.88 }
+            ]
+          },
+          DEATH_YORKER_DEFENSE: {
+            label: '🔥 Death Wide Yorker (5 Out)',
+            maxOut: 5,
+            plan: 'Wide 6th-Stump Yorker',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.20, locked: true },
+              { code: 'BWL', name: 'Death Pacer', angle: 0, radius: 0.22, locked: true },
+              { code: 'S3M', name: 'Short Third Man', angle: 138, radius: 0.42 },
+              { code: 'COV', name: 'Cover', angle: 72, radius: 0.45 },
+              { code: 'MWK', name: 'Mid-Wicket (In)', angle: 295, radius: 0.44 },
+              { code: 'SFL', name: 'Short Fine Leg', angle: 218, radius: 0.40 },
+              { code: 'LOFF', name: 'Long-Off (Deep)', angle: 22, radius: 0.90 },
+              { code: 'LON', name: 'Long-On (Deep)', angle: 338, radius: 0.90 },
+              { code: 'DPT', name: 'Deep Point', angle: 94, radius: 0.90 },
+              { code: 'DCV', name: 'Deep Cover', angle: 56, radius: 0.88 },
+              { code: 'DSQ', name: 'Deep Square Leg', angle: 268, radius: 0.88 }
+            ]
+          },
+          DEATH_SLOWER_CUTTER: {
+            label: '🌀 Death Slower-Cutter Trap',
+            maxOut: 5,
+            plan: 'Into-Pitch Leg Cutter',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+              { code: 'BWL', name: 'Death Specialist', angle: 0, radius: 0.22, locked: true },
+              { code: 'PT', name: 'Backward Point', angle: 102, radius: 0.42 },
+              { code: 'COV', name: 'Extra Cover (In)', angle: 58, radius: 0.44 },
+              { code: 'MOFF', name: 'Mid-Off (In)', angle: 26, radius: 0.44 },
+              { code: 'SFL', name: 'Short Fine Leg', angle: 218, radius: 0.40 },
+              { code: 'LON', name: 'Long-On (Deep)', angle: 336, radius: 0.90 },
+              { code: 'CC', name: 'Cow Corner (Deep)', angle: 312, radius: 0.91 },
+              { code: 'DMW', name: 'Deep Mid-Wicket', angle: 286, radius: 0.90 },
+              { code: 'DSQ', name: 'Deep Square Leg', angle: 262, radius: 0.89 },
+              { code: 'LOFF', name: 'Long-Off (Deep)', angle: 22, radius: 0.90 }
+            ]
+          },
+          SUPER_OVER_UMBRELLA: {
+            label: '🏆 Super Over Boundary Umbrella',
+            maxOut: 5,
+            plan: 'Blockhole Stump-to-Stump',
+            fielders: [
+              { code: 'WK', name: 'Wicketkeeper (Up)', angle: 180, radius: 0.14, locked: true },
+              { code: 'BWL', name: 'Super Over Ace', angle: 0, radius: 0.22, locked: true },
+              { code: 'PT', name: 'Saving-One Point', angle: 92, radius: 0.34 },
+              { code: 'COV', name: 'Saving-One Cover', angle: 54, radius: 0.34 },
+              { code: 'MWK', name: 'Saving-One MW', angle: 298, radius: 0.34 },
+              { code: 'SFL', name: 'Short Fine Leg', angle: 215, radius: 0.34 },
+              { code: 'LOFF', name: 'Long-Off (Rope)', angle: 24, radius: 0.92 },
+              { code: 'LON', name: 'Long-On (Rope)', angle: 336, radius: 0.92 },
+              { code: 'DMW', name: 'Deep Mid-Wicket', angle: 290, radius: 0.92 },
+              { code: 'DPT', name: 'Deep Point (Rope)', angle: 96, radius: 0.92 },
+              { code: '3M', name: 'Third Man (Rope)', angle: 142, radius: 0.91 }
+            ]
+          }
+        };
+        return presets;
+      }
+
+      classifyMobileFieldPosition(angleDeg, radiusNorm) {
+        var a = ((Math.round(angleDeg) % 360) + 360) % 360;
+        if (radiusNorm < 0.28) {
+          if (a >= 145 && a < 180) return { code: '1SL', name: 'First Slip' };
+          if (a >= 120 && a < 145) return { code: 'GUL', name: 'Gully' };
+          if (a >= 80 && a < 120) return { code: 'SPT', name: 'Silly Point' };
+          if (a >= 180 && a < 238) return { code: 'LGL', name: 'Leg Gully' };
+          return { code: 'SLG', name: 'Short Leg' };
+        }
+        if (radiusNorm > 0.52) {
+          if (a >= 125 && a < 170) return { code: '3M', name: 'Third Man (Deep)' };
+          if (a >= 82 && a < 125) return { code: 'DPT', name: 'Deep Point' };
+          if (a >= 40 && a < 82) return { code: 'DCV', name: 'Deep Cover' };
+          if (a >= 5 && a < 40) return { code: 'LOFF', name: 'Long-Off (Deep)' };
+          if (a >= 320 && a <= 355) return { code: 'LON', name: 'Long-On (Deep)' };
+          if (a >= 300 && a < 320) return { code: 'CC', name: 'Cow Corner (Deep)' };
+          if (a >= 275 && a < 300) return { code: 'DMW', name: 'Deep Mid-Wicket' };
+          if (a >= 245 && a < 275) return { code: 'DSQ', name: 'Deep Square Leg' };
+          return { code: 'FLEG', name: 'Fine Leg (Deep)' };
+        }
+        if (a >= 125 && a < 170) return { code: 'S3M', name: 'Short Third Man' };
+        if (a >= 82 && a < 125) return { code: 'PT', name: 'Point' };
+        if (a >= 40 && a < 82) return { code: 'COV', name: 'Extra Cover' };
+        if (a >= 5 && a < 40) return { code: 'MOFF', name: 'Mid-Off' };
+        if (a >= 320 && a <= 355) return { code: 'MON', name: 'Mid-On' };
+        if (a >= 275 && a < 320) return { code: 'MWK', name: 'Mid-Wicket' };
+        if (a >= 240 && a < 275) return { code: 'SQL', name: 'Square Leg' };
+        return { code: 'SFL', name: 'Short Fine Leg' };
+      }
+
+      emitMobileFieldCommentary(summaryText) {
+        var overs = (this.matchState && this.matchState.overs) ? this.matchState.overs : '16.2';
+        var fullText = '🎯 [FIELD CHANGE] ' + summaryText;
+        if (!this.mobileFieldCommentaryLog) this.mobileFieldCommentaryLog = [];
+        this.mobileFieldCommentaryLog.unshift({ over: overs, text: fullText });
+        if (this.matchState && Array.isArray(this.matchState.commentary)) {
+          this.matchState.commentary.unshift({
+            over: overs,
+            badge: 'FIELD',
+            color: '#00E599',
+            text: fullText
+          });
+        }
+        var logEl = document.getElementById('mobileFieldCommentaryLog');
+        if (logEl) {
+          logEl.innerHTML = this.mobileFieldCommentaryLog.slice(0, 4).map(function(c) {
+            return '<div style="padding: 0.28rem 0.45rem; border-radius: 5px; background: rgba(0,229,153,0.12); border-left: 2.5px solid #00E599; font-size: 0.66rem; color: #00E599; font-weight: 700;">' +
+              'Over ' + c.over + ': ' + c.text +
+            '</div>';
+          }).join('');
+        }
+        return fullText;
+      }
+
+      moveMobileFielder(idx, angleDeg, radiusNorm) {
+        if (!this.mobileActiveFielders) return null;
+        var f = this.mobileActiveFielders[idx];
+        if (!f || f.locked) return null;
+        var prevName = f.name;
+        var prevCode = f.code;
+        f.angle = ((Math.round(angleDeg) % 360) + 360) % 360;
+        f.radius = Number(Math.max(0.14, Math.min(0.94, radiusNorm)).toFixed(2));
+        var cls = this.classifyMobileFieldPosition(f.angle, f.radius);
+        f.code = cls.code;
+        f.name = cls.name;
+        this.renderMobileFieldSvgNodes();
+        var msg = 'Captain shifts ' + prevName + ' (' + prevCode + ') to ' + f.name + ' (' + f.code + ' • ' + (f.radius > 0.52 ? 'Deep Boundary' : '30-Yd Ring') + ')';
+        this.emitMobileFieldCommentary(msg);
+        return f;
+      }
+
+      startMobileFielderDrag(evt, idx) {
+        if (!this.mobileActiveFielders) return;
+        var f = this.mobileActiveFielders[idx];
+        if (!f || f.locked) return;
+        if (evt && evt.stopPropagation) evt.stopPropagation();
+        this._mobileDraggingIdx = idx;
+        this._mobileDragStartFielder = { name: f.name, code: f.code };
+        this._mobileDragMoved = false;
+      }
+
+      onMobileFielderDragMove(evt) {
+        if (typeof this._mobileDraggingIdx !== 'number' || this._mobileDraggingIdx < 0) return;
+        var svg = document.getElementById('mobileFieldPlannerSvg');
+        if (!svg) return;
+        var rect = svg.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        var clientX = (evt.touches && evt.touches[0]) ? evt.touches[0].clientX : evt.clientX;
+        var clientY = (evt.touches && evt.touches[0]) ? evt.touches[0].clientY : evt.clientY;
+        var svgX = ((clientX - rect.left) / rect.width) * 220;
+        var svgY = ((clientY - rect.top) / rect.height) * 220;
+        var dx = svgX - 110;
+        var dy = svgY - 110;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var rNorm = Math.max(0.14, Math.min(0.94, dist / 96));
+        var deg = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
+        deg = ((Math.round(deg) % 360) + 360) % 360;
+        var f = this.mobileActiveFielders[this._mobileDraggingIdx];
+        if (!f) return;
+        this._mobileDragMoved = true;
+        f.angle = deg;
+        f.radius = Number(rNorm.toFixed(2));
+        var cls = this.classifyMobileFieldPosition(f.angle, f.radius);
+        f.code = cls.code;
+        f.name = cls.name;
+        this.renderMobileFieldSvgNodes();
+      }
+
+      endMobileFielderDrag() {
+        if (typeof this._mobileDraggingIdx !== 'number' || this._mobileDraggingIdx < 0) return;
+        var idx = this._mobileDraggingIdx;
+        this._mobileDraggingIdx = -1;
+        var f = this.mobileActiveFielders && this.mobileActiveFielders[idx];
+        if (f && this._mobileDragMoved && this._mobileDragStartFielder) {
+          this.emitMobileFieldCommentary(
+            'Captain drags ' + this._mobileDragStartFielder.name + ' (' + this._mobileDragStartFielder.code + ') to ' + f.name + ' (' + f.code + ')'
+          );
+          this.showToast('🎯 Fielder placed at ' + f.name + ' (' + f.code + ')', 'success');
+        }
+      }
+
+      renderMobileFieldSvgNodes() {
+        var g = document.getElementById('mobileFieldNodesGroup');
+        if (!g || !this.mobileActiveFielders) return;
+        var outCount = 0;
+        var html = '';
+        for (var i = 0; i < this.mobileActiveFielders.length; i++) {
+          var f = this.mobileActiveFielders[i];
+          var isDeep = !f.locked && f.radius > 0.52;
+          if (isDeep) outCount++;
+          var rad = ((f.angle - 90) * Math.PI) / 180;
+          var rPx = f.radius * 96;
+          var cx = (110 + rPx * Math.cos(rad)).toFixed(1);
+          var cy = (110 + rPx * Math.sin(rad)).toFixed(1);
+          var fill = f.locked ? '#00D2FF' : (isDeep ? '#FFB800' : '#00E599');
+          html += '<g onpointerdown="window.cricosMobileApp.startMobileFielderDrag(event,' + i + ')" ontouchstart="window.cricosMobileApp.startMobileFielderDrag(event,' + i + ')" onclick="window.cricosMobileApp.moveMobileFielder(' + i + ',' + f.angle + ',' + (isDeep ? '0.42' : '0.88') + ')" style="cursor: grab;">' +
+            '<circle cx="' + cx + '" cy="' + cy + '" r="8.5" fill="' + fill + '" stroke="#04070D" stroke-width="1.5" />' +
+            '<text x="' + cx + '" y="' + (Number(cy) + 2.5) + '" text-anchor="middle" fill="#04070D" font-size="5.8" font-weight="800" style="pointer-events: none;">' + f.code + '</text>' +
+          '</g>';
+        }
+        g.innerHTML = html;
+      }
+
       openFieldPlannerSheet(presetKey) {
         var self = this;
-        var mode = presetKey || 'POWERPLAY_ATTACK';
-        var label = mode === 'DEATH_YORKER' ? '🔥 Death Yorker Defense (5 Deep Riders • Overs 16-20)' : (mode === 'MIDDLE_SPIN' ? '🛡️ Middle Spin Trap (4 Deep Riders • Overs 7-15)' : '⚡ Powerplay Attacking (2 Slips + Gully • Max 2 Out)');
+        if (presetKey === 'MIDDLE_SPIN') presetKey = 'MIDDLE_SPIN_TRAP';
+        if (presetKey === 'DEATH_YORKER') presetKey = 'DEATH_YORKER_DEFENSE';
+        var presets = this.getMobileFieldPresets();
+        var mode = (presetKey && presets[presetKey]) ? presetKey : (this.mobileActiveFieldPreset || 'POWERPLAY_ATTACK');
+        this.mobileActiveFieldPreset = mode;
+        var p = presets[mode] || presets.POWERPLAY_ATTACK;
+        if (presetKey || !this.mobileActiveFielders) {
+          this.mobileActiveFielders = p.fielders.map(function(f) { return Object.assign({}, f); });
+        }
+        if (presetKey) {
+          this.emitMobileFieldCommentary('Captain deploys ' + p.label + ' (' + p.plan + ')');
+        }
+
+        var presetKeys = Object.keys(presets);
+        var buttonsHtml = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.32rem; margin-bottom: 0.55rem;">';
+        for (var k = 0; k < presetKeys.length; k++) {
+          var key = presetKeys[k];
+          var isCur = key === mode;
+          buttonsHtml += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet(&apos;' + key + '&apos;)" style="background: ' + (isCur ? 'rgba(0,229,153,0.18)' : 'rgba(255,255,255,0.04)') + '; border: 1px solid ' + (isCur ? '#00E599' : 'rgba(148,163,184,0.28)') + '; color: ' + (isCur ? '#059669' : '#64748B') + '; border-radius: 6px; padding: 0.3rem 0.4rem; font-size: 0.62rem; font-weight: 700; text-align: left;" data-tooltip="Apply ' + presets[key].label + '">' + presets[key].label + '</button>';
+        }
+        buttonsHtml += '</div>';
+
+        var logItems = (this.mobileFieldCommentaryLog && this.mobileFieldCommentaryLog.length)
+          ? this.mobileFieldCommentaryLog.slice(0, 3).map(function(c) {
+              return '<div style="padding: 0.28rem 0.45rem; border-radius: 5px; background: rgba(0,229,153,0.12); border-left: 2.5px solid #00E599; font-size: 0.66rem; color: #059669; font-weight: 700;">Over ' + c.over + ': ' + c.text + '</div>';
+            }).join('')
+          : '<div style="font-size: 0.66rem; color: #64748B;">Drag any fielder node or tap a formation above to broadcast live field commentary.</div>';
+
         this.openActionSheet({
-          title: '🎯 11-Fielder Radar & MCC Law 28.4',
-          bodyHtml: '<div style="font-size: 0.74rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.35); border-radius: 8px; padding: 0.45rem 0.65rem; margin-bottom: 0.6rem;">' +
-            '✓ ICC & MCC Compliant Field • ' + label +
+          title: '🎯 11-Fielder Drag Radar & Live Commentary',
+          bodyHtml: '<div style="font-size: 0.72rem; color: #059669; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.35); border-radius: 8px; padding: 0.4rem 0.6rem; margin-bottom: 0.5rem;">' +
+            '✓ ' + p.label + ' • Plan: ' + p.plan +
             '</div>' +
-            '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem;">' +
-              '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet(&apos;POWERPLAY_ATTACK&apos;)" style="flex: 1; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.4); color: #00E599; border-radius: 6px; padding: 0.35rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Select Powerplay 1 preset">⚡ PP1 (2 Out)</button>' +
-              '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet(&apos;MIDDLE_SPIN&apos;)" style="flex: 1; background: rgba(0,210,255,0.15); border: 1px solid rgba(0,210,255,0.4); color: #00D2FF; border-radius: 6px; padding: 0.35rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Select Middle Overs preset">🛡️ Mid (4 Out)</button>' +
-              '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet(&apos;DEATH_YORKER&apos;)" style="flex: 1; background: rgba(255,184,0,0.15); border: 1px solid rgba(255,184,0,0.4); color: #FFB800; border-radius: 6px; padding: 0.35rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Select Death Overs preset">🔥 Death (5 Out)</button>' +
-            '</div>' +
-            '<svg viewBox="0 0 220 220" style="width: 180px; height: 180px; display: block; margin: 0 auto; background: rgba(4,15,10,0.85); border-radius: 50%; border: 2px solid #00E599;">' +
+            buttonsHtml +
+            '<svg id="mobileFieldPlannerSvg" viewBox="0 0 220 220" onpointermove="window.cricosMobileApp.onMobileFielderDragMove(event)" onpointerup="window.cricosMobileApp.endMobileFielderDrag()" ontouchmove="window.cricosMobileApp.onMobileFielderDragMove(event)" ontouchend="window.cricosMobileApp.endMobileFielderDrag()" style="width: 196px; height: 196px; display: block; margin: 0 auto 0.45rem auto; background: rgba(4,15,10,0.88); border-radius: 50%; border: 2px solid #00E599; touch-action: none; user-select: none;">' +
               '<circle cx="110" cy="110" r="100" fill="rgba(6,78,59,0.45)" stroke="#00E599" stroke-width="1.5" />' +
               '<circle cx="110" cy="110" r="52" fill="rgba(6,95,70,0.35)" stroke="#00D2FF" stroke-width="1.2" stroke-dasharray="4 3" />' +
               '<rect x="104" y="90" width="12" height="40" rx="2" fill="#D6C5A3" />' +
-              '<circle cx="110" cy="82" r="6" fill="#00D2FF" /><circle cx="110" cy="136" r="6" fill="#00D2FF" />' +
-              '<circle cx="96" cy="78" r="6" fill="#00E599" /><circle cx="84" cy="82" r="6" fill="#00E599" />' +
-              '<circle cx="72" cy="108" r="6" fill="#00E599" /><circle cx="80" cy="132" r="6" fill="#00E599" />' +
-              '<circle cx="136" cy="130" r="6" fill="#00E599" /><circle cx="144" cy="104" r="6" fill="#00E599" />' +
-              '<circle cx="44" cy="56" r="6.5" fill="#FFB800" /><circle cx="172" cy="58" r="6.5" fill="#FFB800" />' +
-              '<circle cx="95" cy="150" r="6" fill="#00E599" />' +
-            '</svg>',
+              '<g id="mobileFieldNodesGroup"></g>' +
+            '</svg>' +
+            '<div style="font-size: 0.63rem; color: #64748B; text-align: center; margin-bottom: 0.45rem;">🖐️ Drag any fielder node across the 360° turf or tap to toggle Ring ⇄ Deep</div>' +
+            '<div id="mobileFieldCommentaryLog" style="display: flex; flex-direction: column; gap: 0.25rem;">' + logItems + '</div>',
           confirmText: 'Sync Field to 3D Stadium 🌐',
           confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
           onConfirm: function() {
@@ -6462,6 +6774,11 @@ export function getMobileAppHtml(): string {
             self.showToast('🎯 11-Fielder Tactical Formation synchronized to 3D Stadium!', 'success');
           }
         });
+        this.renderMobileFieldSvgNodes();
+      }
+
+      applyMobileFieldPreset(presetKey) {
+        return this.openFieldPlannerSheet(presetKey);
       }
 
       openPitchMapSheet(simMode) {

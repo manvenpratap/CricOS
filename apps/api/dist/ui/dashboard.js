@@ -9870,14 +9870,14 @@ cricos_active_sse_connections 1</pre>
        FLAGSHIP STUDIO 2: TACTICAL FIELD PLACEMENT & MCC LAW 28.4 POWERPLAY ENGINE
        ========================================================================= -->
   <div class="modal-backdrop as-drawer" id="modalFieldPlanner" role="dialog" aria-modal="true" aria-labelledby="fieldPlannerTitle">
-    <div class="modal-card" style="max-width: 820px; width: 95vw;">
+    <div class="modal-card" style="max-width: 880px; width: 95vw;">
       <div class="modal-header">
-        <div class="modal-title" id="fieldPlannerTitle">🎯 Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Engine</div>
+        <div class="modal-title" id="fieldPlannerTitle">🎯 Interactive 11-Fielder Tactical Radar, Drag-and-Drop &amp; Live Commentary Engine</div>
         <button type="button" class="modal-close-btn" aria-label="Close Field Planner" onclick="closeModal('modalFieldPlanner')" data-tooltip="Close Tactical Field Placement Planner">×</button>
       </div>
       <div class="modal-body" style="padding: 1.15rem;">
-        <!-- Top Controls: Powerplay Phase + Batter Hand + Presets -->
-        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+        <!-- Top Controls: Powerplay Phase + Batter Hand -->
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
           <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
             <button type="button" id="btnFieldPhasePP1" class="btn btn-secondary btn-sm" onclick="setFieldPlannerPhase('PP1_OVERS_1_6')" data-tooltip="Powerplay 1 (Overs 1-6): Max 2 fielders allowed outside 30-yard circle" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem; border-color: var(--turf-emerald); color: var(--turf-emerald);">PP1 (Overs 1-6 • Max 2 Out)</button>
             <button type="button" id="btnFieldPhaseMid" class="btn btn-secondary btn-sm" onclick="setFieldPlannerPhase('MIDDLE_OVERS_7_15')" data-tooltip="Middle Overs (Overs 7-15): Max 4 fielders allowed outside 30-yard circle" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem;">Middle (Overs 7-15 • Max 4 Out)</button>
@@ -9889,41 +9889,67 @@ cricos_active_sse_connections 1</pre>
           </div>
         </div>
 
-        <!-- Preset Formations Strip -->
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.9rem;">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="applyFieldPreset('POWERPLAY_ATTACK')" data-tooltip="Apply attacking Powerplay preset with 2 Slips, Gully, and 2 boundary riders" style="width: auto; padding: 0.3rem 0.7rem; font-size: 0.74rem;">⚡ Powerplay Attack (2 Slips + Gully)</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="applyFieldPreset('MIDDLE_SPIN_TRAP')" data-tooltip="Apply Middle Overs spin trap with Short Leg, Slip, and 4 deep sweepers" style="width: auto; padding: 0.3rem 0.7rem; font-size: 0.74rem;">🛡️ Middle Spin Trap (Short Leg + 4 Deep)</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="applyFieldPreset('DEATH_YORKER_DEFENSE')" data-tooltip="Apply Death Overs wide yorker defense with 5 boundary riders" style="width: auto; padding: 0.3rem 0.7rem; font-size: 0.74rem;">🔥 Death Yorker Defense (5 Boundary Riders)</button>
+        <!-- 8 Pro Tactical Fielder Configurations Strip -->
+        <div style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.35rem;">8 Tactical Fielder Configurations (Click to Apply &amp; Emit Live Commentary):</div>
+        <div id="fieldPlannerPresetGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 0.4rem; margin-bottom: 0.85rem;">
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="POWERPLAY_ATTACK" onclick="applyFieldPreset('POWERPLAY_ATTACK')" data-tooltip="Overs 1-6: 2 Slips, Gully, Point, Extra Cover, Mid-Off, Mid-On, Deep Third Man, Deep Fine Leg" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">⚡ PP1 Attack (2 Slips + Gully)</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="POWERPLAY_SWING_TRAP" onclick="applyFieldPreset('POWERPLAY_SWING_TRAP')" data-tooltip="Overs 1-6: Inswing pad trap with Leg Slip, Short Mid-Wicket, 1st Slip, and 2 boundary riders" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🎯 PP1 Inswing Pad Trap</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="MIDDLE_SPIN_TRAP" onclick="applyFieldPreset('MIDDLE_SPIN_TRAP')" data-tooltip="Overs 7-15: Spin web with Short Leg, Silly Point, Slip, and 4 boundary sweepers" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🛡️ Middle Spin Web (Short Leg)</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="BOUNCER_SHORT_TRAP" onclick="applyFieldPreset('BOUNCER_SHORT_TRAP')" data-tooltip="Overs 7-15: Short-ball bumper trap with Leg Gully, Short Mid-Wicket, Deep Fine Leg & Deep Square Leg" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">💥 Bodyline Bouncer Trap</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="OFFSIDE_RING_SQUEEZE" onclick="applyFieldPreset('OFFSIDE_RING_SQUEEZE')" data-tooltip="Overs 7-15: 7-2 off-side dry channel squeeze packing Backward Point, Point, Cover & Extra Cover" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🔒 7-2 Off-Side Squeeze</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="DEATH_YORKER_DEFENSE" onclick="applyFieldPreset('DEATH_YORKER_DEFENSE')" data-tooltip="Overs 16-20: Wide 6th-stump yorker defense with 5 boundary riders" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🔥 Death Wide Yorker (5 Out)</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="DEATH_SLOWER_CUTTER" onclick="applyFieldPreset('DEATH_SLOWER_CUTTER')" data-tooltip="Overs 16-20: Slower-ball cutter trap protecting Cow Corner, Deep Mid-Wicket & Long-On" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🌀 Death Slower-Cutter Trap</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="SUPER_OVER_UMBRELLA" onclick="applyFieldPreset('SUPER_OVER_UMBRELLA')" data-tooltip="Final Over / Super Over boundary umbrella with 5 rope riders & saving-one inner ring" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🏆 Super Over Umbrella</button>
         </div>
 
         <!-- Live MCC Law 28.4 & ICC Powerplay Validation Status Banner -->
-        <div id="fieldLegalityBanner" style="padding: 0.65rem 0.95rem; border-radius: 8px; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.4); color: var(--turf-emerald); font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <div id="fieldLegalityBanner" style="padding: 0.6rem 0.9rem; border-radius: 8px; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.4); color: var(--turf-emerald); font-size: 0.78rem; font-weight: 700; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
           <span id="fieldLegalityText">✓ ICC &amp; MCC Compliant Field (2/2 outside 30-yd ring • +15.0% expected run suppression)</span>
           <span id="fieldBowlingPlanBadge" style="font-size: 0.72rem; color: var(--cyan); font-family: var(--font-mono);">Plan: Good Length 4th Stump</span>
         </div>
 
-        <!-- Main Split Grid: Interactive 360 SVG Turf Radar + Fielder Roster Clickable List -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.15rem; align-items: center;">
-          <div style="display: flex; flex-direction: column; align-items: center; background: rgba(4, 15, 10, 0.75); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 12px; padding: 0.85rem;">
-            <svg id="fieldPlannerSvg" viewBox="0 0 320 320" style="width: 100%; max-width: 300px; height: auto; overflow: visible;" role="img" aria-label="Interactive 11-Fielder Cricket Turf Radar">
+        <!-- Main Split Grid: Interactive Drag-and-Drop 360 SVG Turf Radar + Fielder Roster & Live Commentary -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(295px, 1fr)); gap: 1.1rem; align-items: start;">
+          <div style="display: flex; flex-direction: column; align-items: center; background: rgba(4, 15, 10, 0.78); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 12px; padding: 0.85rem;">
+            <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.68rem; color: #94A3B8; margin-bottom: 0.35rem; font-family: var(--font-mono);">
+              <span>🖐️ DRAG &amp; DROP ENABLED</span>
+              <span id="fieldDragStatusBadge" style="color: #00E599; font-weight: 700;">Ready • Drag any node</span>
+            </div>
+            <svg id="fieldPlannerSvg" viewBox="0 0 320 320" style="width: 100%; max-width: 300px; height: auto; overflow: visible; touch-action: none; user-select: none; cursor: crosshair;" role="img" aria-label="Interactive 11-Fielder Drag-and-Drop Cricket Turf Radar">
               <!-- Outfield & Boundary Rope -->
               <circle cx="160" cy="160" r="145" fill="rgba(6, 78, 59, 0.45)" stroke="#00E599" stroke-width="2" />
               <!-- 30-Yard Restriction Circle -->
               <circle cx="160" cy="160" r="76" fill="rgba(6, 95, 70, 0.35)" stroke="#00D2FF" stroke-width="1.5" stroke-dasharray="5 4" />
+              <!-- Close Catching 15-Yard Ring -->
+              <circle cx="160" cy="160" r="38" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="2 3" />
+              <!-- Quadrant Guide Lines -->
+              <line x1="160" y1="15" x2="160" y2="305" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+              <line x1="15" y1="160" x2="305" y2="160" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
               <!-- Central 22-Yard Clay Pitch Strip -->
               <rect x="152" y="132" width="16" height="56" rx="2" fill="#D6C5A3" stroke="#94A3B8" stroke-width="1" />
-              <!-- Dynamic Fielder Nodes Group -->
+              <!-- Dynamic Draggable Fielder Nodes Group -->
               <g id="fieldPlannerNodesGroup"></g>
             </svg>
-            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.45rem; text-align: center;">
-              💡 Click any fielder node on the radar or list to toggle <strong>Inner Ring (In-Circle)</strong> vs <strong>Deep Boundary Rider</strong>
+            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 0.45rem; text-align: center;">
+              💡 <strong>Drag any fielder node</strong> to any 360° angle/depth or <strong>click</strong> to toggle Ring ⇄ Deep Boundary.
             </div>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 0.45rem;">
-            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">Active 11-Player Fielding Positions (Click to Toggle Ring/Deep):</div>
-            <div id="fieldPlannerRosterList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; max-height: 280px; overflow-y: auto;">
+          <div style="display: flex; flex-direction: column; gap: 0.55rem;">
+            <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-main);">Active 11-Player Fielding Positions (Click to Toggle Ring/Deep):</div>
+            <div id="fieldPlannerRosterList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.38rem; max-height: 215px; overflow-y: auto;">
               <!-- Populated by renderFieldPlannerRadar() -->
+            </div>
+
+            <!-- Live Auto-Generated Tactical Field Commentary Box -->
+            <div style="margin-top: 0.25rem; padding: 0.65rem 0.75rem; border-radius: 10px; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(0, 210, 255, 0.28);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.68rem; font-weight: 800; color: #00D2FF; letter-spacing: 0.05em;">🎙️ AUTO-GENERATED LIVE FIELD COMMENTARY</span>
+                <span style="font-size: 0.62rem; color: #00E599; font-family: var(--font-mono);">Synced to #scoringFeed</span>
+              </div>
+              <div id="fieldPlannerCommentaryLog" style="display: flex; flex-direction: column; gap: 0.35rem; max-height: 110px; overflow-y: auto; font-size: 0.72rem; color: #E2E8F0;">
+                <div style="color: #94A3B8;">🎯 Tactical radar active — drag any fielder or select a preset to broadcast live field commentary.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -21372,14 +21398,15 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
-    // 2. Interactive 11-Fielder Tactical Radar & MCC Law 28.4 Powerplay Engine
+    // 2. Interactive 11-Fielder Tactical Radar, Drag-and-Drop & Live Auto-Commentary Engine
     const FIELD_PLANNER_PRESETS = {
       POWERPLAY_ATTACK: {
+        label: '⚡ Powerplay Attack (2 Slips + Gully)',
         phase: 'PP1_OVERS_1_6',
         plan: 'Good Length 4th Stump (Outswing)',
         fielders: [
           { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
-          { code: 'BWL', name: 'Bowler', angle: 0, radius: 0.22, locked: true },
+          { code: 'BWL', name: 'Fast Bowler', angle: 0, radius: 0.22, locked: true },
           { code: '1SL', name: 'First Slip', angle: 164, radius: 0.24 },
           { code: '2SL', name: 'Second Slip', angle: 154, radius: 0.25 },
           { code: 'GUL', name: 'Gully', angle: 132, radius: 0.30 },
@@ -21391,15 +21418,34 @@ cricos_active_sse_connections 1</pre>
           { code: 'FLEG', name: 'Fine Leg (Deep)', angle: 215, radius: 0.86 }
         ]
       },
+      POWERPLAY_SWING_TRAP: {
+        label: '🎯 PP1 Inswing Pad Trap (Leg Slip + Short Mid-Wicket)',
+        phase: 'PP1_OVERS_1_6',
+        plan: 'Full Inswing Targeting Middle & Leg Stump',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+          { code: 'BWL', name: 'Swing Bowler', angle: 0, radius: 0.22, locked: true },
+          { code: '1SL', name: 'First Slip', angle: 164, radius: 0.23 },
+          { code: 'LSL', name: 'Leg Slip', angle: 196, radius: 0.23 },
+          { code: 'SMW', name: 'Short Mid-Wicket', angle: 298, radius: 0.34 },
+          { code: 'PT', name: 'Point', angle: 92, radius: 0.42 },
+          { code: 'COV', name: 'Cover', angle: 64, radius: 0.44 },
+          { code: 'MOFF', name: 'Mid-Off', angle: 26, radius: 0.45 },
+          { code: 'MON', name: 'Mid-On', angle: 334, radius: 0.45 },
+          { code: 'DSQ', name: 'Deep Square Leg', angle: 268, radius: 0.88 },
+          { code: '3M', name: 'Third Man (Deep)', angle: 140, radius: 0.86 }
+        ]
+      },
       MIDDLE_SPIN_TRAP: {
+        label: '🛡️ Middle Spin Web (Short Leg + Silly Point + 4 Deep)',
         phase: 'MIDDLE_OVERS_7_15',
-        plan: 'Tossed Up Flight on Middle & Off',
+        plan: 'Tossed Up Flight on Middle & Off (Drift & Turn)',
         fielders: [
           { code: 'WK', name: 'Wicketkeeper (Up)', angle: 180, radius: 0.12, locked: true },
-          { code: 'BWL', name: 'Spinner', angle: 0, radius: 0.20, locked: true },
+          { code: 'BWL', name: 'Lead Spinner', angle: 0, radius: 0.20, locked: true },
           { code: 'SLG', name: 'Short Leg', angle: 245, radius: 0.18 },
+          { code: 'SPT', name: 'Silly Point', angle: 112, radius: 0.18 },
           { code: 'SLIP', name: 'First Slip', angle: 162, radius: 0.20 },
-          { code: 'PT', name: 'Point', angle: 95, radius: 0.42 },
           { code: 'COV', name: 'Cover', angle: 65, radius: 0.44 },
           { code: 'MWK', name: 'Short Mid-Wicket', angle: 292, radius: 0.38 },
           { code: 'LOFF', name: 'Long-Off (Deep)', angle: 24, radius: 0.88 },
@@ -21408,7 +21454,44 @@ cricos_active_sse_connections 1</pre>
           { code: 'DCV', name: 'Deep Extra Cover', angle: 62, radius: 0.86 }
         ]
       },
+      BOUNCER_SHORT_TRAP: {
+        label: '💥 Bodyline Bouncer Trap (Leg Gully + 2 Deep Hook Riders)',
+        phase: 'MIDDLE_OVERS_7_15',
+        plan: 'Short-Pitched Bumper Barrage at Throat/Shoulder',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper (Back)', angle: 180, radius: 0.24, locked: true },
+          { code: 'BWL', name: 'Enforcer Pacer', angle: 0, radius: 0.22, locked: true },
+          { code: 'LGL', name: 'Leg Gully', angle: 222, radius: 0.26 },
+          { code: 'SMW', name: 'Short Mid-Wicket', angle: 296, radius: 0.36 },
+          { code: 'PT', name: 'Backward Point', angle: 104, radius: 0.42 },
+          { code: 'MOFF', name: 'Mid-Off', angle: 28, radius: 0.45 },
+          { code: 'MON', name: 'Mid-On', angle: 334, radius: 0.45 },
+          { code: 'FLEG', name: 'Deep Fine Leg', angle: 214, radius: 0.90 },
+          { code: 'DBS', name: 'Deep Backward Square', angle: 254, radius: 0.90 },
+          { code: 'DMW', name: 'Deep Mid-Wicket', angle: 286, radius: 0.88 },
+          { code: 'DPT', name: 'Deep Point', angle: 94, radius: 0.88 }
+        ]
+      },
+      OFFSIDE_RING_SQUEEZE: {
+        label: '🔒 7-2 Off-Side Squeeze (Packed Cover/Point Ring)',
+        phase: 'MIDDLE_OVERS_7_15',
+        plan: 'Dry 5th-Stump Channel Outside Off (Cut & Drive Denial)',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+          { code: 'BWL', name: 'Seam Bowler', angle: 0, radius: 0.22, locked: true },
+          { code: 'GUL', name: 'Gully', angle: 132, radius: 0.30 },
+          { code: 'BPT', name: 'Backward Point', angle: 106, radius: 0.42 },
+          { code: 'PT', name: 'Point', angle: 88, radius: 0.43 },
+          { code: 'COV', name: 'Cover', angle: 66, radius: 0.44 },
+          { code: 'XCV', name: 'Extra Cover', angle: 46, radius: 0.45 },
+          { code: 'MOFF', name: 'Mid-Off', angle: 24, radius: 0.46 },
+          { code: 'MON', name: 'Mid-On', angle: 334, radius: 0.46 },
+          { code: 'DPT', name: 'Deep Point', angle: 96, radius: 0.88 },
+          { code: 'DCV', name: 'Deep Cover', angle: 56, radius: 0.88 }
+        ]
+      },
       DEATH_YORKER_DEFENSE: {
+        label: '🔥 Death Wide Yorker Defense (5 Off/Straight Riders)',
         phase: 'DEATH_OVERS_16_20',
         plan: 'Wide Toe-Crushing Yorker (6th Stump)',
         fielders: [
@@ -21424,13 +21507,153 @@ cricos_active_sse_connections 1</pre>
           { code: 'DCV', name: 'Deep Cover', angle: 56, radius: 0.88 },
           { code: 'DSQ', name: 'Deep Square Leg', angle: 268, radius: 0.88 }
         ]
+      },
+      DEATH_SLOWER_CUTTER: {
+        label: '🌀 Death Slower-Cutter Trap (Cow Corner + Deep Mid-Wicket)',
+        phase: 'DEATH_OVERS_16_20',
+        plan: 'Off-Pace Leg-Cutter into the Pitch (Slog-Sweep Trap)',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper', angle: 180, radius: 0.18, locked: true },
+          { code: 'BWL', name: 'Death Specialist', angle: 0, radius: 0.22, locked: true },
+          { code: 'PT', name: 'Backward Point', angle: 102, radius: 0.42 },
+          { code: 'COV', name: 'Extra Cover (In)', angle: 58, radius: 0.44 },
+          { code: 'MOFF', name: 'Mid-Off (In)', angle: 26, radius: 0.44 },
+          { code: 'SFL', name: 'Short Fine Leg', angle: 218, radius: 0.40 },
+          { code: 'LON', name: 'Long-On (Deep)', angle: 336, radius: 0.90 },
+          { code: 'CC', name: 'Cow Corner (Deep)', angle: 312, radius: 0.91 },
+          { code: 'DMW', name: 'Deep Mid-Wicket', angle: 286, radius: 0.90 },
+          { code: 'DSQ', name: 'Deep Square Leg', angle: 262, radius: 0.89 },
+          { code: 'LOFF', name: 'Long-Off (Deep)', angle: 22, radius: 0.90 }
+        ]
+      },
+      SUPER_OVER_UMBRELLA: {
+        label: '🏆 Super Over Boundary Umbrella (5 Rope Riders)',
+        phase: 'DEATH_OVERS_16_20',
+        plan: 'Blockhole Stump-to-Stump (Boundary Denial)',
+        fielders: [
+          { code: 'WK', name: 'Wicketkeeper (Up)', angle: 180, radius: 0.14, locked: true },
+          { code: 'BWL', name: 'Super Over Ace', angle: 0, radius: 0.22, locked: true },
+          { code: 'PT', name: 'Saving-One Point', angle: 92, radius: 0.34 },
+          { code: 'COV', name: 'Saving-One Cover', angle: 54, radius: 0.34 },
+          { code: 'MWK', name: 'Saving-One Mid-Wicket', angle: 298, radius: 0.34 },
+          { code: 'SFL', name: 'Short Fine Leg', angle: 215, radius: 0.34 },
+          { code: 'LOFF', name: 'Long-Off (Rope)', angle: 24, radius: 0.92 },
+          { code: 'LON', name: 'Long-On (Rope)', angle: 336, radius: 0.92 },
+          { code: 'DMW', name: 'Deep Mid-Wicket (Rope)', angle: 290, radius: 0.92 },
+          { code: 'DPT', name: 'Deep Point (Rope)', angle: 96, radius: 0.92 },
+          { code: '3M', name: 'Third Man (Rope)', angle: 142, radius: 0.91 }
+        ]
       }
     };
+    window.FIELD_PLANNER_PRESETS = FIELD_PLANNER_PRESETS;
 
     let _fieldPhase = 'PP1_OVERS_1_6';
     let _fieldHand = 'RHB';
     let _fieldPlan = 'Good Length 4th Stump (Outswing)';
+    let _activePresetKey = 'POWERPLAY_ATTACK';
     let _activeFielders = FIELD_PLANNER_PRESETS.POWERPLAY_ATTACK.fielders.map(function(f) { return Object.assign({}, f); });
+    let _draggingFielderIdx = -1;
+    let _dragMovedSignificantly = false;
+    window._fieldChangeCommentaryHistory = [];
+
+    // Authentic 360° MCC Cricket Fielding Position Classifier
+    function classifyCricketFieldPosition(angleDeg, radiusNorm) {
+      const a = ((Math.round(angleDeg) % 360) + 360) % 360;
+      const isClose = radiusNorm < 0.28;
+      const isDeep = radiusNorm > 0.52;
+      if (isClose) {
+        if (a >= 145 && a < 160) return { code: '2SL', name: 'Second Slip' };
+        if (a >= 160 && a <= 178) return { code: '1SL', name: 'First Slip' };
+        if (a >= 120 && a < 145) return { code: 'GUL', name: 'Gully' };
+        if (a >= 80 && a < 120) return { code: 'SPT', name: 'Silly Point' };
+        if (a >= 18 && a < 80) return { code: 'SMO', name: 'Silly Mid-Off' };
+        if (a >= 182 && a < 215) return { code: 'LSL', name: 'Leg Slip' };
+        if (a >= 215 && a < 238) return { code: 'LGL', name: 'Leg Gully' };
+        if (a >= 238 && a < 285) return { code: 'SLG', name: 'Short Leg' };
+        return { code: 'SMN', name: 'Short Mid-On' };
+      }
+      if (isDeep) {
+        if (a >= 125 && a < 170) return { code: '3M', name: 'Third Man (Deep)' };
+        if (a >= 102 && a < 125) return { code: 'DBP', name: 'Deep Backward Point' };
+        if (a >= 82 && a < 102) return { code: 'DPT', name: 'Deep Point' };
+        if (a >= 64 && a < 82) return { code: 'DCV', name: 'Deep Cover' };
+        if (a >= 40 && a < 64) return { code: 'DXC', name: 'Deep Extra Cover' };
+        if (a >= 5 && a < 40) return { code: 'LOFF', name: 'Long-Off (Deep)' };
+        if (a >= 320 && a <= 355) return { code: 'LON', name: 'Long-On (Deep)' };
+        if (a >= 300 && a < 320) return { code: 'CC', name: 'Cow Corner (Deep)' };
+        if (a >= 276 && a < 300) return { code: 'DMW', name: 'Deep Mid-Wicket' };
+        if (a >= 256 && a < 276) return { code: 'DSQ', name: 'Deep Square Leg' };
+        if (a >= 235 && a < 256) return { code: 'DBS', name: 'Deep Backward Square' };
+        return { code: 'FLEG', name: 'Fine Leg (Deep)' };
+      }
+      // Inner 30-yard ring (0.28 <= radius <= 0.52)
+      if (a >= 125 && a < 170) return { code: 'S3M', name: 'Short Third Man' };
+      if (a >= 102 && a < 125) return { code: 'BPT', name: 'Backward Point' };
+      if (a >= 82 && a < 102) return { code: 'PT', name: 'Point' };
+      if (a >= 62 && a < 82) return { code: 'COV', name: 'Cover' };
+      if (a >= 40 && a < 62) return { code: 'XCV', name: 'Extra Cover' };
+      if (a >= 5 && a < 40) return { code: 'MOFF', name: 'Mid-Off' };
+      if (a >= 320 && a <= 355) return { code: 'MON', name: 'Mid-On' };
+      if (a >= 282 && a < 320) return { code: 'MWK', name: 'Mid-Wicket' };
+      if (a >= 256 && a < 282) return { code: 'SQL', name: 'Square Leg' };
+      if (a >= 232 && a < 256) return { code: 'BSL', name: 'Backward Square Leg' };
+      return { code: 'SFL', name: 'Short Fine Leg' };
+    }
+    window.classifyCricketFieldPosition = classifyCricketFieldPosition;
+
+    // Broadcast Commentary Auto-Generator for Live Match Field Changes
+    function emitFieldChangeCommentary(summaryText, tacticalReason) {
+      const oversEl = document.getElementById('liveOvers');
+      const scoreEl = document.getElementById('liveScore');
+      const currentOvers = (oversEl && oversEl.textContent && oversEl.textContent.trim()) || '14.2';
+      const currentScore = (scoreEl && scoreEl.textContent && scoreEl.textContent.trim()) || '142/3';
+      const outCount = _activeFielders.filter(function(f) { return !f.locked && f.radius > 0.52; }).length;
+      const maxOut = _fieldPhase === 'PP1_OVERS_1_6' ? 2 : (_fieldPhase === 'MIDDLE_OVERS_7_15' ? 4 : 5);
+
+      const fullCommentary = '🎯 Over ' + currentOvers + ' — [TACTICAL FIELD CHANGE] ' + summaryText +
+        (tacticalReason ? ' • ' + tacticalReason : '') +
+        ' (' + outCount + '/' + maxOut + ' outside 30-yd circle • ' + _fieldHand + ')';
+
+      const entry = {
+        timestamp: new Date().toISOString(),
+        over: currentOvers,
+        score: currentScore,
+        summary: summaryText,
+        commentary: fullCommentary,
+        outCount: outCount,
+        maxOut: maxOut
+      };
+      window._fieldChangeCommentaryHistory.unshift(entry);
+      if (window._fieldChangeCommentaryHistory.length > 25) {
+        window._fieldChangeCommentaryHistory.pop();
+      }
+
+      // 1. Prepend to main Live Match Ball-by-Ball Commentary Feed (#scoringFeed)
+      const scoringFeed = document.getElementById('scoringFeed');
+      if (scoringFeed) {
+        const item = document.createElement('div');
+        item.className = 'feed-item field-change-commentary-item';
+        item.style.borderLeft = '3px solid #00E599';
+        item.style.background = 'rgba(0, 229, 153, 0.08)';
+        item.style.padding = '0.45rem 0.65rem';
+        item.style.borderRadius = '6px';
+        item.innerHTML = '<span style="color: #00E599; font-weight: 700;">' + fullCommentary + '</span>' +
+          '<span style="color: var(--text-muted); font-weight: 600; font-family: var(--font-mono);">' + currentScore + '</span>';
+        scoringFeed.prepend(item);
+      }
+
+      // 2. Update Live Field Commentary Box inside #modalFieldPlanner
+      const plannerLog = document.getElementById('fieldPlannerCommentaryLog');
+      if (plannerLog) {
+        plannerLog.innerHTML = window._fieldChangeCommentaryHistory.slice(0, 6).map(function(c) {
+          return '<div style="padding: 0.32rem 0.5rem; border-radius: 6px; background: rgba(0, 229, 153, 0.1); border-left: 2.5px solid #00E599; line-height: 1.35;">' +
+            '<span style="color: #00E599; font-weight: 800;">' + c.commentary + '</span>' +
+          '</div>';
+        }).join('');
+      }
+      return entry;
+    }
+    window.emitFieldChangeCommentary = emitFieldChangeCommentary;
 
     function renderFieldPlannerRadar() {
       const svgGroup = document.getElementById('fieldPlannerNodesGroup');
@@ -21443,6 +21666,13 @@ cricos_active_sse_connections 1</pre>
       const maxOut = _fieldPhase === 'PP1_OVERS_1_6' ? 2 : (_fieldPhase === 'MIDDLE_OVERS_7_15' ? 4 : 5);
       let outCount = 0;
 
+      // Highlight active preset button
+      document.querySelectorAll('.field-preset-btn').forEach(function(btn) {
+        const isCur = btn.getAttribute('data-preset') === _activePresetKey;
+        btn.style.borderColor = isCur ? 'var(--turf-emerald)' : '';
+        btn.style.color = isCur ? 'var(--turf-emerald)' : '';
+      });
+
       svgGroup.innerHTML = _activeFielders.map(function(f, idx) {
         const isDeep = !f.locked && f.radius > 0.52;
         if (isDeep) outCount++;
@@ -21452,9 +21682,14 @@ cricos_active_sse_connections 1</pre>
         const cx = (160 + rPx * Math.cos(rad)).toFixed(1);
         const cy = (160 + rPx * Math.sin(rad)).toFixed(1);
         const fill = f.locked ? '#00D2FF' : (isDeep ? '#FFB800' : '#00E599');
-        return '<g class="field-node-circle" onclick="toggleFielderRingDepth(' + idx + ')" data-tooltip="' + f.name + ' (' + (isDeep ? 'Deep Boundary' : 'Inner 30-Yd Ring') + ')">' +
-          '<circle cx="' + cx + '" cy="' + cy + '" r="10" fill="' + fill + '" stroke="#04070D" stroke-width="2" />' +
-          '<text x="' + cx + '" y="' + (Number(cy) + 3) + '" text-anchor="middle" fill="#04070D" font-size="7.5" font-weight="800" font-family="Space Grotesk, sans-serif">' + f.code + '</text>' +
+        const cursorStyle = f.locked ? 'not-allowed' : 'grab';
+        return '<g class="field-node-circle" data-fielder-index="' + idx + '" ' +
+          'onpointerdown="window.startFielderDrag(event, ' + idx + ')" ' +
+          'onclick="window.handleFielderNodeClick(event, ' + idx + ')" ' +
+          'style="cursor: ' + cursorStyle + ';" ' +
+          'data-tooltip="' + f.name + ' (' + (f.locked ? 'Locked Role' : (isDeep ? 'Deep Boundary • Drag to reposition' : 'Inner 30-Yd Ring • Drag to reposition')) + ')">' +
+          '<circle cx="' + cx + '" cy="' + cy + '" r="11" fill="' + fill + '" stroke="#04070D" stroke-width="2" />' +
+          '<text x="' + cx + '" y="' + (Number(cy) + 3) + '" text-anchor="middle" fill="#04070D" font-size="7.2" font-weight="800" font-family="Space Grotesk, sans-serif" style="pointer-events: none;">' + f.code + '</text>' +
         '</g>';
       }).join('');
 
@@ -21485,6 +21720,111 @@ cricos_active_sse_connections 1</pre>
       }
     }
 
+    // Drag-and-Drop Re-Arrangement Handlers for #fieldPlannerSvg
+    let _dragBeforeState = null;
+    function startFielderDrag(evt, idx) {
+      const f = _activeFielders[idx];
+      if (!f || f.locked) return;
+      if (evt && typeof evt.stopPropagation === 'function') evt.stopPropagation();
+      _draggingFielderIdx = idx;
+      _dragMovedSignificantly = false;
+      _dragBeforeState = { code: f.code, name: f.name, angle: f.angle, radius: f.radius };
+      const statusBadge = document.getElementById('fieldDragStatusBadge');
+      if (statusBadge) statusBadge.textContent = 'Dragging ' + f.name + ' (' + f.code + ')...';
+    }
+    window.startFielderDrag = startFielderDrag;
+
+    function onFielderDragMove(evt) {
+      if (_draggingFielderIdx < 0) return;
+      const svg = document.getElementById('fieldPlannerSvg');
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const clientX = evt.touches && evt.touches[0] ? evt.touches[0].clientX : evt.clientX;
+      const clientY = evt.touches && evt.touches[0] ? evt.touches[0].clientY : evt.clientY;
+      const svgX = ((clientX - rect.left) / rect.width) * 320;
+      const svgY = ((clientY - rect.top) / rect.height) * 320;
+      const dx = svgX - 160;
+      const dy = svgY - 160;
+      const distPx = Math.sqrt(dx * dx + dy * dy);
+      const clampedRadius = Math.max(0.14, Math.min(0.94, distPx / 140));
+      let deg = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
+      deg = ((Math.round(deg) % 360) + 360) % 360;
+      const canonicalAngle = _fieldHand === 'RHB' ? deg : ((360 - deg) % 360);
+
+      const f = _activeFielders[_draggingFielderIdx];
+      if (!f) return;
+      if (Math.abs(f.angle - canonicalAngle) > 2 || Math.abs(f.radius - clampedRadius) > 0.03) {
+        _dragMovedSignificantly = true;
+      }
+      f.angle = canonicalAngle;
+      f.radius = Number(clampedRadius.toFixed(2));
+      const classified = classifyCricketFieldPosition(f.angle, f.radius);
+      f.code = classified.code;
+      f.name = classified.name;
+      renderFieldPlannerRadar();
+      const statusBadge = document.getElementById('fieldDragStatusBadge');
+      if (statusBadge) {
+        statusBadge.textContent = '→ ' + f.name + ' (' + Math.round(f.radius * 100) + '% depth)';
+      }
+    }
+    window.onFielderDragMove = onFielderDragMove;
+
+    function endFielderDrag() {
+      if (_draggingFielderIdx < 0) return;
+      const idx = _draggingFielderIdx;
+      _draggingFielderIdx = -1;
+      const f = _activeFielders[idx];
+      if (f && _dragMovedSignificantly && _dragBeforeState) {
+        const ringZone = f.radius > 0.52 ? 'Boundary Rope (' + Math.round(f.radius * 100) + '% depth)' : (f.radius < 0.28 ? 'Close-In Catching' : '30-Yard Inner Ring');
+        emitFieldChangeCommentary(
+          'Captain drags ' + _dragBeforeState.name + ' (' + _dragBeforeState.code + ') to ' + f.name + ' (' + f.code + ' • ' + ringZone + ')',
+          'Plan: ' + _fieldPlan
+        );
+        showToast('🎯 Fielder repositioned to ' + f.name + ' (' + f.code + ')');
+      }
+      _dragBeforeState = null;
+      const statusBadge = document.getElementById('fieldDragStatusBadge');
+      if (statusBadge && f) statusBadge.textContent = '✓ Placed ' + f.name + ' (' + f.code + ')';
+    }
+    window.endFielderDrag = endFielderDrag;
+
+    function handleFielderNodeClick(evt, idx) {
+      if (_dragMovedSignificantly) {
+        _dragMovedSignificantly = false;
+        return;
+      }
+      toggleFielderRingDepth(idx);
+    }
+    window.handleFielderNodeClick = handleFielderNodeClick;
+
+    // Programmatic & Interactive Drag API for repositioning any fielder by index, angle (0..360), and radius (0.14..0.94)
+    function moveFielderToPosition(idx, angleDeg, radiusNorm) {
+      const f = _activeFielders[idx];
+      if (!f || f.locked) return null;
+      const prevName = f.name;
+      const prevCode = f.code;
+      f.angle = ((Math.round(angleDeg) % 360) + 360) % 360;
+      f.radius = Number(Math.max(0.14, Math.min(0.94, radiusNorm)).toFixed(2));
+      const classified = classifyCricketFieldPosition(f.angle, f.radius);
+      f.code = classified.code;
+      f.name = classified.name;
+      _activePresetKey = 'CUSTOM';
+      renderFieldPlannerRadar();
+      const ringZone = f.radius > 0.52 ? 'Deep Boundary Rider' : (f.radius < 0.28 ? 'Close Catching' : '30-Yard Inner Circle');
+      const entry = emitFieldChangeCommentary(
+        'Captain moves ' + prevName + ' (' + prevCode + ') to ' + f.name + ' (' + f.code + ' • ' + ringZone + ')',
+        'Plan: ' + _fieldPlan
+      );
+      return { code: f.code, name: f.name, angle: f.angle, radius: f.radius, fielder: f, commentaryEntry: entry };
+    }
+    window.moveFielderToPosition = moveFielderToPosition;
+
+    if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+      document.addEventListener('pointermove', onFielderDragMove);
+      document.addEventListener('pointerup', endFielderDrag);
+    }
+
     function openFieldPlannerModal() {
       openModal('modalFieldPlanner');
       renderFieldPlannerRadar();
@@ -21493,29 +21833,44 @@ cricos_active_sse_connections 1</pre>
     function setFieldPlannerPhase(phase) {
       _fieldPhase = phase;
       renderFieldPlannerRadar();
+      emitFieldChangeCommentary(
+        'Powerplay restriction phase switched to ' + phase.replace(/_/g, ' '),
+        'Plan: ' + _fieldPlan
+      );
     }
 
     function setFieldPlannerHand(hand) {
       _fieldHand = hand;
       renderFieldPlannerRadar();
+      emitFieldChangeCommentary(
+        'Field geometry mirrored for ' + (hand === 'LHB' ? 'Left-Handed Batter (LHB)' : 'Right-Handed Batter (RHB)'),
+        'Plan: ' + _fieldPlan
+      );
       showToast('🏏 Field geometry mirrored for ' + (hand === 'LHB' ? 'Left-Handed Batter (LHB)' : 'Right-Handed Batter (RHB)'));
     }
 
     function applyFieldPreset(key) {
       const preset = FIELD_PLANNER_PRESETS[key];
       if (!preset) return;
+      _activePresetKey = key;
       _fieldPhase = preset.phase;
       _fieldPlan = preset.plan;
       _activeFielders = preset.fielders.map(function(f) { return Object.assign({}, f); });
       renderFieldPlannerRadar();
-      showToast('🎯 Applied Tactical Formation: ' + key.replace(/_/g, ' '));
+      emitFieldChangeCommentary(
+        'Captain deploys formation: ' + (preset.label || key.replace(/_/g, ' ')),
+        'Bowling Plan: ' + preset.plan
+      );
+      showToast('🎯 Applied Tactical Formation: ' + (preset.label || key.replace(/_/g, ' ')));
     }
 
     function toggleFielderRingDepth(idx) {
       const f = _activeFielders[idx];
       if (!f || f.locked) return;
-      f.radius = f.radius > 0.52 ? 0.42 : 0.88;
-      renderFieldPlannerRadar();
+      const prevName = f.name;
+      const newRadius = f.radius > 0.52 ? 0.42 : 0.88;
+      moveFielderToPosition(idx, f.angle, newRadius);
+      showToast('🎯 Repositioned ' + prevName + ' → ' + f.name + ' (' + (f.radius > 0.52 ? 'Deep Boundary' : '30-Yd Ring') + ')');
     }
 
     function syncFieldPlannerTo3DStadium() {
@@ -21523,6 +21878,10 @@ cricos_active_sse_connections 1</pre>
       if (typeof setWagonDisplayMode === 'function') {
         setWagonDisplayMode('3D');
       }
+      emitFieldChangeCommentary(
+        '11-Fielder tactical formation synchronized to 3D Floodlit Stadium Pitch',
+        'Active Plan: ' + _fieldPlan
+      );
       showToast('🌐 11-Fielder Tactical Formation synchronized to 3D Floodlit Stadium Pitch!');
     }
 

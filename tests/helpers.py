@@ -129,12 +129,21 @@ async def save_screenshot_async(page, name: str, base_dir: Optional[str] = None)
     filename = f"{name}.png" if not name.endswith(".png") else name
     file_path = target_dir / filename
 
-    await page.screenshot(
-        path=str(file_path),
-        full_page=False,
-        timeout=5000,
-        animations="disabled"
-    )
+    try:
+        await page.screenshot(
+            path=str(file_path),
+            full_page=False,
+            timeout=15000,
+            animations="disabled"
+        )
+    except Exception:
+        await page.evaluate("() => { if (document.fonts && document.fonts.clear) document.fonts.clear(); }")
+        await page.screenshot(
+            path=str(file_path),
+            full_page=False,
+            timeout=15000,
+            animations="disabled"
+        )
 
     # Regenerate local HTML gallery
     catalog_screenshots(str(target_dir))

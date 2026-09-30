@@ -586,7 +586,48 @@ describe('Domain: 3D WebGL Stadium, Visual Graphics, Motion & Precision Layouts'
       assert.ok(mobileHtml.includes("'LHB'") && mobileHtml.includes("'RHB'"), 'Mobile 3D & 2D trajectories must support LHB and RHB mirroring');
     });
   });
+
+  // =========================================================================
+  // Suite 9: 8-Preset Tactical Field Planner, Drag-and-Drop & Live Field Commentary
+  // =========================================================================
+  describe('Suite 9: 8-Preset Tactical Field Planner, Drag-and-Drop & Live Field Commentary', () => {
+    it('1. Defines all 8 tactical fielder configurations on both Desktop and Mobile', () => {
+      const presets = [
+        'POWERPLAY_ATTACK',
+        'POWERPLAY_SWING_TRAP',
+        'MIDDLE_SPIN_TRAP',
+        'BOUNCER_SHORT_TRAP',
+        'OFFSIDE_RING_SQUEEZE',
+        'DEATH_YORKER_DEFENSE',
+        'DEATH_SLOWER_CUTTER',
+        'SUPER_OVER_UMBRELLA'
+      ];
+      for (const preset of presets) {
+        assert.ok(dashboardHtml.includes(preset), `Desktop Field Planner must include preset ${preset}`);
+        assert.ok(mobileHtml.includes(preset), `Mobile Field Planner must include preset ${preset}`);
+      }
+    });
+
+    it('2. Implements 360-degree MCC cricket fielding position classifier and interactive drag-and-drop handlers', () => {
+      assert.ok(dashboardHtml.includes('window.classifyCricketFieldPosition = classifyCricketFieldPosition'));
+      assert.ok(dashboardHtml.includes('window.startFielderDrag = startFielderDrag'));
+      assert.ok(dashboardHtml.includes('window.moveFielderToPosition = moveFielderToPosition'));
+      assert.ok(mobileHtml.includes('classifyMobileFieldPosition(angleDeg, radiusNorm)'));
+      assert.ok(mobileHtml.includes('startMobileFielderDrag(evt, idx)'));
+      assert.ok(mobileHtml.includes('moveMobileFielder(idx, angleDeg, radiusNorm)'));
+    });
+
+    it('3. Auto-generates live match commentary for field position changes and prepends to scoring feed', () => {
+      assert.ok(dashboardHtml.includes('window.emitFieldChangeCommentary = emitFieldChangeCommentary'));
+      assert.ok(dashboardHtml.includes('window._fieldChangeCommentaryHistory'));
+      assert.ok(dashboardHtml.includes('id="fieldPlannerCommentaryLog"'));
+      assert.ok(dashboardHtml.includes('TACTICAL FIELD CHANGE'));
+      assert.ok(mobileHtml.includes('emitMobileFieldCommentary(summaryText)'));
+      assert.ok(mobileHtml.includes('id="mobileFieldCommentaryLog"'));
+    });
+  });
 });
+
 
 
 

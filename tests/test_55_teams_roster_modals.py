@@ -243,8 +243,55 @@ async def test_flagship_studios_weather_and_gear_store():
         assert "Verified" in (checkin_mobile["arrivalText"] or ""), "Mobile arrival status must update to Verified"
         await save_screenshot_async(m_page, "checkin_sheet_mobile.png")
 
+        # 5. Verify 8 Tactical Fielder Presets, Drag-and-Drop Re-Arrangement & Live Match Auto-Commentary (Desktop + Mobile)
+        field_desktop = await page.evaluate("""() => {
+            window.openFieldPlannerModal && window.openFieldPlannerModal();
+            const presetCount = Object.keys(window.FIELD_PLANNER_PRESETS || {}).length;
+            window.applyFieldPreset('BOUNCER_SHORT_TRAP');
+            const dragged = window.moveFielderToPosition(5, 94, 0.88);
+            const feedHtml = document.getElementById('scoringFeed')?.innerHTML || '';
+            const logHtml = document.getElementById('fieldPlannerCommentaryLog')?.innerHTML || '';
+            return {
+                presetCount,
+                draggedCode: dragged ? dragged.code : null,
+                draggedName: dragged ? dragged.name : null,
+                historyCount: (window._fieldChangeCommentaryHistory || []).length,
+                inScoringFeed: feedHtml.includes('TACTICAL FIELD CHANGE') && feedHtml.includes('Deep Point'),
+                inPlannerLog: logHtml.includes('Deep Point')
+            };
+        }""")
+        assert field_desktop["presetCount"] >= 8, f"Expected >= 8 desktop field presets, got {field_desktop['presetCount']}"
+        assert field_desktop["draggedCode"] == "DPT", f"Expected dragged fielder at (94°, 0.88) to classify as DPT (Deep Point), got {field_desktop['draggedCode']}"
+        assert field_desktop["historyCount"] >= 2, "Expected at least 2 auto-generated field change commentary events"
+        assert field_desktop["inScoringFeed"], "Live match #scoringFeed must receive auto-generated field position change commentary"
+        assert field_desktop["inPlannerLog"], "#fieldPlannerCommentaryLog must display the latest tactical field change commentary"
+        await save_screenshot_async(page, "field_planner_drag_and_commentary_desktop.png")
+
+        field_mobile = await m_page.evaluate("""() => {
+            const app = window.cricosMobileApp;
+            if (app && app.closeProviderCheckInSheet) app.closeProviderCheckInSheet();
+            if (app && app.openFieldPlannerSheet) app.openFieldPlannerSheet();
+            const presets = app?.getMobileFieldPresets ? Object.keys(app.getMobileFieldPresets()) : [];
+            app?.applyMobileFieldPreset('SUPER_OVER_UMBRELLA');
+            const moved = app?.moveMobileFielder(5, 312, 0.90);
+            const latestComm = app?.matchState?.commentary?.[0];
+            const mobileLogHtml = document.getElementById('mobileFieldCommentaryLog')?.innerHTML || '';
+            return {
+                presetCount: presets.length,
+                movedCode: moved ? moved.code : null,
+                latestCommText: latestComm ? latestComm.text : '',
+                inMobileLog: mobileLogHtml.includes('Cow Corner')
+            };
+        }""")
+        assert field_mobile["presetCount"] >= 8, f"Expected >= 8 mobile field presets, got {field_mobile['presetCount']}"
+        assert field_mobile["movedCode"] == "CC", f"Expected dragged mobile fielder at (312°, 0.90) to classify as CC (Cow Corner), got {field_mobile['movedCode']}"
+        assert "Cow Corner" in field_mobile["latestCommText"], "Mobile matchState.commentary[0] must include auto-generated field move commentary"
+        assert field_mobile["inMobileLog"], "#mobileFieldCommentaryLog must display the live field change commentary"
+        await save_screenshot_async(m_page, "field_planner_drag_and_commentary_mobile.png")
+
         assert_no_critical_errors(page)
         await browser.close()
+
 
 
 if __name__ == "__main__":

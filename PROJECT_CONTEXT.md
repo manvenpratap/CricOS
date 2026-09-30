@@ -1,14 +1,22 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 09:15:00
-**Version:** 1.0.0-phase2ca (Android 15 `targetSdk 35` / `compileSdk 35` Google Play Protect Privacy & V2/V3 Signature Compliance)  
+**Last Updated:** 2026-09-30 10:02:00
+**Version:** 1.0.0-phase2cb (8-Preset Tactical Field Planner, Interactive 360° Drag-and-Drop Field Rearrangement & Live Match Auto-Generated Field Commentary)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CA Completed — Android 15 (`targetSdk 35` / `compileSdk 35`) Google Play Protect Compliance (`apps/mobile/android/app/build.gradle`, `apps/mobile/android/app/src/main/AndroidManifest.xml`, `apps/mobile/android/app/src/main/java/com/cricos/app/MainActivity.java`, `apps/mobile/android/build-apk.sh`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CB Completed — 8-Preset Tactical Field Planner, Interactive 360° Drag-and-Drop Field Rearrangement & Live Match Auto-Generated Field Commentary (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`):
+  - **1. Expanded Tactical Field Configurations from 3 to 8 Pro Presets (`window.FIELD_PLANNER_PRESETS` & `getMobileFieldPresets()`)**:
+    - `POWERPLAY_ATTACK` (`⚡ PP1 Attack (2 Slips + Gully)`), `POWERPLAY_SWING_TRAP` (`🎯 PP1 Inswing Pad Trap`), `MIDDLE_SPIN_TRAP` (`🛡️ Middle Spin Web (Short Leg)`), `BOUNCER_SHORT_TRAP` (`💥 Bodyline Bouncer Trap`), `OFFSIDE_RING_SQUEEZE` (`🔒 7-2 Off-Side Squeeze`), `DEATH_YORKER_DEFENSE` (`🔥 Death Wide Yorker (5 Out)`), `DEATH_SLOWER_CUTTER` (`🌀 Death Slower-Cutter Trap`), and `SUPER_OVER_UMBRELLA` (`🏆 Super Over Boundary Umbrella`).
+  - **2. Interactive 360° Pointer/Touch Drag-and-Drop Field Re-Arrangement & MCC Position Classifier**:
+    - Implemented `classifyCricketFieldPosition(angleDeg, radiusNorm)` (Desktop) and `classifyMobileFieldPosition(angleDeg, radiusNorm)` (Mobile) to dynamically classify any polar coordinate (`angle: 0..360°`, `radius: 0.14..0.94`) into authentic close-catching, 30-yard inner ring, or deep boundary cricket fielding positions (`1SL`, `GUL`, `SPT`, `LGL`, `SLG`, `PT`, `COV`, `MOFF`, `MON`, `MWK`, `SQL`, `SFL`, `3M`, `DPT`, `DCV`, `LOFF`, `LON`, `CC`, `DMW`, `DSQ`, `FLEG`).
+    - Added pointer/touch drag-and-drop handlers (`startFielderDrag`, `onFielderDragMove`, `endFielderDrag`, `moveFielderToPosition` on `#fieldPlannerSvg`; `startMobileFielderDrag`, `onMobileFielderDragMove`, `endMobileFielderDrag`, `moveMobileFielder` on `#mobileFieldPlannerSvg`) with real-time MCC Law 28.4 outside-circle restriction validation.
+  - **3. Live Match Auto-Generated Commentary for Field Position Changes (`emitFieldChangeCommentary` & `emitMobileFieldCommentary`)**:
+    - Automatically generates and broadcasts live tactical commentary whenever a formation preset is applied, a fielder is dragged/repositioned, ring/boundary depth is toggled, or RHB/LHB stance is mirrored, prepending the commentary card directly into the Live Match Ball-by-Ball Commentary Feed (`#scoringFeed` on Desktop and `this.matchState.commentary` on Mobile) as well as `#fieldPlannerCommentaryLog` / `#mobileFieldCommentaryLog`.
+- **Preceding Phase**: Phase 2CA Completed — Android 15 (`targetSdk 35` / `compileSdk 35`) Google Play Protect Compliance (`apps/mobile/android/app/build.gradle`, `apps/mobile/android/app/src/main/AndroidManifest.xml`, `apps/mobile/android/app/src/main/java/com/cricos/app/MainActivity.java`, `apps/mobile/android/build-apk.sh`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Upgraded SDK & Target API Level to Android 15 (`API 35`)**: Upgraded `compileSdk` and `targetSdk` from `33` (Android 13) to `35` (Android 15) and `minSdk` to `26`, resolving Google Play Protect's `"Unsafe app blocked — This app was built for an older version of Android and doesn't include the latest privacy protections"` block on Android 14/15/16 devices.
   - **2. Removed Legacy/Sensitive Permissions & Added Android 15 Privacy Rules**: Stripped unused dangerous runtime permissions (`READ_EXTERNAL_STORAGE`, `READ_MEDIA_IMAGES`, `CAMERA`, `RECORD_AUDIO`, `MODIFY_AUDIO_SETTINGS`) from `AndroidManifest.xml`, added `res/xml/data_extraction_rules.xml`, `res/xml/network_security_config.xml`, `android:allowBackup="false"`, and `android:enableOnBackInvokedCallback="true"`.
   - **3. Hardened WebView DEX Bytecode & V2/V3 Release Signing**: Set `setAllowFileAccessFromFileURLs(false)` and `setAllowUniversalAccessFromFileURLs(false)` in `MainActivity.java`, disabled `android:debuggable` on distributed builds, and signed both `dist/cricos-release.apk` and `dist/cricos-debug.apk` with a dedicated 2048-bit RSA release keystore (`cricos-release.jks`) using APK Signature Scheme v2 and v3.
