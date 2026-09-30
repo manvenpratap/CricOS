@@ -428,12 +428,21 @@ async def test_flagship_studios_weather_and_gear_store():
         assert modal_closed_ok, "#modalAppSettings must close cleanly"
         await save_screenshot_async(page, "desktop_theme_clean_settings_hub.png")
 
-        # 10. Verify Co-located Theme Switcher, Clean View Toggle & Unified App Settings Bottom Sheet (Mobile)
+        # 10. Verify Decluttered Mobile Top Bar & Co-located Sidebar Controls & Unified App Settings Bottom Sheet
         mobile_settings_check = await m_page.evaluate("""() => {
-            const cluster = document.getElementById('mobileThemeAndCleanCluster');
-            const themeBtn = document.getElementById('btnMobileHeaderThemeCycle');
-            const cleanBtn = document.getElementById('btnMobileToggleDeclutter');
-            const settingsBtn = document.getElementById('btnMobileHeaderSettings');
+            // Mobile top bar declutter verification: redundant controls must NOT be in header
+            const headerThemeBtn = document.getElementById('btnMobileHeaderThemeCycle');
+            const headerCleanBtn = document.getElementById('btnMobileToggleDeclutter');
+            const headerSettingsBtn = document.getElementById('btnMobileHeaderSettings');
+            const headerSoundBtn = document.getElementById('btnMobileSoundToggle');
+            const headerCmdBtn = document.getElementById('btnMobileCommandSearch');
+            const headerPersonaBtn = document.getElementById('btnMobilePersonaSwitch');
+
+            // Sidebar drawer controls verification
+            const sidebarThemeCleanRow = document.getElementById('mobileSidebarThemeAndCleanRow');
+            const sidebarThemeBtn = document.getElementById('btnMobileSidebarThemeCycle');
+            const sidebarCleanBtn = document.getElementById('btnMobileSidebarDeclutterToggle');
+            const sidebarSettingsBtn = document.getElementById('btnMobileSidebarSettings');
             
             // Open mobile settings sheet
             const app = window.cricosMobileApp;
@@ -442,20 +451,24 @@ async def test_flagship_studios_weather_and_gear_store():
             }
             const sheet = document.getElementById('mobileSettingsSheet');
             const sheetVisible = Boolean(sheet && sheet.classList.contains('active'));
+            const sheetSoundBtn = document.getElementById('btnMobileSettingsSoundToggle');
             
             return {
-                hasCluster: Boolean(cluster),
-                hasThemeBtn: Boolean(themeBtn),
-                hasCleanBtn: Boolean(cleanBtn),
-                hasSettingsBtn: Boolean(settingsBtn),
+                headerDecluttered: !headerThemeBtn && !headerCleanBtn && !headerSettingsBtn && !headerSoundBtn && !headerCmdBtn && !headerPersonaBtn,
+                hasSidebarRow: Boolean(sidebarThemeCleanRow),
+                hasSidebarThemeBtn: Boolean(sidebarThemeBtn),
+                hasSidebarCleanBtn: Boolean(sidebarCleanBtn),
+                hasSidebarSettingsBtn: Boolean(sidebarSettingsBtn),
                 sheetVisible,
+                hasSheetSoundBtn: Boolean(sheetSoundBtn),
                 isCleanView: document.body.getAttribute('data-clean-view') === 'true'
             };
         }""")
-        assert mobile_settings_check["hasCluster"], "Mobile header must contain #mobileThemeAndCleanCluster"
-        assert mobile_settings_check["hasThemeBtn"], "Mobile cluster must contain #btnMobileHeaderThemeCycle"
-        assert mobile_settings_check["hasCleanBtn"], "Mobile cluster must contain #btnMobileToggleDeclutter"
-        assert mobile_settings_check["hasSettingsBtn"], "Mobile cluster must contain #btnMobileHeaderSettings"
+        assert mobile_settings_check["headerDecluttered"], "Mobile top bar must be decluttered (redundant controls removed)"
+        assert mobile_settings_check["hasSidebarRow"], "Mobile sidebar must contain #mobileSidebarThemeAndCleanRow"
+        assert mobile_settings_check["hasSidebarThemeBtn"], "Mobile sidebar must contain #btnMobileSidebarThemeCycle"
+        assert mobile_settings_check["hasSidebarCleanBtn"], "Mobile sidebar must contain #btnMobileSidebarDeclutterToggle"
+        assert mobile_settings_check["hasSidebarSettingsBtn"], "Mobile sidebar must contain #btnMobileSidebarSettings"
         assert mobile_settings_check["sheetVisible"], "#mobileSettingsSheet must render and become active"
         assert mobile_settings_check["isCleanView"], "Mobile document.body must have data-clean-view='true'"
         await save_screenshot_async(m_page, "mobile_app_settings_sheet_open.png")

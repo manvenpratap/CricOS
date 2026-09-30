@@ -636,7 +636,7 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
     });
 
     it('3. Mobile webview persona switcher and identity sync support all 8 roles', () => {
-      assert.ok(mobileHtml.includes('id="btnMobilePersonaSwitch"'));
+      assert.ok(mobileHtml.includes('id="mobileSidebarPersonaStrip"') || mobileHtml.includes('id="btnMobileSidebarPersonaSheet"'), 'Mobile drawer must provide persona switcher');
       assert.ok(mobileHtml.includes('id="mobilePersonaSheet"'));
       assert.ok(mobileHtml.includes('openPersonaSheet'));
       assert.ok(mobileHtml.includes('closePersonaSheet'));
@@ -830,12 +830,20 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(dashboardSrc.includes('body[data-clean-view="true"] .clean-view-hide-label'), 'Clean view must suppress .clean-view-hide-label');
       assert.ok(dashboardSrc.includes('body[data-clean-view="true"] .card'), 'Clean view must apply compact card padding');
 
-      // Mobile checks
-      assert.ok(mobileHtml.includes('id="mobileThemeAndCleanCluster"'), 'Mobile header must co-locate Theme, Clean View & Settings in #mobileThemeAndCleanCluster');
-      assert.ok(mobileHtml.includes('id="btnMobileHeaderThemeCycle"'), 'Mobile header must feature #btnMobileHeaderThemeCycle');
-      assert.ok(mobileHtml.includes('id="btnMobileToggleDeclutter"'), 'Mobile header must feature #btnMobileToggleDeclutter');
-      assert.ok(mobileHtml.includes('id="btnMobileHeaderSettings"'), 'Mobile header must feature #btnMobileHeaderSettings');
+      // Mobile checks: Top bar is decluttered (redundant controls moved to sidebar drawer and settings sheet)
+      assert.ok(!mobileHtml.includes('id="btnMobileHeaderThemeCycle"'), 'Mobile top bar must be decluttered: no #btnMobileHeaderThemeCycle');
+      assert.ok(!mobileHtml.includes('id="btnMobileToggleDeclutter"'), 'Mobile top bar must be decluttered: no #btnMobileToggleDeclutter');
+      assert.ok(!mobileHtml.includes('id="btnMobileHeaderSettings"'), 'Mobile top bar must be decluttered: no #btnMobileHeaderSettings');
+      assert.ok(!mobileHtml.includes('id="btnMobileSoundToggle"'), 'Mobile top bar must be decluttered: no #btnMobileSoundToggle');
+      assert.ok(!mobileHtml.includes('id="btnMobileCommandSearch"'), 'Mobile top bar must be decluttered: no #btnMobileCommandSearch');
+      assert.ok(!mobileHtml.includes('id="btnMobilePersonaSwitch"'), 'Mobile top bar must be decluttered: no #btnMobilePersonaSwitch');
+
+      // Controls available in sidebar drawer & settings sheet
       assert.ok(mobileHtml.includes('id="mobileSidebarThemeAndCleanRow"'), 'Mobile sidebar drawer must co-locate theme and clean view');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarThemeCycle"'), 'Mobile sidebar must feature #btnMobileSidebarThemeCycle');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarDeclutterToggle"'), 'Mobile sidebar must feature #btnMobileSidebarDeclutterToggle');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarSettings"'), 'Mobile sidebar must feature #btnMobileSidebarSettings');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarCommandSearch"'), 'Mobile sidebar must feature #btnMobileSidebarCommandSearch');
       assert.ok(mobileSrc.includes('renderMobileSettingsSheet()'), 'Mobile view must include renderMobileSettingsSheet()');
       assert.ok(mobileSrc.includes('openSettingsSheet()'), 'Mobile app must include openSettingsSheet()');
       assert.ok(mobileSrc.includes('closeSettingsSheet()'), 'Mobile app must include closeSettingsSheet()');

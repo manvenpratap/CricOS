@@ -3829,7 +3829,7 @@ export function getMobileAppHtml() {
         // Audio Effects Toggle
         h += '<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.45rem; border-top: 1px solid ' + bdrColor + ';">';
         h += '<span style="font-size: 0.76rem; font-weight: 700;">🔊 Sound FX (Web Audio)</span>';
-        h += '<button type="button" onclick="window.cricosMobileApp.toggleSound()" style="padding: 0.26rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 800; cursor: pointer; ' + (this.soundEnabled ? 'background: rgba(0, 229, 153, 0.2); border: 1px solid var(--turf-emerald); color: var(--turf-emerald);' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '">' + (this.soundEnabled ? 'ON 🔊' : 'OFF 🔇') + '</button>';
+        h += '<button type="button" id="btnMobileSettingsSoundToggle" onclick="window.cricosMobileApp.toggleSound()" style="padding: 0.26rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 800; cursor: pointer; ' + (this.soundEnabled ? 'background: rgba(0, 229, 153, 0.2); border: 1px solid var(--turf-emerald); color: var(--turf-emerald);' : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';') + '">' + (this.soundEnabled ? 'ON 🔊' : 'OFF 🔇') + '</button>';
         h += '</div>';
         h += '</div>';
 
@@ -3973,7 +3973,9 @@ export function getMobileAppHtml() {
           }
           h += '<button type="button" class="mobile-sidebar-persona-chip' + (isActRole ? ' active' : '') + '" data-persona="' + pKey + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona); window.cricosMobileApp.closeSidebarDrawer();" style="padding: 0.26rem 0.5rem; border-radius: 6px; font-size: 0.64rem; cursor: pointer; ' + st + '" data-tooltip="Switch to ' + pKey + '">' + pKey + '</button>';
         }
-        h += '</div></div>';
+        h += '</div>';
+        h += '<button type="button" id="btnMobileSidebarPersonaSheet" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPersonaSheet();" style="width: 100%; margin-top: 0.35rem; padding: 0.32rem 0.5rem; border-radius: 6px; border: 1px dashed ' + (isLight ? '#CBD5E1' : 'rgba(255,255,255,0.2)') + '; background: transparent; color: ' + secondaryInk + '; font-size: 0.64rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open full persona sheet modal with role descriptions"><span>Switch Persona Sheet</span><span>▾</span></button>';
+        h += '</div>';
 
         // Section 2: Core Workspaces (Scoped to Persona)
         h += '<div style="margin-bottom: 0.85rem;">';
@@ -4018,7 +4020,7 @@ export function getMobileAppHtml() {
         h += '<button type="button" id="btnMobileSidebarGearStore" onclick="window.cricosMobileApp.openMobileGearStore()" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioGearStyle + '" data-tooltip="Open Pro Cricket Gear Store, Match Kit Bag &amp; Pavilion Delivery"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>🛍️</span><span>Pro Cricket Gear Store</span></span><span id="mobileSidebarGearCartBadge" style="font-family: Chakra Petch, monospace; font-size: 0.65rem; font-weight: 800; padding: 0.05rem 0.38rem; border-radius: 999px; background: rgba(0,0,0,0.18);">' + cartCount + '</span></button>';
         h += '<button type="button" data-screen="MATCHES" data-subtab="3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
         h += '<button type="button" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
+        h += '<button type="button" id="btnMobileSidebarCommandSearch" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
         h += '<button type="button" id="btnMobileSidebarCheckIn" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openProviderCheckInSheet();" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open Provider Arrival OTP &amp; 3-Party Match Sign-Off"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>📍</span><span>Provider Check-In &amp; Sign-Off</span></span><span style="font-family: Chakra Petch, monospace; font-size: 0.6rem; font-weight: 800; padding: 0.08rem 0.38rem; border-radius: 999px; background: rgba(0, 229, 153, 0.22);">3/3</span></button>';
         h += '</div></div>';
 
@@ -10433,31 +10435,15 @@ export function getMobileAppHtml() {
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">Cric<span style="color: #00E599;">OS</span></span>';
         h += '</div>';
         var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
-        var themeIcon = (activeTheme === 'nordic' ? '🌾' : (activeTheme === 'stadium' ? '🌙' : '🇨🇭'));
-        var cleanIcon = this.cleanFocusMode ? '✨' : '📊';
-        var personaIconMap = {
-          CAPTAIN: '🏏',
-          PLAYER: '👤',
-          SCORER: '⚡',
-          FAN: '🎪',
-          UMPIRE: '⚖️',
-          ORGANISER: '🏆',
-          TURF_PROVIDER: '🏟️',
-          ADMIN: '🛡️'
-        };
-        var currentPersonaIcon = personaIconMap[this.profile.persona] || '👤';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var pulseBg = isLight ? '#ECFDF5' : 'rgba(0, 229, 153, 0.12)';
+        var pulseBdr = isLight ? '#059669' : 'rgba(0, 229, 153, 0.28)';
+        var pulseInk = isLight ? '#064E3B' : '#00E599';
+        var pulseDot = isLight ? '#059669' : '#00E599';
 
+        // Streamlined Right Side: Clean Live Pulse Indicator (All redundant persona, theme, settings, sound & command search moved to sidebar drawer)
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
-        // Co-located Theme, Clean View & App Settings Cluster
-        h += '<div id="mobileThemeAndCleanCluster" style="display: flex; align-items: center; gap: 0.25rem;">';
-        h += '<button type="button" id="btnMobileHeaderThemeCycle" onclick="window.cricosMobileApp.cycleTheme()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;" data-tooltip="Cycle Theme: Swiss 🇨🇭, Nordic 🌾, Stadium 🌙" aria-label="Cycle Design Theme"><span id="mobileHeaderThemeIcon">' + themeIcon + '</span></button>';
-        h += '<button type="button" id="btnMobileToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + (this.cleanFocusMode ? 'background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.45); color: #00E599;' : 'background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #94A3B8;') + ' border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;" data-tooltip="Clean View (Obvious headers hidden, icons only, compact cards) — Tap to toggle" aria-label="Toggle Clean View"><span id="mobileCleanViewToggleIcon">' + cleanIcon + '</span></button>';
-        h += '<button type="button" id="btnMobileHeaderSettings" onclick="window.cricosMobileApp.openSettingsSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; border-radius: 6px; padding: 0.2rem 0.4rem; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;" data-tooltip="App Settings — Customize theme, clean view, audio, stance &amp; units" aria-label="Open App Settings"><span>⚙️</span></button>';
-        h += '</div>';
-
-        h += '<button type="button" id="btnMobileCommandSearch" onclick="window.cricosMobileApp.openCommandPaletteSheet()" style="background: rgba(0, 210, 255, 0.12); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35); padding: 0.2rem 0.4rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Open Mobile Command Palette &amp; Omnisearch (⌘K)" aria-label="Open Command Palette">🔍 ⌘K</button>';
-        h += '<button type="button" id="btnMobileSoundToggle" onclick="window.cricosMobileApp.toggleSound()" style="background: rgba(255,255,255,0.06); color: ' + (this.soundEnabled ? '#00E599' : '#64748b') + '; border: 1px solid rgba(255,255,255,0.12); padding: 0.2rem 0.35rem; border-radius: 6px; font-size: 0.72rem; cursor: pointer;" data-tooltip="Toggle Web Audio synthesized sound FX">' + (this.soundEnabled ? '🔊' : '🔇') + '</button>';
-        h += '<button type="button" id="btnMobilePersonaSwitch" onclick="window.cricosMobileApp.openPersonaSheet()" style="background: rgba(0, 229, 153, 0.15); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.3); padding: 0.18rem 0.4rem; border-radius: 6px; font-size: 0.65rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Switch persona sheet"><span>' + currentPersonaIcon + '</span><span class="clean-view-hide-label">' + this.profile.persona + '</span><span>▾</span></button>';
+        h += '<span id="mobileHeaderLivePulse" style="font-size: 0.65rem; font-weight: 800; color: ' + pulseInk + '; background: ' + pulseBg + '; border: 1px solid ' + pulseBdr + '; border-radius: 9999px; padding: 0.16rem 0.48rem; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="CricOS Real-time Telemetry &amp; Match Engine Active"><span style="width: 6px; height: 6px; border-radius: 50%; background: ' + pulseDot + '; box-shadow: 0 0 6px ' + pulseDot + '; display: inline-block;"></span><span>LIVE</span></span>';
         h += '</div></header>';
 
         // Dedicated Toast Container

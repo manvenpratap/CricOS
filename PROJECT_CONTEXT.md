@@ -1,14 +1,34 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 22:00:00
-**Version:** 1.0.0-phase2cg (Over Completion Bowler Rotation with MCC Law 21 + Fall of Wicket Dismissal Flow with Fielder Involvement & Next Batter + Seamless Over Boundary & Wicket Undo Integrity on Desktop & Mobile)  
+**Last Updated:** 2026-09-30 22:15:00
+**Version:** 1.0.0-phase2ch (Declutter Mobile App Top Bar: Redundant Switch Persona, Settings, Theme Change, Clean ON, Sound FX & Command Search controls streamlined to Left Navigation Drawer & Settings Sheet)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CG Completed — Over Completion Bowler Rotation, Fall of Wicket Dismissal Flow & Undo Last Ball Integrity (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_58_over_completion_and_dismissal_flow.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CH Completed — Declutter Mobile App Top Bar & Sidebar Drawer Consolidation (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Streamlined Decluttered Mobile Top Bar (`.mobile-header`)**:
+    - Removed all 6 redundant, viewport-cramping buttons from the fixed mobile top bar:
+      1. Switch persona button (`#btnMobilePersonaSwitch`)
+      2. App Settings launcher (`#btnMobileHeaderSettings`)
+      3. Design theme cycle button (`#btnMobileHeaderThemeCycle`)
+      4. Clean View toggle button (`#btnMobileToggleDeclutter`)
+      5. Sound FX toggle (`#btnMobileSoundToggle`)
+      6. Command palette and omnisearch launcher (`#btnMobileCommandSearch` `🔍 ⌘K`)
+    - Upgraded top bar right cluster to a sleek, minimalist theme-aware Live Telemetry pulse pill (`#mobileHeaderLivePulse` with WCAG-compliant dynamic Emerald palette across Swiss, Nordic, and Stadium themes).
+    - Preserved essential navigation: Left Hamburger menu toggle (`#btnMobileSidebarToggle`), official CricOS Telemetry Shield crest SVG (`#mobileHeaderBrandLogo`), and authoritative `CricOS` wordmark.
+  - **2. Full Feature Accessibility Preserved on Sidebar Drawer & Settings Sheet**:
+    - **Persona Switching**: Instant one-tap persona chips in `#mobileSidebarPersonaStrip` plus `#btnMobileSidebarPersonaSheet` to open full role descriptions sheet.
+    - **Theme & Clean View**: Dedicated grid row `#mobileSidebarThemeAndCleanRow` featuring `#btnMobileSidebarThemeCycle` and `#btnMobileSidebarDeclutterToggle` in drawer footer.
+    - **Universal App Settings**: Drawer button `#btnMobileSidebarSettings` launching `#mobileSettingsSheet`, featuring Design Themes, Clean View mode, Commentator voice, Sound FX toggle (`#btnMobileSettingsSoundToggle`), Batter Stance (RHB/LHB), and Currency/Speed units.
+    - **Command Palette & Omnisearch**: Quick launcher button `#btnMobileSidebarCommandSearch` (`🔍 Command Palette (⌘K)`) inside `#mobileSidebarStudios`.
+  - **3. Verification & Artifact Release Parity**:
+    - Verified all 207 tests in 59 suites pass in 390ms via `./pipeline.sh test --summary`.
+    - Verified Playwright visual regression suite `tests/test_55_teams_roster_modals.py` passes (2 passed in 13s) and full visual suite passes (11 passed in 26s).
+    - Recompiled and signed Play-Protect-compliant Android 15 release APK (`dist/cricos-release.apk`) and debug APK (`dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CG Completed — Over Completion Bowler Rotation, Fall of Wicket Dismissal Flow & Undo Last Ball Integrity (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_58_over_completion_and_dismissal_flow.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Bowler Rotation Prompt on Over Completion (MCC Law 21)**:
     - **Desktop Modal (`#modalBowlerRotation`)**: Automatically triggers `promptBowlerChange()` on 6th legal delivery; explicitly cites MCC Law 21 prohibiting consecutive overs by the same bowler; dynamically populates playing squad bowling figures, overs bowled, and quota limits (max 4.0 ov in T20); disables previous bowler and exhausted quota bowlers.
     - **Mobile Bottom Sheet (`#mobileBowlerRotationSheet` / `.mobile-bowler-sheet`)**: Automatically launches on 6th legal ball or on manual scorer request (`Change Bowler ↺`); renders interactive `.mobile-bowler-card` elements with live figures (`overs • wickets/runs • econ`), MCC Law 21 warning banner, and disabled states; saves completed over snapshot in `this.completedOversHistory` and rotates ends per MCC Law 18.
