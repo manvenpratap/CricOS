@@ -4,25 +4,40 @@ plugins {
 
 android {
     namespace 'com.cricos.app'
-    compileSdk 33
+    compileSdk 35
     buildToolsVersion '33.0.2'
 
     defaultConfig {
         applicationId "com.cricos.app"
-        minSdk 24
-        targetSdk 33
-        versionCode 1
-        versionName "1.0.0"
+        minSdk 26
+        targetSdk 35
+        versionCode 2
+        versionName "1.2.0"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('cricos-release.jks')
+            storePassword 'cricos2026'
+            keyAlias 'cricos_release'
+            keyPassword 'cricos2026'
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+            enableV4Signing = true
+        }
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            applicationIdSuffix ".debug"
-            debuggable true
+            signingConfig signingConfigs.release
+            debuggable false
         }
     }
 

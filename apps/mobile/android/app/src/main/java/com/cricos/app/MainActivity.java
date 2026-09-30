@@ -90,16 +90,15 @@ public class MainActivity extends AppCompatActivity {
         webView.setHorizontalScrollBarEnabled(false);
         setContentView(webView);
 
-        WebView.setWebContentsDebuggingEnabled(true);
-
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
-        settings.setAllowFileAccessFromFileURLs(true);
-        settings.setAllowUniversalAccessFromFileURLs(true);
+        // Hardened for Android 15 (targetSdk 35) & Google Play Protect security compliance
+        settings.setAllowFileAccessFromFileURLs(false);
+        settings.setAllowUniversalAccessFromFileURLs(false);
         settings.setMediaPlaybackRequiresUserGesture(false);
 
         // Native 1:1 mobile scaling
@@ -136,11 +135,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "[JS Console] " + consoleMessage.message() + " (" +
                         consoleMessage.sourceId() + ":" + consoleMessage.lineNumber() + ")");
                 return true;
-            }
-
-            @Override
-            public void onPermissionRequest(final PermissionRequest request) {
-                request.grant(request.getResources());
             }
 
             @Override

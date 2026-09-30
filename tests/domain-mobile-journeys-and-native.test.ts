@@ -274,9 +274,10 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       const manifestPath = path.join(androidDir, 'app', 'src', 'main', 'AndroidManifest.xml');
       assert.ok(fs.existsSync(manifestPath));
       const manifest = fs.readFileSync(manifestPath, 'utf8');
-      assert.ok(manifest.includes('android.permission.CAMERA'));
-      assert.ok(manifest.includes('android.permission.RECORD_AUDIO'));
+      assert.ok(manifest.includes('android.permission.INTERNET'));
+      assert.ok(manifest.includes('android.permission.VIBRATE'));
       assert.ok(manifest.includes('android:hardwareAccelerated="true"'));
+      assert.ok(manifest.includes('android:dataExtractionRules="@xml/data_extraction_rules"'));
     });
 
     it('3. MainActivity.java WebSettings, file chooser, and WebAppInterface bridge', () => {
@@ -394,6 +395,19 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
         mainActivityJava.includes('public void triggerHaptic(String type)'),
         'MainActivity.java must expose native haptic feedback bridge'
       );
+    });
+
+    it('3. Android 15 (targetSdk 35 / compileSdk 35) Google Play Protect Privacy & Signing Compliance', () => {
+      const gradleSrc = fs.readFileSync(path.join(rootDir, 'apps/mobile/android/app/build.gradle'), 'utf8');
+      const manifestSrc = fs.readFileSync(path.join(rootDir, 'apps/mobile/android/app/src/main/AndroidManifest.xml'), 'utf8');
+      const mainActivitySrc = fs.readFileSync(path.join(rootDir, 'apps/mobile/android/app/src/main/java/com/cricos/app/MainActivity.java'), 'utf8');
+
+      assert.ok(gradleSrc.includes('compileSdk 35') && gradleSrc.includes('targetSdk 35'), 'Android build.gradle must target API 35 (Android 15)');
+      assert.ok(gradleSrc.includes('enableV2Signing = true') && gradleSrc.includes('enableV3Signing = true'), 'APK must enable V2 and V3 signature schemes');
+      assert.ok(manifestSrc.includes('android:dataExtractionRules="@xml/data_extraction_rules"'), 'Manifest must include Android 12-15 data_extraction_rules');
+      assert.ok(manifestSrc.includes('android:networkSecurityConfig="@xml/network_security_config"'), 'Manifest must include network_security_config');
+      assert.ok(!manifestSrc.includes('READ_EXTERNAL_STORAGE') && !manifestSrc.includes('RECORD_AUDIO'), 'Manifest must not request legacy/dangerous storage or audio permissions');
+      assert.ok(mainActivitySrc.includes('setAllowUniversalAccessFromFileURLs(false)'), 'WebView must disable universal file URL access for Play Protect compliance');
     });
   });
 });
