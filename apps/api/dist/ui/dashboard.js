@@ -5,6 +5,8 @@ export function getDashboardHtml() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>CricOS — Unified Cricket Operating System & Interactive Console</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2300E599%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2300D2FF%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2236%22%20height%3D%2236%22%20rx%3D%2210%22%20fill%3D%22%2306101E%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2213%22%20fill%3D%22none%22%20stroke%3D%22%2300D2FF%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%222.5%202%22%20opacity%3D%220.55%22%2F%3E%3Cpath%20d%3D%22M15.5%2015V28.5M20%2014V28.5M24.5%2015V28.5M14.5%2014.5H19.2M20.8%2014.5H25.5%22%20stroke%3D%22%2300E599%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M11%2029L25.5%2014.5%22%20stroke%3D%22%23F8FAFC%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M9%2026C13%2014%2021%209.5%2030.5%2010.5%22%20fill%3D%22none%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2230.5%22%20cy%3D%2210.5%22%20r%3D%223.8%22%20fill%3D%22%23EF4444%22%20stroke%3D%22%23FDE68A%22%20stroke-width%3D%221.4%22%2F%3E%3C%2Fsvg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2300E599%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2300D2FF%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2236%22%20height%3D%2236%22%20rx%3D%2210%22%20fill%3D%22%2306101E%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2213%22%20fill%3D%22none%22%20stroke%3D%22%2300D2FF%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%222.5%202%22%20opacity%3D%220.55%22%2F%3E%3Cpath%20d%3D%22M15.5%2015V28.5M20%2014V28.5M24.5%2015V28.5M14.5%2014.5H19.2M20.8%2014.5H25.5%22%20stroke%3D%22%2300E599%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M11%2029L25.5%2014.5%22%20stroke%3D%22%23F8FAFC%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M9%2026C13%2014%2021%209.5%2030.5%2010.5%22%20fill%3D%22none%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2230.5%22%20cy%3D%2210.5%22%20r%3D%223.8%22%20fill%3D%22%23EF4444%22%20stroke%3D%22%23FDE68A%22%20stroke-width%3D%221.4%22%2F%3E%3C%2Fsvg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -221,14 +223,24 @@ export function getDashboardHtml() {
 
     .brand-logo {
       font-size: 1.35rem;
-      background: linear-gradient(135deg, var(--turf-emerald), var(--cyan));
-      width: 36px;
-      height: 36px;
+      background: radial-gradient(circle at 30% 25%, #0B2239 0%, #050C18 100%);
+      border: 1.5px solid rgba(0, 229, 153, 0.55);
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 9px;
-      box-shadow: 0 0 16px var(--turf-glow);
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.26), inset 0 0 12px rgba(0, 210, 255, 0.14);
+      flex-shrink: 0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: scale(1.04);
+      box-shadow: 0 6px 22px rgba(0, 229, 153, 0.42), inset 0 0 14px rgba(0, 210, 255, 0.24);
+    }
+    .cricos-brand-svg {
+      display: block;
       flex-shrink: 0;
     }
 
@@ -4834,8 +4846,25 @@ export function getDashboardHtml() {
     <aside class="app-sidebar" id="appSidebar">
       <!-- 1. Sidebar Header: Brand & Collapse Toggle -->
       <div class="sidebar-header">
-        <a href="/" class="brand" data-tooltip="CricOS Broadcast Console">
-          <div class="brand-logo">🏏</div>
+        <a href="/" class="brand" id="cricosSidebarBrand" data-tooltip="CricOS — Autonomous 3D Cricket Broadcast &amp; Venue Operating System">
+          <div class="brand-logo" id="cricosSidebarBrandLogo" aria-label="CricOS Brand Crest">
+            <svg class="cricos-brand-svg" width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CricOS Telemetry Shield Crest">
+              <defs>
+                <linearGradient id="cricosNavRim" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00E599"/>
+                  <stop offset="100%" stop-color="#00D2FF"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="36" height="36" rx="10" fill="#06101E" stroke="url(#cricosNavRim)" stroke-width="2.4"/>
+              <circle cx="20" cy="20" r="13" fill="none" stroke="#00D2FF" stroke-width="1" stroke-dasharray="2.5 2" opacity="0.55"/>
+              <path d="M15.5 15V28.5M20 14V28.5M24.5 15V28.5M14.5 14.5H19.2M20.8 14.5H25.5" stroke="#00E599" stroke-width="2" stroke-linecap="round"/>
+              <path d="M11 29L25.5 14.5" stroke="#F8FAFC" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M8.5 31.5L11.5 28.5" stroke="#00D2FF" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M9 26C13 14 21 9.5 30.5 10.5" fill="none" stroke="url(#cricosNavRim)" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="30.5" cy="10.5" r="3.8" fill="#EF4444" stroke="#FDE68A" stroke-width="1.4"/>
+              <path d="M28.5 9.2C29.8 10.2 31.2 11.2 32.5 11.8" stroke="#FFFFFF" stroke-width="0.9" stroke-linecap="round"/>
+            </svg>
+          </div>
           <div class="brand-text">
             <div style="display: flex; align-items: center; gap: 0.35rem;">
               <span class="brand-title">CricOS</span>
@@ -5029,7 +5058,17 @@ export function getDashboardHtml() {
             <span>☰</span>
           </button>
           <div class="topbar-breadcrumb">
-            <span class="breadcrumb-brand">🏏 CricOS</span>
+            <span class="breadcrumb-brand" id="cricosBreadcrumbBrand" style="display: inline-flex; align-items: center; gap: 0.38rem;">
+              <svg class="cricos-brand-svg" width="18" height="18" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="2" y="2" width="36" height="36" rx="10" fill="#06101E" stroke="#00E599" stroke-width="2.6"/>
+                <circle cx="20" cy="20" r="13" fill="none" stroke="#00D2FF" stroke-width="1.2" stroke-dasharray="2.5 2" opacity="0.6"/>
+                <path d="M15.5 15V28.5M20 14V28.5M24.5 15V28.5M14.5 14.5H19.2M20.8 14.5H25.5" stroke="#00E599" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M11 29L25.5 14.5" stroke="#F8FAFC" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M9 26C13 14 21 9.5 30.5 10.5" fill="none" stroke="#00D2FF" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="30.5" cy="10.5" r="3.8" fill="#EF4444" stroke="#FDE68A" stroke-width="1.4"/>
+              </svg>
+              <span>CricOS</span>
+            </span>
             <span class="breadcrumb-sep">/</span>
             <span class="breadcrumb-crumb" id="topbarCurrentTab">Match Center</span>
             <span class="breadcrumb-sep">/</span>
@@ -6838,12 +6877,21 @@ export function getDashboardHtml() {
     <!-- Top Glassmorphic Navigation Bar inside Hero/Login Gateway -->
     <header style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(20px); background-color: #040A16; background: rgba(4, 10, 22, 0.94); flex-wrap: wrap; gap: 0.75rem;">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <div style="width: 38px; height: 38px; border-radius: 10px; background-color: #062822; background: linear-gradient(135deg, rgba(0, 229, 153, 0.28), rgba(0, 210, 255, 0.28)); border: 1px solid rgba(0, 229, 153, 0.55); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 229, 153, 0.22);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00E599" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 8.5c2 2 5 5 7 7"></path><path d="M15.5 8.5l-7 7"></path></svg>
+        <div id="heroTopBrandLogo" style="width: 40px; height: 40px; border-radius: 10px; background: radial-gradient(circle at 30% 25%, #0B2239 0%, #050C18 100%); border: 1.5px solid rgba(0, 229, 153, 0.6); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0, 229, 153, 0.28);">
+          <svg class="cricos-brand-svg" width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CricOS Telemetry Shield Crest">
+            <rect x="2" y="2" width="36" height="36" rx="10" fill="#06101E" stroke="#00E599" stroke-width="2.4"/>
+            <circle cx="20" cy="20" r="13" fill="none" stroke="#00D2FF" stroke-width="1" stroke-dasharray="2.5 2" opacity="0.58"/>
+            <path d="M15.5 15V28.5M20 14V28.5M24.5 15V28.5M14.5 14.5H19.2M20.8 14.5H25.5" stroke="#00E599" stroke-width="2" stroke-linecap="round"/>
+            <path d="M11 29L25.5 14.5" stroke="#F8FAFC" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M8.5 31.5L11.5 28.5" stroke="#00D2FF" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M9 26C13 14 21 9.5 30.5 10.5" fill="none" stroke="#00D2FF" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="30.5" cy="10.5" r="3.8" fill="#EF4444" stroke="#FDE68A" stroke-width="1.4"/>
+            <path d="M28.5 9.2C29.8 10.2 31.2 11.2 32.5 11.8" stroke="#FFFFFF" stroke-width="0.9" stroke-linecap="round"/>
+          </svg>
         </div>
         <div>
           <div style="display: flex; align-items: center; gap: 0.55rem;">
-            <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; color: #FFFFFF;">CricOS</span>
+            <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; color: #FFFFFF;">Cric<span style="color: #00E599;">OS</span></span>
             <span style="font-size: 0.65rem; font-weight: 800; padding: 0.18rem 0.58rem; border-radius: 999px; background-color: #062E24; background: rgba(0, 229, 153, 0.22); color: #6EE7B7; border: 1px solid rgba(0, 229, 153, 0.5); letter-spacing: 0.04em;">PRO MAX 3D OS</span>
           </div>
           <div style="font-size: 0.7rem; color: #CBD5E1; font-weight: 600;">Unified Cricket Broadcast, Officiating &amp; Venue Operating System</div>
@@ -10641,6 +10689,21 @@ cricos_active_sse_connections 1</pre>
     // Swift-Inspired Architectural Models & Safe Value Types (Skill 13 - write-swift)
     // Immutable states, exhaustive Enums, explicit Result types
     // ==========================================================================
+    window.getCricOSBrandLogoSvg = function(size) {
+      const s = size || 28;
+      return '<svg class="cricos-brand-svg" width="' + s + '" height="' + s + '" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CricOS Telemetry Shield Crest">' +
+        '<rect x="2" y="2" width="36" height="36" rx="10" fill="#06101E" stroke="#00E599" stroke-width="2.4"/>' +
+        '<circle cx="20" cy="20" r="13" fill="none" stroke="#00D2FF" stroke-width="1" stroke-dasharray="2.5 2" opacity="0.58"/>' +
+        '<path d="M15.5 15V28.5M20 14V28.5M24.5 15V28.5M14.5 14.5H19.2M20.8 14.5H25.5" stroke="#00E599" stroke-width="2" stroke-linecap="round"/>' +
+        '<path d="M11 29L25.5 14.5" stroke="#F8FAFC" stroke-width="3.2" stroke-linecap="round"/>' +
+        '<path d="M8.5 31.5L11.5 28.5" stroke="#00D2FF" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<path d="M9 26C13 14 21 9.5 30.5 10.5" fill="none" stroke="#00D2FF" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<circle cx="30.5" cy="10.5" r="3.8" fill="#EF4444" stroke="#FDE68A" stroke-width="1.4"/>' +
+        '<path d="M28.5 9.2C29.8 10.2 31.2 11.2 32.5 11.8" stroke="#FFFFFF" stroke-width="0.9" stroke-linecap="round"/>' +
+      '</svg>';
+    };
+    window.CRICOS_BRAND_LOGO_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(window.getCricOSBrandLogoSvg(40));
+
     window.CricOSDomain = Object.freeze({
       Roles: Object.freeze({
         CAPTAIN: 'CAPTAIN',

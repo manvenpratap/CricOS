@@ -345,6 +345,31 @@ async def test_flagship_studios_weather_and_gear_store():
         assert gear_img_mobile["allThumbsValid"], "Every Mobile .mobile-gear-cart-thumb must have a valid SVG data-URI src"
         await save_screenshot_async(m_page, "gear_store_product_images_mobile.png")
 
+        # 8. Verify Unified CricOS Brand Logo Crest across Desktop & Mobile
+        brand_check = await page.evaluate("""() => {
+            return {
+                hasFavicon: Boolean(document.querySelector('link[rel="icon"][type="image/svg+xml"]')),
+                hasSidebarSvg: Boolean(document.querySelector('#cricosSidebarBrandLogo svg.cricos-brand-svg')),
+                hasBreadcrumbSvg: Boolean(document.querySelector('#cricosBreadcrumbBrand svg.cricos-brand-svg')),
+                hasHelper: typeof window.getCricOSBrandLogoSvg === 'function'
+            };
+        }""")
+        assert brand_check["hasFavicon"], "Desktop must include SVG favicon"
+        assert brand_check["hasSidebarSvg"], "Desktop sidebar must render svg.cricos-brand-svg inside #cricosSidebarBrandLogo"
+        assert brand_check["hasBreadcrumbSvg"], "Desktop breadcrumb must render svg.cricos-brand-svg inside #cricosBreadcrumbBrand"
+        assert brand_check["hasHelper"], "Desktop must expose window.getCricOSBrandLogoSvg"
+
+        m_brand_check = await m_page.evaluate("""() => {
+            return {
+                hasFavicon: Boolean(document.querySelector('link[rel="icon"][type="image/svg+xml"]')),
+                hasHeaderSvg: Boolean(document.querySelector('#mobileHeaderBrandLogo svg.cricos-brand-svg')),
+                hasSidebarSvg: Boolean(document.querySelector('#mobileSidebarBrandLogo svg.cricos-brand-svg'))
+            };
+        }""")
+        assert m_brand_check["hasFavicon"], "Mobile must include SVG favicon"
+        assert m_brand_check["hasHeaderSvg"], "Mobile top bar must render svg.cricos-brand-svg inside #mobileHeaderBrandLogo"
+        assert m_brand_check["hasSidebarSvg"], "Mobile sidebar drawer must render svg.cricos-brand-svg inside #mobileSidebarBrandLogo"
+
         assert_no_critical_errors(page)
         await browser.close()
 

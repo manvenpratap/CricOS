@@ -978,6 +978,31 @@ describe('Domain: Commerce, Tournaments, Marketplace & Media Operations', () => 
       assert.ok(mobSrc.includes('class="mobile-gear-product-img"') && mobSrc.includes('class="mobile-gear-product-image-wrap"'), 'Mobile gear catalog cards must render .mobile-gear-product-img inside .mobile-gear-product-image-wrap');
       assert.ok(mobSrc.includes('class="mobile-gear-cart-thumb"'), 'Mobile gear cart line items must render .mobile-gear-cart-thumb');
     });
+
+    it('4. Unified CricOS Brand Logo Crest Across Web, Mobile, Favicon & Android Adaptive Launcher Icon', () => {
+      const dashSrc = readFile('apps/api/src/ui/dashboard.ts');
+      const mobSrc = readFile('apps/api/src/ui/mobile-view.ts');
+      const androidFg = readFile('apps/mobile/android/app/src/main/res/drawable/ic_launcher_foreground.xml');
+      const androidAdaptive = readFile('apps/mobile/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml');
+
+      // Desktop Favicon, Sidebar, Breadcrumb, Hero & Helper
+      assert.ok(dashSrc.includes('rel="icon" type="image/svg+xml"'), 'Desktop must include SVG favicon');
+      assert.ok(dashSrc.includes('id="cricosSidebarBrandLogo"') && dashSrc.includes('class="cricos-brand-svg"'), 'Desktop sidebar must render SVG CricOS Brand Crest');
+      assert.ok(dashSrc.includes('id="cricosBreadcrumbBrand"'), 'Desktop breadcrumb bar must render SVG CricOS Brand Crest');
+      assert.ok(dashSrc.includes('id="heroTopBrandLogo"'), 'Desktop Hero Auth Gateway must render SVG CricOS Brand Crest');
+      assert.ok(dashSrc.includes('window.getCricOSBrandLogoSvg'), 'Desktop must expose window.getCricOSBrandLogoSvg');
+
+      // Mobile Favicon, Top Header, Sidebar Drawer, Hero & Helper
+      assert.ok(mobSrc.includes('rel="icon" type="image/svg+xml"'), 'Mobile must include SVG favicon');
+      assert.ok(mobSrc.includes('getBrandLogoSvg(size)'), 'Mobile must define getBrandLogoSvg(size) helper');
+      assert.ok(mobSrc.includes('id="mobileHeaderBrandLogo"'), 'Mobile top header must render SVG CricOS Brand Crest');
+      assert.ok(mobSrc.includes('id="mobileSidebarBrandLogo"'), 'Mobile sidebar drawer must render SVG CricOS Brand Crest');
+      assert.ok(mobSrc.includes('id="mobileHeroBrandLogo"'), 'Mobile Hero Auth Gateway must render SVG CricOS Brand Crest');
+
+      // Android Adaptive Launcher Icon
+      assert.ok(androidFg.includes('#00E599') && androidFg.includes('#00D2FF'), 'Android adaptive icon foreground must render CricOS Telemetry Shield Crest');
+      assert.ok(androidAdaptive.includes('<adaptive-icon'), 'Android mipmap-anydpi-v26/ic_launcher.xml must configure adaptive-icon');
+    });
   });
 });
 

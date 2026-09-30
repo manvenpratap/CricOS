@@ -8,6 +8,8 @@ export function getMobileAppHtml() {
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>CricOS — Consumer Mobile App (iOS & Android)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2300E599%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2300D2FF%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2236%22%20height%3D%2236%22%20rx%3D%2210%22%20fill%3D%22%2306101E%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2213%22%20fill%3D%22none%22%20stroke%3D%22%2300D2FF%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%222.5%202%22%20opacity%3D%220.55%22%2F%3E%3Cpath%20d%3D%22M15.5%2015V28.5M20%2014V28.5M24.5%2015V28.5M14.5%2014.5H19.2M20.8%2014.5H25.5%22%20stroke%3D%22%2300E599%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M11%2029L25.5%2014.5%22%20stroke%3D%22%23F8FAFC%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M9%2026C13%2014%2021%209.5%2030.5%2010.5%22%20fill%3D%22none%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2230.5%22%20cy%3D%2210.5%22%20r%3D%223.8%22%20fill%3D%22%23EF4444%22%20stroke%3D%22%23FDE68A%22%20stroke-width%3D%221.4%22%2F%3E%3C%2Fsvg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2300E599%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2300D2FF%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2236%22%20height%3D%2236%22%20rx%3D%2210%22%20fill%3D%22%2306101E%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2213%22%20fill%3D%22none%22%20stroke%3D%22%2300D2FF%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%222.5%202%22%20opacity%3D%220.55%22%2F%3E%3Cpath%20d%3D%22M15.5%2015V28.5M20%2014V28.5M24.5%2015V28.5M14.5%2014.5H19.2M20.8%2014.5H25.5%22%20stroke%3D%22%2300E599%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M11%2029L25.5%2014.5%22%20stroke%3D%22%23F8FAFC%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M9%2026C13%2014%2021%209.5%2030.5%2010.5%22%20fill%3D%22none%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2230.5%22%20cy%3D%2210.5%22%20r%3D%223.8%22%20fill%3D%22%23EF4444%22%20stroke%3D%22%23FDE68A%22%20stroke-width%3D%221.4%22%2F%3E%3C%2Fsvg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
@@ -3625,9 +3627,9 @@ export function getMobileAppHtml() {
 
         // Header
         h += '<div class="mobile-sidebar-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid ' + dividerColor + '; margin-bottom: 0.75rem;">';
-        h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
-        h += '<span style="font-size: 1.2rem;">🏏</span>';
-        h += '<div><div style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">CricOS Navigation</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800;">' + cfg.icon + ' ' + role + ' WORKSPACE</div></div>';
+        h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
+        h += '<span id="mobileSidebarBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(28) + '</span>';
+        h += '<div><div style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">Cric<span style="color: ' + accentBrandInk + ';">OS</span> Navigation</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800;">' + cfg.icon + ' ' + role + ' WORKSPACE</div></div>';
         h += '</div>';
         h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="' + closeBtnStyle + ' border-radius: 6px; padding: 0.22rem 0.5rem; font-size: 0.8rem; cursor: pointer;" data-tooltip="Close Sidebar">✕</button>';
         h += '</div>';
@@ -4015,8 +4017,8 @@ export function getMobileAppHtml() {
 
         h += '<header style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.09); background: rgba(4, 10, 20, 0.78); backdrop-filter: blur(16px);">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
-        h += '<div style="width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, rgba(0, 229, 153, 0.22), rgba(0, 210, 255, 0.22)); border: 1px solid rgba(0, 229, 153, 0.45); display: flex; align-items: center; justify-content: center;"><span style="font-size: 0.95rem;">🏏</span></div>';
-        h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
+        h += '<div id="mobileHeroBrandLogo" style="width: 30px; height: 30px; border-radius: 8px; background: radial-gradient(circle at 30% 25%, #0B2239 0%, #050C18 100%); border: 1.5px solid rgba(0, 229, 153, 0.55); display: flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(24) + '</div>';
+        h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">Cric<span style="color: #00E599;">OS</span></span>';
         h += '<span style="font-size: 0.56rem; font-weight: 800; padding: 0.12rem 0.42rem; border-radius: 999px; background: rgba(0, 229, 153, 0.16); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35);">PRO MAX 3D</span>';
         h += '</div>';
         h += '<span id="mobileHeroStageBadge" style="font-size: 0.6rem; font-weight: 700; color: #00D2FF; background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.3); padding: 0.18rem 0.48rem; border-radius: 5px;">' + (isHero ? 'STAGE 1 • HERO' : 'STAGE 2 • LOGIN') + '</span>';
@@ -9563,6 +9565,20 @@ export function getMobileAppHtml() {
         return h;
       }
 
+      getBrandLogoSvg(size) {
+        var s = size || 24;
+        return '<svg class="cricos-brand-svg" width="' + s + '" height="' + s + '" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CricOS Telemetry Shield Crest">' +
+          '<rect x="2" y="2" width="36" height="36" rx="10" fill="#06101E" stroke="#00E599" stroke-width="2.4"/>' +
+          '<circle cx="20" cy="20" r="13" fill="none" stroke="#00D2FF" stroke-width="1" stroke-dasharray="2.5 2" opacity="0.58"/>' +
+          '<path d="M15.5 15V28.5M20 14V28.5M24.5 15V28.5M14.5 14.5H19.2M20.8 14.5H25.5" stroke="#00E599" stroke-width="2" stroke-linecap="round"/>' +
+          '<path d="M11 29L25.5 14.5" stroke="#F8FAFC" stroke-width="3.2" stroke-linecap="round"/>' +
+          '<path d="M8.5 31.5L11.5 28.5" stroke="#00D2FF" stroke-width="2.4" stroke-linecap="round"/>' +
+          '<path d="M9 26C13 14 21 9.5 30.5 10.5" fill="none" stroke="#00D2FF" stroke-width="2.4" stroke-linecap="round"/>' +
+          '<circle cx="30.5" cy="10.5" r="3.8" fill="#EF4444" stroke="#FDE68A" stroke-width="1.4"/>' +
+          '<path d="M28.5 9.2C29.8 10.2 31.2 11.2 32.5 11.8" stroke="#FFFFFF" stroke-width="0.9" stroke-linecap="round"/>' +
+        '</svg>';
+      }
+
       render() {
         var root = document.getElementById('mobile-app-root');
         if (!root) return;
@@ -9614,8 +9630,8 @@ export function getMobileAppHtml() {
         h += '<header class="mobile-header">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '<button type="button" id="btnMobileSidebarToggle" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 6px; padding: 0.2rem 0.5rem; font-size: 0.85rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Open Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios)" aria-label="Open Left Sidebar Navigation Drawer">☰</button>';
-        h += '<span style="font-size: 1.1rem;">🏏</span>';
-        h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">CricOS</span>';
+        h += '<span id="mobileHeaderBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(25) + '</span>';
+        h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">Cric<span style="color: #00E599;">OS</span></span>';
         h += '</div>';
         h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
         h += '<button type="button" id="btnMobileCommandSearch" onclick="window.cricosMobileApp.openCommandPaletteSheet()" style="background: rgba(0, 210, 255, 0.12); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35); padding: 0.2rem 0.45rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Open Mobile Command Palette & Omnisearch (⌘K)" aria-label="Open Command Palette">🔍 ⌘K</button>';

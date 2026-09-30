@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer Telemetry Shield Border -->
+    <path
+        android:fillColor="#06101E"
+        android:strokeColor="#00E599"
+        android:strokeWidth="3.2"
+        android:pathData="M30,24 L78,24 A6,6 0 0,1 84,30 L84,78 A6,6 0 0,1 78,84 L30,84 A6,6 0 0,1 24,78 L24,30 A6,6 0 0,1 30,24 Z" />
+    <!-- 30-Yard Radar Ring -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#00D2FF"
+        android:strokeWidth="1.6"
+        android:pathData="M54,34 A20,20 0 1,1 53.9,34 Z" />
+    <!-- Three Illuminated Wickets & Bails -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#00E599"
+        android:strokeWidth="3.2"
+        android:strokeLineCap="round"
+        android:pathData="M46,44 L46,68 M54,42 L54,68 M62,44 L62,68 M44,43 L52,43 M56,43 L64,43" />
+    <!-- Diagonal English Willow Blade -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F8FAFC"
+        android:strokeWidth="4.8"
+        android:strokeLineCap="round"
+        android:pathData="M38,69 L63,44" />
+    <!-- Hawk-Eye Trajectory Arc -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#00D2FF"
+        android:strokeWidth="3.4"
+        android:strokeLineCap="round"
+        android:pathData="M35,63 Q46,37 71,37" />
+    <!-- Seam-Stitched Cricket Ball at Trajectory Apex -->
+    <path
+        android:fillColor="#EF4444"
+        android:strokeColor="#FDE68A"
+        android:strokeWidth="1.8"
+        android:pathData="M71,32 A5,5 0 1,1 70.9,32 Z" />
+</vector>

@@ -1,14 +1,22 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 11:14:00
-**Version:** 1.0.0-phase2cd (Pro Cricket Gear Store Studio Product Images & Cart Thumbnails + Broadcast Commentary Studio & 8-Preset Tactical Field Planner)  
+**Last Updated:** 2026-09-30 11:36:00
+**Version:** 1.0.0-phase2ce (Unified CricOS Brand Logo Crest + Pro Cricket Gear Store Product Images + Broadcast Commentary Studio & 8-Preset Tactical Field Planner)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CD Completed — Pro Cricket Gear Store Studio Product Images & Cart Thumbnails (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-commerce-tournaments-and-marketplace.test.ts`, `tests/test_55_teams_roster_modals.py`):
+- **Active Phase**: Phase 2CE Completed — Unified CricOS Brand Identity & Telemetry Shield Logo Crest (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/mobile/android/app/src/main/res/drawable/ic_launcher_foreground.xml`, `apps/mobile/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`, `tests/domain-commerce-tournaments-and-marketplace.test.ts`, `tests/test_55_teams_roster_modals.py`):
+  - **1. Designed Official "CricOS Telemetry Shield & Trajectory Crest" (`svg.cricos-brand-svg` / `window.getCricOSBrandLogoSvg`)**:
+    - Combines the **Obsidian Nocturne Stadium Shield (`#06101E` with `#00E599` ➔ `#00D2FF` bevel border)**, **30-Yard Telemetry Radar Ring**, **Three Illuminated Emerald Wickets & Bails**, **Diagonal English Willow Blade**, and **Sweeping Parabolic Hawk-Eye Trajectory Arc** culminating in a crimson-gold seam-stitched cricket ball (`#EF4444` / `#FDE68A`).
+  - **2. Deployed Consistently Across Web, Mobile, Favicons & Android 15 Adaptive Launcher Icon**:
+    - **Browser Favicons & Touch Icons**: Added SVG data-URI `<link rel="icon" type="image/svg+xml">` and `<link rel="apple-touch-icon">` in both `dashboard.ts` and `mobile-view.ts`.
+    - **Desktop Console (`dashboard.ts`)**: Upgraded `.sidebar-header .brand-logo` (`#cricosSidebarBrandLogo`), `.breadcrumb-brand` (`#cricosBreadcrumbBrand`), and `#cricosHeroAuthOverlay` top bar (`#heroTopBrandLogo` with `CricOS` emerald-accented wordmark), plus global `window.getCricOSBrandLogoSvg(size)`.
+    - **Mobile & Native App (`mobile-view.ts`)**: Upgraded `.mobile-header` (`#mobileHeaderBrandLogo`), `.mobile-sidebar-header` (`#mobileSidebarBrandLogo`), and `#mobileHeroAuthOverlay` (`#mobileHeroBrandLogo`), plus `getBrandLogoSvg(size)`.
+    - **Android 15 (`targetSdk 35`) Adaptive Vector Icon**: Added `drawable/ic_launcher_background.xml`, `drawable/ic_launcher_foreground.xml`, `mipmap-anydpi-v26/ic_launcher.xml`, and `mipmap-anydpi-v26/ic_launcher_round.xml`.
+- **Preceding Phase**: Phase 2CD Completed — Pro Cricket Gear Store Studio Product Images & Cart Thumbnails (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-commerce-tournaments-and-marketplace.test.ts`, `tests/test_55_teams_roster_modals.py`):
   - **1. Desktop Pro Cricket Gear Store Product Images (`#gearStoreCatalogGrid` & `#gearCartItemsList` in `apps/api/src/ui/dashboard.ts`)**:
     - Implemented `getGearProductImageDataUri(item)` (`window.getGearProductImageDataUri`) generating high-resolution, offline-safe SVG studio product illustrations (`data:image/svg+xml;charset=utf-8,...`) for all 10+ items in `GEAR_STORE_CATALOG` (Reserve Grade 1+ English Willow Bat, Carbon-Composite Spine Power T20 Blade, Kookaburra Turf White Match Balls, SG Test Red Alum-Tanned Leather Balls, Day-Night Pink Floodlight Leather Balls, Titanium Grill BS7928 Batting Helmet, Test Batting Legguards & Pittards Gloves Combo, Smart Telemetry 9-Axis IMU Gyro Cricket Ball, Pro 12x4m Practice Net Cage & Bowling Machine, 24-Inch Gold Championship Trophy & 16 Medals, plus vendor-published gear).
     - Upgraded every `.gear-product-card` in `renderGearStoreCatalog()` with a top `.gear-product-image-wrap` banner (`height: 124px`) containing `<img class="gear-product-img" ... />` with overlaid category badge and star rating pill, and added `38x38px` `<img class="gear-cart-thumb" ... />` product thumbnails to `#gearCartItemsList`.
