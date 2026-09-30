@@ -152,5 +152,21 @@ describe('Phase 1U: Advanced Operational Telemetry, Performance Profiling & Docu
       assert.ok(res.body.includes('/api/v1/scoring/matches/{id}/deliveries'));
       assert.ok(res.body.includes('/api/v1/tournaments/orchestrate'));
     });
+
+    it('serves /index.html, /mobile.html, and /health/live on Fastify and protects Probe Check with safeFetchProbeJson', async () => {
+      const server = buildServer();
+      const indexRes = await server.inject({ method: 'GET', url: '/index.html' });
+      assert.strictEqual(indexRes.statusCode, 200);
+      assert.ok(indexRes.body.includes('safeFetchProbeJson'), 'Dashboard HTML must include safeFetchProbeJson to prevent Unexpected token < on static servers');
+
+      const mobileRes = await server.inject({ method: 'GET', url: '/mobile.html' });
+      assert.strictEqual(mobileRes.statusCode, 200);
+
+      const liveRes = await server.inject({ method: 'GET', url: '/health/live' });
+      assert.strictEqual(liveRes.statusCode, 200);
+      const liveJson = JSON.parse(liveRes.body);
+      assert.strictEqual(liveJson.status, 'alive');
+    });
   });
 });
+

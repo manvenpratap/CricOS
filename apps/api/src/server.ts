@@ -249,9 +249,15 @@ export function buildServer(): FastifyInstance {
   server.get('/mobile', async (_req, reply) => {
     return reply.type('text/html; charset=utf-8').send(getMobileAppHtml());
   });
+  server.get('/mobile.html', async (_req, reply) => {
+    return reply.type('text/html; charset=utf-8').send(getMobileAppHtml());
+  });
 
   // 5. Interactive Test & Operations Console UI
   server.get('/', async (_req, reply) => {
+    return reply.type('text/html; charset=utf-8').send(getDashboardHtml());
+  });
+  server.get('/index.html', async (_req, reply) => {
     return reply.type('text/html; charset=utf-8').send(getDashboardHtml());
   });
   server.get('/app', async (_req, reply) => {
