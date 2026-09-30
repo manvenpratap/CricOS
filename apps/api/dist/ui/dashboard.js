@@ -8036,16 +8036,19 @@ export function getDashboardHtml() {
               <option value="NON_STRIKER" id="outNonStrikerOption">Hardik Patel (Non-Striker)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Incoming Next Batter</label>
+          <div class="form-group" id="dismissalNextBatterGroup">
+            <label id="dismissalNextBatterLabel">Incoming Next Batter</label>
             <select id="dismissalNextBatter">
               <option value="Rishabh Pant" data-stance="LHB">Rishabh Pant (LHB • WK)</option>
               <option value="Sanju Samson" data-stance="RHB">Sanju Samson (RHB • WK)</option>
-              <option value="Suryakumar Yadav" data-stance="RHB">Suryakumar Yadav (RHB • BAT)</option>
               <option value="Shivam Dube" data-stance="LHB">Shivam Dube (LHB • ALL)</option>
               <option value="Ravindra Jadeja" data-stance="LHB">Ravindra Jadeja (LHB • ALL)</option>
               <option value="Axar Patel" data-stance="LHB">Axar Patel (LHB • ALL)</option>
             </select>
+            <div id="dismissalFinalWicketNotice" style="display: none; background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.55rem 0.75rem; text-align: center;">
+              <div style="font-weight: 800; font-size: 0.82rem; color: #ff3366;">⚠️ FINAL WICKET (10th WICKET)</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">Confirming this dismissal will bowl out the batting team. No incoming batter will be sent to the crease. Team will be declared <strong>ALL OUT</strong>.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -17179,6 +17182,11 @@ cricos_active_sse_connections 1</pre>
         showToast('🔒 Only official Scorers can record dismissals.');
         return;
       }
+      const currentWkts = (typeof wickets === 'number') ? wickets : 0;
+      if (currentWkts >= 10) {
+        showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets). No more wickets can fall.');
+        return;
+      }
       const modal = document.getElementById('modalDismissal');
       if (modal) {
         modal.classList.add('active');
@@ -17189,25 +17197,75 @@ cricos_active_sse_connections 1</pre>
         if (strikerOpt) strikerOpt.textContent = currentStriker + ' (Striker)';
         if (nonStrikerOpt) nonStrikerOpt.textContent = currentNonStriker + ' (Non-Striker)';
 
-        // Dynamically populate available bench batters
+        // Dynamically populate available bench batters excluding all dismissed players
         const nextSel = document.getElementById('dismissalNextBatter');
+        const nextLabel = document.getElementById('dismissalNextBatterLabel');
+        const finalNotice = document.getElementById('dismissalFinalWicketNotice');
+
+        const allBench = [
+          { name: 'Rishabh Pant', stance: 'LHB', role: 'WK' },
+          { name: 'Hardik Patel', stance: 'LHB', role: 'ALL' },
+          { name: 'Sanju Samson', stance: 'RHB', role: 'WK' },
+          { name: 'Shivam Dube', stance: 'LHB', role: 'ALL' },
+          { name: 'Ravindra Jadeja', stance: 'LHB', role: 'ALL' },
+          { name: 'Axar Patel', stance: 'LHB', role: 'ALL' },
+          { name: 'Kuldeep Yadav', stance: 'LHB', role: 'BOWL' },
+          { name: 'Jasprit Bumrah', stance: 'RHB', role: 'BOWL' },
+          { name: 'Mohammed Siraj', stance: 'RHB', role: 'BOWL' }
+        ];
+
+        const activeNames = [currentStriker, currentNonStriker];
+        const dismissedNames = [];
+
+        if (typeof matchScorecardData !== 'undefined' && matchScorecardData.batters) {
+          matchScorecardData.batters.forEach(b => {
+            if (b.dismissal && b.dismissal !== 'not out' && b.dismissal !== 'batting') {
+              dismissedNames.push(b.name.replace(' *', '').trim());
+            }
+          });
+        }
+        if (typeof desktopDismissalHistory !== 'undefined' && desktopDismissalHistory.length > 0) {
+          desktopDismissalHistory.forEach(d => {
+            if (d.outName && !dismissedNames.includes(d.outName)) {
+              dismissedNames.push(d.outName);
+            }
+          });
+        }
+
+        const isUnavailable = (playerName) => {
+          if (!playerName) return true;
+          const norm = playerName.toLowerCase().replace(/[\.\*\(\)\s]+/g, ' ').trim();
+          const checkList = activeNames.concat(dismissedNames);
+          for (let i = 0; i < checkList.length; i++) {
+            const item = checkList[i].toLowerCase().replace(/[\.\*\(\)\s]+/g, ' ').trim();
+            if (norm === item) return true;
+            const partsA = norm.split(' ');
+            const partsB = item.split(' ');
+            if (partsA[0] === partsB[0] && partsA[0].length >= 3) {
+              if (partsA.length > 1 && partsB.length > 1 && partsA[1][0] === partsB[1][0]) {
+                return true;
+              }
+            }
+          }
+          return false;
+        };
+
+        const availableBench = allBench.filter(b => !isUnavailable(b.name));
+        const isFinalWicket = (currentWkts === 9) || (availableBench.length === 0);
+
         if (nextSel) {
-          const availableBench = [
-            { name: 'Rishabh Pant', stance: 'LHB', role: 'WK' },
-            { name: 'Sanju Samson', stance: 'RHB', role: 'WK' },
-            { name: 'Suryakumar Yadav', stance: 'RHB', role: 'BAT' },
-            { name: 'Shivam Dube', stance: 'LHB', role: 'ALL' },
-            { name: 'Ravindra Jadeja', stance: 'LHB', role: 'ALL' },
-            { name: 'Axar Patel', stance: 'LHB', role: 'ALL' },
-            { name: 'Kuldeep Yadav', stance: 'LHB', role: 'BOWL' },
-            { name: 'Jasprit Bumrah', stance: 'RHB', role: 'BOWL' },
-            { name: 'Mohammed Siraj', stance: 'RHB', role: 'BOWL' }
-          ];
-          const activeNames = [currentStriker, currentNonStriker];
-          nextSel.innerHTML = availableBench
-            .filter(b => !activeNames.includes(b.name))
-            .map(b => '<option value="' + b.name + '" data-stance="' + b.stance + '">' + b.name + ' (' + b.stance + ' • ' + b.role + ')</option>')
-            .join('');
+          if (isFinalWicket) {
+            nextSel.style.display = 'none';
+            if (nextLabel) nextLabel.textContent = 'Innings Conclusion (All Out)';
+            if (finalNotice) finalNotice.style.display = 'block';
+          } else {
+            nextSel.style.display = 'block';
+            if (nextLabel) nextLabel.textContent = 'Incoming Next Batter';
+            if (finalNotice) finalNotice.style.display = 'none';
+            nextSel.innerHTML = availableBench
+              .map(b => '<option value="' + b.name + '" data-stance="' + b.stance + '">' + b.name + ' (' + b.stance + ' • ' + b.role + ')</option>')
+              .join('');
+          }
         }
 
         const fielderInput = document.getElementById('dismissalFielder');
@@ -17251,12 +17309,17 @@ cricos_active_sse_connections 1</pre>
         showToast('🔒 Only official Scorers can record dismissals.');
         return;
       }
+      const currentWkts = (typeof wickets === 'number') ? wickets : 0;
+      if (currentWkts >= 10) {
+        showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets).');
+        closeDismissalModal();
+        return;
+      }
+
       const kind = document.getElementById('dismissalKind').value;
       const fielder = document.getElementById('dismissalFielder').value.trim();
       const outRole = document.getElementById('dismissalOutBatter').value;
       const nextBatterSelect = document.getElementById('dismissalNextBatter');
-      const nextBatter = nextBatterSelect ? nextBatterSelect.value : 'Rishabh Pant';
-      const selectedOption = nextBatterSelect && nextBatterSelect.selectedIndex >= 0 ? nextBatterSelect.options[nextBatterSelect.selectedIndex] : null;
 
       const currentStriker = document.getElementById('strikerName')?.textContent?.replace(' *', '').trim() || studioStriker.name;
       const currentNonStriker = document.getElementById('nonStrikerName')?.textContent?.trim() || studioNonStriker.name;
@@ -17270,6 +17333,59 @@ cricos_active_sse_connections 1</pre>
       else if (kind === 'BOWLED') dismissalDesc = 'b ' + currentBowler;
       else if (kind === 'STUMPED') dismissalDesc = 'st ' + (fielder || 'Keeper') + ' b ' + currentBowler;
       else if (kind === 'HIT_WICKET') dismissalDesc = 'hit wicket b ' + currentBowler;
+
+      const nextOptionsCount = nextBatterSelect ? nextBatterSelect.options.length : 0;
+      const isFinalWicket = (currentWkts === 9) || (nextOptionsCount === 0) || (nextBatterSelect && nextBatterSelect.style.display === 'none');
+
+      if (isFinalWicket) {
+        desktopDismissalHistory.push({
+          outName,
+          outRole,
+          wasStriker: outRole === 'STRIKER',
+          previousBatterState: {
+            name: outName,
+            battingStyle: outRole === 'STRIKER' ? (studioStriker.battingStyle || 'RHB') : (studioNonStriker.battingStyle || 'LHB'),
+            runs: outRole === 'STRIKER' ? studioStriker.runs : studioNonStriker.runs,
+            balls: outRole === 'STRIKER' ? studioStriker.balls : studioNonStriker.balls,
+            fours: outRole === 'STRIKER' ? studioStriker.fours : studioNonStriker.fours,
+            sixes: outRole === 'STRIKER' ? studioStriker.sixes : studioNonStriker.sixes
+          },
+          incomingBatterName: null,
+          isAllOut: true,
+          kind,
+          fielder
+        });
+
+        scoreDelivery(0, 0, 'NONE', true, true, {
+          wicket_type: kind,
+          fielder_id: fielder || undefined,
+          player_out_id: outName,
+          next_batter_id: undefined
+        });
+
+        wickets = 10;
+        legalBalls++;
+        const overs = Math.floor(legalBalls / 6) + '.' + (legalBalls % 6);
+        renderScoreState({ runs, wickets: 10, legal_balls: legalBalls, overs_display: overs, is_innings_closed: true }, null, 'ALL_OUT');
+
+        if (outRole === 'STRIKER') {
+          studioStriker.name = outName + ' (out)';
+          studioStriker.isOut = true;
+        } else {
+          studioNonStriker.name = outName + ' (out)';
+          studioNonStriker.isOut = true;
+        }
+        partnership.runs = 0;
+        partnership.balls = 0;
+        updateStudioUI();
+
+        closeDismissalModal();
+        showToast('🛑 ALL OUT! Delhi Daredevils bowled out for ' + (runs || 0) + ' (10 wickets). Innings closed.');
+        return;
+      }
+
+      const nextBatter = nextBatterSelect ? nextBatterSelect.value : 'Rishabh Pant';
+      const selectedOption = nextBatterSelect && nextBatterSelect.selectedIndex >= 0 ? nextBatterSelect.options[nextBatterSelect.selectedIndex] : null;
 
       // Preserve snapshot for undo
       desktopDismissalHistory.push({
@@ -17285,6 +17401,7 @@ cricos_active_sse_connections 1</pre>
           sixes: outRole === 'STRIKER' ? studioStriker.sixes : studioNonStriker.sixes
         },
         incomingBatterName: nextBatter,
+        isAllOut: false,
         kind,
         fielder
       });
@@ -18893,16 +19010,18 @@ cricos_active_sse_connections 1</pre>
       const bowlerBody = document.getElementById('detailedScorecardBowlersBody');
       const btnInn2 = document.getElementById('btnScorecardInn2');
 
+      const isAllOut = currentWickets >= 10 || Boolean(liveState && liveState.is_innings_closed);
+
       if (btnInn2) {
-        btnInn2.textContent = 'Innings 2 (MUM ' + currentRuns + '/' + currentWickets + ')';
-        btnInn2.setAttribute('data-tooltip', 'View Mumbai Super Strikers Innings 2 (Current Chase: ' + currentRuns + '/' + currentWickets + ')');
+        btnInn2.textContent = 'Innings 2 (MUM ' + currentRuns + '/' + currentWickets + (isAllOut ? ' ALL OUT' : '') + ')';
+        btnInn2.setAttribute('data-tooltip', 'View Mumbai Super Strikers Innings 2 (Current Chase: ' + currentRuns + '/' + currentWickets + (isAllOut ? ' ALL OUT' : '') + ')');
       }
 
       if (teamName) teamName.textContent = isInn2 ? 'Mumbai Super Strikers' : 'Delhi Daredevils';
-      if (label) label.textContent = isInn2 ? 'Innings 2 (Target: 178)' : 'Innings 1 (First Batting)';
+      if (label) label.textContent = isInn2 ? ('Innings 2 (Target: 178' + (isAllOut ? ' • ALL OUT' : '') + ')') : 'Innings 1 (First Batting)';
       if (scoreEl) {
         scoreEl.innerHTML = isInn2
-          ? currentRuns + '/' + currentWickets + ' <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(' + oversDisplay + ' ov • CRR: ' + crr + ' • RRR: ' + rrr + ')</span>'
+          ? currentRuns + '/' + currentWickets + ' <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(' + oversDisplay + ' ov • CRR: ' + crr + (isAllOut ? ' • <strong style="color: var(--rose);">ALL OUT</strong>' : ' • RRR: ' + rrr) + ')</span>'
           : '178/10 <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(19.4 ov • RR: 9.05)</span>';
       }
 
@@ -18914,11 +19033,11 @@ cricos_active_sse_connections 1</pre>
         if (extrasDetail) extrasDetail.textContent = isInn2 ? '(b 4, lb 2, w 5, nb 1)' : '(b 2, lb 1, w 4, nb 1)';
       }
 
-      if (totalText) totalText.textContent = isInn2 ? (currentRuns + '/' + currentWickets) : '178/10';
-      if (totalDetail) totalDetail.textContent = isInn2 ? '(' + currentWickets + ' wkts, ' + oversDisplay + ' ov)' : '(10 wkts, 19.4 ov)';
+      if (totalText) totalText.textContent = isInn2 ? (currentRuns + '/' + currentWickets + (isAllOut ? ' (ALL OUT)' : '')) : '178/10';
+      if (totalDetail) totalDetail.textContent = isInn2 ? '(' + currentWickets + ' wkts, ' + oversDisplay + ' ov' + (isAllOut ? ', All Out' : '') + ')' : '(10 wkts, 19.4 ov)';
       if (dnbText) {
         dnbText.textContent = isInn2
-          ? 'Rishabh Pant (wk), Ravindra Jadeja, Axar Patel, Mohammed Shami, Jasprit Bumrah'
+          ? (isAllOut ? 'None (All out)' : 'Rishabh Pant (wk), Ravindra Jadeja, Axar Patel, Mohammed Shami, Jasprit Bumrah')
           : 'None (All out)';
       }
 
@@ -21102,13 +21221,41 @@ cricos_active_sse_connections 1</pre>
       if (targetRRREl) targetRRREl.textContent = rrr;
       if (targetProgressFill) targetProgressFill.style.width = progressPercent + '%';
 
-      // Check match conclusion victory condition
+      // Check match conclusion victory or all-out condition
+      const isAllOut = wickets >= 10 || Boolean(state.is_innings_closed);
+      const banner = document.getElementById('matchResultBanner');
+      const text = document.getElementById('matchResultText');
       if (currentRuns >= targetRuns) {
-        const banner = document.getElementById('matchResultBanner');
-        const text = document.getElementById('matchResultText');
-        if (banner) banner.style.display = 'flex';
+        if (banner) {
+          banner.style.display = 'flex';
+          banner.style.borderColor = 'var(--turf-emerald)';
+          banner.style.background = 'rgba(0, 229, 153, 0.15)';
+        }
         if (text) text.textContent = 'Mumbai Super Strikers won by ' + Math.max(1, 10 - wickets) + ' wickets!';
+      } else if (isAllOut) {
+        if (banner) {
+          banner.style.display = 'flex';
+          banner.style.borderColor = 'var(--rose)';
+          banner.style.background = 'rgba(255, 51, 102, 0.15)';
+        }
+        if (text) text.textContent = 'INNINGS CLOSED — ALL OUT! Delhi Daredevils bowled out for ' + runs + ' (10 wickets). Further deliveries disabled.';
+      } else {
+        if (banner) banner.style.display = 'none';
       }
+
+      // Disable or enable studio pad delivery buttons based on isAllOut
+      const padButtons = document.querySelectorAll('.studio-btn.pad-btn:not(#btnStudioUndo):not([data-id="btnUndoBall"]), .studio-extras-strip button, #btnCompoundExtra');
+      padButtons.forEach(btn => {
+        if (isAllOut) {
+          btn.setAttribute('disabled', 'true');
+          btn.style.opacity = '0.35';
+          btn.style.pointerEvents = 'none';
+        } else {
+          btn.removeAttribute('disabled');
+          btn.style.opacity = '';
+          btn.style.pointerEvents = '';
+        }
+      });
 
       // Update Free Hit active status banner
       const fhBanner = document.getElementById('freeHitBanner');
@@ -21466,6 +21613,11 @@ cricos_active_sse_connections 1</pre>
         showToast('🔒 Only official Scorers can score deliveries.');
         return;
       }
+      const currentWkts = (typeof wickets === 'number') ? wickets : 0;
+      if (currentWkts >= 10 && !isWicket) {
+        showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets). Further deliveries are disabled.');
+        return;
+      }
       if (typeof triggerHaptic === 'function') {
         if (isWicket) triggerHaptic('wicket');
         else if (batRuns === 4 || batRuns === 6) triggerHaptic('boundary');
@@ -21495,10 +21647,10 @@ cricos_active_sse_connections 1</pre>
         offlineDeliveries.push(payload);
         updateSyncUI();
         runs += batRuns + extraRuns;
-        if (isWicket) wickets++;
+        if (isWicket) wickets = Math.min(10, wickets + 1);
         if (legalBall) legalBalls++;
         const overs = Math.floor(legalBalls / 6) + '.' + (legalBalls % 6);
-        const fallbackState = { runs, wickets, legal_balls: legalBalls, overs_display: overs };
+        const fallbackState = { runs, wickets, legal_balls: legalBalls, overs_display: overs, is_innings_closed: wickets >= 10 };
         renderScoreState(fallbackState, payload, 'OFFLINE_LOCAL');
         logFeedItem(fallbackState, payload);
         renderMatchCharts();
@@ -21536,10 +21688,18 @@ cricos_active_sse_connections 1</pre>
           }
         }
       } catch (err) {
-        // Network drop during request: save to outbox
+        // Network drop during request: save to outbox and optimistically update local score state
         offlineDeliveries.push(payload);
         updateSyncUI();
-        showToast('⚠️ Network failure: Delivery queued in outbox');
+        runs += batRuns + extraRuns;
+        if (isWicket) wickets = Math.min(10, wickets + 1);
+        if (legalBall) legalBalls++;
+        const overs = Math.floor(legalBalls / 6) + '.' + (legalBalls % 6);
+        const fallbackState = { runs, wickets, legal_balls: legalBalls, overs_display: overs, is_innings_closed: wickets >= 10 };
+        renderScoreState(fallbackState, payload, 'OFFLINE_LOCAL');
+        logFeedItem(fallbackState, payload);
+        renderMatchCharts();
+        showToast('⚡ [Offline Queue] Delivery queued in outbox');
       }
     }
 

@@ -655,6 +655,58 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(dashboardSrc.includes('.scorecard-dismissal-cell'), 'Scorecard dismissal cell styling must exist');
     });
   });
+
+  // =========================================================================
+  // 11. Dismissed Batter Exclusion & 10-Wicket All Out Innings Closure (MCC Law 12)
+  // =========================================================================
+  describe('11. Dismissed Batter Exclusion & 10-Wicket All Out Innings Closure (MCC Law 12)', () => {
+    it('11.1 should exclude already dismissed and active batters from incoming next batter selection on mobile & desktop', () => {
+      // Mobile checks
+      assert.ok(mobileSrc.includes('getAvailableIncomingBatters()'), 'Mobile must have getAvailableIncomingBatters() method');
+      assert.ok(mobileSrc.includes('dismissedNames'), 'Mobile must track dismissedNames to exclude from bench');
+      assert.ok(!mobileSrc.includes("{ name: 'Surya Y.', stance: 'RHB', role: 'BAT' }"), 'Surya Y. (already dismissed in initial state) must not be on bench');
+      assert.ok(mobileSrc.includes('getAvailableIncomingBatters();'), 'openMobileDismissalSheet must call getAvailableIncomingBatters()');
+
+      // Desktop checks
+      assert.ok(dashboardSrc.includes('dismissedNames'), 'Desktop openDismissalModal must collect dismissedNames');
+      assert.ok(dashboardSrc.includes('matchScorecardData.batters'), 'Desktop must inspect matchScorecardData.batters for prior dismissals');
+      assert.ok(dashboardSrc.includes('desktopDismissalHistory'), 'Desktop must inspect desktopDismissalHistory for prior dismissals');
+    });
+
+    it('11.2 should enforce 10-wicket limit and close innings as ALL OUT on 10th wicket dismissal', () => {
+      // Mobile checks
+      assert.ok(mobileSrc.includes('isFinalWicket = (this.matchState.totalWickets === 9)'), 'Mobile must detect 10th wicket as final wicket');
+      assert.ok(mobileSrc.includes("this.matchState.isAllOut = true"), 'Mobile must set isAllOut = true on 10th wicket');
+      assert.ok(mobileSrc.includes("inningsStatus = 'ALL_OUT'"), 'Mobile must set inningsStatus to ALL_OUT');
+      assert.ok(mobileSrc.includes('id="mobileScorerAllOutNotice"'), 'Mobile must render dedicated All Out notice on scorer pad');
+      assert.ok(mobileSrc.includes('padDis'), 'Mobile pad delivery buttons must be disabled when isAllOut');
+
+      // Desktop checks
+      assert.ok(dashboardSrc.includes('isFinalWicket = (currentWkts === 9)'), 'Desktop must detect 10th wicket as final wicket');
+      assert.ok(dashboardSrc.includes('id="dismissalFinalWicketNotice"'), 'Desktop must have #dismissalFinalWicketNotice element');
+      assert.ok(dashboardSrc.includes("INNINGS CLOSED — ALL OUT!"), 'Desktop must display INNINGS CLOSED — ALL OUT! in match result banner');
+    });
+
+    it('11.3 should reflect ALL OUT status and None (All out) in Did Not Bat across mobile & desktop scorecards', () => {
+      // Mobile Scorecard
+      assert.ok(mobileSrc.includes("None (All out)"), 'Mobile scorecard must show None (All out) in DNB when all out');
+      assert.ok(mobileSrc.includes("• ALL OUT"), 'Mobile scorecard score pill must append ALL OUT');
+
+      // Desktop Scorecard
+      assert.ok(dashboardSrc.includes("isAllOut ? 'None (All out)'"), 'Desktop scorecard must show None (All out) when all out');
+      assert.ok(dashboardSrc.includes("ALL OUT"), 'Desktop scorecard header must show ALL OUT');
+    });
+
+    it('11.4 should cleanly unwind 10th wicket dismissal via Undo Last Ball, restoring 9 wickets and re-enabling keypad', () => {
+      // Mobile Undo
+      assert.ok(mobileSrc.includes("this.matchState.isAllOut = false"), 'Mobile undo must reset isAllOut = false');
+      assert.ok(mobileSrc.includes("this.matchState.isInningsComplete = false"), 'Mobile undo must reset isInningsComplete = false');
+
+      // Desktop Undo
+      assert.ok(dashboardSrc.includes("btn.removeAttribute('disabled')"), 'Desktop pad buttons must be re-enabled when not all out');
+      assert.ok(dashboardSrc.includes("banner.style.display = 'none'"), 'Desktop all out banner must be hidden when undone below 10 wickets');
+    });
+  });
 });
 
 

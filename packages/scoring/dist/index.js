@@ -92,8 +92,8 @@ export function calculateStrikeRate(runs, ballsFaced) {
     return Number(((runs / ballsFaced) * 100).toFixed(2));
 }
 export function applyDelivery(state, event) {
-    if (state.is_innings_closed) {
-        throw new Error('SCORE_INNINGS_ALREADY_CLOSED: Cannot score after innings close');
+    if (state.is_innings_closed || state.wickets >= 10) {
+        throw new Error('SCORE_INNINGS_ALREADY_CLOSED: Cannot score after innings close (Team All Out or target reached)');
     }
     if (event.bat_runs < 0 || event.extra_runs < 0) {
         throw new Error('SCORE_INVALID_RUNS: Runs cannot be negative');
@@ -239,7 +239,22 @@ export function applyDelivery(state, event) {
             });
         }
         // New batter takes crease
-        if (event.next_batter_id) {
+        if (newWickets >= 10) {
+            // 10th wicket fallen - Team is ALL OUT. No incoming batter takes crease.
+            if (outPlayerId === currentStrikerId) {
+                nextStriker = undefined;
+            }
+            else {
+                nextNonStriker = undefined;
+            }
+        }
+        else if (event.next_batter_id) {
+            if (batters[event.next_batter_id]?.isOut) {
+                throw new Error('SCORE_BATTER_ALREADY_DISMISSED: Player has already been dismissed in this innings');
+            }
+            if (event.next_batter_id === currentStrikerId || event.next_batter_id === currentNonStrikerId) {
+                throw new Error('SCORE_BATTER_ALREADY_BATTING: Player is already at the crease');
+            }
             batters[event.next_batter_id] = {
                 playerId: event.next_batter_id,
                 runs: 0,

@@ -258,5 +258,86 @@ describe('Scoring Package', () => {
     assert.equal(closed.is_innings_closed, true);
     assert.equal(closed.target, 180);
   });
+
+  it('rejects an already dismissed batter from batting again in same innings', () => {
+    let state = createInitialScoreState(undefined, 'batter-1', 'batter-2', 'bowler-1');
+
+    // Wicket 1: batter-1 is bowled, replaced by batter-3
+    state = applyDelivery(state, {
+      client_event_id: 'wkt-1',
+      sequence: 1,
+      event_type: 'DELIVERY',
+      bat_runs: 0,
+      extra_runs: 0,
+      extra_type: 'NONE',
+      legal_ball: true,
+      is_wicket: true,
+      wicket_type: 'BOWLED',
+      player_out_id: 'batter-1',
+      next_batter_id: 'batter-3'
+    });
+    assert.equal(state.wickets, 1);
+    assert.equal(state.batters['batter-1']?.isOut, true);
+    assert.equal(state.striker_id, 'batter-3');
+
+    // Wicket 2: batter-3 is caught. Attempting to bring back dismissed batter-1 must throw!
+    assert.throws(
+      () => applyDelivery(state, {
+        client_event_id: 'wkt-2-invalid',
+        sequence: 2,
+        event_type: 'DELIVERY',
+        bat_runs: 0,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true,
+        is_wicket: true,
+        wicket_type: 'CAUGHT',
+        player_out_id: 'batter-3',
+        next_batter_id: 'batter-1' // Already dismissed!
+      }),
+      /SCORE_BATTER_ALREADY_DISMISSED/
+    );
+  });
+
+  it('automatically closes innings when 10 wickets fall (All Out) and rejects further deliveries', () => {
+    let state = createInitialScoreState(undefined, 'b-1', 'b-2', 'bowler-1');
+
+    // Fall of 10 consecutive wickets
+    for (let w = 1; w <= 10; w++) {
+      const outId = w === 1 ? 'b-1' : `b-${w + 1}`;
+      const nextId = w < 10 ? `b-${w + 2}` : undefined;
+      state = applyDelivery(state, {
+        client_event_id: `all-out-wkt-${w}`,
+        sequence: w,
+        event_type: 'DELIVERY',
+        bat_runs: 0,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true,
+        is_wicket: true,
+        wicket_type: 'BOWLED',
+        player_out_id: outId,
+        next_batter_id: nextId
+      });
+    }
+
+    assert.equal(state.wickets, 10, 'Team must have exactly 10 wickets fallen');
+    assert.equal(state.is_innings_closed, true, 'Innings must be automatically closed at 10 wickets (All Out)');
+
+    // Attempting an 11th delivery or 11th wicket must throw!
+    assert.throws(
+      () => applyDelivery(state, {
+        client_event_id: 'wkt-11-invalid',
+        sequence: 11,
+        event_type: 'DELIVERY',
+        bat_runs: 1,
+        extra_runs: 0,
+        extra_type: 'NONE',
+        legal_ball: true
+      }),
+      /SCORE_INNINGS_ALREADY_CLOSED/
+    );
+  });
 });
+
 

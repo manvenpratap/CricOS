@@ -3622,15 +3622,11 @@ export function getMobileAppHtml() {
 
         this.battingSquadBench = [
           { name: 'Rishabh P.', stance: 'LHB', role: 'WKT' },
-          { name: 'Surya Y.', stance: 'RHB', role: 'BAT' },
           { name: 'Hardik P.', stance: 'LHB', role: 'ALL' },
-          { name: 'Sanju S.', stance: 'RHB', role: 'WKT' },
-          { name: 'Shivam D.', stance: 'LHB', role: 'ALL' },
           { name: 'Ravindra J.', stance: 'LHB', role: 'ALL' },
           { name: 'Axar P.', stance: 'LHB', role: 'ALL' },
           { name: 'Kuldeep Y.', stance: 'LHB', role: 'BOWL' },
-          { name: 'Jasprit B.', stance: 'RHB', role: 'BOWL' },
-          { name: 'Mohammed S.', stance: 'RHB', role: 'BOWL' }
+          { name: 'Jasprit B.', stance: 'RHB', role: 'BOWL' }
         ];
 
         this.matchState = {
@@ -3641,6 +3637,9 @@ export function getMobileAppHtml() {
           totalWickets: 3,
           legalBalls: 100,
           targetRuns: 178,
+          isAllOut: false,
+          isInningsComplete: false,
+          inningsStatus: 'IN_PROGRESS',
           currentOverDeliveries: ['1', '4', '•', '2'],
           currentBowlerName: 'Jasprit Bumrah',
           previousBowlerName: 'Mohammed Siraj',
@@ -5535,6 +5534,10 @@ export function getMobileAppHtml() {
           this.showToast('🔒 Only official Scorers can score deliveries.', 'warning');
           return;
         }
+        if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
+          this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets). Further deliveries are disabled.', 'warning', 3000);
+          return;
+        }
         if (window.CricOSSound) window.CricOSSound.playClick();
         this.pendingWagonRuns = Number(runs);
         this.pendingSelectedZone = this.currentSelectedZone || 'EXTRA_COVER';
@@ -5568,6 +5571,10 @@ export function getMobileAppHtml() {
       scoreBall(runs, chosenZone) {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can score deliveries.', 'warning');
+          return;
+        }
+        if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
+          this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets). Further deliveries are disabled.', 'warning', 3000);
           return;
         }
         if (chosenZone) {
@@ -5655,6 +5662,10 @@ export function getMobileAppHtml() {
           this.showToast('🔒 Only official Scorers can score extras.', 'warning');
           return;
         }
+        if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
+          this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets). Further deliveries are disabled.', 'warning', 3000);
+          return;
+        }
         if (window.CricOSSound) window.CricOSSound.playClick();
         this.pendingExtraType = type || 'WIDE';
         this.pendingExtraOption = 0;
@@ -5691,6 +5702,10 @@ export function getMobileAppHtml() {
       applyExtraDelivery(type, opt) {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can score extras.', 'warning');
+          return;
+        }
+        if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
+          this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets). Further deliveries are disabled.', 'warning', 3000);
           return;
         }
         if (!opt || typeof opt !== 'object') {
@@ -5802,6 +5817,10 @@ export function getMobileAppHtml() {
           this.showToast('🔒 Only official Scorers can score compound extras.', 'warning');
           return;
         }
+        if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
+          this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets).', 'warning');
+          return;
+        }
         if (window.CricOSSound) window.CricOSSound.playClick();
         var total = batRuns + extraRuns;
         this.matchState.totalRuns += total;
@@ -5834,6 +5853,47 @@ export function getMobileAppHtml() {
         this.render();
       }
 
+      getAvailableIncomingBatters() {
+        var activeNames = [
+          this.matchState && this.matchState.striker ? this.matchState.striker.name : '',
+          this.matchState && this.matchState.nonStriker ? this.matchState.nonStriker.name : ''
+        ].filter(Boolean);
+
+        var dismissedNames = (this.matchState && this.matchState.dismissedBatters ? this.matchState.dismissedBatters : []).map(function(d) {
+          return d.name;
+        });
+
+        if (this.dismissalHistory && this.dismissalHistory.length > 0) {
+          this.dismissalHistory.forEach(function(dh) {
+            if (dh.dismissedBatter && dh.dismissedBatter.name && !dismissedNames.includes(dh.dismissedBatter.name)) {
+              dismissedNames.push(dh.dismissedBatter.name);
+            }
+          });
+        }
+
+        var isUnavailable = function(playerName) {
+          if (!playerName) return true;
+          var norm = playerName.toLowerCase().replace(/[\.\*\(\)\s]+/g, ' ').trim();
+          var checkList = activeNames.concat(dismissedNames);
+          for (var i = 0; i < checkList.length; i++) {
+            var item = checkList[i].toLowerCase().replace(/[\.\*\(\)\s]+/g, ' ').trim();
+            if (norm === item) return true;
+            var partsA = norm.split(' ');
+            var partsB = item.split(' ');
+            if (partsA[0] === partsB[0] && partsA[0].length >= 3) {
+              if (partsA.length > 1 && partsB.length > 1 && partsA[1][0] === partsB[1][0]) {
+                return true;
+              }
+            }
+          }
+          return false;
+        };
+
+        return (this.battingSquadBench || []).filter(function(b) {
+          return !isUnavailable(b.name);
+        });
+      }
+
       promptWicketModal() {
         this.openMobileDismissalSheet();
       }
@@ -5843,12 +5903,18 @@ export function getMobileAppHtml() {
           this.showToast('🔒 Only official Scorers can record wickets.', 'warning');
           return;
         }
+        if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
+          this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets). No more wickets can fall.', 'warning', 3000);
+          return;
+        }
+
+        var availableBench = this.getAvailableIncomingBatters();
+        var isFinalWicket = (this.matchState.totalWickets === 9) || (availableBench.length === 0);
+
         this.pendingDismissalMode = 'CAUGHT';
         this.pendingDismissalFielder = '';
         this.pendingDismissalOutRole = 'STRIKER';
-        var activeBatters = [this.matchState.striker.name, this.matchState.nonStriker.name];
-        var availableBench = this.battingSquadBench.filter(function(b) { return !activeBatters.includes(b.name); });
-        this.pendingIncomingBatter = availableBench.length > 0 ? availableBench[0].name : 'Rishabh P.';
+        this.pendingIncomingBatter = isFinalWicket ? '' : (availableBench.length > 0 ? availableBench[0].name : '');
         this.dismissalSheetOpen = true;
         this.render();
       }
@@ -5891,6 +5957,10 @@ export function getMobileAppHtml() {
           this.showToast('🔒 Only official Scorers can record wickets.', 'warning');
           return;
         }
+        if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
+          this.showToast('🔒 Innings Complete: Team is ALL OUT (10 wickets).', 'warning');
+          return;
+        }
         if (window.CricOSSound) window.CricOSSound.playWicket();
         if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
           window.CricOSMotionFX.triggerCelebration('WICKET');
@@ -5900,9 +5970,8 @@ export function getMobileAppHtml() {
         var outBatter = isStrikerOut ? this.matchState.striker : this.matchState.nonStriker;
         var outBatterName = outBatter.name;
 
-        var nextBatterName = this.pendingIncomingBatter || 'Rishabh P.';
-        var benchMatch = this.battingSquadBench.find(function(b) { return b.name === nextBatterName; });
-        var nextStance = benchMatch ? benchMatch.stance : (nextBatterName.indexOf('Rishabh') !== -1 ? 'LHB' : 'RHB');
+        var availableBench = this.getAvailableIncomingBatters();
+        var isFinalWicket = (this.matchState.totalWickets === 9) || (availableBench.length === 0);
 
         var mode = this.pendingDismissalMode || 'CAUGHT';
         var fielder = (this.pendingDismissalFielder || '').trim();
@@ -5914,24 +5983,6 @@ export function getMobileAppHtml() {
         else if (mode === 'LBW') desc = 'lbw b ' + this.matchState.currentBowlerName;
         else if (mode === 'BOWLED') desc = 'b ' + this.matchState.currentBowlerName;
         else if (mode === 'HIT_WICKET') desc = 'hit wicket b ' + this.matchState.currentBowlerName;
-
-        this.dismissalHistory.push({
-          outRole: this.pendingDismissalOutRole,
-          dismissedBatter: {
-            name: outBatter.name,
-            runs: outBatter.runs,
-            balls: outBatter.balls,
-            fours: outBatter.fours,
-            sixes: outBatter.sixes,
-            isStriker: outBatter.isStriker,
-            stance: outBatter.stance
-          },
-          mode: mode,
-          fielder: fielder,
-          incomingBatter: nextBatterName,
-          bowlerName: this.matchState.currentBowlerName,
-          ballNumber: this.matchState.legalBalls + 1
-        });
 
         this.matchState.totalWickets += 1;
         this.matchState.legalBalls += 1;
@@ -5958,6 +6009,86 @@ export function getMobileAppHtml() {
           runs: this.matchState.totalRuns,
           batter: outBatter.name,
           over: fowOver
+        });
+
+        if (isFinalWicket || this.matchState.totalWickets >= 10) {
+          // Team is ALL OUT!
+          this.matchState.totalWickets = Math.min(10, this.matchState.totalWickets);
+          this.matchState.isAllOut = true;
+          this.matchState.isInningsComplete = true;
+          this.matchState.inningsStatus = 'ALL_OUT';
+
+          if (isStrikerOut) {
+            this.matchState.striker = { name: outBatter.name + ' (out)', runs: outBatter.runs, balls: outBatter.balls, fours: outBatter.fours, sixes: outBatter.sixes, isStriker: false, isOut: true };
+          } else {
+            this.matchState.nonStriker = { name: outBatter.name + ' (out)', runs: outBatter.runs, balls: outBatter.balls, fours: outBatter.fours, sixes: outBatter.sixes, isStriker: false, isOut: true };
+          }
+
+          this.dismissalHistory.push({
+            outRole: this.pendingDismissalOutRole,
+            dismissedBatter: {
+              name: outBatter.name,
+              runs: outBatter.runs,
+              balls: outBatter.balls,
+              fours: outBatter.fours,
+              sixes: outBatter.sixes,
+              isStriker: outBatter.isStriker,
+              stance: outBatter.stance
+            },
+            mode: mode,
+            fielder: fielder,
+            incomingBatter: null,
+            isAllOut: true,
+            bowlerName: this.matchState.currentBowlerName,
+            ballNumber: this.matchState.legalBalls
+          });
+
+          var ballNum = Math.floor(this.matchState.legalBalls / 6) + '.' + (this.matchState.legalBalls % 6);
+          this.matchState.commentary.unshift({
+            ball: ballNum,
+            category: 'WICKET',
+            badge: 'ALL OUT 🚨',
+            badgeColor: '#ff3366',
+            duel: this.matchState.currentBowlerName + ' ➔ ' + outBatterName,
+            text: 'WICKET & ALL OUT! ' + outBatterName + ' ' + desc + '. ' + this.matchState.battingTeam + ' bowled out for ' + this.matchState.totalRuns + ' in ' + ballNum + ' overs. Innings closed.',
+            telemetry: ['All Out: ' + this.matchState.totalRuns + '/10', 'Overs: ' + ballNum, 'Innings Closed']
+          });
+
+          this.dismissalSheetOpen = false;
+          this.showToast('🛑 ALL OUT! ' + this.matchState.battingTeam + ' bowled out for ' + this.matchState.totalRuns + ' (10 wkts). Innings complete!', 'error', 4000);
+          this.render();
+          return;
+        }
+
+        // Validate incoming batter is NOT already dismissed
+        var nextBatterName = this.pendingIncomingBatter;
+        var isAlreadyOut = (this.matchState.dismissedBatters || []).some(function(d) {
+          return d.name === nextBatterName;
+        });
+        if (isAlreadyOut || !nextBatterName) {
+          nextBatterName = availableBench.length > 0 ? availableBench[0].name : 'Rishabh P.';
+        }
+
+        var benchMatch = this.battingSquadBench.find(function(b) { return b.name === nextBatterName; });
+        var nextStance = benchMatch ? benchMatch.stance : (nextBatterName.indexOf('Rishabh') !== -1 ? 'LHB' : 'RHB');
+
+        this.dismissalHistory.push({
+          outRole: this.pendingDismissalOutRole,
+          dismissedBatter: {
+            name: outBatter.name,
+            runs: outBatter.runs,
+            balls: outBatter.balls,
+            fours: outBatter.fours,
+            sixes: outBatter.sixes,
+            isStriker: outBatter.isStriker,
+            stance: outBatter.stance
+          },
+          mode: mode,
+          fielder: fielder,
+          incomingBatter: nextBatterName,
+          isAllOut: false,
+          bowlerName: this.matchState.currentBowlerName,
+          ballNumber: this.matchState.legalBalls
         });
 
         var newBatter = {
@@ -6102,23 +6233,31 @@ export function getMobileAppHtml() {
           h += '</div>';
         }
 
-        h += '<div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; margin-bottom: 0.35rem;">' + (needsFielder ? '4' : '3') + '. Incoming Next Batter (from Squad Bench)</div>';
-        var activeBatters = [striker.name, nonStriker.name];
-        var availableBench = this.battingSquadBench.filter(function(b) { return !activeBatters.includes(b.name); });
+        var availableBench = this.getAvailableIncomingBatters();
+        var isFinalWicket = (this.matchState.totalWickets === 9) || (availableBench.length === 0);
+
+        h += '<div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; margin-bottom: 0.35rem;">' + (needsFielder ? '4' : '3') + '. ' + (isFinalWicket ? 'Innings Conclusion (All Out)' : 'Incoming Next Batter (from Squad Bench)') + '</div>';
 
         h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<select id="mobileIncomingBatterSelect" onchange="window.cricosMobileApp.selectMobileIncomingBatter(this.value)" style="width: 100%; background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 8px; padding: 0.6rem 0.75rem; color: ' + ink + '; font-size: 0.82rem; font-weight: 700; outline: none;" data-tooltip="Select next batter from squad bench">';
-        for (var b = 0; b < availableBench.length; b++) {
-          var benchPlayer = availableBench[b];
-          var isSel = (this.pendingIncomingBatter === benchPlayer.name);
-          h += '<option value="' + benchPlayer.name + '"' + (isSel ? ' selected' : '') + '>' + benchPlayer.name + ' (' + benchPlayer.role + ' • ' + benchPlayer.stance + ')</option>';
-        }
-        h += '</select>';
-        
-        var self = this;
-        var selectedBenchObj = availableBench.find(function(x) { return x.name === self.pendingIncomingBatter; }) || availableBench[0];
-        if (selectedBenchObj) {
-          h += '<div style="font-size: 0.68rem; color: ' + muted + '; margin-top: 0.3rem;">Stance: <strong style="color: var(--turf-emerald);">' + selectedBenchObj.stance + '</strong> • Tactical Wagon Wheel &amp; 3D Pitch will sync automatically.</div>';
+        if (isFinalWicket) {
+          h += '<div class="mobile-all-out-dismissal-banner" style="background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.55rem 0.75rem; text-align: center;">';
+          h += '<div style="font-weight: 800; font-size: 0.82rem; color: #ff3366;">⚠️ FINAL WICKET (10th WICKET)</div>';
+          h += '<div style="font-size: 0.7rem; color: ' + (isLight ? '#475569' : '#cbd5e1') + '; margin-top: 0.2rem;">Confirming this dismissal will bowl out the batting team. No incoming batter will be sent to the crease. Team will be declared <strong>ALL OUT</strong>.</div>';
+          h += '</div>';
+        } else {
+          h += '<select id="mobileIncomingBatterSelect" onchange="window.cricosMobileApp.selectMobileIncomingBatter(this.value)" style="width: 100%; background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 8px; padding: 0.6rem 0.75rem; color: ' + ink + '; font-size: 0.82rem; font-weight: 700; outline: none;" data-tooltip="Select next batter from squad bench">';
+          for (var b = 0; b < availableBench.length; b++) {
+            var benchPlayer = availableBench[b];
+            var isSel = (this.pendingIncomingBatter === benchPlayer.name);
+            h += '<option value="' + benchPlayer.name + '"' + (isSel ? ' selected' : '') + '>' + benchPlayer.name + ' (' + benchPlayer.role + ' • ' + benchPlayer.stance + ')</option>';
+          }
+          h += '</select>';
+          
+          var self = this;
+          var selectedBenchObj = availableBench.find(function(x) { return x.name === self.pendingIncomingBatter; }) || availableBench[0];
+          if (selectedBenchObj) {
+            h += '<div style="font-size: 0.68rem; color: ' + muted + '; margin-top: 0.3rem;">Stance: <strong style="color: var(--turf-emerald);">' + selectedBenchObj.stance + '</strong> • Tactical Wagon Wheel &amp; 3D Pitch will sync automatically.</div>';
+          }
         }
         h += '</div>';
 
@@ -6415,6 +6554,9 @@ export function getMobileAppHtml() {
             this.matchState.totalWickets = Math.max(0, this.matchState.totalWickets - 1);
             this.matchState.legalBalls = Math.max(0, this.matchState.legalBalls - 1);
             this.matchState.bowler.ballsThisOver = Math.max(0, this.matchState.bowler.ballsThisOver - 1);
+            this.matchState.isAllOut = false;
+            this.matchState.isInningsComplete = false;
+            this.matchState.inningsStatus = 'IN_PROGRESS';
 
             if (this.matchState.dismissedBatters && this.matchState.dismissedBatters.length > 0) {
               this.matchState.dismissedBatters.pop();
@@ -7674,16 +7816,28 @@ export function getMobileAppHtml() {
         h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.4rem;">';
         h += '<div>';
         h += '<div class="scorecard-title" style="font-size: 0.88rem; font-weight: 800; color: ' + (isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#f8fafc') + '; font-family: Space Grotesk, sans-serif;">📄 Official Match Scorecard</div>';
-        var chaseDesc = runsNeeded > 0
-          ? 'Innings 2: ' + this.matchState.battingTeam + ' need ' + runsNeeded + ' in ' + ballsRemaining + 'b'
-          : this.matchState.battingTeam + ' won by ' + Math.max(1, 10 - this.matchState.totalWickets) + ' wickets!';
-        h += '<div class="scorecard-subtitle" style="font-size: 0.66rem; color: ' + (isLight ? (isNordic ? '#57534E' : '#475569') : '#94a3b8') + ';">' + chaseDesc + ' • CRR: ' + crr + (runsNeeded > 0 ? ' • RRR: ' + rrr : '') + '</div>';
+        var isAllOut = this.matchState.isAllOut || this.matchState.totalWickets >= 10;
+        var chaseDesc = '';
+        if (isAllOut) {
+          chaseDesc = 'Innings 2: ' + this.matchState.battingTeam + ' ALL OUT (' + this.matchState.totalRuns + ' runs in ' + oversFormatted + ' ov)';
+        } else if (runsNeeded > 0) {
+          chaseDesc = 'Innings 2: ' + this.matchState.battingTeam + ' need ' + runsNeeded + ' in ' + ballsRemaining + 'b';
+        } else {
+          chaseDesc = this.matchState.battingTeam + ' won by ' + Math.max(1, 10 - this.matchState.totalWickets) + ' wickets!';
+        }
+        h += '<div class="scorecard-subtitle" style="font-size: 0.66rem; color: ' + (isLight ? (isNordic ? '#57534E' : '#475569') : '#94a3b8') + ';">' + chaseDesc + ' • CRR: ' + crr + (runsNeeded > 0 && !isAllOut ? ' • RRR: ' + rrr : '') + '</div>';
         h += '</div>';
 
         var emeraldColor = isLight ? (isNordic ? '#15803D' : '#059669') : '#00E599';
         var cyanColor = isLight ? (isNordic ? '#0369A1' : '#0284C7') : '#00D2FF';
+        var roseColor = isLight ? (isNordic ? '#BE123C' : '#DC2626') : '#FF3366';
 
-        h += '<span class="scorecard-score-pill" style="font-size: 0.76rem; color: ' + emeraldColor + '; font-weight: 800; font-family: Chakra Petch, monospace; background: ' + (isLight ? 'rgba(5, 150, 105, 0.1)' : 'rgba(0,229,153,0.12)') + '; padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid ' + (isLight ? 'rgba(5, 150, 105, 0.25)' : 'rgba(0,229,153,0.3)') + ';">' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + ' (' + oversFormatted + ' ov)</span>';
+        var scorePillText = this.matchState.totalRuns + '/' + this.matchState.totalWickets + ' (' + oversFormatted + ' ov)' + (isAllOut ? ' • ALL OUT' : '');
+        var scorePillBg = isAllOut ? (isLight ? '#FFF1F2' : 'rgba(255,51,102,0.15)') : (isLight ? 'rgba(5, 150, 105, 0.1)' : 'rgba(0,229,153,0.12)');
+        var scorePillBorder = isAllOut ? (isLight ? '#FECACA' : 'rgba(255,51,102,0.3)') : (isLight ? 'rgba(5, 150, 105, 0.25)' : 'rgba(0,229,153,0.3)');
+        var scorePillColor = isAllOut ? roseColor : emeraldColor;
+
+        h += '<span class="scorecard-score-pill" style="font-size: 0.76rem; color: ' + scorePillColor + '; font-weight: 800; font-family: Chakra Petch, monospace; background: ' + scorePillBg + '; padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid ' + scorePillBorder + ';">' + scorePillText + '</span>';
         h += '</div>';
 
         // Batters List
@@ -7707,7 +7861,7 @@ export function getMobileAppHtml() {
         }
 
         // Active striker and non-striker
-        if (this.matchState.striker) {
+        if (this.matchState.striker && !this.matchState.striker.isOut) {
           battersList.push({
             name: this.matchState.striker.name + ' *',
             status: 'not out (striker)',
@@ -7719,7 +7873,7 @@ export function getMobileAppHtml() {
             color: emeraldColor
           });
         }
-        if (this.matchState.nonStriker) {
+        if (this.matchState.nonStriker && !this.matchState.nonStriker.isOut) {
           battersList.push({
             name: this.matchState.nonStriker.name,
             status: 'not out (non-striker)',
@@ -7765,23 +7919,30 @@ export function getMobileAppHtml() {
         h += '</tbody></table>';
 
         // Did Not Bat
-        var activeBatterNames = battersList.map(function(b) { return b.name.replace(/ \*/, '').trim(); });
-        var dnbPlayers = (this.battingSquadBench || []).filter(function(p) {
-          return activeBatterNames.indexOf(p.name) === -1;
-        });
-        if (dnbPlayers.length > 0) {
+        if (isAllOut) {
           h += '<div class="scorecard-dnb-box" style="font-size: 0.65rem; color: ' + (isLight ? '#64748B' : '#94a3b8') + '; margin-bottom: 0.65rem; padding: 0.3rem 0.5rem; border-radius: 6px; background: ' + (isLight ? (isNordic ? '#F5F2EB' : '#F8FAFC') : 'rgba(255,255,255,0.03)') + '; border: 1px solid ' + (isLight ? (isNordic ? '#E6DFD5' : '#E2E8F0') : 'rgba(255,255,255,0.06)') + ';">';
-          h += '<strong style="color: ' + (isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#cbd5e1') + ';">Did Not Bat: </strong>' + dnbPlayers.map(function(p) { return p.name + ' (' + p.role + ')'; }).join(', ');
+          h += '<strong style="color: ' + (isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#cbd5e1') + ';">Did Not Bat: </strong><em style="color: ' + (isLight ? '#64748B' : '#94a3b8') + ';">None (All out)</em>';
           h += '</div>';
+        } else {
+          var activeBatterNames = battersList.map(function(b) { return b.name.replace(/ \*/, '').trim(); });
+          var dnbPlayers = (this.battingSquadBench || []).filter(function(p) {
+            return activeBatterNames.indexOf(p.name) === -1;
+          });
+          if (dnbPlayers.length > 0) {
+            h += '<div class="scorecard-dnb-box" style="font-size: 0.65rem; color: ' + (isLight ? '#64748B' : '#94a3b8') + '; margin-bottom: 0.65rem; padding: 0.3rem 0.5rem; border-radius: 6px; background: ' + (isLight ? (isNordic ? '#F5F2EB' : '#F8FAFC') : 'rgba(255,255,255,0.03)') + '; border: 1px solid ' + (isLight ? (isNordic ? '#E6DFD5' : '#E2E8F0') : 'rgba(255,255,255,0.06)') + ';">';
+            h += '<strong style="color: ' + (isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#cbd5e1') + ';">Did Not Bat: </strong>' + dnbPlayers.map(function(p) { return p.name + ' (' + p.role + ')'; }).join(', ');
+            h += '</div>';
+          }
         }
 
         // Extras & Total summary bar
         var summaryBarBg = isLight ? (isNordic ? '#F5F2EB' : '#F8FAFC') : 'rgba(0,0,0,0.35)';
         var summaryBarBorder = isLight ? (isNordic ? '#E6DFD5' : '#E2E8F0') : 'rgba(255,255,255,0.06)';
         var amberColor = isLight ? (isNordic ? '#C2410C' : '#D97706') : '#FFB800';
+        var totalLabel = this.matchState.totalRuns + '/' + this.matchState.totalWickets + (isAllOut ? ' (ALL OUT)' : '');
         h += '<div class="scorecard-summary-bar" style="background: ' + summaryBarBg + '; border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; border: 1px solid ' + summaryBarBorder + '; font-size: 0.68rem; color: ' + (isLight ? '#475569' : '#94a3b8') + '; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">';
         h += '<span>Extras: <strong style="color: ' + amberColor + ';">' + totalExtras + '</strong> <span style="font-size: 0.62rem;">' + extrasDetail + '</span></span>';
-        h += '<span>Total: <strong style="color: ' + emeraldColor + ';">' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</strong> (' + oversFormatted + ' ov, RR ' + crr + ')</span>';
+        h += '<span>Total: <strong style="color: ' + (isAllOut ? roseColor : emeraldColor) + ';">' + totalLabel + '</strong> (' + oversFormatted + ' ov, RR ' + crr + ')</span>';
         h += '</div>';
 
         // Fall of Wickets
@@ -10171,13 +10332,22 @@ export function getMobileAppHtml() {
         h += '</div></div>';
 
         // LED Scoreboard HUD
-        h += '<div style="background: rgba(10, 16, 28, 0.92); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 12px; padding: 0.65rem 0.85rem; text-align: center; margin-bottom: 0.5rem; box-shadow: 0 4px 16px rgba(0,0,0,0.6); position: relative; overflow: hidden;">';
+        var isAllOut = this.matchState.isAllOut || this.matchState.totalWickets >= 10;
+        var hudScoreColor = isAllOut ? '#ff3366' : '#00E599';
+        var hudScoreDisplay = this.matchState.totalRuns + '/' + this.matchState.totalWickets + (isAllOut ? ' • ALL OUT' : '');
+        h += '<div style="background: rgba(10, 16, 28, 0.92); border: 1px solid ' + (isAllOut ? '#ff3366' : 'rgba(0, 229, 153, 0.3)') + '; border-radius: 12px; padding: 0.65rem 0.85rem; text-align: center; margin-bottom: 0.5rem; box-shadow: 0 4px 16px rgba(0,0,0,0.6); position: relative; overflow: hidden;">';
         h += '<div style="font-size: 0.75rem; color: #cbd5e1; font-weight: 600;">' + this.matchState.battingTeam + ' vs ' + this.matchState.bowlingTeam + '</div>';
-        h += '<div style="font-size: 2.25rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace; line-height: 1.05; margin: 0.15rem 0;">' + this.matchState.totalRuns + '/' + this.matchState.totalWickets + '</div>';
+        h += '<div style="font-size: 2.25rem; font-weight: 800; color: ' + hudScoreColor + '; font-family: Chakra Petch, monospace; line-height: 1.05; margin: 0.15rem 0;">' + hudScoreDisplay + '</div>';
         h += '<div style="font-size: 0.75rem; color: #94a3b8;">Overs: <strong style="color: #00D2FF; font-family: Chakra Petch, monospace;">' + overs + '.' + balls + '</strong> • CRR: <strong style="color: #f8fafc; font-family: Chakra Petch, monospace;">' + crr + '</strong> • RRR: <strong style="color: #FFB800; font-family: Chakra Petch, monospace;">' + rrr + '</strong></div>';
-        h += '<div style="font-size: 0.7rem; color: #00E599; font-weight: 700; margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid rgba(255,255,255,0.06);">';
-        h += 'Target Equation: Need ' + remainingRuns + ' runs in ' + remainingBalls + ' balls';
-        h += '</div>';
+        if (isAllOut) {
+          h += '<div style="font-size: 0.72rem; color: #ff3366; font-weight: 800; margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid rgba(255,255,255,0.06);">';
+          h += '🚨 INNINGS CLOSED — ALL OUT (10 Wickets) • ' + this.matchState.battingTeam + ' bowled out for ' + this.matchState.totalRuns;
+          h += '</div>';
+        } else {
+          h += '<div style="font-size: 0.7rem; color: #00E599; font-weight: 700; margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid rgba(255,255,255,0.06);">';
+          h += 'Target Equation: Need ' + remainingRuns + ' runs in ' + remainingBalls + ' balls';
+          h += '</div>';
+        }
         h += '</div>';
 
         // Intelligent Turf / Stadium / Ground Weather & Forecast Card
@@ -10283,24 +10453,38 @@ export function getMobileAppHtml() {
             h += '<span style="font-size: 0.6rem; color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">TACTICAL SCORER</span>';
             h += '</div>';
 
+            var isAllOut = this.matchState.isAllOut || this.matchState.totalWickets >= 10;
+            if (isAllOut) {
+              h += '<div id="mobileScorerAllOutNotice" style="background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.55rem 0.75rem; margin-bottom: 0.55rem; text-align: center;">';
+              h += '<div style="font-weight: 800; font-size: 0.85rem; color: #ff3366; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">';
+              h += '<span>🚨</span> INNINGS CLOSED — ALL OUT (10 Wickets)';
+              h += '</div>';
+              h += '<div style="font-size: 0.68rem; color: #cbd5e1; margin-top: 0.2rem;">All 10 wickets have fallen. Further scoring deliveries are disabled. Tap <strong>Undo Last Ball</strong> below if a dismissal was recorded by mistake.</div>';
+              h += '</div>';
+            }
+
+            var padDis = isAllOut ? ' disabled style="opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : '';
+            var extDis = isAllOut ? ' disabled style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700; opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : ' style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;"';
+            var extNbDis = isAllOut ? ' disabled style="flex: 1.1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700; opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : ' style="flex: 1.1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;"';
+
             // 4-Column Keypad Grid
             h += '<div class="mobile-studio-pad-grid">';
-            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="0" onclick="window.cricosMobileApp.onPadNumberSelect(0)" data-tooltip="Dot ball (0 runs, choose direction)">0<span class="mobile-studio-sublabel">Dot</span></button>';
-            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="1" onclick="window.cricosMobileApp.onPadNumberSelect(1)" data-tooltip="Single (+1 run, choose direction)">1<span class="mobile-studio-sublabel">Single</span></button>';
-            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="2" onclick="window.cricosMobileApp.onPadNumberSelect(2)" data-tooltip="Two runs (+2 runs, choose direction)">2<span class="mobile-studio-sublabel">Double</span></button>';
-            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="3" onclick="window.cricosMobileApp.onPadNumberSelect(3)" data-tooltip="Three runs (+3 runs, choose direction)">3<span class="mobile-studio-sublabel">Triple</span></button>';
-            h += '<button type="button" class="mobile-studio-btn pad-btn boundary-four" data-runs="4" onclick="window.cricosMobileApp.onPadNumberSelect(4)" data-tooltip="Boundary Four (+4 runs, choose direction)">4<span class="mobile-studio-sublabel" style="color: #00D2FF;">Four</span></button>';
-            h += '<button type="button" class="mobile-studio-btn pad-btn maximum-six" data-runs="6" onclick="window.cricosMobileApp.onPadNumberSelect(6)" data-tooltip="Maximum Six (+6 runs, choose direction)">6<span class="mobile-studio-sublabel" style="color: #00E599;">Six</span></button>';
-            h += '<button type="button" class="mobile-studio-btn pad-btn wicket-out" onclick="window.cricosMobileApp.promptWicketModal()" data-tooltip="Wicket Dismissal Dialog">W<span class="mobile-studio-sublabel" style="color: #ff3366;">Wicket</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="0" onclick="window.cricosMobileApp.onPadNumberSelect(0)" data-tooltip="Dot ball (0 runs, choose direction)"' + padDis + '>0<span class="mobile-studio-sublabel">Dot</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="1" onclick="window.cricosMobileApp.onPadNumberSelect(1)" data-tooltip="Single (+1 run, choose direction)"' + padDis + '>1<span class="mobile-studio-sublabel">Single</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="2" onclick="window.cricosMobileApp.onPadNumberSelect(2)" data-tooltip="Two runs (+2 runs, choose direction)"' + padDis + '>2<span class="mobile-studio-sublabel">Double</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn" data-runs="3" onclick="window.cricosMobileApp.onPadNumberSelect(3)" data-tooltip="Three runs (+3 runs, choose direction)"' + padDis + '>3<span class="mobile-studio-sublabel">Triple</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn boundary-four" data-runs="4" onclick="window.cricosMobileApp.onPadNumberSelect(4)" data-tooltip="Boundary Four (+4 runs, choose direction)"' + padDis + '>4<span class="mobile-studio-sublabel" style="color: #00D2FF;">Four</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn maximum-six" data-runs="6" onclick="window.cricosMobileApp.onPadNumberSelect(6)" data-tooltip="Maximum Six (+6 runs, choose direction)"' + padDis + '>6<span class="mobile-studio-sublabel" style="color: #00E599;">Six</span></button>';
+            h += '<button type="button" class="mobile-studio-btn pad-btn wicket-out" onclick="window.cricosMobileApp.promptWicketModal()" data-tooltip="Wicket Dismissal Dialog"' + padDis + '>W<span class="mobile-studio-sublabel" style="color: #ff3366;">Wicket</span></button>';
             h += '<button type="button" class="mobile-studio-btn pad-btn undo-btn" onclick="window.cricosMobileApp.undoLastDelivery()" data-tooltip="Undo last delivery">↺<span class="mobile-studio-sublabel" style="color: #ffb800;">Undo</span></button>';
             h += '</div>';
 
             // Quick Extras Strip with Generic Labels (Opens wider extra runs menu)
             h += '<div style="display: flex; gap: 0.3rem; margin-bottom: 0.45rem;">';
-            h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;" data-extra="WIDE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Wide delivery (opens extra runs picker)">Wide</button>';
-            h += '<button type="button" class="btn btn-secondary" style="flex: 1.1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;" data-extra="NO_BALL" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="No Ball delivery (opens extra runs picker, Free Hit)">No Ball</button>';
-            h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;" data-extra="LEG_BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Leg Bye delivery (opens extra runs picker)">Leg Bye</button>';
-            h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;" data-extra="BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Bye delivery (opens extra runs picker)">Bye</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="WIDE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Wide delivery (opens extra runs picker)">Wide</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extNbDis + ' data-extra="NO_BALL" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="No Ball delivery (opens extra runs picker, Free Hit)">No Ball</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="LEG_BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Leg Bye delivery (opens extra runs picker)">Leg Bye</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Bye delivery (opens extra runs picker)">Bye</button>';
             h += '</div>';
 
             // Dedicated Undo Last Ball Button (Replaced redundant compound extras & hold-to-reset)

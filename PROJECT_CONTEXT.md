@@ -1,14 +1,49 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 23:50:00
-**Version:** 1.0.0-phase2cm (Official Match Scorecard Live Synchronization & Light Theme Contrast)  
+**Last Updated:** 2026-10-01 00:10:00
+**Version:** 1.0.0-phase2cn (Dismissed Batsmen Exclusion & 10-Wicket All Out Innings Closure)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CM Completed — Official Match Scorecard Live Synchronization & Light Theme Contrast (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/src/screens/LiveMatchScreen.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_59_live_scorecard_synchronization.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CN Completed — Dismissed Batsmen Exclusion & 10-Wicket All Out Innings Closure (`packages/scoring/src/index.ts`, `packages/scoring/test/scoring.test.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_60_all_out_and_dismissed_batters_exclusion.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Dismissed Batsman Exclusion from Incoming Selection**:
+    - **Core Scoring Package (`packages/scoring/src/index.ts`)**:
+      - Throws `SCORE_BATTER_ALREADY_DISMISSED` error when an incoming batter (`event.next_batter_id`) has already been marked out (`batters[next_batter_id]?.isOut`) in the current innings.
+      - Throws `SCORE_BATTER_ALREADY_BATTING` error when next batter is already active at the crease (as striker or non-striker).
+    - **Mobile Scorer Studio (`apps/api/src/ui/mobile-view.ts`)**:
+      - Cleaned `battingSquadBench` by removing `Surya Y.` (who had already fallen in initial match state).
+      - Added `getAvailableIncomingBatters()` method: normalizes and rigorously excludes both currently active crease batters and all dismissed batters (`this.matchState.dismissedBatters`, `this.dismissalHistory`).
+      - Populates `#mobileDismissalNextBatterSelect` strictly with un-batted bench reserves.
+    - **Desktop Match Center (`apps/api/src/ui/dashboard.ts`)**:
+      - Rebuilt bench candidate filtering in `openDismissalModal()`: gathers all dismissed batters from `matchScorecardData.batters` and `desktopDismissalHistory`, completely excluding them from the next batter select dropdown.
+  - **2. MCC Law 12 Strict 10-Wicket All Out Innings Closure**:
+    - **Core Engine Enforcement**: Limits maximum wickets to 10 for standard 11-player squads. Automatically sets `isClosed = true` / `is_innings_closed: true` upon the 10th dismissal and rejects any subsequent scoring deliveries with `SCORE_INNINGS_ALREADY_CLOSED`.
+    - **Mobile Innings Closure**:
+      - `openMobileDismissalSheet()` detects `isFinalWicket` when `totalWickets === 9` or bench reserves are exhausted.
+      - Displays prominent `⚠️ FINAL WICKET (10th WICKET)` notice in the dismissal bottom sheet and disables the next batter selector.
+      - `confirmMobileDismissal()` caps wickets at 10, sets `isAllOut = true`, `isInningsComplete = true`, `inningsStatus = 'ALL_OUT'`, logs All Out commentary and toast, and renders `#mobileScorerAllOutNotice` in the Scorer Studio pad.
+      - Keypad Delivery Buttons (0, 1, 2, 3, 4, 6, W, Wide, No Ball, Leg Bye, Bye) are cleanly disabled with `disabled` attribute and opacity 0.35, preventing any ball entry past 10 wickets.
+    - **Desktop Innings Closure**:
+      - Displays `#dismissalFinalWicketNotice` when 10th wicket is imminent, hides next batter picker, and on confirmation marks innings closed.
+      - Renders prominent `#matchResultBanner` ("INNINGS CLOSED — ALL OUT (10 Wickets)") and locks all studio scoring pads.
+  - **3. Official Scorecard & HUD Synchronization**:
+    - Mobile & Desktop Scorecards render `• ALL OUT` beside the team score.
+    - Did Not Bat container dynamically renders `None (All out)`.
+    - Mobile LED Scoreboard HUD updates with `🚨 INNINGS CLOSED — ALL OUT (10 Wickets)`.
+  - **4. Clean Reversible Undo Delivery Unwind**:
+    - Undoing the 10th wicket delivery via "Undo Last Ball" cleanly clears `isAllOut`, resets `isInningsComplete = false`, restores wickets to 9, removes the All Out warning banners, and re-enables all scorer keypad delivery buttons.
+  - **5. Verification & Testing Health**:
+    - Verified all 216 unit/domain tests in 61 suites pass in 418ms via `./pipeline.sh test --summary`.
+    - Added Suite 11 (4 tests, 35 domain scoring assertions) in `tests/domain-scoring-and-match-ops.test.ts`.
+    - Created Playwright E2E suite `tests/test_60_all_out_and_dismissed_batters_exclusion.py`:
+      - `test_mobile_dismissed_batters_exclusion_and_all_out_flow PASSED`
+      - `test_desktop_dismissed_batters_exclusion_and_all_out_flow PASSED`
+      - Verified zero critical console errors across both flows.
+      - Captured verified visual screenshots: `test_60_mobile_all_out_flow.png` (86 KB) and `test_60_desktop_all_out_flow.png` (255 KB).
+- **Preceding Phase**: Phase 2CM Completed — Official Match Scorecard Live Synchronization & Light Theme Contrast (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/src/screens/LiveMatchScreen.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_59_live_scorecard_synchronization.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Mobile Dynamic Official Scorecard (`MATCHES` -> `ANALYTICS` -> `CARD` / `#mobileScorecardPanel`)**:
     - Rewrote `renderDynamicScorecard()` to fully synchronize with live match state:
       - Live overs calculation (`completedOvers.ballsRemaining ov`), Current Run Rate (`crr`), and Required Run Rate (`rrr`).
