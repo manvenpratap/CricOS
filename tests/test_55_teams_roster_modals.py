@@ -289,6 +289,25 @@ async def test_flagship_studios_weather_and_gear_store():
         assert field_mobile["inMobileLog"], "#mobileFieldCommentaryLog must display the live field change commentary"
         await save_screenshot_async(m_page, "field_planner_drag_and_commentary_mobile.png")
 
+        # 6. Verify Enhanced Broadcast Commentary Studio UI-UX (Voice Personas, Category Filters & Telemetry Pills)
+        comm_studio_check = await page.evaluate("""() => {
+            window.setCommentaryBroadcastVoice && window.setCommentaryBroadcastVoice('HYPE');
+            window.filterLiveCommentary && window.filterLiveCommentary('FIELD');
+            const visibleFieldCards = Array.from(document.querySelectorAll('#scoringFeed .feed-item')).filter(el => el.style.display !== 'none').length;
+            window.filterLiveCommentary && window.filterLiveCommentary('ALL');
+            const allVisibleCards = Array.from(document.querySelectorAll('#scoringFeed .feed-item')).filter(el => el.style.display !== 'none').length;
+            return {
+                voice: window._commentaryBroadcastVoice,
+                visibleFieldCards,
+                allVisibleCards,
+                hasTelemetryPills: document.querySelectorAll('#scoringFeed .comm-telemetry-pill').length > 0
+            };
+        }""")
+        assert comm_studio_check["voice"] == "HYPE", "Broadcast commentary voice must switch to HYPE"
+        assert comm_studio_check["visibleFieldCards"] >= 1, "Filtering by FIELD must show tactical field commentary cards"
+        assert comm_studio_check["allVisibleCards"] > comm_studio_check["visibleFieldCards"], "ALL filter must show more cards than FIELD filter alone"
+        assert comm_studio_check["hasTelemetryPills"], "#scoringFeed cards must render .comm-telemetry-pill badges"
+
         assert_no_critical_errors(page)
         await browser.close()
 

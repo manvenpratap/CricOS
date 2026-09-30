@@ -5489,12 +5489,86 @@ export function getDashboardHtml() {
           </div>
         </div>
 
-        <!-- Live Delivery Commentary Feed -->
-        <div class="card">
-          <div class="card-title">📜 Live Ball Log & Event Stream</div>
-          <div class="card-desc">Event-sourced deliveries validated through Scoring State Machine</div>
-          <div class="feed-container" id="scoringFeed" aria-live="polite" role="feed" aria-label="Live ball-by-ball commentary feed">
-            <div class="feed-item" style="color: var(--text-muted);">Match ready. Waiting for first delivery...</div>
+        <!-- Live Delivery & Tactical Broadcast Commentary Studio -->
+        <div class="card" id="cardLiveCommentaryStudio">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.65rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
+            <div>
+              <div class="card-title" style="display: flex; align-items: center; gap: 0.45rem;">
+                <span>🎙️ Live Broadcast Commentary &amp; Tactical Event Stream</span>
+                <span class="rate-badge" style="color: #00E599; border-color: rgba(0,229,153,0.35); font-size: 0.64rem;">AI + HAWK-EYE TELEMETRY</span>
+              </div>
+              <div class="card-desc" style="margin-bottom: 0;">Ball-by-ball biomechanics, captaincy field shifts, and win-probability insights</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+              <select id="commentaryVoiceSelect" onchange="window.setCommentaryBroadcastVoice && window.setCommentaryBroadcastVoice(this.value)" style="width: auto; padding: 0.28rem 0.55rem; font-size: 0.72rem; border-radius: 7px; font-weight: 700; background: rgba(15, 23, 42, 0.75); border: 1px solid var(--border-subtle); color: var(--text-main);" data-tooltip="Switch live broadcast commentary persona &amp; analytical depth">
+                <option value="ANALYTICAL">🎙️ Voice: Analytical (Harsha)</option>
+                <option value="HYPE">🔥 Voice: High-Octane (Ravi)</option>
+                <option value="TACTICAL">🧠 Voice: Captain's Dugout (Nasser)</option>
+              </select>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="openFieldPlannerModal()" style="width: auto; padding: 0.28rem 0.6rem; font-size: 0.72rem; color: var(--turf-emerald); border-color: rgba(0,229,153,0.35);" data-tooltip="Open 11-Fielder Tactical Radar to rearrange field and broadcast commentary">🎯 + Field Shift</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnSpeakLatestCommentary" onclick="window.speakLatestCommentary && window.speakLatestCommentary()" style="width: auto; padding: 0.28rem 0.6rem; font-size: 0.72rem;" data-tooltip="Synthesize live audio voice readout of the latest commentary card">🔊 Audio Call</button>
+            </div>
+          </div>
+
+          <!-- Interactive Commentary Category Filter Chips -->
+          <div id="commentaryFilterBar" style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle);">
+            <button type="button" class="btn btn-secondary btn-sm comm-filter-chip active" data-comm-filter="ALL" onclick="window.filterLiveCommentary && window.filterLiveCommentary('ALL')" style="width: auto; padding: 0.22rem 0.58rem; font-size: 0.68rem; border-color: var(--turf-emerald); color: var(--turf-emerald);" data-tooltip="Show all deliveries, field shifts, and over summaries">All Stream</button>
+            <button type="button" class="btn btn-secondary btn-sm comm-filter-chip" data-comm-filter="FIELD" onclick="window.filterLiveCommentary && window.filterLiveCommentary('FIELD')" style="width: auto; padding: 0.22rem 0.58rem; font-size: 0.68rem;" data-tooltip="Filter only Captaincy &amp; Tactical Field Placement changes">🎯 Tactical Field</button>
+            <button type="button" class="btn btn-secondary btn-sm comm-filter-chip" data-comm-filter="BOUNDARY" onclick="window.filterLiveCommentary && window.filterLiveCommentary('BOUNDARY')" style="width: auto; padding: 0.22rem 0.58rem; font-size: 0.68rem;" data-tooltip="Filter only Fours (4s) and Sixes (6s)">🏏 Boundaries (4s/6s)</button>
+            <button type="button" class="btn btn-secondary btn-sm comm-filter-chip" data-comm-filter="WICKET" onclick="window.filterLiveCommentary && window.filterLiveCommentary('WICKET')" style="width: auto; padding: 0.22rem 0.58rem; font-size: 0.68rem;" data-tooltip="Filter only Wickets and DRS dismissals">🛑 Wickets</button>
+            <button type="button" class="btn btn-secondary btn-sm comm-filter-chip" data-comm-filter="OVER_SUMMARY" onclick="window.filterLiveCommentary && window.filterLiveCommentary('OVER_SUMMARY')" style="width: auto; padding: 0.22rem 0.58rem; font-size: 0.68rem;" data-tooltip="Filter End-of-Over tactical summaries">📊 Over Summaries</button>
+          </div>
+
+          <div class="feed-container" id="scoringFeed" aria-live="polite" role="feed" aria-label="Live ball-by-ball commentary feed" style="max-height: 390px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.55rem; padding-right: 0.2rem;">
+            <div class="feed-item comm-broadcast-card" data-comm-category="BOUNDARY" style="border-left: 3.5px solid #00E599; background: rgba(0, 229, 153, 0.06); border-radius: 10px; padding: 0.65rem 0.8rem; display: flex; flex-direction: column; gap: 0.35rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 0.42rem; flex-wrap: wrap;">
+                  <span style="font-family: var(--font-mono); font-size: 0.73rem; font-weight: 800; background: rgba(255,255,255,0.1); color: var(--text-main); padding: 0.12rem 0.42rem; border-radius: 5px;">16.4</span>
+                  <span style="font-size: 0.65rem; font-weight: 800; background: rgba(0,229,153,0.18); color: #00E599; border: 1px solid rgba(0,229,153,0.4); padding: 0.1rem 0.45rem; border-radius: 5px;">🏏 FOUR RUNS</span>
+                  <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-main);">Jasprit Bumrah ➔ Virat Sharma</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                  <span style="font-size: 0.62rem; color: var(--cyan); font-weight: 700;">🎙️ Analytical</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 800; color: var(--text-main);">142/3</span>
+                </div>
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-main); line-height: 1.45;">
+                <strong>CRACKING COVER DRIVE!</strong> Pitched at 6.1m on a 4th-stump channel at 144.8 km/h; Virat leans into the stride with a high front elbow and threads the 14° gap between Extra Cover and Mid-Off. The ball races across the lush turf to the rope in 3.8 seconds!
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.1rem;">
+                <span class="comm-telemetry-pill" style="font-size: 0.62rem; padding: 0.1rem 0.42rem; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-muted); font-family: var(--font-mono);">⚡ 144.8 km/h</span>
+                <span class="comm-telemetry-pill" style="font-size: 0.62rem; padding: 0.1rem 0.42rem; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-muted); font-family: var(--font-mono);">📏 Good Length (6.1m)</span>
+                <span class="comm-telemetry-pill" style="font-size: 0.62rem; padding: 0.1rem 0.42rem; border-radius: 4px; background: rgba(0,229,153,0.12); color: #00E599; font-family: var(--font-mono);">🧭 Extra Cover (248° • 109 km/h Exit)</span>
+                <span class="comm-telemetry-pill" style="font-size: 0.62rem; padding: 0.1rem 0.42rem; border-radius: 4px; background: rgba(0,210,255,0.12); color: var(--cyan); font-family: var(--font-mono);">📈 Win Prob: 68.4% (+3.4%)</span>
+              </div>
+            </div>
+
+            <div class="feed-item comm-broadcast-card field-change-commentary-item" data-comm-category="FIELD" style="border-left: 3.5px solid #00D2FF; background: rgba(0, 210, 255, 0.07); border-radius: 10px; padding: 0.65rem 0.8rem; display: flex; flex-direction: column; gap: 0.35rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 0.42rem; flex-wrap: wrap;">
+                  <span style="font-family: var(--font-mono); font-size: 0.73rem; font-weight: 800; background: rgba(0,210,255,0.18); color: var(--cyan); padding: 0.12rem 0.42rem; border-radius: 5px;">16.3</span>
+                  <span style="font-size: 0.65rem; font-weight: 800; background: rgba(0,229,153,0.18); color: #00E599; border: 1px solid rgba(0,229,153,0.4); padding: 0.1rem 0.45rem; border-radius: 5px;">🎯 TACTICAL FIELD CHANGE</span>
+                  <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-main);">Point (PT) ➔ Deep Point (DPT)</span>
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">138/3</span>
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-main); line-height: 1.45;">
+                <strong>CAPTAIN'S CHESS MOVE:</strong> After the previous boundary square of the wicket, Captain shifts Point back to the Deep Point boundary rope (94° • 88% depth) to plug the square-cut and upper-cut scoring arc while keeping Mid-Off inside the 30-yard circle.
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.1rem;">
+                <span class="comm-telemetry-pill" style="font-size: 0.62rem; padding: 0.1rem 0.42rem; border-radius: 4px; background: rgba(0,229,153,0.12); color: #00E599; font-family: var(--font-mono);">📐 94° • 88% Rope Depth</span>
+                <span class="comm-telemetry-pill" style="font-size: 0.62rem; padding: 0.1rem 0.42rem; border-radius: 4px; background: rgba(0,210,255,0.12); color: var(--cyan); font-family: var(--font-mono);">📉 xR Impact: -0.32 runs/ball</span>
+                <span class="comm-telemetry-pill" style="font-size: 0.62rem; padding: 0.1rem 0.42rem; border-radius: 4px; background: rgba(255,184,0,0.14); color: var(--amber); font-family: var(--font-mono);">⚖️ MCC Law 28.4: 4/5 Outside Ring</span>
+              </div>
+            </div>
+
+            <div class="feed-item comm-broadcast-card" data-comm-category="OVER_SUMMARY" style="border-left: 3.5px solid #FFB800; background: rgba(255, 184, 0, 0.07); border-radius: 10px; padding: 0.55rem 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+              <div>
+                <span style="font-size: 0.66rem; font-weight: 800; color: var(--amber); text-transform: uppercase; letter-spacing: 0.05em;">📊 End of Over 16 • 9 Runs • 0 Wickets</span>
+                <div style="font-size: 0.74rem; color: var(--text-main); font-weight: 600;">Mumbai Super Strikers 135/3 (CRR: 8.44 • Req: 10.75 from 24 balls) • Virat Sharma 62*(41), Hardik Patel 28*(17)</div>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: var(--amber); background: rgba(255,184,0,0.14); padding: 0.15rem 0.5rem; border-radius: 6px;">1-1-4-0-2-1</span>
+            </div>
           </div>
         </div>
       </div>
@@ -19817,6 +19891,55 @@ cricos_active_sse_connections 1</pre>
     }
     initSseStream();
 
+    window._commentaryBroadcastVoice = 'ANALYTICAL';
+    window._activeCommentaryFilter = 'ALL';
+
+    function setCommentaryBroadcastVoice(voice) {
+      window._commentaryBroadcastVoice = voice || 'ANALYTICAL';
+      const voiceNames = {
+        ANALYTICAL: '🎙️ Analytical (Harsha)',
+        HYPE: '🔥 High-Octane (Ravi)',
+        TACTICAL: "🧠 Captain's Dugout (Nasser)"
+      };
+      showToast('Broadcast Commentary Voice switched to ' + (voiceNames[window._commentaryBroadcastVoice] || voice));
+    }
+    window.setCommentaryBroadcastVoice = setCommentaryBroadcastVoice;
+
+    function filterLiveCommentary(category) {
+      window._activeCommentaryFilter = category || 'ALL';
+      document.querySelectorAll('#commentaryFilterBar .comm-filter-chip').forEach(function(btn) {
+        const isActive = btn.getAttribute('data-comm-filter') === window._activeCommentaryFilter;
+        btn.classList.toggle('active', isActive);
+        btn.style.borderColor = isActive ? 'var(--turf-emerald)' : '';
+        btn.style.color = isActive ? 'var(--turf-emerald)' : '';
+      });
+      document.querySelectorAll('#scoringFeed .feed-item').forEach(function(card) {
+        const cardCat = card.getAttribute('data-comm-category') || 'ALL';
+        if (window._activeCommentaryFilter === 'ALL' || cardCat === window._activeCommentaryFilter) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+    window.filterLiveCommentary = filterLiveCommentary;
+
+    function speakLatestCommentary() {
+      const firstCard = document.querySelector('#scoringFeed .feed-item');
+      const rawText = firstCard ? firstCard.textContent.replace(/\s+/g, ' ').trim() : 'Live commentary stream active.';
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(rawText.slice(0, 240));
+          utter.rate = 1.04;
+          window.speechSynthesis.speak(utter);
+        } catch (e) { /* headless fallback */ }
+      }
+      showToast('🔊 Broadcasting Audio Call: "' + rawText.slice(0, 88) + '..."');
+      return rawText;
+    }
+    window.speakLatestCommentary = speakLatestCommentary;
+
     function logFeedItem(state, event) {
       if (!event) return;
       const key = getDeliveryKey(event);
@@ -19832,9 +19955,54 @@ cricos_active_sse_connections 1</pre>
       const feed = document.getElementById('scoringFeed');
       if (!feed) return;
       const item = document.createElement('div');
-      item.className = 'feed-item';
-      let desc = event.is_wicket ? '🛑 WICKET!' : (event.bat_runs === 4 ? '🏏 FOUR!' : (event.bat_runs === 6 ? '🚀 SIX!' : (event.extra_type && event.extra_type !== 'NONE' ? event.extra_type + ' (+' + (event.extra_runs || 1) + ')' : (event.bat_runs || 0) + ' run(s)')));
-      item.innerHTML = '<span>Ball ' + (state.overs_display || '0.0') + ' — ' + desc + '</span><span style="color: var(--text-muted); font-weight: 600;">' + (state.runs || 0) + '/' + (state.wickets || 0) + '</span>';
+      const isWkt = Boolean(event.is_wicket);
+      const isSix = event.bat_runs === 6;
+      const isFour = event.bat_runs === 4;
+      const isExtra = Boolean(event.extra_type && event.extra_type !== 'NONE');
+      const category = isWkt ? 'WICKET' : ((isSix || isFour) ? 'BOUNDARY' : 'DELIVERY');
+      const accentColor = isWkt ? '#FF3366' : (isSix ? '#00D2FF' : (isFour ? '#00E599' : (isExtra ? '#FFB800' : '#94A3B8')));
+      const badgeLabel = isWkt ? '🛑 WICKET!' : (isSix ? '🚀 SIX RUNS!' : (isFour ? '🏏 FOUR RUNS!' : (isExtra ? '⚠️ ' + event.extra_type + ' (+' + (event.extra_runs || 1) + ')' : (event.bat_runs === 0 ? '• DOT BALL' : '⚡ ' + (event.bat_runs || 1) + ' RUN(S)'))));
+
+      const voice = window._commentaryBroadcastVoice || 'ANALYTICAL';
+      const zoneLabel = (event.shot_zone || (typeof currentSelectedZone !== 'undefined' ? currentSelectedZone : 'EXTRA_COVER')).replace(/_/g, ' ');
+      const speedKmh = (139.4 + ((state.legal_balls || 1) % 9) * 1.1).toFixed(1);
+      const lengthLabel = isSix ? 'Slot Length (4.6m)' : (isFour ? 'Half-Volley (5.2m)' : (isWkt ? 'Good Length Seam (6.3m)' : 'Hard Length (6.8m)'));
+
+      let narrative = '';
+      if (isWkt) {
+        narrative = voice === 'HYPE'
+          ? '<strong>GOT HIM! TIMBER &amp; BEDLAM IN THE STADIUM!</strong> Absolute jaffa at ' + speedKmh + ' km/h nipping off the seam to breach the defense!'
+          : '<strong>BREAKTHROUGH!</strong> Pitched on a probing 6.3m fourth-stump line at ' + speedKmh + ' km/h; late movement forces the false stroke toward ' + zoneLabel + '.';
+      } else if (isSix) {
+        narrative = voice === 'HYPE'
+          ? '<strong>THAT IS OUT OF HERE! LIKE A TRACER BULLET INTO THE UPPER TIER!</strong> Clean swing of the willow sends a 94-meter monster soaring over ' + zoneLabel + '!'
+          : '<strong>MAXIMUM SIX!</strong> Picked the length early at ' + speedKmh + ' km/h and launched with a 114 km/h exit velocity high over ' + zoneLabel + ' (92m carry).';
+      } else if (isFour) {
+        narrative = voice === 'TACTICAL'
+          ? '<strong>BIOMECHANICAL PERFECTION!</strong> Exploits the gap left in the 30-yard ring at ' + zoneLabel + ' — crisp weight transfer beats the diving sweeper to the rope.'
+          : '<strong>CRACKING FOUR!</strong> Timed off the sweet spot at ' + speedKmh + ' km/h, bisecting the infield at ' + zoneLabel + ' with clinical precision.';
+      } else {
+        narrative = 'Bowled at ' + speedKmh + ' km/h on ' + lengthLabel + '; worked toward ' + zoneLabel + ' for ' + (event.bat_runs || 0) + ' run(s).';
+      }
+
+      item.className = 'feed-item comm-broadcast-card';
+      item.setAttribute('data-comm-category', category);
+      item.style.cssText = 'border-left: 3.5px solid ' + accentColor + '; background: rgba(15, 23, 42, 0.55); border-radius: 10px; padding: 0.6rem 0.78rem; display: flex; flex-direction: column; gap: 0.32rem;';
+      item.innerHTML =
+        '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">' +
+          '<div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">' +
+            '<span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; background: rgba(255,255,255,0.1); color: var(--text-main); padding: 0.1rem 0.4rem; border-radius: 5px;">Ball ' + (state.overs_display || '0.0') + '</span>' +
+            '<span style="font-size: 0.64rem; font-weight: 800; background: rgba(255,255,255,0.06); color: ' + accentColor + '; border: 1px solid ' + accentColor + '66; padding: 0.1rem 0.45rem; border-radius: 5px;">' + badgeLabel + '</span>' +
+            '<span style="font-size: 0.73rem; font-weight: 700; color: var(--text-main);">Jasprit Bumrah ➔ Virat Sharma</span>' +
+          '</div>' +
+          '<span style="color: var(--text-main); font-weight: 800; font-family: var(--font-mono); font-size: 0.74rem;">' + (state.runs || 0) + '/' + (state.wickets || 0) + '</span>' +
+        '</div>' +
+        '<div style="font-size: 0.77rem; color: var(--text-main); line-height: 1.42;">' + narrative + '</div>' +
+        '<div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">' +
+          '<span class="comm-telemetry-pill" style="font-size: 0.61rem; padding: 0.08rem 0.4rem; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-muted); font-family: var(--font-mono);">⚡ ' + speedKmh + ' km/h</span>' +
+          '<span class="comm-telemetry-pill" style="font-size: 0.61rem; padding: 0.08rem 0.4rem; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-muted); font-family: var(--font-mono);">📏 ' + lengthLabel + '</span>' +
+          '<span class="comm-telemetry-pill" style="font-size: 0.61rem; padding: 0.08rem 0.4rem; border-radius: 4px; background: rgba(0,229,153,0.12); color: #00E599; font-family: var(--font-mono);">🧭 ' + zoneLabel + '</span>' +
+        '</div>';
       feed.prepend(item);
     }
 
@@ -21605,13 +21773,27 @@ cricos_active_sse_connections 1</pre>
     function emitFieldChangeCommentary(summaryText, tacticalReason) {
       const oversEl = document.getElementById('liveOvers');
       const scoreEl = document.getElementById('liveScore');
-      const currentOvers = (oversEl && oversEl.textContent && oversEl.textContent.trim()) || '14.2';
+      const currentOvers = (oversEl && oversEl.textContent && oversEl.textContent.trim()) || '16.3';
       const currentScore = (scoreEl && scoreEl.textContent && scoreEl.textContent.trim()) || '142/3';
       const outCount = _activeFielders.filter(function(f) { return !f.locked && f.radius > 0.52; }).length;
       const maxOut = _fieldPhase === 'PP1_OVERS_1_6' ? 2 : (_fieldPhase === 'MIDDLE_OVERS_7_15' ? 4 : 5);
+      const xrDelta = (-0.22 - (outCount * 0.04)).toFixed(2);
+      const phaseName = _fieldPhase === 'PP1_OVERS_1_6' ? 'Powerplay (Overs 1-6)' : (_fieldPhase === 'MIDDLE_OVERS_7_15' ? 'Middle Overs (7-15)' : 'Death Overs (16-20)');
+
+      const voice = window._commentaryBroadcastVoice || 'ANALYTICAL';
+      const voiceIntro = voice === 'HYPE'
+        ? '🔥 <strong>HIGH-STAKES CAPTAINCY GAMBIT!</strong> '
+        : (voice === 'TACTICAL' ? '🧠 <strong>DUGOUT CHESS ADJUSTMENT:</strong> ' : '🎙️ <strong>TACTICAL FIELD RE-ARRANGEMENT:</strong> ');
+
+      const tacticalElaboration = summaryText.indexOf('Deep') !== -1
+        ? 'Protecting the boundary rope against high-exit-velocity lofted strokes and forcing the striker to hit into the longer pocket.'
+        : (summaryText.indexOf('Slip') !== -1 || summaryText.indexOf('Gully') !== -1 || summaryText.indexOf('Short') !== -1
+          ? 'Crowding the bat-pad catching cordon to capitalize on seam movement and extra bounce off the good-length spot.'
+          : 'Rebalancing the 30-yard inner circle to choke quick singles and build dot-ball scoreboard pressure.');
 
       const fullCommentary = '🎯 Over ' + currentOvers + ' — [TACTICAL FIELD CHANGE] ' + summaryText +
         (tacticalReason ? ' • ' + tacticalReason : '') +
+        ' — ' + tacticalElaboration +
         ' (' + outCount + '/' + maxOut + ' outside 30-yd circle • ' + _fieldHand + ')';
 
       const entry = {
@@ -21619,6 +21801,10 @@ cricos_active_sse_connections 1</pre>
         over: currentOvers,
         score: currentScore,
         summary: summaryText,
+        reason: tacticalReason || ('Plan: ' + _fieldPlan),
+        elaboration: tacticalElaboration,
+        xrDelta: xrDelta,
+        phaseName: phaseName,
         commentary: fullCommentary,
         outCount: outCount,
         maxOut: maxOut
@@ -21628,17 +21814,30 @@ cricos_active_sse_connections 1</pre>
         window._fieldChangeCommentaryHistory.pop();
       }
 
-      // 1. Prepend to main Live Match Ball-by-Ball Commentary Feed (#scoringFeed)
+      // 1. Prepend Rich Broadcast Card to main Live Match Ball-by-Ball Commentary Feed (#scoringFeed)
       const scoringFeed = document.getElementById('scoringFeed');
       if (scoringFeed) {
         const item = document.createElement('div');
-        item.className = 'feed-item field-change-commentary-item';
-        item.style.borderLeft = '3px solid #00E599';
-        item.style.background = 'rgba(0, 229, 153, 0.08)';
-        item.style.padding = '0.45rem 0.65rem';
-        item.style.borderRadius = '6px';
-        item.innerHTML = '<span style="color: #00E599; font-weight: 700;">' + fullCommentary + '</span>' +
-          '<span style="color: var(--text-muted); font-weight: 600; font-family: var(--font-mono);">' + currentScore + '</span>';
+        item.className = 'feed-item comm-broadcast-card field-change-commentary-item';
+        item.setAttribute('data-comm-category', 'FIELD');
+        item.style.cssText = 'border-left: 3.5px solid #00E599; background: rgba(0, 229, 153, 0.08); border-radius: 10px; padding: 0.65rem 0.8rem; display: flex; flex-direction: column; gap: 0.35rem;';
+        item.innerHTML =
+          '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">' +
+            '<div style="display: flex; align-items: center; gap: 0.42rem; flex-wrap: wrap;">' +
+              '<span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; background: rgba(0,229,153,0.2); color: #00E599; padding: 0.1rem 0.42rem; border-radius: 5px;">Over ' + currentOvers + '</span>' +
+              '<span style="font-size: 0.64rem; font-weight: 800; background: rgba(0,229,153,0.18); color: #00E599; border: 1px solid rgba(0,229,153,0.45); padding: 0.1rem 0.45rem; border-radius: 5px;">🎯 TACTICAL FIELD CHANGE</span>' +
+              '<span style="font-size: 0.73rem; font-weight: 800; color: var(--text-main);">' + summaryText + '</span>' +
+            '</div>' +
+            '<span style="color: var(--text-muted); font-weight: 700; font-family: var(--font-mono); font-size: 0.72rem;">' + currentScore + '</span>' +
+          '</div>' +
+          '<div style="font-size: 0.77rem; color: var(--text-main); line-height: 1.44;">' +
+            voiceIntro + summaryText + '. ' + tacticalElaboration +
+          '</div>' +
+          '<div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">' +
+            '<span class="comm-telemetry-pill" style="font-size: 0.61rem; padding: 0.09rem 0.42rem; border-radius: 4px; background: rgba(0,229,153,0.14); color: #00E599; font-family: var(--font-mono);">🎯 ' + (tacticalReason || ('Plan: ' + _fieldPlan)) + '</span>' +
+            '<span class="comm-telemetry-pill" style="font-size: 0.61rem; padding: 0.09rem 0.42rem; border-radius: 4px; background: rgba(0,210,255,0.14); color: var(--cyan); font-family: var(--font-mono);">📉 Expected Impact: ' + xrDelta + ' xR/ball</span>' +
+            '<span class="comm-telemetry-pill" style="font-size: 0.61rem; padding: 0.09rem 0.42rem; border-radius: 4px; background: rgba(255,184,0,0.14); color: var(--amber); font-family: var(--font-mono);">⚖️ MCC Law 28.4: ' + outCount + '/' + maxOut + ' Outside Ring (' + _fieldHand + ')</span>' +
+          '</div>';
         scoringFeed.prepend(item);
       }
 
@@ -21646,8 +21845,15 @@ cricos_active_sse_connections 1</pre>
       const plannerLog = document.getElementById('fieldPlannerCommentaryLog');
       if (plannerLog) {
         plannerLog.innerHTML = window._fieldChangeCommentaryHistory.slice(0, 6).map(function(c) {
-          return '<div style="padding: 0.32rem 0.5rem; border-radius: 6px; background: rgba(0, 229, 153, 0.1); border-left: 2.5px solid #00E599; line-height: 1.35;">' +
-            '<span style="color: #00E599; font-weight: 800;">' + c.commentary + '</span>' +
+          return '<div style="padding: 0.45rem 0.6rem; border-radius: 8px; background: rgba(0, 229, 153, 0.09); border: 1px solid rgba(0, 229, 153, 0.28); border-left: 3px solid #00E599; display: flex; flex-direction: column; gap: 0.22rem;">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.35rem;">' +
+              '<span style="font-size: 0.66rem; font-weight: 800; color: #00E599;">🎯 Over ' + c.over + ' • ' + c.summary + '</span>' +
+              '<span style="font-size: 0.6rem; font-family: var(--font-mono); color: var(--cyan); font-weight: 700;">' + (c.xrDelta || '-0.30') + ' xR/b</span>' +
+            '</div>' +
+            '<div style="font-size: 0.68rem; color: var(--text-main); line-height: 1.35;">' + (c.elaboration || c.commentary) + '</div>' +
+            '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap; font-size: 0.58rem; font-family: var(--font-mono); color: var(--text-muted);">' +
+              '<span>' + (c.reason || '') + '</span> • <span>MCC ' + c.outCount + '/' + c.maxOut + ' Out</span>' +
+            '</div>' +
           '</div>';
         }).join('');
       }

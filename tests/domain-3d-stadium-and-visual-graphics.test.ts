@@ -625,6 +625,20 @@ describe('Domain: 3D WebGL Stadium, Visual Graphics, Motion & Precision Layouts'
       assert.ok(mobileHtml.includes('emitMobileFieldCommentary(summaryText)'));
       assert.ok(mobileHtml.includes('id="mobileFieldCommentaryLog"'));
     });
+
+    it('4. Renders Broadcast Commentary Studio UI/UX with voice personas, category filters, and telemetry chips', () => {
+      assert.ok(dashboardHtml.includes('id="cardLiveCommentaryStudio"'));
+      assert.ok(dashboardHtml.includes('id="commentaryVoiceSelect"'));
+      assert.ok(dashboardHtml.includes('id="commentaryFilterBar"'));
+      assert.ok(dashboardHtml.includes('window.filterLiveCommentary = filterLiveCommentary'));
+      assert.ok(dashboardHtml.includes('window.setCommentaryBroadcastVoice = setCommentaryBroadcastVoice'));
+      assert.ok(dashboardHtml.includes('window.speakLatestCommentary = speakLatestCommentary'));
+      assert.ok(mobileHtml.includes('id="mobileCommentaryStudioRoot"'));
+      assert.ok(mobileHtml.includes('id="mobileCommentaryFilterBar"'));
+      assert.ok(mobileHtml.includes('setMobileCommentaryVoice(voice)'));
+      assert.ok(mobileHtml.includes('setMobileCommentaryFilter(filter)'));
+      assert.ok(mobileHtml.includes('speakMobileCommentary()'));
+    });
   });
 });
 

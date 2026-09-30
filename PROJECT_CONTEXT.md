@@ -1,14 +1,21 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 10:02:00
-**Version:** 1.0.0-phase2cb (8-Preset Tactical Field Planner, Interactive 360° Drag-and-Drop Field Rearrangement & Live Match Auto-Generated Field Commentary)  
+**Last Updated:** 2026-09-30 10:36:00
+**Version:** 1.0.0-phase2cc (Broadcast Commentary Studio Content & UI-UX Overhaul + 8-Preset Tactical Field Planner & 360° Drag-and-Drop)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CB Completed — 8-Preset Tactical Field Planner, Interactive 360° Drag-and-Drop Field Rearrangement & Live Match Auto-Generated Field Commentary (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`):
+- **Active Phase**: Phase 2CC Completed — Broadcast Commentary Studio Content & UI/UX Enhancement (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`):
+  - **1. Multi-Persona Broadcast Commentary Engine (`ANALYTICAL` / `HYPE` / `TACTICAL`)**:
+    - Added live commentator voice switching (`#commentaryVoiceSelect` / `window.setCommentaryBroadcastVoice` on Web; `setMobileCommentaryVoice()` on Mobile) supporting **Analytical (Harsha)**, **High-Octane (Ravi)**, and **Captain's Dugout (Nasser)** narrative styles.
+    - Upgraded `emitFieldChangeCommentary()` and `emitMobileFieldCommentary()` to generate rich multi-sentence captaincy rationale explaining boundary rope protection, bat-pad catching cordons, 30-yard ring single-choking, expected run-suppression (`xR/ball`), and MCC Law 28.4 circle status.
+    - Upgraded `logFeedItem()` and `matchState.commentary` to generate full broadcast cards with bowler-to-batter duel headers (`Jasprit Bumrah ➔ Virat Sharma`), ball speed (`km/h`), pitch length (`Good Length 6.1m`), shot sector (`Extra Cover • 248°`), exit speed, and win-probability shift (`Win Prob: 68.4% (+3.4%)`).
+  - **2. Interactive Commentary Studio UI/UX (`#cardLiveCommentaryStudio` & `#mobileCommentaryStudioRoot`)**:
+    - Added interactive category filter chips (`#commentaryFilterBar` / `#mobileCommentaryFilterBar`: `All Stream`, `🎯 Tactical Field`, `🏏 Boundaries (4s/6s)`, `🛑 Wickets`, `📊 Over Summaries`), quick `🎯 + Field Shift` launcher, and `🔊 Audio Call` Web Speech API readout (`speakLatestCommentary()` / `speakMobileCommentary()`).
+- **Preceding Phase**: Phase 2CB Completed — 8-Preset Tactical Field Planner, Interactive 360° Drag-and-Drop Field Rearrangement & Live Match Auto-Generated Field Commentary (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/test_55_teams_roster_modals.py`):
   - **1. Expanded Tactical Field Configurations from 3 to 8 Pro Presets (`window.FIELD_PLANNER_PRESETS` & `getMobileFieldPresets()`)**:
     - `POWERPLAY_ATTACK` (`⚡ PP1 Attack (2 Slips + Gully)`), `POWERPLAY_SWING_TRAP` (`🎯 PP1 Inswing Pad Trap`), `MIDDLE_SPIN_TRAP` (`🛡️ Middle Spin Web (Short Leg)`), `BOUNCER_SHORT_TRAP` (`💥 Bodyline Bouncer Trap`), `OFFSIDE_RING_SQUEEZE` (`🔒 7-2 Off-Side Squeeze`), `DEATH_YORKER_DEFENSE` (`🔥 Death Wide Yorker (5 Out)`), `DEATH_SLOWER_CUTTER` (`🌀 Death Slower-Cutter Trap`), and `SUPER_OVER_UMBRELLA` (`🏆 Super Over Boundary Umbrella`).
   - **2. Interactive 360° Pointer/Touch Drag-and-Drop Field Re-Arrangement & MCC Position Classifier**:

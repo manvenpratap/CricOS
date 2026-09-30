@@ -2621,6 +2621,8 @@ export function getMobileAppHtml() {
           { overNumber: 16, runs: 5, wickets: 0, bowler: 'Mohammed Shami', balls: ['1', '1', '1', '0', '2', '0'] }
         ];
 
+        this.mobileCommentaryFilter = 'ALL';
+        this.mobileCommentaryVoice = 'ANALYTICAL';
         this.matchState = {
           matchId: 'match-pilot-1',
           battingTeam: 'Delhi Daredevils',
@@ -2634,10 +2636,51 @@ export function getMobileAppHtml() {
           nonStriker: { name: 'Rohit S.', runs: 54, balls: 38, fours: 4, sixes: 1, isStriker: false, stance: 'LHB' },
           bowler: { name: 'Jasprit B.', overs: 3, ballsThisOver: 4, maidens: 0, runsConceded: 24, wickets: 2 },
           commentary: [
-            { ball: '16.4', badge: 'TWO', badgeColor: '#00D2FF', text: 'Pushed into the deep cover corridor, brisk sprint turns 1 into 2. Superb running!' },
-            { ball: '16.3', badge: 'DOT', badgeColor: '#94a3b8', text: 'Good length jagging back in from off, defensive push down to mid-on.' },
-            { ball: '16.2', badge: 'FOUR', badgeColor: '#00E599', text: 'CRACKING BOUNDARY! Slashed through backward point with blistering bat speed.' },
-            { ball: '16.1', badge: 'SINGLE', badgeColor: '#cbd5e1', text: 'Tucked off the hips towards backward square leg for an easy single.' }
+            {
+              ball: '16.4',
+              category: 'RUN',
+              badge: '⚡ TWO RUNS',
+              badgeColor: '#00D2FF',
+              duel: 'Jasprit Bumrah ➔ Virat K.',
+              text: 'Pitched at 6.2m outside off at 144.6 km/h; punched with soft hands into the deep extra-cover pocket. Aggressive calling turns 1 into 2 before the throw arrives!',
+              telemetry: ['⚡ 144.6 km/h', '🧭 Extra Cover (248°)', '📈 Win: 68.4%']
+            },
+            {
+              ball: '16.3',
+              category: 'FIELD',
+              badge: '🎯 FIELD SHIFT',
+              badgeColor: '#00E599',
+              duel: 'Captaincy & Tactical Radar',
+              text: '🎯 [FIELD CHANGE] Captain shifts Point (PT) to Deep Point (DPT • Deep Boundary) — Plugging the high-percentage square-cut boundary zone (-0.32 xR/ball suppression).',
+              telemetry: ['📐 94° • 88% Rope', '📉 -0.32 xR/ball', '⚖️ MCC 4/5 Out']
+            },
+            {
+              ball: '16.3',
+              category: 'DOT',
+              badge: '• DOT BALL',
+              badgeColor: '#94a3b8',
+              duel: 'Jasprit Bumrah ➔ Virat K.',
+              text: 'Sharp nip-backer off the seam at 145.8 km/h cramping the batter for room; defended solidly back down the pitch toward mid-on.',
+              telemetry: ['⚡ 145.8 km/h', '📏 Good Length (6.5m)', '• Dot Pressure']
+            },
+            {
+              ball: '16.2',
+              category: 'BOUNDARY',
+              badge: '🏏 FOUR RUNS',
+              badgeColor: '#00E599',
+              duel: 'Jasprit Bumrah ➔ Virat K.',
+              text: 'CRACKING BOUNDARY! Width offered on a 5th-stump channel at 143.9 km/h and Virat slashes fiercely past backward point with a 111 km/h exit speed!',
+              telemetry: ['⚡ 143.9 km/h', '🧭 Backward Point (104°)', '🚀 111 km/h Exit']
+            },
+            {
+              ball: '16.1',
+              category: 'RUN',
+              badge: '1 RUN',
+              badgeColor: '#cbd5e1',
+              duel: 'Jasprit Bumrah ➔ Rohit S.',
+              text: 'Angled into the pads at 142.4 km/h; clipped smoothly off the hips toward deep backward square leg to rotate the strike.',
+              telemetry: ['⚡ 142.4 km/h', '🧭 Sq Leg (72°)', '🔄 Strike Rotated']
+            }
           ]
         };
 
@@ -6609,24 +6652,65 @@ export function getMobileAppHtml() {
         return { code: 'SFL', name: 'Short Fine Leg' };
       }
 
+      setMobileCommentaryFilter(filter) {
+        this.mobileCommentaryFilter = filter || 'ALL';
+        this.render();
+      }
+
+      setMobileCommentaryVoice(voice) {
+        this.mobileCommentaryVoice = voice || 'ANALYTICAL';
+        var labels = { ANALYTICAL: '🎙️ Analytical (Harsha)', HYPE: '🔥 High-Octane (Ravi)', TACTICAL: "🧠 Captain's Dugout (Nasser)" };
+        this.showToast('Switched Commentary Voice to ' + (labels[this.mobileCommentaryVoice] || voice), 'info');
+        this.render();
+      }
+
+      speakMobileCommentary() {
+        var first = (this.matchState && this.matchState.commentary && this.matchState.commentary[0]) ? this.matchState.commentary[0].text : 'Live match commentary active.';
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+            var utter = new SpeechSynthesisUtterance(first.slice(0, 220));
+            window.speechSynthesis.speak(utter);
+          } catch (e) { /* headless fallback */ }
+        }
+        this.showToast('🔊 Audio Commentary: ' + first.slice(0, 72) + '...', 'info');
+        return first;
+      }
+
       emitMobileFieldCommentary(summaryText) {
         var overs = (this.matchState && this.matchState.overs) ? this.matchState.overs : '16.2';
-        var fullText = '🎯 [FIELD CHANGE] ' + summaryText;
+        var outCount = Array.isArray(this.mobileActiveFielders)
+          ? this.mobileActiveFielders.filter(function(f) { return !f.locked && f.radius > 0.52; }).length
+          : 4;
+        var xrDelta = (-0.22 - outCount * 0.03).toFixed(2);
+        var rationale = summaryText.indexOf('Deep') !== -1 || summaryText.indexOf('Rope') !== -1 || summaryText.indexOf('Cow Corner') !== -1
+          ? 'Reinforcing the boundary rope to cut off high-exit-velocity aerial strokes (' + xrDelta + ' xR/ball suppression).'
+          : 'Tightening the 30-yard inner circle to choke singles and build dot-ball pressure (' + xrDelta + ' xR/ball).';
+        var fullText = '🎯 [FIELD CHANGE] ' + summaryText + ' — ' + rationale;
         if (!this.mobileFieldCommentaryLog) this.mobileFieldCommentaryLog = [];
-        this.mobileFieldCommentaryLog.unshift({ over: overs, text: fullText });
+        this.mobileFieldCommentaryLog.unshift({ over: overs, summary: summaryText, rationale: rationale, xrDelta: xrDelta, outCount: outCount, text: fullText });
         if (this.matchState && Array.isArray(this.matchState.commentary)) {
           this.matchState.commentary.unshift({
+            ball: overs,
             over: overs,
-            badge: 'FIELD',
+            category: 'FIELD',
+            badge: '🎯 FIELD SHIFT',
+            badgeColor: '#00E599',
             color: '#00E599',
-            text: fullText
+            duel: 'Captaincy & Tactical Radar',
+            text: fullText,
+            telemetry: ['📐 360° Radar', '📉 ' + xrDelta + ' xR/ball', '⚖️ MCC ' + outCount + '/5 Out']
           });
         }
         var logEl = document.getElementById('mobileFieldCommentaryLog');
         if (logEl) {
           logEl.innerHTML = this.mobileFieldCommentaryLog.slice(0, 4).map(function(c) {
-            return '<div style="padding: 0.28rem 0.45rem; border-radius: 5px; background: rgba(0,229,153,0.12); border-left: 2.5px solid #00E599; font-size: 0.66rem; color: #00E599; font-weight: 700;">' +
-              'Over ' + c.over + ': ' + c.text +
+            return '<div style="padding: 0.36rem 0.52rem; border-radius: 7px; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-left: 3px solid #00E599; display: flex; flex-direction: column; gap: 0.16rem;">' +
+              '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                '<span style="font-size: 0.65rem; color: #059669; font-weight: 800;">Over ' + c.over + ' • ' + (c.summary || 'Field Shift') + '</span>' +
+                '<span style="font-size: 0.58rem; color: #0284c7; font-weight: 700;">' + (c.xrDelta || '-0.30') + ' xR/b</span>' +
+              '</div>' +
+              '<div style="font-size: 0.64rem; color: #334155; font-weight: 600; line-height: 1.32;">' + c.text + '</div>' +
             '</div>';
           }).join('');
         }
@@ -8516,18 +8600,76 @@ export function getMobileAppHtml() {
 
         // SUB-VIEW 3: COMMENTARY STREAM
         else if (this.matchSubTab === 'COMMENTARY') {
-          h += '<div style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.6rem;">🎙️ Live Ball-by-Ball Feed</div>';
+          var activeVoice = this.mobileCommentaryVoice || 'ANALYTICAL';
+          var activeFilter = this.mobileCommentaryFilter || 'ALL';
+          h += '<div id="mobileCommentaryStudioRoot" style="display: flex; flex-direction: column; gap: 0.55rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">';
+          h += '<div>';
+          h += '<div style="font-size: 0.82rem; font-weight: 800; color: #f8fafc;">🎙️ Broadcast Commentary Studio</div>';
+          h += '<div style="font-size: 0.64rem; color: #94a3b8;">Hawk-Eye speed, shot sector &amp; captaincy field shifts</div>';
+          h += '</div>';
+          h += '<div style="display: flex; gap: 0.3rem; align-items: center;">';
+          h += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="padding: 0.24rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.4); background: rgba(0,229,153,0.14); color: #00E599; font-size: 0.64rem; font-weight: 800;" data-tooltip="Open 11-Fielder Tactical Radar">🎯 + Field</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.speakMobileCommentary()" style="padding: 0.24rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,210,255,0.4); background: rgba(0,210,255,0.14); color: #00D2FF; font-size: 0.64rem; font-weight: 800;" data-tooltip="Audio readout of latest commentary">🔊 Audio</button>';
+          h += '</div>';
+          h += '</div>';
+
+          // Broadcast Voice Selector Strip
+          h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">';
+          var voices = [
+            ['ANALYTICAL', '🎙️ Analytical (Harsha)'],
+            ['HYPE', '🔥 High-Octane (Ravi)'],
+            ['TACTICAL', '🧠 Dugout (Nasser)']
+          ];
+          for (var v = 0; v < voices.length; v++) {
+            var vKey = voices[v][0];
+            var isV = activeVoice === vKey;
+            h += '<button type="button" onclick="window.cricosMobileApp.setMobileCommentaryVoice(&apos;' + vKey + '&apos;)" style="padding: 0.2rem 0.48rem; border-radius: 6px; font-size: 0.62rem; font-weight: 700; border: 1px solid ' + (isV ? '#00D2FF' : 'rgba(255,255,255,0.1)') + '; background: ' + (isV ? 'rgba(0,210,255,0.18)' : 'rgba(255,255,255,0.04)') + '; color: ' + (isV ? '#00D2FF' : '#94a3b8') + ';" data-tooltip="Switch commentary style">' + voices[v][1] + '</button>';
+          }
+          h += '</div>';
+
+          // Category Filter Chips
+          h += '<div id="mobileCommentaryFilterBar" style="display: flex; gap: 0.3rem; flex-wrap: wrap; padding-bottom: 0.3rem; border-bottom: 1px solid rgba(255,255,255,0.08);">';
+          var filters = [
+            ['ALL', 'All Stream'],
+            ['FIELD', '🎯 Field Shifts'],
+            ['BOUNDARY', '🏏 4s &amp; 6s'],
+            ['WICKET', '🛑 Wickets']
+          ];
+          for (var fIdx = 0; fIdx < filters.length; fIdx++) {
+            var fKey = filters[fIdx][0];
+            var isF = activeFilter === fKey;
+            h += '<button type="button" onclick="window.cricosMobileApp.setMobileCommentaryFilter(&apos;' + fKey + '&apos;)" style="padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.62rem; font-weight: 700; border: 1px solid ' + (isF ? '#00E599' : 'rgba(255,255,255,0.1)') + '; background: ' + (isF ? 'rgba(0,229,153,0.18)' : 'rgba(255,255,255,0.04)') + '; color: ' + (isF ? '#00E599' : '#94a3b8') + ';" data-tooltip="Filter commentary stream">' + filters[fIdx][1] + '</button>';
+          }
+          h += '</div>';
+
           h += '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
           for (var c = 0; c < this.matchState.commentary.length; c++) {
             var item = this.matchState.commentary[c];
-            h += '<div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 0.65rem 0.85rem;">';
-            h += '<div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">';
-            h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.75rem; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.08); padding: 0.1rem 0.35rem; border-radius: 4px;">' + item.ball + '</span>';
-            h += '<span style="font-size: 0.65rem; font-weight: 800; color: ' + item.badgeColor + '; background: rgba(255,255,255,0.04); padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid ' + item.badgeColor + '40;">' + item.badge + '</span>';
+            var itemCat = item.category || (item.badge && item.badge.indexOf('FIELD') !== -1 ? 'FIELD' : (item.badge && (item.badge.indexOf('FOUR') !== -1 || item.badge.indexOf('SIX') !== -1) ? 'BOUNDARY' : 'ALL'));
+            if (activeFilter !== 'ALL' && itemCat !== activeFilter) continue;
+            var bColor = item.badgeColor || item.color || '#00E599';
+            var ballLabel = item.ball || item.over || '16.2';
+            var duelLabel = item.duel || 'Jasprit Bumrah ➔ Virat K.';
+            var telemetryArr = Array.isArray(item.telemetry) ? item.telemetry : ['⚡ 144.2 km/h', '🧭 Extra Cover'];
+            h += '<div class="mobile-comm-card" style="background: rgba(10, 16, 28, 0.88); border: 1px solid rgba(255,255,255,0.08); border-left: 3.5px solid ' + bColor + '; border-radius: 10px; padding: 0.65rem 0.8rem; display: flex; flex-direction: column; gap: 0.3rem;">';
+            h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">';
+            h += '<div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">';
+            h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.72rem; font-weight: 800; color: #f8fafc; background: rgba(255,255,255,0.1); padding: 0.1rem 0.38rem; border-radius: 4px;">' + ballLabel + '</span>';
+            h += '<span style="font-size: 0.62rem; font-weight: 800; color: ' + bColor + '; background: rgba(255,255,255,0.04); padding: 0.1rem 0.42rem; border-radius: 4px; border: 1px solid ' + bColor + '45;">' + item.badge + '</span>';
+            h += '<span style="font-size: 0.68rem; font-weight: 700; color: #e2e8f0;">' + duelLabel + '</span>';
             h += '</div>';
-            h += '<div style="font-size: 0.75rem; color: #cbd5e1; line-height: 1.35;">' + item.text + '</div>';
+            h += '<span style="font-size: 0.58rem; color: #38bdf8; font-weight: 700;">' + (activeVoice === 'HYPE' ? '🔥 Ravi' : (activeVoice === 'TACTICAL' ? '🧠 Nasser' : '🎙️ Harsha')) + '</span>';
+            h += '</div>';
+            h += '<div style="font-size: 0.74rem; color: #cbd5e1; line-height: 1.4;">' + item.text + '</div>';
+            h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.08rem;">';
+            for (var tIdx = 0; tIdx < telemetryArr.length; tIdx++) {
+              h += '<span style="font-size: 0.58rem; padding: 0.08rem 0.38rem; border-radius: 4px; background: rgba(255,255,255,0.06); color: #94a3b8; font-family: Chakra Petch, monospace;">' + telemetryArr[tIdx] + '</span>';
+            }
+            h += '</div>';
             h += '</div>';
           }
+          h += '</div>';
           h += '</div>';
         }
 
