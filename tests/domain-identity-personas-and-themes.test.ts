@@ -747,6 +747,28 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(fs.existsSync(path.join(screenshotsDir, 'desktop_theme_nordic.png')));
       assert.ok(fs.existsSync(path.join(screenshotsDir, 'desktop_theme_stadium.png')));
     });
+
+    it('4. In-App Notifications (Toasts) define authentic high-contrast light theme backgrounds & status typography on Swiss and Nordic', () => {
+      // Mobile Toast Invariant Verification
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .mobile-toast'), 'Mobile view must define body[data-theme="swiss"] .mobile-toast');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .mobile-toast'), 'Mobile view must define body[data-theme="nordic"] .mobile-toast');
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .mobile-toast.success'), 'Mobile view must define Swiss success toast');
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] .mobile-toast.error'), 'Mobile view must define Swiss error toast');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .mobile-toast.success'), 'Mobile view must define Nordic success toast');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] .mobile-toast.error'), 'Mobile view must define Nordic error toast');
+      assert.ok(mobileHtml.includes('.mobile-toast-text'), 'Mobile toast markup must feature .mobile-toast-text');
+      assert.ok(mobileHtml.includes('.mobile-toast-dismiss'), 'Mobile toast markup must feature .mobile-toast-dismiss');
+
+      // Desktop Sonner Toaster Invariant Verification
+      assert.ok(dashboardSrc.includes('body[data-theme="swiss"] #sonnerToaster .sonner-toast'), 'Dashboard must define Swiss sonner toast');
+      assert.ok(dashboardSrc.includes('body[data-theme="nordic"] #sonnerToaster .sonner-toast'), 'Dashboard must define Nordic sonner toast');
+      assert.ok(dashboardSrc.includes('body[data-theme="swiss"] #sonnerToaster .sonner-toast .sonner-title'), 'Dashboard must define Swiss sonner title');
+      assert.ok(dashboardSrc.includes('body[data-theme="nordic"] #sonnerToaster .sonner-toast .sonner-title'), 'Dashboard must define Nordic sonner title');
+      assert.ok(dashboardSrc.includes('body[data-theme="swiss"] #sonnerToaster .sonner-toast.sonner-type-success'), 'Dashboard must define Swiss success variant');
+      assert.ok(dashboardSrc.includes('body[data-theme="nordic"] #sonnerToaster .sonner-toast.sonner-type-success'), 'Dashboard must define Nordic success variant');
+      assert.ok(dashboardSrc.includes('body[data-theme="swiss"] #toast'), 'Dashboard must define Swiss legacy toast');
+      assert.ok(dashboardSrc.includes('body[data-theme="nordic"] #toast'), 'Dashboard must define Nordic legacy toast');
+    });
   });
 
   // ---- Suite 9: UI/UX Color Contrast, Focus Rings & WCAG 2.2 AA Accessibility ----

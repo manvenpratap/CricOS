@@ -210,6 +210,73 @@ async def test_wcag_sweeps_delayed_tooltips_and_spring_toast():
         assert toast_metrics["hasToast"], "Mobile toast element (.mobile-toast) must exist"
         assert toast_metrics["centerY"] > 600, f"Mobile toast container must be bottom-docked (centerY > 600px), got {toast_metrics['centerY']}"
 
+        # -------------------------------------------------------------
+        # Verify Light Theme Toast Contrast & Visibility on Mobile
+        # -------------------------------------------------------------
+        # 1. Swiss Minimalist Mobile Toast
+        await page.evaluate("() => window.cricosMobileApp.setTheme('swiss', false)")
+        await page.wait_for_timeout(200)
+        swiss_toast = await page.evaluate("""() => {
+            window.cricosMobileApp.showToast('Swiss Toast: Match Scheduled!', 'success', 5000);
+            const t = document.querySelector('.mobile-toast');
+            const text = document.querySelector('.mobile-toast-text') || t;
+            const cs = window.getComputedStyle(t);
+            const ts = window.getComputedStyle(text);
+            return {
+                bg: cs.backgroundColor,
+                color: ts.color,
+                borderColor: cs.borderColor
+            };
+        }""")
+        swiss_bg_rgb = parse_rgb(swiss_toast["bg"])
+        swiss_fg_rgb = parse_rgb(swiss_toast["color"])
+        assert swiss_bg_rgb[0] > 240 and swiss_bg_rgb[1] > 240 and swiss_bg_rgb[2] > 240, f"Swiss toast background must be light, got {swiss_toast['bg']}"
+        assert contrast_ratio(swiss_fg_rgb, swiss_bg_rgb) >= 7.0, f"Swiss toast contrast must be >= 7.0:1 (WCAG AAA), got {contrast_ratio(swiss_fg_rgb, swiss_bg_rgb):.2f}:1"
+        await save_screenshot_async(page, "toast_mobile_swiss_minimal.png")
+
+        # 2. Nordic Editorial Mobile Toast
+        await page.evaluate("() => window.cricosMobileApp.setTheme('nordic', false)")
+        await page.wait_for_timeout(200)
+        nordic_toast = await page.evaluate("""() => {
+            window.cricosMobileApp.showToast('Nordic Toast: Pitch Inspection Clear', 'info', 5000);
+            const t = document.querySelector('.mobile-toast');
+            const text = document.querySelector('.mobile-toast-text') || t;
+            const cs = window.getComputedStyle(t);
+            const ts = window.getComputedStyle(text);
+            return {
+                bg: cs.backgroundColor,
+                color: ts.color,
+                borderColor: cs.borderColor
+            };
+        }""")
+        nordic_bg_rgb = parse_rgb(nordic_toast["bg"])
+        nordic_fg_rgb = parse_rgb(nordic_toast["color"])
+        assert nordic_bg_rgb[0] > 240 and nordic_bg_rgb[1] > 240 and nordic_bg_rgb[2] > 230, f"Nordic toast background must be light oat, got {nordic_toast['bg']}"
+        assert contrast_ratio(nordic_fg_rgb, nordic_bg_rgb) >= 7.0, f"Nordic toast contrast must be >= 7.0:1 (WCAG AAA), got {contrast_ratio(nordic_fg_rgb, nordic_bg_rgb):.2f}:1"
+        await save_screenshot_async(page, "toast_mobile_nordic_editorial.png")
+
+        # 3. Stadium Night Mobile Toast
+        await page.evaluate("() => window.cricosMobileApp.setTheme('stadium', false)")
+        await page.wait_for_timeout(200)
+        stadium_toast = await page.evaluate("""() => {
+            window.cricosMobileApp.showToast('Stadium Toast: Maximum 6 Runs!', 'success', 5000);
+            const t = document.querySelector('.mobile-toast');
+            const text = document.querySelector('.mobile-toast-text') || t;
+            const cs = window.getComputedStyle(t);
+            const ts = window.getComputedStyle(text);
+            return {
+                bg: cs.backgroundColor,
+                color: ts.color,
+                borderColor: cs.borderColor
+            };
+        }""")
+        stadium_bg_rgb = parse_rgb(stadium_toast["bg"])
+        stadium_fg_rgb = parse_rgb(stadium_toast["color"])
+        assert stadium_bg_rgb[0] < 30 and stadium_bg_rgb[1] < 30 and stadium_bg_rgb[2] < 45, f"Stadium toast background must be dark obsidian, got {stadium_toast['bg']}"
+        assert contrast_ratio(stadium_fg_rgb, stadium_bg_rgb) >= 4.5, f"Stadium toast contrast must be >= 4.5:1 (WCAG AA), got {contrast_ratio(stadium_fg_rgb, stadium_bg_rgb):.2f}:1"
+        await save_screenshot_async(page, "toast_mobile_stadium_night.png")
+
         assert_no_critical_errors(page)
+        catalog_screenshots()
         await browser.close()
 

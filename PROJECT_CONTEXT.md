@@ -1,14 +1,37 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 22:30:00
-**Version:** 1.0.0-phase2cj (Clean View vs Full View Distinction: High-density Match Focus vs Detailed Guidance Mode with responsive subtitles, guidance card suppression, and informative toast feedback)  
+**Last Updated:** 2026-09-30 22:50:00
+**Version:** 1.0.0-phase2ck (Authentic High-Contrast Light Theme Backgrounds & Typography for In-App Notifications on Swiss and Nordic Themes across Mobile and Desktop)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CJ Completed — Clean View vs Full View Visual Distinction & Guidance Subtitle Suppression (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CK Completed — Authentic High-Contrast Light Theme Backgrounds & Typography for In-App Notifications (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_57_ui_ux_contrast_and_accessibility.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Mobile In-App Toast System (`.mobile-toast` & `.mobile-toast-container`)**:
+    - **Swiss Minimalist (`body[data-theme="swiss"]` / `html[data-theme="swiss"]`)**: Converted mobile notifications to crisp pure white card surfaces (`background: #FFFFFF !important`, `border: 1px solid #CBD5E1 !important`, `color: #0F172A !important`, `box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08) !important`).
+    - **Nordic Editorial (`body[data-theme="nordic"]` / `html[data-theme="nordic"]`)**: Converted mobile notifications to warm oat paper surfaces (`background: #FCFBF8 !important`, `border: 1px solid #E6DFD5 !important`, `color: #1C1917 !important`, `box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.10), 0 8px 10px -6px rgba(28, 25, 23, 0.06) !important`).
+    - **Semantic Variant Styling**:
+      - Success: Emerald accent (`#059669` Swiss / `#15803D` Nordic), soft tinted icon pill (`#ECFDF5` / `#F0FDF4`), high-contrast dark text (`#0F172A` / `#1C1917`).
+      - Error: Crimson accent (`#DC2626` Swiss / `#BE123C` Nordic), soft tinted icon pill (`#FEF2F2` / `#FFF1F2`), eradicated unreadable pale pink text `#fecdd3` in light modes.
+      - Warning: Amber accent (`#D97706` Swiss / `#C2410C` Nordic), soft tinted icon pill (`#FFFBEB` / `#FFF7ED`), eradicated unreadable pale yellow text `#fef3c7` in light modes.
+      - Info: Cyan/Blue accent (`#0284C7` Swiss / `#0369A1` Nordic), soft tinted icon pill (`#F0F9FF`), dark text.
+    - **Markup & Dismiss**: Added `.mobile-toast-text` and `.mobile-toast-dismiss` with accessible slate/stone contrast and responsive dismiss tap target.
+    - **Kinetic Boundary Banner**: Styled `.kinetic-boundary-banner` with authentic light backgrounds on Swiss and Nordic.
+    - **Contrast Engine Synchronization**: Updated `getEffBg()` in `enforceContrastInvariants()` so daylight toasts evaluate contrast against daylight surfaces (`pageBgRgb`), preventing spurious inversion.
+  - **2. Desktop In-App Notifications (`#sonnerToaster .sonner-toast` & `#toast`)**:
+    - Eradicated dark background overrides (`#0F172A` / `#1C1917`) on light themes in `dashboard.ts`.
+    - Styled `#sonnerToaster .sonner-toast` with authentic light backgrounds (`#FFFFFF` on Swiss, `#FCFBF8` on Nordic), dark typography (`.sonner-title` in `#0F172A` / `#1C1917`), muted description (`.sonner-description` in `#475569` / `#57534E`), and soft close/action buttons.
+    - Fixed selector class mismatch (replaced `.sonner-toast-title` with `.sonner-title` and `.sonner-description`).
+    - Styled legacy single-card `#toast` for Swiss and Nordic light themes.
+  - **3. Verification & Artifact Release Parity**:
+    - Verified all 208 unit/domain tests in 59 suites pass in 458ms via `./pipeline.sh test --summary`.
+    - Added Suite 8 item 4 in `tests/domain-identity-personas-and-themes.test.ts`.
+    - Enhanced `tests/test_57_ui_ux_contrast_and_accessibility.py` with Playwright assertions for Swiss (>7.0:1 WCAG AAA), Nordic (>7.0:1 WCAG AAA), and Stadium (>4.5:1 WCAG AA) toasts, capturing verified visual screenshots (`toast_mobile_swiss_minimal.png`, `toast_mobile_nordic_editorial.png`, `toast_mobile_stadium_night.png`).
+    - Verified all 11 Playwright E2E visual tests pass with zero critical console errors.
+    - Recompiled and signed Play-Protect-compliant Android 15 release APK (`dist/cricos-release.apk`) and debug APK (`dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CJ Completed — Clean View vs Full View Visual Distinction & Guidance Subtitle Suppression (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_55_teams_roster_modals.py`, `tests/README.md`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Purposeful Visual Contrast Between Clean View and Full View**:
     - **Clean View (`✨ Clean View / Match Focus`)**: Tailored for scorers and match officials during live games. Strips all decorative role banners (`#roleExperienceBanner`), top navigation strips (`#mobileCleanFocusBar`), section subtitles (`.mobile-section-subtitle`), and secondary guidance cards (`.mobile-secondary-clutter`, `[data-clean-hide="true"]`), tightening card padding (`0.5rem 0.65rem`) so the scoring pad, radar, and figures fit without scrolling.
     - **Full View (`📊 Full View / Detailed Guidance`)**: Tailored for spectators, fans, and organizers. Displays the prominent **Role Experience HUD Banner** at the top of every screen (showing persona badge, description, and primary CTA), exposes section subtitles and educational guides across all screens, and provides a clear 1-tap `✨ Switch to Clean` CTA in the top focus bar.
