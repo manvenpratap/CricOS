@@ -796,5 +796,21 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(dashboardHtml.includes('Core Workspaces') && dashboardHtml.includes('Tactical &amp; 3D Studios') && dashboardHtml.includes('Match Day &amp; Officiating'), 'Sidebar must organize items into logical domain sections');
       assert.ok(dashboardHtml.includes('class="topbar-cluster"') && dashboardHtml.includes('class="match-action-toolbar"'), 'Topbar and scoreboard must organize actions into logical clusters');
     });
+
+    it('7. JWT Session Persistence, Captain Scoring Pad Suppression & Clean Focus Declutter (64, 65, 66, 71)', () => {
+      assert.ok(dashboardHtml.includes('localStorage.getItem') && dashboardHtml.includes('localStorage.setItem'), 'JWT & persona localStorage persistence must exist');
+      assert.ok(dashboardHtml.includes('CAPTAIN') && dashboardHtml.includes('SCORER'), 'Role-gated scoring pad visibility for Captain vs Scorer must exist');
+    });
+
+    it('8. UI/UX Pro Max Split-Screen Broadcast Hero & Frosted Obsidian Contrast Exclusion (72)', () => {
+      assert.ok(dashboardHtml.includes('id="cricosHeroAuthOverlay"'), 'Desktop Hero overlay must exist');
+      assert.ok(dashboardHtml.includes('id="heroLeftCopyColumn"'), 'Desktop #heroLeftCopyColumn frosted obsidian container must exist');
+      assert.ok(dashboardHtml.includes('cricosHeroAuthOverlay'), 'Desktop contrast enforcer must exclude #cricosHeroAuthOverlay from daylight bleaching');
+      assert.ok(mobileHtml.includes('id="mobileHeroAuthOverlay"'), 'Mobile Hero overlay must exist');
+      assert.ok(mobileHtml.includes('mobileHeroAuthOverlay'), 'Mobile contrast enforcer must exclude #mobileHeroAuthOverlay from daylight bleaching');
+    });
   });
 });
+
+
+

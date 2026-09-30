@@ -571,4 +571,22 @@ describe('Domain: 3D WebGL Stadium, Visual Graphics, Motion & Precision Layouts'
       );
     });
   });
+
+  // =========================================================================
+  // Suite 8: Offline Android APK 3D Fallback & LHB/RHB Trajectory Physics (62, 63, 67)
+  // =========================================================================
+  describe('Suite 8: Offline Android APK 3D Fallback & LHB/RHB Trajectory Physics (62, 63, 67)', () => {
+    it('1. Self-Contained Offline 2.5D/3D Canvas Fallback Renderer for Android WebView (62)', () => {
+      assert.ok(mobileHtml.includes('renderOfflineFallback3DStadium') || mobileHtml.includes('getContext(\'2d\')'), 'Mobile 3D stadium must include guaranteed non-blank 2D/2.5D canvas fallback when WebGL/CDN is unavailable');
+      assert.ok(dashboardHtml.includes('renderDesktopFallback3DStadium') || dashboardHtml.includes('threeJsStadiumCanvas'), 'Desktop 3D stadium canvas fallback support must exist');
+    });
+
+    it('2. True OFF-SIDE vs ON-SIDE Trajectory & Fielder Mirroring for LHB vs RHB (63, 67)', () => {
+      assert.ok(dashboardHtml.includes("currentStance === 'LHB'"), 'Desktop 3D & 2D trajectories must mirror X coordinates when currentStance is LHB');
+      assert.ok(mobileHtml.includes("'LHB'") && mobileHtml.includes("'RHB'"), 'Mobile 3D & 2D trajectories must support LHB and RHB mirroring');
+    });
+  });
 });
+
+
+

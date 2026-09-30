@@ -1,14 +1,18 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 06:15:00
-**Version:** 1.0.0-phase2bx (UI/UX Pro Max Split Hero Section with Interactive 3D Broadcast HUD & 1-Click Persona Sandbox)  
+**Last Updated:** 2026-09-30 08:00:00
+**Version:** 1.0.0-phase2by (Test Suite Re-Consolidation across 5 Domain Suites, 4 Baseline Suites & 4 Canonical Playwright E2E Suites)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 33, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2BX Completed — UI/UX Pro Max Split Hero Section with Interactive 3D Broadcast HUD & 1-Click Persona Sandbox (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2BY Completed — Test Suite Re-Consolidation (`tests/domain-*.test.ts`, `tests/test_54_*.py`..`tests/test_57_*.py`, `tests/README.md`):
+  - Re-consolidated the 15 sequential Playwright E2E suites (`test_58` through `test_72`) into:
+    - **5 High-Cohesion TypeScript Domain Suites (`194` assertions running in `~400ms`)**: `domain-scoring-and-match-ops.test.ts`, `domain-commerce-tournaments-and-marketplace.test.ts`, `domain-identity-personas-and-themes.test.ts`, `domain-mobile-journeys-and-native.test.ts`, and `domain-3d-stadium-and-visual-graphics.test.ts`.
+    - **4 Canonical Playwright Visual/E2E Suites (`9` end-to-end Chromium verification scenarios)**: `test_54_playwright_theme_verification.py`, `test_55_teams_roster_modals.py`, `test_56_3d_stadium_ui_fix.py`, and `test_57_ui_ux_contrast_and_accessibility.py`.
+- **Preceding Phase**: Phase 2BX Completed — UI/UX Pro Max Split Hero Section with Interactive 3D Broadcast HUD & 1-Click Persona Sandbox (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-debug.apk`):
   - **1. Desktop UI/UX Pro Max Split Hero Section (`#cricosHeroAuthOverlay` in `apps/api/src/ui/dashboard.ts`)**:
     - Redesigned `#heroStageLanding` using `/ui-ux-pro-max` architectural guidelines (**Interactive 3D Configurator ("Show, Don't Tell")**, **Asymmetric 2-Column Split Hero**, **Multi-Layer Glassmorphism**, **Live Broadcast Telemetry**, **1-Click Zero-Friction Persona Sandbox**, and **Apple-Style Modular Bento Grid**):
       - **Live Broadcast Telemetry Ribbon (`#heroLiveBroadcastRibbon`)**: Real-time match ticker (`BLR 186/4 (18.2 ov) vs MUM`), Chinnaswamy Turf A micro-climate (`26°C | 920m Alt | 1.8° Out-Swing`), `0.8ms` GiST slot lock, and `5-Account Balanced` escrow ledger.

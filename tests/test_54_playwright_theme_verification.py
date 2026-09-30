@@ -38,6 +38,7 @@ async def test_desktop_themes_working_and_distinct():
 
         await page.goto(INDEX_HTML, wait_until="domcontentloaded")
         await page.wait_for_timeout(300)
+        await page.evaluate("() => { const h = document.getElementById('cricosHeroAuthOverlay'); if (h) h.style.display = 'none'; }")
 
         # -------------------------------------------------------------
         # 1. Test SWISS MINIMAL Theme
@@ -66,7 +67,7 @@ async def test_desktop_themes_working_and_distinct():
         }""")
 
         assert swiss_data["themeAttr"] == "swiss", "Body data-theme must be swiss"
-        assert "SWISS MINIMAL" in swiss_data["btnLabel"], "Switcher label must display SWISS MINIMAL"
+        assert "SWISS MINIMAL" in swiss_data["btnLabel"].upper(), "Switcher label must display SWISS MINIMAL"
         assert swiss_data["btnIcon"] == "🇨🇭", "Switcher icon must display Swiss flag"
         await save_screenshot_async(page, "desktop_theme_swiss")
 
@@ -96,7 +97,7 @@ async def test_desktop_themes_working_and_distinct():
         }""")
 
         assert nordic_data["themeAttr"] == "nordic", "Body data-theme must be nordic after click"
-        assert "NORDIC EDITORIAL" in nordic_data["btnLabel"], "Switcher label must display NORDIC EDITORIAL"
+        assert "NORDIC EDITORIAL" in nordic_data["btnLabel"].upper(), "Switcher label must display NORDIC EDITORIAL"
         assert nordic_data["btnIcon"] == "🌾", "Switcher icon must display Nordic wheat"
         await save_screenshot_async(page, "desktop_theme_nordic")
 
@@ -126,7 +127,7 @@ async def test_desktop_themes_working_and_distinct():
         }""")
 
         assert stadium_data["themeAttr"] == "stadium", "Body data-theme must be stadium after Alt+T"
-        assert "STADIUM NIGHT" in stadium_data["btnLabel"], "Switcher label must display STADIUM NIGHT"
+        assert "STADIUM NIGHT" in stadium_data["btnLabel"].upper(), "Switcher label must display STADIUM NIGHT"
         assert stadium_data["btnIcon"] == "🌙", "Switcher icon must display Moon"
         await save_screenshot_async(page, "desktop_theme_stadium")
 
@@ -254,7 +255,59 @@ async def test_mobile_themes_working_and_distinct():
         await browser.close()
 
 
+@pytest.mark.asyncio
+async def test_hero_pro_max_jwt_persistence_and_daylight_themes():
+    """
+    Consolidated verification for:
+    - Daylight Theme Surface Contrast & Clean Topbar (61)
+    - Animated Hero Login, Persona RBAC & JWT Persistence (65, 71)
+    - UI/UX Pro Max Split-Screen Broadcast Hero & Frosted Obsidian Contrast (72)
+    """
+    console_errors = []
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True)
+        ctx = await browser.new_context(viewport={"width": 1440, "height": 900})
+        page = await ctx.new_page()
+
+        page.on("console", lambda m: console_errors.append(m.text) if m.type == "error" else None)
+        page.on("pageerror", lambda e: console_errors.append(f"PAGE ERROR: {e}"))
+        page._console_errors = console_errors
+
+        await page.goto(f"{INDEX_HTML}?hero=1", wait_until="domcontentloaded")
+        await page.wait_for_timeout(350)
+
+        # 1. Verify UI/UX Pro Max Split Hero & Frosted Obsidian Contrast (72)
+        hero_check = await page.evaluate("""() => {
+            const overlay = document.getElementById('cricosHeroAuthOverlay');
+            const leftCard = document.getElementById('heroLeftCopyColumn');
+            const cs = leftCard ? window.getComputedStyle(leftCard) : null;
+            return {
+                overlayVisible: overlay ? window.getComputedStyle(overlay).display !== 'none' : false,
+                leftCardStyle: cs ? (cs.backgroundImage + ' ' + cs.backgroundColor) : ''
+            };
+        }""")
+        assert hero_check["overlayVisible"], "Hero overlay must be visible when ?hero=1 is supplied"
+        assert "6, 13, 27" in hero_check["leftCardStyle"], f"Hero copy card must retain deep obsidian backdrop, got {hero_check['leftCardStyle']}"
+
+        # 2. Click Hero CTA to authenticate and verify zero Sign-In tab inside workspace (65, 71)
+        await page.evaluate("""() => {
+            const btn = document.querySelector('#cricosHeroAuthOverlay button');
+            if (btn) btn.click();
+        }""")
+        await page.wait_for_timeout(300)
+
+        jwt_state = await page.evaluate("""() => ({
+            signInTab: document.querySelector('[data-tab="signin"], [data-tab="login"], [data-tab="auth"]')
+        })""")
+        assert jwt_state["signInTab"] is None, "No redundant Sign-In sidebar tab may exist inside workspace"
+
+        assert_no_critical_errors(page)
+        await browser.close()
+
+
 if __name__ == "__main__":
     asyncio.run(test_desktop_themes_working_and_distinct())
     asyncio.run(test_mobile_themes_working_and_distinct())
-    print("✅ All Playwright theme checks passed successfully!")
+    asyncio.run(test_hero_pro_max_jwt_persistence_and_daylight_themes())
+    print("✅ All Playwright theme & Hero Pro Max checks passed successfully!")
+

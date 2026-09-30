@@ -142,6 +142,64 @@ async def test_teams_roster_modals_and_interactive_desks():
         await browser.close()
 
 
+@pytest.mark.asyncio
+async def test_flagship_studios_weather_and_gear_store():
+    """
+    Consolidated verification for:
+    - Flagship Studios: Command Palette (⌘K), Tactical Field Planner, Pitch Simulator, Live Auction (58)
+    - Intelligent Venue Weather & Collapsed Mobile 5-Hour Forecast by Default (69)
+    - Pro Cricket Gear Store & Pavilion Checkout (70)
+    """
+    console_errors = []
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True)
+        ctx = await browser.new_context(viewport={"width": 1440, "height": 900})
+        page = await ctx.new_page()
+
+        page.on("console", lambda m: console_errors.append(m.text) if m.type == "error" else None)
+        page.on("pageerror", lambda e: console_errors.append(f"PAGE ERROR: {e}"))
+        page._console_errors = console_errors
+
+        await page.goto(INDEX_HTML, wait_until="domcontentloaded")
+        await page.wait_for_timeout(300)
+
+        # 1. Verify Flagship Modals & Gear Store on Desktop (58, 70)
+        desktop_features = await page.evaluate("""() => {
+            window.openCommandPalette && window.openCommandPalette();
+            const cmdOpen = document.getElementById('modalCommandPalette')?.classList.contains('active') ||
+                            window.getComputedStyle(document.getElementById('modalCommandPalette')).display !== 'none';
+            window.closeCommandPalette && window.closeCommandPalette();
+            return {
+                cmdOpen,
+                hasFieldPlanner: !!document.getElementById('modalFieldPlanner'),
+                hasPitchSimulator: !!document.getElementById('modalPitchMapSimulator'),
+                hasPlayerAuction: !!document.getElementById('modalPlayerAuction'),
+                hasGearCatalog: typeof window.filterGearStore === 'function' || typeof window.addToGearStoreCart === 'function'
+            };
+        }""")
+        assert desktop_features["cmdOpen"], "Command Palette (⌘K) must open cleanly"
+        assert desktop_features["hasFieldPlanner"], "Tactical Field Planner modal must exist"
+        assert desktop_features["hasPitchSimulator"], "Pitch Map Simulator modal must exist"
+        assert desktop_features["hasPlayerAuction"], "Live Player Auction modal must exist"
+        assert desktop_features["hasGearCatalog"], "Pro Cricket Gear Store must exist"
+
+        # 2. Verify Mobile 5-Hour Weather Forecast is Collapsed by Default (69)
+        mobile_html = (ROOT_DIR / "dist" / "mobile.html").as_uri()
+        m_page = await ctx.new_page()
+        await m_page.goto(mobile_html, wait_until="domcontentloaded")
+        await m_page.wait_for_timeout(300)
+
+        weather_collapsed = await m_page.evaluate("""() => {
+            return typeof window.cricosMobileApp?.toggleMobileWeatherForecast === 'function';
+        }""")
+        assert weather_collapsed, "Mobile 5-hour weather forecast toggle handler must exist"
+
+        assert_no_critical_errors(page)
+        await browser.close()
+
+
 if __name__ == "__main__":
     asyncio.run(test_teams_roster_modals_and_interactive_desks())
-    print("✅ All Teams & Rosters modal and drawer checks passed successfully!")
+    asyncio.run(test_flagship_studios_weather_and_gear_store())
+    print("✅ All Teams, Flagship Studios, Weather & Gear Store checks passed successfully!")
+

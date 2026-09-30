@@ -931,4 +931,19 @@ describe('Domain: Commerce, Tournaments, Marketplace & Media Operations', () => 
       assert.strictEqual(distMobileHtml, mobileHtml, 'dist/mobile.html must be identical to getMobileAppHtml()');
     });
   });
+
+  // =========================================================================
+  // Suite 6: Pro Cricket Gear Store & Pavilion Checkout (70)
+  // =========================================================================
+  describe('Suite 6: Pro Cricket Gear Store & Pavilion Checkout (70)', () => {
+    it('1. Desktop & Mobile Pro Cricket Gear Store Catalog, Category Filtering & Custom Bat Integration', () => {
+      const rootDirPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+      const dashHtml = fs.readFileSync(path.join(rootDirPath, 'index.html'), 'utf8');
+      const mobHtml = fs.readFileSync(path.join(rootDirPath, 'dist', 'mobile.html'), 'utf8');
+      assert.ok(dashHtml.includes('filterGearStore') && dashHtml.includes('addToGearStoreCart'), 'Desktop Gear Store filter and cart functions must exist');
+      assert.ok(mobHtml.includes('addMobileGearToCart'), 'Mobile Gear Store cart handler must exist');
+    });
+  });
 });
+
+

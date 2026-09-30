@@ -173,3 +173,45 @@ async def test_3d_stadium_ui_fix_and_controls():
         assert_no_critical_errors(page)
         catalog_screenshots()
         await browser.close()
+
+
+@pytest.mark.asyncio
+async def test_offline_3d_fallback_and_dynamic_rhb_lhb_wagon_wheel():
+    """
+    Consolidated verification for:
+    - Android APK Offline Non-Blank 3D Stadium Rendering (62)
+    - LHB/RHB True OFF-SIDE vs ON-SIDE Trajectory & Buttons (63)
+    - Dynamic Wagon Wheel RHB / LHB Active Batter Stance Sync (67)
+    """
+    console_errors = []
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True)
+        ctx = await browser.new_context(viewport={"width": 1440, "height": 900})
+        page = await ctx.new_page()
+
+        page.on("console", lambda m: console_errors.append(m.text) if m.type == "error" else None)
+        page.on("pageerror", lambda e: console_errors.append(f"PAGE ERROR: {e}"))
+        page._console_errors = console_errors
+
+        await page.goto(INDEX_HTML, wait_until="domcontentloaded")
+        await page.wait_for_timeout(300)
+
+        await page.click('[data-tab="studio"]')
+        await page.wait_for_timeout(250)
+
+        # Verify RHB vs LHB dynamic stance switching & OFF-SIDE / ON-SIDE mirroring (63, 67)
+        stance_sync = await page.evaluate("""() => {
+            const h = document.getElementById('cricosHeroAuthOverlay');
+            if (h) h.style.display = 'none';
+            window.setBatterStance('RHB');
+            const rhbIsRhbActive = document.getElementById('btnStanceRhb')?.classList.contains('active');
+            window.setBatterStance('LHB');
+            const lhbIsRhbActive = document.getElementById('btnStanceRhb')?.classList.contains('active');
+            return { rhbIsRhbActive, lhbIsRhbActive, isLhbActive: document.getElementById('btnStanceLhb')?.classList.contains('active') };
+        }""")
+        assert stance_sync["isLhbActive"], "LHB stance pill must become active when switched to LHB"
+        assert stance_sync["rhbIsRhbActive"] != stance_sync["lhbIsRhbActive"], "RHB active state must toggle off when switching from RHB to LHB"
+
+        assert_no_critical_errors(page)
+        await browser.close()
+

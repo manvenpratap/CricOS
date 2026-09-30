@@ -547,4 +547,25 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(mobileSrc.includes('openPlayerAuctionSheet('), 'Mobile Player Auction sheet');
     });
   });
+
+  // =========================================================================
+  // 8. Dynamic RHB/LHB Stance Sync & Intelligent Venue Weather (63, 67, 69)
+  // =========================================================================
+  describe('8. Dynamic RHB/LHB Stance Sync & Intelligent Venue Weather (63, 67, 69)', () => {
+    it('8.1 should automatically sync active batter stance (RHB / LHB) to Wagon Wheel & 3D Stadium', () => {
+      assert.ok(dashboardSrc.includes('setBatterStance'), 'setBatterStance controller must exist');
+      assert.ok(dashboardSrc.includes('OFF-SIDE') && dashboardSrc.includes('ON-SIDE'), 'Wagon Wheel & 3D Stadium must label OFF-SIDE and ON-SIDE clearly');
+      assert.ok(mobileSrc.includes('setWagonBatterStance') || mobileSrc.includes('RHB') && mobileSrc.includes('LHB'), 'Mobile Wagon Wheel must support RHB and LHB stance switching');
+    });
+
+    it('8.2 should provide multi-venue meteorological intelligence and collapse mobile 5-hour weather forecast by default', () => {
+      assert.ok(dashboardSrc.includes('VENUE_WEATHER_PROFILES'), 'VENUE_WEATHER_PROFILES dictionary must exist');
+      assert.ok(dashboardSrc.includes('Wankhede') && dashboardSrc.includes('Chinnaswamy'), 'Flagship stadium weather profiles must exist');
+      assert.ok(mobileSrc.includes('weatherForecastExpanded'), 'weatherForecastExpanded state toggle must exist');
+      assert.ok(mobileSrc.includes('toggleMobileWeatherForecast'), 'toggleMobileWeatherForecast handler must exist');
+      assert.ok(mobileSrc.includes('id="btnMobileMarketplaceWeatherToggle"'), 'Marketplace weather toggle button must exist');
+    });
+  });
 });
+
+

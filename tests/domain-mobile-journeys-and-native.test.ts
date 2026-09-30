@@ -367,4 +367,36 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('cancelAnimationFrame'), 'Must cancel animation frames on cleanup');
     });
   });
+
+  // =========================================================================
+  // Suite 4: Android APK Toast Deduplication, Spring Physics Toast & Sidebar Contrast (68)
+  // =========================================================================
+  describe('Suite 4: Android APK Toast Deduplication, Spring Physics Toast & Sidebar Contrast (68)', () => {
+    const mobileHtml = fs.readFileSync(path.join(rootDir, 'dist', 'mobile.html'), 'utf8');
+
+    it('1. Single Bottom-Docked Glassmorphic Spring Toast with Live Progress Bar', () => {
+      assert.ok(mobileHtml.includes('@keyframes toastSpringIn'), 'toastSpringIn keyframe animation must exist');
+      assert.ok(mobileHtml.includes('@keyframes toastSpringOut'), 'toastSpringOut keyframe animation must exist');
+      assert.ok(mobileHtml.includes('id="mobileToastContainer"'), 'mobileToastContainer element must exist');
+      assert.ok(mobileHtml.includes('transform-origin: center bottom'), 'Toast must animate from bottom center origin');
+    });
+
+    it('2. Native Android Bridge Suppresses Duplicate Toast.makeText while Preserving Haptics', () => {
+      const mainActivityPath = fs.existsSync(path.join(rootDir, 'android/app/src/main/java/com/cricos/app/MainActivity.java'))
+        ? path.join(rootDir, 'android/app/src/main/java/com/cricos/app/MainActivity.java')
+        : path.join(rootDir, 'apps/mobile/android/app/src/main/java/com/cricos/app/MainActivity.java');
+      const mainActivityJava = fs.readFileSync(mainActivityPath, 'utf8');
+      assert.ok(
+        mainActivityJava.includes('Native OS Toast.makeText suppressed'),
+        'MainActivity.java showToast bridge must suppress duplicate native Toast.makeText'
+      );
+      assert.ok(
+        mainActivityJava.includes('public void triggerHaptic(String type)'),
+        'MainActivity.java must expose native haptic feedback bridge'
+      );
+    });
+  });
 });
+
+
+
