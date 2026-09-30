@@ -624,7 +624,39 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(mobileSrc.includes('overSnap.deliveries'), 'Mobile undo must restore previous over deliveries when unwinding over boundary');
     });
   });
+
+  // =========================================================================
+  // 10. Official Match Scorecard Live Synchronization & Contrast Invariants
+  // =========================================================================
+  describe('10. Official Match Scorecard Live Synchronization & Contrast Invariants', () => {
+    it('10.1 should dynamically synchronize mobile scorecard with live scoring deliveries, overs, CRR, RRR, and extras', () => {
+      assert.ok(mobileSrc.includes('renderDynamicScorecard()'), 'Mobile renderDynamicScorecard must exist');
+      assert.ok(mobileSrc.includes('id="mobileScorecardPanel"'), 'Mobile scorecard panel must exist');
+      assert.ok(mobileSrc.includes('this.matchState.extras'), 'Mobile scorecard must track and display extras breakdown');
+      assert.ok(mobileSrc.includes('this.matchState.fallOfWickets'), 'Mobile scorecard must render dynamic fall of wickets');
+      assert.ok(mobileSrc.includes('this.matchState.dismissedBatters'), 'Mobile scorecard must render official dismissal descriptions');
+      assert.ok(mobileSrc.includes('applyExtraDelivery(type, opt)'), 'Mobile applyExtraDelivery must exist and defend against missing opt');
+    });
+
+    it('10.2 should dynamically synchronize desktop scorecard with live score state, totals, and innings badges', () => {
+      assert.ok(dashboardSrc.includes('renderDetailedScorecard'), 'Desktop renderDetailedScorecard function must exist');
+      assert.ok(dashboardSrc.includes('scorecardInningsScore'), 'Desktop scorecard innings score badge must exist');
+      assert.ok(dashboardSrc.includes('scorecardTotalText'), 'Desktop scorecard total text element must exist');
+      assert.ok(dashboardSrc.includes('scorecardFowContainer'), 'Desktop fall of wickets container must exist');
+      assert.ok(dashboardSrc.includes('btnScorecardInn2'), 'Desktop Innings 2 tab button must dynamically update');
+    });
+
+    it('10.3 should enforce Swiss Minimalist and Nordic Editorial daylight card surfaces and deep typography for scorecards', () => {
+      assert.ok(mobileSrc.includes('body[data-theme="swiss"] #mobileScorecardPanel'), 'Swiss Minimalist light contrast styling must exist for mobile scorecard');
+      assert.ok(mobileSrc.includes('body[data-theme="nordic"] #mobileScorecardPanel'), 'Nordic Editorial warm contrast styling must exist for mobile scorecard');
+      assert.ok(dashboardSrc.includes('body[data-theme="swiss"] #scorecardInningsBanner'), 'Swiss Minimalist scorecard banner contrast must exist');
+      assert.ok(dashboardSrc.includes('body[data-theme="nordic"] #scorecardInningsBanner'), 'Nordic Editorial scorecard banner contrast must exist');
+      assert.ok(dashboardSrc.includes('.scorecard-player-cell'), 'Scorecard player cell styling must exist');
+      assert.ok(dashboardSrc.includes('.scorecard-dismissal-cell'), 'Scorecard dismissal cell styling must exist');
+    });
+  });
 });
+
 
 
 

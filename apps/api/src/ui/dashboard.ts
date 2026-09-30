@@ -345,6 +345,12 @@ export function getDashboardHtml(): string {
       background: var(--turf-emerald);
       color: #04070D;
     }
+    .scorecard-player-cell {
+      color: #F8FAFC;
+    }
+    .scorecard-dismissal-cell {
+      color: var(--text-muted);
+    }
 
     .sidebar-cta-wrap {
       padding: 0.85rem 1rem 0.5rem 1rem;
@@ -2749,6 +2755,47 @@ export function getDashboardHtml(): string {
       border-radius: 4px !important;
     }
 
+    body[data-theme="swiss"] #scorecardInningsBanner {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    body[data-theme="swiss"] #scorecardTeamName {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] #scorecardInningsLabel {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] #scorecardInningsScore {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] #scorecardTotalText {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] #scorecardExtrasText {
+      color: #B45309 !important;
+    }
+    body[data-theme="swiss"] #scorecardDnbText {
+      color: #1E293B !important;
+    }
+    body[data-theme="swiss"] .scorecard-player-cell {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .scorecard-dismissal-cell {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .scorecard-fow-badge {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .btn-scorecard-inn {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .btn-scorecard-inn.active {
+      background: #0F172A !important;
+      color: #FFFFFF !important;
+    }
+
     body[data-theme="swiss"] .three-stadium-viewport {
       border: 1px solid #CBD5E1 !important;
       border-radius: 6px !important;
@@ -3028,6 +3075,47 @@ export function getDashboardHtml(): string {
       background: #FCFBF8 !important;
       border: 1px solid #E6DFD5 !important;
       border-radius: 12px !important;
+    }
+
+    body[data-theme="nordic"] #scorecardInningsBanner {
+      background: #F5F2EB !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] #scorecardTeamName {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] #scorecardInningsLabel {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] #scorecardInningsScore {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] #scorecardTotalText {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] #scorecardExtrasText {
+      color: #C2410C !important;
+    }
+    body[data-theme="nordic"] #scorecardDnbText {
+      color: #292524 !important;
+    }
+    body[data-theme="nordic"] .scorecard-player-cell {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .scorecard-dismissal-cell {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .scorecard-fow-badge {
+      background: #FFFFFF !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .btn-scorecard-inn {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .btn-scorecard-inn.active {
+      background: #1C1917 !important;
+      color: #FCFBF8 !important;
     }
 
     body[data-theme="nordic"] .three-stadium-viewport {
@@ -14252,6 +14340,9 @@ cricos_active_sse_connections 1</pre>
 
       if (partEl) partEl.innerHTML = partnership.runs + ' runs <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(' + partnership.balls + ' balls)</span>';
       if (partFill) partFill.style.width = Math.min(100, (partnership.runs / 75) * 100) + '%';
+      if (typeof renderDetailedScorecard === 'function') {
+        renderDetailedScorecard();
+      }
     }
 
     function recordStudioBall(batRuns) {
@@ -18692,8 +18783,100 @@ cricos_active_sse_connections 1</pre>
       renderDetailedScorecard();
     }
 
-    function renderDetailedScorecard() {
+    function renderDetailedScorecard(liveState) {
       const isInn2 = currentScorecardInnings === 2;
+
+      // Synchronize live match figures for Innings 2
+      const currentRuns = (liveState && liveState.runs !== undefined) ? liveState.runs : (runs || 142);
+      const currentWickets = (liveState && liveState.wickets !== undefined) ? liveState.wickets : (typeof wickets === 'number' && (runs > 0 || legalBalls > 0) ? wickets : 3);
+      const currentBalls = (liveState && liveState.legal_balls !== undefined) ? liveState.legal_balls : (legalBalls || 100);
+      const completedOvers = Math.floor(currentBalls / 6);
+      const ballsInOver = currentBalls % 6;
+      const oversDisplay = (liveState && liveState.overs_display) ? liveState.overs_display : (completedOvers + '.' + ballsInOver);
+      const oversFloat = completedOvers + (ballsInOver / 6);
+      const crr = oversFloat > 0 ? (currentRuns / oversFloat).toFixed(2) : '8.52';
+      const targetRuns = 178;
+      const runsNeeded = Math.max(0, targetRuns - currentRuns);
+      const ballsLeft = Math.max(0, 120 - currentBalls);
+      const rrr = ballsLeft > 0 ? ((runsNeeded / ballsLeft) * 6).toFixed(2) : '0.00';
+
+      if (isInn2) {
+        matchScorecardData.innings2Score = currentRuns + '/' + currentWickets + ' (' + oversDisplay + ' ov)';
+        matchScorecardData.result = currentRuns >= targetRuns
+          ? 'Mumbai Super Strikers won by ' + Math.max(1, 10 - currentWickets) + ' wickets'
+          : 'Mumbai Super Strikers require ' + runsNeeded + ' runs in ' + ballsLeft + ' balls';
+
+        // Update active batters in Innings 2 scorecard
+        if (typeof studioStriker !== 'undefined' && studioStriker) {
+          const strikerEntry = matchScorecardData.batters.find(b => b.name.includes(studioStriker.name) || studioStriker.name.includes(b.name.replace(' *', '')));
+          if (strikerEntry) {
+            strikerEntry.name = studioStriker.name + ' *';
+            strikerEntry.runs = studioStriker.runs;
+            strikerEntry.balls = studioStriker.balls;
+            strikerEntry.fours = studioStriker.fours;
+            strikerEntry.sixes = studioStriker.sixes;
+            strikerEntry.sr = studioStriker.balls > 0 ? (studioStriker.runs / studioStriker.balls) * 100 : 0;
+            strikerEntry.dismissal = 'not out';
+          }
+        }
+        if (typeof studioNonStriker !== 'undefined' && studioNonStriker) {
+          const nonStrikerEntry = matchScorecardData.batters.find(b => b.name.includes(studioNonStriker.name) || studioNonStriker.name.includes(b.name.replace(' *', '')));
+          if (nonStrikerEntry) {
+            nonStrikerEntry.name = studioNonStriker.name;
+            nonStrikerEntry.runs = studioNonStriker.runs;
+            nonStrikerEntry.balls = studioNonStriker.balls;
+            nonStrikerEntry.fours = studioNonStriker.fours;
+            nonStrikerEntry.sixes = studioNonStriker.sixes;
+            nonStrikerEntry.sr = studioNonStriker.balls > 0 ? (studioNonStriker.runs / studioNonStriker.balls) * 100 : 0;
+            nonStrikerEntry.dismissal = 'not out';
+          }
+        }
+        if (liveState && liveState.batters) {
+          Object.values(liveState.batters).forEach(sb => {
+            const entry = matchScorecardData.batters.find(b => b.name.includes(sb.name || sb.playerId) || (sb.name && sb.name.includes(b.name.replace(' *', ''))));
+            if (entry) {
+              entry.runs = sb.runs;
+              entry.balls = sb.ballsFaced;
+              entry.fours = sb.fours;
+              entry.sixes = sb.sixes;
+              entry.sr = sb.strikeRate;
+              if (sb.isOut && sb.dismissalDescription) {
+                entry.dismissal = sb.dismissalDescription;
+                entry.name = entry.name.replace(' *', '');
+              }
+            }
+          });
+        }
+        if (typeof desktopDismissalHistory !== 'undefined' && desktopDismissalHistory.length > 0) {
+          desktopDismissalHistory.forEach(d => {
+            const entry = matchScorecardData.batters.find(b => b.name.includes(d.outName) || d.outName.includes(b.name.replace(' *', '')));
+            if (entry && d.previousBatterState) {
+              entry.runs = d.previousBatterState.runs;
+              entry.balls = d.previousBatterState.balls;
+              entry.fours = d.previousBatterState.fours;
+              entry.sixes = d.previousBatterState.sixes;
+              entry.sr = d.previousBatterState.balls > 0 ? (d.previousBatterState.runs / d.previousBatterState.balls) * 100 : 0;
+              entry.dismissal = (d.kind || 'c. sub') + (d.fielder ? ' ' + d.fielder : '');
+              entry.name = entry.name.replace(' *', '');
+            }
+          });
+        }
+
+        // Update active bowler in Innings 2 scorecard
+        if (liveState && liveState.bowlers) {
+          Object.values(liveState.bowlers).forEach(sbw => {
+            const bEntry = matchScorecardData.bowlers.find(bw => bw.name.includes(sbw.name || sbw.bowlerId) || (sbw.name && sbw.name.includes(bw.name)));
+            if (bEntry) {
+              bEntry.overs = sbw.oversDisplay;
+              bEntry.maidens = sbw.maidens;
+              bEntry.runs = sbw.runsConceded;
+              bEntry.wickets = sbw.wickets;
+              bEntry.econ = sbw.economyRate;
+            }
+          });
+        }
+      }
+
       const batters = isInn2 ? matchScorecardData.batters : matchScorecardData.innings1Batters;
       const bowlers = isInn2 ? matchScorecardData.bowlers : matchScorecardData.innings1Bowlers;
 
@@ -18708,18 +18891,31 @@ cricos_active_sse_connections 1</pre>
       const fowContainer = document.getElementById('scorecardFowContainer');
       const batterBody = document.getElementById('detailedScorecardBattersBody');
       const bowlerBody = document.getElementById('detailedScorecardBowlersBody');
+      const btnInn2 = document.getElementById('btnScorecardInn2');
+
+      if (btnInn2) {
+        btnInn2.textContent = 'Innings 2 (MUM ' + currentRuns + '/' + currentWickets + ')';
+        btnInn2.setAttribute('data-tooltip', 'View Mumbai Super Strikers Innings 2 (Current Chase: ' + currentRuns + '/' + currentWickets + ')');
+      }
 
       if (teamName) teamName.textContent = isInn2 ? 'Mumbai Super Strikers' : 'Delhi Daredevils';
       if (label) label.textContent = isInn2 ? 'Innings 2 (Target: 178)' : 'Innings 1 (First Batting)';
       if (scoreEl) {
         scoreEl.innerHTML = isInn2
-          ? '142/3 <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(16.4 ov • CRR: 8.52 • RRR: 10.80)</span>'
+          ? currentRuns + '/' + currentWickets + ' <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(' + oversDisplay + ' ov • CRR: ' + crr + ' • RRR: ' + rrr + ')</span>'
           : '178/10 <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-ui);">(19.4 ov • RR: 9.05)</span>';
       }
-      if (extrasText) extrasText.textContent = isInn2 ? '12' : '8';
-      if (extrasDetail) extrasDetail.textContent = isInn2 ? '(b 4, lb 2, w 5, nb 1)' : '(b 2, lb 1, w 4, nb 1)';
-      if (totalText) totalText.textContent = isInn2 ? '142/3' : '178/10';
-      if (totalDetail) totalDetail.textContent = isInn2 ? '(3 wkts, 16.4 ov)' : '(10 wkts, 19.4 ov)';
+
+      if (isInn2 && liveState && liveState.extras) {
+        if (extrasText) extrasText.textContent = String(liveState.extras.total);
+        if (extrasDetail) extrasDetail.textContent = '(b ' + (liveState.extras.byes || 0) + ', lb ' + (liveState.extras.legByes || 0) + ', w ' + (liveState.extras.wides || 0) + ', nb ' + (liveState.extras.noBalls || 0) + ')';
+      } else {
+        if (extrasText) extrasText.textContent = isInn2 ? '12' : '8';
+        if (extrasDetail) extrasDetail.textContent = isInn2 ? '(b 4, lb 2, w 5, nb 1)' : '(b 2, lb 1, w 4, nb 1)';
+      }
+
+      if (totalText) totalText.textContent = isInn2 ? (currentRuns + '/' + currentWickets) : '178/10';
+      if (totalDetail) totalDetail.textContent = isInn2 ? '(' + currentWickets + ' wkts, ' + oversDisplay + ' ov)' : '(10 wkts, 19.4 ov)';
       if (dnbText) {
         dnbText.textContent = isInn2
           ? 'Rishabh Pant (wk), Ravindra Jadeja, Axar Patel, Mohammed Shami, Jasprit Bumrah'
@@ -18727,20 +18923,42 @@ cricos_active_sse_connections 1</pre>
       }
 
       if (fowContainer) {
-        const fowList = isInn2 ? [
-          { wkt: '1-14', batter: 'Rohit Verma', ov: '2.1 ov' },
-          { wkt: '2-48', batter: 'Ishan Kishan', ov: '5.4 ov' },
-          { wkt: '3-104', batter: 'Suryakumar Yadav', ov: '12.2 ov' }
-        ] : [
-          { wkt: '1-28', batter: 'Prithvi Shaw', ov: '3.1 ov' },
-          { wkt: '2-74', batter: 'Mitchell Marsh', ov: '8.2 ov' },
-          { wkt: '3-98', batter: 'David Warner', ov: '11.5 ov' },
-          { wkt: '4-142', batter: 'Axar Patel', ov: '15.3 ov' },
-          { wkt: '5-155', batter: 'Rishabh Pant', ov: '17.1 ov' }
-        ];
+        let fowList = [];
+        if (isInn2) {
+          if (liveState && liveState.fall_of_wickets && liveState.fall_of_wickets.length > 0) {
+            fowList = liveState.fall_of_wickets.map(f => ({
+              wkt: f.wicketNumber + '-' + f.score,
+              batter: f.playerOutId,
+              ov: f.overs + ' ov'
+            }));
+          } else {
+            fowList = [
+              { wkt: '1-14', batter: 'Rohit Verma', ov: '2.1 ov' },
+              { wkt: '2-48', batter: 'Ishan Kishan', ov: '5.4 ov' },
+              { wkt: '3-104', batter: 'Suryakumar Yadav', ov: '12.2 ov' }
+            ];
+            if (typeof desktopDismissalHistory !== 'undefined' && desktopDismissalHistory.length > 0) {
+              desktopDismissalHistory.forEach((d, idx) => {
+                fowList.push({
+                  wkt: (4 + idx) + '-' + currentRuns,
+                  batter: d.outName,
+                  ov: oversDisplay + ' ov'
+                });
+              });
+            }
+          }
+        } else {
+          fowList = [
+            { wkt: '1-28', batter: 'Prithvi Shaw', ov: '3.1 ov' },
+            { wkt: '2-74', batter: 'Mitchell Marsh', ov: '8.2 ov' },
+            { wkt: '3-98', batter: 'David Warner', ov: '11.5 ov' },
+            { wkt: '4-142', batter: 'Axar Patel', ov: '15.3 ov' },
+            { wkt: '5-155', batter: 'Rishabh Pant', ov: '17.1 ov' }
+          ];
+        }
 
         fowContainer.innerHTML = fowList.map(f => \`
-          <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.25rem 0.6rem; color: #F8FAFC;" data-tooltip="Wicket: \${f.batter} at \${f.ov}">
+          <span class="scorecard-fow-badge" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.25rem 0.6rem; color: #F8FAFC;" data-tooltip="Wicket: \${f.batter} at \${f.ov}">
             <strong style="color: var(--rose);">\${f.wkt}</strong> <small style="color: var(--text-muted);">(\${f.batter}, \${f.ov})</small>
           </span>
         \`).join('');
@@ -18749,8 +18967,8 @@ cricos_active_sse_connections 1</pre>
       if (batterBody && batters) {
         batterBody.innerHTML = batters.map(b => \`
           <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <td style="padding: 0.5rem 0.6rem; font-weight: 700; color: #F8FAFC;">\${b.name}</td>
-            <td style="padding: 0.5rem 0.6rem; color: var(--text-muted); font-size: 0.78rem;">\${b.dismissal}</td>
+            <td style="padding: 0.5rem 0.6rem; font-weight: 700;" class="scorecard-player-cell">\${b.name}</td>
+            <td style="padding: 0.5rem 0.6rem; font-size: 0.78rem;" class="scorecard-dismissal-cell">\${b.dismissal}</td>
             <td style="padding: 0.5rem 0.6rem; text-align: right; font-weight: 800; color: var(--turf-emerald); font-family: var(--font-score);">\${b.runs}</td>
             <td style="padding: 0.5rem 0.6rem; text-align: right;">\${b.balls}</td>
             <td style="padding: 0.5rem 0.6rem; text-align: right;">\${b.fours}</td>
@@ -18763,7 +18981,7 @@ cricos_active_sse_connections 1</pre>
       if (bowlerBody && bowlers) {
         bowlerBody.innerHTML = bowlers.map(bw => \`
           <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <td style="padding: 0.5rem 0.6rem; font-weight: 700; color: #F8FAFC;">\${bw.name}</td>
+            <td style="padding: 0.5rem 0.6rem; font-weight: 700;" class="scorecard-player-cell">\${bw.name}</td>
             <td style="padding: 0.5rem 0.6rem; text-align: right;">\${bw.overs}</td>
             <td style="padding: 0.5rem 0.6rem; text-align: right;">\${bw.maidens}</td>
             <td style="padding: 0.5rem 0.6rem; text-align: right;">\${bw.runs}</td>
@@ -20960,6 +21178,9 @@ cricos_active_sse_connections 1</pre>
             document.getElementById('bowlerFigures').innerHTML = bowler.oversDisplay + '-' + bowler.maidens + '-' + bowler.runsConceded + '-' + bowler.wickets + ' <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(Econ: ' + bowler.economyRate.toFixed(2) + ')</span>';
           }
         }
+      }
+      if (typeof renderDetailedScorecard === 'function') {
+        renderDetailedScorecard(state);
       }
     }
 

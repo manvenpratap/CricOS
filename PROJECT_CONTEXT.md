@@ -1,14 +1,48 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-09-30 23:25:00
-**Version:** 1.0.0-phase2cl (Authentic Light Theme Contrast for Player Profile & Holographic Cards, and Organic 3D Feature Integration)  
+**Last Updated:** 2026-09-30 23:50:00
+**Version:** 1.0.0-phase2cm (Official Match Scorecard Live Synchronization & Light Theme Contrast)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CL Completed — Authentic Light Theme Contrast for Player Profile & Holographic Cards, and Organic 3D Feature Integration (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_57_ui_ux_contrast_and_accessibility.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CM Completed — Official Match Scorecard Live Synchronization & Light Theme Contrast (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/src/screens/LiveMatchScreen.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_59_live_scorecard_synchronization.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Mobile Dynamic Official Scorecard (`MATCHES` -> `ANALYTICS` -> `CARD` / `#mobileScorecardPanel`)**:
+    - Rewrote `renderDynamicScorecard()` to fully synchronize with live match state:
+      - Live overs calculation (`completedOvers.ballsRemaining ov`), Current Run Rate (`crr`), and Required Run Rate (`rrr`).
+      - Batting Table: Live striker marked with emerald badge and asterisk (`*`), live runs, balls faced, boundaries (4s, 6s), and calculated strike rate.
+      - Official Dismissals: Batters dismissed via `confirmMobileDismissal()` rendered with official dismissal descriptions (e.g., `c Pant b Kishan`, `lbw b Siraj`) from `this.matchState.dismissedBatters`.
+      - Bench Reserves: Un-batted players accurately listed under "Did Not Bat".
+      - Dynamic Extras: Tracked and broken down by category (`wides`, `noBalls`, `legByes`, `byes`, `penalty`) with accurate total extras.
+      - Dynamic Fall of Wickets: Rendered with dynamic wicket milestones (e.g., `1-14 (Kishan, 2.1 ov)`, `2-48 (Pant, 6.3 ov)`, `3-104 (Surya, 12.5 ov)`) from `this.matchState.fallOfWickets`.
+      - Bowling Figures: Dynamically merges active bowler's live stats (overs, maidens, runs conceded, wickets taken, economy) into team bowling figures.
+    - Defended `applyExtraDelivery(type, opt)` with safe defaults when `opt` is omitted or numeric.
+  - **2. Desktop Match Center Scorecard Dynamic Synchronization (`dashboard.ts`)**:
+    - Created `renderDetailedScorecard(liveState)` invoked directly from `updateStudioUI()` and `renderScoreState(state)`:
+      - Dynamic banner score `#scorecardInningsScore` and `#scorecardTotalText` updating live runs, wickets, overs, CRR, and RRR.
+      - Synchronized Innings tab switchers (`#btnScorecardInn1` & `#btnScorecardInn2`).
+      - Batters and Bowlers tables update live player stats and strike rates.
+      - Fall of Wickets `#scorecardFowContainer` synchronizes with live wickets.
+  - **3. Daylight Surfaces & WCAG 2.2 AAA/AA Contrast Compliance**:
+    - Mobile: Swiss Minimalist (`body[data-theme="swiss"] #mobileScorecardPanel`) styled with pure white card surfaces (`#FFFFFF`), slate borders (`#E2E8F0`), and dark typography (`#0F172A`).
+    - Mobile: Nordic Editorial (`body[data-theme="nordic"] #mobileScorecardPanel`) styled with warm oat paper surfaces (`#FCFBF8`), subtle sand borders (`#E6DFD5`), and deep stone typography (`#1C1917`).
+    - Desktop: High-contrast daylight banner `#scorecardInningsBanner`, `.scorecard-player-cell`, `.scorecard-dismissal-cell`, and `.scorecard-fow-badge` with AAA/AA contrast.
+  - **4. Verification & Testing Health**:
+    - Verified all 212 unit/domain tests in 60 suites pass in 415ms via `./pipeline.sh test --summary`.
+    - Added Suite 10 in `tests/domain-scoring-and-match-ops.test.ts` asserting official scorecard dynamic synchronization and light theme contrast invariants.
+    - Created `tests/test_59_live_scorecard_synchronization.py` asserting:
+      - Dynamic mobile scorecard updates across boundaries (+4), extras (WIDE), dismissals (CAUGHT), and delivery undos.
+      - Dynamic desktop scorecard updates with live runs, wickets, and totals.
+      - High-contrast visual rendering on Swiss Minimalist and Nordic Editorial themes.
+      - Zero critical console errors across all journeys.
+      - Visual screenshots captured:
+        - `scorecard_mobile_swiss_minimal.png` (93 KB)
+        - `scorecard_mobile_nordic_editorial.png` (96 KB)
+        - `scorecard_desktop_swiss_minimal.png` (251 KB)
+        - `scorecard_desktop_nordic_editorial.png` (282 KB)
+- **Preceding Phase**: Phase 2CL Completed — Authentic Light Theme Contrast for Player Profile & Holographic Cards, and Organic 3D Feature Integration (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_57_ui_ux_contrast_and_accessibility.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Player Profile Cards Light Theme Contrast & Legibility**:
     - **Swiss Minimalist (`body[data-theme="swiss"]` / `html[data-theme="swiss"]`)**: Converted mobile and desktop player cards (`.profile-hero-card`, `.profile-settings-card`, `.profile-bio-card`, `.athletic-stats-card`, `.profile-stat-box`, `.profile-dossier-card`, `.profile-tournament-card`) to clean, high-contrast daylight card surfaces (`background-color: #FFFFFF !important; background-image: linear-gradient(...) !important; border: 1px solid #E2E8F0 !important; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05) !important`).
     - **Nordic Editorial (`body[data-theme="nordic"]` / `html[data-theme="nordic"]`)**: Converted profile cards to tactile warm oat paper surfaces (`background-color: #FCFBF8 !important; background-image: linear-gradient(...) !important; border: 1px solid #E6DFD5 !important; box-shadow: 0 4px 6px -1px rgba(28, 25, 23, 0.05), 0 2px 4px -2px rgba(28, 25, 23, 0.04) !important`).

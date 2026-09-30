@@ -310,14 +310,20 @@ export class LiveMatchScreenController {
       `;
         }
         else if (activeChart === 'SCORECARD') {
+            const completedOvers = Math.floor(this.state.legalBalls / 6);
+            const ballsInOver = this.state.legalBalls % 6;
+            const oversDisplay = `${completedOvers}.${ballsInOver}`;
+            const bowlerOvers = `${this.state.bowler.overs}.${this.state.bowler.ballsThisOver}`;
+            const bowlerOversFloat = this.state.bowler.overs + (this.state.bowler.ballsThisOver / 6);
+            const bowlerEcon = bowlerOversFloat > 0 ? (this.state.bowler.runsConceded / bowlerOversFloat).toFixed(2) : '0.00';
             chartPanelHtml = `
         <div id="mobileScorecardPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
             <div>
               <span style="font-size: 0.85rem; font-weight: 800; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">📄 Detailed Scorecard (Official Match Scorecard)</span>
-              <div style="font-size: 0.65rem; color: #94a3b8;">Innings 2: 142/3</div>
+              <div style="font-size: 0.65rem; color: #94a3b8;">Innings 2: ${this.state.totalRuns}/${this.state.totalWickets}</div>
             </div>
-            <span style="font-size: 0.75rem; color: #00E599; font-weight: 800; font-family: monospace; background: rgba(0,229,153,0.12); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.3);">${this.state.totalRuns}/${this.state.totalWickets} (16.4 ov)</span>
+            <span style="font-size: 0.75rem; color: #00E599; font-weight: 800; font-family: monospace; background: rgba(0,229,153,0.12); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.3);">${this.state.totalRuns}/${this.state.totalWickets} (${oversDisplay} ov)</span>
           </div>
 
           <div style="font-size: 0.7rem; font-weight: 700; color: #00D2FF; margin-bottom: 0.35rem; text-transform: uppercase;">Batting Figures</div>
@@ -363,7 +369,7 @@ export class LiveMatchScreenController {
                 <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.striker.balls}</td>
                 <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.striker.fours}</td>
                 <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.striker.sixes}</td>
-                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">${((this.state.striker.runs / this.state.striker.balls) * 100).toFixed(1)}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">${this.state.striker.balls > 0 ? ((this.state.striker.runs / this.state.striker.balls) * 100).toFixed(1) : '0.0'}</td>
               </tr>
               <tr>
                 <td style="padding: 0.3rem 0; font-weight: 700; color: #00D2FF;">${this.state.nonStriker.name} <small style="color: #94a3b8; display: block; font-size: 0.62rem;">not out (non-striker)</small></td>
@@ -371,14 +377,14 @@ export class LiveMatchScreenController {
                 <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.nonStriker.balls}</td>
                 <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.nonStriker.fours}</td>
                 <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.nonStriker.sixes}</td>
-                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">${((this.state.nonStriker.runs / this.state.nonStriker.balls) * 100).toFixed(1)}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">${this.state.nonStriker.balls > 0 ? ((this.state.nonStriker.runs / this.state.nonStriker.balls) * 100).toFixed(1) : '0.0'}</td>
               </tr>
             </tbody>
           </table>
 
           <div style="font-size: 0.68rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem; margin-bottom: 0.65rem; display: flex; justify-content: space-between;">
             <span>Extras: <strong style="color: #FFB800;">12</strong> (b 4, lb 2, w 5, nb 1)</span>
-            <span>Total: <strong style="color: #00E599;">${this.state.totalRuns}/${this.state.totalWickets}</strong> (16.4 ov)</span>
+            <span>Total: <strong style="color: #00E599;">${this.state.totalRuns}/${this.state.totalWickets}</strong> (${oversDisplay} ov)</span>
           </div>
 
           <div style="font-size: 0.7rem; font-weight: 700; color: #FF3366; margin-bottom: 0.35rem; text-transform: uppercase;">Fall of Wickets</div>
@@ -410,12 +416,12 @@ export class LiveMatchScreenController {
                 <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">7.75</td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                <td style="padding: 0.3rem 0; font-weight: 700; color: #FFB800;">Jasprit Bumrah *</td>
-                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">3.4</td>
-                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">0</td>
-                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">32</td>
-                <td style="padding: 0.3rem 0; text-align: right; color: #FF3366; font-weight: 800; font-family: monospace;">1</td>
-                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">8.73</td>
+                <td style="padding: 0.3rem 0; font-weight: 700; color: #FFB800;">${this.state.bowler.name} *</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${bowlerOvers}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.bowler.maidens}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #cbd5e1; font-family: monospace;">${this.state.bowler.runsConceded}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #FF3366; font-weight: 800; font-family: monospace;">${this.state.bowler.wickets}</td>
+                <td style="padding: 0.3rem 0; text-align: right; color: #94a3b8; font-family: monospace;">${bowlerEcon}</td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
                 <td style="padding: 0.3rem 0; font-weight: 700;">Kuldeep Yadav</td>
