@@ -2059,12 +2059,51 @@ export function getMobileAppHtml() {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
+      min-width: 26px;
+      height: 24px;
+      padding: 0 0.35rem;
+      border-radius: 6px;
       font-size: 0.65rem;
       font-weight: 800;
       font-family: Chakra Petch, monospace;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .wagon-sector-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: max-content;
+      height: 26px;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: Space Grotesk, sans-serif;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .worm-over-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 26px;
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      font-family: Chakra Petch, monospace;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
 
     /* 21st.dev Athletic KPI & Career Stats Card in Mobile View */
@@ -4943,11 +4982,29 @@ export function getMobileAppHtml() {
           : 'background: rgba(251, 191, 36, 0.12); border: 1px solid rgba(251, 191, 36, 0.38); color: #FDE68A; font-weight: 700;';
         var cartCount = this.getMobileGearCartCount ? this.getMobileGearCartCount() : 2;
 
+        var studioFieldStyle = isLight
+          ? 'background: #ECFDF5; border: 1px solid #059669; color: #064E3B; font-weight: 800;'
+          : 'background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-weight: 700;';
+        var studioPitchStyle = isLight
+          ? 'background: #F0F9FF; border: 1px solid #0284C7; color: #0C4A6E; font-weight: 800;'
+          : 'background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-weight: 700;';
+        var studioAuctionStyle = isLight
+          ? 'background: #F5F3FF; border: 1px solid #7C3AED; color: #4C1D95; font-weight: 800;'
+          : 'background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: #C084FC; font-weight: 700;';
+        var studioDlsStyle = isLight
+          ? 'background: #FFFBEB; border: 1px solid #D97706; color: #78350F; font-weight: 800;'
+          : 'background: rgba(255, 184, 0, 0.12); border: 1px solid rgba(255, 184, 0, 0.35); color: #FFB800; font-weight: 700;';
+
         h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D Studios &amp; Officiating</div>';
+        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Tactical Studios &amp; Officiating</div>';
         h += '<div id="mobileSidebarStudios" style="display: flex; flex-direction: column; gap: 0.28rem;">';
         h += '<button type="button" id="btnMobileSidebar3DStadium" data-screen="MATCHES" data-subtab="STADIUM_3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
         h += '<button type="button" id="btnMobileSidebarWagonWheel" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
+        h += '<button type="button" id="btnMobileSidebarFieldRadar" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openFieldPlannerSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioFieldStyle + '" data-tooltip="Open 11-Fielder Tactical Radar &amp; MCC Law 28.4 Engine"><span>🎯</span><span>Field Radar (11-Fielder)</span></button>';
+        h += '<button type="button" id="btnMobileSidebarPitchMap" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPitchMapSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioPitchStyle + '" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator"><span>🧬</span><span>Pitch &amp; Win Simulator</span></button>';
+        h += '<button type="button" id="btnMobileSidebarAuction" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPlayerAuctionSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioAuctionStyle + '" data-tooltip="Open Live Player Auction Gavel &amp; Salary Purse"><span>🔨</span><span>Live Player Auction</span></button>';
+        h += '<button type="button" id="btnMobileSidebarDrsReview" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openDrsReviewSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioPitchStyle + '" data-tooltip="Launch Hawk-Eye DRS Review"><span>📡</span><span>Hawk-Eye DRS Review</span></button>';
+        h += '<button type="button" id="btnMobileSidebarDlsTarget" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openDlsCalculatorSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioDlsStyle + '" data-tooltip="Open Duckworth-Lewis-Stern Target Calculator"><span>🌧️</span><span>DLS Target Calculator</span></button>';
         h += '<button type="button" id="btnMobileSidebarCommandSearch" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
         h += '<button type="button" id="btnMobileSidebarCheckIn" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openProviderCheckInSheet();" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open Provider Arrival OTP &amp; 3-Party Match Sign-Off"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>📍</span><span>Provider Check-In &amp; Sign-Off</span></span><span style="font-family: Chakra Petch, monospace; font-size: 0.6rem; font-weight: 800; padding: 0.08rem 0.38rem; border-radius: 999px; background: rgba(0, 229, 153, 0.22);">3/3</span></button>';
         h += '</div></div>';
@@ -7946,13 +8003,14 @@ export function getMobileAppHtml() {
 
         h += '<div style="margin-top: 0.65rem;">';
         h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.35rem; display: flex; justify-content: space-between;"><span>Jump to Over:</span><span>' + (this.selectedWormOver ? 'Inspecting Ov ' + this.selectedWormOver : 'Tap any over below') + '</span></div>';
-        h += '<div style="display: flex; gap: 0.3rem; overflow-x: auto; padding-bottom: 0.25rem;">';
+        h += '<div style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.35rem; -webkit-overflow-scrolling: touch;">';
         for (var chipOv = 1; chipOv <= 16; chipOv++) {
           var isChipActive = this.selectedWormOver === chipOv;
-          var chipBg = isChipActive ? 'rgba(255, 184, 0, 0.3)' : 'rgba(255, 255, 255, 0.05)';
+          var chipBg = isChipActive ? 'rgba(255, 184, 0, 0.28)' : 'rgba(255, 255, 255, 0.05)';
           var chipBorder = isChipActive ? '#FFB800' : 'rgba(255, 255, 255, 0.12)';
           var chipColor = isChipActive ? '#FFB800' : '#cbd5e1';
-          h += '<button type="button" class="analytics-over-chip" style="background: ' + chipBg + '; border: 1px solid ' + chipBorder + '; color: ' + chipColor + '; padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; cursor: pointer; flex-shrink: 0;" onclick="window.cricosMobileApp.selectWormOver(this.dataset.over)" data-over="' + chipOv + '" data-tooltip="Inspect Over ' + chipOv + ' comparison">Ov ' + chipOv + '</button>';
+          var chipShadow = isChipActive ? 'box-shadow: 0 0 8px rgba(255, 184, 0, 0.35);' : '';
+          h += '<button type="button" class="worm-over-chip' + (isChipActive ? ' active' : '') + '" style="background: ' + chipBg + '; border: 1px solid ' + chipBorder + '; color: ' + chipColor + '; ' + chipShadow + '" onclick="window.cricosMobileApp.selectWormOver(this.dataset.over)" data-over="' + chipOv + '" data-tooltip="Inspect Over ' + chipOv + ' comparison">Ov ' + chipOv + '</button>';
         }
         h += '</div>';
         h += '</div>';
@@ -8353,14 +8411,15 @@ export function getMobileAppHtml() {
         var offPct = Math.round((offRuns / totalShotRuns) * 100);
         var legPct = 100 - offPct;
 
-        h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.35rem 0.55rem; margin-bottom: 0.55rem;">';
-        h += '<div style="display: flex; justify-content: space-between; font-size: 0.65rem; margin-bottom: 0.2rem;">';
-        h += '<span style="color: #00D2FF; font-weight: 700;">Off-Side: ' + offRuns + 'r (' + offPct + '%)</span>';
-        h += '<span style="color: #00E599; font-weight: 700;">On-Side: ' + legRuns + 'r (' + legPct + '%)</span>';
-        h += '</div>';
-        h += '<div style="height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; display: flex; overflow: hidden;">';
-        h += '<div style="width: ' + offPct + '%; background: #00D2FF;"></div>';
-        h += '<div style="width: ' + legPct + '%; background: #00E599;"></div>';
+        h += '<div style="margin-top: 0.5rem; padding-top: 0.45rem; border-top: 1px solid rgba(255,255,255,0.06);">';
+        h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.35rem; display: flex; justify-content: space-between;"><span>Filter Specific Sector:</span><span style="color: #00E599; font-weight: 700;">' + activeZoneLabel + '</span></div>';
+        h += '<div style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.35rem; -webkit-overflow-scrolling: touch;">';
+        for (var sz = 0; sz < this.SHOT_ZONES_DATA.length; sz++) {
+          var szItem = this.SHOT_ZONES_DATA[sz];
+          var isSzActive = this.currentSelectedZone === szItem.id;
+          var szShadow = isSzActive ? 'box-shadow: 0 0 8px rgba(0, 229, 153, 0.35);' : '';
+          h += '<button type="button" class="wagon-sector-chip' + (isSzActive ? ' active' : '') + '" style="background: ' + (isSzActive ? 'rgba(0, 229, 153, 0.28)' : 'rgba(255,255,255,0.05)') + '; border: 1px solid ' + (isSzActive ? '#00E599' : 'rgba(255,255,255,0.12)') + '; color: ' + (isSzActive ? '#00E599' : '#cbd5e1') + '; ' + szShadow + '" onclick="window.cricosMobileApp.selectWagonZone(this.dataset.zone)" data-zone="' + szItem.id + '" data-tooltip="Filter ' + szItem.label + '">' + szItem.shortLabel + '</button>';
+        }
         h += '</div></div>';
         h += '</div>';
         return h;
@@ -8548,13 +8607,15 @@ export function getMobileAppHtml() {
         h += '</div>';
 
         h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.35rem;">Filter Specific Sector:</div>';
-        h += '<div style="display: flex; gap: 0.25rem; overflow-x: auto; padding-bottom: 0.25rem;">';
+        h += '<div style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.35rem; -webkit-overflow-scrolling: touch;">';
         var isAllZoneActive = this.analyticsWagonZone === 'ALL';
-        h += '<button type="button" class="analytics-over-chip" style="background: ' + (isAllZoneActive ? 'rgba(192, 132, 252, 0.3)' : 'rgba(255,255,255,0.05)') + '; border: 1px solid ' + (isAllZoneActive ? '#c084fc' : 'rgba(255,255,255,0.12)') + '; color: ' + (isAllZoneActive ? '#c084fc' : '#cbd5e1') + '; padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; cursor: pointer; flex-shrink: 0;" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="ALL" data-tooltip="Show all 8 sectors">All Sectors</button>';
+        var allZoneShadow = isAllZoneActive ? 'box-shadow: 0 0 8px rgba(192, 132, 252, 0.35);' : '';
+        h += '<button type="button" class="wagon-sector-chip' + (isAllZoneActive ? ' active' : '') + '" style="background: ' + (isAllZoneActive ? 'rgba(192, 132, 252, 0.28)' : 'rgba(255,255,255,0.05)') + '; border: 1px solid ' + (isAllZoneActive ? '#c084fc' : 'rgba(255,255,255,0.12)') + '; color: ' + (isAllZoneActive ? '#c084fc' : '#cbd5e1') + '; ' + allZoneShadow + '" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="ALL" data-tooltip="Show all 8 sectors">All Sectors</button>';
         for (var zk = 0; zk < this.SHOT_ZONES_DATA.length; zk++) {
           var zdItem = this.SHOT_ZONES_DATA[zk];
           var isZdActive = this.analyticsWagonZone === zdItem.id;
-          h += '<button type="button" class="analytics-over-chip" style="background: ' + (isZdActive ? 'rgba(192, 132, 252, 0.3)' : 'rgba(255,255,255,0.05)') + '; border: 1px solid ' + (isZdActive ? '#c084fc' : 'rgba(255,255,255,0.12)') + '; color: ' + (isZdActive ? '#c084fc' : '#cbd5e1') + '; padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; cursor: pointer; flex-shrink: 0;" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="' + zdItem.id + '" data-tooltip="Filter ' + zdItem.label + '">' + zdItem.shortLabel + '</button>';
+          var zdShadow = isZdActive ? 'box-shadow: 0 0 8px rgba(192, 132, 252, 0.35);' : '';
+          h += '<button type="button" class="wagon-sector-chip' + (isZdActive ? ' active' : '') + '" style="background: ' + (isZdActive ? 'rgba(192, 132, 252, 0.28)' : 'rgba(255,255,255,0.05)') + '; border: 1px solid ' + (isZdActive ? '#c084fc' : 'rgba(255,255,255,0.12)') + '; color: ' + (isZdActive ? '#c084fc' : '#cbd5e1') + '; ' + zdShadow + '" onclick="window.cricosMobileApp.selectAnalyticsWagonZone(this.dataset.zone)" data-zone="' + zdItem.id + '" data-tooltip="Filter ' + zdItem.label + '">' + zdItem.shortLabel + '</button>';
         }
         h += '</div>';
 
@@ -9325,6 +9386,49 @@ export function getMobileAppHtml() {
           confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
           onConfirm: function() {
             self.showToast('🌧️ Revised DLS Target Applied: 148 runs from 15 overs (Req: 9.87)', 'success');
+            self.closeActionSheet();
+          }
+        });
+      }
+
+      openMatchContextMenuSheet() {
+        var self = this;
+        var isLight = (this.currentTheme === 'swiss' || this.currentTheme === 'nordic');
+        var cardBg = isLight ? '#FFFFFF' : 'rgba(15, 23, 42, 0.85)';
+        var cardBorder = isLight ? '#E2E8F0' : 'rgba(255, 255, 255, 0.1)';
+        var txtColor = isLight ? '#0F172A' : '#F8FAFC';
+        var descColor = isLight ? '#64748B' : '#94A3B8';
+
+        var bodyHtml = '<div style="display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 0.5rem;">' +
+          '<div style="font-size: 0.72rem; color: ' + descColor + '; margin-bottom: 0.2rem;">Quick contextual tools and studio overlays for this match:</div>' +
+          '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openFieldPlannerSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.35); background: rgba(0, 229, 153, 0.1); color: #00E599; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Open 11-Fielder Tactical Radar &amp; MCC Law 28.4 Engine">' +
+            '<span style="display: flex; align-items: center; gap: 0.55rem;"><span>🎯</span><span>11-Fielder Tactical Radar</span></span>' +
+            '<span style="font-size: 0.65rem; color: #00E599; font-family: Chakra Petch, monospace;">MCC 28.4</span>' +
+          '</button>' +
+          '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openPitchMapSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator">' +
+            '<span style="display: flex; align-items: center; gap: 0.55rem;"><span>🧬</span><span>Pitch Beehive &amp; Win Simulator</span></span>' +
+            '<span style="font-size: 0.65rem; color: #00D2FF; font-family: Chakra Petch, monospace;">Monte Carlo</span>' +
+          '</button>' +
+          '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openPlayerAuctionSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.35); background: rgba(168, 85, 247, 0.1); color: #C084FC; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Open Live Player Auction Gavel &amp; Salary Purse">' +
+            '<span style="display: flex; align-items: center; gap: 0.55rem;"><span>🔨</span><span>Live Player Auction Room</span></span>' +
+            '<span style="font-size: 0.65rem; color: #C084FC; font-family: Chakra Petch, monospace;">Draft Gavel</span>' +
+          '</button>' +
+          '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openDrsReviewSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Launch Hawk-Eye DRS Review">' +
+            '<span style="display: flex; align-items: center; gap: 0.55rem;"><span>📡</span><span>Hawk-Eye DRS Review</span></span>' +
+            '<span style="font-size: 0.65rem; color: #00D2FF; font-family: Chakra Petch, monospace;">3D Tracking</span>' +
+          '</button>' +
+          '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openDlsCalculatorSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.35); background: rgba(255, 184, 0, 0.12); color: #FFB800; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Open Duckworth-Lewis-Stern Target Calculator">' +
+            '<span style="display: flex; align-items: center; gap: 0.55rem;"><span>🌧️</span><span>DLS Target Calculator</span></span>' +
+            '<span style="font-size: 0.65rem; color: #FFB800; font-family: Chakra Petch, monospace;">Rain Target</span>' +
+          '</button>' +
+          '</div>';
+
+        this.openActionSheet({
+          title: '⚡ Match Context Actions',
+          bodyHtml: bodyHtml,
+          confirmText: 'Done ✓',
+          confirmStyle: 'background: rgba(255, 255, 255, 0.15); color: #F8FAFC;',
+          onConfirm: function() {
             self.closeActionSheet();
           }
         });
@@ -11123,12 +11227,8 @@ export function getMobileAppHtml() {
         h += '<span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 9999px;">🔴 LIVE MATCH</span>';
         h += '<button type="button" id="mobileActiveVenueBadge" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 9999px; padding: 0.12rem 0.48rem; font-size: 0.66rem; color: #38bdf8; font-weight: 700; cursor: pointer;" data-tooltip="Tap to toggle 5-Hour Turf Weather Forecast">' + activeWeather.icon + ' ' + activeWeather.name + ' (' + activeWeather.tempC + '°C) ' + (this.weatherForecastExpanded ? '▴' : '▾') + '</button>';
         h += '</div>';
-        h += '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); color: #00E599; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open 11-Fielder Tactical Radar & MCC Law 28.4 Engine" aria-label="Field Planner">🎯 Field Radar</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open Pitch Beehive Map & Monte Carlo Win Simulator" aria-label="Pitch and Win Simulator">🧬 Pitch & Win</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.openPlayerAuctionSheet()" style="background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.35); color: #C084FC; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open Live Player Auction Gavel & Salary Purse" aria-label="Player Auction Room">🔨 Auction</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.openDrsReviewSheet()" style="background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: #00D2FF; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Launch Hawk-Eye DRS Review" aria-label="Hawk-Eye DRS Review">📡 Hawk-Eye</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.openDlsCalculatorSheet()" style="background: rgba(255, 184, 0, 0.12); border: 1px solid rgba(255, 184, 0, 0.35); color: #FFB800; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 5px;" data-tooltip="Open Duckworth-Lewis-Stern target calculator" aria-label="DLS Calculator">🌧️ DLS Target</button>';
+        h += '<div style="display: flex; gap: 0.35rem; align-items: center;">';
+        h += '<button type="button" id="btnMatchContextMenu" onclick="window.cricosMobileApp.openMatchContextMenuSheet()" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: #F8FAFC; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Open Match Context Actions (Field Radar, Pitch &amp; Win, Auction, DRS, DLS)" aria-label="Match Context Actions"><span>⚡ Actions</span><span>▾</span></button>';
         h += '</div></div>';
 
         // LED Scoreboard HUD

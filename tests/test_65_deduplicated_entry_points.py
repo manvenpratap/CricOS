@@ -147,9 +147,14 @@ async def test_mobile_single_entry_points():
         sidebar_gear = await page.query_selector("#btnMobileSidebarGearStore")
         assert sidebar_gear is None, "Duplicate #btnMobileSidebarGearStore must be removed from mobile drawer"
 
-        # 6. Verify 3D Stadium & Wagon Wheel remain accessible in sidebar drawer
+        # 6. Verify 3D Stadium & Wagon Wheel remain accessible in sidebar drawer alongside tactical studios
         assert await page.query_selector("#btnMobileSidebar3DStadium") is not None, "Sidebar must retain #btnMobileSidebar3DStadium"
         assert await page.query_selector("#btnMobileSidebarWagonWheel") is not None, "Sidebar must retain #btnMobileSidebarWagonWheel"
+        assert await page.query_selector("#btnMobileSidebarFieldRadar") is not None, "Sidebar must have #btnMobileSidebarFieldRadar"
+        assert await page.query_selector("#btnMobileSidebarPitchMap") is not None, "Sidebar must have #btnMobileSidebarPitchMap"
+        assert await page.query_selector("#btnMobileSidebarAuction") is not None, "Sidebar must have #btnMobileSidebarAuction"
+        assert await page.query_selector("#btnMobileSidebarDrsReview") is not None, "Sidebar must have #btnMobileSidebarDrsReview"
+        assert await page.query_selector("#btnMobileSidebarDlsTarget") is not None, "Sidebar must have #btnMobileSidebarDlsTarget"
 
         # 7. Verify Persona chips exist in drawer
         persona_chips = await page.query_selector_all(".mobile-sidebar-persona-chip")
@@ -159,7 +164,36 @@ async def test_mobile_single_entry_points():
         await page.click("#btnCloseMobileSidebar")
         await page.wait_for_timeout(300)
 
-        # 8. Switch to Marketplace screen via Bottom Nav
+        # 8. Verify Match Context Menu replaces cluttered top bar pills in Match Center
+        context_actions_btn = await page.query_selector("#btnMatchContextMenu")
+        assert context_actions_btn is not None, "#btnMatchContextMenu must exist in match header"
+        await page.click("#btnMatchContextMenu")
+        await page.wait_for_timeout(300)
+        action_sheet = await page.query_selector(".mobile-action-sheet.active")
+        assert action_sheet is not None, "Clicking #btnMatchContextMenu must open the contextual actions sheet"
+        await page.click("#btnActionSheetConfirm")
+        await page.wait_for_timeout(300)
+
+        # 9. Verify Worm Over Selector and Wagon Sector Filter Chip CSS Geometry
+        # Navigate to Analytics & Card subtab
+        await page.click('.mobile-subnav-btn[data-subtab="ANALYTICS"]')
+        await page.wait_for_timeout(300)
+        worm_chips = await page.query_selector_all(".worm-over-chip")
+        assert len(worm_chips) >= 16, "Worm over selector chips must exist with .worm-over-chip class"
+        ov1_chip = worm_chips[0]
+        ov1_box = await ov1_chip.bounding_box()
+        assert ov1_box["width"] >= 30, f"Worm chip must have adequate width (got {ov1_box['width']}px, not squashed)"
+
+        # Switch to Wagon Wheel subtab to inspect Wagon Sector Filter chips
+        await page.click('.mobile-subnav-btn[data-subtab="WAGON"]')
+        await page.wait_for_timeout(300)
+        sector_chips = await page.query_selector_all(".wagon-sector-chip")
+        assert len(sector_chips) >= 8, "Wagon sector chips must exist with .wagon-sector-chip class"
+        for chip in sector_chips[:3]:
+            box = await chip.bounding_box()
+            assert box["width"] >= 35, f"Wagon sector chip must fit text without squashing (got {box['width']}px)"
+
+        # 10. Switch to Marketplace screen via Bottom Nav
         await page.click('[data-screen="MARKETPLACE"]')
         await page.wait_for_timeout(300)
 
@@ -167,7 +201,7 @@ async def test_mobile_single_entry_points():
         gear_btn = await page.query_selector("#btnMobileOpenGearStore")
         assert gear_btn is not None, "#btnMobileOpenGearStore must exist in Marketplace as canonical entry point"
 
-        # 9. Test Gear Store opens cleanly
+        # 11. Test Gear Store opens cleanly
         await page.click("#btnMobileOpenGearStore")
         await page.wait_for_timeout(300)
         is_gear_store_visible = await page.is_visible("#mobileGearStoreContainer")

@@ -1,14 +1,33 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 09:05:00
-**Version:** 1.0.0-phase2ct (Single Points of Entry & Cross-Platform Deduplication)  
+**Last Updated:** 2026-10-01 09:25:00
+**Version:** 1.0.0-phase2cu (Sidebar Navigational Anchoring, Match Context Actions & Chip Geometry Fix)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CT Completed — Single Points of Entry & Cross-Platform Deduplication (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_65_deduplicated_entry_points.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CU Completed — Sidebar Navigational Anchoring, Match Context Actions & Chip Geometry Fix (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_65_deduplicated_entry_points.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Sidebar Canonical Navigation Anchoring**:
+    - **Single Primary Launcher for 3D Stadium & Studios**: Established left sidebar drawer (`#btnMobileSidebar3DStadium` / `#sidebarBtn3DStadium`) as the canonical entry point for the 3D Stadium Pitch studio.
+    - **Sidebar Tactical Studios Hub**: Expanded mobile sidebar drawer Section 2 ("Tactical Studios & Officiating") to house all flagship studios canonically: `#btnMobileSidebarFieldRadar` (11-Fielder Tactical Radar), `#btnMobileSidebarPitchMap` (Pitch Beehive & Monte Carlo Win Simulator), `#btnMobileSidebarAuction` (Live Player Auction Room), `#btnMobileSidebarDrsReview` (Hawk-Eye DRS Review), and `#btnMobileSidebarDlsTarget` (DLS Target Calculator).
+    - **Eliminated Cluttered Top Bar Pills**: Removed the horizontal pill button row (`🎯 Field Radar`, `🧬 Pitch & Win`, `🔨 Auction`, `📡 Hawk-Eye`, `🌧️ DLS Target`) from the mobile match card header, freeing up valuable card real estate.
+    - **Context Menu Within Cards**: Replaced the cluttered pill cluster with a clean contextual actions trigger `#btnMatchContextMenu` (`⚡ Actions ▾`), opening an in-card action sheet for rapid contextual tools without cluttering primary match telemetry.
+  - **2. Chip CSS Geometry & Text Overflow Fix**:
+    - **Worm Over Selector Fix**: Replaced rigid circle styling on `.analytics-over-chip` with dedicated `.worm-over-chip` (`min-width: 44px; height: 26px; padding: 0.2rem 0.45rem; border-radius: 6px; font-weight: 800; font-family: Chakra Petch, monospace; white-space: nowrap; flex-shrink: 0;`). Over numbers (`Ov 1` to `Ov 16`) render cleanly with zero squashing or clipped text.
+    - **Wagon Sector Filter Fix**: Created dedicated `.wagon-sector-chip` class (`min-width: max-content; height: 26px; padding: 0.2rem 0.55rem; border-radius: 6px; font-weight: 700; font-family: Space Grotesk, sans-serif; white-space: nowrap; flex-shrink: 0;`). Sector labels (`All Sectors`, `Third Man`, `Point`, `Cover`, `Mid Wkt`, `Sq Leg`, `Long Off`, `Long On`) render with full readable typography and smooth horizontal scrolling.
+    - **Wagon Wheel In-Card Sector Filter**: Co-located the sector filter chips directly under the 8-Zone Precision Wagon Wheel card (`renderMobile8ZoneWagonWheel`), giving users instant sector breakdown access alongside outfield shot rays.
+    - **Compositor Invariant Compliance**: Strictly avoided `transition: all`, using explicit properties (`transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease`) complying with Emil Kowalski motion vocabulary invariants.
+  - **3. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 490ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Verified Playwright E2E suites:
+      - `tests/test_65_deduplicated_entry_points.py` PASSED (Desktop & Mobile single entry points, sidebar studios, match context menu, and chip geometry assertions).
+      - `tests/test_62_sidebar_3d_stadium_and_wagon_wheel.py` PASSED (3D Stadium and 8-Zone Wagon Wheel sidebar navigation).
+      - Zero critical console errors across all flows.
+    - Verified distribution packaging via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Compiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CT Completed — Single Points of Entry & Cross-Platform Deduplication (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_65_deduplicated_entry_points.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Desktop Single Entry Point Enforcement**:
     - **App Settings**: Single canonical point of entry in topbar cluster `#btnAppSettings`. Removed redundant `#sidebarBtnAppSettings` from sidebar Section 5.
     - **Mobile Preview**: Single canonical point of entry in topbar cluster `#btnMobileQuickLauncher`. Removed redundant modal launcher from sidebar Section 5.
