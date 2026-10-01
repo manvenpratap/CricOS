@@ -18974,19 +18974,34 @@ cricos_active_sse_connections 1</pre>
       if (!container) return;
 
       if (currentActiveChart === 'WORM') {
+        const completedOvers = Math.floor(legalBalls / 6);
         const currentOverNum = (legalBalls / 6);
         const currentRunsNum = runs || 142;
         const currentWicketsNum = wickets || 3;
+        const oversDisplayStr = completedOvers + '.' + (legalBalls % 6);
 
-        const team2Progression = [
-          { over: 0, runs: 0 },
-          { over: 2, runs: 22, isWicket: true },
-          { over: 5, runs: 48 },
-          { over: 8, runs: 76, isWicket: true },
-          { over: 11, runs: 102 },
-          { over: 14, runs: 128, isWicket: true },
-          { over: Math.max(16.4, currentOverNum), runs: currentRunsNum, isWicket: false }
-        ];
+        const team2Progression = [{ over: 0, runs: 0, isWicket: false }];
+        let cumR = 0;
+        let cumW = 0;
+        const maxOvs = Math.min(completedOvers, overHistory.length);
+        for (let i = 0; i < maxOvs; i++) {
+          cumR += overHistory[i].runs;
+          cumW += overHistory[i].wickets;
+          team2Progression.push({
+            over: overHistory[i].overNumber,
+            runs: cumR,
+            isWicket: overHistory[i].wickets > 0
+          });
+        }
+        if (currentOverNum > maxOvs || team2Progression.length === 1) {
+          team2Progression.push({
+            over: currentOverNum,
+            runs: currentRunsNum,
+            isWicket: false
+          });
+        } else if (team2Progression.length > 1) {
+          team2Progression[team2Progression.length - 1].runs = currentRunsNum;
+        }
 
         const w = 620;
         const h = 230;
@@ -19051,6 +19066,17 @@ cricos_active_sse_connections 1</pre>
           '</g>'
         ).join('');
 
+        const liveChaseDot =
+          '<g>' +
+            '<circle cx="' + sx(currentOverNum) + '" cy="' + sy(currentRunsNum) + '" r="6.5" fill="none" stroke="#00D2FF" stroke-width="1.5" opacity="0.6">' +
+              '<animate attributeName="r" values="4;9;4" dur="2s" repeatCount="indefinite" />' +
+              '<animate attributeName="opacity" values="0.8;0.1;0.8" dur="2s" repeatCount="indefinite" />' +
+            '</circle>' +
+            '<circle cx="' + sx(currentOverNum) + '" cy="' + sy(currentRunsNum) + '" r="3.5" fill="#00D2FF" stroke="#ffffff" stroke-width="1.5" data-tooltip="Live Chase: ' + currentRunsNum + '/' + currentWicketsNum + ' in ' + oversDisplayStr + ' ov">' +
+              '<title>Live Chase: Mumbai ' + currentRunsNum + '/' + currentWicketsNum + ' (' + oversDisplayStr + ' ov)</title>' +
+            '</circle>' +
+          '</g>';
+
         container.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" width="100%" height="230" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.25); border-radius: 8px;">' +
           grid +
           phaseSvg +
@@ -19058,6 +19084,7 @@ cricos_active_sse_connections 1</pre>
           '<path d="' + p1Path + '" fill="none" stroke="#00E599" stroke-width="2.5" stroke-linecap="round" />' +
           '<path d="' + p2Path + '" fill="none" stroke="#00D2FF" stroke-width="2.5" stroke-linecap="round" />' +
           p1Dots + p2Dots +
+          liveChaseDot +
           '<g transform="translate(' + (padL + 6) + ', 18)">' +
             '<rect x="0" y="-8" width="12" height="4" fill="#00E599" rx="2" />' +
             '<text x="16" y="-4" fill="#00E599" font-size="11" font-weight="700">Delhi 178/10</text>' +

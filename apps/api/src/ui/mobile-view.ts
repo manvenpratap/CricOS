@@ -7849,11 +7849,19 @@ export function getMobileAppHtml(): string {
           }
         }
 
+        var completedOvers = Math.floor(this.matchState.legalBalls / 6);
+        var currentLegalBalls = this.matchState.legalBalls % 6;
+        var liveOverFrac = this.matchState.legalBalls / 6;
+        var liveRuns = this.matchState.totalRuns;
+        var liveWkts = this.matchState.totalWickets;
+
         var inn2Progression = [{ over: 0, runs: 0, wickets: 0 }];
         var cumRuns = 0;
         var cumWkts = 0;
         var inn2WicketMarkers = [];
-        for (var j = 0; j < this.overHistory.length; j++) {
+
+        var maxHistoryOvers = Math.min(completedOvers, this.overHistory.length);
+        for (var j = 0; j < maxHistoryOvers; j++) {
           var ovItem = this.overHistory[j];
           cumRuns += ovItem.runs;
           cumWkts += ovItem.wickets;
@@ -7869,9 +7877,6 @@ export function getMobileAppHtml(): string {
           }
         }
 
-        var currentLegalBalls = this.matchState.legalBalls % 6;
-        var liveOverFrac = 16 + (currentLegalBalls / 6);
-        var liveRuns = this.matchState.totalRuns;
         var liveX = getX(liveOverFrac);
         var liveY = getY(liveRuns);
 
@@ -7880,7 +7885,12 @@ export function getMobileAppHtml(): string {
           var p2 = inn2Progression[k];
           inn2Points.push(getX(p2.over).toFixed(1) + ',' + getY(p2.runs).toFixed(1));
         }
-        inn2Points.push(liveX.toFixed(1) + ',' + liveY.toFixed(1));
+        if (liveOverFrac > (inn2Progression[inn2Progression.length - 1].over) || inn2Progression.length === 1) {
+          inn2Points.push(liveX.toFixed(1) + ',' + liveY.toFixed(1));
+        } else if (inn2Progression.length > 1) {
+          inn2Progression[inn2Progression.length - 1].runs = liveRuns;
+          inn2Progression[inn2Progression.length - 1].wickets = liveWkts;
+        }
 
         var targetY = getY(this.matchState.targetRuns);
         var currentOversElapsed = (this.matchState.legalBalls / 6);
@@ -7956,13 +7966,15 @@ export function getMobileAppHtml(): string {
           h += '<text x="' + m2.x + '" y="' + (m2.y + 2.2) + '" fill="#ffffff" font-size="5.5" font-weight="900" font-family="Chakra Petch, monospace" text-anchor="middle">W</text>';
         }
 
+        var oversDisplayStr = Math.floor(this.matchState.legalBalls / 6) + '.' + (this.matchState.legalBalls % 6);
         h += '<circle cx="' + liveX + '" cy="' + liveY + '" r="7" fill="none" stroke="#00D2FF" stroke-width="1.5" opacity="0.6"><animate attributeName="r" values="4;10;4" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.8;0.1;0.8" dur="2s" repeatCount="indefinite"/></circle>';
-        h += '<circle cx="' + liveX + '" cy="' + liveY + '" r="3.5" fill="#00D2FF" stroke="#ffffff" stroke-width="1.5" data-tooltip="Live Chase: 142/3 in 16.4 ov" />';
+        h += '<circle cx="' + liveX + '" cy="' + liveY + '" r="3.5" fill="#00D2FF" stroke="#ffffff" stroke-width="1.5" data-tooltip="Live Chase: ' + liveRuns + '/' + liveWkts + ' in ' + oversDisplayStr + ' ov" />';
 
-        if (this.selectedWormOver !== null && this.selectedWormOver >= 1 && this.selectedWormOver <= 16) {
+        var maxInspectableOver = Math.min(20, Math.max(inn2Progression.length - 1, completedOvers, 1));
+        if (this.selectedWormOver !== null && this.selectedWormOver >= 1 && this.selectedWormOver < inn2Progression.length) {
           var selOv = this.selectedWormOver;
           var selX = getX(selOv);
-          var inn1RunsAtSel = this.innings1Progression[selOv].runs;
+          var inn1RunsAtSel = (this.innings1Progression[selOv] ? this.innings1Progression[selOv].runs : 0);
           var inn2RunsAtSel = inn2Progression[selOv].runs;
           var selY1 = getY(inn1RunsAtSel);
           var selY2 = getY(inn2RunsAtSel);
@@ -7972,7 +7984,7 @@ export function getMobileAppHtml(): string {
           h += '<circle cx="' + selX + '" cy="' + selY2 + '" r="4.5" fill="#00D2FF" stroke="#ffffff" stroke-width="1.5" />';
         }
 
-        for (var ovTap = 1; ovTap <= 16; ovTap++) {
+        for (var ovTap = 1; ovTap < inn2Progression.length; ovTap++) {
           var tapX = getX(ovTap);
           var inn2R = inn2Progression[ovTap].runs;
           var tapY = getY(inn2R);
@@ -7982,9 +7994,9 @@ export function getMobileAppHtml(): string {
         h += '</svg>';
         h += '</div>';
 
-        if (this.selectedWormOver !== null) {
+        if (this.selectedWormOver !== null && this.selectedWormOver < inn2Progression.length) {
           var sOv = this.selectedWormOver;
-          var s1 = this.innings1Progression[sOv];
+          var s1 = this.innings1Progression[sOv] || { runs: 0, wickets: 0 };
           var s2 = inn2Progression[sOv];
           var runDiff = s2.runs - s1.runs;
           var diffColor = runDiff >= 0 ? '#00E599' : '#FF3366';
@@ -8005,7 +8017,7 @@ export function getMobileAppHtml(): string {
         h += '<div style="margin-top: 0.65rem;">';
         h += '<div style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.35rem; display: flex; justify-content: space-between;"><span>Jump to Over:</span><span>' + (this.selectedWormOver ? 'Inspecting Ov ' + this.selectedWormOver : 'Tap any over below') + '</span></div>';
         h += '<div style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.35rem; -webkit-overflow-scrolling: touch;">';
-        for (var chipOv = 1; chipOv <= 16; chipOv++) {
+        for (var chipOv = 1; chipOv <= maxInspectableOver; chipOv++) {
           var isChipActive = this.selectedWormOver === chipOv;
           var chipBg = isChipActive ? 'rgba(255, 184, 0, 0.28)' : 'rgba(255, 255, 255, 0.05)';
           var chipBorder = isChipActive ? '#FFB800' : 'rgba(255, 255, 255, 0.12)';

@@ -177,9 +177,28 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
   // ---- Suite 5: Dynamic Mobile Analytics & Scorecard System ----
   describe('Suite 5: Dynamic Mobile Analytics & Scorecard System', () => {
     it('1. Renders dynamic Worm progression curve with CRR and RRR math', () => {
-      const controller = new LiveMatchScreenController();
+      const controller = new LiveMatchScreenController({
+        matchId: 'match-1',
+        battingTeam: 'Mumbai Indians',
+        bowlingTeam: 'Delhi Capitals',
+        totalRuns: 142,
+        totalWickets: 3,
+        legalBalls: 100, // 16.4 ov
+        striker: { playerId: 'p1', name: 'Rohit Sharma', runs: 64, balls: 42, fours: 6, sixes: 3, isStriker: true },
+        nonStriker: { playerId: 'p2', name: 'Virat Kohli', runs: 45, balls: 32, fours: 4, sixes: 1, isStriker: false },
+        bowler: { playerId: 'b1', name: 'Jasprit Bumrah', overs: 3, ballsThisOver: 4, maidens: 0, runsConceded: 22, wickets: 2 },
+        currentOverDeliveries: ['1', '4', '0', '2'],
+        fallOfWickets: [],
+        isOverComplete: false
+      });
       const wormHtml = controller.renderMobileHtml('FAN', 'WORM');
       assert.ok(wormHtml.includes('Worm Progression') || wormHtml.includes('Worm Curve') || wormHtml.includes('worm-svg') || wormHtml.includes('svg'));
+      assert.ok(wormHtml.includes('data-tooltip="Live Point: 142/3 (16.4 ov)"'), 'Initial live chase marker tooltip must show 142/3 (16.4 ov)');
+
+      // Verify dynamic synchronization when delivery recorded
+      controller.recordDelivery({ runs: 4, isExtra: false });
+      const updatedWormHtml = controller.renderMobileHtml('FAN', 'WORM');
+      assert.ok(updatedWormHtml.includes('data-tooltip="Live Point: 146/3 (16.5 ov)"'), 'Live chase marker must dynamically sync to 146/3 (16.5 ov)');
     });
 
     it('2. Renders precision Manhattan over velocity bars', () => {

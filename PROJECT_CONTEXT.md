@@ -1,14 +1,35 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 09:25:00
-**Version:** 1.0.0-phase2cu (Sidebar Navigational Anchoring, Match Context Actions & Chip Geometry Fix)  
+**Last Updated:** 2026-10-01 10:10:00
+**Version:** 1.0.0-phase2cv (Worm Chart Dynamic Auto-Update & Live Score Synchronization)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CU Completed — Sidebar Navigational Anchoring, Match Context Actions & Chip Geometry Fix (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_65_deduplicated_entry_points.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CV Completed — Worm Chart Dynamic Auto-Update & Live Score Synchronization (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/src/screens/LiveMatchScreen.ts`, `tests/test_66_worm_live_score_sync.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Dynamic Mobile Worm Progression Synchronization**:
+    - **Dynamic Over & Fractional Progression**: Replaced hardcoded `16 + (currentLegalBalls / 6)` in `renderDynamicWormChart()` with dynamic `liveOverFrac = this.matchState.legalBalls / 6`, dynamically computing `completedOvers` and slicing `overHistory` up to actual completed overs.
+    - **Real-Time Polyline Calculation**: Dynamically appended the live score endpoint `(liveX, liveY)` to `inn2Points`, immediately responding to every run, boundary, extra, or dismissal confirmed in the mobile scoring studio.
+    - **Dynamic Pulsing Live Marker Tooltip**: Dynamic label `Live Chase: ${liveRuns}/${liveWkts} in ${oversDisplayStr} ov` dynamically reflects live matchState totals and overs.
+    - **Dynamic Over Chip Selector & Inspection Bounds**: Over selection buttons scale dynamically up to `maxInspectableOver = Math.min(20, Math.max(inn2Progression.length - 1, completedOvers, 1))`. Differential comparison safely accesses overs within bounds.
+    - **Reactive Undo Integration**: Undoing deliveries via `#btnMobileStudioUndoBall` instantly unwinds runs and legal balls, automatically recalculating the Worm chart and rolling back polyline points and marker coordinates in real time.
+  - **2. Dynamic Desktop Worm Progression Synchronization**:
+    - **Dynamic team2Progression**: Dynamically generated Mumbai chase progression from `overHistory` and live score state (`runs`, `wickets`, `legalBalls`) in `dashboard.ts` `renderMatchCharts()` rather than hardcoded 16.4 points.
+    - **Pulsing Live Chase Endpoint**: Added live chase glowing dot and marker at `sx(currentOverNum)` and `sy(currentRunsNum)` with dynamic tooltip `Live Chase: ${currentRunsNum}/${currentWicketsNum} in ${oversDisplayStr} ov`.
+    - **Live Header Legend**: Desktop legend dynamically updates to `Mumbai ${currentRunsNum}/${currentWicketsNum} (Chase)`.
+    - **Bi-directional Scoring Keypad & Undo Sync**: Synchronized with `renderScoreState()`, `recordStudioBall()`, and `undoLastDelivery()`.
+  - **3. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 467ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Created Playwright E2E suite `tests/test_66_worm_live_score_sync.py`:
+      - `test_mobile_worm_auto_updates_with_live_score PASSED` (initial 142/3 in 16.4 ov -> four to 146/3 in 16.5 ov -> six to 152/3 in 17.0 ov -> undo back to 146/3 in 16.5 ov -> differential inspection).
+      - `test_desktop_worm_auto_updates_with_live_score PASSED` (initial 142/3 chase -> live delivery update to 146/3 in 16.5 ov -> polyline path & legend update).
+      - Zero critical console errors across all flows.
+      - Captured verified visual screenshots: `test_66_mobile_worm_initial.png`, `test_66_mobile_worm_after_four.png`, `test_66_mobile_worm_after_six.png`, `test_66_desktop_worm_initial.png`, and `test_66_desktop_worm_after_delivery.png`.
+    - Verified distribution packaging via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Compiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CU Completed — Sidebar Navigational Anchoring, Match Context Actions & Chip Geometry Fix (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_65_deduplicated_entry_points.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Sidebar Canonical Navigation Anchoring**:
     - **Single Primary Launcher for 3D Stadium & Studios**: Established left sidebar drawer (`#btnMobileSidebar3DStadium` / `#sidebarBtn3DStadium`) as the canonical entry point for the 3D Stadium Pitch studio.
     - **Sidebar Tactical Studios Hub**: Expanded mobile sidebar drawer Section 2 ("Tactical Studios & Officiating") to house all flagship studios canonically: `#btnMobileSidebarFieldRadar` (11-Fielder Tactical Radar), `#btnMobileSidebarPitchMap` (Pitch Beehive & Monte Carlo Win Simulator), `#btnMobileSidebarAuction` (Live Player Auction Room), `#btnMobileSidebarDrsReview` (Hawk-Eye DRS Review), and `#btnMobileSidebarDlsTarget` (DLS Target Calculator).

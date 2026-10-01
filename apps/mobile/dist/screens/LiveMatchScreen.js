@@ -212,7 +212,7 @@ export class LiveMatchScreenController {
             <circle cx="175" cy="61" r="3.2" fill="#FF3366" stroke="#00D2FF" stroke-width="1" data-tooltip="Wicket at Ov 10: 88/3" />
 
             <circle cx="262" cy="31" r="6" fill="none" stroke="#00D2FF" stroke-width="1.2" opacity="0.7" />
-            <circle cx="262" cy="31" r="3" fill="#00D2FF" stroke="#ffffff" stroke-width="1" data-tooltip="Live Point: ${this.state.totalRuns}/${this.state.totalWickets} (16.4 ov)" />
+            <circle cx="262" cy="31" r="3" fill="#00D2FF" stroke="#ffffff" stroke-width="1" data-tooltip="Live Point: ${this.state.totalRuns}/${this.state.totalWickets} (${Math.floor(this.state.legalBalls / 6)}.${this.state.legalBalls % 6} ov)" />
           </svg>
         </div>
       `;
