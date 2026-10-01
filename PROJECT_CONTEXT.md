@@ -1,14 +1,35 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 08:35:00
-**Version:** 1.0.0-phase2cs (Automatic Match Ending, Scorecard Victory Highlight & Live Standings Synchronization)  
+**Last Updated:** 2026-10-01 09:05:00
+**Version:** 1.0.0-phase2ct (Single Points of Entry & Cross-Platform Deduplication)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CS Completed — Automatic Match Ending, Scorecard Victory Highlight & Live Standings Synchronization (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_64_match_ending_scorecard_and_standings.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CT Completed — Single Points of Entry & Cross-Platform Deduplication (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_65_deduplicated_entry_points.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Desktop Single Entry Point Enforcement**:
+    - **App Settings**: Single canonical point of entry in topbar cluster `#btnAppSettings`. Removed redundant `#sidebarBtnAppSettings` from sidebar Section 5.
+    - **Mobile Preview**: Single canonical point of entry in topbar cluster `#btnMobileQuickLauncher`. Removed redundant modal launcher from sidebar Section 5.
+    - **System Health**: Single canonical point of entry in topbar `#telemetrySyncNode`. Removed duplicate link from sidebar Section 5.
+    - **Match Action Toolbar**: Streamlined toolbar in `#tab-scoring` down to core match operations (`#btnConductToss`, `#btnExportScorecard`, `#btnDesktopEndMatch`, `#btnRateMatch`). Eliminated redundant studio shortcuts (`#btnFieldPlannerQuick`, `#btnPitchMapQuick`, `#btnPlayerAuctionQuick`, `#btnDivisionsQuick`) and redundant ops shortcuts (`#btnUmpireDeskQuick`, `#btnExportCricsheet`) which live canonically in the left sidebar.
+    - **Marketplace Features**: Gear Store and Official Availability Calendar reside canonically in the Marketplace workspace (`#btnOpenGearStoreFromMarketplace`, `#btnMarketplaceOfficialCalendar`). Removed duplicate entries from sidebar Section 4.
+  - **2. Mobile Single Entry Point Enforcement**:
+    - **Sidebar Drawer Navigation**: Removed redundant `#mobileSidebarWorkspaces` list from mobile sidebar drawer; the pinned mobile bottom navigation bar (`.mobile-bottom-nav`) is now the single canonical point of entry for core screens (`MATCHES`, `TEAMS`, `TOURNAMENTS`, `MARKETPLACE`, `PROFILE`).
+    - **Navigation Drawer Toggle**: Header `#btnMobileSidebarToggle` serves as the single canonical entry point to the sidebar drawer. Removed redundant `☰ Menu` button from `#mobileCleanFocusBar`.
+    - **Gear Store & Studios**: Mobile Marketplace screen holds the single point of entry for the Pro Cricket Gear Store (`#btnMobileOpenGearStore`), removing the duplicate button from the sidebar drawer.
+    - **Direct Persona Switcher**: Direct tap chips `#mobileSidebarPersonaStrip` preserved in drawer for instant 1-tap switching without extra sheet nesting.
+  - **3. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 431ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Created Playwright E2E suite `tests/test_65_deduplicated_entry_points.py`:
+      - `test_desktop_single_entry_points PASSED`
+      - `test_mobile_single_entry_points PASSED`
+      - Verified zero critical console errors across all flows.
+      - Captured verified visual screenshots: `test_65_desktop_single_entry_points.png` and `test_65_mobile_single_entry_points.png`.
+    - Verified single-file distribution artifacts synchronization via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Built Android native release & debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CS Completed — Automatic Match Ending, Scorecard Victory Highlight & Live Standings Synchronization (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_64_match_ending_scorecard_and_standings.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Automatic & Manual Match/Innings Conclusion**:
     - Automatic conclusion on target reached (`runs >= target`), all-out (10 wickets per MCC Law 12), and overs exhausted.
     - Mobile Scorer Studio: `#mobileScorerMatchEndedNotice` informs scorer, locks scoring keypad buttons, and keeps `#btnMobileStudioUndoBall` and `#btnMobileEndInnings` accessible. Manual conclusion prompt via native in-app action sheet dialog (`promptScorerEndMatchMobile`).

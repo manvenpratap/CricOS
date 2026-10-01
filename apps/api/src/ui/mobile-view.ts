@@ -4928,28 +4928,7 @@ export function getMobileAppHtml(): string {
         h += '<button type="button" id="btnMobileSidebarPersonaSheet" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPersonaSheet();" style="width: 100%; margin-top: 0.35rem; padding: 0.32rem 0.5rem; border-radius: 6px; border: 1px dashed ' + (isLight ? '#CBD5E1' : 'rgba(255,255,255,0.2)') + '; background: transparent; color: ' + secondaryInk + '; font-size: 0.64rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open full persona sheet modal with role descriptions"><span>Switch Persona Sheet</span><span>▾</span></button>';
         h += '</div>';
 
-        // Section 2: Core Workspaces (Scoped to Persona)
-        h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Core Workspaces</div>';
-        h += '<div id="mobileSidebarWorkspaces" style="display: flex; flex-direction: column; gap: 0.28rem;">';
-        for (var n = 0; n < navItems.length; n++) {
-          var nav = navItems[n];
-          var isCurScreen = this.currentScreen === nav[0];
-          var navStyle = '';
-          if (isCurScreen) {
-            navStyle = isLight
-              ? 'background: #ECFDF5; border: 1.5px solid #059669; color: #064E3B; font-weight: 800;'
-              : 'background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.45); color: #00E599; font-weight: 800;';
-          } else {
-            navStyle = isLight
-              ? 'background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A; font-weight: 700;'
-              : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #F8FAFC; font-weight: 600;';
-          }
-          h += '<button type="button" class="mobile-sidebar-nav-item' + (isCurScreen ? ' active' : '') + '" data-screen="' + nav[0] + '" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.5rem 0.65rem; border-radius: 8px; font-size: 0.76rem; cursor: pointer; ' + navStyle + '" data-tooltip="Open ' + nav[2] + '"><span>' + nav[1] + '</span><span>' + nav[2] + '</span></button>';
-        }
-        h += '</div></div>';
-
-        // Section 3: 3D & Tactical Studios (Tucked out of Main Area to eliminate clutter)
+        // Section 2: 3D Studios & Officiating (Tucked out of Main Area to eliminate clutter)
         var studio3dStyle = isLight
           ? 'background: #F0F9FF; border: 1px solid #0284C7; color: #0C4A6E; font-weight: 800;'
           : 'background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-weight: 700;';
@@ -4966,9 +4945,8 @@ export function getMobileAppHtml(): string {
         var cartCount = this.getMobileGearCartCount ? this.getMobileGearCartCount() : 2;
 
         h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D, Gear Store &amp; Studios</div>';
+        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">3D Studios &amp; Officiating</div>';
         h += '<div id="mobileSidebarStudios" style="display: flex; flex-direction: column; gap: 0.28rem;">';
-        h += '<button type="button" id="btnMobileSidebarGearStore" onclick="window.cricosMobileApp.openMobileGearStore()" style="display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioGearStyle + '" data-tooltip="Open Pro Cricket Gear Store, Match Kit Bag &amp; Pavilion Delivery"><span style="display: inline-flex; align-items: center; gap: 0.55rem;"><span>🛍️</span><span>Pro Cricket Gear Store</span></span><span id="mobileSidebarGearCartBadge" style="font-family: Chakra Petch, monospace; font-size: 0.65rem; font-weight: 800; padding: 0.05rem 0.38rem; border-radius: 999px; background: rgba(0,0,0,0.18);">' + cartCount + '</span></button>';
         h += '<button type="button" id="btnMobileSidebar3DStadium" data-screen="MATCHES" data-subtab="STADIUM_3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch"><span>🏟️</span><span>3D Stadium Pitch</span></button>';
         h += '<button type="button" id="btnMobileSidebarWagonWheel" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel"><span>🎯</span><span>8-Zone Wagon Wheel</span></button>';
         h += '<button type="button" id="btnMobileSidebarCommandSearch" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openCommandPaletteSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioCmdStyle + '" data-tooltip="Open Universal Command Palette"><span>🔍</span><span>Command Palette (⌘K)</span></button>';
@@ -5022,7 +5000,6 @@ export function getMobileAppHtml(): string {
         // Sleek 1-line Clean Focus Strip (hidden when cleanFocusMode is active to remove obvious headers)
         h += '<div id="mobileCleanFocusBar" style="display: ' + (this.cleanFocusMode ? 'none' : 'flex') + '; justify-content: space-between; align-items: center; gap: 0.4rem; padding: 0.38rem 0.6rem; margin-bottom: 0.5rem; border-radius: 8px; background: ' + barBg + '; border: 1px solid ' + barBorder + '; color: ' + barInk + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.38rem; min-width: 0;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="' + menuBtnStyle + ' border-radius: 5px; padding: 0.14rem 0.4rem; font-size: 0.64rem; font-weight: 800; cursor: pointer;" data-tooltip="Open Sidebar Menu">☰ Menu</button>';
         h += '<span style="font-size: 0.68rem; font-weight: 800; color: ' + barInk + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + cfg.icon + ' ' + cfg.title + '</span>';
         h += '</div>';
         h += '<button type="button" id="btnMobileBannerToggleDeclutter" onclick="window.cricosMobileApp.toggleCleanFocusMode()" style="' + toggleBtnStyle + ' border-radius: 5px; padding: 0.15rem 0.42rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; white-space: nowrap;" data-tooltip="Switch to Clean View (compact cards &amp; hide banners)">' + (this.cleanFocusMode ? '📊 Full View' : '✨ Switch to Clean') + '</button>';

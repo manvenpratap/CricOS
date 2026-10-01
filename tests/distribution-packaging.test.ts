@@ -140,13 +140,13 @@ test('Distribution Packaging: Dashboard console contains polished branding, titl
   assert.ok(rootIndex.includes('CricOS'));
   assert.ok(rootIndex.includes('Unified Cricket Operating System'));
 
-  // Navigation links with data-tooltip attributes
+  // Navigation links with data-tooltip attributes (deduplicated single points of entry)
   assert.ok(rootIndex.includes('href="/docs"'));
-  assert.ok(rootIndex.includes('data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox"'));
+  assert.ok(rootIndex.includes('data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox"') || rootIndex.includes('data-tooltip="Interactive OpenAPI 3.0 Documentation &amp; Sandbox"'));
   assert.ok(rootIndex.includes('href="/metrics"'));
-  assert.ok(rootIndex.includes('data-tooltip="Prometheus & OpenMetrics Standard Metrics Exposition"'));
-  assert.ok(rootIndex.includes('href="/health/ready"'));
-  assert.ok(rootIndex.includes('data-tooltip="Kubernetes Readiness Probe & Database Pool Status"'));
+  assert.ok(rootIndex.includes('data-tooltip="Prometheus & OpenMetrics Standard Metrics Exposition"') || rootIndex.includes('data-tooltip="Prometheus &amp; OpenMetrics Standard Metrics Exposition"'));
+  assert.ok(rootIndex.includes('id="telemetrySyncNode"'), 'Canonical telemetry sync node must exist in topbar');
+  assert.ok(rootIndex.includes('openHealthModal()'), 'openHealthModal handler must exist');
 });
 
 test('Distribution Packaging: Floodlit Stadium Broadcast & Athletic Precision Design System invariants', () => {

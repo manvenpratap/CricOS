@@ -5512,10 +5512,6 @@ export function getDashboardHtml() {
               <span class="tab-icon">📊</span>
               <span class="sidebar-nav-label">Fixtures Ops</span>
             </button>
-            <button type="button" onclick="openOfficialCalendarModal()" class="sidebar-nav-item" data-tooltip="Weekly availability schedule, match assignments, and rest buffers">
-              <span class="tab-icon">📅</span>
-              <span class="sidebar-nav-label">Calendar</span>
-            </button>
             <button type="button" onclick="openModal('modalSponsorshipAuction')" class="sidebar-nav-item" data-tooltip="Tournament sponsorship prize pool pledges and virtual player auction desk">
               <span class="tab-icon">🤝</span>
               <span class="sidebar-nav-label">Sponsors &amp; Auction</span>
@@ -5524,13 +5520,6 @@ export function getDashboardHtml() {
               <span class="tab-icon">📑</span>
               <span class="sidebar-nav-label">RFQ Desk</span>
             </button>
-            <button type="button" id="sidebarBtnGearStore" onclick="openGearStoreModal()" class="sidebar-nav-item" data-tooltip="Pro Cricket Gear Store: English willow bats, match leather balls, protective kit, smart sensors &amp; 45-min turf pavilion delivery">
-              <span class="tab-icon">🛍️</span>
-              <span class="sidebar-nav-label" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                <span>Gear Store</span>
-                <span id="sidebarGearCartBadge" style="font-size: 0.62rem; font-family: var(--font-mono); font-weight: 800; padding: 0.08rem 0.38rem; border-radius: 999px; background: rgba(0,229,153,0.2); color: var(--turf-emerald); border: 1px solid rgba(0,229,153,0.4);">2</span>
-              </span>
-            </button>
           </div>
         </div>
 
@@ -5538,25 +5527,13 @@ export function getDashboardHtml() {
         <div class="sidebar-nav-section">
           <div class="sidebar-section-title">Developer &amp; Platform</div>
           <div class="sidebar-nav-list">
-            <button type="button" id="sidebarBtnAppSettings" onclick="openAppSettingsModal()" class="sidebar-nav-item" data-tooltip="Configure all app settings: Theme, Clean View, Audio, Stance, Units &amp; Diagnostics in one place (Shortcut: Alt+S)">
-              <span class="tab-icon">⚙️</span>
-              <span class="sidebar-nav-label">App Settings</span>
-            </button>
-            <button type="button" onclick="openMobilePreviewModal()" class="sidebar-nav-item" data-tooltip="Launch Standalone Consumer Mobile App (iOS &amp; Android Preview) with OTP &amp; Profile">
-              <span class="tab-icon">📱</span>
-              <span class="sidebar-nav-label">Mobile App</span>
-            </button>
-            <a href="/docs" onclick="openApiDocsModal(); return false;" class="sidebar-nav-item" data-tooltip="Interactive OpenAPI 3.0 Documentation & Sandbox">
+            <a href="/docs" onclick="openApiDocsModal(); return false;" class="sidebar-nav-item" data-tooltip="Interactive OpenAPI 3.0 Documentation &amp; Sandbox">
               <span class="tab-icon">📖</span>
               <span class="sidebar-nav-label">API Docs</span>
             </a>
-            <a href="/metrics" onclick="openMetricsModal(); return false;" class="sidebar-nav-item" data-tooltip="Prometheus & OpenMetrics Standard Metrics Exposition">
+            <a href="/metrics" onclick="openMetricsModal(); return false;" class="sidebar-nav-item" data-tooltip="Prometheus &amp; OpenMetrics Standard Metrics Exposition">
               <span class="tab-icon">📈</span>
               <span class="sidebar-nav-label">Metrics</span>
-            </a>
-            <a href="/health/ready" onclick="openHealthModal(); return false;" class="sidebar-nav-item" data-tooltip="Kubernetes Readiness Probe & Database Pool Status">
-              <span class="tab-icon">🩺</span>
-              <span class="sidebar-nav-label">System Health</span>
             </a>
             <button type="button" onclick="openLegalModal()" class="sidebar-nav-item" data-tooltip="Review Apple App Store &amp; Google Play Policies, Privacy Policy and Terms">
               <span class="tab-icon">📜</span>
@@ -5703,23 +5680,14 @@ export function getDashboardHtml() {
               </div>
               <div class="match-meta">T20 Championship • Innings 2 • Match ID: <span id="currentMatchId" style="font-family: monospace; color: var(--cyan);">match-pilot-1</span></div>
             </div>
-            <!-- Organized Match Action Toolbar (Officiating & Records vs Tactical & League Studios) -->
+            <!-- Streamlined Match Action Toolbar (Core match operations: Toss, Scorecard Export, End Match, Rate Match) -->
             <div class="match-action-toolbar">
-              <div class="match-action-group" aria-label="Match Officiating and Records">
+              <div class="match-action-group" aria-label="Match Operations">
                 <span class="match-action-group-label">Match Ops:</span>
                 <button class="nav-pill" id="btnConductToss" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
-                <button class="nav-pill" id="btnUmpireDeskQuick" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalUmpireDesk')" data-tooltip="Open Official Umpire Match Day Desk, DRS review, and sign-off">⚖️ Umpire Desk</button>
-                <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
-                <button class="nav-pill" id="btnExportCricsheet" style="cursor: pointer; background: rgba(0,210,255,0.12); border-color: rgba(0,210,255,0.3); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalCricsheetExport')" data-tooltip="Export ball-by-ball Cricsheet JSON and Federation XML with audio telemetry">⚡ Cricsheet &amp; XML</button>
+                <button class="nav-pill" id="btnExportScorecard" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
                 <button class="nav-pill" id="btnDesktopEndMatch" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="promptDesktopEndMatch()" data-tooltip="Officially conclude match or innings (triggers automatic scorecard result &amp; standings update)">🏁 End Match</button>
-                <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
-              </div>
-              <div class="match-action-group" aria-label="Tactical and League Studios">
-                <span class="match-action-group-label">Studios:</span>
-                <button class="nav-pill" id="btnFieldPlannerQuick" style="cursor: pointer; background: rgba(0,229,153,0.14); border-color: rgba(0,229,153,0.4); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openFieldPlannerModal()" data-tooltip="Open Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Restriction Engine (Shortcut: Shift+F)">🎯 Field Planner</button>
-                <button class="nav-pill" id="btnPitchMapQuick" style="cursor: pointer; background: rgba(0,210,255,0.14); border-color: rgba(0,210,255,0.4); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator (Shortcut: Shift+P)">🧬 Pitch &amp; Win Sim</button>
-                <button class="nav-pill" id="btnPlayerAuctionQuick" style="cursor: pointer; background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.4); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openPlayerAuctionModal()" data-tooltip="Open Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room (Shortcut: Shift+A)">🔨 Player Auction</button>
-                <button class="nav-pill" id="btnDivisionsQuick" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalLeagueDivisions')" data-tooltip="Multi-Division League Ladders, NRR and Promotion/Relegation">🏆 Divisions</button>
+                <button class="nav-pill" id="btnRateMatch" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
               </div>
             </div>
           </div>
@@ -13495,7 +13463,7 @@ cricos_active_sse_connections 1</pre>
         providerStorefrontBtn.style.display = (role === 'TURF_PROVIDER' || role === 'ADMIN') ? 'flex' : 'none';
       }
 
-      // 9. Match Scoreboard Header Quick Buttons Gating
+      // 9. Match Scoreboard Header Quick Buttons Gating (if present)
       const umpireDeskQuickBtn = document.getElementById('btnUmpireDeskQuick');
       const exportCricsheetBtn = document.getElementById('btnExportCricsheet');
       if (umpireDeskQuickBtn) {
