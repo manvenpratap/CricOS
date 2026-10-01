@@ -232,13 +232,13 @@ export function getDashboardHtml() {
       align-items: center;
       justify-content: center;
       border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.26), inset 0 0 12px rgba(0, 210, 255, 0.14);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
       flex-shrink: 0;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .brand:hover .brand-logo {
       transform: scale(1.04);
-      box-shadow: 0 6px 22px rgba(0, 229, 153, 0.42), inset 0 0 14px rgba(0, 210, 255, 0.24);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
     .cricos-brand-svg {
       display: block;
@@ -258,10 +258,7 @@ export function getDashboardHtml() {
       font-size: 1.15rem;
       letter-spacing: -0.03em;
       line-height: 1.1;
-      background: linear-gradient(135deg, #FFFFFF 40%, var(--turf-emerald) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #FFFFFF;
     }
 
     .brand-subtitle {
@@ -295,13 +292,7 @@ export function getDashboardHtml() {
       height: 6px;
       border-radius: 50%;
       background: var(--turf-emerald);
-      box-shadow: 0 0 8px var(--turf-emerald);
-      animation: livePulse 2s infinite ease-in-out;
-    }
-
-    @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.8); }
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
     .sidebar-collapse-btn {
@@ -373,7 +364,7 @@ export function getDashboardHtml() {
       font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 0 16px rgba(0, 229, 153, 0.28), 0 2px 4px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
       transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
       white-space: nowrap;
       overflow: hidden;
@@ -382,7 +373,7 @@ export function getDashboardHtml() {
     @media (hover: hover) and (pointer: fine) {
       .sidebar-cta-btn:hover {
         background: linear-gradient(135deg, #05f5a4, #00E599);
-        box-shadow: 0 0 24px rgba(0, 229, 153, 0.45);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
         transform: translateY(-1px);
       }
     }
@@ -476,7 +467,7 @@ export function getDashboardHtml() {
       border-color: rgba(0, 229, 153, 0.55);
       color: #00FFB2;
       font-weight: 800;
-      box-shadow: inset 4px 0 0 #00E599, 0 0 16px rgba(0, 229, 153, 0.2);
+      box-shadow: inset 4px 0 0 #00E599, 0 1px 3px rgba(0, 0, 0, 0.35);
       position: relative;
     }
 
@@ -487,7 +478,7 @@ export function getDashboardHtml() {
       height: 6px;
       border-radius: 50%;
       background: #00E599;
-      box-shadow: 0 0 8px #00E599;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
       margin-left: auto;
       flex-shrink: 0;
     }
@@ -579,7 +570,7 @@ export function getDashboardHtml() {
 
     .app-sidebar.collapsed .sidebar-nav-item.active,
     .app-sidebar.collapsed .tab-btn.active {
-      box-shadow: 0 0 14px rgba(0, 229, 153, 0.45);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
       border-color: var(--turf-emerald);
       background: rgba(0, 229, 153, 0.2);
     }
@@ -768,8 +759,7 @@ export function getDashboardHtml() {
       height: 7px;
       background: var(--turf-emerald);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--turf-emerald);
-      animation: pulse 2s infinite;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
     .header-nav-divider {
@@ -847,7 +837,7 @@ export function getDashboardHtml() {
       .status-pill:hover {
         background: rgba(0, 229, 153, 0.15);
         border-color: rgba(0, 229, 153, 0.45);
-        box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       }
     }
     .status-pill:active {
@@ -859,13 +849,7 @@ export function getDashboardHtml() {
       height: 7px;
       background: var(--primary);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--primary);
-      animation: livePulse 2s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
     /* Mobile responsive drawer */
@@ -997,7 +981,6 @@ export function getDashboardHtml() {
       height: 100%;
       background: linear-gradient(90deg, var(--turf-emerald), var(--cyan));
       border-radius: 9999px;
-      box-shadow: 0 0 10px rgba(0, 229, 153, 0.5);
       transition: width 0.4s ease;
     }
 
@@ -1047,7 +1030,7 @@ export function getDashboardHtml() {
       .fow-pill:hover {
         transform: scale(1.05);
         border-color: var(--rose);
-        box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
       }
     }
     .fow-pill:active {
@@ -1099,7 +1082,7 @@ export function getDashboardHtml() {
       background: rgba(0, 210, 255, 0.12);
       border-color: rgba(0, 210, 255, 0.4);
       font-weight: 700;
-      box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
 
     /* Slot Reservation Matrix */
@@ -1150,7 +1133,7 @@ export function getDashboardHtml() {
       color: #04070D;
       border-color: var(--cyan);
       font-weight: 700;
-      box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
 
     /* Main Container */
@@ -1365,10 +1348,10 @@ export function getDashboardHtml() {
 
     .ball-bubble.dot { color: var(--text-muted); }
     .ball-bubble.single { color: var(--text-main); background: rgba(255, 255, 255, 0.1); }
-    .ball-bubble.four { background: rgba(0, 229, 153, 0.25); color: var(--turf-emerald); border-color: var(--turf-emerald); box-shadow: 0 0 12px rgba(0, 229, 153, 0.4); }
-    .ball-bubble.six { background: rgba(168, 85, 247, 0.25); color: #C084FC; border-color: #A855F7; box-shadow: 0 0 12px rgba(168, 85, 247, 0.4); }
-    .ball-bubble.wicket { background: rgba(255, 51, 102, 0.3); color: #FF3366; border-color: #FF3366; box-shadow: 0 0 14px rgba(255, 51, 102, 0.5); }
-    .ball-bubble.extra { background: rgba(255, 184, 0, 0.25); color: #FFB800; border-color: #FFB800; box-shadow: 0 0 12px rgba(255, 184, 0, 0.4); }
+    .ball-bubble.four { background: rgba(0, 229, 153, 0.25); color: var(--turf-emerald); border-color: var(--turf-emerald); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
+    .ball-bubble.six { background: rgba(168, 85, 247, 0.25); color: #C084FC; border-color: #A855F7; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
+    .ball-bubble.wicket { background: rgba(255, 51, 102, 0.3); color: #FF3366; border-color: #FF3366; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
+    .ball-bubble.extra { background: rgba(255, 184, 0, 0.25); color: #FFB800; border-color: #FFB800; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
 
     .live-match-stats {
       display: grid;
@@ -1457,21 +1440,21 @@ export function getDashboardHtml() {
 
     .pad-btn:active {
       transform: scale(0.97) translateY(1px);
-      box-shadow: inset 0 0 16px var(--turf-glow);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
     .pad-btn.boundary-4 {
       background: rgba(0, 229, 153, 0.18);
       border-color: rgba(0, 229, 153, 0.45);
       color: var(--turf-emerald);
-      box-shadow: 0 0 10px rgba(0, 229, 153, 0.2);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .pad-btn.boundary-6 {
       background: rgba(168, 85, 247, 0.2);
       border-color: rgba(168, 85, 247, 0.45);
       color: #C084FC;
-      box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     .pad-btn.wicket {
@@ -1681,7 +1664,7 @@ export function getDashboardHtml() {
       background: rgba(0, 229, 153, 0.22);
       border-color: rgba(0, 229, 153, 0.7);
       color: #FFFFFF;
-      box-shadow: 0 0 10px rgba(0, 229, 153, 0.25);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
     }
     .btn-swap-strike:active {
       transform: scale(0.95);
@@ -1752,7 +1735,7 @@ export function getDashboardHtml() {
       border-radius: 50%;
       background: rgba(0, 229, 153, 0.15);
       border: 2.5px solid var(--turf-emerald);
-      box-shadow: 0 0 20px rgba(0, 229, 153, 0.35);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
       overflow: hidden;
       cursor: pointer;
       display: flex;
@@ -1763,7 +1746,7 @@ export function getDashboardHtml() {
     .avatar-preview-wrapper:hover {
       transform: scale(1.05);
       border-color: #FFF;
-      box-shadow: 0 0 25px rgba(0, 229, 153, 0.6);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
     }
     .avatar-preview-img {
       width: 100%;
@@ -1828,7 +1811,7 @@ export function getDashboardHtml() {
     }
     .preset-avatar-chip.active {
       border-color: var(--turf-emerald);
-      box-shadow: 0 0 14px rgba(0, 229, 153, 0.6);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
       transform: scale(1.08);
     }
     .preset-avatar-chip img {
@@ -1994,7 +1977,7 @@ export function getDashboardHtml() {
       border-radius: 12px;
       background: rgba(0, 0, 0, 0.4);
       border: 2px solid var(--turf-emerald);
-      box-shadow: 0 0 16px rgba(0, 229, 153, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -2035,7 +2018,7 @@ export function getDashboardHtml() {
        ========================================================================== */
     #sonnerToaster {
       position: fixed;
-      top: 1.5rem;
+      top: 4.5rem;
       right: 1.5rem;
       z-index: 100000;
       display: flex;
@@ -2052,7 +2035,7 @@ export function getDashboardHtml() {
       border: 1px solid var(--border-accent);
       border-radius: 12px;
       padding: 0.85rem 1.1rem;
-      box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.75), 0 0 24px rgba(0, 229, 153, 0.15);
+      box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.75);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -2455,7 +2438,7 @@ export function getDashboardHtml() {
       max-width: 620px;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 229, 153, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
       transform-origin: center center;
     }
     .modal-backdrop.active .modal-dialog {
@@ -2962,7 +2945,6 @@ export function getDashboardHtml() {
     body[data-theme="nordic"] .scoreboard {
       background: #FCFBF8 !important;
       border: 1px solid #E6DFD5 !important;
-      border-top: 5px solid #C2410C !important;
       border-radius: 16px !important;
       color: #292524 !important;
       box-shadow: 0 10px 30px -5px rgba(68, 64, 60, 0.1) !important;
@@ -3257,7 +3239,7 @@ export function getDashboardHtml() {
       border: 1px solid rgba(0, 229, 153, 0.45) !important;
       border-radius: 10px !important;
       color: #F8FAFC !important;
-      box-shadow: 0 0 25px rgba(0, 229, 153, 0.18), 0 8px 32px rgba(0, 0, 0, 0.7) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7) !important;
     }
 
     body[data-theme="stadium"] .scoreboard .live-score {
@@ -3282,7 +3264,7 @@ export function getDashboardHtml() {
 
     body[data-theme="stadium"] .pad-btn:hover {
       border-color: #00E599 !important;
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.3) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
       color: #00E599 !important;
     }
 
@@ -3314,15 +3296,15 @@ export function getDashboardHtml() {
       border: 1px solid rgba(0, 229, 153, 0.35) !important;
       border-radius: 999px !important;
       color: #00E599 !important;
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
     }
 
     /* Command Palette (Cmd+K) & Flagship Studio Modals */
     #sonnerToaster {
-      top: auto !important;
-      right: auto !important;
-      bottom: 1.25rem !important;
-      left: 1.25rem !important;
+      top: 4.5rem !important;
+      right: 1.5rem !important;
+      bottom: auto !important;
+      left: auto !important;
       z-index: 100050 !important;
       max-width: 360px !important;
       pointer-events: none;
@@ -3615,9 +3597,9 @@ export function getDashboardHtml() {
       display: none !important;
     }
     #sonnerToaster {
-      top: auto !important;
-      bottom: 1.25rem !important;
-      right: 1.25rem !important;
+      top: 4.5rem !important;
+      bottom: auto !important;
+      right: 1.5rem !important;
       left: auto !important;
     }
     .topbar-clean-pill {
@@ -4296,6 +4278,7 @@ export function getDashboardHtml() {
     }
     .modal-body {
       padding: 1rem 1.25rem;
+      min-height: 0;
     }
     .modal-footer {
       padding: 0.75rem 1.25rem;
@@ -4440,7 +4423,7 @@ export function getDashboardHtml() {
       color: #04070D;
       border-color: var(--turf-emerald);
       transform: scale(1.08);
-      box-shadow: 0 0 14px rgba(0, 229, 153, 0.45);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     }
     .field-zone-btn[data-pos*="top"].active,
     .field-zone-btn[data-pos*="bottom"].active {
@@ -4647,7 +4630,7 @@ export function getDashboardHtml() {
       color: #04070D !important;
       border-color: var(--turf-emerald) !important;
       font-weight: 800;
-      box-shadow: 0 0 10px rgba(0, 229, 153, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .three-cam-btn.accent {
       border: 1px solid rgba(0, 210, 255, 0.35);
@@ -4658,7 +4641,7 @@ export function getDashboardHtml() {
       color: #04070D !important;
       border-color: var(--cyan) !important;
       font-weight: 800;
-      box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .three-fallback-notice {
       position: absolute;
@@ -4685,7 +4668,7 @@ export function getDashboardHtml() {
       font-family: var(--font-mono);
       font-size: 0.72rem;
       color: #FFFFFF;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 229, 153, 0.3);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.4);
       white-space: nowrap;
       transition: opacity 0.15s ease, transform 0.15s ease;
     }
@@ -4784,16 +4767,10 @@ export function getDashboardHtml() {
       border: 1px solid rgba(0, 229, 153, 0.3);
       border-radius: 16px;
       padding: 1.25rem;
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 24px -4px rgba(0, 229, 153, 0.12);
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6);
       position: relative;
       overflow: hidden;
       transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
-    }
-    .athletic-stats-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--turf-emerald), var(--cyan), var(--amber));
     }
     .athletic-card-header {
       display: flex;
@@ -4832,7 +4809,7 @@ export function getDashboardHtml() {
       border-radius: 50%;
       background: var(--turf-emerald);
       border: 2px solid #04070D;
-      box-shadow: 0 0 8px var(--turf-emerald);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
     .athletic-hero-section {
       display: flex;
@@ -5065,7 +5042,7 @@ export function getDashboardHtml() {
       border-radius: 20px;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 229, 153, 0.4);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 6px 20px rgba(0, 0, 0, 0.5);
       border: 2px solid rgba(0, 229, 153, 0.6);
       background: rgba(4, 7, 13, 0.85);
       opacity: 0;
@@ -5119,7 +5096,6 @@ export function getDashboardHtml() {
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-left: 3px solid var(--turf-emerald);
       margin: 0.75rem 0;
       display: flex;
       align-items: center;
@@ -5157,7 +5133,7 @@ export function getDashboardHtml() {
       height: 20px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, #FF4D6D 0%, #C9184A 55%, #590D22 100%);
-      box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.6), 0 0 8px rgba(255, 77, 109, 0.4);
+      box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
       position: relative;
       transform-style: preserve-3d;
       animation: ballGyroSpin 2.5s linear infinite;
@@ -5166,15 +5142,9 @@ export function getDashboardHtml() {
       position: absolute;
       top: 0;
       left: 50%;
-      width: 2px;
+      width: 0;
       height: 100%;
-      background: repeating-linear-gradient(
-        to bottom,
-        #FFF 0px,
-        #FFF 2px,
-        transparent 2px,
-        transparent 4px
-      );
+      border-left: 1.5px dashed rgba(255, 255, 255, 0.9);
       transform: translateX(-50%) rotate(15deg);
     }
     @keyframes ballGyroSpin {
@@ -5955,7 +5925,7 @@ export function getDashboardHtml() {
           <!-- Asymmetric Sports Cockpit: Rate Differential Gauge + Boundary Telemetry -->
           <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 0.65rem; margin-bottom: 1rem;">
             <!-- Primary Chase Pressure Console -->
-            <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.08); border-left: 3px solid var(--rose); border-radius: 10px; padding: 0.75rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 0.75rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between;">
               <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
                 <span style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Run Rate Pressure Gauge</span>
                 <span style="font-size: 0.66rem; font-weight: 800; color: var(--rose); background: rgba(255, 51, 102, 0.15); border: 1px solid rgba(255, 51, 102, 0.3); padding: 0.1rem 0.4rem; border-radius: 4px;">▲ +2.28 REQ DEFICIT</span>
@@ -6503,7 +6473,7 @@ export function getDashboardHtml() {
                 </tr>
               </thead>
               <tbody id="standingsBody">
-                <tr style="border-left: 3px solid var(--turf-emerald);">
+                <tr>
                   <td><strong>Northside XI</strong> <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span></td>
                   <td>3</td>
                   <td>2</td>
@@ -6511,7 +6481,7 @@ export function getDashboardHtml() {
                   <td><strong style="color: var(--primary); font-family: var(--font-score);">4</strong></td>
                   <td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: +0.850">+0.850</span></td>
                 </tr>
-                <tr style="border-left: 3px solid var(--turf-emerald);">
+                <tr>
                   <td><strong>Royal Strikers</strong> <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span></td>
                   <td>3</td>
                   <td>2</td>
@@ -7677,7 +7647,7 @@ export function getDashboardHtml() {
     <!-- Live Broadcast Telemetry Ribbon -->
     <div id="heroLiveBroadcastRibbon" style="position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 2rem; background-color: #02060E; background: rgba(2, 6, 14, 0.95); border-bottom: 1px solid rgba(0, 229, 153, 0.28); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #E2E8F0; gap: 1rem; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
-        <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #00E599; font-weight: 800;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #00E599; box-shadow: 0 0 8px #00E599; display: inline-block;"></span> LIVE TELEMETRY</span>
+        <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #00E599; font-weight: 800;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #00E599; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); display: inline-block;"></span> LIVE TELEMETRY</span>
         <span style="color: #64748B;">•</span>
         <span style="color: #FFFFFF; font-weight: 800;">BLR 186/4 (18.2 ov) vs MUM</span>
         <span style="color: #64748B;">•</span>
@@ -7732,10 +7702,10 @@ export function getDashboardHtml() {
       <!-- 2-Column Split Hero Container -->
       <div id="heroSplitGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 1.65rem; align-items: stretch; width: 100%;">
         <!-- Left Column: Frosted Obsidian Card Backing for 100% WCAG AAA Text Contrast -->
-        <div id="heroLeftCopyColumn" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; background-color: #060D1B; background: linear-gradient(155deg, rgba(6, 13, 27, 0.92) 0%, rgba(4, 9, 18, 0.95) 100%); border: 1.5px solid rgba(0, 229, 153, 0.3); border-radius: 18px; padding: 1.55rem 1.7rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 36px rgba(0, 229, 153, 0.08); backdrop-filter: blur(20px); justify-content: space-between;">
+        <div id="heroLeftCopyColumn" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; background-color: #060D1B; background: linear-gradient(155deg, rgba(6, 13, 27, 0.92) 0%, rgba(4, 9, 18, 0.95) 100%); border: 1.5px solid rgba(0, 229, 153, 0.3); border-radius: 18px; padding: 1.55rem 1.7rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); justify-content: space-between;">
           <div>
             <div style="display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.36rem 0.85rem; border-radius: 999px; background-color: #062820; background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.48); color: #6EE7B7; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.95rem;">
-              <span style="width: 8px; height: 8px; border-radius: 50%; background: #00E599; box-shadow: 0 0 10px #00E599;"></span>
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #00E599; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);"></span>
               <span>✨ LIVE 60FPS 3D STADIUM • RHB/LHB BIOMECHANICS • RBAC PERSONAS</span>
             </div>
 
@@ -7795,7 +7765,7 @@ export function getDashboardHtml() {
         </div>
 
         <!-- Right Column: Interactive 3D Broadcast Command Preview HUD (#heroInteractivePreviewHud) -->
-        <div id="heroInteractivePreviewHud" style="background-color: #060D1B; background: linear-gradient(165deg, rgba(10, 20, 36, 0.95) 0%, rgba(5, 11, 22, 0.97) 100%); border: 1.5px solid rgba(0, 229, 153, 0.42); border-radius: 18px; padding: 1.35rem 1.45rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), 0 0 40px rgba(0, 229, 153, 0.12); backdrop-filter: blur(20px); display: flex; flex-direction: column; justify-content: flex-start; gap: 0.9rem;">
+        <div id="heroInteractivePreviewHud" style="background-color: #060D1B; background: linear-gradient(165deg, rgba(10, 20, 36, 0.95) 0%, rgba(5, 11, 22, 0.97) 100%); border: 1.5px solid rgba(0, 229, 153, 0.42); border-radius: 18px; padding: 1.35rem 1.45rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), 0 4px 16px rgba(0, 0, 0, 0.45); backdrop-filter: blur(20px); display: flex; flex-direction: column; justify-content: flex-start; gap: 0.9rem;">
           <!-- HUD Top Bar: Live Match Strip & Interactive Stance Mirror Toggle -->
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 0.65rem;">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -8164,7 +8134,7 @@ export function getDashboardHtml() {
         </div>
         <button class="modal-close-btn" aria-label="Close ICC Laws dialog" onclick="closeIccLawsModal()" data-tooltip="Close laws rulebook">✕</button>
       </div>
-      <div class="modal-body" style="overflow-y: auto; flex: 1; padding: 1.25rem;">
+      <div class="modal-body" style="overflow-y: auto; flex: 1; min-height: 0; padding: 1.25rem;">
         <!-- Live search bar & category filters -->
         <div style="margin-bottom: 1rem;">
           <div style="position: relative; margin-bottom: 0.75rem;">
@@ -9131,7 +9101,7 @@ export function getDashboardHtml() {
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMessagingModal()" data-tooltip="Close messaging modal">✕</button>
       </div>
-      <div class="modal-body" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
+      <div class="modal-body" style="flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
         <!-- Thread Header Bar -->
         <div style="padding: 0.75rem 1.25rem; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
           <div>
@@ -9672,7 +9642,7 @@ cricos_active_sse_connections 1</pre>
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
                   <span class="badge" style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #CBD5E1; padding: 0.15rem 0.5rem; border-radius: 4px;">OFFICIAL: UMPIRE</span>
                   <span class="badge badge-cyan" style="font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.3rem;">
-                    <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan);"></span>
+                    <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);"></span>
                     OPEN FOR BIDS
                   </span>
                 </div>
@@ -19120,7 +19090,7 @@ cricos_active_sse_connections 1</pre>
             </div>
 
             <div style="position: relative; width: 340px; height: 340px; max-width: 100%;">
-              <svg id="mcWagonSvg" viewBox="0 0 360 360" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; box-shadow: 0 0 30px rgba(0,0,0,0.6);">
+              <svg id="mcWagonSvg" viewBox="0 0 360 360" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="border-radius: 50%; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
                 <defs>
                   <radialGradient id="mcTurfGrad" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stop-color="#0E3324"/>
@@ -20872,7 +20842,7 @@ cricos_active_sse_connections 1</pre>
           '</div>' +
         '</div>' +
         '<div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 9999px; overflow: hidden;">' +
-          '<div style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--turf-emerald), var(--cyan)); border-radius: 9999px; box-shadow: 0 0 10px rgba(0,229,153,0.5);"></div>' +
+          '<div style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--turf-emerald), var(--cyan)); border-radius: 9999px; box-shadow: 0 1px 3px rgba(0,0,0,0.35);"></div>' +
         '</div>' +
         '<div style="margin-top: 0.45rem; font-size: 0.75rem; color: var(--turf-emerald); display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; flex-wrap: wrap;">' +
           '<span>✓ Mandatory sporting resources locked. Match is fully cleared for live broadcast.</span>' +

@@ -1,14 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 01:52:00
-**Version:** 1.0.0-phase2cp (3D Stadium Pitch & 8-Zone Wagon Wheel Sidebar Navigation)  
+**Last Updated:** 2026-10-01 07:18:00
+**Version:** 1.0.0-phase2cq (Elevation & Directional Shadow System Overhaul)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CP Completed — 3D Stadium Pitch & 8-Zone Wagon Wheel Sidebar Navigation (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_62_sidebar_3d_stadium_and_wagon_wheel.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CQ Completed — Elevation & Directional Shadow System Overhaul with Modal Flex Overflow Hardening (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Zero-Offset Neon Glow Elimination & Directional Elevation Architecture**:
+    - Replaced all non-semantic chromatic/neon box-shadow glows (`box-shadow: 0 0 Xpx rgba(...)`) across Desktop Match Center (`apps/api/src/ui/dashboard.ts`) and Mobile Scorer Studio (`apps/api/src/ui/mobile-view.ts`):
+      - Brand Logo & hover badges: converted to directional depth `0 4px 16px rgba(0,0,0,0.35)` with subtle `inset 0 1px 0 rgba(255,255,255,0.2)`.
+      - Sidebar Navigation & Tab Items: converted active indicator glows to crisp directional elevation `0 1px 3px rgba(0,0,0,0.35)` with green inset guide.
+      - Scorer Keypad Buttons: converted active states to physical tactile pressed inset `inset 0 2px 4px rgba(0,0,0,0.4)`, boundary chips (`.pad-btn.boundary-4`, `.boundary-6`) and ball bubbles (`.ball-bubble.four`, `.six`, `.wicket`, `.extra`) to directional elevation `0 1px 2px/3px rgba(0,0,0,0.25/0.35)`.
+      - Modals & Cards: updated `.modal-dialog` to realistic layered shadow `0 25px 60px -15px rgba(0,0,0,0.85), 0 8px 24px rgba(0,0,0,0.5)`, eliminating artificial neon borders.
+      - 3D Pitch Viewport & Tactical HUDs: converted `.three-hud-tooltip`, `.kinetic-boundary-banner`, `#heroInteractivePreviewHud`, and `#mcWagonSvg` to clean directional shadows.
+      - Progress Bars: converted `.target-progress-fill` and procurement readiness progress bar to directional elevation shadows.
+  - **2. Modal Flexbox Overflow Container Invariants**:
+    - Enforced `min-height: 0;` on `.modal-body` and nested flex containers (`#modalMessaging .modal-body`) preventing vertical flex children and scroll stream bubbles from overflowing parent boundaries in modern rendering engines.
+  - **3. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 474ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Verified single-file distribution artifacts synchronization via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Built Android native release & debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CP Completed — 3D Stadium Pitch & 8-Zone Wagon Wheel Sidebar Navigation (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_62_sidebar_3d_stadium_and_wagon_wheel.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Mobile Sidebar Navigation & Subtab Normalization**:
     - Resolved issue where tapping "3D Stadium Pitch" (`#btnMobileSidebar3DStadium`) and "8-Zone Wagon Wheel" (`#btnMobileSidebarWagonWheel`) in the mobile sidebar drawer opened an empty/blank view:
       - Normalization: `navigateToFromSidebar` and `setMatchSubTab` now normalize `'3D'` to `'STADIUM_3D'` and `'WAGON_WHEEL'` to `'WAGON'`.

@@ -389,9 +389,8 @@ export function getMobileAppHtml() {
     }
     body[data-theme="swiss"] .athletic-rating-val,
     html[data-theme="swiss"] .athletic-rating-val {
-      background: linear-gradient(135deg, #059669 0%, #0284C7 100%) !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
+      color: #059669 !important;
+      font-weight: 800 !important;
     }
     body[data-theme="swiss"] .athletic-stat-pill,
     html[data-theme="swiss"] .athletic-stat-pill,
@@ -426,7 +425,7 @@ export function getMobileAppHtml() {
       background-color: #FFFFFF !important;
       background-image: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 60%, #EEF2F6 100%) !important;
       border: 2px solid #059669 !important;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12), 0 0 16px rgba(5, 150, 105, 0.25) !important;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
       color: #0F172A !important;
     }
     body[data-theme="swiss"] .mobile-holo-sheen,
@@ -852,9 +851,8 @@ export function getMobileAppHtml() {
     }
     body[data-theme="nordic"] .athletic-rating-val,
     html[data-theme="nordic"] .athletic-rating-val {
-      background: linear-gradient(135deg, #15803D 0%, #0369A1 100%) !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
+      color: #15803D !important;
+      font-weight: 800 !important;
     }
     body[data-theme="nordic"] .athletic-stat-pill,
     html[data-theme="nordic"] .athletic-stat-pill,
@@ -889,7 +887,7 @@ export function getMobileAppHtml() {
       background-color: #FCFBF8 !important;
       background-image: linear-gradient(145deg, #FCFBF8 0%, #F5F2EB 60%, #EAE5DC 100%) !important;
       border: 2px solid #15803D !important;
-      box-shadow: 0 12px 30px rgba(28, 25, 23, 0.10), 0 0 16px rgba(21, 128, 61, 0.22) !important;
+      box-shadow: 0 12px 30px rgba(28, 25, 23, 0.10) !important;
       color: #1C1917 !important;
     }
     body[data-theme="nordic"] .mobile-holo-sheen,
@@ -1179,7 +1177,7 @@ export function getMobileAppHtml() {
       aspect-ratio: 390 / 844;
       background: #000;
       border-radius: 50px;
-      box-shadow: 0 0 0 4px #262e3d, 0 0 0 8px #131722, 0 30px 70px rgba(0,0,0,0.9), 0 0 60px rgba(0, 229, 153, 0.18);
+      box-shadow: 0 0 0 4px #262e3d, 0 0 0 8px #131722, 0 30px 70px rgba(0,0,0,0.9);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -1201,14 +1199,7 @@ export function getMobileAppHtml() {
       align-items: center;
       justify-content: space-between;
       padding: 0 12px;
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
-      transition: width var(--duration-modal) var(--ease-spring), box-shadow var(--duration-modal) var(--ease-out);
-    }
-    @media (hover: hover) and (pointer: fine) {
-      .device-notch:hover {
-        width: 170px;
-        box-shadow: 0 0 22px rgba(0, 229, 153, 0.45);
-      }
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
     }
     .notch-camera {
       width: 10px;
@@ -1282,7 +1273,7 @@ export function getMobileAppHtml() {
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
-      padding-bottom: 1rem;
+      padding-bottom: 2.5rem;
     }
     .mobile-scroll-body::-webkit-scrollbar {
       width: 4px;
@@ -1330,18 +1321,17 @@ export function getMobileAppHtml() {
     }
     .mobile-nav-item .mobile-nav-icon {
       font-size: 1.05rem;
-      transition: transform 0.15s ease, filter 0.15s ease;
+      transition: transform 0.15s ease;
     }
     .mobile-nav-item.active {
       color: #00FFB2;
       font-weight: 800;
-      background: linear-gradient(180deg, rgba(0, 229, 153, 0.22) 0%, rgba(0, 229, 153, 0.05) 100%);
+      background: rgba(0, 229, 153, 0.14);
       border: 1px solid rgba(0, 229, 153, 0.45);
-      box-shadow: 0 0 14px rgba(0, 229, 153, 0.25), inset 0 2px 0 #00E599;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 2px 0 #00E599;
     }
     .mobile-nav-item.active .mobile-nav-icon {
-      transform: scale(1.15);
-      filter: drop-shadow(0 0 6px rgba(0, 229, 153, 0.65));
+      transform: scale(1.08);
     }
     .mobile-nav-item.active::after {
       content: '';
@@ -1351,7 +1341,7 @@ export function getMobileAppHtml() {
       height: 3px;
       border-radius: 9999px;
       background: #00E599;
-      box-shadow: 0 0 8px #00E599;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
     /* Home Indicator bar at bottom of modern phone */
@@ -1394,7 +1384,7 @@ export function getMobileAppHtml() {
     input:focus, select:focus, textarea:focus {
       border-color: #00E599 !important;
       outline: none !important;
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.35) !important;
+      box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.25) !important;
     }
 
     .mobile-checkin-stakeholder {
@@ -1728,11 +1718,11 @@ export function getMobileAppHtml() {
       transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
     .mobile-subnav-btn.active {
-      background: linear-gradient(135deg, rgba(0, 229, 153, 0.25) 0%, rgba(0, 210, 255, 0.16) 100%);
+      background: rgba(0, 229, 153, 0.15);
       border-color: #00E599;
-      color: #00FFB2;
+      color: #00E599;
       font-weight: 800;
-      box-shadow: 0 0 10px rgba(0, 229, 153, 0.35);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
 
     /* Pitch Telemetry Bar */
@@ -1995,25 +1985,25 @@ export function getMobileAppHtml() {
       background: rgba(0, 229, 153, 0.18);
       border-color: #00E599;
       color: #00E599;
-      box-shadow: 0 0 10px rgba(0, 229, 153, 0.25);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .analytics-tab-btn.active-bars {
       background: rgba(0, 210, 255, 0.18);
       border-color: #00D2FF;
       color: #00D2FF;
-      box-shadow: 0 0 10px rgba(0, 210, 255, 0.25);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .analytics-tab-btn.active-wagon {
       background: rgba(192, 132, 252, 0.18);
       border-color: #c084fc;
       color: #c084fc;
-      box-shadow: 0 0 10px rgba(192, 132, 252, 0.25);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .analytics-tab-btn.active-card {
       background: rgba(255, 255, 255, 0.15);
       border-color: rgba(255, 255, 255, 0.35);
       color: #f8fafc;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .analytics-panel-card {
       background: rgba(10, 16, 28, 0.96);
@@ -2092,16 +2082,6 @@ export function getMobileAppHtml() {
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       margin-bottom: 0.65rem;
     }
-    .athletic-stats-card::before {
-      content: '';
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 110px;
-      height: 110px;
-      background: radial-gradient(circle, rgba(0, 229, 153, 0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
     .athletic-hero-section {
       display: flex;
       justify-content: space-between;
@@ -2139,9 +2119,7 @@ export function getMobileAppHtml() {
       font-size: 1.5rem;
       font-weight: 800;
       line-height: 1;
-      background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--turf-emerald);
     }
     .athletic-ranking-ribbon {
       display: inline-flex;
@@ -2230,7 +2208,7 @@ export function getMobileAppHtml() {
       border-radius: 16px;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 229, 153, 0.4);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
       border: 2px solid rgba(0, 229, 153, 0.6);
       background: rgba(4, 7, 13, 0.88);
       opacity: 0;
@@ -2283,7 +2261,7 @@ export function getMobileAppHtml() {
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-left: 3px solid #00E599;
+      border: 1px solid rgba(0, 229, 153, 0.25);
       margin: 0.5rem 0;
       display: flex;
       align-items: center;
@@ -2320,7 +2298,7 @@ export function getMobileAppHtml() {
       height: 16px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, #FF4D6D 0%, #C9184A 55%, #590D22 100%);
-      box-shadow: inset -1px -1px 3px rgba(0, 0, 0, 0.6), 0 0 6px rgba(255, 77, 109, 0.4);
+      box-shadow: inset -1px -1px 3px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
       position: relative;
       animation: ballGyroSpin 2.5s linear infinite;
     }
@@ -2328,15 +2306,9 @@ export function getMobileAppHtml() {
       position: absolute;
       top: 0;
       left: 50%;
-      width: 1.5px;
+      width: 0;
       height: 100%;
-      background: repeating-linear-gradient(
-        to bottom,
-        #FFF 0px,
-        #FFF 2px,
-        transparent 2px,
-        transparent 4px
-      );
+      border-left: 1.5px dashed rgba(255, 255, 255, 0.9);
       transform: translateX(-50%) rotate(15deg);
     }
     @keyframes ballGyroSpin {
@@ -2552,7 +2524,7 @@ export function getMobileAppHtml() {
     .signup-role-card.selected {
       background: rgba(0, 229, 153, 0.12);
       border-color: #00E599;
-      box-shadow: 0 0 12px rgba(0, 229, 153, 0.2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .signup-role-header {
       display: flex;
@@ -2690,7 +2662,7 @@ export function getMobileAppHtml() {
     }
     #editSheetAvatarPreview:active,
     #editSheetAvatarPreview:hover {
-      box-shadow: 0 0 22px rgba(0, 229, 153, 0.55);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     /* Mobile Profile Cards & Dossiers */
@@ -2872,7 +2844,7 @@ export function getMobileAppHtml() {
       overflow: hidden;
       background: radial-gradient(circle at 50% 50%, #0E3324 0%, #04070D 85%);
       border: 1.5px solid rgba(0, 229, 153, 0.35);
-      box-shadow: inset 0 0 30px rgba(0, 229, 153, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
       touch-action: none;
       margin-bottom: 0.5rem;
     }
@@ -2918,19 +2890,19 @@ export function getMobileAppHtml() {
       background: rgba(0, 229, 153, 0.22);
       border-color: #00E599;
       color: #00E599;
-      box-shadow: 0 0 10px rgba(0, 229, 153, 0.3);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
     .mobile-three-btn.mode-active {
       background: rgba(0, 210, 255, 0.22);
       border-color: #00D2FF;
       color: #00D2FF;
-      box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
     .mobile-three-btn.lighting-active {
       background: rgba(255, 184, 0, 0.22);
       border-color: #FFB800;
       color: #FFB800;
-      box-shadow: 0 0 10px rgba(255, 184, 0, 0.3);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
     .mobile-three-fallback-notice {
       position: absolute;
@@ -4471,7 +4443,7 @@ export function getMobileAppHtml() {
           '<div style="text-align: center;">' +
             '<div style="font-size: 0.72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.45rem;">Profile Photo</div>' +
             '<div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">' +
-              '<div style="position: relative; width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2.5px solid #00E599; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 16px rgba(0, 229, 153, 0.35);" onclick="document.getElementById(&#39;editProfilePhotoInput&#39;).click()" data-tooltip="Tap to upload profile photo" id="editSheetAvatarPreview">' +
+              '<div style="position: relative; width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2.5px solid #00E599; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);" onclick="document.getElementById(&#39;editProfilePhotoInput&#39;).click()" data-tooltip="Tap to upload profile photo" id="editSheetAvatarPreview">' +
                 avatarPreviewHtml +
               '</div>' +
               '<div style="display: flex; flex-direction: column; gap: 0.3rem;">' +
@@ -5331,7 +5303,7 @@ export function getMobileAppHtml() {
         if (isHero) {
           h += '<section id="mobileHeroStageLanding" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; padding: 1rem 0.95rem 1.8rem 0.95rem;">';
           h += '<div style="font-size: 0.6rem; font-weight: 800; color: #00E599; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.22rem 0.65rem; border-radius: 999px; margin-bottom: 0.65rem;">✨ 60FPS 3D STADIUM • RHB/LHB BIOMECHANICS • RBAC</div>';
-          h += '<h1 id="mobileHeroKineticHeadline" style="font-family: Space Grotesk, sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1.1; margin: 0 0 0.55rem 0; background: linear-gradient(135deg, #ffffff 15%, #00E599 58%, #00D2FF 95%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Every Ball. Every Tactic. Every Persona — Unified in 3D.</h1>';
+          h += '<h1 id="mobileHeroKineticHeadline" style="font-family: Space Grotesk, sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1.1; margin: 0 0 0.55rem 0; color: #FFFFFF;">Every Ball. Every Tactic. Every Persona — <span style="color: #00E599;">Unified in 3D.</span></h1>';
           h += '<p style="font-size: 0.74rem; color: #cbd5e1; line-height: 1.48; margin: 0 0 0.9rem 0;">Real-time 3D parabolic ball trajectories, LHB/RHB biomechanical wagon wheels, and role-scoped workspaces.</p>';
 
           // Interactive Mobile 3D Broadcast Command Preview HUD (#mobileHeroInteractiveHud)
@@ -8311,7 +8283,7 @@ export function getMobileAppHtml() {
         h += '<div id="mobileAnalyticsWagonOrientation" style="text-align: center; font-size: 0.65rem; font-weight: 800; font-family: Chakra Petch, monospace; color: ' + (isLhb ? '#00D2FF' : '#00E599') + '; margin-bottom: 0.4rem;">' + (isLhb ? 'LHB ORIENTATION: ◀ ON-SIDE (Left) | OFF-SIDE (Right) ▶' : 'RHB ORIENTATION: ◀ OFF-SIDE (Left) | ON-SIDE (Right) ▶') + '</div>';
 
         h += '<div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.75rem;">';
-        h += '<svg viewBox="0 0 320 310" width="280" height="280" xmlns="http://www.w3.org/2000/svg" style="background: #030C08; border-radius: 50%; border: 2px solid rgba(0, 229, 153, 0.4); box-shadow: 0 0 20px rgba(0, 229, 153, 0.15);">';
+        h += '<svg viewBox="0 0 320 310" width="280" height="280" xmlns="http://www.w3.org/2000/svg" style="background: #030C08; border-radius: 50%; border: 1.5px solid rgba(0, 229, 153, 0.4); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);">';
         
         for (var zi = 0; zi < this.SHOT_ZONES_DATA.length; zi++) {
           var zoneDef = this.SHOT_ZONES_DATA[zi];
@@ -9414,7 +9386,7 @@ export function getMobileAppHtml() {
         var logEl = document.getElementById('mobileFieldCommentaryLog');
         if (logEl) {
           logEl.innerHTML = this.mobileFieldCommentaryLog.slice(0, 4).map(function(c) {
-            return '<div style="padding: 0.36rem 0.52rem; border-radius: 7px; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-left: 3px solid #00E599; display: flex; flex-direction: column; gap: 0.16rem;">' +
+            return '<div style="padding: 0.36rem 0.52rem; border-radius: 7px; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); display: flex; flex-direction: column; gap: 0.16rem;">' +
               '<div style="display: flex; justify-content: space-between; align-items: center;">' +
                 '<span style="font-size: 0.65rem; color: #059669; font-weight: 800;">Over ' + c.over + ' • ' + (c.summary || 'Field Shift') + '</span>' +
                 '<span style="font-size: 0.58rem; color: #0284c7; font-weight: 700;">' + (c.xrDelta || '-0.30') + ' xR/b</span>' +
@@ -11494,15 +11466,15 @@ export function getMobileAppHtml() {
         h += '<span style="font-size: 0.62rem; color: #FFB800; font-weight: 700; background: rgba(255,184,0,0.15); padding: 0.1rem 0.35rem; border-radius: 4px;">₹300k Purse</span>';
         h += '</div>';
         h += '<div style="display: flex; flex-direction: column; gap: 0.35rem;">';
-        h += '<div style="background: rgba(0,0,0,0.35); border-left: 3px solid #00E599; border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; justify-content: space-between; align-items: center;">';
         h += '<div><div style="font-size: 0.62rem; color: #00E599; font-weight: 700;">QUALIFIER 1</div><div style="font-size: 0.72rem; font-weight: 700;">Mumbai vs Delhi</div></div>';
         h += '<button type="button" onclick="window.cricosMobileApp.setKnockoutReminder(this.dataset.match)" data-match="Qualifier 1" style="background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); color: #00E599; font-size: 0.62rem; padding: 0.18rem 0.4rem; border-radius: 4px;" data-tooltip="Set reminder for Qualifier 1">Remind ⏰</button>';
         h += '</div>';
-        h += '<div style="background: rgba(0,0,0,0.35); border-left: 3px solid #00D2FF; border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; justify-content: space-between; align-items: center;">';
         h += '<div><div style="font-size: 0.62rem; color: #00D2FF; font-weight: 700;">ELIMINATOR</div><div style="font-size: 0.72rem; font-weight: 700;">Bangalore RC vs Kolkata KR</div></div>';
         h += '<button type="button" onclick="window.cricosMobileApp.setKnockoutReminder(this.dataset.match)" data-match="Eliminator" style="background: rgba(0,210,255,0.12); border: 1px solid rgba(0,210,255,0.3); color: #00D2FF; font-size: 0.62rem; padding: 0.18rem 0.4rem; border-radius: 4px;" data-tooltip="Set reminder for Eliminator">Remind ⏰</button>';
         h += '</div>';
-        h += '<div style="background: rgba(255,184,0,0.08); border-left: 3px solid #FFB800; border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="background: rgba(255,184,0,0.08); border: 1px solid rgba(255, 184, 0, 0.25); border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; justify-content: space-between; align-items: center;">';
         h += '<div><div style="font-size: 0.62rem; color: #FFB800; font-weight: 700;">GRAND FINAL</div><div style="font-size: 0.72rem; font-weight: 700;">Winner Q1 vs Winner Q2</div></div>';
         h += '<span style="font-size: 0.62rem; color: #FFB800; font-weight: 700;">Sun 19:30</span>';
         h += '</div>';
@@ -11955,7 +11927,7 @@ export function getMobileAppHtml() {
         } else {
           avatarContent = '<span style="font-size: 1.1rem; font-weight: 800; color: #00E599; font-family: Chakra Petch, monospace;">#' + this.profile.jerseyNumber + '</span>';
         }
-        h += '<div id="mobileProfileAvatar" style="position: relative; width: 52px; height: 52px; min-width: 52px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2.5px solid #00E599; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; box-shadow: 0 0 14px rgba(0, 229, 153, 0.3);" onclick="document.getElementById(&#39;mobileProfilePhotoInput&#39;).click()" data-tooltip="Tap to upload your profile photo">';
+        h += '<div id="mobileProfileAvatar" style="position: relative; width: 52px; height: 52px; min-width: 52px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2px solid #00E599; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);" onclick="document.getElementById(&#39;mobileProfilePhotoInput&#39;).click()" data-tooltip="Tap to upload your profile photo">';
         h += '<div id="mobileAvatarContent">' + avatarContent + '</div>';
         h += '<div style="position: absolute; inset: 0; background: rgba(4, 7, 13, 0.65); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; border-radius: 50%;" class="mobile-avatar-cam-overlay"><span style="font-size: 0.85rem;">📷</span></div>';
         h += '</div>';
@@ -12187,7 +12159,7 @@ export function getMobileAppHtml() {
 
         // Streamlined Right Side: Clean Live Pulse Indicator (All redundant persona, theme, settings, sound & command search moved to sidebar drawer)
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
-        h += '<span id="mobileHeaderLivePulse" style="font-size: 0.65rem; font-weight: 800; color: ' + pulseInk + '; background: ' + pulseBg + '; border: 1px solid ' + pulseBdr + '; border-radius: 9999px; padding: 0.16rem 0.48rem; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="CricOS Real-time Telemetry &amp; Match Engine Active"><span style="width: 6px; height: 6px; border-radius: 50%; background: ' + pulseDot + '; box-shadow: 0 0 6px ' + pulseDot + '; display: inline-block;"></span><span>LIVE</span></span>';
+        h += '<span id="mobileHeaderLivePulse" style="font-size: 0.65rem; font-weight: 800; color: ' + pulseInk + '; background: ' + pulseBg + '; border: 1px solid ' + pulseBdr + '; border-radius: 9999px; padding: 0.16rem 0.48rem; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="CricOS Real-time Telemetry &amp; Match Engine Active"><span style="width: 6px; height: 6px; border-radius: 50%; background: ' + pulseDot + '; display: inline-block;"></span><span>LIVE</span></span>';
         h += '</div></header>';
 
         // Dedicated Toast Container
