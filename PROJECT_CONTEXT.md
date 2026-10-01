@@ -1,14 +1,38 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 07:35:00
-**Version:** 1.0.0-phase2cr (Impeccable Quality & Zero-Overlap Verification Overhaul)  
+**Last Updated:** 2026-10-01 08:35:00
+**Version:** 1.0.0-phase2cs (Automatic Match Ending, Scorecard Victory Highlight & Live Standings Synchronization)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CR Completed — Impeccable Design Quality & Zero-Overlap Elimination Overhaul (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CS Completed — Automatic Match Ending, Scorecard Victory Highlight & Live Standings Synchronization (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_64_match_ending_scorecard_and_standings.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Automatic & Manual Match/Innings Conclusion**:
+    - Automatic conclusion on target reached (`runs >= target`), all-out (10 wickets per MCC Law 12), and overs exhausted.
+    - Mobile Scorer Studio: `#mobileScorerMatchEndedNotice` informs scorer, locks scoring keypad buttons, and keeps `#btnMobileStudioUndoBall` and `#btnMobileEndInnings` accessible. Manual conclusion prompt via native in-app action sheet dialog (`promptScorerEndMatchMobile`).
+    - Desktop Match Center: Locks pad delivery buttons, shows `#matchResultBanner` and detailed scorecard `#scorecardResultHighlight`. Manual conclusion dialog `#modalEndMatchConfirmation` via toolbar `#btnDesktopEndMatch` (RBAC SCORER & ADMIN) and studio `#btnStudioEndInnings`.
+  - **2. Scorecard Outcome Banner with Prominent Victory Highlighting**:
+    - Mobile: Renders `#mobileScorecardResultBanner` in `#mobileScorecardPanel` with winner, margin, target chased, POTM badge, and `OFFICIAL RESULT` tag.
+    - Desktop: Renders `#scorecardResultHighlight` directly above `#scorecardInningsBanner` with winner headline `#scorecardResultTitle`, margin `#scorecardResultSubtitle`, target, and `#scorecardResultPotmBadge`.
+    - WCAG 2.1 AA/AAA text contrast compliance across Swiss Minimalist (`#065F46` / `#F0FDF4`) and Nordic Editorial (`#14532D` / `#F4FBF7`) daylight themes.
+  - **3. Automatic Tournament Standings Table Synchronization**:
+    - Real-time auto-update of tournament standings upon match conclusion:
+      - Mobile: `this.standings` updates points (+2 for win, +1 for tie), played count (+1), won/lost tallies, NRR recalculation, qualification sorting (`QUALIFIED`, `CONTENDING`), and fixture `f-1` marked `COMPLETED` with outcome result text.
+      - Desktop: `#standingsBody` and Premier Division table in `#modalLeagueDivisions` auto-updated with updated match records.
+  - **4. Full Reversible Undo Unwinding Protocol**:
+    - Undoing a delivery that completed the match seamlessly reopens the match (`isMatchEnded = false`, `isInningsComplete = false`, `inningsStatus = 'IN_PROGRESS'`), unlocks scoring keypad buttons, hides scorecard result banners, and restores pre-match standings tables and fixture states (`revertDesktopStandings()` & `revertMobileStandings()`).
+  - **5. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 496ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Created Playwright E2E suite `tests/test_64_match_ending_scorecard_and_standings.py`:
+      - `test_mobile_automatic_match_ending_scorecard_and_standings PASSED`
+      - `test_desktop_automatic_match_ending_scorecard_and_standings PASSED`
+      - Verified zero critical console errors across all flows.
+      - Captured verified visual screenshots: `test_64_mobile_match_ended.png` (94 KB) and `test_64_desktop_scorecard_highlight.png` (273 KB).
+    - Verified single-file distribution artifacts synchronization via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Built Android native release & debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CR Completed — Impeccable Design Quality & Zero-Overlap Elimination Overhaul (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Impeccable Quality Floor Enforcement & AI-Slop Elimination**:
     - Installed native Impeccable CLI skill suite at `.agents/skills/impeccable/` and `.github/skills/impeccable/`.
     - Eliminated all tacky side-tab borders (`[side-tab]` anti-patterns):

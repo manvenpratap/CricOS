@@ -3046,7 +3046,7 @@
     <div class="home-indicator"></div>
   </div>
 
-  <script>
+  <script type="module">
     // Auto-detect native mobile app / standalone mode to strip emulator framing
     (function initNativePlatformMode() {
       const isNative = window.location.protocol === 'file:' ||
@@ -3617,6 +3617,11 @@
           targetRuns: 178,
           isAllOut: false,
           isInningsComplete: false,
+          isMatchEnded: false,
+          matchResultText: '',
+          winnerTeam: '',
+          matchMargin: '',
+          playerOfTheMatch: 'Virat K. (68* off 44b)',
           inningsStatus: 'IN_PROGRESS',
           currentOverDeliveries: ['1', '4', '•', '2'],
           currentBowlerName: 'Jasprit Bumrah',
@@ -4032,6 +4037,10 @@
         var normSubTab = subTab;
         if (subTab === '3D') normSubTab = 'STADIUM_3D';
         if (subTab === 'WAGON_WHEEL') normSubTab = 'WAGON';
+        if (subTab === 'SCORECARD' || subTab === 'CARD') {
+          normSubTab = 'ANALYTICS';
+          this.activeChart = 'SCORECARD';
+        }
 
         if (this.matchSubTab === 'STADIUM_3D' && normSubTab !== 'STADIUM_3D') {
           this.stopMobile3DViewers();
@@ -5571,9 +5580,172 @@
         this.scoreBall(runs, zone);
       }
 
+      checkMatchOrInningsConclusion() {
+        var runs = this.matchState.totalRuns;
+        var wickets = this.matchState.totalWickets;
+        var balls = this.matchState.legalBalls;
+        var target = this.matchState.targetRuns || 178;
+        var maxBalls = 120; // 20.0 overs
+
+        var isAllOut = wickets >= 10;
+        var isTargetReached = runs >= target;
+        var isOversExhausted = balls >= maxBalls;
+
+        if (isTargetReached) {
+          var wktsLeft = Math.max(1, 10 - wickets);
+          var margin = wktsLeft + ' wicket' + (wktsLeft === 1 ? '' : 's');
+          var winner = 'Mumbai Super Strikers';
+          var resultText = winner + ' won by ' + margin + '!';
+          this.concludeMobileMatch(winner, margin, resultText, 'TARGET_CHASED');
+        } else if (isAllOut || isOversExhausted) {
+          if (runs < target - 1) {
+            var runsMargin = Math.max(1, (target - 1) - runs);
+            var marginR = runsMargin + ' run' + (runsMargin === 1 ? '' : 's');
+            var winnerR = 'Delhi Daredevils';
+            var resultTextR = winnerR + ' won by ' + marginR + '!';
+            this.concludeMobileMatch(winnerR, marginR, resultTextR, isAllOut ? 'ALL_OUT' : 'OVERS_EXHAUSTED');
+          } else if (runs === target - 1) {
+            this.concludeMobileMatch('TIE', 'Match Tied', 'Match Tied (Scores Level)', 'TIE');
+          }
+        }
+      }
+
+      concludeMobileMatch(winner, margin, resultText, reason) {
+        this.matchState.isMatchEnded = true;
+        this.matchState.isInningsComplete = true;
+        this.matchState.inningsStatus = 'COMPLETED';
+        this.matchState.winnerTeam = winner;
+        this.matchState.matchMargin = margin;
+        this.matchState.matchResultText = resultText;
+        if (reason === 'ALL_OUT') {
+          this.matchState.isAllOut = true;
+        }
+
+        // Auto update tournament standings
+        this.autoUpdateMobileStandings(winner);
+
+        // Mark fixture f-1 as COMPLETED
+        var f = this.fixtures.find(function(fix) { return fix.id === 'f-1'; });
+        if (f) {
+          f.status = 'COMPLETED';
+          f.result = resultText;
+        }
+
+        this.showToast('🏆 Match Concluded: ' + resultText, 'success', 3500);
+      }
+
+      autoUpdateMobileStandings(winner) {
+        if (this._standingsUpdatedForMatch) return;
+        this._standingsUpdatedForMatch = true;
+        this._preMatchStandingsBackup = JSON.parse(JSON.stringify(this.standings));
+
+        var mum = this.standings.find(function(s) { return s.team && s.team.includes('Mumbai'); });
+        var del = this.standings.find(function(s) { return s.team && s.team.includes('Delhi'); });
+
+        if (mum && del) {
+          mum.played = (mum.played || 3) + 1;
+          del.played = (del.played || 3) + 1;
+
+          if (winner === 'TIE') {
+            mum.points = (mum.points || 6) + 1;
+            del.points = (del.points || 4) + 1;
+          } else if (winner && winner.includes('Mumbai')) {
+            mum.won = (mum.won || 3) + 1;
+            mum.points = (mum.points || 6) + 2;
+            mum.nrr = '+1.650';
+            del.lost = (del.lost || 1) + 1;
+            del.nrr = '+0.520';
+          } else {
+            del.won = (del.won || 2) + 1;
+            del.points = (del.points || 4) + 2;
+            del.nrr = '+1.150';
+            mum.lost = (mum.lost || 0) + 1;
+            mum.nrr = '+1.120';
+          }
+
+          this.standings.sort(function(a, b) {
+            if (b.points !== a.points) return b.points - a.points;
+            return parseFloat(b.nrr) - parseFloat(a.nrr);
+          });
+
+          this.standings.forEach(function(s, idx) {
+            s.position = idx + 1;
+            if (idx < 2) s.qualification = 'QUALIFIED';
+            else if (idx === 2) s.qualification = 'CONTENDING';
+            else s.qualification = 'ELIMINATED';
+          });
+        }
+      }
+
+      revertMobileStandings() {
+        if (this._preMatchStandingsBackup) {
+          this.standings = JSON.parse(JSON.stringify(this._preMatchStandingsBackup));
+        }
+        this._standingsUpdatedForMatch = false;
+        var f = this.fixtures.find(function(fix) { return fix.id === 'f-1'; });
+        if (f) {
+          f.status = 'LIVE';
+          f.result = undefined;
+        }
+      }
+
+      promptScorerEndMatchMobile() {
+        if (this.profile.persona !== 'SCORER') {
+          this.showToast('🔒 Only official Scorers can conclude matches.', 'warning');
+          return;
+        }
+        if (this.matchState.isMatchEnded) {
+          this.showToast('Match is already concluded.', 'info');
+          return;
+        }
+        var self = this;
+        this.openActionSheet({
+          title: '🏁 Conclude Match & Finalize Scorecard',
+          bodyHtml: '<div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.45;">' +
+            'Officially end this match and declare innings closed? This will freeze scoring, display the victory outcome highlight on the scorecard, and automatically update Premier League tournament standings.' +
+            '</div>',
+          confirmText: '🏁 Conclude Match',
+          confirmTooltip: 'Finalize scorecard and update standings',
+          onConfirm: function() {
+            self.closeActionSheet();
+            self.confirmEndMatchMobile('DECLARATION');
+          }
+        });
+      }
+
+      confirmEndMatchMobile(reason) {
+        var runs = this.matchState.totalRuns;
+        var wickets = this.matchState.totalWickets;
+        var target = this.matchState.targetRuns || 178;
+        var winner = 'Mumbai Super Strikers';
+        var margin = '7 wickets';
+        var resultText = '';
+
+        if (runs >= target) {
+          var wktsLeft = Math.max(1, 10 - wickets);
+          margin = wktsLeft + ' wicket' + (wktsLeft === 1 ? '' : 's');
+          winner = 'Mumbai Super Strikers';
+          resultText = winner + ' won by ' + margin + '!';
+        } else if (reason === 'ALL_OUT' || wickets >= 10) {
+          var runsMargin = Math.max(1, (target - 1) - runs);
+          margin = runsMargin + ' run' + (runsMargin === 1 ? '' : 's');
+          winner = 'Delhi Daredevils';
+          resultText = winner + ' won by ' + margin + '!';
+        } else {
+          resultText = 'Match Concluded by Scorer (' + (reason || 'Declaration') + ')';
+        }
+
+        this.concludeMobileMatch(winner, margin, resultText, reason || 'DECLARATION');
+        this.render();
+      }
+
       scoreBall(runs, chosenZone) {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can score deliveries.', 'warning');
+          return;
+        }
+        if (this.matchState.isMatchEnded) {
+          this.showToast('🔒 Match Concluded: ' + (this.matchState.matchResultText || 'Match has ended'), 'info', 3000);
           return;
         }
         if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
@@ -5657,6 +5829,7 @@
           this.showToast('+' + runs + (runs === 1 ? ' run' : ' runs') + ' scored (' + (zoneDef ? zoneDef.shortLabel : 'Field') + ')', 'success', 1200);
         }
         this.syncStanceFromStriker();
+        this.checkMatchOrInningsConclusion();
         this.render();
       }
 
@@ -5705,6 +5878,10 @@
       applyExtraDelivery(type, opt) {
         if (this.profile.persona !== 'SCORER') {
           this.showToast('🔒 Only official Scorers can score extras.', 'warning');
+          return;
+        }
+        if (this.matchState.isMatchEnded) {
+          this.showToast('🔒 Match Concluded: ' + (this.matchState.matchResultText || 'Match has ended'), 'info', 3000);
           return;
         }
         if (this.matchState.totalWickets >= 10 || this.matchState.isAllOut) {
@@ -5797,6 +5974,7 @@
         }
 
         this.syncStanceFromStriker();
+        this.checkMatchOrInningsConclusion();
         this.render();
       }
 
@@ -6075,7 +6253,20 @@
           this.matchState.totalWickets = Math.min(10, this.matchState.totalWickets);
           this.matchState.isAllOut = true;
           this.matchState.isInningsComplete = true;
+          this.matchState.isMatchEnded = true;
           this.matchState.inningsStatus = 'ALL_OUT';
+
+          var targetR = this.matchState.targetRuns || 178;
+          var runsDef = Math.max(1, (targetR - 1) - this.matchState.totalRuns);
+          this.matchState.winnerTeam = 'Delhi Daredevils';
+          this.matchState.matchMargin = runsDef + ' runs';
+          this.matchState.matchResultText = 'Delhi Daredevils won by ' + runsDef + ' runs!';
+          this.autoUpdateMobileStandings('Delhi Daredevils');
+          var fixF1 = this.fixtures.find(function(fix) { return fix.id === 'f-1'; });
+          if (fixF1) {
+            fixF1.status = 'COMPLETED';
+            fixF1.result = this.matchState.matchResultText;
+          }
 
           if (isStrikerOut) {
             this.matchState.striker = { name: outBatter.name + ' (out)', runs: outBatter.runs, balls: outBatter.balls, fours: outBatter.fours, sixes: outBatter.sixes, isStriker: false, isOut: true };
@@ -6922,6 +7113,17 @@
         this.extraPickerOpen = false;
         this.wagonPickerOpen = false;
 
+        var wasMatchEnded = !!(this.matchState && this.matchState.isMatchEnded);
+        if (wasMatchEnded) {
+          this.matchState.isMatchEnded = false;
+          this.matchState.isInningsComplete = false;
+          this.matchState.inningsStatus = 'IN_PROGRESS';
+          this.matchState.matchResultText = '';
+          this.matchState.winnerTeam = '';
+          this.matchState.matchMargin = '';
+          this.revertMobileStandings();
+        }
+
         // Over boundary unwinding: restore previous over if current over is empty
         if (this.matchState.currentOverDeliveries.length === 0 && this.completedOversHistory.length > 0) {
           var overSnap = this.completedOversHistory.pop();
@@ -7050,7 +7252,10 @@
           }
 
           this.syncStanceFromStriker();
-          this.showToast('Last delivery undone per Scorer protocol ↺', 'info');
+          this.showToast(wasMatchEnded ? 'Last delivery undone and match reopened ↺' : 'Last delivery undone per Scorer protocol ↺', 'info');
+          this.render();
+        } else if (wasMatchEnded) {
+          this.showToast('Match conclusion undone per Scorer protocol ↺', 'info');
           this.render();
         } else {
           this.showToast('No deliveries in current over to undo', 'warning');
@@ -8402,6 +8607,30 @@
         var panelBorder = isLight ? (isNordic ? '#E6DFD5' : '#CBD5E1') : 'rgba(255, 255, 255, 0.2)';
         var panelBg = isLight ? (isNordic ? '#FCFBF8' : '#FFFFFF') : 'rgba(10, 16, 28, 0.96)';
         var h = '<div id="mobileScorecardPanel" class="analytics-panel-card" style="background: ' + panelBg + '; border-color: ' + panelBorder + ';">';
+
+        var isAllOut = this.matchState.isAllOut || this.matchState.totalWickets >= 10;
+        var isMatchOver = this.matchState.isMatchEnded || isAllOut || (this.matchState.totalRuns >= target);
+        if (isMatchOver) {
+          var winnerName = this.matchState.winnerTeam || (this.matchState.totalRuns >= target ? 'Mumbai Super Strikers' : 'Delhi Daredevils');
+          var resultHeadline = this.matchState.matchResultText || (this.matchState.totalRuns >= target ? ('Mumbai Super Strikers won by ' + Math.max(1, 10 - this.matchState.totalWickets) + ' wickets') : (isAllOut ? 'Delhi Daredevils won by ' + Math.max(1, (target - 1) - this.matchState.totalRuns) + ' runs' : 'Match Concluded'));
+          var resultBannerBg = isLight ? (isNordic ? '#F4FBF7' : '#F0FDF4') : 'rgba(0, 229, 153, 0.12)';
+          var resultBannerBorder = isLight ? (isNordic ? '#15803D' : '#059669') : '#00E599';
+          var resultTitleColor = isLight ? (isNordic ? '#14532D' : '#065F46') : '#00E599';
+          var resultSubColor = isLight ? (isNordic ? '#44403C' : '#334155') : '#94a3b8';
+
+          h += '<div id="mobileScorecardResultBanner" class="mobile-scorecard-result-banner" style="background: ' + resultBannerBg + '; border: 1.5px solid ' + resultBannerBorder + '; border-radius: 8px; padding: 0.55rem 0.75rem; margin-bottom: 0.75rem;">';
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap;">';
+          h += '<div style="display: flex; align-items: center; gap: 0.4rem;">';
+          h += '<span style="font-size: 1.2rem;">🏆</span>';
+          h += '<div>';
+          h += '<div id="mobileScorecardResultTitle" style="font-weight: 800; font-size: 0.82rem; color: ' + resultTitleColor + '; font-family: Space Grotesk, sans-serif;">' + resultHeadline + '</div>';
+          h += '<div style="font-size: 0.65rem; color: ' + resultSubColor + '; margin-top: 0.1rem;">Target: ' + target + ' • Player of the Match: ' + (this.matchState.playerOfTheMatch || 'Virat K. (68* off 44b)') + '</div>';
+          h += '</div>';
+          h += '</div>';
+          h += '<span style="font-size: 0.62rem; font-weight: 800; color: ' + resultTitleColor + '; background: ' + (isLight ? '#E2FBE8' : 'rgba(0,229,153,0.2)') + '; padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid ' + resultBannerBorder + ';">OFFICIAL RESULT</span>';
+          h += '</div>';
+          h += '</div>';
+        }
 
         // Header
         h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.4rem;">';
@@ -11059,6 +11288,7 @@
             }
 
             var isAllOut = this.matchState.isAllOut || this.matchState.totalWickets >= 10;
+            var isMatchEnded = this.matchState.isMatchEnded || (this.matchState.totalRuns >= this.matchState.targetRuns);
             if (isAllOut) {
               h += '<div id="mobileScorerAllOutNotice" style="background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.55rem 0.75rem; margin-bottom: 0.55rem; text-align: center;">';
               h += '<div style="font-weight: 800; font-size: 0.85rem; color: #ff3366; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">';
@@ -11066,11 +11296,18 @@
               h += '</div>';
               h += '<div style="font-size: 0.68rem; color: #cbd5e1; margin-top: 0.2rem;">All 10 wickets have fallen. Further scoring deliveries are disabled. Tap <strong>Undo Last Ball</strong> below if a dismissal was recorded by mistake.</div>';
               h += '</div>';
+            } else if (isMatchEnded) {
+              h += '<div id="mobileScorerMatchEndedNotice" style="background: rgba(0, 229, 153, 0.15); border: 1.5px solid #00E599; border-radius: 8px; padding: 0.55rem 0.75rem; margin-bottom: 0.55rem; text-align: center;">';
+              h += '<div style="font-weight: 800; font-size: 0.85rem; color: #00E599; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">';
+              h += '<span>🏆</span> MATCH CONCLUDED — TARGET ACHIEVED!';
+              h += '</div>';
+              h += '<div style="font-size: 0.68rem; color: #cbd5e1; margin-top: 0.2rem;">' + (this.matchState.matchResultText || ('Mumbai Super Strikers won by ' + Math.max(1, 10 - this.matchState.totalWickets) + ' wickets!')) + ' Scoring delivery buttons are locked. Tap <strong>Undo Last Ball</strong> below if a ball was recorded by mistake.</div>';
+              h += '</div>';
             }
 
-            var padDis = isAllOut ? ' disabled style="opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : '';
-            var extDis = isAllOut ? ' disabled style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700; opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : ' style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;"';
-            var extNbDis = isAllOut ? ' disabled style="flex: 1.1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700; opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : ' style="flex: 1.1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;"';
+            var padDis = (isAllOut || isMatchEnded) ? ' disabled style="opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : '';
+            var extDis = (isAllOut || isMatchEnded) ? ' disabled style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700; opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : ' style="flex: 1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;"';
+            var extNbDis = (isAllOut || isMatchEnded) ? ' disabled style="flex: 1.1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700; opacity: 0.35; cursor: not-allowed; pointer-events: none;"' : ' style="flex: 1.1; padding: 0.38rem 0.2rem; font-size: 0.72rem; text-align: center; font-weight: 700;"';
 
             // 4-Column Keypad Grid
             h += '<div class="mobile-studio-pad-grid">';
@@ -11098,9 +11335,10 @@
             h += '<button type="button" class="btn btn-secondary" id="btnMobileIccLaws" onclick="window.cricosMobileApp.openIccLawsSheet()" style="flex: 1; padding: 0.38rem 0.3rem; font-size: 0.7rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.25rem;" data-tooltip="Open ICC Playing Conditions &amp; MCC Laws Rulebook"><span style="font-size: 0.82rem;">📖</span> ICC Laws Rulebook</button>';
             h += '</div>';
 
-            // Dedicated Undo Last Ball Button (Replaced redundant compound extras & hold-to-reset)
-            h += '<div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.45rem;">';
-            h += '<button type="button" class="btn btn-secondary" id="btnMobileStudioUndoBall" onclick="window.cricosMobileApp.undoLastDelivery()" style="width: 100%; padding: 0.45rem 0.5rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"><span style="font-size: 0.9rem;">↺</span> Undo Last Ball</button>';
+            // Dedicated Undo Last Ball & End Match Buttons
+            h += '<div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.45rem; display: flex; gap: 0.35rem;">';
+            h += '<button type="button" class="btn btn-secondary" id="btnMobileStudioUndoBall" onclick="window.cricosMobileApp.undoLastDelivery()" style="flex: 1.2; padding: 0.45rem 0.5rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"><span style="font-size: 0.9rem;">↺</span> Undo Last Ball</button>';
+            h += '<button type="button" class="btn btn-secondary" id="btnMobileEndInnings" onclick="window.cricosMobileApp.promptScorerEndMatchMobile()" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(255,51,102,0.45); color: #ff8099; background: rgba(255,51,102,0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem; border-radius: 8px;" data-tooltip="Manually conclude match or innings"><span style="font-size: 0.9rem;">🏁</span> End Match</button>';
             h += '</div>';
             h += '</div>';
           } else if (persona === 'CAPTAIN' || persona === 'PLAYER') {

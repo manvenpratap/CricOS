@@ -63,7 +63,12 @@ export interface ScoreState {
     balls: number;
     overs_display: string;
     target?: number;
+    max_overs?: number;
     is_innings_closed: boolean;
+    is_match_completed?: boolean;
+    match_result?: string;
+    winner_id?: string;
+    margin?: string;
     is_free_hit?: boolean;
     striker_id?: string;
     non_striker_id?: string;
@@ -97,7 +102,8 @@ export declare function undoDelivery(events: ScoreEvent[], initial?: ScoreState)
 };
 export declare function swapStrike(state: ScoreState): ScoreState;
 export declare function changeBowler(state: ScoreState, nextBowlerId: string, enforceConsecutiveRule?: boolean): ScoreState;
-export declare function closeInnings(state: ScoreState, target?: number): ScoreState;
+export declare function closeInnings(state: ScoreState, target?: number, resultText?: string): ScoreState;
+export declare function concludeMatch(state: ScoreState, winnerId?: string, resultText?: string, margin?: string): ScoreState;
 export interface IccCricketLawItem {
     id: string;
     law: string;

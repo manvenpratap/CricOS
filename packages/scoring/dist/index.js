@@ -306,13 +306,46 @@ export function applyDelivery(state, event) {
         nextStriker = nextNonStriker;
         nextNonStriker = temp;
     }
-    // 7. Check innings conclusion conditions
+    // 7. Check innings & match conclusion conditions
     let isClosed = state.is_innings_closed;
-    if (state.target !== undefined && newRuns >= state.target) {
-        isClosed = true;
+    let isMatchCompleted = Boolean(state.is_match_completed);
+    let matchResult = state.match_result;
+    let winnerId = state.winner_id;
+    let margin = state.margin;
+    const maxLegalBalls = state.max_overs !== undefined ? state.max_overs * 6 : 120;
+    const isOversExhausted = newLegalBalls >= maxLegalBalls;
+    const isAllOut = newWickets >= 10;
+    if (state.target !== undefined) {
+        // Second innings (chase)
+        if (newRuns >= state.target) {
+            isClosed = true;
+            isMatchCompleted = true;
+            winnerId = state.striker_id || 'CHASING_TEAM';
+            const wktsLeft = Math.max(1, 10 - newWickets);
+            margin = `${wktsLeft} wicket${wktsLeft === 1 ? '' : 's'}`;
+            matchResult = `Chasing team won by ${margin}`;
+        }
+        else if (isAllOut || isOversExhausted) {
+            isClosed = true;
+            isMatchCompleted = true;
+            if (newRuns < state.target - 1) {
+                winnerId = state.current_bowler_id || 'DEFENDING_TEAM';
+                const runsMargin = (state.target - 1) - newRuns;
+                margin = `${runsMargin} run${runsMargin === 1 ? '' : 's'}`;
+                matchResult = `Defending team won by ${margin}`;
+            }
+            else if (newRuns === state.target - 1) {
+                winnerId = undefined;
+                margin = 'Tie';
+                matchResult = 'Match Tied';
+            }
+        }
     }
-    if (newWickets >= 10) {
-        isClosed = true;
+    else {
+        // First innings
+        if (isAllOut || (state.max_overs !== undefined && isOversExhausted)) {
+            isClosed = true;
+        }
     }
     return {
         runs: newRuns,
@@ -322,7 +355,12 @@ export function applyDelivery(state, event) {
         balls,
         overs_display: display,
         target: state.target,
+        max_overs: state.max_overs,
         is_innings_closed: isClosed,
+        is_match_completed: isMatchCompleted,
+        match_result: matchResult,
+        winner_id: winnerId,
+        margin,
         is_free_hit: nextIsFreeHit,
         striker_id: nextStriker,
         non_striker_id: nextNonStriker,
@@ -382,11 +420,24 @@ export function changeBowler(state, nextBowlerId, enforceConsecutiveRule = true)
         bowlers
     };
 }
-export function closeInnings(state, target) {
+export function closeInnings(state, target, resultText) {
+    const isMatchDone = target === undefined && state.target !== undefined;
     return {
         ...state,
         is_innings_closed: true,
+        is_match_completed: isMatchDone || Boolean(state.is_match_completed),
+        match_result: resultText || state.match_result,
         target: target !== undefined ? target : state.target
+    };
+}
+export function concludeMatch(state, winnerId, resultText, margin) {
+    return {
+        ...state,
+        is_innings_closed: true,
+        is_match_completed: true,
+        winner_id: winnerId,
+        margin: margin || state.margin,
+        match_result: resultText || (winnerId ? `${winnerId} won` : 'Match Concluded')
     };
 }
 export const ICC_CRICKET_LAWS_DIRECTORY = [

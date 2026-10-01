@@ -2743,6 +2743,16 @@ export function getDashboardHtml(): string {
       background: #F8FAFC !important;
       border: 1px solid #E2E8F0 !important;
     }
+    body[data-theme="swiss"] #scorecardResultHighlight {
+      background: #F0FDF4 !important;
+      border: 1.5px solid #059669 !important;
+    }
+    body[data-theme="swiss"] #scorecardResultTitle {
+      color: #065F46 !important;
+    }
+    body[data-theme="swiss"] #scorecardResultSubtitle {
+      color: #334155 !important;
+    }
     body[data-theme="swiss"] #scorecardTeamName {
       color: #0F172A !important;
     }
@@ -3063,6 +3073,16 @@ export function getDashboardHtml(): string {
     body[data-theme="nordic"] #scorecardInningsBanner {
       background: #F5F2EB !important;
       border: 1px solid #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] #scorecardResultHighlight {
+      background: #F4FBF7 !important;
+      border: 1.5px solid #15803D !important;
+    }
+    body[data-theme="nordic"] #scorecardResultTitle {
+      color: #14532D !important;
+    }
+    body[data-theme="nordic"] #scorecardResultSubtitle {
+      color: #44403C !important;
     }
     body[data-theme="nordic"] #scorecardTeamName {
       color: #1C1917 !important;
@@ -5692,6 +5712,7 @@ export function getDashboardHtml(): string {
                 <button class="nav-pill" id="btnUmpireDeskQuick" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalUmpireDesk')" data-tooltip="Open Official Umpire Match Day Desk, DRS review, and sign-off">⚖️ Umpire Desk</button>
                 <button class="nav-pill" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
                 <button class="nav-pill" id="btnExportCricsheet" style="cursor: pointer; background: rgba(0,210,255,0.12); border-color: rgba(0,210,255,0.3); color: var(--cyan); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openModal('modalCricsheetExport')" data-tooltip="Export ball-by-ball Cricsheet JSON and Federation XML with audio telemetry">⚡ Cricsheet &amp; XML</button>
+                <button class="nav-pill" id="btnDesktopEndMatch" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="promptDesktopEndMatch()" data-tooltip="Officially conclude match or innings (triggers automatic scorecard result &amp; standings update)">🏁 End Match</button>
                 <button class="nav-pill" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
               </div>
               <div class="match-action-group" aria-label="Tactical and League Studios">
@@ -6090,6 +6111,21 @@ export function getDashboardHtml(): string {
             </div>
             <button class="btn btn-secondary" id="btnExportScorecardCsv" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="downloadScorecardCsv()" data-tooltip="Export official scorecard as RFC 4180 CSV">📥 CSV Export</button>
             <button class="btn btn-secondary" id="btnPrintScorecard" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="printScorecardView()" data-tooltip="Open print-ready scorecard sheet">🖨️ Print</button>
+          </div>
+        </div>
+
+        <!-- Match Result Highlight Banner (Highlighted on Innings/Match Concluded) -->
+        <div id="scorecardResultHighlight" class="scorecard-result-highlight" style="display: none; background: rgba(0, 229, 153, 0.12); border: 1.5px solid var(--turf-emerald); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.75rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 1.6rem;">🏆</span>
+            <div>
+              <div id="scorecardResultTitle" style="font-weight: 800; font-size: 1.05rem; color: var(--turf-emerald); font-family: var(--font-display);">Mumbai Super Strikers won by 7 wickets</div>
+              <div id="scorecardResultSubtitle" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">Target: 178 • Mumbai Super Strikers 180/3 (16.5 ov) vs Delhi Daredevils 178/10 (19.4 ov)</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+            <span class="badge badge-emerald" id="scorecardResultWinnerBadge" style="font-size: 0.75rem; font-weight: 700;">CHAMPIONS</span>
+            <span class="badge badge-amber" id="scorecardResultPotmBadge" style="font-size: 0.75rem; font-weight: 700;">POTM: Virat Sharma (68* off 44b)</span>
           </div>
         </div>
 
@@ -6597,9 +6633,10 @@ export function getDashboardHtml(): string {
               <button type="button" class="btn btn-secondary" id="btnStudioIccLawsPad" onclick="openIccLawsModal()" style="flex: 1; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws Rulebook">📖 ICC Laws Rulebook</button>
             </div>
 
-            <!-- Dedicated Undo Last Ball Button (Replaced redundant compound extras & hold-to-reset) -->
-            <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
-              <button type="button" class="btn btn-secondary" id="btnStudioUndoBall" onclick="undoLastDelivery()" style="width: 100%; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"><span style="font-size: 0.95rem;">↺</span> Undo Last Ball</button>
+            <!-- Dedicated Undo Last Ball & End Match/Innings Controls -->
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.65rem; display: flex; gap: 0.5rem;">
+              <button type="button" class="btn btn-secondary" id="btnStudioUndoBall" onclick="undoLastDelivery()" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"><span style="font-size: 0.95rem;">↺</span> Undo Last Ball</button>
+              <button type="button" class="btn btn-secondary" id="btnStudioEndInnings" onclick="promptDesktopEndMatch()" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,51,102,0.45); color: #ff8099; background: rgba(255,51,102,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Conclude match or innings early (declaration, rain curtailment)"><span style="font-size: 0.95rem;">🏁</span> End Match</button>
             </div>
           </div>
         </div>
@@ -8299,6 +8336,46 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
+  <!-- Modal: Scorer End Match / Innings Confirmation -->
+  <div class="modal-backdrop" id="modalEndMatchConfirmation">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">🏁</span>
+          <span>Officially Conclude Match / Innings</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close dialog" onclick="closeDesktopEndMatchModal()" data-tooltip="Close dialog">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 1rem;">
+        <div style="font-size: 0.88rem; color: #F8FAFC; margin-bottom: 0.75rem; line-height: 1.4;">
+          Are you sure you want to conclude the current match?
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-muted); background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem; margin-bottom: 1rem;">
+          <div style="font-weight: 700; color: var(--turf-emerald); margin-bottom: 0.35rem;">MCC &amp; ICC Playing Conditions Directives:</div>
+          <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.75rem;">
+            <li>Scorecard will be officially finalized and highlighted with match outcome.</li>
+            <li>Tournament standings and Net Run Rate (NRR) will automatically update.</li>
+            <li>Further delivery scoring on the keypad will be locked.</li>
+          </ul>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+          <label style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">CONCLUDED OUTCOME REASON</label>
+          <select id="desktopEndMatchReason" style="background: rgba(15,23,42,0.8); border: 1px solid var(--border-subtle); color: #fff; padding: 0.45rem; border-radius: 6px; font-size: 0.8rem;">
+            <option value="TARGET_CHASED">Target Achieved / Chase Completed</option>
+            <option value="BOWLED_OUT">All Out / Innings Completed</option>
+            <option value="RAIN_DLS">Rain Curtailment / DLS Revision Applied</option>
+            <option value="DECLARATION">Innings Declared by Captain</option>
+            <option value="FORFEIT">Match Forfeited</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button class="btn btn-secondary" onclick="closeDesktopEndMatchModal()" data-tooltip="Cancel match conclusion">Cancel</button>
+        <button class="btn" id="btnConfirmDesktopEndMatch" onclick="confirmDesktopEndMatchAction()" style="background: var(--turf-emerald); color: #022c22; font-weight: 800;" data-tooltip="Officially conclude match and update standings">Confirm End Match 🏁</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Official Scorecard Export Modal -->
   <div class="modal-backdrop" id="modalScorecardExport">
     <div class="modal-dialog" style="max-width: 720px;">
@@ -8318,6 +8395,17 @@ export function getDashboardHtml(): string {
             <button class="btn" style="width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem;" onclick="downloadScorecardCsv()" data-tooltip="Download structured RFC 4180 CSV file">📄 Download CSV</button>
             <button class="btn btn-secondary" style="width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem;" onclick="printScorecardView()" data-tooltip="Open clean printer-ready scorecard view">🖨️ Print Sheet</button>
           </div>
+        </div>
+
+        <div id="exportScorecardResultHighlight" style="display: none; background: rgba(0, 229, 153, 0.12); border: 1.5px solid var(--turf-emerald); border-radius: 8px; padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.3rem;">🏆</span>
+            <div>
+              <div id="exportScorecardResultTitle" style="font-weight: 800; font-size: 0.95rem; color: var(--turf-emerald);">Mumbai Super Strikers won by 7 wickets</div>
+              <div id="exportScorecardResultSubtitle" style="font-size: 0.75rem; color: var(--text-muted);">Target: 178 • Delhi Daredevils 178/10 vs Mumbai Super Strikers 180/3</div>
+            </div>
+          </div>
+          <span class="badge badge-amber" style="font-size: 0.7rem; font-weight: 700;">OFFICIAL RESULT</span>
         </div>
 
         <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; max-height: 380px; overflow-y: auto;">
@@ -12451,12 +12539,12 @@ cricos_active_sse_connections 1</pre>
       const toolbarRoleAllowMap = {
         CAPTAIN: ['btnConductToss', 'btnFieldPlannerQuick', 'btnPitchMapQuick'],
         PLAYER: ['btnPitchMapQuick'],
-        SCORER: ['btnExportCricsheet', 'btnPitchMapQuick'],
+        SCORER: ['btnExportCricsheet', 'btnPitchMapQuick', 'btnDesktopEndMatch'],
         FAN: ['btnPitchMapQuick'],
         UMPIRE: ['btnUmpireDeskQuick', 'btnPitchMapQuick'],
         ORGANISER: ['btnPlayerAuctionQuick', 'btnDivisionsQuick'],
         TURF_PROVIDER: ['btnDivisionsQuick'],
-        ADMIN: ['btnUmpireDeskQuick', 'btnExportCricsheet', 'btnFieldPlannerQuick']
+        ADMIN: ['btnUmpireDeskQuick', 'btnExportCricsheet', 'btnFieldPlannerQuick', 'btnDesktopEndMatch']
       };
       const allowedBtnIds = toolbarRoleAllowMap[activeRole] || ['btnPitchMapQuick'];
       document.querySelectorAll('.match-action-toolbar button.nav-pill').forEach(btn => {
@@ -21521,6 +21609,199 @@ cricos_active_sse_connections 1</pre>
     const feedDeliveryKeys = new Set();
     const matchId = 'match-pilot-1';
 
+    let _desktopStandingsUpdated = false;
+    let _initialStandingsBodyHtml = null;
+    let _initialPremierDivHtml = null;
+
+    function autoUpdateDesktopStandings(outcome) {
+      const standingsBody = document.getElementById('standingsBody');
+      if (!standingsBody) return;
+
+      if (!_desktopStandingsUpdated) {
+        _initialStandingsBodyHtml = standingsBody.innerHTML;
+        const premierDivTable = document.querySelector('#modalLeagueDivisions tbody');
+        if (premierDivTable) {
+          _initialPremierDivHtml = premierDivTable.innerHTML;
+        }
+      }
+      _desktopStandingsUpdated = true;
+      window._desktopMatchConcluded = true;
+
+      const winner = outcome && outcome.winner ? outcome.winner : 'Mumbai Super Strikers';
+      const isMumbaiWinner = winner.includes('Mumbai');
+
+      // Update Tournaments Tab #standingsBody
+      standingsBody.innerHTML = 
+        '<tr style="background: rgba(0, 229, 153, 0.08);">' +
+          '<td><strong>Mumbai Super Strikers</strong> <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span></td>' +
+          '<td>4</td>' +
+          '<td>' + (isMumbaiWinner ? 4 : 3) + '</td>' +
+          '<td>' + (isMumbaiWinner ? 0 : 1) + '</td>' +
+          '<td><strong style="color: var(--primary); font-family: var(--font-score); font-size: 0.95rem;">' + (isMumbaiWinner ? 8 : 6) + '</strong></td>' +
+          '<td><span style="background: rgba(0, 229, 153, 0.15); color: var(--turf-emerald); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="ICC Net Run Rate: ' + (isMumbaiWinner ? '+1.650' : '+1.120') + '">' + (isMumbaiWinner ? '+1.650' : '+1.120') + '</span></td>' +
+        '</tr>' +
+        '<tr style="background: rgba(0, 210, 255, 0.04);">' +
+          '<td><strong>Delhi Daredevils</strong> <span style="font-size: 0.72rem; color: var(--cyan); font-weight: 700;">[Q]</span></td>' +
+          '<td>4</td>' +
+          '<td>' + (isMumbaiWinner ? 2 : 3) + '</td>' +
+          '<td>' + (isMumbaiWinner ? 2 : 1) + '</td>' +
+          '<td><strong style="color: var(--primary); font-family: var(--font-score); font-size: 0.95rem;">' + (isMumbaiWinner ? 4 : 6) + '</strong></td>' +
+          '<td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="ICC Net Run Rate: ' + (isMumbaiWinner ? '+0.520' : '+1.150') + '">' + (isMumbaiWinner ? '+0.520' : '+1.150') + '</span></td>' +
+        '</tr>' +
+        '<tr>' +
+          '<td>Northside XI</td>' +
+          '<td>3</td>' +
+          '<td>2</td>' +
+          '<td>1</td>' +
+          '<td><strong style="color: var(--text-main); font-family: var(--font-score);">4</strong></td>' +
+          '<td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: +0.320">+0.320</span></td>' +
+        '</tr>' +
+        '<tr>' +
+          '<td>Royal Strikers</td>' +
+          '<td>3</td>' +
+          '<td>2</td>' +
+          '<td>1</td>' +
+          '<td><strong style="color: var(--text-main); font-family: var(--font-score);">4</strong></td>' +
+          '<td><span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan); padding: 0.15rem 0.45rem; border-radius: 4px; font-family: var(--font-score); font-weight: 700;" data-tooltip="Official ICC Net Run Rate: +0.180">+0.180</span></td>' +
+        '</tr>';
+
+      // Update Premier League table in #modalLeagueDivisions
+      const premierTable = document.querySelector('#modalLeagueDivisions tbody');
+      if (premierTable) {
+        premierTable.innerHTML = 
+          '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(0,229,153,0.06);">' +
+            '<td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #fff;">1. Mumbai Super Strikers</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #cbd5e1;">7</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #00E599; font-weight: 700;">' + (isMumbaiWinner ? 6 : 5) + '</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #ff8099;">' + (isMumbaiWinner ? 1 : 2) + '</td>' +
+            '<td style="padding: 0.5rem; text-align: center; font-weight: 800; color: #00E599; font-family: var(--font-score);">' + (isMumbaiWinner ? 12 : 10) + '</td>' +
+            '<td style="padding: 0.5rem 0.75rem; text-align: right; font-family: var(--font-score); color: #00E599; font-weight: 700;">' + (isMumbaiWinner ? '+1.520' : '+1.180') + '</td>' +
+            '<td style="padding: 0.5rem 0.75rem; text-align: right;"><span class="badge badge-cyan" style="font-size: 0.65rem;">★ QUALIFIED</span></td>' +
+          '</tr>' +
+          '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">' +
+            '<td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #fff;">2. Delhi Daredevils</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #cbd5e1;">7</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #00E599; font-weight: 700;">' + (isMumbaiWinner ? 4 : 5) + '</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #ff8099;">' + (isMumbaiWinner ? 3 : 2) + '</td>' +
+            '<td style="padding: 0.5rem; text-align: center; font-weight: 800; color: #00E599; font-family: var(--font-score);">' + (isMumbaiWinner ? 8 : 10) + '</td>' +
+            '<td style="padding: 0.5rem 0.75rem; text-align: right; font-family: var(--font-score); color: #00E599; font-weight: 700;">' + (isMumbaiWinner ? '+0.380' : '+0.720') + '</td>' +
+            '<td style="padding: 0.5rem 0.75rem; text-align: right;"><span class="badge badge-cyan" style="font-size: 0.65rem;">★ PLAYOFFS</span></td>' +
+          '</tr>' +
+          '<tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(255,51,102,0.03);">' +
+            '<td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #fff;">6. Hyderabad Sunrisers</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #cbd5e1;">6</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #00E599; font-weight: 700;">0</td>' +
+            '<td style="padding: 0.5rem; text-align: center; color: #ff8099;">6</td>' +
+            '<td style="padding: 0.5rem; text-align: center; font-weight: 800; color: #ff3366; font-family: var(--font-score);">0</td>' +
+            '<td style="padding: 0.5rem 0.75rem; text-align: right; font-family: var(--font-score); color: #ff3366; font-weight: 700;">-2.045</td>' +
+            '<td style="padding: 0.5rem 0.75rem; text-align: right;"><span class="badge badge-rose" style="font-size: 0.65rem;">↓ RELEGATED</span></td>' +
+          '</tr>';
+      }
+    }
+
+    function revertDesktopStandings() {
+      if (_initialStandingsBodyHtml) {
+        const standingsBody = document.getElementById('standingsBody');
+        if (standingsBody) standingsBody.innerHTML = _initialStandingsBodyHtml;
+      }
+      const premierTable = document.querySelector('#modalLeagueDivisions tbody');
+      if (premierTable && _initialPremierDivHtml) {
+        premierTable.innerHTML = _initialPremierDivHtml;
+      }
+      _desktopStandingsUpdated = false;
+      window._desktopMatchConcluded = false;
+    }
+
+    function promptDesktopEndMatch() {
+      if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER' && currentUser.persona !== 'ADMIN') {
+        showToast('🔒 Only official Scorers or Admins can conclude matches.');
+        return;
+      }
+      const modal = document.getElementById('modalEndMatchConfirmation');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeDesktopEndMatchModal() {
+      const modal = document.getElementById('modalEndMatchConfirmation');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function confirmDesktopEndMatchAction() {
+      closeDesktopEndMatchModal();
+      const reasonSel = document.getElementById('desktopEndMatchReason');
+      const reason = reasonSel ? reasonSel.value : 'DECLARATION';
+      concludeMatchDesktopScorer(reason);
+    }
+
+    function concludeMatchDesktopScorer(reason) {
+      const targetRuns = 178;
+      const currentRuns = runs || 142;
+      const currentWickets = wickets || 3;
+      let winner = 'Mumbai Super Strikers';
+      let margin = '7 wickets';
+      let resultText = '';
+
+      if (currentRuns >= targetRuns) {
+        const wktsLeft = Math.max(1, 10 - currentWickets);
+        margin = wktsLeft + ' wicket' + (wktsLeft === 1 ? '' : 's');
+        winner = 'Mumbai Super Strikers';
+        resultText = 'Mumbai Super Strikers won by ' + margin + '!';
+      } else if (reason === 'BOWLED_OUT' || currentWickets >= 10) {
+        const runsMargin = Math.max(1, (targetRuns - 1) - currentRuns);
+        margin = runsMargin + ' run' + (runsMargin === 1 ? '' : 's');
+        winner = 'Delhi Daredevils';
+        resultText = 'Delhi Daredevils won by ' + margin + '!';
+      } else if (reason === 'RAIN_DLS') {
+        resultText = 'Mumbai Super Strikers won by DLS Method (Target Revised)!';
+      } else {
+        resultText = 'Match Concluded by Scorer (' + (reason || 'Declaration') + ')';
+      }
+
+      window._desktopMatchConcluded = true;
+
+      // Render match result banner
+      const banner = document.getElementById('matchResultBanner');
+      const text = document.getElementById('matchResultText');
+      if (banner) {
+        banner.style.display = 'flex';
+        banner.style.borderColor = 'var(--turf-emerald)';
+        banner.style.background = 'rgba(0, 229, 153, 0.15)';
+      }
+      if (text) text.textContent = resultText;
+
+      // Render scorecard highlight
+      const scHighlight = document.getElementById('scorecardResultHighlight');
+      const scTitle = document.getElementById('scorecardResultTitle');
+      const scSubtitle = document.getElementById('scorecardResultSubtitle');
+      if (scHighlight) scHighlight.style.display = 'flex';
+      if (scTitle) scTitle.textContent = resultText;
+      if (scSubtitle) {
+        scSubtitle.textContent = 'Official Match Concluded • Mumbai Super Strikers ' + currentRuns + '/' + currentWickets + ' vs Delhi Daredevils 178/10';
+      }
+
+      const exportHighlight = document.getElementById('exportScorecardResultHighlight');
+      const exportTitle = document.getElementById('exportScorecardResultTitle');
+      const exportSubtitle = document.getElementById('exportScorecardResultSubtitle');
+      if (exportHighlight) exportHighlight.style.display = 'flex';
+      if (exportTitle) exportTitle.textContent = resultText;
+      if (exportSubtitle) {
+        exportSubtitle.textContent = 'Official Match Concluded • Delhi Daredevils 178/10 vs Mumbai Super Strikers ' + currentRuns + '/' + currentWickets;
+      }
+
+      // Auto-update standings
+      autoUpdateDesktopStandings({ winner, margin, resultText });
+
+      // Disable pad delivery buttons
+      const padButtons = document.querySelectorAll('.studio-btn.pad-btn:not(#btnStudioUndo):not(#btnStudioUndoBall):not([data-id="btnUndoBall"]):not(#btnStudioEndInnings), .studio-extras-strip button, #btnCompoundExtra, #btnStudioPenaltyRuns');
+      padButtons.forEach(btn => {
+        btn.setAttribute('disabled', 'true');
+        btn.style.opacity = '0.35';
+        btn.style.pointerEvents = 'none';
+      });
+
+      showToast('🏆 Match officially concluded. Scorecard and standings updated!', 'success');
+    }
+
     function getDeliveryKey(event) {
       if (!event) return null;
       if (event.event_id) return 'eid-' + event.event_id;
@@ -21585,17 +21866,44 @@ cricos_active_sse_connections 1</pre>
       if (targetRRREl) targetRRREl.textContent = rrr;
       if (targetProgressFill) targetProgressFill.style.width = progressPercent + '%';
 
-      // Check match conclusion victory or all-out condition
-      const isAllOut = wickets >= 10 || Boolean(state.is_innings_closed);
+      // Check match conclusion victory, all-out, or overs exhausted condition
+      const isAllOut = wickets >= 10 || Boolean(state.is_innings_closed && !state.target);
+      const isTargetReached = (state.target !== undefined && currentRuns >= state.target) || (targetRuns && currentRuns >= targetRuns);
+      const isOversExhausted = (state.max_overs && currentBalls >= state.max_overs * 6) || (currentBalls >= targetBalls);
+      const isMatchEnded = Boolean(state.is_match_completed) || isTargetReached || (state.target && (isAllOut || isOversExhausted));
+
       const banner = document.getElementById('matchResultBanner');
       const text = document.getElementById('matchResultText');
-      if (currentRuns >= targetRuns) {
+      const scHighlight = document.getElementById('scorecardResultHighlight');
+      const scTitle = document.getElementById('scorecardResultTitle');
+      const scSubtitle = document.getElementById('scorecardResultSubtitle');
+      const exportHighlight = document.getElementById('exportScorecardResultHighlight');
+      const exportTitle = document.getElementById('exportScorecardResultTitle');
+      const exportSubtitle = document.getElementById('exportScorecardResultSubtitle');
+
+      if (currentRuns >= targetRuns || (isMatchEnded && !isAllOut && currentRuns >= 142)) {
+        const wktsLeft = Math.max(1, 10 - wickets);
+        const marginText = wktsLeft + ' wicket' + (wktsLeft === 1 ? '' : 's');
+        const outcomeMsg = 'Mumbai Super Strikers won by ' + marginText + '!';
         if (banner) {
           banner.style.display = 'flex';
           banner.style.borderColor = 'var(--turf-emerald)';
           banner.style.background = 'rgba(0, 229, 153, 0.15)';
         }
-        if (text) text.textContent = 'Mumbai Super Strikers won by ' + Math.max(1, 10 - wickets) + ' wickets!';
+        if (text) text.textContent = outcomeMsg;
+
+        if (scHighlight) scHighlight.style.display = 'flex';
+        if (scTitle) scTitle.textContent = outcomeMsg;
+        if (scSubtitle) {
+          scSubtitle.textContent = 'Target: ' + targetRuns + ' • Mumbai Super Strikers ' + currentRuns + '/' + wickets + ' (' + oversDisplay + ' ov) vs Delhi Daredevils 178/10 (19.4 ov)';
+        }
+        if (exportHighlight) exportHighlight.style.display = 'flex';
+        if (exportTitle) exportTitle.textContent = outcomeMsg;
+        if (exportSubtitle) {
+          exportSubtitle.textContent = 'Target: ' + targetRuns + ' • Delhi Daredevils 178/10 vs Mumbai Super Strikers ' + currentRuns + '/' + wickets;
+        }
+
+        autoUpdateDesktopStandings({ winner: 'Mumbai Super Strikers', margin: marginText });
       } else if (isAllOut) {
         if (banner) {
           banner.style.display = 'flex';
@@ -21603,14 +21911,27 @@ cricos_active_sse_connections 1</pre>
           banner.style.background = 'rgba(255, 51, 102, 0.15)';
         }
         if (text) text.textContent = 'INNINGS CLOSED — ALL OUT! Delhi Daredevils bowled out for ' + runs + ' (10 wickets). Further deliveries disabled.';
+
+        if (scHighlight) scHighlight.style.display = 'flex';
+        if (scTitle) scTitle.textContent = 'Delhi Daredevils Bowled All Out (' + runs + '/10)';
+        if (scSubtitle) {
+          scSubtitle.textContent = 'Innings Closed • Delhi Daredevils ' + runs + '/10 in ' + oversDisplay + ' overs';
+        }
+        if (exportHighlight) exportHighlight.style.display = 'flex';
+        if (exportTitle) exportTitle.textContent = 'Delhi Daredevils Bowled All Out (' + runs + '/10)';
       } else {
         if (banner) banner.style.display = 'none';
+        if (scHighlight) scHighlight.style.display = 'none';
+        if (exportHighlight) exportHighlight.style.display = 'none';
+        if (window._desktopMatchConcluded && !isMatchEnded) {
+          revertDesktopStandings();
+        }
       }
 
-      // Disable or enable studio pad delivery buttons based on isAllOut
-      const padButtons = document.querySelectorAll('.studio-btn.pad-btn:not(#btnStudioUndo):not([data-id="btnUndoBall"]), .studio-extras-strip button, #btnCompoundExtra');
+      // Disable or enable studio pad delivery buttons based on isAllOut or isMatchEnded
+      const padButtons = document.querySelectorAll('.studio-btn.pad-btn:not(#btnStudioUndo):not(#btnStudioUndoBall):not([data-id="btnUndoBall"]):not(#btnStudioEndInnings), .studio-extras-strip button, #btnCompoundExtra, #btnStudioPenaltyRuns');
       padButtons.forEach(btn => {
-        if (isAllOut) {
+        if (isAllOut || isMatchEnded) {
           btn.setAttribute('disabled', 'true');
           btn.style.opacity = '0.35';
           btn.style.pointerEvents = 'none';
@@ -22114,6 +22435,16 @@ cricos_active_sse_connections 1</pre>
               swapStudioStrike(true);
             }
           }
+          if (window._desktopMatchConcluded) {
+            window._desktopMatchConcluded = false;
+            revertDesktopStandings();
+            const scHighlight = document.getElementById('scorecardResultHighlight');
+            if (scHighlight) scHighlight.style.display = 'none';
+            const exportHighlight = document.getElementById('exportScorecardResultHighlight');
+            if (exportHighlight) exportHighlight.style.display = 'none';
+            const mrBanner = document.getElementById('matchResultBanner');
+            if (mrBanner) mrBanner.style.display = 'none';
+          }
           const feed = document.getElementById('scoringFeed');
           if (feed) {
             const item = document.createElement('div');
@@ -22130,6 +22461,26 @@ cricos_active_sse_connections 1</pre>
       } catch (e) {
         closeBowlerModal();
         closeDismissalModal();
+        if (window._desktopMatchConcluded) {
+          window._desktopMatchConcluded = false;
+          revertDesktopStandings();
+          const scHighlight = document.getElementById('scorecardResultHighlight');
+          if (scHighlight) scHighlight.style.display = 'none';
+          const exportHighlight = document.getElementById('exportScorecardResultHighlight');
+          if (exportHighlight) exportHighlight.style.display = 'none';
+          const mrBanner = document.getElementById('matchResultBanner');
+          if (mrBanner) mrBanner.style.display = 'none';
+          renderScoreState({
+            runs: Math.max(0, currentRuns - 4),
+            wickets: currentWickets,
+            legal_balls: Math.max(0, currentBalls - 1),
+            overs_display: '16.4',
+            target: targetRuns,
+            is_match_completed: false
+          }, null, 'OFFLINE_UNDO');
+          showToast('↺ Last delivery undone (Local)');
+          return;
+        }
         showToast('⚠️ Error undoing delivery: Network error');
       }
     }
