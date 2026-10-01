@@ -25,7 +25,7 @@
       --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
       --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
       --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
       --duration-fast: 120ms;
       --duration-normal: 200ms;
       --duration-modal: 280ms;
@@ -1480,10 +1480,10 @@
       -webkit-backdrop-filter: blur(18px) saturate(180%);
       transform-origin: center bottom;
       will-change: transform, opacity;
-      animation: toastSpringIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: toastDecelIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .mobile-toast.is-exiting {
-      animation: toastSpringOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
+      animation: toastDecelOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
     }
     .mobile-toast-icon {
       width: 24px;
@@ -1521,21 +1521,17 @@
     .mobile-toast.info { border-color: rgba(0, 210, 255, 0.62); }
     .mobile-toast.info .mobile-toast-icon { background: rgba(0, 210, 255, 0.18); border-color: rgba(0, 210, 255, 0.48); color: #00D2FF; }
     .mobile-toast.info .mobile-toast-progress { background: linear-gradient(90deg, #00D2FF, #38BDF8); }
-    @keyframes toastSpringIn {
+    @keyframes toastDecelIn {
       0% {
-        transform: translate3d(0, 28px, 0) scale(0.92);
+        transform: translate3d(0, 20px, 0) scale(0.96);
         opacity: 0;
-      }
-      65% {
-        transform: translate3d(0, -3px, 0) scale(1.015);
-        opacity: 1;
       }
       100% {
         transform: translate3d(0, 0, 0) scale(1);
         opacity: 1;
       }
     }
-    @keyframes toastSpringOut {
+    @keyframes toastDecelOut {
       0% {
         transform: translate3d(0, 0, 0) scale(1);
         opacity: 1;
@@ -1925,7 +1921,7 @@
       stroke: rgba(255, 255, 255, 0.1);
       stroke-width: 1px;
       cursor: pointer;
-      transition: fill 0.18s ease, stroke 0.18s ease, stroke-width 0.18s ease;
+      transition: fill 0.18s ease, stroke 0.18s ease;
     }
     .wagon-sector-wedge:hover, .wagon-sector-wedge.active {
       fill: rgba(0, 229, 153, 0.28) !important;
@@ -2213,14 +2209,13 @@
       max-width: 90%;
     }
     .kinetic-boundary-banner.active {
-      animation: bannerPopElastic 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: bannerPopDecel 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    @keyframes bannerPopElastic {
-      0% { transform: translate(-50%, -50%) scale(0.3) rotate(-6deg); opacity: 0; }
-      20% { transform: translate(-50%, -50%) scale(1.1) rotate(2deg); opacity: 1; }
-      35% { transform: translate(-50%, -50%) scale(0.98) rotate(0deg); opacity: 1; }
-      80% { transform: translate(-50%, -50%) scale(1) translateY(0); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(0.85) translateY(-25px); opacity: 0; }
+    @keyframes bannerPopDecel {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+      15% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.96) translateY(-14px); opacity: 0; }
     }
 
     .holo-foil-card {

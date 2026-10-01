@@ -1,14 +1,38 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 07:18:00
-**Version:** 1.0.0-phase2cq (Elevation & Directional Shadow System Overhaul)  
+**Last Updated:** 2026-10-01 07:35:00
+**Version:** 1.0.0-phase2cr (Impeccable Quality & Zero-Overlap Verification Overhaul)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CQ Completed — Elevation & Directional Shadow System Overhaul with Modal Flex Overflow Hardening (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CR Completed — Impeccable Design Quality & Zero-Overlap Elimination Overhaul (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Impeccable Quality Floor Enforcement & AI-Slop Elimination**:
+    - Installed native Impeccable CLI skill suite at `.agents/skills/impeccable/` and `.github/skills/impeccable/`.
+    - Eliminated all tacky side-tab borders (`[side-tab]` anti-patterns):
+      - Swiss Scoreboard: replaced `border-left: 6px solid #DC2626 !important` with clean uniform `border: 2px solid #0F172A !important`.
+      - Nordic Scoreboard: replaced asymmetric thick borders with balanced `1.5px solid` borders.
+      - Cheerfeed, Dispute Resolution, and Field Planner Commentary: removed asymmetric colored borders (`border-left: 3px solid`) in favor of balanced card borders and subtle tinted background fills.
+    - Eliminated tacky bounce/spring overshoot easing (`[bounce-easing]` anti-patterns):
+      - Replaced all overshoot cubic-bezier curves with critically damped exponential deceleration `cubic-bezier(0.16, 1, 0.3, 1)`.
+      - Replaced `bannerPopElastic` and `ballRollIn` with smooth `bannerPopDecel` without scale/rotation overshoot.
+      - Renamed mobile toast animations to `toastDecelIn` and `toastDecelOut`, eliminating mid-flight scale(1.015) oscillations.
+      - Removed stroke-width SVG transitions (`[layout-transition]`) to eliminate layout thrashing.
+    - Confirmed 0 `[side-tab]`, 0 `[bounce-easing]`, and 0 `[layout-transition]` anti-patterns detected via `.agents/skills/impeccable/scripts/impeccable detect`.
+  - **2. Exhaustive Playwright Overlap & Viewport Verification**:
+    - Automated Playwright detection script (`scratch/detect_overlaps.py`) tested 6 distinct screen form factors:
+      - Desktop viewports: 1440x900, 1280x800, 1024x768.
+      - Mobile viewports: 390x844 (iPhone 14/15/16), 412x915 (Pixel 8/9/Samsung Galaxy), 360x780 (compact Android).
+    - Verified 0 element overlaps across all desktop modals (Dismissal, ICC Laws Reference, Penalty Runs).
+    - Verified 0 element overlaps across all mobile sheets and subtabs (Dismissal Sheet, ICC Laws Sheet, Penalty Runs Sheet, Scorecard Subtab, 3D Stadium Subtab, Wagon Wheel Subtab).
+    - Verified `scrollWidth === innerWidth` on both desktop and mobile viewports with zero horizontal overflow leaks.
+  - **3. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 408ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Verified single-file distribution artifacts synchronization via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Built Android native release & debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CQ Completed — Elevation & Directional Shadow System Overhaul with Modal Flex Overflow Hardening (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Zero-Offset Neon Glow Elimination & Directional Elevation Architecture**:
     - Replaced all non-semantic chromatic/neon box-shadow glows (`box-shadow: 0 0 Xpx rgba(...)`) across Desktop Match Center (`apps/api/src/ui/dashboard.ts`) and Mobile Scorer Studio (`apps/api/src/ui/mobile-view.ts`):
       - Brand Logo & hover badges: converted to directional depth `0 4px 16px rgba(0,0,0,0.35)` with subtle `inset 0 1px 0 rgba(255,255,255,0.2)`.

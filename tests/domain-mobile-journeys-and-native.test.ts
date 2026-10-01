@@ -385,8 +385,8 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
     const mobileHtml = fs.readFileSync(path.join(rootDir, 'dist', 'mobile.html'), 'utf8');
 
     it('1. Single Bottom-Docked Glassmorphic Spring Toast with Live Progress Bar', () => {
-      assert.ok(mobileHtml.includes('@keyframes toastSpringIn'), 'toastSpringIn keyframe animation must exist');
-      assert.ok(mobileHtml.includes('@keyframes toastSpringOut'), 'toastSpringOut keyframe animation must exist');
+      assert.ok(mobileHtml.includes('@keyframes toastDecelIn') || mobileHtml.includes('@keyframes toastSpringIn'), 'toastDecelIn keyframe animation must exist');
+      assert.ok(mobileHtml.includes('@keyframes toastDecelOut') || mobileHtml.includes('@keyframes toastSpringOut'), 'toastDecelOut keyframe animation must exist');
       assert.ok(mobileHtml.includes('id="mobileToastContainer"'), 'mobileToastContainer element must exist');
       assert.ok(mobileHtml.includes('transform-origin: center bottom'), 'Toast must animate from bottom center origin');
     });

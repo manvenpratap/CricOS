@@ -41,7 +41,7 @@ export function getDashboardHtml(): string {
       --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
       --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
       --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
       --duration-fast: 120ms;
       --duration-normal: 200ms;
       --duration-modal: 280ms;
@@ -2615,8 +2615,7 @@ export function getDashboardHtml(): string {
     body[data-theme="swiss"] .scoreboard,
     body.outdoor-mode .scoreboard {
       background: #FFFFFF !important;
-      border: 1px solid #0F172A !important;
-      border-left: 6px solid #DC2626 !important;
+      border: 2px solid #0F172A !important;
       border-radius: 4px !important;
       color: #0F172A !important;
       box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
@@ -3805,7 +3804,6 @@ export function getDashboardHtml(): string {
     body[data-theme="swiss"] .scoreboard {
       background: #FFFFFF !important;
       border: 1.5px solid #CBD5E1 !important;
-      border-left: 6px solid #DC2626 !important;
       border-radius: 12px !important;
       color: #0F172A !important;
       box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
@@ -3814,7 +3812,6 @@ export function getDashboardHtml(): string {
     body[data-theme="nordic"] .scoreboard {
       background: #FCFBF8 !important;
       border: 1.5px solid #D6D0C4 !important;
-      border-left: 6px solid #15803D !important;
       border-radius: 12px !important;
       color: #1C1917 !important;
       box-shadow: 0 4px 16px rgba(28, 25, 23, 0.05) !important;
@@ -5049,14 +5046,13 @@ export function getDashboardHtml(): string {
       opacity: 0;
     }
     .kinetic-boundary-banner.active {
-      animation: bannerPopElastic 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: bannerPopDecel 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    @keyframes bannerPopElastic {
-      0% { transform: translate(-50%, -50%) scale(0.3) rotate(-6deg); opacity: 0; }
-      20% { transform: translate(-50%, -50%) scale(1.12) rotate(2deg); opacity: 1; }
-      35% { transform: translate(-50%, -50%) scale(0.98) rotate(0deg); opacity: 1; }
-      80% { transform: translate(-50%, -50%) scale(1) translateY(0); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(0.85) translateY(-30px); opacity: 0; }
+    @keyframes bannerPopDecel {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+      15% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.96) translateY(-14px); opacity: 0; }
     }
 
     /* 3. Holographic Foil Card Shimmer */
@@ -5155,12 +5151,11 @@ export function getDashboardHtml(): string {
 
     /* 6. Roll-In Ball Animation for Over Strip */
     .ball-bubble.roll-in {
-      animation: ballRollIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: ballRollIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes ballRollIn {
-      0% { transform: scale(0.4) rotate(-180deg) translateX(20px); opacity: 0; }
-      70% { transform: scale(1.14) rotate(12deg) translateX(-2px); opacity: 1; }
-      100% { transform: scale(1) rotate(0deg) translateX(0); opacity: 1; }
+      0% { transform: scale(0.7) translateX(12px); opacity: 0; }
+      100% { transform: scale(1) translateX(0); opacity: 1; }
     }
 
     /* Reduced Motion Safety */
@@ -11534,7 +11529,7 @@ cricos_active_sse_connections 1</pre>
       easeOut: 'cubic-bezier(0.23, 1, 0.32, 1)',
       easeInOut: 'cubic-bezier(0.77, 0, 0.175, 1)',
       easeDrawer: 'cubic-bezier(0.32, 0.72, 0, 1)',
-      easeSpring: 'cubic-bezier(0.175, 0.885, 0.32, 1.15)',
+      easeSpring: 'cubic-bezier(0.16, 1, 0.3, 1)',
       durationFast: 120,
       durationNormal: 200,
       durationModal: 280
@@ -13546,7 +13541,7 @@ cricos_active_sse_connections 1</pre>
       if (feed) {
         const item = document.createElement('div');
         item.className = 'feed-item';
-        item.style.borderLeft = '3px solid var(--purple-light)';
+        item.style.border = '1px solid rgba(168, 85, 247, 0.35)';
         item.innerHTML = '<span style="color: var(--purple-light); font-weight: 700;">[FAN CHEER]</span> 🎪 ' + currentUser.name + ': ' + cheerText;
         feed.insertBefore(item, feed.firstChild);
       }
@@ -20915,7 +20910,7 @@ cricos_active_sse_connections 1</pre>
 
       const colors = { MATCH: 'var(--cyan)', FINANCIAL: 'var(--amber)', TRUST: 'var(--turf-emerald)', SYSTEM: 'var(--purple-light)' };
       listEl.innerHTML = filtered.map(function(item) {
-        return '<div style="padding: 0.85rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); background: ' + (item.read ? 'transparent' : 'rgba(0,229,153,0.04)') + '; border-left: 3px solid ' + (item.read ? 'transparent' : (colors[item.category] || 'var(--cyan)')) + ';">' +
+        return '<div style="padding: 0.85rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); background: ' + (item.read ? 'transparent' : 'rgba(0,229,153,0.04)') + '; border-radius: 6px; margin-bottom: 4px;">' +
           '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">' +
             '<span style="font-weight: 700; font-size: 0.84rem; color: #FFF;">' + item.title + '</span>' +
             '<span style="font-size: 0.7rem; color: var(--text-muted);">' + item.time + '</span>' +
@@ -21139,7 +21134,7 @@ cricos_active_sse_connections 1</pre>
             '<span>Dispute Value: <strong style="color: var(--amber);">' + item.amount + '</strong></span>' +
             '<span>Logged: ' + item.time + '</span>' +
           '</div>' +
-          '<div style="font-size: 0.75rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border-left: 3px solid var(--amber); margin-bottom: 0.75rem;">' +
+          '<div style="font-size: 0.75rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.3); margin-bottom: 0.75rem;">' +
             '<strong>Suggested Action:</strong> ' + item.recommendation +
           '</div>' +
           '<div style="display: flex; gap: 0.5rem; justify-content: flex-end;">' +
@@ -22530,7 +22525,7 @@ cricos_active_sse_connections 1</pre>
       var standingsBody = document.getElementById('standingsBody');
       if (standingsBody && teams.length > 0) {
         standingsBody.innerHTML = teams.map(function(team, idx) { 
-          return '<tr style="' + (idx < 2 ? 'border-left: 3px solid var(--turf-emerald);' : '') + '">' +
+          return '<tr style="' + (idx < 2 ? 'background: rgba(0, 229, 153, 0.04);' : '') + '">' +
             '<td><strong>' + team + '</strong> ' + (idx < 2 ? '<span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">[Q]</span>' : '') + '</td>' +
             '<td>0</td><td>0</td><td>0</td>' +
             '<td><strong style="color: var(--primary); font-family: var(--font-score);">0</strong></td>' +
@@ -23854,7 +23849,7 @@ cricos_active_sse_connections 1</pre>
       const plannerLog = document.getElementById('fieldPlannerCommentaryLog');
       if (plannerLog) {
         plannerLog.innerHTML = window._fieldChangeCommentaryHistory.slice(0, 6).map(function(c) {
-          return '<div style="padding: 0.45rem 0.6rem; border-radius: 8px; background: rgba(0, 229, 153, 0.09); border: 1px solid rgba(0, 229, 153, 0.28); border-left: 3px solid #00E599; display: flex; flex-direction: column; gap: 0.22rem;">' +
+          return '<div style="padding: 0.45rem 0.6rem; border-radius: 8px; background: rgba(0, 229, 153, 0.09); border: 1px solid rgba(0, 229, 153, 0.35); display: flex; flex-direction: column; gap: 0.22rem;">' +
             '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.35rem;">' +
               '<span style="font-size: 0.66rem; font-weight: 800; color: #00E599;">🎯 Over ' + c.over + ' • ' + c.summary + '</span>' +
               '<span style="font-size: 0.6rem; font-family: var(--font-mono); color: var(--cyan); font-weight: 700;">' + (c.xrDelta || '-0.30') + ' xR/b</span>' +
