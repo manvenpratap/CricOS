@@ -1,14 +1,42 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-01 10:10:00
-**Version:** 1.0.0-phase2cv (Worm Chart Dynamic Auto-Update & Live Score Synchronization)  
+**Last Updated:** 2026-10-03 09:10:00
+**Version:** 1.0.0-phase2cw (Mobile UI-UX Navigation Simplification & Linear User Journeys)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CV Completed — Worm Chart Dynamic Auto-Update & Live Score Synchronization (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/src/screens/LiveMatchScreen.ts`, `tests/test_66_worm_live_score_sync.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CW Completed — Mobile UI-UX Navigation Simplification & Linear User Journeys (`apps/api/src/ui/mobile-view.ts`, `tests/test_67_mobile_singular_navigation_audit.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Elimination of In-Card Navigation Duplications**:
+    - **Wagon Wheel Singular Linear Journey**: Removed duplicate `renderMobile8ZoneWagonWheel()` render from bottom of `SCORE` subtab. `SCORE` remains exclusively dedicated to live match scoring pad, batter/bowler cards, and DRS telemetry. The Wagon Wheel is canonically accessed via the dedicated `WAGON` subtab or the `ANALYTICS` chart view.
+    - **Removed In-Card 2D/3D Mode Toggles**: Eliminated duplicate `2D Map` vs `🌐 3D Stadium` navigation buttons from within the 3D Stadium header, 8-Zone Wagon Wheel header, and Analytics Wagon Wheel header. 3D Stadium is accessed with a singular linear path via the subnav pill (`STADIUM_3D`) and sidebar drawer (`#btnMobileSidebar3DStadium`).
+    - **Cleaned Captain HUD Action Buttons**: Removed duplicate `🎯 Field Radar`, `🧬 Win Simulator`, and `🏏 Playing XI` buttons from the Captain Tactical Center HUD (`mobileCaptainTacticalCenter`). The HUD now cleanly focuses on match target, balls left, RRR, and tactical directives. Tactical studios reside canonically in `#btnMatchContextMenu` (`⚡ Actions ▾`) and the sidebar drawer.
+    - **Cleaned Commentary Studio Header**: Removed duplicate `🎯 + Field` button from Commentary studio header, keeping it strictly focused on commentator voice indicator and audio commentary narration.
+  - **2. Single Canonical Placement for 3D Assets**:
+    - **Teams Hub Header Streamlining**: Retained canonical `🃏 3D Player Card` button for holographic squad telemetry while removing redundant `🏏 3D Gear` and `🏆 3D Trophy` buttons from Teams Hub.
+    - **Canonical 3D Silverware Home**: Retained `🏆 Silverware` in `TOURNAMENTS` Championship Hub as the singular canonical launcher for the 3D Trophy Cabinet sheet.
+    - **Canonical 3D Bat Configurator Home**: Retained `🏏 3D Bat Config` in `MARKETPLACE` Pro Cricket Gear Store as the singular canonical launcher for the 3D Gear Customizer sheet.
+    - **Cleaned Sidebar Drawer Persona Switcher**: Removed redundant `#btnMobileSidebarPersonaSheet` modal button in drawer; provisioned personas are directly selected with 1-tap via `#mobileSidebarPersonaStrip`.
+  - **3. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 452ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Created Playwright E2E suite `tests/test_67_mobile_singular_navigation_audit.py`:
+      - `test_mobile_singular_navigation_and_deduplication PASSED`:
+        - Asserted `#mobilePrecisionWagonWheel` does NOT exist in `SCORE` subtab.
+        - Asserted `#mobilePrecisionWagonWheel` exists canonically in `WAGON` subtab with sector chips and stance switcher.
+        - Asserted absence of redundant in-card mode toggles in Wagon Wheel and 3D Stadium headers.
+        - Asserted absence of redundant studio buttons in Captain HUD.
+        - Asserted absence of duplicate field planner button in Commentary header.
+        - Asserted Teams Hub contains 3D Player Card and lacks duplicate 3D Gear and 3D Trophy buttons.
+        - Asserted Tournaments Hub holds canonical 3D Silverware opening Trophy Cabinet sheet.
+        - Asserted Marketplace Pro Gear Store holds canonical 3D Bat Config opening Gear Customizer sheet.
+        - Asserted Sidebar drawer holds 1-tap persona chips and lacks redundant persona sheet launcher.
+        - Verified zero critical console errors across all journeys.
+        - Captured verified visual screenshot: `test_67_mobile_singular_navigation_audit.png`.
+    - Verified single-file distribution packaging via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Compiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk` (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CV Completed — Worm Chart Dynamic Auto-Update & Live Score Synchronization (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/src/screens/LiveMatchScreen.ts`, `tests/test_66_worm_live_score_sync.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Dynamic Mobile Worm Progression Synchronization**:
     - **Dynamic Over & Fractional Progression**: Replaced hardcoded `16 + (currentLegalBalls / 6)` in `renderDynamicWormChart()` with dynamic `liveOverFrac = this.matchState.legalBalls / 6`, dynamically computing `completedOvers` and slicing `overHistory` up to actual completed overs.
     - **Real-Time Polyline Calculation**: Dynamically appended the live score endpoint `(liveX, liveY)` to `inn2Points`, immediately responding to every run, boundary, extra, or dismissal confirmed in the mobile scoring studio.

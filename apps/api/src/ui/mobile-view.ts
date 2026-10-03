@@ -4964,7 +4964,6 @@ export function getMobileAppHtml(): string {
           h += '<button type="button" class="mobile-sidebar-persona-chip' + (isActRole ? ' active' : '') + '" data-persona="' + pKey + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona); window.cricosMobileApp.closeSidebarDrawer();" style="padding: 0.26rem 0.5rem; border-radius: 6px; font-size: 0.64rem; cursor: pointer; ' + st + '" data-tooltip="Switch to ' + pKey + '">' + pKey + '</button>';
         }
         h += '</div>';
-        h += '<button type="button" id="btnMobileSidebarPersonaSheet" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPersonaSheet();" style="width: 100%; margin-top: 0.35rem; padding: 0.32rem 0.5rem; border-radius: 6px; border: 1px dashed ' + (isLight ? '#CBD5E1' : 'rgba(255,255,255,0.2)') + '; background: transparent; color: ' + secondaryInk + '; font-size: 0.64rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open full persona sheet modal with role descriptions"><span>Switch Persona Sheet</span><span>▾</span></button>';
         h += '</div>';
 
         // Section 2: 3D Studios & Officiating (Tucked out of Main Area to eliminate clutter)
@@ -8162,10 +8161,6 @@ export function getMobileAppHtml(): string {
         h += '<span style="background: rgba(0, 229, 153, 0.15); border: 1px solid #00E599; color: #00E599; font-size: 0.65rem; font-weight: 800; padding: 0.12rem 0.45rem; border-radius: 9999px;">🌐 3D STADIUM VIEWPORT</span>';
         h += '<span style="font-size: 0.65rem; color: #94a3b8;">Wankhede Stadium</span>';
         h += '</div>';
-        h += '<div style="display: flex; gap: 0.25rem; background: rgba(0,0,0,0.5); padding: 0.15rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">';
-        h += '<button type="button" class="mobile-chip' + (this.wagonDisplayMode === '2D' ? ' active' : '') + '" style="font-size: 0.62rem; padding: 0.15rem 0.45rem;" data-mode="2D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" data-tooltip="Switch back to 2D field map">2D Map</button>';
-        h += '<button type="button" class="mobile-chip' + (this.wagonDisplayMode === '3D' ? ' active' : '') + '" style="font-size: 0.62rem; padding: 0.15rem 0.45rem;" data-mode="3D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" data-tooltip="Active 3D Stadium Orbit">3D Stadium</button>';
-        h += '</div>';
         h += '</div>';
 
         // 2. 3D Viewport Box
@@ -8269,10 +8264,6 @@ export function getMobileAppHtml(): string {
         h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px;">';
         h += '<button type="button" data-stance="RHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'RHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'RHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Right-handed batter stance">RHB</button>';
         h += '<button type="button" data-stance="LHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'LHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'LHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Left-handed batter stance">LHB</button>';
-        h += '</div>';
-        h += '<div style="display: inline-flex; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 2px; margin-left: 0.25rem;">';
-        h += '<button type="button" data-mode="2D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: #00E599; color: #04070D; cursor: pointer;" data-tooltip="2D Outfield Map">2D Map</button>';
-        h += '<button type="button" data-mode="3D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" style="font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 4px; border: none; background: transparent; color: #94a3b8; cursor: pointer;" data-tooltip="Switch to 3D stadium viewport">🌐 3D Stadium</button>';
         h += '</div></div>';
         h += '<span style="font-family: Chakra Petch, monospace; font-size: 0.65rem; color: #00E599; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 5px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25);" id="mobileWagonSelectedZone">ZONE: ' + activeZoneLabel.toUpperCase() + ' (' + activeZoneSide + '-SIDE)</span>';
         h += '</div>';
@@ -8495,10 +8486,6 @@ export function getMobileAppHtml(): string {
         h += '<div style="font-size: 0.65rem; color: #94a3b8;">Interactive 8-zone radial distribution & trajectory rays</div>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.25rem;">';
-        h += '<div style="display: flex; gap: 0.25rem; background: rgba(0,0,0,0.5); padding: 0.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">';
-        h += '<button type="button" class="mobile-chip active" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" data-mode="2D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" data-tooltip="2D Outfield Map">2D Map</button>';
-        h += '<button type="button" class="mobile-chip" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" data-mode="3D" onclick="window.cricosMobileApp.setWagonDisplayMode(this.dataset.mode)" data-tooltip="Launch 3D Stadium Orbit">🌐 3D Stadium</button>';
-        h += '</div>';
         h += '<div style="display: flex; gap: 0.25rem; background: rgba(0,0,0,0.5); padding: 0.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">';
         h += '<button type="button" class="mobile-chip' + (!isLhb ? ' active' : '') + '" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" onclick="window.cricosMobileApp.setAnalyticsWagonStance(this.dataset.stance)" data-stance="RHB" data-tooltip="Switch Wagon to Right-Hand Batter stance">RHB</button>';
         h += '<button type="button" class="mobile-chip' + (isLhb ? ' active' : '') + '" style="font-size: 0.65rem; padding: 0.2rem 0.5rem;" onclick="window.cricosMobileApp.setAnalyticsWagonStance(this.dataset.stance)" data-stance="LHB" data-tooltip="Switch Wagon to Left-Hand Batter stance">LHB</button>';
@@ -11447,13 +11434,6 @@ export function getMobileAppHtml(): string {
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Balls Left</div><div style="font-weight: 800; font-size: 0.82rem; color: #00D2FF; font-family: Chakra Petch, monospace;">' + remainingBalls + '</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Required RR</div><div style="font-weight: 800; font-size: 0.82rem; color: #FFB800; font-family: Chakra Petch, monospace;">' + rrr + '</div></div>';
             h += '</div>';
-            if (persona === 'CAPTAIN') {
-              h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.45rem;">';
-              h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.36rem 0.4rem; font-size: 0.68rem; font-weight: 700; color: #00E599; border-color: rgba(0, 229, 153, 0.35);" onclick="window.cricosMobileApp.openFieldPlannerSheet()" data-tooltip="Adjust 11-Fielder Tactical Radar &amp; Powerplay ring">🎯 Field Radar</button>';
-              h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.36rem 0.4rem; font-size: 0.68rem; font-weight: 700; color: #00D2FF; border-color: rgba(0, 210, 255, 0.35);" onclick="window.cricosMobileApp.openPitchMapSheet()" data-tooltip="Inspect Pitch Beehive &amp; Win Probability">🧬 Win Simulator</button>';
-              h += '<button type="button" class="btn btn-secondary" style="flex: 1; padding: 0.36rem 0.4rem; font-size: 0.68rem; font-weight: 700; color: #FFB800; border-color: rgba(255, 184, 0, 0.35);" data-screen="TEAMS" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-tooltip="Manage Playing XI &amp; Toss">🏏 Playing XI</button>';
-              h += '</div>';
-            }
             h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
             h += '<strong>Tactical Directive:</strong> Target deep mid-wicket &amp; cover corridors against spin. Official ball-by-ball scoring is managed exclusively by the match Scorer.';
             h += '</div>';
@@ -11496,10 +11476,7 @@ export function getMobileAppHtml(): string {
             h += '</div>';
           }
 
-          // 6. Full Interactive Precision 8-Zone Wagon Wheel
-          h += this.renderMobile8ZoneWagonWheel();
-
-          // 7. Fan Stadium Pulse (Visible to Spectators & Admin Monitoring only)
+          // 6. Fan Stadium Pulse (Visible to Spectators & Admin Monitoring only)
           if (persona === 'FAN' || persona === 'ADMIN') {
             h += '<div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 10px; padding: 0.55rem 0.7rem; margin-bottom: 0.55rem;">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">';
@@ -11555,7 +11532,6 @@ export function getMobileAppHtml(): string {
           h += '<div style="display: flex; gap: 0.3rem; align-items: center;">';
           var voiceName = activeVoice === 'HYPE' ? 'Ravi' : (activeVoice === 'TACTICAL' ? 'Nasser' : 'Harsha');
           h += '<span id="mobileActiveVoiceIndicator" style="font-size: 0.62rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.16rem 0.45rem; border-radius: 999px;" data-tooltip="Voice: ' + voiceName + ' (Configured in App Settings)">🎙️ ' + voiceName + '</span>';
-          h += '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="padding: 0.24rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.4); background: rgba(0,229,153,0.14); color: #00E599; font-size: 0.64rem; font-weight: 800;" data-tooltip="Open 11-Fielder Tactical Radar">🎯 + Field</button>';
           h += '<button type="button" onclick="window.cricosMobileApp.speakMobileCommentary()" style="padding: 0.24rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,210,255,0.4); background: rgba(0,210,255,0.14); color: #00D2FF; font-size: 0.64rem; font-weight: 800;" data-tooltip="Audio readout of latest commentary">🔊 Audio</button>';
           h += '</div>';
           h += '</div>';
@@ -11643,9 +11619,7 @@ export function getMobileAppHtml(): string {
         h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.2rem;">Official Playing XI squad roster, 3D equipment customization &amp; career telemetry</div>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.openGearCustomizerSheet()" style="padding: 0.22rem 0.45rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.68rem; font-weight: 700;" data-tooltip="Customise 3D bat blade and grips" aria-label="3D Gear Configurator">🏏 3D Gear</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="padding: 0.22rem 0.45rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.68rem; font-weight: 700;" data-tooltip="Inspect Holographic 3D Player Card and telemetry" aria-label="3D Player Card">🃏 3D Card</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet()" style="padding: 0.22rem 0.45rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #FFB800; font-size: 0.68rem; font-weight: 700;" data-tooltip="Inspect 3D Championship Trophy Cabinet" aria-label="3D Trophy Cabinet">🏆 3D Trophy</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="padding: 0.22rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.68rem; font-weight: 700;" data-tooltip="Inspect Holographic 3D Player Card and telemetry" aria-label="3D Player Card">🃏 3D Player Card</button>';
         h += '</div>';
         h += '</div>';
         if (isCaptain || this.profile.persona === 'PLAYER') {

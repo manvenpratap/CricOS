@@ -344,9 +344,10 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
 
     it('3. Dual-mode 2D / 3D Stadium switch in 8-Zone Precision Wagon Wheel', () => {
       assert.ok(mobileHtml.includes('setWagonDisplayMode'), 'Mode switch handler must exist');
-      assert.ok(mobileHtml.includes("setWagonDisplayMode('2D')") || mobileHtml.includes("setWagonDisplayMode(this.dataset.mode)"), '2D Map button must exist');
-      assert.ok(mobileHtml.includes("setWagonDisplayMode('3D')") || mobileHtml.includes("setWagonDisplayMode(this.dataset.mode)"), '3D Stadium button must exist');
-      assert.ok(mobileHtml.includes("wagonDisplayMode === '3D'"), 'Wagon mode state toggle check must exist');
+      assert.ok(mobileHtml.includes('data-subtab="STADIUM_3D"'), '3D Stadium subtab must exist');
+      assert.ok(mobileHtml.includes('data-subtab="WAGON"'), 'Wagon Wheel subtab must exist');
+      assert.ok(mobileHtml.includes('btnMobileSidebar3DStadium'), 'Sidebar 3D Stadium button must exist');
+      assert.ok(mobileHtml.includes('btnMobileSidebarWagonWheel'), 'Sidebar Wagon Wheel button must exist');
     });
 
     it('4. Interactive 3D Championship Trophy Cabinet action sheet', () => {
