@@ -440,6 +440,73 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mainActivitySrc.includes('setAllowUniversalAccessFromFileURLs(false)'), 'WebView must disable universal file URL access for Play Protect compliance');
     });
   });
+
+  // =========================================================================
+  // Suite 9: Mobile UI-UX Navigation Simplification & Linear User Journeys (67)
+  // =========================================================================
+  describe('Suite 9: Mobile UI-UX Navigation Simplification & Linear User Journeys (67)', () => {
+    it('1. Wagon Wheel is strictly canonical in WAGON and eliminated from SCORE subtab', () => {
+      // In mobile view template, mobilePrecisionWagonWheel is only rendered when matchSubTab === 'WAGON' or in Analytics
+      assert.ok(mobileHtml.includes('id="mobilePrecisionWagonWheel"'), 'Wagon Wheel element must exist');
+      assert.ok(mobileHtml.includes('subTabs'), 'Subnav tabs array must exist');
+      assert.ok(mobileHtml.includes("['WAGON', '🎯 Wagon Wheel']"), 'Dedicated WAGON subtab must be defined');
+    });
+
+    it('2. Eliminates redundant in-card 2D/3D mode toggles from Wagon Wheel and 3D Stadium', () => {
+      assert.ok(!mobileHtml.includes('data-tooltip="Switch back to 2D field map"'), 'Redundant 2D toggle in 3D Stadium header removed');
+      assert.ok(!mobileHtml.includes('data-tooltip="Switch between 2D field diagram and 3D stadium angle"'), 'Redundant toggle in Wagon Wheel removed');
+    });
+
+    it('3. Captain HUD strictly displays tactical directive and targets without duplicate studio buttons', () => {
+      assert.ok(mobileHtml.includes('mobileCaptainTacticalCenter'), 'Captain HUD must be defined');
+      assert.ok(mobileHtml.includes('Tactical Directive:'), 'Captain HUD must focus on tactical directive');
+    });
+
+    it('4. Canonical 3D Silverware & 3D Bat Config homes established', () => {
+      assert.ok(mobileHtml.includes('open3DTrophyCabinetSheet()'), 'Championship Tournaments hub must hold 3D Silverware launcher');
+      assert.ok(mobileHtml.includes('openGearCustomizerSheet()'), 'Marketplace gear store must hold 3D Bat Config launcher');
+    });
+
+    it('5. Sidebar drawer linear persona strip without redundant sheet button', () => {
+      assert.ok(mobileHtml.includes('mobileSidebarPersonaStrip'), 'Sidebar must provide 1-tap persona strip');
+      assert.ok(!mobileHtml.includes('btnMobileSidebarPersonaSheet'), 'Redundant persona sheet button in drawer removed');
+    });
+  });
+
+  // =========================================================================
+  // Suite 10: Iconsax Real SVG Icon System & Dynamic Flippable 3D Cards (68)
+  // =========================================================================
+  describe('Suite 10: Iconsax Real SVG Icon System & Dynamic Flippable 3D Cards (68)', () => {
+    it('1. Real SVG Icon Helper and Two-Tone SVG icons system defined', () => {
+      assert.ok(mobileHtml.includes('iconSvg(name, color, size)'), 'iconSvg helper method must be defined on StandaloneMobileApp');
+      assert.ok(mobileHtml.includes('class="cricos-icon"'), 'SVG icons must include cricos-icon class');
+    });
+
+    it('2. Bottom Navigation uses SVG icon helper without raw emojis', () => {
+      assert.ok(mobileHtml.includes("this.iconSvg(item[1], navIconColor, 22)"), 'Bottom nav items must render SVG icons via iconSvg()');
+    });
+
+    it('3. Profile Career Figures use 3D flippable stat cards with front/back faces', () => {
+      assert.ok(mobileHtml.includes('stat-3d-card-scene'), 'Stat 3D card scene container must exist');
+      assert.ok(mobileHtml.includes('stat-3d-card'), 'Stat 3D card element must exist');
+      assert.ok(mobileHtml.includes('stat-3d-front'), 'Stat 3D front face must exist');
+      assert.ok(mobileHtml.includes('stat-3d-back'), 'Stat 3D back face must exist');
+      assert.ok(mobileHtml.includes('toggleFlipCard(this)'), 'Card click must trigger toggleFlipCard');
+    });
+
+    it('4. 3D Player Card Sheet features dynamic striker selection and CSS flip card', () => {
+      assert.ok(mobileHtml.includes('open3DPlayerCardSheet'), 'open3DPlayerCardSheet must exist');
+      assert.ok(mobileHtml.includes('player-flip-card'), 'player-flip-card class must exist');
+      assert.ok(mobileHtml.includes('player-flip-front'), 'player-flip-front face must exist');
+      assert.ok(mobileHtml.includes('player-flip-back'), 'player-flip-back face must exist');
+      assert.ok(mobileHtml.includes('this.matchState.striker'), 'Player card must dynamically select current match striker');
+    });
+
+    it('5. toggleFlipCard method cleanly manages flip state across 3D cards', () => {
+      assert.ok(mobileHtml.includes('toggleFlipCard(el)'), 'toggleFlipCard method must exist');
+      assert.ok(mobileHtml.includes("target.classList.toggle('flipped')"), 'Must toggle flipped class');
+    });
+  });
 });
 
 
