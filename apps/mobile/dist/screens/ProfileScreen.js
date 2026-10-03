@@ -37,9 +37,9 @@ export class ProfileScreenController {
                 { tournamentName: 'Inter-Club Championship 2025', year: 2025, matches: 12, runs: 512, average: 46.54, strikeRate: 138.9, wickets: 1 }
             ],
             badges: profile?.badges || [
-                { id: 'bdg-1', title: 'Century Master 💯', icon: '💯', rarity: 'LEGENDARY', description: '5 competitive match-winning centuries' },
-                { id: 'bdg-2', title: 'Boundary King 🚀', icon: '🚀', rarity: 'RARE', description: '450+ boundaries and 100+ maximum sixes' },
-                { id: 'bdg-3', title: 'Tactical Captain 👑', icon: '👑', rarity: 'RARE', description: '50+ matches captained with >65% win rate' }
+                { id: 'bdg-1', title: 'Century Master', icon: 'medal', rarity: 'LEGENDARY', description: '5 competitive match-winning centuries' },
+                { id: 'bdg-2', title: 'Boundary King', icon: 'fire', rarity: 'RARE', description: '450+ boundaries and 100+ maximum sixes' },
+                { id: 'bdg-3', title: 'Tactical Captain', icon: 'crown', rarity: 'RARE', description: '50+ matches captained with >65% win rate' }
             ]
         };
     }
@@ -85,14 +85,14 @@ export class ProfileScreenController {
     }
     renderMobileHtml() {
         const roles = [
-            { id: 'CAPTAIN', label: 'Captain', icon: '👑' },
-            { id: 'PLAYER', label: 'Player', icon: '🏏' },
-            { id: 'SCORER', label: 'Scorer', icon: '⚡' },
-            { id: 'FAN', label: 'Fan', icon: '🎪' },
-            { id: 'UMPIRE', label: 'Umpire', icon: '⚖️' },
-            { id: 'ORGANISER', label: 'Organiser', icon: '🏆' },
-            { id: 'TURF_PROVIDER', label: 'Provider', icon: '🏟️' },
-            { id: 'ADMIN', label: 'Admin', icon: '⚡' }
+            { id: 'CAPTAIN', label: 'Captain', icon: 'crown' },
+            { id: 'PLAYER', label: 'Player', icon: 'bat' },
+            { id: 'SCORER', label: 'Scorer', icon: 'lightning' },
+            { id: 'FAN', label: 'Fan', icon: 'stadium' },
+            { id: 'UMPIRE', label: 'Umpire', icon: 'scale' },
+            { id: 'ORGANISER', label: 'Organiser', icon: 'trophy' },
+            { id: 'TURF_PROVIDER', label: 'Provider', icon: 'stadium' },
+            { id: 'ADMIN', label: 'Admin', icon: 'lightning' }
         ];
         return `
       <div class="mobile-profile-screen" style="padding: 1rem; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif;">
@@ -117,7 +117,7 @@ export class ProfileScreenController {
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;">
               ${roles.map(r => `
                 <button type="button" onclick="window.cricosMobileApp.switchUserPersona('${r.id}')" style="padding: 0.35rem 0.2rem; border-radius: 6px; border: 1px solid ${this.profile.persona === r.id ? '#00E599' : 'rgba(255,255,255,0.1)'}; background: ${this.profile.persona === r.id ? 'rgba(0,229,153,0.2)' : 'rgba(255,255,255,0.03)'}; color: ${this.profile.persona === r.id ? '#00E599' : '#cbd5e1'}; font-size: 0.65rem; font-weight: 600; cursor: pointer; text-align: center;" data-tooltip="Switch to ${r.label} persona">
-                  ${r.icon} ${r.label}
+                  ${r.label}
                 </button>
               `).join('')}
             </div>
@@ -136,7 +136,7 @@ export class ProfileScreenController {
         </div>
 
         <!-- Batting Career Metrics Grid -->
-        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">🏏 Batting Career Figures</div>
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">Batting Career Figures</div>
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 1rem;">
           <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.65rem; text-align: center;" data-tooltip="Total Career Runs">
             <div style="font-size: 1.15rem; font-weight: 800; color: #00E599; font-family: 'Chakra Petch', monospace;">${this.profile.batting.runs}</div>
@@ -153,7 +153,7 @@ export class ProfileScreenController {
         </div>
 
         <!-- Bowling Career Metrics Grid -->
-        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">🎳 Bowling Career Figures</div>
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">Bowling Career Figures</div>
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 1.25rem;">
           <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.65rem; text-align: center;" data-tooltip="Career Wickets Taken">
             <div style="font-size: 1.15rem; font-weight: 800; color: #00D2FF; font-family: 'Chakra Petch', monospace;">${this.profile.bowling.wickets}</div>
@@ -170,11 +170,11 @@ export class ProfileScreenController {
         </div>
 
         <!-- Career Milestone Badges -->
-        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">🏆 Milestone Achievement Badges</div>
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">Milestone Achievement Badges</div>
         <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem;">
           ${this.profile.badges.map(b => `
             <div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(10, 16, 28, 0.7); border: 1px solid ${b.rarity === 'LEGENDARY' ? '#FFB800' : 'rgba(255,255,255,0.08)'}; border-radius: 10px; padding: 0.65rem 0.85rem;" data-tooltip="${b.description}">
-              <div style="font-size: 1.35rem;">${b.icon}</div>
+              <div style="width: 26px; height: 26px; border-radius: 6px; background: rgba(0, 229, 153, 0.15); border: 1px solid rgba(0, 229, 153, 0.3); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #00E599; font-weight: 800;">★</div>
               <div style="flex: 1;">
                 <div style="font-size: 0.85rem; font-weight: 700; color: #f8fafc;">${b.title}</div>
                 <div style="font-size: 0.7rem; color: #94a3b8;">${b.description}</div>
@@ -185,7 +185,7 @@ export class ProfileScreenController {
         </div>
 
         <!-- Multi-Tournament Longitudinal Form -->
-        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">📊 Tournament Performance Logs</div>
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">Tournament Performance Logs</div>
         <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem;">
           ${this.profile.tournaments.map(t => `
             <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem;" data-tooltip="${t.tournamentName}: ${t.runs} runs @ avg ${t.average}">
@@ -209,12 +209,12 @@ export class ProfileScreenController {
           <div style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.75rem;">Account & Session Security</div>
           
           <button type="button" onclick="window.cricosMobileApp.signOutAction()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.75rem; cursor: pointer;" data-tooltip="Clear mobile session">
-            🚪 Sign Out of CricOS
+            Sign Out of CricOS
           </button>
 
           <!-- Apple Guideline 5.1.1(v) Compliant Account Deletion -->
           <button type="button" onclick="window.cricosMobileApp.promptDeleteAccount()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff6688; font-weight: 600; font-size: 0.85rem; cursor: pointer;" data-tooltip="Mandatory permanent account deletion per Apple App Store 5.1.1(v)">
-            🗑️ Delete Account & All Data (App Store Compliance)
+            Delete Account & All Data (App Store Compliance)
           </button>
         </div>
       </div>

@@ -670,7 +670,7 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(fanHtml.includes('data-tooltip="View full detailed scorecard"'));
 
       const wagonHtml = controller.renderMobileHtml('FAN', 'WAGON');
-      assert.ok(wagonHtml.includes('🎯 Mobile Precision Wagon Wheel'));
+      assert.ok(wagonHtml.includes('Mobile Precision Wagon Wheel'));
       assert.ok(wagonHtml.includes('<svg viewBox="0 0 300 300"'));
 
       const scorecardHtml = controller.renderMobileHtml('FAN', 'SCORECARD');

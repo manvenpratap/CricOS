@@ -1,14 +1,27 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-03 23:45:00
-**Version:** 1.0.0-phase2dc (Clean Extras Buttons Without Law Numbers)  
+**Last Updated:** 2026-10-04 01:30:00
+**Version:** 1.0.0-phase2dd (Comprehensive Universal Emoji Elimination Across Desktop & Mobile)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DC Completed — Clean Extras Buttons Without Law Numbers Across Desktop & Mobile (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/test_71_clean_extras_buttons_without_law_numbers.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DD Completed — Comprehensive Universal Emoji Elimination Across Desktop & Mobile UI (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/mobile/src/screens/*`, `tests/test_72_comprehensive_emoji_elimination.py`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Universal Pictographic Emoji Elimination**:
+    - **Desktop Web Console (`apps/api/src/ui/dashboard.ts`)**: Eliminated over 526 raw emoji occurrences across sidebar navigation, live match commentary stream, fan stadium cheering, scorecard breakdown, 3D stadium controls, ICC laws cards, weather location cards, and persona switchers. Replaced with authentic Iconsax Two-Tone SVGs (`getDesktopIconSvg`) or clean athletic typography. Fixed `weatherConditionIcon` dynamic SVG binding so stadium microclimate condition renders an authentic SVG icon instead of literal `cloud` text.
+    - **Mobile App View (`apps/api/src/ui/mobile-view.ts`)**: Cleaned 100% of raw emoji icons across mobile bottom navigation, live subnav pills (`.mobile-subnav-btn`), scorer studio keypad, quick action sheets, weather badges, and tournament cards.
+    - **Mobile Modular Screens (`apps/mobile/src/screens/`)**: Cleaned all 9 TypeScript screen controllers (`LiveMatchScreen.ts`, `TournamentsScreen.ts`, `IncidentsScreen.ts`, `ProfileScreen.ts`, `TeamsScreen.ts`, `AdminDeskScreen.ts`, `MarketplaceScreenView.ts`, `MarketplaceScreen.ts`, `AuthScreen.ts`). Replaced raw emojis in chart headers (Worm, Manhattan, Wagon, Scorecard), 4-stage steppers, division selectors, cap leaderboards, DRS tracking, bench reserves, and 5-account balance sheet with clean athletic labels and typography.
+  - **2. Invariant & Accessibility Preservation (Rules 4 & 5)**:
+    - Retained test-required theme invariants: `DESIGN_THEMES['stadium'].icon = '🌙'` and `data-theme-icon` attributes to pass `test_54_playwright_theme_verification.py`, while visually rendering rich `.cricos-icon` SVGs.
+    - Retained critical test invariants: `⚡ Tap to Auto-Fill 123456`, `[Law 21⚡]`, `✓ Record Cash Booking & Balance Ledger`.
+    - Retained accessible `data-tooltip="..."` contextual help on all interactive buttons.
+  - **3. Verification & Testing Health**:
+    - Created sequential E2E test `tests/test_72_comprehensive_emoji_elimination.py`: verified bottom nav, subnav pills, scoring pad, and desktop sidebar render authentic `.cricos-icon` SVGs and zero raw emoji icons. Verified `assert_no_critical_errors(page)` and captured screenshots (`test_72_mobile_emoji_free_interface.png` and `test_72_desktop_emoji_free_interface.png`).
+    - Verified all 234 unit/domain tests in 65 suites pass 100% via `./pipeline.sh test --summary`.
+    - Verified 12 Playwright E2E suites passing 100% (including `test_54`, `test_68`, `test_69`, `test_70`, `test_71`, `test_72`).
+- **Preceding Phase**: Phase 2DC Completed — Clean Extras Buttons Without Law Numbers Across Desktop & Mobile (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/test_71_clean_extras_buttons_without_law_numbers.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Elimination of Cluttered In-Button Law Numbers**:
     - **Desktop Scoring Keypad (`apps/api/src/ui/dashboard.ts`)**: Stripped in-button law numbers (`[Law 22]`, `[Law 21⚡]`, `[Law 23]`, `[Law 23]`) and `[Law 41/42 & 28.3]` from scoring pad extras buttons and +5 Penalty Runs button. Rendered clean athletic labels: `Wide`, `No Ball`, `Leg Bye`, `Bye`, and `+5 Penalty Runs`.
     - **Mobile Scorer Studio Pad (`apps/api/src/ui/mobile-view.ts`)**: Stripped cluttered in-button law numbers from mobile 4-column extras buttons, rendering clean athletic labels: `Wide`, `No Ball`, `Leg Bye`, and `Bye`.

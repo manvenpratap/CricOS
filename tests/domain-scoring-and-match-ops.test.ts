@@ -422,7 +422,7 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
     it('6.3 should strictly gate manual Strike Swap button to SCORER persona on both mobile & desktop', () => {
       // Mobile gating
       assert.ok(mobileSrc.includes("if (this.profile.persona === 'SCORER')"), 'Mobile gates swap button to SCORER');
-      assert.ok(mobileSrc.includes("this.showToast('🔒 Only official Scorers can swap strike.', 'warning')"), 'Mobile guard toast');
+      assert.ok(mobileSrc.includes("this.showToast('Only official Scorers can swap strike.', 'warning')"), 'Mobile guard toast');
 
       // Dashboard gating
       assert.ok(dashboardSrc.includes('id="btnStudioSwapStrike" style="display: none;"'), 'Dashboard swap button hidden by default');

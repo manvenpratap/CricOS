@@ -179,7 +179,7 @@ export class LiveMatchScreenController {
             chartPanelHtml = `
         <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
           <div style="font-size: 0.85rem; font-weight: 800; color: #00E599; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; font-family: 'Space Grotesk', sans-serif;">
-            <span>📈 Precision Worm Progression</span>
+            <span>Precision Worm Progression</span>
             <span style="color: #94a3b8; font-size: 0.68rem;">Target: ${targetRuns}</span>
           </div>
 
@@ -241,7 +241,7 @@ export class LiveMatchScreenController {
             chartPanelHtml = `
         <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 210, 255, 0.35); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
           <div style="font-size: 0.85rem; font-weight: 800; color: #00D2FF; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; font-family: 'Space Grotesk', sans-serif;">
-            <span>📊 Precision Manhattan Velocity</span>
+            <span>Precision Manhattan Velocity</span>
             <span style="color: #94a3b8; font-size: 0.68rem;">Overs 1-16 (135 runs)</span>
           </div>
           <svg viewBox="0 0 340 135" width="100%" height="135" xmlns="http://www.w3.org/2000/svg" style="background: rgba(0,0,0,0.35); border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
@@ -261,7 +261,7 @@ export class LiveMatchScreenController {
             chartPanelHtml = `
         <div id="mobileWagonPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(192, 132, 252, 0.35); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.85rem; font-weight: 800; color: #c084fc; font-family: 'Space Grotesk', sans-serif;">🎯 Mobile Precision Wagon Wheel (360° Precision Wagon Wheel)</span>
+            <span style="font-size: 0.85rem; font-weight: 800; color: #c084fc; font-family: 'Space Grotesk', sans-serif;">Mobile Precision Wagon Wheel (360° Precision Wagon Wheel)</span>
             <span style="font-size: 0.65rem; color: #00E599; font-weight: 800; background: rgba(0,229,153,0.15); padding: 0.15rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0,229,153,0.3);">RHB • Striker (${this.state.striker.runs}*)</span>
           </div>
           <div style="position: relative; width: 100%; display: flex; justify-content: center; margin-bottom: 0.65rem;">
@@ -320,7 +320,7 @@ export class LiveMatchScreenController {
         <div id="mobileScorecardPanel" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
             <div>
-              <span style="font-size: 0.85rem; font-weight: 800; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">📄 Detailed Scorecard (Official Match Scorecard)</span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">Detailed Scorecard (Official Match Scorecard)</span>
               <div style="font-size: 0.65rem; color: #94a3b8;">Innings 2: ${this.state.totalRuns}/${this.state.totalWickets}</div>
             </div>
             <span style="font-size: 0.75rem; color: #00E599; font-weight: 800; font-family: monospace; background: rgba(0,229,153,0.12); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0,229,153,0.3);">${this.state.totalRuns}/${this.state.totalWickets} (${oversDisplay} ov)</span>
@@ -449,14 +449,14 @@ export class LiveMatchScreenController {
         <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
           <div style="display: flex; align-items: center; gap: 0.4rem;">
-            <span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 9999px;">🔴 LIVE</span>
+            <span style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff3366; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #ff3366; box-shadow: 0 0 6px #ff3366;"></span> LIVE</span>
             <span style="font-size: 0.75rem; color: #94a3b8;">Match #${this.state.matchId}</span>
           </div>
           <div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">
-            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('WORM')" style="background: ${activeChart === 'WORM' ? 'rgba(0, 229, 153, 0.25)' : 'rgba(0, 229, 153, 0.1)'}; border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Worm progression curve">📈 Worm</button>
-            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('MANHATTAN')" style="background: ${activeChart === 'MANHATTAN' ? 'rgba(0, 210, 255, 0.25)' : 'rgba(0, 210, 255, 0.1)'}; border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Manhattan over bars">📊 Bars</button>
-            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('WAGON')" style="background: ${activeChart === 'WAGON' ? 'rgba(192, 132, 252, 0.25)' : 'rgba(192, 132, 252, 0.1)'}; border: 1px solid rgba(192, 132, 252, 0.3); color: #c084fc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View 8-zone Wagon Wheel">🎯 Wagon</button>
-            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('SCORECARD')" style="background: ${activeChart === 'SCORECARD' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.06)'}; border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View full detailed scorecard">📄 Card</button>
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('WORM')" style="background: ${activeChart === 'WORM' ? 'rgba(0, 229, 153, 0.25)' : 'rgba(0, 229, 153, 0.1)'}; border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Worm progression curve">Worm</button>
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('MANHATTAN')" style="background: ${activeChart === 'MANHATTAN' ? 'rgba(0, 210, 255, 0.25)' : 'rgba(0, 210, 255, 0.1)'}; border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View Manhattan over bars">Bars</button>
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('WAGON')" style="background: ${activeChart === 'WAGON' ? 'rgba(192, 132, 252, 0.25)' : 'rgba(192, 132, 252, 0.1)'}; border: 1px solid rgba(192, 132, 252, 0.3); color: #c084fc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View 8-zone Wagon Wheel">Wagon</button>
+            <button type="button" onclick="window.cricosMobileApp.toggleMobileChart('SCORECARD')" style="background: ${activeChart === 'SCORECARD' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.06)'}; border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; font-size: 0.68rem; padding: 0.2rem 0.45rem; border-radius: 6px; cursor: pointer;" data-tooltip="View full detailed scorecard">Card</button>
           </div>
         </div>
 
@@ -515,7 +515,7 @@ export class LiveMatchScreenController {
 
         <!-- Bowler Active Strip -->
         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem; margin-bottom: 1rem; display: flex; justify-content: space-between; font-size: 0.8rem;" data-tooltip="Current Bowler Figures">
-          <span style="font-weight: 600;">🎳 ${this.state.bowler.name}</span>
+          <span style="font-weight: 600;">${this.state.bowler.name}</span>
           <span style="color: #00D2FF; font-family: 'Chakra Petch', monospace; font-weight: 700;">
             ${this.state.bowler.overs}.${this.state.bowler.ballsThisOver}-${this.state.bowler.maidens}-${this.state.bowler.runsConceded}-${this.state.bowler.wickets}
           </span>
@@ -526,17 +526,17 @@ export class LiveMatchScreenController {
           <!-- 1. FAN STADIUM CHEERING & MATCH PULSE CONSOLE -->
           <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 14px; padding: 1rem; margin-bottom: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-              <span style="font-size: 0.85rem; font-weight: 700; color: #c084fc; font-family: 'Space Grotesk', sans-serif;">🎪 Fan Stadium Cheering Pulse</span>
+              <span style="font-size: 0.85rem; font-weight: 700; color: #c084fc; font-family: 'Space Grotesk', sans-serif;">Fan Stadium Cheering Pulse</span>
               <span style="font-size: 0.75rem; color: #00E599; font-weight: 700; font-family: 'Chakra Petch', monospace;" id="mobileCheerCounter">1,429+ Cheers</span>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 0.75rem;">
-              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('🔥 Cheer BLR')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 700; font-size: 0.75rem; cursor: pointer;">🔥 Cheer BLR</button>
-              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('👏 Applause')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 700; font-size: 0.75rem; cursor: pointer;">👏 Applause</button>
-              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('💥 Boundary')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.3); background: rgba(0, 229, 153, 0.1); color: #00E599; font-weight: 700; font-size: 0.75rem; cursor: pointer;">💥 Boundary</button>
-              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('⚡ Sixer!')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.1); color: #c084fc; font-weight: 700; font-size: 0.75rem; cursor: pointer;">⚡ Sixer!</button>
-              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('🛡️ Breakthrough')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff8099; font-weight: 700; font-size: 0.75rem; cursor: pointer;">🛡️ Wicket</button>
-              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('👑 Virat!')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.1); color: #ffb800; font-weight: 700; font-size: 0.75rem; cursor: pointer;">👑 King Kohli</button>
+              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('Cheer BLR')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 700; font-size: 0.75rem; cursor: pointer;">Cheer BLR</button>
+              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('Applause')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 700; font-size: 0.75rem; cursor: pointer;">Applause</button>
+              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('Boundary')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.3); background: rgba(0, 229, 153, 0.1); color: #00E599; font-weight: 700; font-size: 0.75rem; cursor: pointer;">Boundary</button>
+              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('Sixer!')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.1); color: #c084fc; font-weight: 700; font-size: 0.75rem; cursor: pointer;">Sixer!</button>
+              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('Breakthrough')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff8099; font-weight: 700; font-size: 0.75rem; cursor: pointer;">Wicket</button>
+              <button type="button" onclick="window.cricosMobileApp.sendMobileCheer('Virat!')" style="padding: 0.6rem 0.3rem; border-radius: 8px; border: 1px solid rgba(255, 184, 0, 0.3); background: rgba(255, 184, 0, 0.1); color: #ffb800; font-weight: 700; font-size: 0.75rem; cursor: pointer;">King Kohli</button>
             </div>
 
             <!-- Win Probability Poll -->
@@ -561,8 +561,8 @@ export class LiveMatchScreenController {
           <!-- 2. CAPTAIN TACTICAL HUD -->
           <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 14px; padding: 1rem; margin-bottom: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-              <span style="font-size: 0.85rem; font-weight: 700; color: #00E599; font-family: 'Space Grotesk', sans-serif;">👑 Captain Tactical View</span>
-              <button type="button" onclick="window.cricosMobileApp.conductTossModal()" style="padding: 0.3rem 0.6rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="Record toss result">🪙 Toss</button>
+              <span style="font-size: 0.85rem; font-weight: 700; color: #00E599; font-family: 'Space Grotesk', sans-serif;">Captain Tactical View</span>
+              <button type="button" onclick="window.cricosMobileApp.conductTossModal()" style="padding: 0.3rem 0.6rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="Record toss result">Toss</button>
             </div>
             <div style="font-size: 0.75rem; color: #cbd5e1; margin-bottom: 0.6rem;">
               Target Equation: Need <strong style="color: #00E599;">48 runs</strong> in <strong style="color: #00D2FF;">20 balls</strong> (RRR: 14.40)
@@ -578,7 +578,7 @@ export class LiveMatchScreenController {
           <!-- 3. OFFICIAL SCORER CONTROLS & WAGON WHEEL -->
           <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1rem; margin-bottom: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-              <span style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">⚡ Live Scoring Pad</span>
+              <span style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">Live Scoring Pad</span>
               <div style="display: flex; gap: 0.3rem;">
                 <button type="button" onclick="window.cricosMobileApp.swapMobileStrike()" style="padding: 0.25rem 0.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-size: 0.7rem; cursor: pointer;" data-tooltip="Swap batsman strike">⇄ Swap Strike</button>
                 <button type="button" onclick="window.cricosMobileApp.undoMobileBall()" style="padding: 0.25rem 0.5rem; border-radius: 6px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff8099; font-size: 0.7rem; cursor: pointer;" data-tooltip="Undo last recorded delivery">↩ Undo</button>
@@ -607,7 +607,7 @@ export class LiveMatchScreenController {
 
             <!-- 8-Zone Wagon Wheel Shot Selector -->
             <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.6rem;">
-              <div style="font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.4rem;">🎯 8-Zone Wagon Wheel Shot Selector:</div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.4rem;">8-Zone Wagon Wheel Shot Selector:</div>
               <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;">
                 <button type="button" onclick="window.cricosMobileApp.selectMobileWagonZone('THIRD_MAN')" style="padding: 0.35rem 0.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-size: 0.65rem; cursor: pointer;">Third Man</button>
                 <button type="button" onclick="window.cricosMobileApp.selectMobileWagonZone('POINT')" style="padding: 0.35rem 0.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-size: 0.65rem; cursor: pointer;">Point</button>
@@ -623,7 +623,7 @@ export class LiveMatchScreenController {
         ` : (!isFan && !isCaptain ? `
           <!-- NON-SCORER LOCKED NOTICE -->
           <div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1rem; margin-bottom: 1rem; text-align: center;">
-            <div style="font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.3rem;">🔒 Live Scoring Console Locked</div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.3rem;">Live Scoring Console Locked</div>
             <div style="font-size: 0.75rem; color: #64748b;">Live scoring is reserved exclusively for the assigned Official Scorer.</div>
           </div>
         ` : '')}

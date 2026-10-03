@@ -103,7 +103,7 @@ export class AdminDeskScreenController {
               <h2 style="margin: 0.2rem 0 0; font-size: 1.25rem; font-family: 'Space Grotesk', sans-serif;">Admin & Settlement Desk</h2>
               <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.2rem;">Double-Entry Ledger & Dispute Arbitration</div>
             </div>
-            <span style="font-size: 1.25rem;">⚡</span>
+            
           </div>
 
           <!-- Telemetry Pills -->
@@ -128,7 +128,7 @@ export class AdminDeskScreenController {
         <!-- 5-Account Chart of Accounts Balance Sheet -->
         <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">📊 5-Account Balance Sheet</span>
+            <span style="font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">5-Account Balance Sheet</span>
             <span style="font-size: 0.7rem; color: #00E599; font-weight: 600;">Double-Entry Verified</span>
           </div>
           <div style="display: flex; flex-direction: column;">
@@ -150,7 +150,7 @@ export class AdminDeskScreenController {
         <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
             <span style="font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">
-              ⚖️ Dispute Arbitration Queue (${this.state.disputes.filter(d => d.status === 'PENDING').length} Pending)
+              Dispute Arbitration Queue (${this.state.disputes.filter(d => d.status === 'PENDING').length} Pending)
             </span>
           </div>
           <div style="display: flex; flex-direction: column;">

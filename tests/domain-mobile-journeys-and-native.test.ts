@@ -160,7 +160,7 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('setAuthMode(this.dataset.mode)'));
       assert.ok(mobileHtml.includes('data-mode="SIGN_IN"'));
       assert.ok(mobileHtml.includes('data-mode="SIGN_UP"'));
-      assert.ok(mobileHtml.includes('✨ Create Account'));
+      assert.ok(mobileHtml.includes('Create Account'));
     });
 
     it('2. Automated 8-persona role experience definition and HUD banner', () => {
@@ -331,7 +331,7 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
 
     it('2. Interactive 3D Stadium Pitch Viewport in Match Center', () => {
       assert.ok(mobileHtml.includes("'STADIUM_3D'"), 'STADIUM_3D subtab must exist');
-      assert.ok(mobileHtml.includes('🌐 3D Stadium'), '3D Stadium label must be in subtabs');
+      assert.ok(mobileHtml.includes('3D Stadium'), '3D Stadium label must be in subtabs');
       assert.ok(mobileHtml.includes('id="mobileThreeStadiumCanvas"'), '3D stadium canvas element must exist');
       assert.ok(mobileHtml.includes('id="mobileThreeFallbackNotice"'), '3D fallback notice element must exist');
       assert.ok(mobileHtml.includes('renderMobile3DStadium()'), '3D stadium rendering method must exist');
@@ -450,7 +450,7 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       // In mobile view template, mobilePrecisionWagonWheel is only rendered when matchSubTab === 'WAGON' or in Analytics
       assert.ok(mobileHtml.includes('id="mobilePrecisionWagonWheel"'), 'Wagon Wheel element must exist');
       assert.ok(mobileHtml.includes('subTabs'), 'Subnav tabs array must exist');
-      assert.ok(mobileHtml.includes("['WAGON', '🎯 Wagon Wheel']"), 'Dedicated WAGON subtab must be defined');
+      assert.ok(mobileHtml.includes("['WAGON', 'Wagon Wheel', 'wagon-wheel']"), 'Dedicated WAGON subtab must be defined');
     });
 
     it('2. Eliminates redundant in-card 2D/3D mode toggles from Wagon Wheel and 3D Stadium', () => {

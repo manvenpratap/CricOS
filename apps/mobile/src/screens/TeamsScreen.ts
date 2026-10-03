@@ -88,7 +88,7 @@ export class TeamsScreenController {
             </div>
             <div style="text-align: right;">
               <span style="background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: #00D2FF; font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Team Join Code">
-                🔑 ${this.state.teamCode}
+                ${this.state.teamCode}
               </span>
             </div>
           </div>
@@ -97,9 +97,9 @@ export class TeamsScreenController {
           <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
             <div style="font-size: 0.8rem;">
               ${this.state.tossConducted ? `
-                <span style="color: #00E599; font-weight: 700;">🪙 Toss Result:</span> ${this.state.tossWinner} chose to ${this.state.tossDecision}
+                <span style="color: #00E599; font-weight: 700;">Toss Result:</span> ${this.state.tossWinner} chose to ${this.state.tossDecision}
               ` : `
-                <span style="color: #FFB800; font-weight: 600;">🪙 Toss Pending:</span> Scheduled 15m before start
+                <span style="color: #FFB800; font-weight: 600;">Toss Pending:</span> Scheduled 15m before start
               `}
             </div>
             ${isCaptain && !this.state.tossConducted ? `
@@ -125,7 +125,7 @@ export class TeamsScreenController {
                     ${p.jerseyNumber}
                   </div>
                   <div>
-                    <div style="font-size: 0.85rem; font-weight: 600; color: #f8fafc;">${p.name} ${p.isCaptain ? '👑 (C)' : ''}</div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #f8fafc;">${p.name} ${p.isCaptain ? '(C)' : ''}</div>
                     <div style="font-size: 0.7rem; color: #94a3b8;">${p.battingStance} • ${p.bowlingStyle}</div>
                   </div>
                 </div>
@@ -143,7 +143,7 @@ export class TeamsScreenController {
         <!-- Bench Reserves -->
         <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: 700; font-size: 0.9rem; font-family: 'Space Grotesk', sans-serif;">🛡️ Bench Reserves (${this.state.bench.length})</span>
+            <span style="font-weight: 700; font-size: 0.9rem; font-family: 'Space Grotesk', sans-serif;">Bench Reserves (${this.state.bench.length})</span>
             <span style="font-size: 0.7rem; color: #94a3b8;">Substitutes</span>
           </div>
           <div style="display: flex; flex-direction: column;">

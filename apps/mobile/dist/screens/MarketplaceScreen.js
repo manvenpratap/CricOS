@@ -186,7 +186,7 @@ export class MarketplaceScreenController {
                 ${isProvider ? 'Manage hourly slots, floodlights & payouts' : 'Authoritative 15-min GiST hold with escrow'}
               </div>
             </div>
-            <span style="font-size: 1.25rem;">${isProvider ? '🏟️' : '🛒'}</span>
+            
           </div>
 
           ${isProvider ? `
@@ -212,7 +212,7 @@ export class MarketplaceScreenController {
           <!-- Provider Slot Publisher Form -->
           <div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
             <div style="font-size: 0.85rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.6rem; font-family: 'Space Grotesk', sans-serif;">
-              ➕ Publish Hourly Match Slot
+              Publish Hourly Match Slot
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.4rem;">
               <input type="text" id="slotTitleInput" placeholder="Slot Title (e.g. Pitch 2 Floodlit)" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.5rem; color: #f8fafc; font-size: 0.75rem;" />
@@ -262,7 +262,7 @@ export class MarketplaceScreenController {
                   </div>
                   ${isProvider ? `
                     <button type="button" onclick="window.cricosMobileApp.toggleSlotFreeze('${slot.id}')" style="padding: 0.4rem 0.8rem; border-radius: 6px; border: 1px solid ${slot.isAvailable ? '#ff3366' : '#00E599'}; background: ${slot.isAvailable ? 'rgba(255,51,102,0.15)' : 'rgba(0,229,153,0.15)'}; color: ${slot.isAvailable ? '#ff8099' : '#00E599'}; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="${slot.isAvailable ? 'Freeze slot to prevent bookings' : 'Unfreeze slot to accept bookings'}">
-                      ${slot.isAvailable ? 'Freeze Slot ❄️' : 'Unfreeze Slot ✓'}
+                      ${slot.isAvailable ? 'Freeze Slot' : 'Unfreeze Slot ✓'}
                     </button>
                   ` : `
                     <button type="button" onclick="window.cricosMobileApp.bookTurfInstant('${slot.title}', '${(breakdown.totalMinor / 100).toFixed(2)}')" style="padding: 0.4rem 0.85rem; border-radius: 6px; border: none; background: ${slot.isAvailable ? 'linear-gradient(135deg, #00E599, #00D2FF)' : '#475569'}; color: ${slot.isAvailable ? '#04070D' : '#94a3b8'}; font-weight: 700; font-size: 0.75rem; cursor: pointer;" ${slot.isAvailable ? '' : 'disabled'} data-tooltip="${slot.isAvailable ? 'Lock slot with 15-minute GiST hold' : 'Slot already booked'}">

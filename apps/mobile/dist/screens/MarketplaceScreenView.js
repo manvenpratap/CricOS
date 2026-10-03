@@ -51,7 +51,7 @@ export class MarketplaceScreenViewController {
                   <div>
                     <span style="font-size: 0.7rem; background: rgba(0, 229, 153, 0.15); color: #00E599; padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 600;">${l.category}</span>
                     <h3 style="margin: 0.35rem 0 0.15rem; font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; color: #f8fafc;">${l.title}</h3>
-                    <div style="font-size: 0.75rem; color: #94a3b8;">📍 ${l.location} • ★ ${l.rating} Trust Score</div>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">${l.location} • ★ ${l.rating} Trust Score</div>
                   </div>
                   <div style="text-align: right;">
                     <div style="font-size: 1.15rem; font-weight: 800; color: #00E599; font-family: 'Chakra Petch', monospace;">₹${price}</div>

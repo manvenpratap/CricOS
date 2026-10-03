@@ -107,10 +107,10 @@ export class TournamentsScreenController {
             ${isOrganiser ? `
               <div style="display: flex; gap: 0.35rem;">
                 <button type="button" id="btnMobileCreateTournament" onclick="window.cricosMobileApp.openCreateTournamentSheet()" style="padding: 0.35rem 0.6rem; border-radius: 6px; border: 1px solid #00D2FF; background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="Onboard new tournament with custom teams">
-                  + New 🏆
+                  + New Tournament
                 </button>
                 <button type="button" onclick="window.cricosMobileApp.openEventBasketModal()" style="padding: 0.35rem 0.6rem; border-radius: 6px; border: 1px solid #00E599; background: rgba(0, 229, 153, 0.15); color: #00E599; font-weight: 700; font-size: 0.7rem; cursor: pointer;" data-tooltip="Manage Event Basket & Procurement">
-                  🧺 Basket
+                  Basket
                 </button>
               </div>
             ` : ''}
@@ -124,7 +124,7 @@ export class TournamentsScreenController {
             </div>
             <div style="height: 2px; flex: 1; background: #00E599;"></div>
             <div style="text-align: center; flex: 1;">
-              <div style="width: 22px; height: 22px; border-radius: 50%; background: #00D2FF; color: #04070D; font-size: 0.65rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.2rem; box-shadow: 0 0 8px rgba(0,210,255,0.6);">⚡</div>
+              <div style="width: 22px; height: 22px; border-radius: 50%; background: #00D2FF; color: #04070D; font-size: 0.65rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.2rem; box-shadow: 0 0 8px rgba(0,210,255,0.6);">2</div>
               <div style="font-size: 0.65rem; color: #00D2FF; font-weight: 700;">Groups</div>
             </div>
             <div style="height: 2px; flex: 1; background: rgba(255,255,255,0.15);"></div>
@@ -134,7 +134,7 @@ export class TournamentsScreenController {
             </div>
             <div style="height: 2px; flex: 1; background: rgba(255,255,255,0.15);"></div>
             <div style="text-align: center; flex: 1;">
-              <div style="width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #94a3b8; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.2rem;">🏆</div>
+              <div style="width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #94a3b8; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.2rem;">4</div>
               <div style="font-size: 0.65rem; color: #94a3b8;">Final</div>
             </div>
           </div>
@@ -145,8 +145,8 @@ export class TournamentsScreenController {
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
             <div style="font-size: 0.85rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif;">Official Standings & Net Run Rate</div>
             <div style="display: flex; gap: 0.3rem;">
-              <button type="button" onclick="window.cricosMobileApp.switchDivisionAction('PREMIER')" style="background: ${this.activeDivisionTier === 'PREMIER' ? 'rgba(0, 229, 153, 0.2)' : 'rgba(255,255,255,0.05)'}; color: ${this.activeDivisionTier === 'PREMIER' ? '#00E599' : '#94a3b8'}; border: 1px solid ${this.activeDivisionTier === 'PREMIER' ? '#00E599' : 'rgba(255,255,255,0.1)'}; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Premier Division standings">Premier 🏆</button>
-              <button type="button" onclick="window.cricosMobileApp.switchDivisionAction('DIVISION_1')" style="background: ${this.activeDivisionTier === 'DIVISION_1' ? 'rgba(0, 210, 255, 0.2)' : 'rgba(255,255,255,0.05)'}; color: ${this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : '#94a3b8'}; border: 1px solid ${this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : 'rgba(255,255,255,0.1)'}; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Division 1 Championship standings">Div 1 ⚡</button>
+              <button type="button" onclick="window.cricosMobileApp.switchDivisionAction('PREMIER')" style="background: ${this.activeDivisionTier === 'PREMIER' ? 'rgba(0, 229, 153, 0.2)' : 'rgba(255,255,255,0.05)'}; color: ${this.activeDivisionTier === 'PREMIER' ? '#00E599' : '#94a3b8'}; border: 1px solid ${this.activeDivisionTier === 'PREMIER' ? '#00E599' : 'rgba(255,255,255,0.1)'}; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Premier Division standings">Premier</button>
+              <button type="button" onclick="window.cricosMobileApp.switchDivisionAction('DIVISION_1')" style="background: ${this.activeDivisionTier === 'DIVISION_1' ? 'rgba(0, 210, 255, 0.2)' : 'rgba(255,255,255,0.05)'}; color: ${this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : '#94a3b8'}; border: 1px solid ${this.activeDivisionTier === 'DIVISION_1' ? '#00D2FF' : 'rgba(255,255,255,0.1)'}; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch to Division 1 Championship standings">Div 1</button>
             </div>
           </div>
 
@@ -192,7 +192,7 @@ export class TournamentsScreenController {
         <!-- Fixtures Schedule Grid -->
         <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">📅 Tournament Fixtures</span>
+            <span style="font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">Tournament Fixtures</span>
             ${isOrganiser ? `
               <button type="button" onclick="window.cricosMobileApp.generateFixturesAction()" style="background: none; border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer;" data-tooltip="Auto-generate round-robin bracket">Auto-Schedule</button>
             ` : ''}
@@ -216,7 +216,7 @@ export class TournamentsScreenController {
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
           <!-- Orange Cap -->
           <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255, 184, 0, 0.25); border-radius: 12px; padding: 0.75rem;">
-            <div style="font-size: 0.75rem; font-weight: 700; color: #FFB800; margin-bottom: 0.4rem;">🟠 Orange Cap (Runs)</div>
+            <div style="font-size: 0.75rem; font-weight: 700; color: #FFB800; margin-bottom: 0.4rem;">Orange Cap (Runs)</div>
             ${this.orangeCap.map(p => `
               <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
                 <span style="color: #cbd5e1;">${p.rank}. ${p.name}</span>
@@ -227,7 +227,7 @@ export class TournamentsScreenController {
 
           <!-- Purple Cap -->
           <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 12px; padding: 0.75rem;">
-            <div style="font-size: 0.75rem; font-weight: 700; color: #c084fc; margin-bottom: 0.4rem;">🟣 Purple Cap (Wkts)</div>
+            <div style="font-size: 0.75rem; font-weight: 700; color: #c084fc; margin-bottom: 0.4rem;">Purple Cap (Wkts)</div>
             ${this.purpleCap.map(p => `
               <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
                 <span style="color: #cbd5e1;">${p.rank}. ${p.name}</span>

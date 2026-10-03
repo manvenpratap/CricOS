@@ -134,26 +134,26 @@ export class AuthScreenController {
     renderHtml() {
         const isOtpStep = this.state.step === 'OTP_INPUT';
         const roles = [
-            { id: 'CAPTAIN', label: 'Captain', icon: '👑', tooltip: 'Captain: Manage Playing XI, conduct toss, tactical view' },
-            { id: 'PLAYER', label: 'Player', icon: '🏏', tooltip: 'Player: Career figures, squad lineup, tournament standings' },
-            { id: 'SCORER', label: 'Scorer', icon: '⚡', tooltip: 'Scorer: Live scoring pad, extras, wagon wheel, dismissals' },
-            { id: 'FAN', label: 'Fan', icon: '🎪', tooltip: 'Fan: Stadium cheering, win probability poll, match pulse' },
-            { id: 'UMPIRE', label: 'Umpire', icon: '⚖️', tooltip: 'Umpire: Fair Play & Trust, DRS reviews, match sign-off' },
-            { id: 'ORGANISER', label: 'Organiser', icon: '🏆', tooltip: 'Organiser: Fixtures, event basket procurement, standings' },
-            { id: 'TURF_PROVIDER', label: 'Provider', icon: '🏟️', tooltip: 'Provider: Storefront, hourly slots, earnings dashboard' },
-            { id: 'ADMIN', label: 'Admin', icon: '⚡', tooltip: 'Admin: 5-account ledger integrity, dispute arbitration' }
+            { id: 'CAPTAIN', label: 'Captain', icon: 'crown', tooltip: 'Captain: Manage Playing XI, conduct toss, tactical view' },
+            { id: 'PLAYER', label: 'Player', icon: 'bat', tooltip: 'Player: Career figures, squad lineup, tournament standings' },
+            { id: 'SCORER', label: 'Scorer', icon: 'lightning', tooltip: 'Scorer: Live scoring pad, extras, wagon wheel, dismissals' },
+            { id: 'FAN', label: 'Fan', icon: 'stadium', tooltip: 'Fan: Stadium cheering, win probability poll, match pulse' },
+            { id: 'UMPIRE', label: 'Umpire', icon: 'scale', tooltip: 'Umpire: Fair Play & Trust, DRS reviews, match sign-off' },
+            { id: 'ORGANISER', label: 'Organiser', icon: 'trophy', tooltip: 'Organiser: Fixtures, event basket procurement, standings' },
+            { id: 'TURF_PROVIDER', label: 'Provider', icon: 'stadium', tooltip: 'Provider: Storefront, hourly slots, earnings dashboard' },
+            { id: 'ADMIN', label: 'Admin', icon: 'lightning', tooltip: 'Admin: 5-account ledger integrity, dispute arbitration' }
         ];
         return `
       <div class="mobile-auth-card" style="padding: 1.25rem; background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; margin: 0.75rem 0;">
         <div style="text-align: center; margin-bottom: 1.25rem;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.4rem;">🏏</div>
+          
           <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; color: #f8fafc;">Sign In to CricOS</h2>
           <p style="margin: 0.25rem 0 0; color: #94a3b8; font-size: 0.8rem;">Select Your Persona to Enter the Stadium</p>
         </div>
 
         ${this.state.errorMessage ? `
           <div style="background: rgba(255, 51, 102, 0.15); border: 1px solid #ff3366; color: #ff8099; padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1rem;">
-            ⚠️ ${this.state.errorMessage}
+            ${this.state.errorMessage}
           </div>
         ` : ''}
 

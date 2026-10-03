@@ -114,7 +114,7 @@ export class IncidentsScreenController {
               <h2 style="margin: 0.2rem 0 0; font-size: 1.25rem; font-family: 'Space Grotesk', sans-serif;">Official Umpire Desk</h2>
               <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.2rem;">Match #${this.state.matchId} • Lead Umpire Nitin Menon</div>
             </div>
-            <span style="font-size: 1.25rem;">⚖️</span>
+            
           </div>
 
           <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
@@ -141,7 +141,7 @@ export class IncidentsScreenController {
         ${isUmpire ? `
           <div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
             <div style="font-size: 0.85rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.6rem; font-family: 'Space Grotesk', sans-serif;">
-              🚨 Log Code of Conduct Breach
+              Log Code of Conduct Breach
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
               <input type="text" id="incidentPlayerInput" placeholder="Player Name" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.5rem; color: #f8fafc; font-size: 0.8rem;" />
@@ -167,7 +167,7 @@ export class IncidentsScreenController {
         <!-- DRS Reviews History -->
         <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">📺 DRS Tracking & Ball Trajectory</span>
+            <span style="font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">DRS Tracking & Ball Trajectory</span>
             <span style="font-size: 0.7rem; color: #38BDF8;">UltraEdge & HawkEye</span>
           </div>
           <div style="display: flex; flex-direction: column;">
@@ -186,7 +186,7 @@ export class IncidentsScreenController {
         <!-- Incident Feed -->
         <div style="background: rgba(10, 16, 28, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">
           <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 700; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif;">
-            📋 Recent Disciplinary Incidents (${this.state.incidents.length})
+            Recent Disciplinary Incidents (${this.state.incidents.length})
           </div>
           <div style="display: flex; flex-direction: column;">
             ${this.state.incidents.map(inc => `
