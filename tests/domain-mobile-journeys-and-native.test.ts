@@ -472,6 +472,15 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('mobileSidebarPersonaStrip'), 'Sidebar must provide 1-tap persona strip');
       assert.ok(!mobileHtml.includes('btnMobileSidebarPersonaSheet'), 'Redundant persona sheet button in drawer removed');
     });
+
+    it('6. Eliminates duplicate Actions button from match header; studios live canonically in sidebar drawer', () => {
+      assert.ok(!mobileHtml.includes('id="btnMatchContextMenu"'), 'Duplicate #btnMatchContextMenu must be eliminated from match header');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarFieldRadar"'), 'Field Radar must live canonically in sidebar drawer');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarPitchMap"'), 'Pitch Map must live canonically in sidebar drawer');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarAuction"'), 'Player Auction must live canonically in sidebar drawer');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarDrsReview"'), 'DRS Review must live canonically in sidebar drawer');
+      assert.ok(mobileHtml.includes('id="btnMobileSidebarDlsTarget"'), 'DLS Target must live canonically in sidebar drawer');
+    });
   });
 
   // =========================================================================
@@ -540,6 +549,60 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(dashHtml.includes('id="linkMobileApkDownloadPill"'), 'Pill APK download ID must exist');
       assert.ok(dashHtml.includes('id="btnMobileApkDownloadFooter"'), 'Footer APK download ID must exist');
       assert.ok(dashHtml.includes('syncMobilePreviewSources();'), 'syncMobilePreviewSources must be called on page load and modal open');
+    });
+
+    it('4. Renders authentic ISO/IEC 18004 scannable QR Code SVG and eliminates fake mock rectangles', () => {
+      const dashHtml = getDashboardHtml();
+      assert.ok(dashHtml.includes('id="mobilePreviewQrContainer"'), 'mobilePreviewQrContainer ID must exist');
+      assert.ok(dashHtml.includes('id="mobileQrUrlDisplay"'), 'mobileQrUrlDisplay ID must exist');
+      assert.ok(dashHtml.includes('http://localhost:3000/mobile'), 'Default mobile QR URL must be present');
+      // Assert fake mock rectangles are eliminated
+      assert.ok(!dashHtml.includes('viewBox="0 0 29 29"'), 'Fake 29x29 15-rectangle mock SVG must be eliminated');
+    });
+
+    it('5. Embeds client-side QR engine and LAN IP configuration controls', () => {
+      const dashHtml = getDashboardHtml();
+      assert.ok(dashHtml.includes('id="btnCustomQrUrlToggle"'), 'btnCustomQrUrlToggle ID must exist');
+      assert.ok(dashHtml.includes('id="customQrInputRow"'), 'customQrInputRow ID must exist');
+      assert.ok(dashHtml.includes('id="inputCustomQrUrl"'), 'inputCustomQrUrl ID must exist');
+      assert.ok(dashHtml.includes('id="btnApplyCustomQrUrl"'), 'btnApplyCustomQrUrl ID must exist');
+      assert.ok(dashHtml.includes('generateQrCodeSvg'), 'generateQrCodeSvg must be defined in client script');
+      assert.ok(dashHtml.includes('updateMobilePreviewQr'), 'updateMobilePreviewQr must be defined in client script');
+    });
+  });
+
+  // ---- Suite 12: Space-Efficient Mobile Scoring, Subtle Live Pill & Multi-Match Support ----
+  describe('Suite 12: Space-Efficient Mobile Scoring, Subtle Live Pill & Multi-Match Support', () => {
+    it('1. Renders centered floating bridge strike swap FAB between symmetrical batter cards', () => {
+      assert.ok(mobileHtml.includes('mobile-batters-crease-container'), 'mobile-batters-crease-container container must exist');
+      assert.ok(mobileHtml.includes('btn-swap-strike-bridge'), 'btn-swap-strike-bridge CSS class must exist');
+      assert.ok(mobileHtml.includes('id="btnMobileSwapStrike"'), 'btnMobileSwapStrike ID must exist');
+      assert.ok(mobileHtml.includes('id="mobileStrikerCard"'), 'mobileStrikerCard ID must exist');
+      assert.ok(mobileHtml.includes('id="mobileNonStrikerCard"'), 'mobileNonStrikerCard ID must exist');
+      assert.ok(mobileHtml.includes('id="mobileStrikerStanceBadge"'), 'mobileStrikerStanceBadge ID must exist');
+      assert.ok(mobileHtml.includes('id="mobileNonStrikerStanceBadge"'), 'mobileNonStrikerStanceBadge ID must exist');
+    });
+
+    it('2. Renders two-tier space-efficient bowler section with dedicated change bowler action pill', () => {
+      assert.ok(mobileHtml.includes('btn-change-bowler-pill'), 'btn-change-bowler-pill CSS class must exist');
+      assert.ok(mobileHtml.includes('id="btnMobileChangeBowler"'), 'btnMobileChangeBowler ID must exist');
+      assert.ok(mobileHtml.includes('id="mobileActiveBowlerName"'), 'mobileActiveBowlerName ID must exist');
+      assert.ok(mobileHtml.includes('id="mobileActiveBowlerFigures"'), 'mobileActiveBowlerFigures ID must exist');
+      assert.ok(mobileHtml.includes('id="mobileActiveBowlerEcon"'), 'mobileActiveBowlerEcon ID must exist');
+    });
+
+    it('3. Renders subtle refined live status indicator eliminating loud shouting red badge', () => {
+      assert.ok(mobileHtml.includes('mobile-live-pill'), 'mobile-live-pill CSS class must exist');
+      assert.ok(mobileHtml.includes('live-pulse-dot'), 'live-pulse-dot CSS class must exist');
+      assert.ok(mobileHtml.includes('id="mobileLiveMatchPill"'), 'mobileLiveMatchPill ID must exist');
+      assert.ok(!mobileHtml.includes('LIVE MATCH'), 'Harsh loud LIVE MATCH text must be eliminated');
+    });
+
+    it('4. Provides multi-match architecture with quick switch strip and tournament selection', () => {
+      assert.ok(mobileHtml.includes('mobile-multi-match-strip'), 'mobile-multi-match-strip CSS class must exist');
+      assert.ok(mobileHtml.includes('mobile-match-switch-tab'), 'mobile-match-switch-tab CSS class must exist');
+      assert.ok(mobileHtml.includes('getLiveFixtures()'), 'getLiveFixtures method must exist');
+      assert.ok(mobileHtml.includes('selectLiveMatch('), 'selectLiveMatch method must exist');
     });
   });
 });

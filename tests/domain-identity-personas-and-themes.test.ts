@@ -797,6 +797,29 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(dashboardSrc.includes('html[data-theme="swiss"] #modalPlayerStatsDrawer'), 'Dashboard must define Swiss #modalPlayerStatsDrawer');
       assert.ok(dashboardSrc.includes('html[data-theme="nordic"] #modalPlayerStatsDrawer'), 'Dashboard must define Nordic #modalPlayerStatsDrawer');
     });
+
+    it('6. Every theme defines compatible typography tokens across Desktop and Mobile (Swiss Inter, Nordic Fraunces/Newsreader, Stadium Space Grotesk/Chakra Petch)', () => {
+      // 1. Dashboard Desktop Typography Tokens
+      assert.ok(dashboardSrc.includes("--font-display: 'Inter'"), 'Dashboard Swiss must define Inter for display');
+      assert.ok(dashboardSrc.includes("--font-score: 'Inter'"), 'Dashboard Swiss must define Inter for scores');
+      assert.ok(dashboardSrc.includes("--font-display: 'Fraunces', 'Newsreader'"), 'Dashboard Nordic must define Fraunces/Newsreader for display');
+      assert.ok(dashboardSrc.includes("--font-score: 'Fraunces', 'Newsreader'"), 'Dashboard Nordic must define Fraunces/Newsreader for scores');
+      assert.ok(dashboardSrc.includes("--font-display: 'Space Grotesk'"), 'Dashboard Stadium must define Space Grotesk for display');
+      assert.ok(dashboardSrc.includes("--font-score: 'Chakra Petch'"), 'Dashboard Stadium must define Chakra Petch for scores');
+
+      // 2. Mobile Typography Tokens
+      assert.ok(mobileSrc.includes("--font-display: 'Inter'"), 'Mobile Swiss must define Inter for display');
+      assert.ok(mobileSrc.includes("--font-score: 'Inter'"), 'Mobile Swiss must define Inter for scores');
+      assert.ok(mobileSrc.includes("--font-display: 'Fraunces', 'Newsreader'"), 'Mobile Nordic must define Fraunces/Newsreader for display');
+      assert.ok(mobileSrc.includes("--font-score: 'Fraunces', 'Newsreader'"), 'Mobile Nordic must define Fraunces/Newsreader for scores');
+      assert.ok(mobileSrc.includes("--font-display: 'Space Grotesk'"), 'Mobile Stadium must define Space Grotesk for display');
+      assert.ok(mobileSrc.includes("--font-score: 'Chakra Petch'"), 'Mobile Stadium must define Chakra Petch for scores');
+
+      // 3. Theme Metadata
+      assert.ok(dashboardSrc.includes("fontDisplay: 'Inter'"), 'DESIGN_THEMES swiss must specify Inter');
+      assert.ok(dashboardSrc.includes("fontDisplay: 'Fraunces / Newsreader'"), 'DESIGN_THEMES nordic must specify Fraunces');
+      assert.ok(dashboardSrc.includes("fontDisplay: 'Space Grotesk'"), 'DESIGN_THEMES stadium must specify Space Grotesk');
+    });
   });
 
   // ---- Suite 9: UI/UX Color Contrast, Focus Rings & WCAG 2.2 AA Accessibility ----

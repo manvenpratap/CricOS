@@ -1,14 +1,84 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 01:30:00
-**Version:** 1.0.0-phase2dd (Comprehensive Universal Emoji Elimination Across Desktop & Mobile)  
+**Last Updated:** 2026-10-04 03:20:00
+**Version:** 1.0.0-phase2di (Space-Efficient Scoring Crease, Subtle Multi-Match HUD & Consolidated Playwright Suite)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DD Completed — Comprehensive Universal Emoji Elimination Across Desktop & Mobile UI (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/mobile/src/screens/*`, `tests/test_72_comprehensive_emoji_elimination.py`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DI Completed — Space-Efficient Scoring Crease, Subtle Multi-Match HUD & Full Playwright Test Consolidation (`apps/api/src/ui/mobile-view.ts`, `tests/test_consolidated_*.py`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Space-Efficient Batting Crease & Floating Bridge Strike Swap FAB**:
+    - Re-architected mobile scorer studio batting crease into perfectly symmetrical dual batter cards (`#mobileBatterCard1`, `#mobileBatterCard2`), each featuring clear strike indicator badges (`.mobile-crease-batter-badge`), strike rate, and boundaries metrics.
+    - Extracted the strike swap action into a centered floating bridge FAB (`#btnMobileSwapStrike`) positioned between the two batter cards with high-contrast Iconsax swap icon, eliminating all card width skew and horizontal overflow.
+  - **2. Two-Tier Bowler Card Layout**:
+    - Restructured the current bowler section into a space-efficient two-tier athletic card: Tier 1 houses Bowler Name with high-visibility bowler icon + space-efficient Action Pill (`#btnMobileChangeBowler`) on the right; Tier 2 displays monospace bowling figures (`O-M-R-W`) and dynamic Economy rate pill.
+  - **3. Subtle Live Match Indicator**:
+    - Replaced the loud neon live match box with a refined, minimalist `.mobile-live-pill` (`#mobileLiveMatchPill`) featuring a pulsing emerald dot (`.live-pulse-dot`) and crisp typography (`Live`), maximizing vertical screen real estate.
+  - **4. Multi-Match Architecture & 1-Tap Switcher**:
+    - Added native multi-match switching strip (`#mobileLiveMatchSwitcher`) supporting multiple concurrent matches (`f-1`, `f-2`).
+    - Implemented dynamic fixture switching (`window.cricosMobileApp.switchLiveMatch(matchId)`), updating scoreboards, worm curves, commentary feeds, and player statistics in real time.
+  - **5. Comprehensive Playwright Test Suite Consolidation**:
+    - Consolidated 23 fragmented test files (`test_54` through `test_76`) into 5 cohesive, highly maintainable test suites:
+      - `tests/test_consolidated_themes_and_visuals.py` (Desktop & Mobile themes, typography tokens, contrast ratios, Iconsax SVGs, JWT auth)
+      - `tests/test_consolidated_scoring_and_laws.py` (Scoring pad, extras, MCC/ICC laws, dismissals, crease geometry, two-tier bowler card, multi-match)
+      - `tests/test_consolidated_match_progression.py` (Desktop & Mobile live scorecards, worm sync, match completion, tournament standings)
+      - `tests/test_consolidated_navigation_and_studios.py` (Desktop single entry points, mobile singular drawer navigation, tactical studios)
+      - `tests/test_consolidated_3d_and_packaging.py` (3D Stadium & wagon wheel, flippable player cards, zero overflow, protocol resolution, OpenCV QR validation)
+    - Preserved 100% assertion coverage across all viewports while reducing execution overhead and test file clutter.
+    - Removed all 23 legacy test files (`test_54_*.py` through `test_76_*.py`).
+    - All 13 consolidated tests pass in ~50s with zero critical console errors.
+    - All 243 domain/unit tests pass in ~450ms via `./pipeline.sh test --summary`.
+  - **6. Packaging & Android Compilation (Rule 6)**:
+    - Recompiled single-file web distribution via `./pipeline.sh package` ensuring byte-for-byte HTML parity across root and dist outputs.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DG Completed — High-Fidelity ISO/IEC 18004 Verified Scannable QR Code Architecture (`apps/api/src/ui/qr-code.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_74_scannable_mobile_qr_code.py`, `tests/test_70_mobile_preview_file_protocol_resolution.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. High-Fidelity ISO/IEC 18004 QR Engine**:
+    - Completely replaced the decorative 15-rectangle mock SVG in `#modalMobileAppPreview` with a true mathematical ISO/IEC 18004 Model 2 QR code matrix (`apps/api/src/ui/qr-code.ts`).
+    - Error Correction Level M (15% redundancy) with standard finder patterns, timing tracks, format information, and quiet zone margin, guaranteed to scan instantly on Apple Camera, Google Lens, Samsung Camera, and QR decoders.
+    - Zero external CDN dependencies: fully bundled in pure TypeScript/JavaScript for offline operation and single-file `file:///` and HTTP deployments.
+  - **2. Dynamic Client-Side LAN IP & URL Configuration**:
+    - Injected client-side QR engine (`window.qrcode`, `window.generateQrCodeSvg`, `window.updateMobilePreviewQr`, `window.getMobileAppScanUrl`).
+    - Added `#mobileQrUrlDisplay` indicating the exact URL being scanned (`http://localhost:3000/mobile` by default).
+    - Added `#btnCustomQrUrlToggle`, `#customQrInputRow`, and `#inputCustomQrUrl` allowing developers and stadium operators to enter their Wi-Fi LAN IP (e.g. `http://192.168.1.120:3000/mobile`) and dynamically regenerate the scannable QR code on screen in real time.
+  - **3. Comprehensive OpenCV Automated Verification (Rule 4)**:
+    - Added assertions 4 & 5 to Suite 11 in `tests/domain-mobile-journeys-and-native.test.ts`.
+    - Created sequential E2E test `tests/test_74_scannable_mobile_qr_code.py`: programmatically validates full-screenshot QR code detection and decoding via OpenCV `cv2.QRCodeDetector()` across root `index.html` and `dist/index.html`, verifies dynamic LAN IP re-generation, and asserts zero console errors.
+    - Verified all 238 unit/domain tests pass in 522ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Verified `test_70` and `test_74` pass 100% (4 tests passed).
+    - Captured verified scannable screenshots: `tests/screenshots/test_70_root_mobile_preview_modal.png`, `tests/screenshots/test_70_dist_mobile_preview_modal.png`, `tests/screenshots/test_74_root_mobile_preview_scannable_qr.png`, and `tests/screenshots/test_74_custom_lan_ip_scannable_qr.png`.
+  - **4. Packaging & Android Compilation (Rule 6)**:
+    - Recompiled single-file web distribution via `./pipeline.sh package` ensuring byte-for-byte HTML parity across root and dist outputs.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DF Completed — Complete Elimination of Duplicate Match Context Actions Button & Canonical Drawer Studio Routing (`apps/api/src/ui/mobile-view.ts`, `tests/test_65_deduplicated_entry_points.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Complete Elimination of Duplicate `#btnMatchContextMenu` ("⚡ Actions ▾")**:
+    - Stripped `#btnMatchContextMenu` ("⚡ Actions ▾") and its wrapper container from the mobile live match card header in `apps/api/src/ui/mobile-view.ts`.
+    - Preserved only the uncluttered Live Match badge and the 5-Hour Turf Weather Forecast toggle `#mobileActiveVenueBadge`.
+    - Enforced the Single Canonical Entry Point Architecture: all 5 tactical studio overlays (11-Fielder Tactical Radar `#btnMobileSidebarFieldRadar`, Pitch Beehive & Win Simulator `#btnMobileSidebarPitchMap`, Live Player Auction Room `#btnMobileSidebarAuction`, Hawk-Eye 3D DRS Review `#btnMobileSidebarDrsReview`, and DLS Target Calculator `#btnMobileSidebarDlsTarget`) live exclusively and canonically in Section 2 of the left sidebar drawer, matching Desktop Web Console architecture.
+  - **2. Test Suite & Domain Verification Updates (Rule 4)**:
+    - Updated `tests/test_65_deduplicated_entry_points.py` Step 8 to explicitly assert `assert context_actions_btn is None` and confirm that tactical studios live exclusively in the sidebar drawer.
+    - Added Assertion 6 to Suite 9 in `tests/domain-mobile-journeys-and-native.test.ts` verifying that `!mobileHtml.includes('id="btnMatchContextMenu"')` and confirming all 5 canonical drawer IDs exist.
+    - Verified all 236 unit/domain tests pass 100% in 439ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Verified Playwright test suites (`test_65`, `test_67`, `test_73`) pass 100% with zero console errors (`assert_no_critical_errors(page)`).
+  - **3. Packaging & Android Compilation (Rule 6)**:
+    - Recompiled single-file web distribution via `./pipeline.sh package` ensuring byte-for-byte HTML parity across root and dist outputs.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DE Completed — Theme-Compatible Dynamic Typography Architecture Across Desktop & Mobile (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_73_theme_compatible_fonts.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Theme Typography Mapping & CSS Variable Architecture**:
+    - **Swiss Minimal (`swiss`)**: Clean International Typographic Style (Neo-Grotesque) — `--font-display: 'Inter'`, `--font-body: 'Inter'`, `--font-ui: 'Inter'`, `--font-score: 'Inter'` with tabular numerals (`font-feature-settings: "tnum" 1`), and `--font-mono: 'JetBrains Mono'`.
+    - **Nordic Editorial (`nordic`)**: Refined Scandinavian sports journalism — `--font-display: 'Fraunces', 'Newsreader', 'Georgia', serif` (Editorial Serif), `--font-score: 'Fraunces', 'Newsreader', 'Georgia', serif`, `--font-body: 'Plus Jakarta Sans'`, `--font-ui: 'Plus Jakarta Sans'`, and `--font-mono: 'JetBrains Mono'`.
+    - **Stadium Night (`stadium`)**: Floodlit broadcast glassmorphism — `--font-display: 'Space Grotesk'`, `--font-score: 'Chakra Petch'`, `--font-body: 'Plus Jakarta Sans'`, `--font-ui: 'Plus Jakarta Sans'`, and `--font-mono: 'JetBrains Mono'`.
+  - **2. Universal Font Token Enforcement Across Desktop & Mobile**:
+    - **Desktop Web Console (`apps/api/src/ui/dashboard.ts`)**: Updated Google Fonts stylesheet imports loading all 7 font families with exact design-invariant weight ranges. Bound headings (`.brand-title`, `h1`-`h3`, `.card-title`, `.modal-title`, `.hero-title`), scoreboards (`#scoreRunsWickets`, `.main-score`, `.overs-score`, `.live-score`, `.overs-val`), and tactical scoring pad buttons (`.pad-btn`) to theme variables. Updated `DESIGN_THEMES` metadata and settings modal cards with font badges.
+    - **Mobile App View (`apps/api/src/ui/mobile-view.ts`)**: Eliminated over 150 hardcoded inline `font-family` declarations across mobile app header (`.mobile-app-title`), live score HUD (`.mobile-hero-score`), scoring studio buttons (`.mobile-studio-btn`), athletic ratings, 3D flip cards, and charts in favor of dynamic CSS variables (`var(--font-display)`, `var(--font-score)`, `var(--font-mono)`, `var(--font-body)`).
+  - **3. Verification & Testing Health**:
+    - Added Unit Assertion 6 to Suite 8 in `tests/domain-identity-personas-and-themes.test.ts`: verifying theme typography tokens and metadata across Desktop and Mobile.
+    - Created sequential E2E test `tests/test_73_theme_compatible_fonts.py`: verified dynamic font switching and computed styles across Swiss, Nordic, and Stadium themes on Desktop and Mobile, verified `assert_no_critical_errors(page)`, and generated 6 local screenshots in `tests/screenshots/` (`test_73_desktop_swiss_fonts.png`, `test_73_desktop_nordic_fonts.png`, `test_73_desktop_stadium_fonts.png`, `test_73_mobile_swiss_fonts.png`, `test_73_mobile_nordic_fonts.png`, `test_73_mobile_stadium_fonts.png`).
+    - Verified all 235 unit/domain tests in 65 suites pass 100% via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Verified Playwright test suites (`test_54`, `test_73`) pass 100% with zero console errors.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DD Completed — Comprehensive Universal Emoji Elimination Across Desktop & Mobile UI (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/mobile/src/screens/*`, `tests/test_72_comprehensive_emoji_elimination.py`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Universal Pictographic Emoji Elimination**:
     - **Desktop Web Console (`apps/api/src/ui/dashboard.ts`)**: Eliminated over 526 raw emoji occurrences across sidebar navigation, live match commentary stream, fan stadium cheering, scorecard breakdown, 3D stadium controls, ICC laws cards, weather location cards, and persona switchers. Replaced with authentic Iconsax Two-Tone SVGs (`getDesktopIconSvg`) or clean athletic typography. Fixed `weatherConditionIcon` dynamic SVG binding so stadium microclimate condition renders an authentic SVG icon instead of literal `cloud` text.
     - **Mobile App View (`apps/api/src/ui/mobile-view.ts`)**: Cleaned 100% of raw emoji icons across mobile bottom navigation, live subnav pills (`.mobile-subnav-btn`), scorer studio keypad, quick action sheets, weather badges, and tournament cards.

@@ -158,7 +158,7 @@ describe('Domain: 3D WebGL Stadium, Visual Graphics, Motion & Precision Layouts'
       assert.ok(mobileSrc.includes('id="cricosCelebrationCanvas"'));
       assert.ok(mobileSrc.includes('id="kineticBoundaryBanner"'));
       assert.ok(dashboardSrc.includes("window.CricOSMotionFX.triggerCelebration('SIX')"));
-      assert.ok(dashboardSrc.includes("window.CricOSMotionFX.triggerCelebration('WICKET')"));
+      assert.ok(dashboardSrc.includes("window.CricOSMotionFX.triggerCelebration('WICKET'"));
       assert.ok(dashboardSrc.includes('.holo-foil-card'));
       assert.ok(dashboardSrc.includes('@keyframes holoFoilSweep'));
     });
@@ -531,13 +531,12 @@ describe('Domain: 3D WebGL Stadium, Visual Graphics, Motion & Precision Layouts'
   // Suite 7: Visual Regression Verification & Distribution Parity
   // =========================================================================
   describe('Suite 7: Visual Regression Verification & Distribution Parity', () => {
-    it('1. test_56_3d_stadium_ui_fix.py exists with strict geometry and console error assertions', () => {
-      const pyPath = path.join(rootDir, 'tests', 'test_56_3d_stadium_ui_fix.py');
+    it('1. test_consolidated_3d_and_packaging.py exists with strict geometry and console error assertions', () => {
+      const pyPath = path.join(rootDir, 'tests', 'test_consolidated_3d_and_packaging.py');
       assert.ok(fs.existsSync(pyPath));
       const pyContent = fs.readFileSync(pyPath, 'utf8');
       assert.ok(pyContent.includes('assert_no_critical_errors(page)'));
-      assert.ok(pyContent.includes('btnWagonMode3D'));
-      assert.ok(pyContent.includes('btnWagonMode2D'));
+      assert.ok(pyContent.includes('threeJsStadiumViewport'));
     });
 
     it('2. High-resolution visual regression screenshots exist in tests/screenshots/', () => {

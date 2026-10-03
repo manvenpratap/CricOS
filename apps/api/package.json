@@ -12,13 +12,14 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@cricket-platform/contracts": "workspace:*",
     "@cricket-platform/commercial": "workspace:*",
+    "@cricket-platform/contracts": "workspace:*",
     "@cricket-platform/domain": "workspace:*",
     "@cricket-platform/scoring": "workspace:*",
-    "fastify": "^4.28.1",
     "@fastify/cors": "^9.0.1",
-    "pg": "^8.12.0"
+    "fastify": "^4.28.1",
+    "pg": "^8.12.0",
+    "qrcode-generator": "^2.0.4"
   },
   "devDependencies": {
     "@types/pg": "^8.11.6"

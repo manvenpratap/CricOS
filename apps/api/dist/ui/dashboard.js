@@ -1,4 +1,6 @@
 import { ICC_CRICKET_LAWS_DIRECTORY } from '@cricket-platform/scoring';
+import { generateQrCodeSvg, getQrCodeClientScript } from './qr-code.js';
+import { getDismissalConfigClientScript } from './dismissal-config.js';
 // =========================================================================
 // CricOS Icon System — Desktop Iconsax Two-Tone 24×24 SVG Engine
 // =========================================================================
@@ -102,7 +104,7 @@ export function getDashboardHtml() {
   <link rel="apple-touch-icon" href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2300E599%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2300D2FF%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2236%22%20height%3D%2236%22%20rx%3D%2210%22%20fill%3D%22%2306101E%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2213%22%20fill%3D%22none%22%20stroke%3D%22%2300D2FF%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%222.5%202%22%20opacity%3D%220.55%22%2F%3E%3Cpath%20d%3D%22M15.5%2015V28.5M20%2014V28.5M24.5%2015V28.5M14.5%2014.5H19.2M20.8%2014.5H25.5%22%20stroke%3D%22%2300E599%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M11%2029L25.5%2014.5%22%20stroke%3D%22%23F8FAFC%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M9%2026C13%2014%2021%209.5%2030.5%2010.5%22%20fill%3D%22none%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2230.5%22%20cy%3D%2210.5%22%20r%3D%223.8%22%20fill%3D%22%23EF4444%22%20stroke%3D%22%23FDE68A%22%20stroke-width%3D%221.4%22%2F%3E%3C%2Fsvg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
@@ -122,8 +124,8 @@ export function getDashboardHtml() {
       --cyan-glow: rgba(0, 210, 255, 0.25);
       --rose: #FF3366;
       --purple: #A855F7;
-      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
-      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-ui: var(--font-body);
       --font-score: 'Chakra Petch', monospace;
       --font-mono: 'JetBrains Mono', monospace;
@@ -2605,7 +2607,6 @@ export function getDashboardHtml() {
     /* ==========================================================================
        Design System Themes: Swiss Minimal, Nordic Editorial & Stadium Night
        ========================================================================== */
-    /* 1. Swiss Minimal Theme (Architectural, High-Contrast Modernist Grid) */
     body[data-theme="swiss"],
     html[data-theme="swiss"],
     body.outdoor-mode {
@@ -2625,6 +2626,12 @@ export function getDashboardHtml() {
       --amber: #D97706;
       --rose: #DC2626;
       --purple: #7C3AED;
+      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      --font-score: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      font-family: var(--font-body) !important;
       background: #F8F9FA !important;
       background-image: radial-gradient(circle, #CBD5E1 0.75px, transparent 0.75px) !important;
       background-size: 20px 20px !important;
@@ -2644,12 +2651,30 @@ export function getDashboardHtml() {
     }
 
     body[data-theme="swiss"] .brand-title,
+    body[data-theme="swiss"] h1,
+    body[data-theme="swiss"] h2,
+    body[data-theme="swiss"] h3,
+    body[data-theme="swiss"] .card-title,
+    body[data-theme="swiss"] .modal-title,
+    body[data-theme="swiss"] .hero-title,
     body.outdoor-mode .brand-title {
+      font-family: var(--font-display) !important;
       background: none !important;
       -webkit-text-fill-color: #0F172A !important;
       color: #0F172A !important;
       letter-spacing: -0.02em !important;
       font-weight: 800 !important;
+    }
+
+    body[data-theme="swiss"] .scoreboard .live-score,
+    body[data-theme="swiss"] .scoreboard .main-score,
+    body[data-theme="swiss"] .scoreboard .overs-score,
+    body[data-theme="swiss"] .scoreboard .overs-val,
+    body[data-theme="swiss"] .pad-btn,
+    body[data-theme="swiss"] #scorecardInningsScore,
+    body[data-theme="swiss"] #scorecardTotalText {
+      font-family: var(--font-score) !important;
+      font-feature-settings: "tnum" 1;
     }
 
     body[data-theme="swiss"] .app-topbar,
@@ -2981,6 +3006,12 @@ export function getDashboardHtml() {
       --amber: #C2410C;
       --rose: #BE123C;
       --purple: #6B21A8;
+      --font-display: 'Fraunces', 'Newsreader', 'Georgia', serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-score: 'Fraunces', 'Newsreader', 'Georgia', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      font-family: var(--font-body) !important;
       background: #F5F0E8 !important;
       background-image: radial-gradient(ellipse at 50% 0%, rgba(194, 65, 12, 0.07) 0%, transparent 65%) !important;
       color: #292524 !important;
@@ -2996,11 +3027,31 @@ export function getDashboardHtml() {
       border-bottom: 1px solid #E6DFD5 !important;
     }
 
-    body[data-theme="nordic"] .brand-title {
+    body[data-theme="nordic"] .brand-title,
+    body[data-theme="nordic"] h1,
+    body[data-theme="nordic"] h2,
+    body[data-theme="nordic"] h3,
+    body[data-theme="nordic"] .card-title,
+    body[data-theme="nordic"] .modal-title,
+    body[data-theme="nordic"] .hero-title,
+    body[data-theme="nordic"] #scorecardResultTitle {
+      font-family: var(--font-display) !important;
       background: none !important;
       -webkit-text-fill-color: #292524 !important;
       color: #292524 !important;
       letter-spacing: -0.01em !important;
+      font-weight: 700 !important;
+    }
+
+    body[data-theme="nordic"] .scoreboard .live-score,
+    body[data-theme="nordic"] .scoreboard .main-score,
+    body[data-theme="nordic"] .scoreboard .overs-score,
+    body[data-theme="nordic"] .scoreboard .overs-val,
+    body[data-theme="nordic"] .pad-btn,
+    body[data-theme="nordic"] #scorecardInningsScore,
+    body[data-theme="nordic"] #scorecardTotalText {
+      font-family: var(--font-score) !important;
+      font-weight: 700 !important;
     }
 
     body[data-theme="nordic"] .app-topbar {
@@ -3312,12 +3363,38 @@ export function getDashboardHtml() {
       --amber: #FFB800;
       --rose: #FF3366;
       --purple: #A855F7;
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-score: 'Chakra Petch', monospace;
+      --font-mono: 'JetBrains Mono', monospace;
+      font-family: var(--font-body) !important;
       background: #04070D !important;
       background-image: 
         radial-gradient(1200px circle at 50% -12%, rgba(0, 229, 153, 0.16) 0%, transparent 60%),
         radial-gradient(850px circle at 90% 20%, rgba(0, 210, 255, 0.10) 0%, transparent 50%),
         radial-gradient(800px circle at 10% 40%, rgba(168, 85, 247, 0.08) 0%, transparent 50%) !important;
       color: #F8FAFC !important;
+    }
+
+    body[data-theme="stadium"] .brand-title,
+    body[data-theme="stadium"] h1,
+    body[data-theme="stadium"] h2,
+    body[data-theme="stadium"] h3,
+    body[data-theme="stadium"] .card-title,
+    body[data-theme="stadium"] .modal-title,
+    body[data-theme="stadium"] .hero-title {
+      font-family: var(--font-display) !important;
+    }
+
+    body[data-theme="stadium"] .scoreboard .live-score,
+    body[data-theme="stadium"] .scoreboard .main-score,
+    body[data-theme="stadium"] .scoreboard .overs-score,
+    body[data-theme="stadium"] .scoreboard .overs-val,
+    body[data-theme="stadium"] .pad-btn,
+    body[data-theme="stadium"] #scorecardInningsScore,
+    body[data-theme="stadium"] #scorecardTotalText {
+      font-family: var(--font-score) !important;
     }
 
     body[data-theme="stadium"] .app-sidebar {
@@ -7464,20 +7541,20 @@ export function getDashboardHtml() {
               <div style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('palette', 'var(--turf-emerald)', 16)} Design Theme &amp; Visual Language</div>
               <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">Select your preferred atmosphere. CricOS dynamically enforces WCAG AAA contrast across all surfaces.</div>
               <div class="settings-theme-grid">
-                <div class="settings-theme-card" id="themeCard_swiss" onclick="selectSettingsTheme('swiss')" data-tooltip="Swiss Minimalist: High-contrast daylight paper with 7.09:1 WCAG AAA readability">
+                <div class="settings-theme-card" id="themeCard_swiss" onclick="selectSettingsTheme('swiss')" data-tooltip="Swiss Minimalist: High-contrast daylight paper with Inter Neo-Grotesque typography">
                   <div style="margin-bottom: 0.3rem;">${iconSvg('palette', '#0F172A', 26)}</div>
                   <div style="font-weight: 800; font-size: 0.8rem; color: #0F172A;">Swiss Minimal</div>
-                  <div style="font-size: 0.68rem; color: #475569; margin-top: 0.2rem;">Daylight Paper #F8F9FA</div>
+                  <div style="font-size: 0.68rem; color: #475569; margin-top: 0.2rem;">Daylight Paper • Inter</div>
                 </div>
-                <div class="settings-theme-card" id="themeCard_nordic" onclick="selectSettingsTheme('nordic')" data-tooltip="Nordic Editorial: Warm Scandinavian oat canvas with forest accents">
+                <div class="settings-theme-card" id="themeCard_nordic" onclick="selectSettingsTheme('nordic')" data-tooltip="Nordic Editorial: Warm Scandinavian oat canvas with Fraunces &amp; Newsreader Serif typography">
                   <div style="margin-bottom: 0.3rem;">${iconSvg('leaf', '#1C1917', 26)}</div>
                   <div style="font-weight: 800; font-size: 0.8rem; color: #1C1917;">Nordic Editorial</div>
-                  <div style="font-size: 0.68rem; color: #57534E; margin-top: 0.2rem;">Warm Canvas #FCFBF8</div>
+                  <div style="font-size: 0.68rem; color: #57534E; margin-top: 0.2rem;">Warm Canvas • Fraunces</div>
                 </div>
-                <div class="settings-theme-card" id="themeCard_stadium" onclick="selectSettingsTheme('stadium')" data-tooltip="Stadium Night: Obsidian floodlit broadcast glassmorphism">
+                <div class="settings-theme-card" id="themeCard_stadium" onclick="selectSettingsTheme('stadium')" data-tooltip="Stadium Night: Obsidian floodlit broadcast glassmorphism with Space Grotesk &amp; Chakra Petch typography">
                   <div style="margin-bottom: 0.3rem;">${iconSvg('moon', '#00E599', 26)}</div>
                   <div style="font-weight: 800; font-size: 0.8rem; color: #00E599;">Stadium Night</div>
-                  <div style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.2rem;">Obsidian Glass #04070D</div>
+                  <div style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.2rem;">Obsidian Glass • Space Grotesk</div>
                 </div>
               </div>
             </div>
@@ -9517,7 +9594,7 @@ export function getDashboardHtml() {
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('mobile', 'var(--turf-emerald)', 20)}</span>
           <div>
             <div class="modal-title">CricOS Mobile App &amp; Android APK</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Consumer iOS &amp; Native Android Experience (Target SDK 33 / AGP 8.1.4)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Consumer iOS &amp; Native Android Experience (Target SDK 35 / Gradle 8.5)</div>
           </div>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMobilePreviewModal()" data-tooltip="Close mobile preview (Esc)">×</button>
@@ -9532,36 +9609,26 @@ export function getDashboardHtml() {
         </div>
 
         <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 0.85rem; margin-bottom: 0.85rem; text-align: left;">
-          <!-- SVG QR Code representing CricOS Mobile URL -->
-          <div style="background: #FFF; padding: 6px; border-radius: 8px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-            <svg width="84" height="84" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="QR Code to launch CricOS mobile application">
-              <rect width="29" height="29" fill="#FFFFFF"/>
-              <!-- Position markers -->
-              <rect x="2" y="2" width="7" height="7" fill="#04070D"/>
-              <rect x="3" y="3" width="5" height="5" fill="#FFFFFF"/>
-              <rect x="4" y="4" width="3" height="3" fill="#00E599"/>
-              <rect x="20" y="2" width="7" height="7" fill="#04070D"/>
-              <rect x="21" y="3" width="5" height="5" fill="#FFFFFF"/>
-              <rect x="22" y="4" width="3" height="3" fill="#00E599"/>
-              <rect x="2" y="20" width="7" height="7" fill="#04070D"/>
-              <rect x="3" y="21" width="5" height="5" fill="#FFFFFF"/>
-              <rect x="4" y="22" width="3" height="3" fill="#00E599"/>
-              <!-- Data modules -->
-              <rect x="11" y="2" width="2" height="3" fill="#04070D"/><rect x="15" y="4" width="3" height="2" fill="#04070D"/>
-              <rect x="10" y="7" width="2" height="2" fill="#04070D"/><rect x="14" y="8" width="4" height="2" fill="#04070D"/>
-              <rect x="2" y="11" width="3" height="2" fill="#04070D"/><rect x="7" y="11" width="2" height="2" fill="#04070D"/>
-              <rect x="11" y="11" width="3" height="3" fill="#00E599"/><rect x="16" y="12" width="2" height="2" fill="#04070D"/>
-              <rect x="20" y="11" width="4" height="2" fill="#04070D"/><rect x="26" y="12" width="2" height="3" fill="#04070D"/>
-              <rect x="4" y="15" width="2" height="3" fill="#04070D"/><rect x="8" y="14" width="4" height="2" fill="#04070D"/>
-              <rect x="14" y="16" width="3" height="2" fill="#04070D"/><rect x="19" y="15" width="2" height="2" fill="#04070D"/>
-              <rect x="11" y="20" width="2" height="4" fill="#04070D"/><rect x="15" y="22" width="4" height="2" fill="#04070D"/>
-              <rect x="22" y="18" width="3" height="3" fill="#00E599"/><rect x="26" y="22" width="2" height="4" fill="#04070D"/>
-            </svg>
+          <!-- High-Fidelity ISO/IEC 18004 Verified Scannable QR Code -->
+          <div style="background: #FFFFFF; padding: 6px; border-radius: 8px; flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.6); display: inline-flex; align-items: center; justify-content: center;">
+            <div id="mobilePreviewQrContainer" style="display: inline-flex; align-items: center; justify-content: center;">
+              ${generateQrCodeSvg('http://localhost:3000/mobile', 2, 88)}
+            </div>
           </div>
-          <div>
+          <div style="flex: 1; min-width: 0;">
             <div style="font-weight: 700; color: #FFF; font-size: 0.88rem; margin-bottom: 0.2rem;">Scan with Phone Camera</div>
             <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">
               Instantly preview the responsive mobile layout or transfer the debug APK to test on physical Android/iOS hardware.
+            </div>
+            <div style="margin-top: 0.35rem; display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+              <span id="mobileQrUrlDisplay" style="font-size: 0.65rem; color: var(--turf-emerald); font-family: var(--font-mono); background: rgba(0,229,153,0.1); border: 1px solid rgba(0,229,153,0.25); padding: 0.15rem 0.45rem; border-radius: 4px; word-break: break-all;">http://localhost:3000/mobile</span>
+              <button type="button" id="btnCustomQrUrlToggle" onclick="toggleCustomQrInput()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; cursor: pointer;" data-tooltip="Set local Wi-Fi / LAN IP (e.g. 192.168.1.x) for phone access">Set LAN IP ✎</button>
+            </div>
+            <div id="customQrInputRow" style="display: none; margin-top: 0.35rem;">
+              <div style="display: flex; gap: 0.3rem;">
+                <input type="text" id="inputCustomQrUrl" placeholder="http://192.168.1.X:3000/mobile" style="background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.68rem; font-family: var(--font-mono); padding: 0.2rem 0.4rem; border-radius: 4px; flex-grow: 1;" />
+                <button type="button" id="btnApplyCustomQrUrl" onclick="applyCustomQrUrl()" style="background: var(--turf-emerald); color: #04070D; font-weight: 700; border: none; font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer;">Apply</button>
+              </div>
             </div>
             <div style="margin-top: 0.4rem; display: flex; gap: 0.4rem;">
               <span style="font-size: 0.68rem; color: var(--cyan); background: rgba(0,210,255,0.1); border: 1px solid rgba(0,210,255,0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">PWA Ready</span>
@@ -11368,6 +11435,9 @@ cricos_active_sse_connections 1</pre>
     // Centralized Desktop Iconsax SVG Icon Generator
     window.iconSvg = window.getDesktopIconSvg = ${getDesktopIconSvg.toString()};
 
+    ${getQrCodeClientScript()}
+    ${getDismissalConfigClientScript()}
+
     // ==========================================
     // In-App Dialog System (replaces alert/confirm/prompt)
     // ==========================================
@@ -11900,9 +11970,24 @@ cricos_active_sse_connections 1</pre>
             banner.style.borderColor = 'rgba(0, 210, 255, 0.7)';
             banner.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 210, 255, 0.5)';
           } else if (type === 'WICKET') {
-            banner.innerHTML = '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem; filter: drop-shadow(0 0 16px rgba(255,51,102,0.8));">'+(window.getDesktopIconSvg?window.getDesktopIconSvg('alert','var(--rose)',48):'')+'</div><div style="font-family: var(--font-display, Chakra Petch, sans-serif); font-size: 2.4rem; font-weight: 900; color: #FFF; text-shadow: 0 0 20px #FF3366, 0 0 40px #FF3366; letter-spacing: 0.04em;">WICKET! TIMBER!</div><div style="font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--rose, #FF3366); margin-top: 0.2rem;">BOWLED OFF STUMP • DEPARTING BATTER DISMISSED</div>';
-            banner.style.borderColor = 'rgba(255, 51, 102, 0.7)';
-            banner.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 51, 102, 0.5)';
+            const wMode = (options && (options.mode || options.wicket_type || options.dismissalKind || options.wicketType)) || 'BOWLED';
+            const wFielder = options && (options.fielder || options.fielder_id || options.fielderName);
+            const wBowler = options && (options.bowler || options.bowlerName || (document.getElementById('bowlerName')?.textContent?.split('*')[0].trim() || ''));
+            const wBatter = options && (options.batter || options.player_out_id || options.batterName);
+            const resolver = window.getDismissalPopupConfig || (typeof getDismissalPopupConfig === 'function' ? getDismissalPopupConfig : null);
+            const cfg = resolver ? resolver(wMode, wFielder, wBowler, wBatter) : {
+              title: 'WICKET!',
+              subtitle: 'DEPARTING BATTER DISMISSED',
+              icon: 'target',
+              color: '#FF3366',
+              borderColor: 'rgba(255, 51, 102, 0.7)',
+              shadowColor: 'rgba(255, 51, 102, 0.5)',
+              particleColors: ['#FF3366', '#FF5C8A', '#FFB800', '#FFFFFF', '#C084FC']
+            };
+
+            banner.innerHTML = '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem; filter: drop-shadow(0 0 16px ' + (cfg.shadowColor || 'rgba(255,51,102,0.8)') + ');">' + (window.getDesktopIconSvg ? window.getDesktopIconSvg(cfg.icon, cfg.color, 48) : '') + '</div><div style="font-family: var(--font-display, Chakra Petch, sans-serif); font-size: 2.4rem; font-weight: 900; color: #FFF; text-shadow: 0 0 20px ' + cfg.color + ', 0 0 40px ' + cfg.color + '; letter-spacing: 0.04em;">' + cfg.title + '</div><div style="font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: ' + cfg.color + '; margin-top: 0.2rem;">' + cfg.subtitle + '</div>';
+            banner.style.borderColor = cfg.borderColor;
+            banner.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px ' + cfg.shadowColor;
           } else {
             banner.innerHTML = '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem; filter: drop-shadow(0 0 16px rgba(192,132,252,0.8));">'+(window.getDesktopIconSvg?window.getDesktopIconSvg('trophy','var(--purple-light)',48):'')+'</div><div style="font-family: var(--font-display, Chakra Petch, sans-serif); font-size: 2.2rem; font-weight: 900; color: #FFF; text-shadow: 0 0 20px #C084FC, 0 0 40px #C084FC; letter-spacing: 0.04em;">STADIUM ROAR!</div><div style="font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--purple-light, #C084FC); margin-top: 0.2rem;">CROWD NOISE: 104 dB • TURF PULSE SURGE</div>';
             banner.style.borderColor = 'rgba(192, 132, 252, 0.7)';
@@ -11916,13 +12001,19 @@ cricos_active_sse_connections 1</pre>
         }
 
         // Generate Particles & Shockwaves
-        const colors = type === 'SIX'
+        let colors = type === 'SIX'
           ? ['#00E599', '#00FFB2', '#FFD700', '#FFFFFF', '#00D2FF']
           : type === 'FOUR'
           ? ['#00D2FF', '#38BDF8', '#00E599', '#FFFFFF']
           : type === 'WICKET'
           ? ['#FF3366', '#FF5C8A', '#FFB800', '#FFFFFF', '#C084FC']
           : ['#00E599', '#00D2FF', '#FFB800', '#FF3366', '#C084FC', '#FFFFFF'];
+        if (type === 'WICKET') {
+          const wMode = (options && (options.mode || options.wicket_type || options.dismissalKind || options.wicketType)) || 'BOWLED';
+          const resolver = window.getDismissalPopupConfig || (typeof getDismissalPopupConfig === 'function' ? getDismissalPopupConfig : null);
+          const cfg = resolver ? resolver(wMode, options && options.fielder, options && options.bowler, options && options.batter) : null;
+          if (cfg && cfg.particleColors) colors = cfg.particleColors;
+        }
 
         const count = type === 'SIX' ? 85 : type === 'FOUR' ? 60 : 70;
         for (let i = 0; i < count; i++) {
@@ -13948,7 +14039,7 @@ cricos_active_sse_connections 1</pre>
       overlay.style.cssText = 'position: fixed; inset: 0; z-index: 10000; background: rgba(4, 7, 13, 0.94); backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;';
       overlay.setAttribute('data-tooltip', 'Click anywhere or press Escape to close preview');
       overlay.innerHTML = '<img src="' + images[index] + '" style="max-width: 90vw; max-height: 80vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); object-fit: contain;" alt="Venue preview">' +
-        '<div style="margin-top: 1rem; color: #94a3b8; font-size: 0.8rem; font-family: Plus Jakarta Sans, sans-serif;">Photo ' + (index + 1) + ' of ' + images.length + ' • Click or press Escape to close</div>';
+        '<div style="margin-top: 1rem; color: #94a3b8; font-size: 0.8rem; font-family: var(--font-body);">Photo ' + (index + 1) + ' of ' + images.length + ' • Click or press Escape to close</div>';
       overlay.addEventListener('click', function() { overlay.remove(); });
       document.addEventListener('keydown', function handler(e) {
         if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', handler); }
@@ -17802,6 +17893,13 @@ cricos_active_sse_connections 1</pre>
 
       closeDismissalModal();
       if (isRetiredHurt) {
+        if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
+          window.CricOSMotionFX.triggerCelebration('WICKET', {
+            mode: 'RETIRED_HURT',
+            batter: outName,
+            bowler: currentBowler
+          });
+        }
         showToast('RETIRED HURT: ' + outName + ' retired hurt (not out) • Next: ' + nextBatter + ' (' + nextStance + ')');
       } else {
         showToast('WICKET! ' + outName + ' ' + dismissalDesc + ' • Next: ' + nextBatter + ' (' + nextStance + ')');
@@ -22430,7 +22528,18 @@ cricos_active_sse_connections 1</pre>
         else triggerHaptic('default');
       }
       if (window.CricOSMotionFX && typeof window.CricOSMotionFX.triggerCelebration === 'function') {
-        if (isWicket) window.CricOSMotionFX.triggerCelebration('WICKET');
+        if (isWicket) {
+          const wMode = (wicketOptions && (wicketOptions.wicket_type || wicketOptions.wicketType)) || 'BOWLED';
+          const wFielder = wicketOptions && (wicketOptions.fielder_id || wicketOptions.fielder);
+          const wBatter = wicketOptions && (wicketOptions.player_out_id || wicketOptions.batter);
+          const wBowler = (typeof currentBowler !== 'undefined' ? currentBowler : '') || (document.getElementById('bowlerName')?.textContent?.split('*')[0].trim() || 'Bowler');
+          window.CricOSMotionFX.triggerCelebration('WICKET', {
+            mode: wMode,
+            fielder: wFielder,
+            batter: wBatter,
+            bowler: wBowler
+          });
+        }
         else if (batRuns === 6) window.CricOSMotionFX.triggerCelebration('SIX');
         else if (batRuns === 4) window.CricOSMotionFX.triggerCelebration('FOUR');
       }
@@ -23445,6 +23554,10 @@ cricos_active_sse_connections 1</pre>
       if (footerApk) {
         footerApk.href = apkUrl;
       }
+
+      if (typeof window.updateMobilePreviewQr === 'function') {
+        window.updateMobilePreviewQr();
+      }
     }
 
     function openMobilePreviewModal() {
@@ -23700,6 +23813,10 @@ cricos_active_sse_connections 1</pre>
         name: 'Swiss Minimal',
         icon: '🇨🇭',
         badge: '🇨🇭 SWISS MINIMAL',
+        fontDisplay: 'Inter',
+        fontBody: 'Inter',
+        fontScore: 'Inter',
+        fontBadge: 'Inter Neo-Grotesque',
         desc: 'Clean international typographic minimalism with bright background & hairline borders'
       },
       nordic: {
@@ -23707,6 +23824,10 @@ cricos_active_sse_connections 1</pre>
         name: 'Nordic Editorial',
         icon: '🌾',
         badge: '🌾 NORDIC EDITORIAL',
+        fontDisplay: 'Fraunces / Newsreader',
+        fontBody: 'Plus Jakarta Sans',
+        fontScore: 'Fraunces / Newsreader',
+        fontBadge: 'Fraunces Editorial Serif',
         desc: 'Warm paper ivory canvas with refined sport editorial layout'
       },
       stadium: {
@@ -23714,6 +23835,10 @@ cricos_active_sse_connections 1</pre>
         name: 'Stadium Night',
         icon: '🌙',
         badge: '🌙 STADIUM NIGHT',
+        fontDisplay: 'Space Grotesk',
+        fontBody: 'Plus Jakarta Sans',
+        fontScore: 'Chakra Petch',
+        fontBadge: 'Space Grotesk & Chakra Petch',
         desc: 'Floodlit stadium broadcast glassmorphism with high-intensity floodlight glow'
       }
     };

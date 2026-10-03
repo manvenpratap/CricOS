@@ -7,6 +7,7 @@ import type { FastifyInstance } from 'fastify';
 import { buildServer } from '../apps/api/dist/server.js';
 import { getDashboardHtml } from '../apps/api/dist/ui/dashboard.js';
 import { getMobileAppHtml } from '../apps/api/dist/ui/mobile-view.js';
+import { getDismissalPopupConfig } from '../apps/api/dist/ui/dismissal-config.js';
 import {
   UmpireMatchDeskComponent,
   getSanctionConsequences,
@@ -780,6 +781,84 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(!dashboardSrc.includes('No Ball <span style="font-size: 0.65rem; opacity: 0.8;">[Law 21⚡]</span>'), 'Desktop No Ball button must not have in-button law number');
       assert.ok(dashboardSrc.includes('data-tooltip="Wide delivery [MCC Law 22]'), 'Desktop Wide button must retain Law 22 tooltip');
       assert.ok(dashboardSrc.includes('data-tooltip="No Ball delivery [MCC Law 21'), 'Desktop No Ball button must retain Law 21 tooltip');
+    });
+
+    it('13. Dismissal Mode Specific Kinetic Wicket Popups (MCC Laws 30–39 & Law 25)', () => {
+      // 1. Caught dismissal mode configuration
+      const caughtWithFielder = getDismissalPopupConfig('CAUGHT', 'Ravindra Jadeja', 'Jasprit Bumrah', 'Virat Kohli');
+      assert.strictEqual(caughtWithFielder.title, 'CAUGHT OUT!');
+      assert.ok(caughtWithFielder.subtitle.includes('TAKEN BY RAVINDRA JADEJA'));
+      assert.ok(caughtWithFielder.subtitle.includes('IN THE AIR & GONE!'));
+      assert.ok(!caughtWithFielder.subtitle.includes('STUMPS SHATTERED'));
+      assert.strictEqual(caughtWithFielder.icon, 'shield');
+      assert.strictEqual(caughtWithFielder.color, '#FF3366');
+
+      const caughtWithoutFielder = getDismissalPopupConfig('CAUGHT', '', 'Jasprit Bumrah', 'Virat Kohli');
+      assert.strictEqual(caughtWithoutFielder.title, 'CAUGHT OUT!');
+      assert.ok(caughtWithoutFielder.subtitle.includes('SAFE HANDS IN THE FIELD'));
+      assert.ok(!caughtWithoutFielder.subtitle.includes('STUMPS SHATTERED'));
+
+      // 2. Bowled dismissal mode configuration
+      const bowled = getDismissalPopupConfig('BOWLED', '', 'Jasprit Bumrah', 'Steve Smith');
+      assert.strictEqual(bowled.title, 'BOWLED! TIMBER!');
+      assert.ok(bowled.subtitle.includes('STUMPS SHATTERED'));
+      assert.ok(bowled.subtitle.includes('CLEAN THROUGH THE GATE'));
+      assert.strictEqual(bowled.icon, 'target');
+
+      // 3. LBW dismissal mode configuration
+      const lbw = getDismissalPopupConfig('LBW', '', 'Mohammed Shami', 'Joe Root');
+      assert.strictEqual(lbw.title, 'LBW! TRAPPED IN FRONT!');
+      assert.ok(lbw.subtitle.includes('PLUMB IN FRONT'));
+      assert.ok(!lbw.subtitle.includes('STUMPS SHATTERED'));
+      assert.strictEqual(lbw.icon, 'scale');
+
+      // 4. Run Out dismissal mode configuration
+      const runOut = getDismissalPopupConfig('RUN_OUT', 'Ravindra Jadeja', 'Jasprit Bumrah', 'Ben Stokes');
+      assert.strictEqual(runOut.title, 'RUN OUT!');
+      assert.ok(runOut.subtitle.includes('DIRECT HIT BY RAVINDRA JADEJA'));
+      assert.ok(!runOut.subtitle.includes('STUMPS SHATTERED'));
+      assert.strictEqual(runOut.icon, 'lightning');
+      assert.strictEqual(runOut.color, '#FFB800');
+
+      // 5. Stumped dismissal mode configuration
+      const stumped = getDismissalPopupConfig('STUMPED', 'MS Dhoni', 'Kuldeep Yadav', 'Glenn Maxwell');
+      assert.strictEqual(stumped.title, 'STUMPED!');
+      assert.ok(stumped.subtitle.includes('LIGHTNING GLOVEWORK BY MS DHONI'));
+      assert.ok(!stumped.subtitle.includes('STUMPS SHATTERED'));
+      assert.strictEqual(stumped.icon, 'lightning');
+      assert.strictEqual(stumped.color, '#38BDF8');
+
+      // 6. Other MCC Laws
+      const hitWicket = getDismissalPopupConfig('HIT_WICKET');
+      assert.strictEqual(hitWicket.title, 'HIT WICKET!');
+      assert.ok(!hitWicket.subtitle.includes('STUMPS SHATTERED'));
+
+      const obstructing = getDismissalPopupConfig('OBSTRUCTING');
+      assert.strictEqual(obstructing.title, 'OBSTRUCTING THE FIELD!');
+
+      const hitBallTwice = getDismissalPopupConfig('HIT_BALL_TWICE');
+      assert.strictEqual(hitBallTwice.title, 'HIT THE BALL TWICE!');
+
+      const handledBall = getDismissalPopupConfig('HANDLED_BALL');
+      assert.strictEqual(handledBall.title, 'HANDLED THE BALL!');
+
+      const timedOut = getDismissalPopupConfig('TIMED_OUT');
+      assert.strictEqual(timedOut.title, 'TIMED OUT!');
+
+      const retiredHurt = getDismissalPopupConfig('RETIRED_HURT');
+      assert.strictEqual(retiredHurt.title, 'RETIRED HURT');
+      assert.strictEqual(retiredHurt.icon, 'activity');
+
+      const retiredOut = getDismissalPopupConfig('RETIRED_OUT');
+      assert.strictEqual(retiredOut.title, 'RETIRED OUT!');
+
+      // 7. Desktop & Mobile UI source code assertions
+      assert.ok(dashboardSrc.includes('getDismissalPopupConfig'), 'Dashboard must include getDismissalPopupConfig resolver');
+      assert.ok(mobileSrc.includes('getDismissalPopupConfig'), 'Mobile view must include getDismissalPopupConfig resolver');
+      assert.ok(mobileSrc.includes("triggerCelebration('WICKET', {"), 'Mobile confirmMobileDismissal must pass options to triggerCelebration');
+      assert.ok(dashboardSrc.includes("triggerCelebration('WICKET', {"), 'Desktop scoreDelivery must pass options to triggerCelebration');
+      assert.ok(!dashboardSrc.includes("WICKET! TIMBER!</div><div style=\"font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--rose, #FF3366); margin-top: 0.2rem;\">BOWLED OFF STUMP"), 'Desktop must not unconditionally hardcode Bowled Off Stump');
+      assert.ok(!mobileSrc.includes("WICKET! TIMBER!</div><div style=\"font-size: 0.72rem; color: #FF3366; font-weight: 700; margin-top: 0.2rem;\">STUMPS SHATTERED</div>"), 'Mobile must not unconditionally hardcode Stumps Shattered');
     });
   });
 });
