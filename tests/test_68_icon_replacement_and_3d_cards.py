@@ -77,6 +77,16 @@ async def test_icon_replacement_and_3d_flippable_cards():
         settings_btn_svg = await page.query_selector("#btnMobileSidebarSettings svg.cricos-icon")
         assert settings_btn_svg is not None, "Settings button in sidebar must render SVG icon"
 
+        # Verify Wagon Wheel and Field Radar have distinct SVG icons
+        wagon_btn_svg = await page.query_selector("#btnMobileSidebarWagonWheel svg.cricos-icon")
+        radar_btn_svg = await page.query_selector("#btnMobileSidebarFieldRadar svg.cricos-icon")
+        assert wagon_btn_svg is not None, "8-Zone Wagon Wheel button must render SVG icon"
+        assert radar_btn_svg is not None, "Field Radar button must render SVG icon"
+
+        wagon_svg_html = await page.evaluate("el => el.innerHTML", wagon_btn_svg)
+        radar_svg_html = await page.evaluate("el => el.innerHTML", radar_btn_svg)
+        assert wagon_svg_html != radar_svg_html, "Wagon Wheel and Field Radar must have distinct SVG icons"
+
         await save_screenshot_async(page, "test_68_2_sidebar_svg_icons.png")
         await page.evaluate("() => window.cricosMobileApp.closeSidebarDrawer()")
         await page.wait_for_timeout(200)

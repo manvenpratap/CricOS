@@ -1,14 +1,25 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-03 23:00:00
-**Version:** 1.0.0-phase2cy (Universal Iconsax Two-Tone SVG System Across Desktop & Mobile)  
+**Last Updated:** 2026-10-03 23:10:00
+**Version:** 1.0.0-phase2cz (Bespoke Iconsax SVG Separation for 8-Zone Wagon Wheel & 11-Fielder Tactical Radar)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CY Completed — Universal Desktop & Mobile Emoji Replacement with Iconsax Two-Tone SVG System (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_54_playwright_theme_verification.py`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CZ Completed — Bespoke Iconsax SVG Separation for 8-Zone Wagon Wheel & 11-Fielder Tactical Radar (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_68_icon_replacement_and_3d_cards.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `dist/index.html`, `dist/mobile.html`):
+  - **1. Dedicated Cricket 8-Zone Wagon Wheel Icon (`wagon` / `wagon-wheel`)**:
+    - Created an authentic cricket Wagon Wheel Iconsax Two-Tone SVG: 24×24 viewBox, outer boundary rope circle (`r=9`), 8 radial sector spokes radiating from center hub at 0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°, central batting crease hub (`r=2.5`), two-tone shaded scoring sector wedges (`fill-opacity="0.28"` and `"0.22"`), and boundary shot impact dots.
+    - Added to `getDesktopIconSvg` (`apps/api/src/ui/dashboard.ts`) and `this.iconSvg` (`apps/api/src/ui/mobile-view.ts`).
+    - Assigned to `#sidebarBtnWagonWheel` (Desktop) and `#btnMobileSidebarWagonWheel` (Mobile) and Hero Stage 1 3D Wagon Arcs button.
+  - **2. Tactical Radar Icon Refinement (`radar`)**:
+    - Refined the `radar` icon into an authentic 11-Fielder Tactical Radar: concentric boundary circle and 30-yard powerplay restriction ring, center pitch dot, tactical sweep beam with 45° angle, and strategic fielder dots (`(17,16)`, `(8,14)`, `(14.5,9.5)`).
+    - Exclusively assigned to `#sidebarBtnFieldPlanner` (Desktop) and `#btnMobileSidebarFieldRadar` (Mobile with distinct `#38BDF8` sky-cyan accent).
+  - **3. Verification & Testing Health**:
+    - Verified all 231 unit/domain tests in 64 suites pass in 449ms via `./pipeline.sh test --summary` (Suite 10 assertion 6 passing).
+    - Verified Playwright E2E suites passing 100%: `test_68_icon_replacement_and_3d_cards.py` (explicit assertion confirming `wagon_svg_html != radar_svg_html`), `test_62_sidebar_3d_stadium_and_wagon_wheel.py`, `test_65_deduplicated_entry_points.py`, and `test_67_mobile_singular_navigation_audit.py` with zero console errors.
+- **Preceding Phase**: Phase 2CY Completed — Universal Desktop & Mobile Emoji Replacement with Iconsax Two-Tone SVG System (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_54_playwright_theme_verification.py`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Desktop Iconsax Two-Tone SVG Engine**:
     - Created comprehensive `getDesktopIconSvg(name, color = 'currentColor', size = 18)` supporting over 70 distinct Iconsax Two-Tone inline SVGs with secondary opacities (0.18-0.32) and clean 1.6-1.9px stroke outlines.
     - Exposed `window.iconSvg = window.getDesktopIconSvg = ...` globally in client context for dynamic JS updates.

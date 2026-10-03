@@ -506,6 +506,11 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('toggleFlipCard(el)'), 'toggleFlipCard method must exist');
       assert.ok(mobileHtml.includes("target.classList.toggle('flipped')"), 'Must toggle flipped class');
     });
+
+    it('6. Wagon Wheel and Field Radar use distinct bespoke Iconsax SVG icons', () => {
+      assert.ok(mobileHtml.includes("this.iconSvg('wagon',"), 'Mobile sidebar must render dedicated wagon icon for 8-Zone Wagon Wheel');
+      assert.ok(mobileHtml.includes("this.iconSvg('radar',"), 'Mobile sidebar must render radar icon for Field Radar');
+    });
   });
 });
 
