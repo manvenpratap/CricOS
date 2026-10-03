@@ -11601,12 +11601,12 @@ export function getMobileAppHtml(): string {
             h += '<button type="button" class="mobile-studio-btn pad-btn undo-btn" onclick="window.cricosMobileApp.undoLastDelivery()" data-tooltip="Undo last delivery">↺<span class="mobile-studio-sublabel" style="color: #ffb800;">Undo</span></button>';
             h += '</div>';
 
-            // Quick Extras Strip with Law Citations (Opens wider extra runs menu)
+            // Quick Extras Strip (Opens wider extra runs menu)
             h += '<div style="display: flex; gap: 0.3rem; margin-bottom: 0.45rem;">';
-            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="WIDE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Wide delivery [MCC Law 22] (opens extra runs picker)">Wide <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 22]</span></button>';
-            h += '<button type="button" class="btn btn-secondary"' + extNbDis + ' data-extra="NO_BALL" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="No Ball delivery [MCC Law 21 &amp; ICC 21.19 Free Hit]">No Ball <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 21⚡]</span></button>';
-            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="LEG_BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Leg Bye delivery [MCC Law 23]">Leg Bye <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 23]</span></button>';
-            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Bye delivery [MCC Law 23]">Bye <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 23]</span></button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="WIDE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Wide delivery [MCC Law 22] (opens extra runs picker)">Wide</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extNbDis + ' data-extra="NO_BALL" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="No Ball delivery [MCC Law 21 &amp; ICC 21.19 Free Hit]">No Ball</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="LEG_BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Leg Bye delivery [MCC Law 23]">Leg Bye</button>';
+            h += '<button type="button" class="btn btn-secondary"' + extDis + ' data-extra="BYE" onclick="window.cricosMobileApp.openExtraPickerSheet(this.dataset.extra)" data-tooltip="Bye delivery [MCC Law 23]">Bye</button>';
             h += '</div>';
 
             // Dedicated Penalty Runs & Laws Reference Bar

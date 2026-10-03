@@ -1,14 +1,25 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-03 23:35:00
-**Version:** 1.0.0-phase2db (Mobile Preview & Android APK File Protocol Auto-Resolution)  
+**Last Updated:** 2026-10-03 23:45:00
+**Version:** 1.0.0-phase2dc (Clean Extras Buttons Without Law Numbers)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DB Completed — Mobile Preview & Android APK File Protocol Auto-Resolution (`apps/api/src/ui/dashboard.ts`, `scripts/package-distribution.mjs`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_70_mobile_preview_file_protocol_resolution.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DC Completed — Clean Extras Buttons Without Law Numbers Across Desktop & Mobile (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/test_71_clean_extras_buttons_without_law_numbers.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Elimination of Cluttered In-Button Law Numbers**:
+    - **Desktop Scoring Keypad (`apps/api/src/ui/dashboard.ts`)**: Stripped in-button law numbers (`[Law 22]`, `[Law 21⚡]`, `[Law 23]`, `[Law 23]`) and `[Law 41/42 & 28.3]` from scoring pad extras buttons and +5 Penalty Runs button. Rendered clean athletic labels: `Wide`, `No Ball`, `Leg Bye`, `Bye`, and `+5 Penalty Runs`.
+    - **Mobile Scorer Studio Pad (`apps/api/src/ui/mobile-view.ts`)**: Stripped cluttered in-button law numbers from mobile 4-column extras buttons, rendering clean athletic labels: `Wide`, `No Ball`, `Leg Bye`, and `Bye`.
+  - **2. UI Tooltips & Accessibility Invariants Preservation (Rule 5)**:
+    - Retained and strictly enforced official MCC Law citations inside accessible `data-tooltip="..."` attributes on all extras buttons across both Desktop and Mobile (`[MCC Law 22]`, `[MCC Law 21 & ICC 21.19 Free Hit]`, `[MCC Law 23]`, `[MCC Laws 41/42 & 28.3]`), ensuring scorers retain rich rulebook context on hover/focus without visual button clutter.
+  - **3. Verification & Testing Health**:
+    - Updated assertions in existing test suites: `tests/domain-scoring-and-match-ops.test.ts` (test 12.4) and `tests/test_61_icc_laws_scorer_reference_and_enforcement.py` (Rule 4: never delete tests).
+    - Created sequential E2E test `tests/test_71_clean_extras_buttons_without_law_numbers.py`: verified clean labels, absence of in-button law numbers, preservation of tooltips, interactive modal/sheet opening, zero critical console errors, and captured verified screenshots (`test_71_mobile_clean_extras_pad.png`, `test_71_desktop_clean_extras_pad.png`, `test_71_desktop_penalty_modal.png`).
+    - Verified all 234 unit/domain tests in 65 suites pass via `./pipeline.sh test --summary`.
+    - Verified regression Playwright suites passing 100%.
+- **Preceding Phase**: Phase 2DB Completed — Mobile Preview & Android APK File Protocol Auto-Resolution (`apps/api/src/ui/dashboard.ts`, `scripts/package-distribution.mjs`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_70_mobile_preview_file_protocol_resolution.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Diagnosis & Dynamic Protocol URL Resolution Engine**:
     - **Root Cause Remediation**: Resolved the blank mobile preview and Chrome `ERR_FILE_NOT_FOUND` ("It may have been moved, edited or deleted") error when `index.html` was opened via `file:///` filesystem URLs. In static HTML, `#modalMobileAppPreview` iframe hardcoded `src="/mobile"`, causing Chromium to query `file:///mobile` at filesystem root.
     - **Context- & Protocol-Aware Resolver**: Added `getMobileAppUrl()` and `getApkDownloadUrl()` in `dashboard.ts`:

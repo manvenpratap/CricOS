@@ -69,11 +69,15 @@ async def test_mobile_icc_laws_scorer_reference_and_enforcement_flow():
         laws_btn = await page.query_selector("#btnMobileIccLaws")
         assert laws_btn is not None, "#btnMobileIccLaws button must exist in mobile scorer studio pad"
 
-        # Verify Law badges on Extras buttons
+        # Verify clean Extras buttons without in-button law numbers
         pad_text = await page.evaluate("() => document.getElementById('mobileScorerStudioPad')?.textContent || ''")
-        assert "[Law 22]" in pad_text, "Pad should show Law 22 badge on Wide button"
-        assert "[Law 21⚡]" in pad_text, "Pad should show Law 21 badge on No Ball button"
-        assert "[Law 23]" in pad_text, "Pad should show Law 23 badge on Bye / Leg Bye buttons"
+        assert "[Law 22]" not in pad_text, "Pad should not show Law 22 on Wide button text"
+        assert "[Law 21⚡]" not in pad_text, "Pad should not show Law 21 on No Ball button text"
+        assert "[Law 23]" not in pad_text, "Pad should not show Law 23 on Bye / Leg Bye buttons text"
+        wide_tooltip = await page.get_attribute("button[data-extra='WIDE']", "data-tooltip")
+        assert "MCC Law 22" in (wide_tooltip or ""), "Wide button tooltip must retain MCC Law 22 reference"
+        nb_tooltip = await page.get_attribute("button[data-extra='NO_BALL']", "data-tooltip")
+        assert "MCC Law 21" in (nb_tooltip or ""), "No Ball button tooltip must retain MCC Law 21 reference"
 
         # 3. Open ICC Laws Reference Rulebook Sheet
         await page.evaluate("""() => {

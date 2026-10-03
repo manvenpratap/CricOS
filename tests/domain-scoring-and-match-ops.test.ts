@@ -761,21 +761,25 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(dashboardSrc.includes("value=\"RETIRED_OUT\""), 'Desktop must have RETIRED_OUT option in dismissal select');
     });
 
-    it('12.4 should provide dedicated +5 Penalty Runs award modals and Law badges across Mobile & Desktop', () => {
-      // Mobile Penalty runs
+    it('12.4 should provide dedicated +5 Penalty Runs award modals and clean extras buttons without in-button law numbers', () => {
+      // Mobile Penalty runs & clean extras buttons
       assert.ok(mobileSrc.includes('openPenaltyRunsSheet'), 'Mobile must have openPenaltyRunsSheet()');
       assert.ok(mobileSrc.includes('renderMobilePenaltyRunsSheet'), 'Mobile must have renderMobilePenaltyRunsSheet()');
       assert.ok(mobileSrc.includes('id="btnMobileStudioPenaltyRuns"'), 'Mobile pad must have +5 Penalty Runs button');
-      assert.ok(mobileSrc.includes('[Law 21⚡]'), 'Mobile No Ball button must have Law 21 citation');
-      assert.ok(mobileSrc.includes('[Law 22]'), 'Mobile Wide button must have Law 22 citation');
+      assert.ok(!mobileSrc.includes('Wide <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 22]</span>'), 'Mobile Wide button must not have in-button law number');
+      assert.ok(!mobileSrc.includes('No Ball <span style="font-size: 0.58rem; opacity: 0.8; font-weight: 600;">[Law 21⚡]</span>'), 'Mobile No Ball button must not have in-button law number');
+      assert.ok(mobileSrc.includes('data-tooltip="Wide delivery [MCC Law 22]'), 'Mobile Wide button must retain Law 22 tooltip');
+      assert.ok(mobileSrc.includes('data-tooltip="No Ball delivery [MCC Law 21'), 'Mobile No Ball button must retain Law 21 tooltip');
 
-      // Desktop Penalty runs
+      // Desktop Penalty runs & clean extras buttons
       assert.ok(dashboardSrc.includes('id="modalPenaltyRuns"'), 'Desktop must have modalPenaltyRuns modal');
       assert.ok(dashboardSrc.includes('openPenaltyRunsModal'), 'Desktop must have openPenaltyRunsModal()');
       assert.ok(dashboardSrc.includes('confirmDesktopPenaltyRuns'), 'Desktop must have confirmDesktopPenaltyRuns()');
       assert.ok(dashboardSrc.includes('id="btnStudioPenaltyRuns"'), 'Desktop keypad must have +5 Penalty Runs button');
-      assert.ok(dashboardSrc.includes('[Law 21⚡]'), 'Desktop No Ball button must have Law 21 citation');
-      assert.ok(dashboardSrc.includes('[Law 22]'), 'Desktop Wide button must have Law 22 citation');
+      assert.ok(!dashboardSrc.includes('Wide <span style="font-size: 0.65rem; opacity: 0.8;">[Law 22]</span>'), 'Desktop Wide button must not have in-button law number');
+      assert.ok(!dashboardSrc.includes('No Ball <span style="font-size: 0.65rem; opacity: 0.8;">[Law 21⚡]</span>'), 'Desktop No Ball button must not have in-button law number');
+      assert.ok(dashboardSrc.includes('data-tooltip="Wide delivery [MCC Law 22]'), 'Desktop Wide button must retain Law 22 tooltip');
+      assert.ok(dashboardSrc.includes('data-tooltip="No Ball delivery [MCC Law 21'), 'Desktop No Ball button must retain Law 21 tooltip');
     });
   });
 });
