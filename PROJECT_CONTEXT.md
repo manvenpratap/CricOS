@@ -1,14 +1,27 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-03 23:10:00
-**Version:** 1.0.0-phase2cz (Bespoke Iconsax SVG Separation for 8-Zone Wagon Wheel & 11-Fielder Tactical Radar)  
+**Last Updated:** 2026-10-03 23:25:00
+**Version:** 1.0.0-phase2da (Elimination of Duplicate Laws Buttons & Scoring Pad Redundant Labels)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CZ Completed — Bespoke Iconsax SVG Separation for 8-Zone Wagon Wheel & 11-Fielder Tactical Radar (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_68_icon_replacement_and_3d_cards.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `dist/index.html`, `dist/mobile.html`):
+- **Active Phase**: Phase 2DA Completed — Elimination of Duplicate Laws Buttons & Scoring Pad Redundant Labels (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_69_deduplicate_laws_buttons_and_labels.py`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Elimination of Duplicate Laws Buttons**:
+    - **Mobile Scorer Studio Pad (`#mobileScorerStudioPad`)**: Completely removed the redundant `#btnMobileIccLawsHeader` (`📖 LAWS`) from the card header. Standardized on the single canonical `#btnMobileIccLaws` button located in the Dedicated Penalty Runs & Laws Reference Bar below Extras.
+    - **Desktop Scoring Keypad (`#cardStudioKeypad`)**: Completely removed the redundant `#btnDesktopIccLaws` from the card header. Standardized on the single canonical `#btnDesktopIccLaws` button in the Dedicated Penalty Runs & Laws Reference Bar inside `#studioScoringControlsGroup`, replacing the duplicate `#btnStudioIccLawsPad`.
+  - **2. Elimination of Duplicate Labels & Iconsax SVG Upgrade**:
+    - **Removed Redundant `TACTICAL SCORER` Pill**: Eliminated the redundant right-aligned `<span ...>TACTICAL SCORER</span>` pill in `#mobileScorerStudioPad` header, keeping the header clean and uncluttered with the primary title `Scorer Studio & Tactical Pad`.
+    - **Iconsax Two-Tone SVG Integration**: Upgraded the card header icon from raw unicode emoji `🎯` to Iconsax Two-Tone SVG `this.iconSvg('target', '#00E599', 16)`. Replaced raw emojis in the action bar with `this.iconSvg('scale', '#eab308', 14)` for `+5 Penalty Runs` and `this.iconSvg('book', '#38bdf8', 14)` for `ICC Laws Rulebook`. Upgraded Captain (`crown`), Umpire (`scale`), and Facility (`stadium`) persona headers to Iconsax SVGs.
+  - **3. Verification & Testing Health**:
+    - Created sequential E2E suite `tests/test_69_deduplicate_laws_buttons_and_labels.py`: verified absence of `#btnMobileIccLawsHeader` and `TACTICAL SCORER` pill, single canonical `#btnMobileIccLaws` and `#btnDesktopIccLaws`, real SVG icons (`.cricos-icon`), modal/sheet opening, and zero console errors.
+    - Verified all 231 unit/domain tests in 64 suites pass in 532ms via `./pipeline.sh test --summary`.
+    - Verified all regression Playwright suites passing 100%: `test_61_icc_laws_scorer_reference_and_enforcement.py`, `test_65_deduplicated_entry_points.py`, `test_67_mobile_singular_navigation_audit.py`, `test_68_icon_replacement_and_3d_cards.py`, and `test_69_deduplicate_laws_buttons_and_labels.py`.
+    - Captured verified visual screenshots: `test_69_mobile_deduplicated_scoring_pad.png` and `test_69_desktop_deduplicated_scoring_pad.png`.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2CZ Completed — Bespoke Iconsax SVG Separation for 8-Zone Wagon Wheel & 11-Fielder Tactical Radar (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_68_icon_replacement_and_3d_cards.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `dist/index.html`, `dist/mobile.html`):
   - **1. Dedicated Cricket 8-Zone Wagon Wheel Icon (`wagon` / `wagon-wheel`)**:
     - Created an authentic cricket Wagon Wheel Iconsax Two-Tone SVG: 24×24 viewBox, outer boundary rope circle (`r=9`), 8 radial sector spokes radiating from center hub at 0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°, central batting crease hub (`r=2.5`), two-tone shaded scoring sector wedges (`fill-opacity="0.28"` and `"0.22"`), and boundary shot impact dots.
     - Added to `getDesktopIconSvg` (`apps/api/src/ui/dashboard.ts`) and `this.iconSvg` (`apps/api/src/ui/mobile-view.ts`).

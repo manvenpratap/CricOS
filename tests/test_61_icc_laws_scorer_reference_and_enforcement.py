@@ -3,7 +3,7 @@ test_61_icc_laws_scorer_reference_and_enforcement.py — Exhaustive ICC Cricket 
 Verifies:
 1. Mobile Scorer Studio:
    - Interactive ICC Laws Reference Sheet (#mobileIccLawsSheet):
-     - Opened via #btnMobileIccLawsHeader or #btnMobileIccLaws.
+     - Opened via canonical #btnMobileIccLaws.
      - Live search filtering (#mobileIccLawSearchInput) filters law entries dynamically.
      - Category filter chips (ALL, EXTRAS, DISMISSALS, FAIR_PLAY, MATCH_OPS, FIELDING) filter rules.
      - Displays Law Title, MCC Law clause, Summary, Scorer Directives, CricOS Automation notes, and Quick Action buttons.

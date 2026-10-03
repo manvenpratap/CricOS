@@ -11553,13 +11553,9 @@ export function getMobileAppHtml(): string {
           if (persona === 'SCORER') {
             h += '<div id="mobileScorerStudioPad" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">';
-            h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
-            h += '<span style="font-size: 0.8rem;">🎯</span>';
-            h += '<span style="font-size: 0.78rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">Scorer Studio &amp; Tactical Pad</span>';
-            h += '</div>';
             h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
-            h += '<button type="button" id="btnMobileIccLawsHeader" class="btn btn-secondary" onclick="window.cricosMobileApp.openIccLawsSheet()" style="padding: 0.12rem 0.45rem; font-size: 0.62rem; font-weight: 800; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.12); border-radius: 9999px;" data-tooltip="Open ICC Playing Conditions &amp; MCC Laws Rulebook">📖 LAWS</button>';
-            h += '<span style="font-size: 0.6rem; color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">TACTICAL SCORER</span>';
+            h += this.iconSvg('target', '#00E599', 16);
+            h += '<span style="font-size: 0.78rem; font-weight: 800; color: #f8fafc; font-family: Space Grotesk, sans-serif;">Scorer Studio &amp; Tactical Pad</span>';
             h += '</div>';
             h += '</div>';
 
@@ -11615,8 +11611,8 @@ export function getMobileAppHtml(): string {
 
             // Dedicated Penalty Runs & Laws Reference Bar
             h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.45rem;">';
-            h += '<button type="button" class="btn btn-secondary" id="btnMobileStudioPenaltyRuns" onclick="window.cricosMobileApp.openPenaltyRunsSheet()" style="flex: 1.2; padding: 0.38rem 0.3rem; font-size: 0.7rem; font-weight: 700; color: #eab308; border-color: rgba(234, 179, 8, 0.4); background: rgba(234, 179, 8, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.25rem;" data-tooltip="Award +5 Penalty Runs (MCC Laws 41/42 &amp; 28.3 Helmet Penalty)"><span style="font-size: 0.82rem;">⚖️</span> +5 Penalty Runs</button>';
-            h += '<button type="button" class="btn btn-secondary" id="btnMobileIccLaws" onclick="window.cricosMobileApp.openIccLawsSheet()" style="flex: 1; padding: 0.38rem 0.3rem; font-size: 0.7rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.25rem;" data-tooltip="Open ICC Playing Conditions &amp; MCC Laws Rulebook"><span style="font-size: 0.82rem;">📖</span> ICC Laws Rulebook</button>';
+            h += '<button type="button" class="btn btn-secondary" id="btnMobileStudioPenaltyRuns" onclick="window.cricosMobileApp.openPenaltyRunsSheet()" style="flex: 1.2; padding: 0.38rem 0.3rem; font-size: 0.7rem; font-weight: 700; color: #eab308; border-color: rgba(234, 179, 8, 0.4); background: rgba(234, 179, 8, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.25rem;" data-tooltip="Award +5 Penalty Runs (MCC Laws 41/42 &amp; 28.3 Helmet Penalty)">' + this.iconSvg('scale', '#eab308', 14) + ' +5 Penalty Runs</button>';
+            h += '<button type="button" class="btn btn-secondary" id="btnMobileIccLaws" onclick="window.cricosMobileApp.openIccLawsSheet()" style="flex: 1; padding: 0.38rem 0.3rem; font-size: 0.7rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.25rem;" data-tooltip="Open ICC Playing Conditions &amp; MCC Laws Rulebook">' + this.iconSvg('book', '#38bdf8', 14) + ' ICC Laws Rulebook</button>';
             h += '</div>';
 
             // Dedicated Undo Last Ball & End Match Buttons
@@ -11629,7 +11625,7 @@ export function getMobileAppHtml(): string {
             h += '<div id="mobileCaptainTacticalCenter" style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">';
             h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
-            h += '<span style="font-size: 0.8rem;">👑</span>';
+            h += this.iconSvg('crown', '#00E599', 16);
             h += '<span style="font-size: 0.78rem; font-weight: 800; color: #00E599; font-family: Space Grotesk, sans-serif;">' + (persona === 'CAPTAIN' ? 'Captain Tactical &amp; Field Strategy Center' : 'Tactical Chase &amp; Strategy Center') + '</span>';
             h += '</div>';
             h += '<span style="font-size: 0.6rem; color: #00E599; background: rgba(0,229,153,0.12); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">' + (persona === 'CAPTAIN' ? 'CAPTAIN HUD' : 'INNINGS 2 CHASE') + '</span>';
@@ -11647,7 +11643,7 @@ export function getMobileAppHtml(): string {
             h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">';
             h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
-            h += '<span style="font-size: 0.8rem;">⚖️</span>';
+            h += this.iconSvg('scale', '#38BDF8', 16);
             h += '<span style="font-size: 0.78rem; font-weight: 800; color: #38BDF8; font-family: Space Grotesk, sans-serif;">Lead Umpire Match Telemetry &amp; Invariants</span>';
             h += '</div>';
             h += '<span style="font-size: 0.6rem; color: #38BDF8; background: rgba(56, 189, 248, 0.12); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">MCC LAW AUDIT</span>';
@@ -11665,7 +11661,7 @@ export function getMobileAppHtml(): string {
             h += '<div style="background: rgba(10, 16, 28, 0.95); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 12px; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem;">';
             h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">';
             h += '<div style="display: flex; align-items: center; gap: 0.3rem;">';
-            h += '<span style="font-size: 0.8rem;">🏟️</span>';
+            h += this.iconSvg('stadium', '#00E599', 16);
             h += '<span style="font-size: 0.78rem; font-weight: 800; color: #00E599; font-family: Space Grotesk, sans-serif;">Venue Ground Operations &amp; Facility Telemetry</span>';
             h += '</div>';
             h += '<span style="font-size: 0.6rem; color: #00E599; background: rgba(0, 229, 153, 0.12); padding: 0.12rem 0.4rem; border-radius: 9999px; font-weight: 800;">FACILITY ACTIVE</span>';
@@ -12658,6 +12654,9 @@ export function getMobileAppHtml(): string {
           'edit': '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z" fill="' + c + '" fill-opacity="0.28" stroke="' + c + '" stroke-width="1.8" stroke-linejoin="round"/><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5" stroke="' + c + '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
           'clean': '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2l1 4h4l-3 3 1 4-3-2-3 2 1-4-3-3h4l1-4Z" fill="' + c + '" fill-opacity="0.28" stroke="' + c + '" stroke-width="1.6" stroke-linejoin="round"/></svg>',
           'menu': '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/></svg>',
+          'target': '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="' + c + '" stroke-width="1.8"/><circle cx="12" cy="12" r="5" fill="' + c + '" fill-opacity="0.24" stroke="' + c + '" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="' + c + '"/></svg>',
+          'crown': '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M2 19h20M4 19l2-12 5 6 5-6 2 12" fill="' + c + '" fill-opacity="0.25" stroke="' + c + '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="7" r="1.5" fill="' + c + '"/><circle cx="12" cy="5" r="1.5" fill="' + c + '"/><circle cx="18" cy="7" r="1.5" fill="' + c + '"/></svg>',
+          'book': '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="' + c + '" fill-opacity="0.2" stroke="' + c + '" stroke-width="1.8"/><path d="M6 6h10M6 10h10M6 14h6" stroke="' + c + '" stroke-width="1.8" stroke-linecap="round"/></svg>',
         };
         return icons[name] || icons['bat'];
       }

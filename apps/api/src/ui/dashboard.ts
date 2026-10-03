@@ -6618,10 +6618,7 @@ export function getDashboardHtml(): string {
         <div class="card" id="cardStudioKeypad">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
             <div class="card-title" id="studioCardTitle" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('crown', 'currentColor', 18)} Captain Crease &amp; Tactical Command</div>
-            <div style="display: flex; align-items: center; gap: 0.45rem;">
-              <button type="button" class="btn btn-secondary" id="btnDesktopIccLaws" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: inline-flex; align-items: center; gap: 0.3rem; border-radius: 9999px;" onclick="openIccLawsModal()" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws 1-42 Rulebook Reference">${iconSvg('book', '#38bdf8', 13)} ICC Laws Rulebook</button>
-              <span class="rate-badge" id="studioModePill" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">CAPTAIN TACTICAL MODE</span>
-            </div>
+            <span class="rate-badge" id="studioModePill" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">CAPTAIN TACTICAL MODE</span>
           </div>
           <div class="card-desc" id="studioCardDesc">Live striker/non-striker crease matchups, partnership velocity, and field placement strategy (Official ball scoring reserved for Scorer)</div>
           <div id="captainTacticalNotice" style="display: block; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.65rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700;">
@@ -6691,7 +6688,7 @@ export function getDashboardHtml(): string {
             <!-- Dedicated Penalty Runs & Laws Reference Bar -->
             <div style="display: flex; gap: 0.5rem; margin-bottom: 0.65rem;">
               <button type="button" class="btn btn-secondary" id="btnStudioPenaltyRuns" onclick="openPenaltyRunsModal()" style="flex: 1.2; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #eab308; border-color: rgba(234, 179, 8, 0.35); background: rgba(234, 179, 8, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Award +5 Penalty Runs under MCC Laws 41/42 or Law 28.3 (Helmet Penalty)">${iconSvg('scale', '#eab308', 14)} +5 Penalty Runs [Law 41/42 &amp; 28.3]</button>
-              <button type="button" class="btn btn-secondary" id="btnStudioIccLawsPad" onclick="openIccLawsModal()" style="flex: 1; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws Rulebook">${iconSvg('book', '#38bdf8', 14)} ICC Laws Rulebook</button>
+              <button type="button" class="btn btn-secondary" id="btnDesktopIccLaws" onclick="openIccLawsModal()" style="flex: 1; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws Rulebook">${iconSvg('book', '#38bdf8', 14)} ICC Laws Rulebook</button>
             </div>
 
             <!-- Dedicated Undo Last Ball & End Match/Innings Controls -->
@@ -13523,12 +13520,13 @@ cricos_active_sse_connections 1</pre>
       const studioSwapBtn = document.getElementById('btnStudioSwapStrike');
 
       if (studioCardTitle) {
+        var _icon = (window.getDesktopIconSvg || window.iconSvg);
         if (role === 'SCORER') {
-          studioCardTitle.textContent = '🎯 Scorer Studio & Tactical Pad';
+          studioCardTitle.innerHTML = (_icon ? _icon('target', 'var(--turf-emerald)', 18) : '🎯') + ' Scorer Studio &amp; Tactical Pad';
         } else if (role === 'CAPTAIN') {
-          studioCardTitle.textContent = '👑 Captain Crease & Tactical Command';
+          studioCardTitle.innerHTML = (_icon ? _icon('crown', 'var(--turf-emerald)', 18) : '👑') + ' Captain Crease &amp; Tactical Command';
         } else {
-          studioCardTitle.textContent = '📊 Live Batter Crease & Matchups';
+          studioCardTitle.innerHTML = (_icon ? _icon('chart', 'var(--cyan)', 18) : '📊') + ' Live Batter Crease &amp; Matchups';
         }
       }
       if (studioCardDesc) {
