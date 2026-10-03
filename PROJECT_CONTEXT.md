@@ -1,14 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-03 20:20:00
-**Version:** 1.0.0-phase2cx (Iconsax SVG System & Dynamic Flippable 3D Player Cards)  
+**Last Updated:** 2026-10-03 23:00:00
+**Version:** 1.0.0-phase2cy (Universal Iconsax Two-Tone SVG System Across Desktop & Mobile)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CX Completed — Iconsax Real SVG Icon System & Flippable 3D Player Cards (`apps/api/src/ui/mobile-view.ts`, `tests/test_68_icon_replacement_and_3d_cards.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CY Completed — Universal Desktop & Mobile Emoji Replacement with Iconsax Two-Tone SVG System (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_54_playwright_theme_verification.py`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Desktop Iconsax Two-Tone SVG Engine**:
+    - Created comprehensive `getDesktopIconSvg(name, color = 'currentColor', size = 18)` supporting over 70 distinct Iconsax Two-Tone inline SVGs with secondary opacities (0.18-0.32) and clean 1.6-1.9px stroke outlines.
+    - Exposed `window.iconSvg = window.getDesktopIconSvg = ...` globally in client context for dynamic JS updates.
+    - Replaced all raw unicode emojis across all 26 sidebar navigation tabs, Topbar, Hero Stages 1 & 2, Scoreboard, Tactical Pads, 3D Stadium controls, and all 25 modals (`modalUserProfile`, `modalAppSettings`, `modalDismissal`, `modalExtraPicker`, `modalBowlerRotation`, `modalIccLawsReference`, `modalPenaltyRuns`, `modalCreateTeam`, `modalCheckout`, `modalEndMatchConfirmation`, `modalScorecardExport`, `modalMatchToss`, `modalMatchRating`, `modalLegalPolicies`, `modalEventBasket`, `modalProviderStorefront`, `modalCreateEvent`, `modalEventOverview`, `modalOfficialCalendar`, `modalMessaging`, `modalBookingLifecycle`, `modalFinancialReconciliation`, `modalMobileAppPreview`, `modalApiDocs`, `modalSystemHealth`, `modalMetricsTelemetry`, `modalCommerce`, `modalTournamentOps`, `modalMatchInsights`, `modalCheckIn`, `modalSponsorshipAuction`, `modalUmpireDesk`, `modalCricsheetExport`, `modalLeagueDivisions`, `modalDlsCalculator`, `modal3DTrophyCabinet`, `modal3DPlayerCard`, `modal3DBatCustomizer`, `modalPlayerStatsDrawer`, `modalCommandPalette`, `modalFieldPlanner`, `modalPitchMapSimulator`, `modalPlayerAuction`, and `modalKeyboardShortcuts`).
+  - **2. Mobile Header, Toasts & Sidebar Polish**:
+    - Replaced mobile hamburger `☰` with `this.iconSvg('menu', '#00E599', 18)`.
+    - Replaced preview header emojis with `mobile` and `book` SVGs via imported `getDesktopIconSvg`.
+    - Replaced toast notification unicode characters with `check`, `cross`, `alert`, and `chat` Iconsax SVGs in `renderToasts()`.
+  - **3. Dynamic Client-Side Theme & Persona Integration**:
+    - Decoupled theme icon testing in `tests/test_54_playwright_theme_verification.py` by maintaining `data-theme-icon` attributes while visually rendering rich two-tone SVG icons.
+    - Dynamic persona filter strips and declutter toggles seamlessly render clean SVGs without emoji fallback.
+    - Preserved critical test invariants: `[Law 21⚡]`, `✓ Record Cash Booking & Balance Ledger`, and `⚡ Tap to Auto-Fill 123456`.
+  - **4. Verification & Testing Health**:
+    - Verified all 230 unit/domain tests in 64 suites pass in 500ms via `./pipeline.sh test --summary`.
+    - Verified all Playwright E2E suites passing 100%: `test_54_playwright_theme_verification.py`, `test_68_icon_replacement_and_3d_cards.py`, `test_65_deduplicated_entry_points.py`, and `test_67_mobile_singular_navigation_audit.py` (7 tests, 0 errors).
+    - Verified single-file distribution packaging via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+    - Verified Android 15 Release & Debug APKs (`dist/cricos-release.apk`, `dist/cricos-debug.apk`).
+- **Preceding Phase**: Phase 2CX Completed — Iconsax Real SVG Icon System & Flippable 3D Player Cards (`apps/api/src/ui/mobile-view.ts`, `tests/test_68_icon_replacement_and_3d_cards.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Real SVG Icon Replacement across UI**:
     - Replaced all raw emoji characters across Bottom Navigation, Sidebar Drawer Nav, Tactical Studios, Sidebar Footer, Animated Hero Quick Launch, and Profile action buttons with consistent, professional Iconsax Two-Tone inline SVGs via `iconSvg(name, color, size)`.
     - Established strict visual token consistency with 24x24 icon grid, 18-32% opacity background accent fill, and 1.6-1.9 stroke outlines.

@@ -1,5 +1,95 @@
 import { ICC_CRICKET_LAWS_DIRECTORY } from '@cricket-platform/scoring';
+// =========================================================================
+// CricOS Icon System — Desktop Iconsax Two-Tone 24×24 SVG Engine
+// =========================================================================
+export function getDesktopIconSvg(name, color = 'currentColor', size = 18) {
+    const c = color || 'currentColor';
+    const s = size || 18;
+    const icons = {
+        'bat': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M3 21L9.5 14.5M9.5 14.5L18 5.5c.8-.8 2.1-.8 2.5 0L19 7c.8.8.8 2.1 0 2.9L14.5 14.5M9.5 14.5L14.5 14.5" stroke="${c}" stroke-opacity="0.32" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 21L9.5 14.5M9.5 14.5L18 5.5c.8-.8 2.1-.8 2.5 0L19 7c.8.8.8 2.1 0 2.9L14.5 14.5M9.5 14.5L14.5 14.5" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'users': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="9" cy="7" r="4" fill="${c}" fill-opacity="0.28"/><path d="M1 21v-1a7 7 0 0 1 7-7h2a7 7 0 0 1 7 7v1" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="${c}" stroke-width="1.8"/><path d="M20 8a3 3 0 0 1 0 6M23 21v-1a5 5 0 0 0-4-4.9" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'user': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="${c}" fill-opacity="0.28"/><circle cx="12" cy="8" r="4" stroke="${c}" stroke-width="1.8"/><path d="M4 21v-1a8 8 0 0 1 16 0v1" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'trophy': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M7 3h10v9a5 5 0 0 1-10 0V3Z" fill="${c}" fill-opacity="0.28"/><path d="M7 3h10v9a5 5 0 0 1-10 0V3ZM12 17v4M8 21h8M4 3H7M17 3h3l-1 6H17" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'cart': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" fill="${c}" fill-opacity="0.22"/><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4ZM3 6h18M16 10a4 4 0 0 1-8 0" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'shield': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2L3 6v5c0 5.5 4 10.5 9 12 5-1.5 9-6.5 9-12V6L12 2Z" fill="${c}" fill-opacity="0.22"/><path d="M12 2L3 6v5c0 5.5 4 10.5 9 12 5-1.5 9-6.5 9-12V6L12 2Z" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'lightning': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M13 2L4.09 12.96H12L11 22L19.91 11.04H12L13 2Z" fill="${c}" fill-opacity="0.28"/><path d="M13 2L4.09 12.96H12L11 22L19.91 11.04H12L13 2Z" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'stadium': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><ellipse cx="12" cy="9" rx="9" ry="4.5" fill="${c}" fill-opacity="0.22"/><path d="M3 9c0 2.5 4 4.5 9 4.5s9-2 9-4.5M3 9C3 6.5 7 4.5 12 4.5s9 2 9 4.5M3 9v6c0 2.5 4 4.5 9 4.5s9-2 9-4.5V9" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'target': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="${c}" stroke-width="1.8"/><circle cx="12" cy="12" r="5" fill="${c}" fill-opacity="0.24" stroke="${c}" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="${c}"/></svg>`,
+        'radar': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="${c}" fill-opacity="0.15"/><circle cx="12" cy="12" r="9" stroke="${c}" stroke-width="1.8"/><circle cx="12" cy="12" r="5" stroke="${c}" stroke-width="1.5" stroke-opacity="0.5"/><circle cx="12" cy="12" r="1.8" fill="${c}"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2" stroke="${c}" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+        'dna': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M7 3c0 4 3 5 5 7s5 3 5 7M17 3c0 4-3 5-5 7s-5 3-5 7" stroke="${c}" stroke-width="1.9" stroke-linecap="round"/><path d="M7.5 6.5h9M7.5 17.5h9" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.6"/></svg>`,
+        'chart': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1" fill="${c}" fill-opacity="0.28" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/><rect x="10" y="7" width="4" height="14" rx="1" fill="${c}" fill-opacity="0.28" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/><rect x="17" y="3" width="4" height="18" rx="1" fill="${c}" fill-opacity="0.28" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+        'code': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6M14 4l-4 16" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'clipboard': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2" fill="${c}" fill-opacity="0.18" stroke="${c}" stroke-width="1.8"/><path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1ZM8 12h8M8 16h5" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'pin': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z" fill="${c}" fill-opacity="0.28"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z" stroke="${c}" stroke-width="1.8"/><circle cx="12" cy="9" r="2.5" fill="${c}" fill-opacity="0.5" stroke="${c}" stroke-width="1.6"/></svg>`,
+        'scale': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M5 17a4 4 0 0 0 4-5L5 7 1 12a4 4 0 0 0 4 5ZM19 17a4 4 0 0 0 4-5L19 7l-4 5a4 4 0 0 0 4 5Z" fill="${c}" fill-opacity="0.22"/><path d="M5 17h14M12 3v14M5 17l-2-5a4 4 0 0 1 4 0M19 17l2-5a4 4 0 0 0-4 0" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'chat': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-4.8-1.25L3 21l1.25-4.2A9 9 0 1 1 21 12Z" fill="${c}" fill-opacity="0.22" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="8.5" cy="12" r="1" fill="${c}"/><circle cx="12" cy="12" r="1" fill="${c}"/><circle cx="15.5" cy="12" r="1" fill="${c}"/></svg>`,
+        'gavel': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M10 4l10 10-4 4L6 8l4-4Z" fill="${c}" fill-opacity="0.22"/><path d="M9 19H2M10 4l10 10-4 4L6 8l4-4ZM14 5l5 5" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="18" width="10" height="3" rx="1.5" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="1.4"/></svg>`,
+        'medal': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="14" r="7" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8"/><path d="M8.21 13.89L7 2l5 3 5-3-1.21 11.89" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="14" r="3" stroke="${c}" stroke-width="1.5"/></svg>`,
+        'calendar': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" fill="${c}" fill-opacity="0.18" stroke="${c}" stroke-width="1.8"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'handshake': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M11 17l2 2 4-4M2 13l4-4 4 4 6-6 4 4" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14l-3 3 4 4 3-3" fill="${c}" fill-opacity="0.22" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'document': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 2v6h6M9 13h6M9 17h4" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'book': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8"/><path d="M6 6h10M6 10h10M6 14h6" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'activity': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="${c}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'scroll': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M8 3h10a2 2 0 0 1 2 2v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3h2" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8"/><path d="M6 9h10M6 13h8" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'plus': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="${c}" fill-opacity="0.22"/><path d="M12 8v8M8 12h8" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'minus': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="${c}" fill-opacity="0.22"/><path d="M8 12h8" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'keyboard': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3" fill="${c}" fill-opacity="0.18" stroke="${c}" stroke-width="1.8"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'search': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="${c}" fill-opacity="0.2"/><circle cx="11" cy="11" r="7" stroke="${c}" stroke-width="1.8"/><path d="M16.5 16.5L21 21" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'gear': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="${c}" fill-opacity="0.35"/><circle cx="12" cy="12" r="3" stroke="${c}" stroke-width="1.8"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" stroke="${c}" stroke-width="1.6"/></svg>`,
+        'sun': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="1.8"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'moon': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'crown': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M2 19h20M5 19l-2-12 6 5 3-7 3 7 6-5-2 12H5Z" fill="${c}" fill-opacity="0.26" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="5" r="1" fill="${c}"/><circle cx="3" cy="7" r="1" fill="${c}"/><circle cx="21" cy="7" r="1" fill="${c}"/></svg>`,
+        'bell': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'coin': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="${c}" fill-opacity="0.24" stroke="${c}" stroke-width="1.8"/><circle cx="12" cy="12" r="6" stroke="${c}" stroke-width="1.4" stroke-opacity="0.6"/><path d="M12 9v6M10.5 10.5h3" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+        'download': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'flag': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" fill="${c}" fill-opacity="0.24" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 22v-7" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'sparkle': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2Z" fill="${c}" fill-opacity="0.28" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+        'star': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'clean': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2l1.5 5 5 1.5-5 1.5L12 15l-1.5-5-5-1.5 5-1.5L12 2Z" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="1.2" stroke-linejoin="round"/></svg>`,
+        'menu': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'mobile': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="3" fill="${c}" fill-opacity="0.18" stroke="${c}" stroke-width="1.8"/><circle cx="12" cy="18" r="1" fill="${c}"/><path d="M9 5h6" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+        'palette': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.97 3.61 9.12 8.4 9.87-.26-.47-.4-1.01-.4-1.59C10 18.45 11.34 17 13 17h2.5c1.93 0 3.5-1.57 3.5-3.5C19 8.96 15.97 2 12 2Z" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6.5" cy="11.5" r="1.5" fill="${c}"/><circle cx="9.5" cy="7.5" r="1.5" fill="${c}"/><circle cx="14.5" cy="6.5" r="1.5" fill="${c}"/></svg>`,
+        'thermometer': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8"/><circle cx="11.5" cy="17.5" r="2" fill="${c}"/></svg>`,
+        'wind': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'drop': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="${c}" fill-opacity="0.22" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'rain': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M20 17.6A5 5 0 0 0 18 8h-1.3A7 7 0 1 0 4 14.7" fill="${c}" fill-opacity="0.18" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 19v3M12 17v3M16 19v3" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'mic': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'volume': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'volume-mute': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><line x1="23" y1="9" x2="17" y2="15" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'refresh': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'check': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="${c}" fill-opacity="0.2"/><path d="M8 12.5l2.5 2.5 5.5-5.5" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'cross': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="${c}" fill-opacity="0.2"/><path d="M15 9l-6 6M9 9l6 6" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'alert': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="${c}" fill-opacity="0.24" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><line x1="12" y1="9" x2="12" y2="13" stroke="${c}" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="${c}"/></svg>`,
+        'lock': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'unlock': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8"/><path d="M7 11V7a5 5 0 0 1 9.9-1" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'fire': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" fill="${c}" fill-opacity="0.28" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'rocket': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="15.5" cy="8.5" r="1.5" fill="${c}"/></svg>`,
+        'print': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" fill="${c}" fill-opacity="0.18" stroke="${c}" stroke-width="1.8"/><rect x="6" y="14" width="12" height="8" rx="1" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8"/></svg>`,
+        'leaf': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M2 21c0-3 1.85-5.36 5.08-6" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'satellite': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="${c}" fill-opacity="0.28"/><circle cx="12" cy="12" r="4" stroke="${c}" stroke-width="1.8"/><path d="M4.9 4.9a10 10 0 0 1 14.2 0M7.8 7.8a6 6 0 0 1 8.4 0" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><path d="M12 12l6 6" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'camera': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z" fill="${c}" fill-opacity="0.18"/><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" fill="${c}" fill-opacity="0.28" stroke="${c}" stroke-width="1.8"/></svg>`,
+        'trash': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" fill="${c}" fill-opacity="0.18"/><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'signout': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><path d="M16 17l5-5-5-5M21 12H9" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'card': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="3" y="4" width="14" height="18" rx="2" fill="${c}" fill-opacity="0.22" stroke="${c}" stroke-width="1.8"/><path d="M7 8h6M7 12h4" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/><path d="M19 6l2 2-8 8-4-4 1-1" stroke="${c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.65"/></svg>`,
+        'flip': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M1 4v6h6M23 20v-6h-6" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 9A9 9 0 0 0 5.2 5.2L1 10M23 14l-4.2 4.8A9 9 0 0 1 3.5 15" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.6"/></svg>`,
+        'basket': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M6 9h12l-1.5 9H7.5L6 9Z" fill="${c}" fill-opacity="0.28"/><path d="M6 9h12l-1.5 9H7.5L6 9ZM2 9h20M9 3l3 6 3-6" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'key': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5" fill="${c}" fill-opacity="0.28"/><circle cx="7.5" cy="15.5" r="4.5" stroke="${c}" stroke-width="1.8"/><path d="M10.5 12.5L21 2M19 4l2 2M16 7l1 1" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'wave': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M3 12c1.5-4 2.5-4 3.5 0s2 4 3.5 0 2-4 3.5 0 2 4 3.5 0S19.5 8 21 12" stroke="${c}" stroke-opacity="0.3" stroke-width="5" stroke-linecap="round"/><path d="M3 12c1.5-4 2.5-4 3.5 0s2 4 3.5 0 2-4 3.5 0 2 4 3.5 0S19.5 8 21 12" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'eye': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="1.8"/></svg>`,
+        'edit': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z" fill="${c}" fill-opacity="0.28" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'chair': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M7 11v8M17 11v8M7 15h10M6 4h12a2 2 0 0 1 2 2v5H4V6a2 2 0 0 1 2-2Z" fill="${c}" fill-opacity="0.22" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 11h14" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'receipt': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M4 2v20l2.5-1.5L9 22l2.5-1.5L14 22l2.5-1.5L19 22l2.5-1.5V2L19 3.5 16.5 2 14 3.5 11.5 2 9 3.5 6.5 2 4 3.5Z" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 8h8M8 12h8M8 16h5" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        'filter': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" fill="${c}" fill-opacity="0.24" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'clock': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'heart': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+        'cube': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M21 16.5l-9 5.2-9-5.2V7.5l9-5.2 9 5.2v9z" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        'drs': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M2 12h4l3-6 4 12 3-6h6" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="${c}" stroke-width="1.6" stroke-opacity="0.3"/></svg>`,
+        'building': `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.8"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`
+    };
+    return icons[name] || icons['bat'] || '';
+}
 export function getDashboardHtml() {
+    const iconSvg = getDesktopIconSvg;
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5399,7 +5489,7 @@ export function getDashboardHtml() {
       <!-- 2. Primary CTA: Create Match -->
       <div class="sidebar-cta-wrap">
         <button type="button" onclick="openCreateEventModal()" class="sidebar-cta-btn" data-tooltip="Schedule match fixtures, select formats, and procure verified officials and venues">
-          <span class="pill-icon">➕</span>
+          <span class="pill-icon">${iconSvg('plus', 'currentColor', 16)}</span>
           <span class="sidebar-btn-label">Create Match</span>
         </button>
       </div>
@@ -5411,31 +5501,31 @@ export function getDashboardHtml() {
           <div class="sidebar-section-title">Core Workspaces</div>
           <div class="sidebar-nav-list" role="tablist" aria-label="Operating system consoles and studios">
             <button class="tab-btn sidebar-nav-item active" role="tab" aria-selected="true" aria-controls="tab-scoring" data-tab="scoring" onclick="switchTab('scoring')" data-tooltip="Live match scoring center, strike rotation, and ball strip">
-              <span class="tab-icon">🏏</span>
+              <span class="tab-icon">${iconSvg('bat', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Match Center</span>
             </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-studio" data-tab="studio" onclick="switchTab('studio')" data-tooltip="Scorer Studio: Dismissals, extras, wagon wheel, and partnerships">
-              <span class="tab-icon">🎯</span>
+              <span class="tab-icon">${iconSvg('target', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Scoring Studio</span>
             </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-teams" data-tab="teams" onclick="switchTab('teams')" data-tooltip="Create teams, manage squad rosters, playing XI, and join codes">
-              <span class="tab-icon">👥</span>
+              <span class="tab-icon">${iconSvg('users', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Teams &amp; Rosters</span>
             </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-tournaments" data-tab="tournaments" onclick="switchTab('tournaments')" data-tooltip="Tournament scheduling, fixtures, Net Run Rate, and create wizard">
-              <span class="tab-icon">🏆</span>
+              <span class="tab-icon">${iconSvg('trophy', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Tournaments</span>
             </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-marketplace" data-tab="marketplace" onclick="switchTab('marketplace')" data-tooltip="Turf and official booking with instant 15-minute reservation hold">
-              <span class="tab-icon">🛒</span>
+              <span class="tab-icon">${iconSvg('cart', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Venues &amp; Turfs</span>
             </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-incidents" data-tab="incidents" onclick="switchTab('incidents')" data-tooltip="Dispute resolution, verified reliability scores, and fair play protection">
-              <span class="tab-icon">🛡️</span>
+              <span class="tab-icon">${iconSvg('shield', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Fair Play &amp; Trust</span>
             </button>
             <button class="tab-btn sidebar-nav-item" role="tab" aria-selected="false" aria-controls="tab-explorer" data-tab="explorer" onclick="switchTab('explorer')" data-tooltip="Live API endpoint runner, telemetry, and response inspector">
-              <span class="tab-icon">⚡</span>
+              <span class="tab-icon">${iconSvg('lightning', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Operations &amp; APIs</span>
             </button>
           </div>
@@ -5446,27 +5536,27 @@ export function getDashboardHtml() {
           <div class="sidebar-section-title">Tactical &amp; 3D Studios</div>
           <div class="sidebar-nav-list">
             <button type="button" id="sidebarBtn3DStadium" onclick="openDesktop3DStadiumFromSidebar()" class="sidebar-nav-item" data-tooltip="Interactive 60fps WebGL 3D Stadium &amp; Pitch Studio with Orbit Camera Controls">
-              <span class="tab-icon">🌐</span>
+              <span class="tab-icon">${iconSvg('stadium', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">3D Stadium Pitch</span>
             </button>
             <button type="button" id="sidebarBtnWagonWheel" onclick="openDesktopWagonWheelFromSidebar()" class="sidebar-nav-item" data-tooltip="Interactive 8-Zone Precision Wagon Wheel &amp; Outfield Shot Distribution">
-              <span class="tab-icon">🎯</span>
+              <span class="tab-icon">${iconSvg('radar', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">8-Zone Wagon Wheel</span>
             </button>
             <button type="button" id="sidebarBtnFieldPlanner" onclick="openFieldPlannerModal()" class="sidebar-nav-item" data-tooltip="Interactive 11-Fielder Tactical Radar &amp; MCC Law 28.4 Powerplay Restriction Engine (Shortcut: Shift+F)">
-              <span class="tab-icon">🎯</span>
+              <span class="tab-icon">${iconSvg('radar', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Field Placement Radar</span>
             </button>
             <button type="button" id="sidebarBtnPitchMap" onclick="openPitchMapSimulatorModal()" class="sidebar-nav-item" data-tooltip="Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator (Shortcut: Shift+P)">
-              <span class="tab-icon">🧬</span>
+              <span class="tab-icon">${iconSvg('dna', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Pitch &amp; Win Simulator</span>
             </button>
             <button type="button" onclick="openModal('modalMatchInsights')" class="sidebar-nav-item" data-tooltip="Match narrative recap, turning points, and Player of the Match MVP">
-              <span class="tab-icon">📈</span>
+              <span class="tab-icon">${iconSvg('chart', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Match Intelligence</span>
             </button>
             <button type="button" id="sidebarBtnCricsheetExport" onclick="openModal('modalCricsheetExport')" class="sidebar-nav-item" data-tooltip="Cricsheet JSON, Federation XML, and live speech-to-score commentary recorder">
-              <span class="tab-icon">⚡</span>
+              <span class="tab-icon">${iconSvg('code', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Cricsheet &amp; XML</span>
             </button>
           </div>
@@ -5477,19 +5567,19 @@ export function getDashboardHtml() {
           <div class="sidebar-section-title">Match Day &amp; Officiating</div>
           <div class="sidebar-nav-list">
             <button type="button" onclick="openEventOverviewModal()" class="sidebar-nav-item" data-tooltip="Event procurement readiness, operational checklists, and match countdown">
-              <span class="tab-icon">📋</span>
+              <span class="tab-icon">${iconSvg('clipboard', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Readiness</span>
             </button>
             <button type="button" onclick="openModal('modalCheckIn')" class="sidebar-nav-item" data-tooltip="Provider arrival OTP verification and 3-party match scorecard sign-off">
-              <span class="tab-icon">📍</span>
+              <span class="tab-icon">${iconSvg('pin', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Check-In</span>
             </button>
             <button type="button" id="sidebarBtnUmpireDesk" onclick="openModal('modalUmpireDesk')" class="sidebar-nav-item" data-tooltip="Umpire Match Day Desk, MCC Law 41/42 sanctions, DRS ball-tracking, and match card sign-off">
-              <span class="tab-icon">⚖️</span>
+              <span class="tab-icon">${iconSvg('scale', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Umpire Desk</span>
             </button>
             <button type="button" onclick="openMessagingModal()" class="sidebar-nav-item" data-tooltip="Match operations chat, official dispatch, and booking alerts">
-              <span class="tab-icon">💬</span>
+              <span class="tab-icon">${iconSvg('chat', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Match Chat</span>
               <span class="counter-badge amber">1</span>
             </button>
@@ -5501,23 +5591,23 @@ export function getDashboardHtml() {
           <div class="sidebar-section-title">League, Auction &amp; Commerce</div>
           <div class="sidebar-nav-list">
             <button type="button" id="sidebarBtnPlayerAuction" onclick="openPlayerAuctionModal()" class="sidebar-nav-item" data-tooltip="Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room (Shortcut: Shift+A)">
-              <span class="tab-icon">🔨</span>
+              <span class="tab-icon">${iconSvg('gavel', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Player Auction Room</span>
             </button>
             <button type="button" id="sidebarBtnLeagueDivisions" onclick="openModal('modalLeagueDivisions')" class="sidebar-nav-item" data-tooltip="Multi-tier league standings, NRR calculator, promotion/relegation ladders, and playoff brackets">
-              <span class="tab-icon">🏆</span>
+              <span class="tab-icon">${iconSvg('medal', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Divisions</span>
             </button>
             <button type="button" onclick="openModal('modalTournamentOps')" class="sidebar-nav-item" data-tooltip="Tournament fixture board, conflict detection, and bulk CSV schedule import">
-              <span class="tab-icon">📊</span>
+              <span class="tab-icon">${iconSvg('calendar', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Fixtures Ops</span>
             </button>
             <button type="button" onclick="openModal('modalSponsorshipAuction')" class="sidebar-nav-item" data-tooltip="Tournament sponsorship prize pool pledges and virtual player auction desk">
-              <span class="tab-icon">🤝</span>
+              <span class="tab-icon">${iconSvg('handshake', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Sponsors &amp; Auction</span>
             </button>
             <button type="button" onclick="openModal('modalRfq')" class="sidebar-nav-item" data-tooltip="Tournament procurement requests, quote submissions, and provider bids">
-              <span class="tab-icon">📑</span>
+              <span class="tab-icon">${iconSvg('document', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">RFQ Desk</span>
             </button>
           </div>
@@ -5528,15 +5618,15 @@ export function getDashboardHtml() {
           <div class="sidebar-section-title">Developer &amp; Platform</div>
           <div class="sidebar-nav-list">
             <a href="/docs" onclick="openApiDocsModal(); return false;" class="sidebar-nav-item" data-tooltip="Interactive OpenAPI 3.0 Documentation &amp; Sandbox">
-              <span class="tab-icon">📖</span>
+              <span class="tab-icon">${iconSvg('book', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">API Docs</span>
             </a>
             <a href="/metrics" onclick="openMetricsModal(); return false;" class="sidebar-nav-item" data-tooltip="Prometheus &amp; OpenMetrics Standard Metrics Exposition">
-              <span class="tab-icon">📈</span>
+              <span class="tab-icon">${iconSvg('activity', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Metrics</span>
             </a>
             <button type="button" onclick="openLegalModal()" class="sidebar-nav-item" data-tooltip="Review Apple App Store &amp; Google Play Policies, Privacy Policy and Terms">
-              <span class="tab-icon">📜</span>
+              <span class="tab-icon">${iconSvg('scroll', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Legal &amp; Privacy</span>
             </button>
           </div>
@@ -5562,7 +5652,7 @@ export function getDashboardHtml() {
       <header class="app-topbar">
         <div class="topbar-left">
           <button type="button" class="mobile-sidebar-toggle" onclick="toggleSidebarMobile()" data-tooltip="Toggle Navigation Menu" aria-label="Toggle Navigation">
-            <span>☰</span>
+            <span>${iconSvg('menu', '#00E599', 18)}</span>
           </button>
           <div class="topbar-breadcrumb">
             <span class="breadcrumb-brand" id="cricosBreadcrumbBrand" style="display: inline-flex; align-items: center; gap: 0.38rem;">
@@ -5588,12 +5678,12 @@ export function getDashboardHtml() {
           <!-- Cluster 1: Global Omnisearch & Keyboard Shortcuts -->
           <div class="topbar-cluster" aria-label="Global Search and Shortcuts">
             <button type="button" id="btnCommandPalette" onclick="openCommandPalette()" class="nav-pill topbar-clean-pill" data-tooltip="Open Universal Command Palette &amp; Omnisearch (Shortcut: Cmd+K or Ctrl+K)" aria-label="Open Command Palette">
-              <span>🔍</span>
+              <span>${iconSvg('search', 'currentColor', 15)}</span>
               <span>Search</span>
               <kbd class="cmd-kbd-badge">⌘K</kbd>
             </button>
             <button type="button" id="btnKeyboardShortcuts" onclick="openKeyboardShortcutsModal()" class="nav-pill topbar-clean-pill" data-tooltip="View Keyboard Shortcuts &amp; Cockpit Cheat Sheet (Shortcut: ?)" aria-label="Keyboard Shortcuts Guide">
-              <span>⌨️</span>
+              <span>${iconSvg('keyboard', 'currentColor', 15)}</span>
             </button>
           </div>
 
@@ -5622,22 +5712,22 @@ export function getDashboardHtml() {
           <!-- Cluster 3: Theme & Clean View Controls (Co-located) -->
           <div class="topbar-cluster" id="themeAndCleanViewCluster" aria-label="Theme and Clean View Controls">
             <button type="button" id="btnDesignThemeSwitcher" onclick="cycleDesignTheme()" class="nav-pill topbar-clean-pill" data-tooltip="Switch Design Theme: Swiss Minimal, Nordic Editorial, Stadium Night (Shortcut: Alt+T)">
-              <span id="designThemeIcon">🇨🇭</span>
+              <span id="designThemeIcon" data-theme-icon="🇨🇭">${iconSvg('palette', 'currentColor', 16)}</span>
               <span id="designThemeLabel" class="clean-view-hide-label">Swiss Minimal</span>
             </button>
             <button type="button" id="btnToggleMainAreaDeclutter" onclick="toggleMainAreaDeclutter()" class="nav-pill topbar-clean-pill" style="border-color: rgba(0, 229, 153, 0.45) !important; background: rgba(0, 229, 153, 0.14) !important; color: var(--turf-emerald) !important;" data-tooltip="Clean View Active (Obvious headers hidden, icon-only controls, compact cards) — Click to toggle Extended Telemetry View">
-              <span id="cleanViewToggleIcon">✨</span>
+              <span id="cleanViewToggleIcon">${iconSvg('clean', 'var(--turf-emerald)', 15)}</span>
               <span id="cleanViewToggleLabel" class="clean-view-hide-label">Clean View</span>
             </button>
             <button type="button" id="btnAppSettings" onclick="openAppSettingsModal()" class="nav-pill topbar-clean-pill" data-tooltip="Configure all app settings in one place: Theme, Clean View, Audio, Stance, Units &amp; Diagnostics (Shortcut: Alt+S)">
-              <span id="appSettingsIcon">⚙️</span>
+              <span id="appSettingsIcon">${iconSvg('gear', 'currentColor', 15)}</span>
               <span id="appSettingsLabel" class="clean-view-hide-label">Settings</span>
             </button>
             <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" style="display: none;" aria-hidden="true">
-              <span class="pill-icon" id="outdoorModeIcon">☀️</span>
+              <span class="pill-icon" id="outdoorModeIcon">${iconSvg('sun', 'currentColor', 15)}</span>
             </button>
             <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="display: none;" aria-hidden="true">
-              <span id="tactilePrototypeLabel">⚡ HAPTIC STADIUM</span>
+              <span id="tactilePrototypeLabel" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('lightning', 'currentColor', 14)} HAPTIC STADIUM</span>
             </button>
           </div>
 
@@ -5646,12 +5736,12 @@ export function getDashboardHtml() {
           <!-- Cluster 4: Mobile Companion, Active Persona & Notifications -->
           <div class="topbar-cluster" aria-label="Mobile App, Persona, and Notifications">
             <button type="button" id="btnMobileQuickLauncher" onclick="openMobilePreviewModal()" class="nav-pill topbar-clean-pill" data-tooltip="Open Mobile App demo, scan live QR code, or download compiled Android APK">
-              <span>📱</span>
+              <span>${iconSvg('mobile', 'currentColor', 15)}</span>
               <span class="clean-view-hide-label">Mobile</span>
             </button>
-            <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill topbar-clean-pill" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile"><span id="activePersonaIcon">👑</span><span id="activePersonaTextLabel" class="clean-view-hide-label">Captain</span></button>
+            <button type="button" id="activePersonaBadge" onclick="openUserModal()" class="nav-pill topbar-clean-pill" data-tooltip="Active Persona: Captain • Click to switch persona or edit profile"><span id="activePersonaIcon">${iconSvg('crown', 'currentColor', 15)}</span><span id="activePersonaTextLabel" class="clean-view-hide-label">Captain</span></button>
             <button type="button" onclick="toggleNotificationsDrawer()" class="nav-pill topbar-clean-pill" data-tooltip="Real-time match alerts, financial settlements, and platform notifications">
-              <span class="pill-icon">🔔</span>
+              <span class="pill-icon">${iconSvg('bell', 'currentColor', 15)}</span>
               <span id="headerNotifBadge" class="counter-badge emerald">3</span>
             </button>
           </div>
@@ -5662,7 +5752,7 @@ export function getDashboardHtml() {
         <!-- Persona-Scoped Extended Workspace Banner (Hidden in Clean View) -->
         <div id="workspaceCleanFocusBar" style="display: none; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.45rem 0.85rem; margin-bottom: 0.75rem; border-radius: 10px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.28); flex-wrap: wrap;">
           <div style="display: flex; align-items: center; gap: 0.55rem;">
-            <span id="cleanFocusPersonaTitle" style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald);">👑 Captain Extended Workspace</span>
+            <span id="cleanFocusPersonaTitle" style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('crown', 'var(--turf-emerald)', 15)} Captain Extended Workspace</span>
             <span style="color: var(--text-muted); font-size: 0.72rem;" id="cleanFocusPersonaSummary">• Extended Telemetry View active</span>
           </div>
         </div>
@@ -5684,10 +5774,10 @@ export function getDashboardHtml() {
             <div class="match-action-toolbar">
               <div class="match-action-group" aria-label="Match Operations">
                 <span class="match-action-group-label">Match Ops:</span>
-                <button class="nav-pill" id="btnConductToss" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">🪙 Conduct Toss</button>
-                <button class="nav-pill" id="btnExportScorecard" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">📥 Export Scorecard</button>
-                <button class="nav-pill" id="btnDesktopEndMatch" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="promptDesktopEndMatch()" data-tooltip="Officially conclude match or innings (triggers automatic scorecard result &amp; standings update)">🏁 End Match</button>
-                <button class="nav-pill" id="btnRateMatch" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">⭐ Rate Match</button>
+                <button class="nav-pill" id="btnConductToss" style="cursor: pointer; background: rgba(255,184,0,0.12); border-color: rgba(255,184,0,0.3); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openTossModal()" data-tooltip="Conduct official pre-match toss, select decision (Bat/Bowl), and confirm squads">${iconSvg('coin', 'var(--amber)', 14)} Conduct Toss</button>
+                <button class="nav-pill" id="btnExportScorecard" style="cursor: pointer; background: rgba(0,229,153,0.12); border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openScorecardModal()" data-tooltip="Export official match scorecard as RFC 4180 CSV or print-ready PDF/HTML">${iconSvg('download', 'var(--turf-emerald)', 14)} Export Scorecard</button>
+                <button class="nav-pill" id="btnDesktopEndMatch" style="cursor: pointer; background: rgba(255,51,102,0.12); border-color: rgba(255,51,102,0.3); color: #ff8099; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; display: inline-flex; align-items: center; gap: 0.3rem;" onclick="promptDesktopEndMatch()" data-tooltip="Officially conclude match or innings (triggers automatic scorecard result &amp; standings update)">${iconSvg('flag', '#ff8099', 14)} End Match</button>
+                <button class="nav-pill" id="btnRateMatch" style="cursor: pointer; background: rgba(192,132,252,0.12); border-color: rgba(192,132,252,0.3); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openMatchRatingModal()" data-tooltip="Rate turf quality, umpiring, and scoring accuracy to update community trust ratings">${iconSvg('star', 'var(--purple-light)', 14)} Rate Match</button>
               </div>
             </div>
           </div>
@@ -5701,7 +5791,7 @@ export function getDashboardHtml() {
         <!-- Target Equation Bar -->
         <div class="target-equation-bar" id="targetEquationBar">
           <div class="target-equation-info">
-            <span class="target-badge" data-tooltip="Target set in first innings">🎯 TARGET: 178</span>
+            <span class="target-badge" data-tooltip="Target set in first innings" style="display: inline-flex; align-items: center; gap: 0.25rem;">${iconSvg('target', 'var(--cyan)', 12)} TARGET: 178</span>
             <span class="target-stat">Need <strong style="color: var(--amber);" id="targetRunsNeeded">36</strong> runs in <strong id="targetBallsLeft">20</strong> balls</span>
             <span class="target-divider">•</span>
             <span class="target-stat">Req RR: <strong style="color: var(--rose);" id="targetRRR">10.80</strong></span>
@@ -5715,10 +5805,10 @@ export function getDashboardHtml() {
         <div id="matchVenueWeatherBar" class="glass-panel" style="margin-top: 0.75rem; padding: 0.65rem 0.95rem; border-radius: 10px; border: 1px solid rgba(0, 210, 255, 0.28); background: rgba(8, 15, 28, 0.78); display: flex; flex-direction: column; gap: 0.55rem;" data-venue-id="chinnaswamy_turf_a">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-              <span id="weatherConditionIcon" style="font-size: 1.15rem;" data-tooltip="Live Stadium Micro-Climate Condition">⛅</span>
+              <span id="weatherConditionIcon" style="display: inline-flex; align-items: center;" data-tooltip="Live Stadium Micro-Climate Condition">${iconSvg('sun', '#FBBF24', 18)}</span>
               <div style="display: flex; flex-direction: column;">
                 <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                  <label for="venueWeatherLocationSelect" style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cyan);">📍 Turf / Ground:</label>
+                  <label for="venueWeatherLocationSelect" style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.25rem;">${iconSvg('pin', 'var(--cyan)', 13)} Turf / Ground:</label>
                   <select id="venueWeatherLocationSelect" aria-label="Select Turf or Stadium Location for Weather Forecast" onchange="selectVenueWeatherLocation(this.value, true)" style="background: rgba(15, 23, 42, 0.9); color: #F8FAFC; border: 1px solid rgba(0, 210, 255, 0.38); border-radius: 6px; padding: 0.18rem 0.5rem; font-size: 0.74rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch Turf / Stadium Location to compute localized weather, swing/seam drift, dew onset, and DLS rain forecast">
                     <option value="chinnaswamy_turf_a">M. Chinnaswamy Turf Arena (Bengaluru • 920m Alt)</option>
                     <option value="wankhede_arena">Wankhede Arena Turf Club (Mumbai • Coastal Breeze)</option>
@@ -5732,19 +5822,19 @@ export function getDashboardHtml() {
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-              <span id="weatherTempBadge" class="badge" style="background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); color: var(--turf-emerald); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem;" data-tooltip="Ambient Air Temperature &amp; Heat Index on Turf">🌡️ 26°C (Feels 27°C)</span>
-              <span id="weatherWindHumidityBadge" class="badge" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.35); color: var(--cyan); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem;" data-tooltip="10m Anemometer Wind Vector &amp; Relative Humidity">💨 16 km/h ENE • 💧 64% RH</span>
-              <span id="weatherSwingDewBadge" class="badge" style="background: rgba(168, 85, 247, 0.14); border: 1px solid rgba(168, 85, 247, 0.35); color: var(--purple-light); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem;" data-tooltip="Aerodynamic Swing/Seam Index &amp; Evening Dew Factor">🎯 Swing 6.8/10 • Dew: MODERATE-HIGH</span>
-              <span id="weatherDlsRiskBadge" class="badge" style="background: rgba(255, 184, 0, 0.14); border: 1px solid rgba(255, 184, 0, 0.35); color: var(--amber); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem;" data-tooltip="Precipitation Probability &amp; DLS Interruption Risk">☔ Rain 18% • DLS: LOW</span>
-              <button type="button" id="btnToggleWeatherForecastDrawer" class="btn btn-secondary" onclick="toggleVenueWeatherForecast()" style="width: auto; padding: 0.22rem 0.6rem; font-size: 0.7rem; font-weight: 800; border-color: rgba(0, 210, 255, 0.4); color: var(--cyan);" data-tooltip="Expand 5-Hour Match Window Forecast, Pitch Micro-Climate &amp; Toss Strategy">🌦️ 5-Hr Forecast &amp; Pitch Impact ▾</button>
+              <span id="weatherTempBadge" class="badge" style="background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); color: var(--turf-emerald); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Ambient Air Temperature &amp; Heat Index on Turf">${iconSvg('thermometer', 'var(--turf-emerald)', 13)} 26°C (Feels 27°C)</span>
+              <span id="weatherWindHumidityBadge" class="badge" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.35); color: var(--cyan); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="10m Anemometer Wind Vector &amp; Relative Humidity">${iconSvg('wind', 'var(--cyan)', 13)} 16 km/h ENE • ${iconSvg('drop', 'var(--cyan)', 13)} 64% RH</span>
+              <span id="weatherSwingDewBadge" class="badge" style="background: rgba(168, 85, 247, 0.14); border: 1px solid rgba(168, 85, 247, 0.35); color: var(--purple-light); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Aerodynamic Swing/Seam Index &amp; Evening Dew Factor">${iconSvg('radar', 'var(--purple-light)', 13)} Swing 6.8/10 • Dew: MODERATE-HIGH</span>
+              <span id="weatherDlsRiskBadge" class="badge" style="background: rgba(255, 184, 0, 0.14); border: 1px solid rgba(255, 184, 0, 0.35); color: var(--amber); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Precipitation Probability &amp; DLS Interruption Risk">${iconSvg('rain', 'var(--amber)', 13)} Rain 18% • DLS: LOW</span>
+              <button type="button" id="btnToggleWeatherForecastDrawer" class="btn btn-secondary" onclick="toggleVenueWeatherForecast()" style="width: auto; padding: 0.22rem 0.6rem; font-size: 0.7rem; font-weight: 800; border-color: rgba(0, 210, 255, 0.4); color: var(--cyan); display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Expand 5-Hour Match Window Forecast, Pitch Micro-Climate &amp; Toss Strategy">${iconSvg('rain', 'var(--cyan)', 13)} 5-Hr Forecast &amp; Pitch Impact ▾</button>
             </div>
           </div>
 
           <!-- Expandable 5-Hour Forecast Timeline & Pitch Aerodynamics Breakdown -->
           <div id="venueWeatherForecastPanel" style="display: none; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.6rem; margin-top: 0.15rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.4rem;">
-              <div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald);" id="weatherTossRecommendationText">🪙 Tactical Toss Intelligence: BOWL FIRST (Chasing Advantage 64%) — Exploit early Cubbon Park breeze; evening dew speeds up outfield after 19:30 IST.</div>
-              <button type="button" id="btnSyncLiveGpsWeather" class="btn btn-secondary" onclick="syncLiveGpsVenueWeather()" style="width: auto; padding: 0.18rem 0.55rem; font-size: 0.66rem; font-weight: 700;" data-tooltip="Fetch live satellite weather telemetry for active stadium coordinates via Open-Meteo API">🔄 Sync Live Satellite Telemetry</button>
+              <div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;" id="weatherTossRecommendationText">${iconSvg('coin', 'var(--turf-emerald)', 13)} Tactical Toss Intelligence: BOWL FIRST (Chasing Advantage 64%) — Exploit early Cubbon Park breeze; evening dew speeds up outfield after 19:30 IST.</div>
+              <button type="button" id="btnSyncLiveGpsWeather" class="btn btn-secondary" onclick="syncLiveGpsVenueWeather()" style="width: auto; padding: 0.18rem 0.55rem; font-size: 0.66rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Fetch live satellite weather telemetry for active stadium coordinates via Open-Meteo API">${iconSvg('refresh', 'currentColor', 12)} Sync Live Satellite Telemetry</button>
             </div>
             <div id="weatherHourlyTimelineGrid" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.45rem; margin-bottom: 0.55rem;"></div>
             <div id="weatherPitchImpactGrid" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.45rem;"></div>
@@ -5756,7 +5846,7 @@ export function getDashboardHtml() {
           <canvas class="match-momentum-canvas" id="matchMomentumCanvas"></canvas>
           <div class="match-momentum-hud">
             <div style="display: flex; align-items: center; gap: 0.45rem;">
-              <span style="font-size: 0.8rem;">⚡</span>
+              <span style="display: inline-flex; align-items: center;">${iconSvg('lightning', 'var(--turf-emerald)', 14)}</span>
               <strong style="color: var(--turf-emerald); font-family: var(--font-display, sans-serif); letter-spacing: 0.02em;">MATCH MOMENTUM WAVE</strong>
               <span style="color: var(--text-muted); font-size: 0.65rem;">• Dual-Phase Harmonic Tension</span>
             </div>
@@ -5768,7 +5858,7 @@ export function getDashboardHtml() {
                 <span style="font-size: 0.65rem; color: #FFF; font-family: var(--font-mono, monospace); font-weight: 700;">142.4 <span style="color: var(--turf-emerald);">KM/H</span></span>
                 <span style="font-size: 0.62rem; color: var(--cyan); font-family: var(--font-mono, monospace);">2,420 RPM</span>
               </div>
-              <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.2rem 0.55rem; font-size: 0.65rem; border-color: rgba(0,229,153,0.3); color: var(--turf-emerald);" onclick="window.CricOSMotionFX.triggerCelebration('SIX')" data-tooltip="Test Stadium Pyro &amp; Particle Explosion (Maximum Six FX)">🎆 Stadium FX</button>
+              <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.2rem 0.55rem; font-size: 0.65rem; border-color: rgba(0,229,153,0.3); color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.25rem;" onclick="window.CricOSMotionFX.triggerCelebration('SIX')" data-tooltip="Test Stadium Pyro &amp; Particle Explosion (Maximum Six FX)">${iconSvg('sparkle', 'var(--turf-emerald)', 13)} Stadium FX</button>
             </div>
           </div>
         </div>
@@ -5776,7 +5866,7 @@ export function getDashboardHtml() {
         <!-- Match Result Victory Banner -->
         <div id="matchResultBanner" style="display: none; background: rgba(0,229,153,0.15); border: 1px solid var(--turf-emerald); border-radius: 8px; padding: 0.85rem 1.25rem; margin-top: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
           <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <span style="font-size: 1.5rem;">🏆</span>
+            <span style="display: inline-flex; align-items: center;">${iconSvg('trophy', 'var(--turf-emerald)', 24)}</span>
             <div>
               <div style="font-weight: 800; color: #F8FAFC; font-size: 1.05rem;" id="matchResultText">Mumbai Super Strikers won by 6 wickets!</div>
               <div style="font-size: 0.75rem; color: var(--turf-emerald);">Official Match Concluded • Player of the Match: Virat Sharma (68 runs off 42 balls)</div>
@@ -5802,7 +5892,7 @@ export function getDashboardHtml() {
           <div class="stat-mini-card">
             <div class="stat-mini-title">
               <span style="display: flex; align-items: center; gap: 0.4rem;">Striker <button class="btn btn-secondary" style="width: auto; padding: 0.1rem 0.45rem; font-size: 0.65rem;" onclick="swapMatchStrike()" data-tooltip="Manually rotate strike between batters">Swap Strike</button></span>
-              <span style="color: var(--primary);">★ On Strike</span>
+              <span style="color: var(--primary); display: inline-flex; align-items: center; gap: 0.25rem;">${iconSvg('star', 'var(--primary)', 13)} On Strike</span>
             </div>
             <div class="stat-player-name" id="strikerName">Virat K. *</div>
             <div class="stat-player-figures" id="strikerFigures">0 <span style="font-size: 0.85rem; color: var(--text-muted);">(0b) • SR: 0.0</span></div>
@@ -5821,7 +5911,7 @@ export function getDashboardHtml() {
 
         <!-- Free Hit Active Alert Banner -->
         <div id="freeHitBanner" style="display: none; background: rgba(255,184,0,0.15); border: 1px solid var(--amber); border-radius: 8px; padding: 0.65rem 1.15rem; margin-top: 1rem; align-items: center; gap: 0.65rem;">
-          <span style="font-size: 1.25rem;">⚡</span>
+          <span style="display: inline-flex; align-items: center;">${iconSvg('lightning', 'var(--amber)', 22)}</span>
           <div>
             <div style="font-weight: 800; color: var(--amber); font-size: 0.95rem;">FREE HIT IN EFFECT!</div>
             <div style="font-size: 0.75rem; color: #F8FAFC;">Batter cannot be dismissed bowled, caught, lbw, or stumped on this delivery. Only run out applies!</div>
@@ -5842,7 +5932,7 @@ export function getDashboardHtml() {
         <div id="fanCheerSection" style="display: none; margin-top: 1.25rem; background: linear-gradient(135deg, rgba(192, 132, 252, 0.08) 0%, rgba(13, 20, 36, 0.95) 100%); border: 1px solid rgba(192, 132, 252, 0.25); border-radius: 12px; padding: 1.25rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="font-size: 1.25rem;">🎪</span>
+              <span style="display: inline-flex; align-items: center;">${iconSvg('stadium', 'var(--purple-light)', 20)}</span>
               <div>
                 <div style="font-size: 0.95rem; font-weight: 800; color: #FFF;">Fan Stadium Cheering &amp; Match Pulse</div>
                 <div style="font-size: 0.75rem; color: var(--text-muted);">Send real-time stadium cheers, crowd noise, and predict match turning points</div>
@@ -5856,12 +5946,12 @@ export function getDashboardHtml() {
 
           <!-- Cheering Buttons -->
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.6rem; margin-bottom: 1rem;">
-            <button class="btn btn-secondary" onclick="sendFanCheer('🔥 Lets Go Bangalore!')" data-tooltip="Cheer for Bangalore Blasters with fire energy" style="border-color: rgba(255, 184, 0, 0.4); color: var(--amber);">🔥 Cheer BLR (+1)</button>
-            <button class="btn btn-secondary" onclick="sendFanCheer('👏 Clapping Strikers!')" data-tooltip="Applaud the active partnership" style="border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald);">👏 Applause (+1)</button>
-            <button class="btn btn-secondary" onclick="sendFanCheer('💥 Boundary Expected!')" data-tooltip="Predict boundary next delivery" style="border-color: rgba(0, 210, 255, 0.4); color: var(--cyan);">💥 Boundary (+1)</button>
-            <button class="btn btn-secondary" onclick="sendFanCheer('⚡ Maximum Six!')" data-tooltip="Call for a maximum 6" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple-light);">⚡ Sixer! (+1)</button>
-            <button class="btn btn-secondary" onclick="sendFanCheer('🛡️ Wicket Alert!')" data-tooltip="Back the bowling team for a breakthrough" style="border-color: rgba(255, 51, 102, 0.4); color: var(--rose);">🛡️ Breakthrough (+1)</button>
-            <button class="btn btn-secondary" onclick="sendFanCheer('🎆 Stadium Celebration!')" data-tooltip="Trigger stadium fireworks, confetti, and celebratory pyro FX" style="border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald);">🎆 Stadium Pyro (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('🔥 Lets Go Bangalore!')" data-tooltip="Cheer for Bangalore Blasters with fire energy" style="border-color: rgba(255, 184, 0, 0.4); color: var(--amber); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">${iconSvg('fire', 'var(--amber)', 14)} Cheer BLR (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('👏 Clapping Strikers!')" data-tooltip="Applaud the active partnership" style="border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">${iconSvg('handshake', 'var(--turf-emerald)', 14)} Applause (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('💥 Boundary Expected!')" data-tooltip="Predict boundary next delivery" style="border-color: rgba(0, 210, 255, 0.4); color: var(--cyan); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">${iconSvg('sparkle', 'var(--cyan)', 14)} Boundary (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('⚡ Maximum Six!')" data-tooltip="Call for a maximum 6" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple-light); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">${iconSvg('lightning', 'var(--purple-light)', 14)} Sixer! (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('🛡️ Wicket Alert!')" data-tooltip="Back the bowling team for a breakthrough" style="border-color: rgba(255, 51, 102, 0.4); color: var(--rose); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">${iconSvg('shield', 'var(--rose)', 14)} Breakthrough (+1)</button>
+            <button class="btn btn-secondary" onclick="sendFanCheer('🎆 Stadium Celebration!')" data-tooltip="Trigger stadium fireworks, confetti, and celebratory pyro FX" style="border-color: rgba(0, 229, 153, 0.4); color: var(--turf-emerald); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">${iconSvg('sparkle', 'var(--turf-emerald)', 14)} Stadium Pyro (+1)</button>
           </div>
 
           <!-- Fan Win Probability Prediction Poll -->
@@ -5892,7 +5982,7 @@ export function getDashboardHtml() {
             <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
               <div>
                 <div style="font-weight: 800; color: var(--amber); font-size: 0.88rem; display: flex; align-items: center; gap: 0.35rem;">
-                  <span>⚡ Official Scorer Mode Active</span>
+                  <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('lightning', 'var(--amber)', 14)} Official Scorer Mode Active</span>
                 </div>
                 <div style="color: var(--text-muted); font-size: 0.74rem; margin-top: 0.2rem;">All live deliveries, wagon wheel shot zones, and dismissals are managed in the Scoring Studio.</div>
               </div>
@@ -5901,7 +5991,7 @@ export function getDashboardHtml() {
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-            <div class="card-title" style="margin: 0; font-size: 1.05rem; font-family: var(--font-display); letter-spacing: -0.02em;">📊 Match Situation &amp; Chase Cockpit</div>
+            <div class="card-title" style="margin: 0; font-size: 1.05rem; font-family: var(--font-display); letter-spacing: -0.02em; display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('chart', 'currentColor', 16)} Match Situation &amp; Chase Cockpit</div>
             <span class="rate-badge" style="color: var(--cyan); border-color: rgba(0, 210, 255, 0.35); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em;">DEATH OVERS (16-20)</span>
           </div>
           <div class="card-desc">Live run rate pressure gauge, boundary velocity, and phase progression telemetry</div>
@@ -5951,10 +6041,10 @@ export function getDashboardHtml() {
           <!-- Weather Interruption & DLS Calculator Shortcut -->
           <div style="margin-bottom: 0.75rem; padding: 0.6rem 0.85rem; background: rgba(0, 210, 255, 0.06); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <div>
-              <span style="font-size: 0.78rem; font-weight: 700; color: var(--cyan);">🌧️ Weather Delay &amp; Revised Chase:</span>
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('rain', 'var(--cyan)', 14)} Weather Delay &amp; Revised Chase:</span>
               <div style="font-size: 0.7rem; color: var(--text-muted);">Standard Duckworth-Lewis-Stern resource calculation engine</div>
             </div>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="openModal('modalDlsCalculator')" data-tooltip="Open Duckworth-Lewis-Stern (DLS) rain interruption target calculator" style="padding: 0.25rem 0.65rem; font-size: 0.74rem;">🌧️ DLS Calculator</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openModal('modalDlsCalculator')" data-tooltip="Open Duckworth-Lewis-Stern (DLS) rain interruption target calculator" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('rain', 'currentColor', 13)} DLS Calculator</button>
           </div>
 
           <!-- Phase Breakdown Strip -->
@@ -6193,17 +6283,17 @@ export function getDashboardHtml() {
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: #F8FAFC; display: flex; align-items: center; gap: 0.6rem;">
-            🏏 Bangalore Blasters <span style="font-size: 0.8rem; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid var(--border-accent); padding: 0.2rem 0.6rem; border-radius: 6px;">BLR</span>
+            ${iconSvg('bat', 'var(--turf-emerald)', 22)} <span>Bangalore Blasters</span> <span style="font-size: 0.8rem; background: rgba(0,229,153,0.15); color: var(--turf-emerald); border: 1px solid var(--border-accent); padding: 0.2rem 0.6rem; border-radius: 6px;">BLR</span>
           </h2>
           <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Home Ground: Chinnaswamy Turf A • Verified Squad Status: 11/11 Verified</div>
         </div>
         <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
-          <div class="nav-pill" style="cursor: pointer; background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.82rem;" onclick="copyJoinCode()" data-tooltip="Click to copy team join invite code for new players">
-            🔑 Join Code: <strong style="color: var(--cyan);" id="teamJoinCodeBadge">CRIC-BLR-4821</strong>
+          <div class="nav-pill" style="cursor: pointer; background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="copyJoinCode()" data-tooltip="Click to copy team join invite code for new players">
+            ${iconSvg('key', 'var(--cyan)', 14)} <span>Join Code: <strong style="color: var(--cyan);" id="teamJoinCodeBadge">CRIC-BLR-4821</strong></span>
           </div>
-          <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="open3DPlayerCardModal('Hardik Patel', '#33', 'ALL_ROUNDER')" data-tooltip="Inspect Holographic 3D Player Card &amp; Telemetry">🃏 3D Player Card</button>
-          <button class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="openJoinTeamPrompt()" data-tooltip="Join an existing team using a 8-character invite code">➕ Join Team</button>
-          <button class="btn" style="width: auto; padding: 0.5rem 1.15rem; font-size: 0.85rem;" onclick="openCreateTeamModal()" data-tooltip="Create a new cricket franchise or local club team">🏆 Create New Team</button>
+          <button type="button" class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="open3DPlayerCardModal('Hardik Patel', '#33', 'ALL_ROUNDER')" data-tooltip="Inspect Holographic 3D Player Card &amp; Telemetry">${iconSvg('card', 'currentColor', 15)} 3D Player Card</button>
+          <button class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="openJoinTeamPrompt()" data-tooltip="Join an existing team using a 8-character invite code">${iconSvg('plus', 'currentColor', 15)} Join Team</button>
+          <button class="btn" style="width: auto; padding: 0.5rem 1.15rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="openCreateTeamModal()" data-tooltip="Create a new cricket franchise or local club team">${iconSvg('trophy', 'currentColor', 15)} Create New Team</button>
         </div>
       </div>
 
@@ -6211,7 +6301,7 @@ export function getDashboardHtml() {
         <!-- Playing XI Card -->
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <div class="card-title">⚡ Playing XI (Active Match Lineup)</div>
+            <div class="card-title" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('lightning', 'var(--turf-emerald)', 16)} Playing XI (Active Match Lineup)</div>
             <span style="font-size: 0.72rem; color: var(--turf-emerald); font-weight: 700;">11 PLAYERS</span>
           </div>
           <div class="card-desc">Current starting lineup declared for match day</div>
@@ -6305,7 +6395,7 @@ export function getDashboardHtml() {
           </div>
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <div class="card-title">🪑 Bench & Reserve Squad</div>
+              <div class="card-title" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('chair', 'var(--cyan)', 16)} Bench &amp; Reserve Squad</div>
               <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">3 RESERVES</span>
             </div>
             <div class="card-desc">Substitutes available for tactical rotation or concussion sub</div>
@@ -6315,7 +6405,7 @@ export function getDashboardHtml() {
           </div>
 
           <div class="card">
-            <div class="card-title">📊 Team Franchise Profile</div>
+            <div class="card-title" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('chart', 'currentColor', 16)} Team Franchise Profile</div>
             <div class="card-desc">Official team registration details and jersey kit</div>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 0.5rem;">
               <div style="background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
@@ -6340,30 +6430,30 @@ export function getDashboardHtml() {
     <div id="tab-marketplace" class="tab-pane">
       <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; gap: 0.5rem; flex-wrap: wrap;">
         <button type="button" id="btnOpenGearStoreFromMarketplace" class="btn btn-primary" onclick="openGearStoreModal()" data-tooltip="Open Pro Cricket Gear Store: English willow bats, Kookaburra/SG match balls, protective kit &amp; express pavilion delivery" style="width: auto; padding: 0.35rem 0.9rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.45rem; font-weight: 800;">
-          <span>🛍️</span> Pro Gear Store &amp; Kit Bag <span id="marketplaceGearCartBadge" style="font-family: var(--font-mono); background: rgba(4,9,20,0.35); padding: 0.05rem 0.4rem; border-radius: 999px; font-size: 0.72rem;">2</span>
+          <span>${iconSvg('cart', 'currentColor', 16)}</span> Pro Gear Store &amp; Kit Bag <span id="marketplaceGearCartBadge" style="font-family: var(--font-mono); background: rgba(4,9,20,0.35); padding: 0.05rem 0.4rem; border-radius: 999px; font-size: 0.72rem;">2</span>
         </button>
         <button type="button" class="btn btn-secondary" onclick="open3DBatCustomizerModal()" data-tooltip="Interactive 3D Cricket Bat &amp; Gear Configurator" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
-          <span>🏏</span> 3D Bat Customizer
+          <span>${iconSvg('bat', 'currentColor', 16)}</span> 3D Bat Customizer
         </button>
         <button class="btn btn-secondary" onclick="openBookingLifecycleModal()" data-tooltip="Manage booking cancellation bands, penalty calculations, reschedule price adjustments, and no-show dispute handling" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
-          <span>🔄</span> Cancellation &amp; Reschedule Desk
+          <span>${iconSvg('refresh', 'currentColor', 16)}</span> Cancellation &amp; Reschedule Desk
         </button>
         <button class="btn btn-secondary" id="btnMarketplaceOfficialCalendar" onclick="openOfficialCalendarModal()" data-tooltip="Inspect official weekly schedule, slot availability, buffer times, and conflict overlap checks" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
-          <span>📅</span> Official Availability Calendar
+          <span>${iconSvg('calendar', 'currentColor', 16)}</span> Official Availability Calendar
         </button>
         <button class="btn btn-secondary" id="btnMarketplaceProviderStorefront" onclick="openProviderStorefrontModal()" data-tooltip="Provider Capacity Manager: publish hourly slots, set rates, and inspect monthly payout earnings" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
-          <span>🏪</span> Provider Storefront &amp; Slot Publisher
+          <span>${iconSvg('cart', 'currentColor', 16)}</span> Provider Storefront &amp; Slot Publisher
         </button>
       </div>
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">🏪 Available Venue &amp; Official Listings</div>
+          <div class="card-title" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('cart', 'currentColor', 16)} Available Venue &amp; Official Listings</div>
           <div class="card-desc">Browse certified listings from <code>GET /api/v1/marketplace/listings</code></div>
           <div style="display: flex; gap: 0.35rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
             <button class="btn btn-secondary active" id="btnFilterAll" onclick="filterMarketplaceListings('ALL')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Show all available grounds and officials">All</button>
-            <button class="btn btn-secondary" id="btnFilterGround" onclick="filterMarketplaceListings('GROUND')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Filter turf cricket grounds">Grounds 🏟️</button>
-            <button class="btn btn-secondary" id="btnFilterUmpire" onclick="filterMarketplaceListings('UMPIRE')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Filter certified match umpires">Umpires ⚖️</button>
-            <button class="btn btn-secondary" id="btnFilterScorer" onclick="filterMarketplaceListings('SCORER')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto;" data-tooltip="Filter digital match scorers">Scorers ⚡</button>
+            <button class="btn btn-secondary" id="btnFilterGround" onclick="filterMarketplaceListings('GROUND')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Filter turf cricket grounds">Grounds ${iconSvg('stadium', 'currentColor', 13)}</button>
+            <button class="btn btn-secondary" id="btnFilterUmpire" onclick="filterMarketplaceListings('UMPIRE')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Filter certified match umpires">Umpires ${iconSvg('scale', 'currentColor', 13)}</button>
+            <button class="btn btn-secondary" id="btnFilterScorer" onclick="filterMarketplaceListings('SCORER')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; width: auto; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Filter digital match scorers">Scorers ${iconSvg('lightning', 'currentColor', 13)}</button>
           </div>
           <div id="listingsContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
             <div class="telemetry-loading-strip">
@@ -6374,7 +6464,7 @@ export function getDashboardHtml() {
         </div>
 
         <div class="card">
-          <div class="card-title">🧾 Checkout & Commercial Breakdown</div>
+          <div class="card-title" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('receipt', 'currentColor', 16)} Checkout &amp; Commercial Breakdown</div>
           <div class="card-desc">Itemized Sporting Resource Breakdown &amp; Escrow Hold</div>
 
           <div class="breakdown-table">
@@ -6397,8 +6487,8 @@ export function getDashboardHtml() {
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
-            <button class="btn" onclick="executeCheckoutAndPay()" data-tooltip="Execute booking checkout, platform fee calculation, and payment webhook">💳 Confirm Order & Simulate Payment Webhook</button>
-            <button class="btn btn-secondary" onclick="simulateHoldSlot()" data-tooltip="Reserve slot with 15-minute exclusive hold preventing schedule overlaps">⏱️ Hold Slot (15-min TTL)</button>
+            <button class="btn" onclick="executeCheckoutAndPay()" data-tooltip="Execute booking checkout, platform fee calculation, and payment webhook" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">${iconSvg('card', 'currentColor', 15)} Confirm Order &amp; Simulate Payment Webhook</button>
+            <button class="btn btn-secondary" onclick="simulateHoldSlot()" data-tooltip="Reserve slot with 15-minute exclusive hold preventing schedule overlaps" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">${iconSvg('clock', 'currentColor', 14)} Hold Slot (15-min TTL)</button>
           </div>
 
           <div id="bookingConfirmation" style="margin-top: 1rem; font-size: 0.85rem; color: var(--primary); display: none;">
@@ -6413,17 +6503,17 @@ export function getDashboardHtml() {
       <!-- Tournament Stage Stepper -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
         <div class="stage-stepper" style="margin-bottom: 0; flex: 1;">
-          <div class="stage-step completed" data-tooltip="Team registration, player KYC, and squads verified">✓ Squads Verified</div>
-          <div class="stage-step active" data-tooltip="Round-robin stage currently underway across 4 match grounds">⚡ Group Stage (Live)</div>
+          <div class="stage-step completed" data-tooltip="Team registration, player KYC, and squads verified" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('check', '#00E599', 14)} Squads Verified</div>
+          <div class="stage-step active" data-tooltip="Round-robin stage currently underway across 4 match grounds" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('lightning', 'currentColor', 14)} Group Stage (Live)</div>
           <div class="stage-step" data-tooltip="Top 2 teams qualify for playoff finals">Super 4s</div>
-          <div class="stage-step" data-tooltip="Grand Final championship under stadium floodlights">🏆 Grand Final</div>
+          <div class="stage-step" data-tooltip="Grand Final championship under stadium floodlights" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('trophy', 'currentColor', 14)} Grand Final</div>
         </div>
-        <button type="button" class="btn btn-secondary" onclick="open3DTrophyCabinetModal()" data-tooltip="Inspect 3D Tournament Championship Trophy Cabinet" style="width: auto; padding: 0.5rem 1rem; font-size: 0.82rem;">🏆 3D Trophy Cabinet</button>
+        <button type="button" class="btn btn-secondary" onclick="open3DTrophyCabinetModal()" data-tooltip="Inspect 3D Tournament Championship Trophy Cabinet" style="width: auto; padding: 0.5rem 1rem; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('trophy', 'var(--amber)', 15)} 3D Trophy Cabinet</button>
       </div>
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">🏆 Create Tournament & Generate Schedule</div>
+          <div class="card-title" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('trophy', 'currentColor', 16)} Create Tournament &amp; Generate Schedule</div>
           <div class="card-desc">Tournament Operating System (<code>/api/v1/tournaments</code>)</div>
 
           <div class="form-group">
@@ -6442,18 +6532,18 @@ export function getDashboardHtml() {
             <input type="text" id="tournamentTeams" value="Northside XI, Riverside XI, Coastal Titans, Royal Strikers">
           </div>
 
-          <button class="btn" onclick="generateTournamentFixtures()" data-tooltip="Orchestrate multi-team round-robin schedule and standings table">⚡ Create Tournament & Generate Round-Robin Fixtures</button>
+          <button class="btn" onclick="generateTournamentFixtures()" data-tooltip="Orchestrate multi-team round-robin schedule and standings table" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">${iconSvg('lightning', 'currentColor', 14)} Create Tournament &amp; Generate Round-Robin Fixtures</button>
 
           <div id="fixturesList" style="margin-top: 1.25rem;"></div>
         </div>
 
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-            <div class="card-title">📊 Competition Standings &amp; Player Caps</div>
+            <div class="card-title" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('chart', 'currentColor', 16)} Competition Standings &amp; Player Caps</div>
             <div style="display: flex; gap: 0.35rem;">
-              <button type="button" id="btnSubTabStandings" class="nav-pill active" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700;" onclick="switchTournamentSubTab('standings')" data-tooltip="ICC Group Standings and official Net Run Rate table">🏆 Standings</button>
-              <button type="button" id="btnSubTabOrange" class="nav-pill" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700; color: #FFB800;" onclick="switchTournamentSubTab('orange')" data-tooltip="Orange Cap: Leading tournament run scorers and strike rates">👑 Orange Cap</button>
-              <button type="button" id="btnSubTabPurple" class="nav-pill" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700; color: var(--purple-light);" onclick="switchTournamentSubTab('purple')" data-tooltip="Purple Cap: Leading tournament wicket takers and bowling figures">💜 Purple Cap</button>
+              <button type="button" id="btnSubTabStandings" class="nav-pill active" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;" onclick="switchTournamentSubTab('standings')" data-tooltip="ICC Group Standings and official Net Run Rate table">${iconSvg('trophy', 'currentColor', 13)} Standings</button>
+              <button type="button" id="btnSubTabOrange" class="nav-pill" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700; color: #FFB800; display: inline-flex; align-items: center; gap: 0.25rem;" onclick="switchTournamentSubTab('orange')" data-tooltip="Orange Cap: Leading tournament run scorers and strike rates">${iconSvg('crown', '#FFA726', 13)} Orange Cap</button>
+              <button type="button" id="btnSubTabPurple" class="nav-pill" style="cursor: pointer; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 700; color: var(--purple-light); display: inline-flex; align-items: center; gap: 0.25rem;" onclick="switchTournamentSubTab('purple')" data-tooltip="Purple Cap: Leading tournament wicket takers and bowling figures">${iconSvg('crown', '#AB47BC', 13)} Purple Cap</button>
             </div>
           </div>
           <div class="card-desc" id="tournamentSubTabDesc">Automatic points calculation and Net Run Rate (NRR) tracking</div>
@@ -6523,23 +6613,23 @@ export function getDashboardHtml() {
         <!-- Studio Pad & Ball Logger -->
         <div class="card" id="cardStudioKeypad">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <div class="card-title" id="studioCardTitle">👑 Captain Crease &amp; Tactical Command</div>
+            <div class="card-title" id="studioCardTitle" style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('crown', 'currentColor', 18)} Captain Crease &amp; Tactical Command</div>
             <div style="display: flex; align-items: center; gap: 0.45rem;">
-              <button type="button" class="btn btn-secondary" id="btnDesktopIccLaws" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: inline-flex; align-items: center; gap: 0.3rem; border-radius: 9999px;" onclick="openIccLawsModal()" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws 1-42 Rulebook Reference">📖 ICC Laws Rulebook</button>
+              <button type="button" class="btn btn-secondary" id="btnDesktopIccLaws" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: inline-flex; align-items: center; gap: 0.3rem; border-radius: 9999px;" onclick="openIccLawsModal()" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws 1-42 Rulebook Reference">${iconSvg('book', '#38bdf8', 13)} ICC Laws Rulebook</button>
               <span class="rate-badge" id="studioModePill" style="color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);">CAPTAIN TACTICAL MODE</span>
             </div>
           </div>
           <div class="card-desc" id="studioCardDesc">Live striker/non-striker crease matchups, partnership velocity, and field placement strategy (Official ball scoring reserved for Scorer)</div>
           <div id="captainTacticalNotice" style="display: block; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; padding: 0.65rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.75rem; color: var(--turf-emerald); font-weight: 700;">
-            <div style="margin-bottom: 0.45rem;">👑 Captain Tactical View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Official ball-by-ball scoring is managed exclusively by the Scorer)</div>
+            <div style="margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('crown', 'var(--turf-emerald)', 14)} <span>Captain Tactical View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Official ball-by-ball scoring is managed exclusively by the Scorer)</span></div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald); border-color: rgba(0, 229, 153, 0.35);" onclick="openFieldPlannerModal()" data-tooltip="Open 11-Fielder Tactical Radar &amp; MCC Law 28.4 Engine">🎯 Field Placement Radar</button>
-              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--cyan); border-color: rgba(0, 210, 255, 0.35);" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator">🔮 Pitch &amp; Win Simulator</button>
-              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--amber); border-color: rgba(255, 184, 0, 0.35);" onclick="openTossModal()" data-tooltip="Conduct Match Toss or adjust DLS target">🪙 Toss &amp; DLS</button>
+              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald); border-color: rgba(0, 229, 153, 0.35); display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openFieldPlannerModal()" data-tooltip="Open 11-Fielder Tactical Radar &amp; MCC Law 28.4 Engine">${iconSvg('radar', 'var(--turf-emerald)', 13)} Field Placement Radar</button>
+              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--cyan); border-color: rgba(0, 210, 255, 0.35); display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator">${iconSvg('dna', 'var(--cyan)', 13)} Pitch &amp; Win Simulator</button>
+              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--amber); border-color: rgba(255, 184, 0, 0.35); display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openTossModal()" data-tooltip="Conduct Match Toss or adjust DLS target">${iconSvg('coin', 'var(--amber)', 13)} Toss &amp; DLS</button>
             </div>
           </div>
-          <div id="fanTacticalNotice" style="display: none; background: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--purple-light); font-weight: 700;">🎪 Fan Spectator View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Scoring Pad disabled in spectator mode)</div>
-          <div id="adminTacticalNotice" style="display: none; background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--rose); font-weight: 700;">⚡ Non-Scorer Observation View: Scoring keypad hidden. Only certified Official Scorers can input deliveries.</div>
+          <div id="fanTacticalNotice" style="display: none; background: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--purple-light); font-weight: 700;"><span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('wave', 'var(--purple-light)', 14)} <span>Fan Spectator View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Scoring Pad disabled in spectator mode)</span></span></div>
+          <div id="adminTacticalNotice" style="display: none; background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.3); border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--rose); font-weight: 700;"><span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('shield', 'var(--rose)', 14)} <span>Non-Scorer Observation View: Scoring keypad hidden. Only certified Official Scorers can input deliveries.</span></span></div>
 
           <!-- Active Batters on Field -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
@@ -6570,7 +6660,7 @@ export function getDashboardHtml() {
           <div id="studioScoringControlsGroup" style="display: none;">
             <!-- Free Hit Active Status Banner -->
             <div id="studioFreeHitBanner" style="display: none; background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; color: #ff3366; font-size: 0.8rem; font-weight: 800; align-items: center; justify-content: space-between;">
-              <span style="display: flex; align-items: center; gap: 0.35rem;"><span>⚡</span> FREE HIT IN EFFECT (ICC Clause 21.19)</span>
+              <span style="display: flex; align-items: center; gap: 0.35rem;"><span>${iconSvg('lightning', '#ff3366', 15)}</span> FREE HIT IN EFFECT (ICC Clause 21.19)</span>
               <span style="font-size: 0.7rem; color: #cbd5e1; font-weight: 600;">Striker cannot be dismissed Bowled/Caught/LBW/Stumped</span>
             </div>
 
@@ -6583,7 +6673,7 @@ export function getDashboardHtml() {
               <button class="studio-btn pad-btn four boundary-four" data-runs="4" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
               <button class="studio-btn pad-btn six maximum-six" data-runs="6" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
               <button class="studio-btn pad-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (MCC Laws 30-39 &amp; 25)">W<span class="studio-sublabel">Wicket</span></button>
-              <button class="studio-btn pad-btn" id="btnStudioUndo" data-id="btnUndoBall" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber);" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">↺<span class="studio-sublabel">Undo</span></button>
+              <button class="studio-btn pad-btn" id="btnStudioUndo" data-id="btnUndoBall" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber); display: inline-flex; flex-direction: column; align-items: center; justify-content: center;" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">${iconSvg('refresh', 'var(--amber)', 14)}<span class="studio-sublabel">Undo</span></button>
             </div>
 
             <!-- Quick Extras Strip with Law Citations (Opens wider extra runs menu) -->
@@ -6596,14 +6686,14 @@ export function getDashboardHtml() {
 
             <!-- Dedicated Penalty Runs & Laws Reference Bar -->
             <div style="display: flex; gap: 0.5rem; margin-bottom: 0.65rem;">
-              <button type="button" class="btn btn-secondary" id="btnStudioPenaltyRuns" onclick="openPenaltyRunsModal()" style="flex: 1.2; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #eab308; border-color: rgba(234, 179, 8, 0.35); background: rgba(234, 179, 8, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Award +5 Penalty Runs under MCC Laws 41/42 or Law 28.3 (Helmet Penalty)">⚖️ +5 Penalty Runs [Law 41/42 &amp; 28.3]</button>
-              <button type="button" class="btn btn-secondary" id="btnStudioIccLawsPad" onclick="openIccLawsModal()" style="flex: 1; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws Rulebook">📖 ICC Laws Rulebook</button>
+              <button type="button" class="btn btn-secondary" id="btnStudioPenaltyRuns" onclick="openPenaltyRunsModal()" style="flex: 1.2; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #eab308; border-color: rgba(234, 179, 8, 0.35); background: rgba(234, 179, 8, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Award +5 Penalty Runs under MCC Laws 41/42 or Law 28.3 (Helmet Penalty)">${iconSvg('scale', '#eab308', 14)} +5 Penalty Runs [Law 41/42 &amp; 28.3]</button>
+              <button type="button" class="btn btn-secondary" id="btnStudioIccLawsPad" onclick="openIccLawsModal()" style="flex: 1; padding: 0.4rem; font-size: 0.76rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Open complete ICC Playing Conditions &amp; MCC Laws Rulebook">${iconSvg('book', '#38bdf8', 14)} ICC Laws Rulebook</button>
             </div>
 
             <!-- Dedicated Undo Last Ball & End Match/Innings Controls -->
             <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.65rem; display: flex; gap: 0.5rem;">
-              <button type="button" class="btn btn-secondary" id="btnStudioUndoBall" onclick="undoLastDelivery()" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)"><span style="font-size: 0.95rem;">↺</span> Undo Last Ball</button>
-              <button type="button" class="btn btn-secondary" id="btnStudioEndInnings" onclick="promptDesktopEndMatch()" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,51,102,0.45); color: #ff8099; background: rgba(255,51,102,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Conclude match or innings early (declaration, rain curtailment)"><span style="font-size: 0.95rem;">🏁</span> End Match</button>
+              <button type="button" class="btn btn-secondary" id="btnStudioUndoBall" onclick="undoLastDelivery()" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,184,0,0.45); color: #ffb800; background: rgba(255,184,0,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Undo last delivery (revert fat finger or scoring misunderstanding)">${iconSvg('refresh', '#ffb800', 14)} Undo Last Ball</button>
+              <button type="button" class="btn btn-secondary" id="btnStudioEndInnings" onclick="promptDesktopEndMatch()" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; font-weight: 700; border-color: rgba(255,51,102,0.45); color: #ff8099; background: rgba(255,51,102,0.08); display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px;" data-tooltip="Conclude match or innings early (declaration, rain curtailment)">${iconSvg('flag', '#ff8099', 14)} End Match</button>
             </div>
           </div>
         </div>
@@ -6800,40 +6890,40 @@ export function getDashboardHtml() {
                 <!-- 3D Camera Controls Toolbar -->
                 <div class="three-camera-bar" id="threeCameraBar">
                   <div class="three-bar-group camera-group">
-                    <button type="button" class="three-cam-btn active" id="btnCamOrbit" onclick="setThreeCameraPreset('ORBIT')" data-tooltip="Interactive Orbit Camera (Drag to rotate, scroll/pinch to zoom)">🔄 Orbit</button>
-                    <button type="button" class="three-cam-btn" id="btnCamBatsman" onclick="setThreeCameraPreset('BATSMAN')" data-tooltip="Batsman Striker POV View">🏏 Batsman</button>
-                    <button type="button" class="three-cam-btn" id="btnCamElevation" onclick="setThreeCameraPreset('ELEVATION')" data-tooltip="Broadcast Elevation View (35° side angle)">📐 Elevation</button>
-                    <button type="button" class="three-cam-btn" id="btnCamTopDown" onclick="setThreeCameraPreset('TOP_DOWN')" data-tooltip="Direct Top-Down Overhead View">⬇ Top</button>
-                    <button type="button" class="three-cam-btn" id="btnCamGrandstand" onclick="setThreeCameraPreset('GRANDSTAND')" data-tooltip="Upper Grandstand Fan Seat POV">🎟 Grandstand</button>
-                    <button type="button" class="three-cam-btn" id="btnCamPavilion" onclick="setThreeCameraPreset('PAVILION')" data-tooltip="Long-On Members Pavilion POV">🏟 Pavilion</button>
-                    <button type="button" class="three-cam-btn" id="btnCamUmpire" onclick="setThreeCameraPreset('UMPIRE')" data-tooltip="Bowler's End Match Umpire POV">👨‍⚖️ Umpire</button>
+                    <button type="button" class="three-cam-btn active" id="btnCamOrbit" onclick="setThreeCameraPreset('ORBIT')" data-tooltip="Interactive Orbit Camera (Drag to rotate, scroll/pinch to zoom)">${iconSvg('refresh', 'currentColor', 14)} Orbit</button>
+                    <button type="button" class="three-cam-btn" id="btnCamBatsman" onclick="setThreeCameraPreset('BATSMAN')" data-tooltip="Batsman Striker POV View">${iconSvg('bat', 'currentColor', 14)} Batsman</button>
+                    <button type="button" class="three-cam-btn" id="btnCamElevation" onclick="setThreeCameraPreset('ELEVATION')" data-tooltip="Broadcast Elevation View (35° side angle)">${iconSvg('radar', 'currentColor', 14)} Elevation</button>
+                    <button type="button" class="three-cam-btn" id="btnCamTopDown" onclick="setThreeCameraPreset('TOP_DOWN')" data-tooltip="Direct Top-Down Overhead View">${iconSvg('target', 'currentColor', 14)} Top</button>
+                    <button type="button" class="three-cam-btn" id="btnCamGrandstand" onclick="setThreeCameraPreset('GRANDSTAND')" data-tooltip="Upper Grandstand Fan Seat POV">${iconSvg('stadium', 'currentColor', 14)} Grandstand</button>
+                    <button type="button" class="three-cam-btn" id="btnCamPavilion" onclick="setThreeCameraPreset('PAVILION')" data-tooltip="Long-On Members Pavilion POV">${iconSvg('building', 'currentColor', 14)} Pavilion</button>
+                    <button type="button" class="three-cam-btn" id="btnCamUmpire" onclick="setThreeCameraPreset('UMPIRE')" data-tooltip="Bowler's End Match Umpire POV">${iconSvg('scale', 'currentColor', 14)} Umpire</button>
                   </div>
                   <div class="three-bar-group action-group">
-                    <button type="button" class="three-cam-btn" id="btnCamAuto" onclick="toggleThreeAutoRotate()" data-tooltip="Toggle 360° Broadcast Auto-Orbit Camera">🛰 Auto-Cam</button>
-                    <button type="button" class="three-cam-btn accent" id="btnThreeSubMode" onclick="toggleThreeVisualMode()" data-tooltip="Switch to 3D Hawkeye Ball-Tracking Pitch Map">🎯 Hawkeye</button>
-                    <button type="button" class="three-cam-btn" id="btnCamReset" onclick="resetThreeCamera()" data-tooltip="Reset Camera Angle &amp; Distance">↺ Reset</button>
+                    <button type="button" class="three-cam-btn" id="btnCamAuto" onclick="toggleThreeAutoRotate()" data-tooltip="Toggle 360° Broadcast Auto-Orbit Camera">${iconSvg('satellite', 'currentColor', 14)} Auto-Cam</button>
+                    <button type="button" class="three-cam-btn accent" id="btnThreeSubMode" onclick="toggleThreeVisualMode()" data-tooltip="Switch to 3D Hawkeye Ball-Tracking Pitch Map">${iconSvg('target', 'currentColor', 14)} Hawkeye</button>
+                    <button type="button" class="three-cam-btn" id="btnCamReset" onclick="resetThreeCamera()" data-tooltip="Reset Camera Angle &amp; Distance">${iconSvg('refresh', 'currentColor', 14)} Reset</button>
                   </div>
                 </div>
 
                 <!-- 3D Visual Modes & Stadium Lighting Sub-Bar -->
                 <div class="three-sub-bar" id="threeSubBar">
                   <div class="three-bar-group mode-group">
-                    <button type="button" class="three-cam-btn active" id="btnModeWagon" onclick="setThreeVisualMode('WAGON')" data-tooltip="3D Wagon Wheel Outfield Shot Trajectories">🏏 Wagon</button>
-                    <button type="button" class="three-cam-btn" id="btnModeHawkeye" onclick="setThreeVisualMode('HAWKEYE')" data-tooltip="3D Hawkeye Ball-Tracking Pitch Length Map">🎯 Hawkeye</button>
-                    <button type="button" class="three-cam-btn" id="btnModeFusion" onclick="setThreeVisualMode('FUSION')" data-tooltip="Simultaneous Pitch Delivery &amp; Shot Boundary Fusion">🔀 Fusion</button>
-                    <button type="button" class="three-cam-btn" id="btnModeFielders" onclick="setThreeVisualMode('FIELD')" data-tooltip="11 3D Fielders with Dynamic Catch Cones &amp; Radius">👥 Fielders</button>
-                    <button type="button" class="three-cam-btn accent" id="btnModeDrs" onclick="setThreeVisualMode('DRS')" data-tooltip="Procedural DRS LBW Ball-Tracking Review &amp; Stumps Collision">⚖️ DRS Review</button>
+                    <button type="button" class="three-cam-btn active" id="btnModeWagon" onclick="setThreeVisualMode('WAGON')" data-tooltip="3D Wagon Wheel Outfield Shot Trajectories">${iconSvg('bat', 'currentColor', 14)} Wagon</button>
+                    <button type="button" class="three-cam-btn" id="btnModeHawkeye" onclick="setThreeVisualMode('HAWKEYE')" data-tooltip="3D Hawkeye Ball-Tracking Pitch Length Map">${iconSvg('target', 'currentColor', 14)} Hawkeye</button>
+                    <button type="button" class="three-cam-btn" id="btnModeFusion" onclick="setThreeVisualMode('FUSION')" data-tooltip="Simultaneous Pitch Delivery &amp; Shot Boundary Fusion">${iconSvg('refresh', 'currentColor', 14)} Fusion</button>
+                    <button type="button" class="three-cam-btn" id="btnModeFielders" onclick="setThreeVisualMode('FIELD')" data-tooltip="11 3D Fielders with Dynamic Catch Cones &amp; Radius">${iconSvg('users', 'currentColor', 14)} Fielders</button>
+                    <button type="button" class="three-cam-btn accent" id="btnModeDrs" onclick="setThreeVisualMode('DRS')" data-tooltip="Procedural DRS LBW Ball-Tracking Review &amp; Stumps Collision">${iconSvg('scale', 'currentColor', 14)} DRS Review</button>
                   </div>
                   <div class="three-bar-group lighting-group">
-                    <button type="button" class="three-cam-btn" id="btnLightDay" onclick="setThreeStadiumLighting('DAY')" data-tooltip="Afternoon Stadium Sunlight">☀️ Day</button>
-                    <button type="button" class="three-cam-btn" id="btnLightDusk" onclick="setThreeStadiumLighting('DUSK')" data-tooltip="Golden Hour Dusk Twilight">🌅 Dusk</button>
-                    <button type="button" class="three-cam-btn active" id="btnLightNight" onclick="setThreeStadiumLighting('NIGHT')" data-tooltip="Floodlit Night Match Arena">🌙 Night</button>
+                    <button type="button" class="three-cam-btn" id="btnLightDay" onclick="setThreeStadiumLighting('DAY')" data-tooltip="Afternoon Stadium Sunlight">${iconSvg('sun', '#F59E0B', 14)} Day</button>
+                    <button type="button" class="three-cam-btn" id="btnLightDusk" onclick="setThreeStadiumLighting('DUSK')" data-tooltip="Golden Hour Dusk Twilight">${iconSvg('sun', '#F97316', 14)} Dusk</button>
+                    <button type="button" class="three-cam-btn active" id="btnLightNight" onclick="setThreeStadiumLighting('NIGHT')" data-tooltip="Floodlit Night Match Arena">${iconSvg('moon', '#38BDF8', 14)} Night</button>
                   </div>
                 </div>
 
                 <!-- Fallback Notice (Graceful degradation if WebGL is unavailable) -->
                 <div class="three-fallback-notice" id="threeJsFallbackNotice" style="display: none;">
-                  <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚠️</div>
+                  <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">${iconSvg('alert', '#F59E0B', 24)}</div>
                   <div style="font-weight: 700; margin-bottom: 0.25rem;">WebGL Acceleration Unavailable</div>
                   <div style="font-size: 0.72rem; color: #94A3B8; margin-bottom: 0.75rem;">Your device or browser does not currently support hardware WebGL rendering.</div>
                   <button type="button" class="btn btn-primary" onclick="setWagonDisplayMode('2D')" style="font-size: 0.72rem; padding: 0.3rem 0.7rem;" data-tooltip="Return to 2D schematic wagon map" aria-label="Return to 2D Schematic Map">Return to 2D Schematic Map</button>
@@ -7083,7 +7173,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog">
       <div class="modal-header">
         <div class="modal-title">
-          <span>👤 User Profile &amp; Persona Switcher</span>
+          <span>${iconSvg('user', 'var(--turf-emerald)', 18)} User Profile &amp; Persona Switcher</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeUserModal()" data-tooltip="Close modal">✕</button>
       </div>
@@ -7091,45 +7181,45 @@ export function getDashboardHtml() {
         <!-- Active User Account & Provisioned Personas Banner -->
         <div id="userAllowedPersonasBanner" style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 10px; padding: 0.6rem 0.85rem; margin-bottom: 0.85rem;">
           <div>
-            <div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.04em;" id="userAccountStatusTitle">🔐 Authenticated Session • Provisioned Personas</div>
+            <div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.04em;" id="userAccountStatusTitle">${iconSvg('lock', 'var(--turf-emerald)', 14)} Authenticated Session • Provisioned Personas</div>
             <div style="font-size: 0.74rem; color: #cbd5e1; margin-top: 0.15rem;" id="userAllowedPersonasListLabel">Available to your account: All 8 Personas</div>
           </div>
-          <button type="button" id="btnDesktopSignOut" class="btn btn-secondary btn-sm" onclick="logoutToHero()" style="width: auto; padding: 0.38rem 0.75rem; font-size: 0.74rem; border-color: rgba(0, 210, 255, 0.45); color: #00D2FF; white-space: nowrap;" data-tooltip="Sign out to Animated Hero Page &amp; Login screen to switch user account">🚪 Sign Out / Switch Account</button>
+          <button type="button" id="btnDesktopSignOut" class="btn btn-secondary btn-sm" onclick="logoutToHero()" style="width: auto; padding: 0.38rem 0.75rem; font-size: 0.74rem; border-color: rgba(0, 210, 255, 0.45); color: #00D2FF; white-space: nowrap;" data-tooltip="Sign out to Animated Hero Page &amp; Login screen to switch user account">${iconSvg('signout', '#00D2FF', 14)} Sign Out / Switch Account</button>
         </div>
 
         <!-- Persona Pills -->
         <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; display: block;">Select Active Persona (Scoped to Your Account)</label>
         <div class="persona-pills-container">
           <button class="persona-pill-btn active" onclick="selectPersona('CAPTAIN')" data-role="CAPTAIN" data-tooltip="Captain persona: Manage Playing XI, toss, declarations, and tactical pad">
-            <span class="persona-icon">👑</span>
+            <span class="persona-icon">${iconSvg('crown', 'var(--gold, #F59E0B)', 18)}</span>
             <span>Captain</span>
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('PLAYER')" data-role="PLAYER" data-tooltip="Player persona: Career stats, RSVP, squad roster, and match fixtures">
-            <span class="persona-icon">🏏</span>
+            <span class="persona-icon">${iconSvg('bat', 'var(--turf-emerald)', 18)}</span>
             <span>Player</span>
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('SCORER')" data-role="SCORER" data-tooltip="Official Scorer: Ball-by-ball scoring, dismissals, wagon wheel, and match sign-off">
-            <span class="persona-icon">📋</span>
+            <span class="persona-icon">${iconSvg('clipboard', 'var(--cyan)', 18)}</span>
             <span>Scorer</span>
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('FAN')" data-role="FAN" data-tooltip="Fan persona: Live spectator broadcast, cheering console, polls, and MVP insights">
-            <span class="persona-icon">🎪</span>
+            <span class="persona-icon">${iconSvg('sparkle', 'var(--violet, #A78BFA)', 18)}</span>
             <span>Fan</span>
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('UMPIRE')" data-role="UMPIRE" data-tooltip="Official Umpire: Fair play reports, code of conduct breaches, DRS reviews, and sign-off">
-            <span class="persona-icon">⚖️</span>
+            <span class="persona-icon">${iconSvg('scale', 'var(--gold, #F59E0B)', 18)}</span>
             <span>Umpire</span>
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('ADMIN')" data-role="ADMIN" data-tooltip="Platform Admin: Unrestricted access across all consoles, ledgers, audit desk, and APIs">
-            <span class="persona-icon">⚡</span>
+            <span class="persona-icon">${iconSvg('lightning', 'var(--rose, #F43F5E)', 18)}</span>
             <span>Admin</span>
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('ORGANISER')" data-role="ORGANISER" data-tooltip="Tournament Organiser: Fixture brackets, round-robin scheduler, and venue RFQs">
-            <span class="persona-icon">🏆</span>
+            <span class="persona-icon">${iconSvg('trophy', 'var(--gold, #F59E0B)', 18)}</span>
             <span>Organiser</span>
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('TURF_PROVIDER')" data-role="TURF_PROVIDER" data-tooltip="Turf Venue Owner: Manage ground slots, surge pricing, and escrow payouts">
-            <span class="persona-icon">🏟️</span>
+            <span class="persona-icon">${iconSvg('stadium', 'var(--turf-emerald)', 18)}</span>
             <span>Provider</span>
           </button>
         </div>
@@ -7143,15 +7233,15 @@ export function getDashboardHtml() {
                 <span class="avatar-initials-fallback" id="profileAvatarInitials">VK</span>
               </div>
               <div class="avatar-camera-overlay">
-                <span style="font-size: 1.2rem;">📷</span>
+                <span style="font-size: 1.2rem;">${iconSvg('camera', '#FFFFFF', 20)}</span>
                 <span>Upload</span>
               </div>
             </div>
             <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="handleUserPhotoUpload(event)">
             <div style="display: flex; flex-direction: column; gap: 0.4rem;">
               <div style="display: flex; gap: 0.4rem;">
-                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('profilePhotoInput').click()" data-tooltip="Select image file from your device" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;">📁 Choose File</button>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="resetUserAvatarToDefault()" data-tooltip="Reset to standard initials monogram" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem; color: var(--rose);">↺ Reset</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('profilePhotoInput').click()" data-tooltip="Select image file from your device" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;">${iconSvg('document', 'currentColor', 14)} Choose File</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="resetUserAvatarToDefault()" data-tooltip="Reset to standard initials monogram" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem; color: var(--rose);">${iconSvg('refresh', 'var(--rose)', 14)} Reset</button>
               </div>
               <div style="font-size: 0.68rem; color: var(--text-muted);">PNG, JPG, WebP &bull; Drag &amp; drop onto avatar circle</div>
             </div>
@@ -7336,7 +7426,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog modal-card" style="max-width: 920px; width: 96vw;">
       <div class="modal-header" style="border-bottom: 1px solid var(--border-subtle); padding: 0.9rem 1.4rem; display: flex; align-items: center; justify-content: space-between;">
         <div class="modal-title" id="appSettingsTitle" style="display: flex; align-items: center; gap: 0.55rem; font-size: 1.05rem; font-weight: 800;">
-          <span style="font-size: 1.25rem;">⚙️</span>
+          <span style="display: inline-flex; align-items: center;">${iconSvg('gear', 'var(--turf-emerald)', 20)}</span>
           <span>CricOS Unified App Settings</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeAppSettingsModal()" data-tooltip="Close settings dialog (Esc)">✕</button>
@@ -7346,23 +7436,23 @@ export function getDashboardHtml() {
         <!-- Vertical Category Nav -->
         <nav class="settings-nav" aria-label="Settings Categories">
           <button type="button" class="settings-nav-item active" id="tabBtn_appearance" onclick="switchAppSettingsTab('appearance')" data-tooltip="Visual themes, clean view declutter, and display options">
-            <span>🎨</span>
+            <span>${iconSvg('palette', 'var(--turf-emerald)', 16)}</span>
             <span>Appearance &amp; Theme</span>
           </button>
           <button type="button" class="settings-nav-item" id="tabBtn_audio" onclick="switchAppSettingsTab('audio')" data-tooltip="Broadcast commentary style, audio readout &amp; match sound effects">
-            <span>🎙️</span>
+            <span>${iconSvg('mic', 'var(--cyan)', 16)}</span>
             <span>Broadcast &amp; Audio</span>
           </button>
           <button type="button" class="settings-nav-item" id="tabBtn_scoring" onclick="switchAppSettingsTab('scoring')" data-tooltip="Default batter stance, 3D stadium mode &amp; strike rotation">
-            <span>🏏</span>
+            <span>${iconSvg('bat', 'var(--turf-emerald)', 16)}</span>
             <span>Scoring &amp; 3D Radar</span>
           </button>
           <button type="button" class="settings-nav-item" id="tabBtn_locale" onclick="switchAppSettingsTab('locale')" data-tooltip="Currency, speed units, distance units &amp; venue weather">
-            <span>🌍</span>
+            <span>${iconSvg('stadium', 'var(--gold, #F59E0B)', 16)}</span>
             <span>Locale &amp; Units</span>
           </button>
           <button type="button" class="settings-nav-item" id="tabBtn_system" onclick="switchAppSettingsTab('system')" data-tooltip="Notification alerts, offline storage cache &amp; reset defaults">
-            <span>🔔</span>
+            <span>${iconSvg('bell', 'var(--rose, #F43F5E)', 16)}</span>
             <span>Alerts &amp; Reset</span>
           </button>
         </nav>
@@ -7372,21 +7462,21 @@ export function getDashboardHtml() {
           <!-- 1. Appearance & Theme Panel -->
           <div class="settings-tab-panel" id="settingsPanel_appearance">
             <div class="settings-section-card">
-              <div style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">🎨 Design Theme &amp; Visual Language</div>
+              <div style="font-size: 0.76rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('palette', 'var(--turf-emerald)', 16)} Design Theme &amp; Visual Language</div>
               <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">Select your preferred atmosphere. CricOS dynamically enforces WCAG AAA contrast across all surfaces.</div>
               <div class="settings-theme-grid">
                 <div class="settings-theme-card" id="themeCard_swiss" onclick="selectSettingsTheme('swiss')" data-tooltip="Swiss Minimalist: High-contrast daylight paper with 7.09:1 WCAG AAA readability">
-                  <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🇨🇭</div>
+                  <div style="margin-bottom: 0.3rem;">${iconSvg('palette', '#0F172A', 26)}</div>
                   <div style="font-weight: 800; font-size: 0.8rem; color: #0F172A;">Swiss Minimal</div>
                   <div style="font-size: 0.68rem; color: #475569; margin-top: 0.2rem;">Daylight Paper #F8F9FA</div>
                 </div>
                 <div class="settings-theme-card" id="themeCard_nordic" onclick="selectSettingsTheme('nordic')" data-tooltip="Nordic Editorial: Warm Scandinavian oat canvas with forest accents">
-                  <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🌾</div>
+                  <div style="margin-bottom: 0.3rem;">${iconSvg('leaf', '#1C1917', 26)}</div>
                   <div style="font-weight: 800; font-size: 0.8rem; color: #1C1917;">Nordic Editorial</div>
                   <div style="font-size: 0.68rem; color: #57534E; margin-top: 0.2rem;">Warm Canvas #FCFBF8</div>
                 </div>
                 <div class="settings-theme-card" id="themeCard_stadium" onclick="selectSettingsTheme('stadium')" data-tooltip="Stadium Night: Obsidian floodlit broadcast glassmorphism">
-                  <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🌙</div>
+                  <div style="margin-bottom: 0.3rem;">${iconSvg('moon', '#00E599', 26)}</div>
                   <div style="font-weight: 800; font-size: 0.8rem; color: #00E599;">Stadium Night</div>
                   <div style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.2rem;">Obsidian Glass #04070D</div>
                 </div>
@@ -7396,7 +7486,7 @@ export function getDashboardHtml() {
             <div class="settings-section-card">
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">✨ Clean View Mode (Decluttered Focus)</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('clean', 'currentColor', 16)} Clean View Mode (Decluttered Focus)</div>
                   <div class="settings-row-desc">Removes obvious headers, hides verbose text labels in favor of crisp icons, and applies compact cards.</div>
                 </div>
                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: var(--turf-emerald);">
@@ -7407,7 +7497,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">☀️ Outdoor / High-Contrast Sunlight Mode</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('sun', '#F59E0B', 16)} Outdoor / High-Contrast Sunlight Mode</div>
                   <div class="settings-row-desc">Instantly toggles between high-contrast daylight Swiss Minimalist and Obsidian Floodlit stadium mode.</div>
                 </div>
                 <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.82rem; font-weight: 700;">
@@ -7418,7 +7508,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">📐 Card &amp; Scoreboard Density</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('radar', 'var(--cyan)', 16)} Card &amp; Scoreboard Density</div>
                   <div class="settings-row-desc">Control padding and gaps across cards, scoreboards, and product listings.</div>
                 </div>
                 <select id="settingSelectDensity" onchange="updateAppSetting('cardDensity', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
@@ -7432,27 +7522,27 @@ export function getDashboardHtml() {
           <!-- 2. Broadcast & Audio Panel -->
           <div class="settings-tab-panel" id="settingsPanel_audio" style="display: none;">
             <div class="settings-section-card">
-              <div style="font-size: 0.76rem; font-weight: 800; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">🎙️ Broadcast Commentary Narrative Engine</div>
+              <div style="font-size: 0.76rem; font-weight: 800; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('mic', 'var(--cyan)', 16)} Broadcast Commentary Narrative Engine</div>
               <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">Switch live commentator voice persona to change tactical analysis and ball-by-ball narrative style.</div>
               <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
                 <label style="display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); cursor: pointer;">
                   <input type="radio" name="settingsCommentaryVoice" value="ANALYTICAL" onchange="updateAppSetting('commentaryVoice', 'ANALYTICAL')">
                   <div>
-                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--turf-emerald);">📊 Analytical (Harsha)</div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--turf-emerald); display: flex; align-items: center; gap: 0.35rem;">${iconSvg('chart', 'var(--turf-emerald)', 16)} Analytical (Harsha)</div>
                     <div style="font-size: 0.7rem; color: var(--text-muted);">Data-driven win probability, pitch microclimate seam analysis &amp; field-restriction math.</div>
                   </div>
                 </label>
                 <label style="display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); cursor: pointer;">
                   <input type="radio" name="settingsCommentaryVoice" value="HYPE" onchange="updateAppSetting('commentaryVoice', 'HYPE')">
                   <div>
-                    <div style="font-size: 0.82rem; font-weight: 800; color: #A855F7;">⚡ High-Octane (Ravi)</div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: #A855F7; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('lightning', '#A855F7', 16)} High-Octane (Ravi)</div>
                     <div style="font-size: 0.7rem; color: var(--text-muted);">Electric maximums, stadium crowd roar, tracer-bullet boundaries &amp; climax moments.</div>
                   </div>
                 </label>
                 <label style="display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); cursor: pointer;">
                   <input type="radio" name="settingsCommentaryVoice" value="TACTICAL" onchange="updateAppSetting('commentaryVoice', 'TACTICAL')">
                   <div>
-                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--cyan);">👑 Captain's Dugout (Nasser)</div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--cyan); display: flex; align-items: center; gap: 0.35rem;">${iconSvg('crown', 'var(--cyan)', 16)} Captain's Dugout (Nasser)</div>
                     <div style="font-size: 0.7rem; color: var(--text-muted);">Captaincy rationale, 30-yard ring single-choking, slip cordons &amp; batting traps.</div>
                   </div>
                 </label>
@@ -7462,7 +7552,7 @@ export function getDashboardHtml() {
             <div class="settings-section-card">
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🔊 Web Audio Sound FX &amp; Sirens</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('volume', 'currentColor', 16)} Web Audio Sound FX &amp; Sirens</div>
                   <div class="settings-row-desc">Synthesized sound effects for boundaries (4s/6s), wickets, and DRS appeals.</div>
                 </div>
                 <input type="checkbox" id="settingCbSoundFx" onchange="updateAppSetting('audioEnabled', this.checked)">
@@ -7470,7 +7560,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🗣️ Speech Synthesis TTS Commentary Readout</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('chat', 'currentColor', 16)} Speech Synthesis TTS Commentary Readout</div>
                   <div class="settings-row-desc">Automatically read live ball-by-ball commentary aloud via Web Speech API.</div>
                 </div>
                 <input type="checkbox" id="settingCbCommentaryTts" onchange="updateAppSetting('commentaryTts', this.checked)">
@@ -7478,7 +7568,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">⏩ TTS Speech Rate</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('rocket', 'currentColor', 16)} TTS Speech Rate</div>
                   <div class="settings-row-desc">Adjust the speed of synthetic speech narration.</div>
                 </div>
                 <select id="settingSelectSpeechRate" onchange="updateAppSetting('speechRate', parseFloat(this.value))" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
@@ -7495,7 +7585,7 @@ export function getDashboardHtml() {
             <div class="settings-section-card">
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🏏 Default Batter Stance Orientation</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('bat', 'currentColor', 16)} Default Batter Stance Orientation</div>
                   <div class="settings-row-desc">Mirrors pitch maps, wagon wheels, and fielding coordinates for right-handed vs left-handed batters.</div>
                 </div>
                 <div style="display: flex; gap: 0.4rem;">
@@ -7506,7 +7596,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🌐 3D Stadium &amp; Radar Simulation Mode</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('stadium', 'currentColor', 16)} 3D Stadium &amp; Radar Simulation Mode</div>
                   <div class="settings-row-desc">Default visualizer mode on match dashboard and interactive broadcast HUD.</div>
                 </div>
                 <select id="settingSelectCanvasMode" onchange="updateAppSetting('canvasVisualMode', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
@@ -7518,7 +7608,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🔄 Auto-Rotate Strike on Odd Runs (1, 3, 5)</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('refresh', 'currentColor', 16)} Auto-Rotate Strike on Odd Runs (1, 3, 5)</div>
                   <div class="settings-row-desc">Automatically swap striker and non-striker in compliance with MCC Law 18.</div>
                 </div>
                 <input type="checkbox" id="settingCbAutoStrike" onchange="updateAppSetting('autoRotateStrike', this.checked)">
@@ -7526,15 +7616,15 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🎯 Default Tactical Field Formation Preset</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('target', 'currentColor', 16)} Default Tactical Field Formation Preset</div>
                   <div class="settings-row-desc">Initial 11-player formation when launching the Tactical Field Planner.</div>
                 </div>
                 <select id="settingSelectFieldPreset" onchange="updateAppSetting('defaultFieldPreset', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
-                  <option value="POWERPLAY_ATTACK">⚡ PP1 Attack (2 Slips + Gully)</option>
-                  <option value="OFFSIDE_RING_SQUEEZE">🔒 7-2 Off-Side Squeeze</option>
-                  <option value="DEATH_YORKER_DEFENSE">🔥 Death Wide Yorker (5 Out)</option>
-                  <option value="MIDDLE_SPIN_TRAP">🛡️ Middle Spin Web (Short Leg)</option>
-                  <option value="SUPER_OVER_UMBRELLA">🏆 Super Over Umbrella</option>
+                  <option value="POWERPLAY_ATTACK">PP1 Attack (2 Slips + Gully)</option>
+                  <option value="OFFSIDE_RING_SQUEEZE">7-2 Off-Side Squeeze</option>
+                  <option value="DEATH_YORKER_DEFENSE">Death Wide Yorker (5 Out)</option>
+                  <option value="MIDDLE_SPIN_TRAP">Middle Spin Web (Short Leg)</option>
+                  <option value="SUPER_OVER_UMBRELLA">Super Over Umbrella</option>
                 </select>
               </div>
             </div>
@@ -7545,7 +7635,7 @@ export function getDashboardHtml() {
             <div class="settings-section-card">
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">💰 Currency Display</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('coin', 'currentColor', 16)} Currency Display</div>
                   <div class="settings-row-desc">Used across double-entry ledger, provider escrows, and pro gear store.</div>
                 </div>
                 <select id="settingSelectCurrency" onchange="updateAppSetting('currency', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
@@ -7559,7 +7649,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">⚡ Delivery Speed Units</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('lightning', 'currentColor', 16)} Delivery Speed Units</div>
                   <div class="settings-row-desc">Units for radar gun and ball telemetry (km/h vs mph).</div>
                 </div>
                 <select id="settingSelectSpeedUnit" onchange="updateAppSetting('speedUnit', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
@@ -7570,7 +7660,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">📏 Boundary &amp; Pitch Distance Units</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('scale', 'currentColor', 16)} Boundary &amp; Pitch Distance Units</div>
                   <div class="settings-row-desc">Units for boundary distance, trajectory arcs, and pitch lengths.</div>
                 </div>
                 <select id="settingSelectDistanceUnit" onchange="updateAppSetting('distanceUnit', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
@@ -7581,7 +7671,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🏟️ Default Match Venue Microclimate</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('pin', 'currentColor', 16)} Default Match Venue Microclimate</div>
                   <div class="settings-row-desc">Location profile for live GPS weather forecasts and pitch aerodynamics.</div>
                 </div>
                 <select id="settingSelectVenueWeather" onchange="updateAppSetting('venueWeather', this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #FFF; border-radius: 6px; padding: 0.28rem 0.65rem; font-size: 0.78rem;">
@@ -7600,7 +7690,7 @@ export function getDashboardHtml() {
             <div class="settings-section-card">
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">🔔 Real-Time Match Alerts</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('bell', 'currentColor', 16)} Real-Time Match Alerts</div>
                   <div class="settings-row-desc">Toasts for wickets, boundaries (4s/6s), milestones, and DRS outcomes.</div>
                 </div>
                 <input type="checkbox" id="settingCbMatchAlerts" onchange="updateAppSetting('matchAlerts', this.checked)">
@@ -7608,7 +7698,7 @@ export function getDashboardHtml() {
 
               <div class="settings-row">
                 <div>
-                  <div class="settings-row-label">💳 Financial &amp; Escrow Ledger Alerts</div>
+                  <div class="settings-row-label" style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('card', 'currentColor', 16)} Financial &amp; Escrow Ledger Alerts</div>
                   <div class="settings-row-desc">Notifications for 5-account balance releases, player purse deductions, and payouts.</div>
                 </div>
                 <input type="checkbox" id="settingCbFinancialAlerts" onchange="updateAppSetting('financialAlerts', this.checked)">
@@ -7616,11 +7706,11 @@ export function getDashboardHtml() {
             </div>
 
             <div class="settings-section-card">
-              <div style="font-size: 0.76rem; font-weight: 800; color: var(--rose); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">💾 Diagnostics &amp; Configuration Management</div>
+              <div style="font-size: 0.76rem; font-weight: 800; color: var(--rose); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('lock', 'var(--rose)', 16)} Diagnostics &amp; Configuration Management</div>
               <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">Export your complete application setup or reset all preferences back to factory defaults.</div>
               <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
-                <button type="button" class="btn btn-secondary btn-sm" id="btnExportAppSettings" onclick="exportAppSettings()" style="width: auto; padding: 0.4rem 0.85rem;" data-tooltip="Copy entire settings JSON schema to clipboard">📋 Export Settings JSON</button>
-                <button type="button" class="btn btn-secondary btn-sm" id="btnResetAppSettings" onclick="resetAppSettings()" style="width: auto; padding: 0.4rem 0.85rem; color: var(--rose); border-color: rgba(255, 51, 102, 0.4);" data-tooltip="Restore all application preferences back to defaults">↺ Reset to Defaults</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnExportAppSettings" onclick="exportAppSettings()" style="width: auto; padding: 0.4rem 0.85rem;" data-tooltip="Copy entire settings JSON schema to clipboard">${iconSvg('clipboard', 'currentColor', 14)} Export Settings JSON</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnResetAppSettings" onclick="resetAppSettings()" style="width: auto; padding: 0.4rem 0.85rem; color: var(--rose); border-color: rgba(255, 51, 102, 0.4);" data-tooltip="Restore all application preferences back to defaults">${iconSvg('refresh', 'var(--rose)', 14)} Reset to Defaults</button>
               </div>
             </div>
           </div>
@@ -7686,14 +7776,14 @@ export function getDashboardHtml() {
 
       <!-- Interactive Canvas Visual Mode Selector -->
       <div id="heroCanvasModeBar" style="display: inline-flex; align-items: center; gap: 0.35rem; background-color: #0A1426; background: rgba(10, 20, 38, 0.94); border: 1px solid rgba(255,255,255,0.18); padding: 0.28rem; border-radius: 10px;">
-        <button type="button" id="btnHeroCanvasModeWagon" onclick="setHeroCanvasVisualMode('WAGON')" style="background-color: #063429; background: rgba(0, 229, 153, 0.24); color: #6EE7B7; border: 1px solid rgba(0, 229, 153, 0.55); border-radius: 7px; padding: 0.3rem 0.7rem; font-size: 0.72rem; font-weight: 800; cursor: pointer;" data-tooltip="Render 60fps 3D Wagon Wheel parabolic arcs on stadium canvas">🏏 3D Wagon Arcs</button>
-        <button type="button" id="btnHeroCanvasModeHawkeye" onclick="setHeroCanvasVisualMode('HAWKEYE')" style="background-color: transparent; background: transparent; color: #E2E8F0; border: 1px solid transparent; border-radius: 7px; padding: 0.3rem 0.7rem; font-size: 0.72rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch stadium canvas to Hawk-Eye DRS ball-tracking corridor">🎯 Hawk-Eye DRS</button>
-        <button type="button" id="btnHeroCanvasModeRadar" onclick="setHeroCanvasVisualMode('RADAR')" style="background-color: transparent; background: transparent; color: #E2E8F0; border: 1px solid transparent; border-radius: 7px; padding: 0.3rem 0.7rem; font-size: 0.72rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch stadium canvas to 11-Fielder Powerplay Tactical Radar">🛡️ Field Radar</button>
+        <button type="button" id="btnHeroCanvasModeWagon" onclick="setHeroCanvasVisualMode('WAGON')" style="background-color: #063429; background: rgba(0, 229, 153, 0.24); color: #6EE7B7; border: 1px solid rgba(0, 229, 153, 0.55); border-radius: 7px; padding: 0.3rem 0.7rem; font-size: 0.72rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Render 60fps 3D Wagon Wheel parabolic arcs on stadium canvas">${iconSvg('bat', '#6EE7B7', 14)} 3D Wagon Arcs</button>
+        <button type="button" id="btnHeroCanvasModeHawkeye" onclick="setHeroCanvasVisualMode('HAWKEYE')" style="background-color: transparent; background: transparent; color: #E2E8F0; border: 1px solid transparent; border-radius: 7px; padding: 0.3rem 0.7rem; font-size: 0.72rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Switch stadium canvas to Hawk-Eye DRS ball-tracking corridor">${iconSvg('target', '#E2E8F0', 14)} Hawk-Eye DRS</button>
+        <button type="button" id="btnHeroCanvasModeRadar" onclick="setHeroCanvasVisualMode('RADAR')" style="background-color: transparent; background: transparent; color: #E2E8F0; border: 1px solid transparent; border-radius: 7px; padding: 0.3rem 0.7rem; font-size: 0.72rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Switch stadium canvas to 11-Fielder Powerplay Tactical Radar">${iconSvg('shield', '#E2E8F0', 14)} Field Radar</button>
       </div>
 
       <div style="display: flex; align-items: center; gap: 0.75rem;">
         <span id="heroStageBadge" style="font-size: 0.7rem; font-weight: 800; color: #7DD3FC; background-color: #08243B; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(0, 210, 255, 0.45); padding: 0.32rem 0.7rem; border-radius: 7px;">STAGE 1 OF 2 • ANIMATED HERO</span>
-        <button type="button" id="btnHeroHeaderSignIn" onclick="showHeroLoginStage()" style="background-color: #00E599; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 8px; padding: 0.5rem 1.1rem; font-size: 0.82rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 229, 153, 0.32);" data-tooltip="Proceed to Login screen">🔐 Sign In →</button>
+        <button type="button" id="btnHeroHeaderSignIn" onclick="showHeroLoginStage()" style="background-color: #00E599; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 8px; padding: 0.5rem 1.1rem; font-size: 0.82rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 229, 153, 0.32); display: inline-flex; align-items: center; gap: 0.4rem;" data-tooltip="Proceed to Login screen">${iconSvg('lock', '#04070D', 14)} Sign In →</button>
       </div>
     </header>
 
@@ -7706,7 +7796,7 @@ export function getDashboardHtml() {
           <div>
             <div style="display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.36rem 0.85rem; border-radius: 999px; background-color: #062820; background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.48); color: #6EE7B7; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.95rem;">
               <span style="width: 8px; height: 8px; border-radius: 50%; background: #00E599; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);"></span>
-              <span>✨ LIVE 60FPS 3D STADIUM • RHB/LHB BIOMECHANICS • RBAC PERSONAS</span>
+              <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('sparkle', '#00E599', 14)} LIVE 60FPS 3D STADIUM • RHB/LHB BIOMECHANICS • RBAC PERSONAS</span>
             </div>
 
             <h1 id="heroKineticHeadline" style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.1rem, 3.4vw, 3.1rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 0.85rem 0; color: #FFFFFF;">
@@ -7720,25 +7810,25 @@ export function getDashboardHtml() {
             <!-- Primary & Interactive Secondary CTA Row -->
             <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-bottom: 1.2rem;">
               <button type="button" id="btnHeroProceedToLogin" onclick="showHeroLoginStage()" style="background-color: #00E599; background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%); color: #04070D; border: none; border-radius: 12px; padding: 0.85rem 1.7rem; font-size: 0.96rem; font-weight: 900; cursor: pointer; box-shadow: 0 12px 32px rgba(0, 229, 153, 0.34); letter-spacing: 0.01em; display: inline-flex; align-items: center; gap: 0.5rem;" data-tooltip="Proceed from Animated Hero Page to User Login">
-                <span>⚡ Enter CricOS — Sign In →</span>
+                <span style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('lightning', '#04070D', 16)} Enter CricOS — Sign In →</span>
               </button>
               <button type="button" id="btnHeroCyclePreview" onclick="cycleHeroInteractivePreview()" style="background-color: #0D1B32; background: rgba(13, 27, 50, 0.96); color: #FFFFFF; border: 1.5px solid rgba(56, 189, 248, 0.55); border-radius: 12px; padding: 0.85rem 1.25rem; font-size: 0.86rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);" data-tooltip="Cycle the live 3D Command HUD preview on the right across Scorer, Captain, Umpire, and Turf Store">
-                <span>🎛️</span> <span id="heroCyclePreviewBtnLabel" style="color: #FFFFFF;">Preview: Scorer 3D Pad ↻</span>
+                <span>${iconSvg('radar', '#38BDF8', 16)}</span> <span id="heroCyclePreviewBtnLabel" style="color: #FFFFFF;">Preview: Scorer 3D Pad ↻</span>
               </button>
             </div>
 
             <!-- Instant 1-Click Verified Persona Quick-Launch Bar -->
             <div id="heroQuickPersonaLaunchBar" style="width: 100%; background-color: #091326; background: rgba(9, 19, 38, 0.96); border: 1px solid rgba(56, 189, 248, 0.32); border-radius: 12px; padding: 0.72rem 0.9rem; margin-bottom: 1.15rem;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <span style="font-size: 0.7rem; font-weight: 800; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.05em;">🚀 Instant 1-Click Demo Account Launch (Zero-Friction Sandbox)</span>
+                <span style="font-size: 0.7rem; font-weight: 800; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('rocket', '#38BDF8', 14)} Instant 1-Click Demo Account Launch (Zero-Friction Sandbox)</span>
                 <span style="font-size: 0.66rem; color: #CBD5E1; font-family: 'JetBrains Mono', monospace; font-weight: 700;">JWT + RBAC Locked</span>
               </div>
               <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
-                <button type="button" id="btnHeroQuickCaptain" onclick="loginWithHeroAccount('CAPTAIN_PLAYER')" style="background-color: #0C233B; background: rgba(12, 35, 59, 0.96); border: 1px solid rgba(56, 189, 248, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant 1-click sign-in as Virat Sharma (CAPTAIN, PLAYER)">👑 Captain (Virat S.)</button>
-                <button type="button" id="btnHeroQuickScorer" onclick="loginWithHeroAccount('SCORER_ONLY')" style="background-color: #082923; background: rgba(8, 41, 35, 0.96); border: 1px solid rgba(16, 185, 129, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant 1-click sign-in as Sunil Gavaskar (SCORER)">📋 Scorer (Sunil G.)</button>
-                <button type="button" id="btnHeroQuickUmpire" onclick="loginWithHeroAccount('UMPIRE_OFFICIAL')" style="background-color: #2B1F0A; background: rgba(43, 31, 10, 0.96); border: 1px solid rgba(251, 191, 36, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant 1-click sign-in as Nitin Menon (UMPIRE, SCORER)">⚖️ Umpire (Nitin M.)</button>
-                <button type="button" id="btnHeroQuickOrganiser" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="background-color: #22163B; background: rgba(34, 22, 59, 0.96); border: 1px solid rgba(192, 132, 252, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant 1-click sign-in as Jay Shah (ORGANISER, TURF_PROVIDER)">🏆 Organiser (Jay S.)</button>
-                <button type="button" id="btnHeroQuickAdmin" onclick="loginWithHeroAccount('ADMIN_SUPERUSER')" style="background-color: #2E1120; background: rgba(46, 17, 32, 0.96); border: 1px solid rgba(251, 113, 133, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer;" data-tooltip="Instant 1-click sign-in as System Root (All 8 Personas)">⚡ Root Admin (All 8)</button>
+                <button type="button" id="btnHeroQuickCaptain" onclick="loginWithHeroAccount('CAPTAIN_PLAYER')" style="background-color: #0C233B; background: rgba(12, 35, 59, 0.96); border: 1px solid rgba(56, 189, 248, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Virat Sharma (CAPTAIN, PLAYER)">${iconSvg('crown', '#38BDF8', 14)} Captain (Virat S.)</button>
+                <button type="button" id="btnHeroQuickScorer" onclick="loginWithHeroAccount('SCORER_ONLY')" style="background-color: #082923; background: rgba(8, 41, 35, 0.96); border: 1px solid rgba(16, 185, 129, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Sunil Gavaskar (SCORER)">${iconSvg('clipboard', '#10B981', 14)} Scorer (Sunil G.)</button>
+                <button type="button" id="btnHeroQuickUmpire" onclick="loginWithHeroAccount('UMPIRE_OFFICIAL')" style="background-color: #2B1F0A; background: rgba(43, 31, 10, 0.96); border: 1px solid rgba(251, 191, 36, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Nitin Menon (UMPIRE, SCORER)">${iconSvg('scale', '#FBBF24', 14)} Umpire (Nitin M.)</button>
+                <button type="button" id="btnHeroQuickOrganiser" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="background-color: #22163B; background: rgba(34, 22, 59, 0.96); border: 1px solid rgba(192, 132, 252, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Jay Shah (ORGANISER, TURF_PROVIDER)">${iconSvg('trophy', '#C084FC', 14)} Organiser (Jay S.)</button>
+                <button type="button" id="btnHeroQuickAdmin" onclick="loginWithHeroAccount('ADMIN_SUPERUSER')" style="background-color: #2E1120; background: rgba(46, 17, 32, 0.96); border: 1px solid rgba(251, 113, 133, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as System Root (All 8 Personas)">${iconSvg('lightning', '#FB7185', 14)} Root Admin (All 8)</button>
               </div>
             </div>
           </div>
@@ -7772,17 +7862,17 @@ export function getDashboardHtml() {
               <span style="padding: 0.2rem 0.55rem; border-radius: 6px; background-color: #380D1A; background: rgba(255, 51, 102, 0.22); border: 1px solid rgba(255, 51, 102, 0.55); color: #FDA4AF; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.04em;">● LIVE 3D HUD</span>
               <span id="heroHudActiveModeTitle" style="font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 800; color: #FFFFFF;">Scorer 3D Ball-by-Ball &amp; Wagon Wheel</span>
             </div>
-            <button type="button" id="btnHeroPreviewStanceToggle" onclick="toggleHeroPreviewStance()" style="background-color: #082338; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(56, 189, 248, 0.55); color: #7DD3FC; border-radius: 7px; padding: 0.28rem 0.65rem; font-size: 0.7rem; font-weight: 800; cursor: pointer; font-family: 'JetBrains Mono', monospace;" data-tooltip="Toggle RHB vs LHB batter stance to see live ON-SIDE / OFF-SIDE biomechanical mirroring">
-              🏏 Stance: RHB (OFF-Left | ON-Right) ⇄
+            <button type="button" id="btnHeroPreviewStanceToggle" onclick="toggleHeroPreviewStance()" style="background-color: #082338; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(56, 189, 248, 0.55); color: #7DD3FC; border-radius: 7px; padding: 0.28rem 0.65rem; font-size: 0.7rem; font-weight: 800; cursor: pointer; font-family: 'JetBrains Mono', monospace; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Toggle RHB vs LHB batter stance to see live ON-SIDE / OFF-SIDE biomechanical mirroring">
+              ${iconSvg('bat', '#7DD3FC', 13)} Stance: RHB (OFF-Left | ON-Right) ⇄
             </button>
           </div>
 
           <!-- Interactive 4-Role Preview Tabs inside HUD -->
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem;" role="tablist" aria-label="Interactive Hero Telemetry Modes">
-            <button type="button" id="heroPreviewTab_SCORER" onclick="switchHeroInteractivePreview('SCORER')" style="background-color: #072E25; background: rgba(0, 229, 153, 0.22); border: 1px solid #00E599; color: #6EE7B7; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 800; cursor: pointer;" data-tooltip="Preview Official Scorer 3D Wagon Wheel &amp; Parabolic Arc">📋 Scorer 3D</button>
-            <button type="button" id="heroPreviewTab_CAPTAIN" onclick="switchHeroInteractivePreview('CAPTAIN')" style="background-color: #0C182C; background: rgba(12, 24, 44, 0.94); border: 1px solid rgba(255,255,255,0.18); color: #E2E8F0; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Preview Captain 11-Fielder Powerplay Radar &amp; Win Sim">👑 Captain XI</button>
-            <button type="button" id="heroPreviewTab_UMPIRE" onclick="switchHeroInteractivePreview('UMPIRE')" style="background-color: #0C182C; background: rgba(12, 24, 44, 0.94); border: 1px solid rgba(255,255,255,0.18); color: #E2E8F0; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Preview Umpire Hawk-Eye DRS Impact Corridor &amp; Weather">⚖️ DRS &amp; Turf</button>
-            <button type="button" id="heroPreviewTab_COMMERCE" onclick="switchHeroInteractivePreview('COMMERCE')" style="background-color: #0C182C; background: rgba(12, 24, 44, 0.94); border: 1px solid rgba(255,255,255,0.18); color: #E2E8F0; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 700; cursor: pointer;" data-tooltip="Preview Pro Gear Kit Bag, 3D Bat Customizer &amp; Turf Escrow">🛍️ Gear &amp; Turf</button>
+            <button type="button" id="heroPreviewTab_SCORER" onclick="switchHeroInteractivePreview('SCORER')" style="background-color: #072E25; background: rgba(0, 229, 153, 0.22); border: 1px solid #00E599; color: #6EE7B7; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Preview Official Scorer 3D Wagon Wheel &amp; Parabolic Arc">${iconSvg('clipboard', '#6EE7B7', 13)} Scorer 3D</button>
+            <button type="button" id="heroPreviewTab_CAPTAIN" onclick="switchHeroInteractivePreview('CAPTAIN')" style="background-color: #0C182C; background: rgba(12, 24, 44, 0.94); border: 1px solid rgba(255,255,255,0.18); color: #E2E8F0; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Preview Captain 11-Fielder Powerplay Radar &amp; Win Sim">${iconSvg('crown', '#E2E8F0', 13)} Captain XI</button>
+            <button type="button" id="heroPreviewTab_UMPIRE" onclick="switchHeroInteractivePreview('UMPIRE')" style="background-color: #0C182C; background: rgba(12, 24, 44, 0.94); border: 1px solid rgba(255,255,255,0.18); color: #E2E8F0; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Preview Umpire Hawk-Eye DRS Impact Corridor &amp; Weather">${iconSvg('scale', '#E2E8F0', 13)} DRS &amp; Turf</button>
+            <button type="button" id="heroPreviewTab_COMMERCE" onclick="switchHeroInteractivePreview('COMMERCE')" style="background-color: #0C182C; background: rgba(12, 24, 44, 0.94); border: 1px solid rgba(255,255,255,0.18); color: #E2E8F0; border-radius: 8px; padding: 0.42rem 0.35rem; font-size: 0.7rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;" data-tooltip="Preview Pro Gear Kit Bag, 3D Bat Customizer &amp; Turf Escrow">${iconSvg('cart', '#E2E8F0', 13)} Gear &amp; Turf</button>
           </div>
 
           <!-- Interactive 3D SVG Stadium & Trajectory Viewport (#heroInteractivePitchSvg) -->
@@ -7844,7 +7934,7 @@ export function getDashboardHtml() {
       <div id="heroBentoFeatureGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.85rem; width: 100%;">
         <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(0, 229, 153, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #6EE7B7;">📋 Scorer 3D Studio</span>
+            <span style="font-size: 0.84rem; font-weight: 800; color: #6EE7B7; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('clipboard', '#6EE7B7', 16)} Scorer 3D Studio</span>
             <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #062C23; background: rgba(0, 229, 153, 0.18); border: 1px solid rgba(0, 229, 153, 0.4); color: #6EE7B7;">RHB / LHB Auto-Mirror</span>
           </div>
           <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">Exclusive Ball-by-Ball Keypad &amp; Wagon Wheel</div>
@@ -7853,7 +7943,7 @@ export function getDashboardHtml() {
 
         <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(56, 189, 248, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #7DD3FC;">👑 Captain Tactical Hub</span>
+            <span style="font-size: 0.84rem; font-weight: 800; color: #7DD3FC; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('crown', '#7DD3FC', 16)} Captain Tactical Hub</span>
             <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #08243A; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(56, 189, 248, 0.4); color: #7DD3FC;">MCC Law 28.4 Radar</span>
           </div>
           <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">Playing XI Lineup, Toss &amp; 11-Fielder Radar</div>
@@ -7862,7 +7952,7 @@ export function getDashboardHtml() {
 
         <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(251, 191, 36, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #FDE047;">⚖️ Umpire DRS &amp; Weather</span>
+            <span style="font-size: 0.84rem; font-weight: 800; color: #FDE047; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('scale', '#FDE047', 16)} Umpire DRS &amp; Weather</span>
             <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #2B1E08; background: rgba(255, 184, 0, 0.18); border: 1px solid rgba(251, 191, 36, 0.4); color: #FDE047;">5-Hr Micro-Climate</span>
           </div>
           <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">Hawk-Eye Review, +5 Sanctions &amp; DLS Forecast</div>
@@ -7871,7 +7961,7 @@ export function getDashboardHtml() {
 
         <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(192, 132, 252, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #DDD6FE;">🛍️ Turf &amp; Pro Gear Store</span>
+            <span style="font-size: 0.84rem; font-weight: 800; color: #DDD6FE; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('cart', '#DDD6FE', 16)} Turf &amp; Pro Gear Store</span>
             <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #21153A; background: rgba(167, 139, 250, 0.18); border: 1px solid rgba(192, 132, 252, 0.4); color: #DDD6FE;">45m Pavilion Drop</span>
           </div>
           <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">15-Min GiST Slot Holds &amp; 3D Willow Kit Bag</div>
@@ -7884,21 +7974,21 @@ export function getDashboardHtml() {
     <section id="heroStageLogin" style="position: relative; z-index: 2; flex: 1; display: none; flex-direction: column; align-items: center; justify-content: flex-start; padding: 1.75rem 1.5rem 3rem 1.5rem; max-width: 980px; margin: 0 auto; width: 100%;">
       <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <button type="button" id="btnLoginBackToHero" onclick="openHeroGateway('HERO')" style="background: rgba(255,255,255,0.07); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.78rem; font-weight: 700; cursor: pointer;" data-tooltip="Return to Animated Hero Landing Page">← Back to Animated Hero</button>
-        <span style="font-size: 0.74rem; color: #00E599; font-weight: 700;">🔒 Persona-Scoped Zero-Trust Session</span>
+        <span style="font-size: 0.74rem; color: #00E599; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('lock', '#00E599', 14)} Persona-Scoped Zero-Trust Session</span>
       </div>
 
       <div style="width: 100%; background: rgba(8, 15, 28, 0.88); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 16px; padding: 1.5rem; backdrop-filter: blur(16px); box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
-        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; margin: 0 0 0.35rem 0; color: #f8fafc;">🔐 Sign In to CricOS</h2>
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; margin: 0 0 0.35rem 0; color: #f8fafc; display: flex; align-items: center; gap: 0.5rem;">${iconSvg('lock', '#00E599', 20)} Sign In to CricOS</h2>
         <p style="font-size: 0.84rem; color: #94a3b8; margin: 0 0 1.25rem 0;">
           Select a verified user account below or sign in with custom credentials. Your in-app navigation, scoring controls, and persona switcher will be restricted strictly to the personas available to your logged-in user.
         </p>
 
         <!-- Preset Verified User Accounts (with Distinct Allowed Personas) -->
-        <div style="font-size: 0.75rem; font-weight: 800; color: #00D2FF; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.65rem;">⚡ Instant Verified Account Sign-In (Select User Account)</div>
+        <div style="font-size: 0.75rem; font-weight: 800; color: #00D2FF; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.65rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('lightning', '#00D2FF', 14)} Instant Verified Account Sign-In (Select User Account)</div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); gap: 0.75rem; margin-bottom: 1.4rem;">
           <button type="button" id="btnLoginAccountCaptain" class="hero-login-account-card" onclick="loginWithHeroAccount('CAPTAIN_PLAYER')" style="text-align: left; background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Virat Sharma (Provisioned Personas: CAPTAIN, PLAYER)">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 800; font-size: 0.9rem;">👑 Virat Sharma</span>
+              <span style="font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('crown', '#00D2FF', 16)} Virat Sharma</span>
               <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 210, 255, 0.2); color: #00D2FF; font-weight: 800;">2 Personas</span>
             </div>
             <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">virat@cricos.io • Squad Leader &amp; Opening Batter</div>
@@ -7907,7 +7997,7 @@ export function getDashboardHtml() {
 
           <button type="button" id="btnLoginAccountScorer" class="hero-login-account-card" onclick="loginWithHeroAccount('SCORER_ONLY')" style="text-align: left; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Sunil Gavaskar (Provisioned Persona: SCORER only)">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 800; font-size: 0.9rem;">📋 Sunil Gavaskar</span>
+              <span style="font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('clipboard', '#00E599', 16)} Sunil Gavaskar</span>
               <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.2); color: #00E599; font-weight: 800;">1 Persona</span>
             </div>
             <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">scorer@cricos.io • BCCI Certified Official Scorer</div>
@@ -7916,7 +8006,7 @@ export function getDashboardHtml() {
 
           <button type="button" id="btnLoginAccountUmpire" class="hero-login-account-card" onclick="loginWithHeroAccount('UMPIRE_OFFICIAL')" style="text-align: left; background: rgba(255, 184, 0, 0.08); border: 1px solid rgba(255, 184, 0, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Nitin Menon (Provisioned Personas: UMPIRE, SCORER)">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 800; font-size: 0.9rem;">⚖️ Nitin Menon</span>
+              <span style="font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('scale', '#FFB800', 16)} Nitin Menon</span>
               <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(255, 184, 0, 0.2); color: #FFB800; font-weight: 800;">2 Personas</span>
             </div>
             <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">umpire@cricos.io • ICC Elite Match Official</div>
@@ -7925,7 +8015,7 @@ export function getDashboardHtml() {
 
           <button type="button" id="btnLoginAccountOrganiser" class="hero-login-account-card" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="text-align: left; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Jay Shah (Provisioned Personas: ORGANISER, TURF_PROVIDER)">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 800; font-size: 0.9rem;">🏆 Jay Shah</span>
+              <span style="font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('trophy', '#a78bfa', 16)} Jay Shah</span>
               <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(167, 139, 250, 0.2); color: #a78bfa; font-weight: 800;">2 Personas</span>
             </div>
             <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">organiser@cricos.io • League &amp; Venue Commissioner</div>
@@ -7934,7 +8024,7 @@ export function getDashboardHtml() {
 
           <button type="button" id="btnLoginAccountFan" class="hero-login-account-card" onclick="loginWithHeroAccount('FAN_ONLY')" style="text-align: left; background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Aarav Mehta (Provisioned Persona: FAN only)">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 800; font-size: 0.9rem;">🎪 Aarav Mehta</span>
+              <span style="font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('sparkle', '#f97316', 16)} Aarav Mehta</span>
               <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(249, 115, 22, 0.2); color: #f97316; font-weight: 800;">1 Persona</span>
             </div>
             <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">fan@cricos.io • Stadium Spectator &amp; Pulse Member</div>
@@ -7943,7 +8033,7 @@ export function getDashboardHtml() {
 
           <button type="button" id="btnLoginAccountAdmin" class="hero-login-account-card" onclick="loginWithHeroAccount('ADMIN_SUPERUSER')" style="text-align: left; background: rgba(255, 51, 102, 0.08); border: 1px solid rgba(255, 51, 102, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as System Root (All 8 Personas Provisioned)">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 800; font-size: 0.9rem;">⚡ System Root</span>
+              <span style="font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('lightning', '#ff3366', 16)} System Root</span>
               <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(255, 51, 102, 0.2); color: #ff3366; font-weight: 800;">All 8 Personas</span>
             </div>
             <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">admin@cricos.io • Full Platform Governance</div>
@@ -7971,18 +8061,18 @@ export function getDashboardHtml() {
 
           <label style="font-size: 0.7rem; color: #94a3b8; display: block; margin-bottom: 0.4rem;">Personas Provisioned to This User Account:</label>
           <div id="heroCustomPersonaCheckboxes" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="CAPTAIN" checked> 👑 Captain</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="PLAYER" checked> 🏏 Player</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="SCORER"> 📋 Scorer</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="FAN"> 🎪 Fan</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="UMPIRE"> ⚖️ Umpire</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ORGANISER"> 🏆 Organiser</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="TURF_PROVIDER"> 🏟️ Provider</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ADMIN"> ⚡ Admin</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="CAPTAIN" checked> ${iconSvg('crown', '#f8fafc', 14)} Captain</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="PLAYER" checked> ${iconSvg('bat', '#f8fafc', 14)} Player</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="SCORER"> ${iconSvg('clipboard', '#f8fafc', 14)} Scorer</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="FAN"> ${iconSvg('sparkle', '#f8fafc', 14)} Fan</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="UMPIRE"> ${iconSvg('scale', '#f8fafc', 14)} Umpire</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ORGANISER"> ${iconSvg('trophy', '#f8fafc', 14)} Organiser</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="TURF_PROVIDER"> ${iconSvg('stadium', '#f8fafc', 14)} Provider</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ADMIN"> ${iconSvg('lightning', '#f8fafc', 14)} Admin</label>
           </div>
 
-          <button type="button" id="btnCompleteHeroLogin" onclick="completeCustomHeroLogin()" style="width: 100%; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 10px; padding: 0.75rem 1.25rem; font-size: 0.9rem; font-weight: 800; cursor: pointer;" data-tooltip="Verify OTP and launch workspace restricted to selected personas">
-            🔐 Verify OTP &amp; Launch Scoped Workspace →
+          <button type="button" id="btnCompleteHeroLogin" onclick="completeCustomHeroLogin()" style="width: 100%; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 10px; padding: 0.75rem 1.25rem; font-size: 0.9rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Verify OTP and launch workspace restricted to selected personas">
+            ${iconSvg('lock', '#04070D', 16)} Verify OTP &amp; Launch Scoped Workspace →
           </button>
         </div>
       </div>
@@ -7994,7 +8084,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog">
       <div class="modal-header">
         <div class="modal-title">
-          <span style="color: var(--rose);">⚡ Record Wicket Dismissal</span>
+          <span style="color: var(--rose); display: flex; align-items: center; gap: 0.4rem;">${iconSvg('lightning', 'var(--rose)', 18)} Record Wicket Dismissal</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeDismissalModal()" data-tooltip="Cancel wicket">✕</button>
       </div>
@@ -8002,7 +8092,7 @@ export function getDashboardHtml() {
         <!-- Free Hit Active Warning Banner (ICC Clause 21.19) -->
         <div id="dismissalFreeHitAlert" style="display: none; background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.55rem 0.75rem; margin-bottom: 0.85rem;">
           <div style="font-weight: 800; font-size: 0.82rem; color: #ff3366; display: flex; align-items: center; gap: 0.35rem;">
-            <span>⚡</span> FREE HIT IN EFFECT (ICC Clause 21.19)
+            <span>${iconSvg('lightning', '#ff3366', 16)}</span> FREE HIT IN EFFECT (ICC Clause 21.19)
           </div>
           <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; line-height: 1.35;">
             Striker cannot be dismissed Bowled, Caught, LBW, Stumped, or Hit Wicket. Only <strong>Run Out (Law 38)</strong>, <strong>Obstructing (Law 37)</strong>, or <strong>Hit Ball Twice (Law 34)</strong> are legally valid under ICC playing conditions.
@@ -8056,7 +8146,7 @@ export function getDashboardHtml() {
               <option value="Axar Patel" data-stance="LHB">Axar Patel (LHB • ALL)</option>
             </select>
             <div id="dismissalFinalWicketNotice" style="display: none; background: rgba(255, 51, 102, 0.15); border: 1.5px solid #ff3366; border-radius: 8px; padding: 0.55rem 0.75rem; text-align: center;">
-              <div style="font-weight: 800; font-size: 0.82rem; color: #ff3366;">⚠️ FINAL WICKET (10th WICKET)</div>
+              <div style="font-weight: 800; font-size: 0.82rem; color: #ff3366; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">${iconSvg('alert', '#ff3366', 16)} FINAL WICKET (10th WICKET)</div>
               <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">Confirming this dismissal will bowl out the batting team. No incoming batter will be sent to the crease. Team will be declared <strong>ALL OUT</strong>.</div>
             </div>
           </div>
@@ -8074,7 +8164,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 480px;">
       <div class="modal-header">
         <div class="modal-title" id="extraPickerTitle">
-          <span style="color: var(--amber);">🏏 Record Extra Delivery</span>
+          <span style="color: var(--amber); display: flex; align-items: center; gap: 0.4rem;">${iconSvg('bat', 'var(--amber)', 18)} Record Extra Delivery</span>
         </div>
         <button class="modal-close-btn" aria-label="Close extra runs dialog" onclick="closeStudioExtraPicker()" data-tooltip="Dismiss extra runs dialog">✕</button>
       </div>
@@ -8097,14 +8187,14 @@ export function getDashboardHtml() {
     <div class="modal-dialog">
       <div class="modal-header">
         <div class="modal-title">
-          <span style="color: var(--amber);">🏏 Over Completed — Select Next Bowler</span>
+          <span style="color: var(--amber); display: flex; align-items: center; gap: 0.4rem;">${iconSvg('bat', 'var(--amber)', 18)} Over Completed — Select Next Bowler</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeBowlerModal()" data-tooltip="Dismiss dialog">✕</button>
       </div>
       <div class="modal-body">
         <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;" id="bowlerModalDesc">
           Over has completed. Select the next bowler to commence the next over.
-          <div style="color: var(--amber); margin-top: 0.35rem; font-size: 0.78rem;">⚠️ MCC Law 21: A bowler cannot bowl two consecutive overs.</div>
+          <div style="color: var(--amber); margin-top: 0.35rem; font-size: 0.78rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('alert', 'var(--amber)', 14)} MCC Law 21: A bowler cannot bowl two consecutive overs.</div>
         </div>
         <div class="form-group">
           <label>Next Bowler</label>
@@ -8129,7 +8219,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 860px; max-height: 88vh; display: flex; flex-direction: column;">
       <div class="modal-header">
         <div class="modal-title" id="iccLawsModalTitle" style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="font-size: 1.25rem;">📖</span>
+          <span style="display: flex; align-items: center;">${iconSvg('book', '#38bdf8', 20)}</span>
           <span style="font-weight: 800; font-family: var(--font-display); color: #38bdf8;">ICC Playing Conditions &amp; MCC Laws Rulebook (Laws 1–42)</span>
         </div>
         <button class="modal-close-btn" aria-label="Close ICC Laws dialog" onclick="closeIccLawsModal()" data-tooltip="Close laws rulebook">✕</button>
@@ -8139,15 +8229,15 @@ export function getDashboardHtml() {
         <div style="margin-bottom: 1rem;">
           <div style="position: relative; margin-bottom: 0.75rem;">
             <input type="text" id="desktopIccLawSearchInput" placeholder="Search laws by keyword or law number (e.g. Free Hit, Wide, LBW, Helmet, Caught, No Ball)..." oninput="searchDesktopIccLaws(this.value)" style="width: 100%; box-sizing: border-box; padding: 0.65rem 0.85rem 0.65rem 2.25rem; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main); font-size: 0.85rem; outline: none;" data-tooltip="Search ICC and MCC cricket rules directory">
-            <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: var(--text-muted); pointer-events: none;">🔍</span>
+            <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; display: flex; align-items: center;">${iconSvg('search', 'currentColor', 14)}</span>
           </div>
           <div id="desktopIccLawCategoryFilters" style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
             <button type="button" class="btn btn-secondary active" data-category="ALL" onclick="setDesktopIccCategory('ALL')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px;" data-tooltip="Filter by All Laws">All Laws</button>
-            <button type="button" class="btn btn-secondary" data-category="EXTRAS" onclick="setDesktopIccCategory('EXTRAS')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px;" data-tooltip="Filter by Extras &amp; Free Hit">⚡ Extras &amp; Free Hit</button>
-            <button type="button" class="btn btn-secondary" data-category="DISMISSALS" onclick="setDesktopIccCategory('DISMISSALS')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px;" data-tooltip="Filter by 10 Dismissal Modes">🚨 10 Dismissal Modes</button>
-            <button type="button" class="btn btn-secondary" data-category="FAIR_PLAY" onclick="setDesktopIccCategory('FAIR_PLAY')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px;" data-tooltip="Filter by Fair Play &amp; Penalties">⚖️ Fair Play &amp; Penalties</button>
-            <button type="button" class="btn btn-secondary" data-category="MATCH_OPS" onclick="setDesktopIccCategory('MATCH_OPS')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px;" data-tooltip="Filter by Match Ops &amp; Overs">⏱️ Match Ops &amp; Overs</button>
-            <button type="button" class="btn btn-secondary" data-category="FIELDING" onclick="setDesktopIccCategory('FIELDING')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px;" data-tooltip="Filter by Fielding &amp; Equipment">🛡️ Fielding &amp; Equipment</button>
+            <button type="button" class="btn btn-secondary" data-category="EXTRAS" onclick="setDesktopIccCategory('EXTRAS')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Filter by Extras &amp; Free Hit">${iconSvg('lightning', 'currentColor', 14)} Extras &amp; Free Hit</button>
+            <button type="button" class="btn btn-secondary" data-category="DISMISSALS" onclick="setDesktopIccCategory('DISMISSALS')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Filter by 10 Dismissal Modes">${iconSvg('alert', 'currentColor', 14)} 10 Dismissal Modes</button>
+            <button type="button" class="btn btn-secondary" data-category="FAIR_PLAY" onclick="setDesktopIccCategory('FAIR_PLAY')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Filter by Fair Play &amp; Penalties">${iconSvg('scale', 'currentColor', 14)} Fair Play &amp; Penalties</button>
+            <button type="button" class="btn btn-secondary" data-category="MATCH_OPS" onclick="setDesktopIccCategory('MATCH_OPS')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Filter by Match Ops &amp; Overs">${iconSvg('clock', 'currentColor', 14)} Match Ops &amp; Overs</button>
+            <button type="button" class="btn btn-secondary" data-category="FIELDING" onclick="setDesktopIccCategory('FIELDING')" style="padding: 0.25rem 0.65rem; font-size: 0.72rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Filter by Fielding &amp; Equipment">${iconSvg('shield', 'currentColor', 14)} Fielding &amp; Equipment</button>
           </div>
         </div>
 
@@ -8168,7 +8258,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 540px;">
       <div class="modal-header">
         <div class="modal-title" id="penaltyRunsModalTitle" style="display: flex; align-items: center; gap: 0.45rem;">
-          <span style="color: var(--amber); font-size: 1.25rem;">⚖️</span>
+          <span style="color: var(--amber); display: inline-flex; align-items: center;">${iconSvg('scale', 'var(--amber)', 20)}</span>
           <span style="font-weight: 800; font-family: var(--font-display);">Award +5 Penalty Runs (MCC Laws 41/42 &amp; 28.3)</span>
         </div>
         <button class="modal-close-btn" aria-label="Close penalty runs modal" onclick="closePenaltyRunsModal()" data-tooltip="Cancel penalty award">✕</button>
@@ -8206,7 +8296,7 @@ export function getDashboardHtml() {
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" style="width: auto;" onclick="closePenaltyRunsModal()" data-tooltip="Cancel penalty award">Cancel</button>
-        <button class="btn" style="width: auto; background: var(--amber); border-color: var(--amber); color: black; font-weight: 800;" onclick="confirmDesktopPenaltyRuns()" data-tooltip="Credit +5 penalty runs to batting extras">Award +5 Penalty Runs ✓</button>
+        <button class="btn" style="width: auto; background: var(--amber); border-color: var(--amber); color: black; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="confirmDesktopPenaltyRuns()" data-tooltip="Credit +5 penalty runs to batting extras">Award +5 Penalty Runs ${iconSvg('check', 'currentColor', 14)}</button>
       </div>
     </div>
   </div>
@@ -8216,7 +8306,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog">
       <div class="modal-header">
         <div class="modal-title">
-          <span>🏆 Create Cricket Team / Club</span>
+          <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('trophy', 'var(--gold, #F59E0B)', 18)} Create Cricket Team / Club</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCreateTeamModal()">✕</button>
       </div>
@@ -8260,7 +8350,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog">
       <div class="modal-header">
         <div class="modal-title">
-          <span>🛒 Turf Booking &amp; 15-Minute Reservation Hold</span>
+          <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('cart', 'var(--cyan)', 18)} Turf Booking &amp; 15-Minute Reservation Hold</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCheckoutModal()">✕</button>
       </div>
@@ -8293,7 +8383,7 @@ export function getDashboardHtml() {
         </div>
 
         <div style="font-size: 0.75rem; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
-          🔒 Funds are locked in CricOS Double-Entry Escrow until match completion. Full refund issued automatically if venue cancels or weather suspends play.
+          <div style="display: flex; align-items: flex-start; gap: 0.4rem;">${iconSvg('lock', 'currentColor', 14)} <span>Funds are locked in CricOS Double-Entry Escrow until match completion. Full refund issued automatically if venue cancels or weather suspends play.</span></div>
         </div>
       </div>
       <div class="modal-footer">
@@ -8308,7 +8398,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 480px;">
       <div class="modal-header">
         <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="font-size: 1.3rem;">🏁</span>
+          <span style="display: flex; align-items: center;">${iconSvg('flag', 'var(--turf-emerald)', 20)}</span>
           <span>Officially Conclude Match / Innings</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeDesktopEndMatchModal()" data-tooltip="Close dialog">✕</button>
@@ -8338,7 +8428,7 @@ export function getDashboardHtml() {
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.5rem;">
         <button class="btn btn-secondary" onclick="closeDesktopEndMatchModal()" data-tooltip="Cancel match conclusion">Cancel</button>
-        <button class="btn" id="btnConfirmDesktopEndMatch" onclick="confirmDesktopEndMatchAction()" style="background: var(--turf-emerald); color: #022c22; font-weight: 800;" data-tooltip="Officially conclude match and update standings">Confirm End Match 🏁</button>
+        <button class="btn" id="btnConfirmDesktopEndMatch" onclick="confirmDesktopEndMatchAction()" style="background: var(--turf-emerald); color: #022c22; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Officially conclude match and update standings">Confirm End Match ${iconSvg('flag', 'currentColor', 14)}</button>
       </div>
     </div>
   </div>
@@ -8348,7 +8438,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>📥 Official Match Scorecard &amp; Export</span>
+          <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('download', 'var(--cyan)', 18)} Official Match Scorecard &amp; Export</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeScorecardModal()" data-tooltip="Close modal">✕</button>
       </div>
@@ -8359,14 +8449,14 @@ export function getDashboardHtml() {
             <div style="font-size: 0.78rem; color: var(--text-muted);">T20 Championship • Innings 2 • Match ID: match-pilot-1</div>
           </div>
           <div style="display: flex; gap: 0.5rem;">
-            <button class="btn" style="width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem;" onclick="downloadScorecardCsv()" data-tooltip="Download structured RFC 4180 CSV file">📄 Download CSV</button>
-            <button class="btn btn-secondary" style="width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem;" onclick="printScorecardView()" data-tooltip="Open clean printer-ready scorecard view">🖨️ Print Sheet</button>
+            <button class="btn" style="width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="downloadScorecardCsv()" data-tooltip="Download structured RFC 4180 CSV file">${iconSvg('download', 'currentColor', 14)} Download CSV</button>
+            <button class="btn btn-secondary" style="width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="printScorecardView()" data-tooltip="Open clean printer-ready scorecard view">${iconSvg('print', 'currentColor', 14)} Print Sheet</button>
           </div>
         </div>
 
         <div id="exportScorecardResultHighlight" style="display: none; background: rgba(0, 229, 153, 0.12); border: 1.5px solid var(--turf-emerald); border-radius: 8px; padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem;">
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 1.3rem;">🏆</span>
+            <span style="display: flex; align-items: center;">${iconSvg('trophy', 'var(--turf-emerald)', 20)}</span>
             <div>
               <div id="exportScorecardResultTitle" style="font-weight: 800; font-size: 0.95rem; color: var(--turf-emerald);">Mumbai Super Strikers won by 7 wickets</div>
               <div id="exportScorecardResultSubtitle" style="font-size: 0.75rem; color: var(--text-muted);">Target: 178 • Delhi Daredevils 178/10 vs Mumbai Super Strikers 180/3</div>
@@ -8423,7 +8513,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 540px;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>🪙 Official Match Toss &amp; Lineup Confirmation</span>
+          <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('coin', 'var(--gold, #F59E0B)', 18)} Official Match Toss &amp; Lineup Confirmation</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeTossModal()" data-tooltip="Close toss modal">✕</button>
       </div>
@@ -8446,11 +8536,11 @@ export function getDashboardHtml() {
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.25rem;">
               <label style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                 <input type="radio" name="tossDecision" value="BAT" checked style="accent-color: var(--turf-emerald);">
-                <span style="font-weight: 700; color: #F8FAFC;">🏏 Bat First</span>
+                <span style="font-weight: 700; color: #F8FAFC; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('bat', 'var(--turf-emerald)', 16)} Bat First</span>
               </label>
               <label style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                 <input type="radio" name="tossDecision" value="BOWL" style="accent-color: var(--cyan);">
-                <span style="font-weight: 700; color: #F8FAFC;">🎯 Bowl First</span>
+                <span style="font-weight: 700; color: #F8FAFC; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('target', 'var(--cyan)', 16)} Bowl First</span>
               </label>
             </div>
           </div>
@@ -8462,7 +8552,7 @@ export function getDashboardHtml() {
 
           <div style="display: flex; gap: 0.75rem;">
             <button type="button" class="btn btn-secondary" onclick="closeTossModal()" style="width: auto; flex: 1;" data-tooltip="Cancel coin toss" aria-label="Cancel coin toss">Cancel</button>
-            <button type="submit" class="btn" style="width: auto; flex: 2;" data-tooltip="Submit toss record and lock match lineups">✓ Confirm Toss &amp; Start Match</button>
+            <button type="submit" class="btn" style="width: auto; flex: 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;" data-tooltip="Submit toss record and lock match lineups">${iconSvg('check', 'currentColor', 14)} Confirm Toss &amp; Start Match</button>
           </div>
         </form>
       </div>
@@ -8474,7 +8564,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 540px;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>⭐ Post-Match Verification &amp; Ratings</span>
+          <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('star', 'var(--gold, #F59E0B)', 18)} Post-Match Verification &amp; Ratings</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMatchRatingModal()" data-tooltip="Close rating modal">✕</button>
       </div>
@@ -8486,7 +8576,7 @@ export function getDashboardHtml() {
         <form id="formPostMatchRating" onsubmit="submitPostMatchRating(event)">
           <div style="margin-bottom: 1.15rem;">
             <div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.35rem;">
-              <span>🏟️ Turf &amp; Pitch Condition</span>
+              <span style="display: flex; align-items: center; gap: 0.35rem;">${iconSvg('stadium', 'currentColor', 16)} Turf &amp; Pitch Condition</span>
               <span id="labelPitchRating" style="color: #FFB800; font-family: var(--font-score); font-weight: 700;">5 ★</span>
             </div>
             <input type="range" id="inputRatingPitch" min="1" max="5" value="5" step="1" oninput="updateRatingDisplay('labelPitchRating', this.value)" style="width: 100%; accent-color: var(--turf-emerald);">
@@ -8498,7 +8588,7 @@ export function getDashboardHtml() {
 
           <div style="margin-bottom: 1.15rem;">
             <div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.35rem;">
-              <span>⚖️ Official Umpiring &amp; Fair Play</span>
+              <span style="display: flex; align-items: center; gap: 0.35rem;">${iconSvg('scale', 'currentColor', 16)} Official Umpiring &amp; Fair Play</span>
               <span id="labelUmpireRating" style="color: #FFB800; font-family: var(--font-score); font-weight: 700;">5 ★</span>
             </div>
             <input type="range" id="inputRatingUmpire" min="1" max="5" value="5" step="1" oninput="updateRatingDisplay('labelUmpireRating', this.value)" style="width: 100%; accent-color: var(--cyan);">
@@ -8510,7 +8600,7 @@ export function getDashboardHtml() {
 
           <div style="margin-bottom: 1.15rem;">
             <div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.35rem;">
-              <span>📋 Live Electronic Scoring Accuracy</span>
+              <span style="display: flex; align-items: center; gap: 0.35rem;">${iconSvg('clipboard', 'currentColor', 16)} Live Electronic Scoring Accuracy</span>
               <span id="labelScorerRating" style="color: #FFB800; font-family: var(--font-score); font-weight: 700;">5 ★</span>
             </div>
             <input type="range" id="inputRatingScorer" min="1" max="5" value="5" step="1" oninput="updateRatingDisplay('labelScorerRating', this.value)" style="width: 100%; accent-color: var(--purple-light);">
@@ -8527,7 +8617,7 @@ export function getDashboardHtml() {
 
           <div style="display: flex; gap: 0.75rem;">
             <button type="button" onclick="closeMatchRatingModal()" class="btn btn-secondary" style="width: auto; flex: 1;" data-tooltip="Cancel match rating" aria-label="Cancel match rating">Cancel</button>
-            <button type="submit" class="btn" style="width: auto; flex: 2;" data-tooltip="Submit verified review and disburse escrow to provider">✓ Submit &amp; Disburse Escrow</button>
+            <button type="submit" class="btn" style="width: auto; flex: 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;" data-tooltip="Submit verified review and disburse escrow to provider">${iconSvg('check', 'currentColor', 14)} Submit &amp; Disburse Escrow</button>
           </div>
         </form>
       </div>
@@ -8539,15 +8629,15 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>📜 CricOS Store Compliance, Privacy &amp; Terms</span>
+          <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('scroll', 'var(--cyan)', 18)} CricOS Store Compliance, Privacy &amp; Terms</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeLegalModal()" data-tooltip="Close legal modal">✕</button>
       </div>
       <div class="modal-body">
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
-          <button type="button" id="btnLegalTabPrivacy" class="nav-pill active" onclick="switchLegalTab('privacy')" style="cursor: pointer; font-weight: 700;" data-tooltip="View Privacy Policy" aria-label="Privacy Policy">🔒 Privacy Policy</button>
-          <button type="button" id="btnLegalTabTerms" class="nav-pill" onclick="switchLegalTab('terms')" style="cursor: pointer; font-weight: 700;" data-tooltip="View Terms of Service" aria-label="Terms of Service">⚖️ Terms of Service</button>
-          <button type="button" id="btnLegalTabApple" class="nav-pill" onclick="switchLegalTab('apple')" style="cursor: pointer; font-weight: 700; color: var(--turf-emerald);" data-tooltip="View Apple Store Guidelines Compliance" aria-label="Store Guidelines">🍏 Store Guidelines</button>
+          <button type="button" id="btnLegalTabPrivacy" class="nav-pill active" onclick="switchLegalTab('privacy')" style="cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="View Privacy Policy" aria-label="Privacy Policy">${iconSvg('lock', 'currentColor', 14)} Privacy Policy</button>
+          <button type="button" id="btnLegalTabTerms" class="nav-pill" onclick="switchLegalTab('terms')" style="cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="View Terms of Service" aria-label="Terms of Service">${iconSvg('scale', 'currentColor', 14)} Terms of Service</button>
+          <button type="button" id="btnLegalTabApple" class="nav-pill" onclick="switchLegalTab('apple')" style="cursor: pointer; font-weight: 700; color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="View Apple Store Guidelines Compliance" aria-label="Store Guidelines">${iconSvg('shield', 'currentColor', 14)} Store Guidelines</button>
         </div>
 
         <div id="legalSubViewPrivacy" style="font-size: 0.84rem; line-height: 1.6; color: #CBD5E1; max-height: 420px; overflow-y: auto; padding-right: 0.5rem;">
@@ -8609,8 +8699,8 @@ export function getDashboardHtml() {
   <div class="modal-backdrop" id="modalEventBasket">
     <div class="modal-dialog" style="max-width: 600px;">
       <div class="modal-header">
-        <div class="modal-title">
-          <span>🧺 Match Event Basket &amp; Resource Procurement</span>
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>${iconSvg('basket', 'var(--turf-emerald)', 18)} Match Event Basket &amp; Resource Procurement</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeEventBasketModal()" data-tooltip="Close basket modal">✕</button>
       </div>
@@ -8622,7 +8712,7 @@ export function getDashboardHtml() {
         <div id="eventBasketItemsList" style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
             <div>
-              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">🏟️ Turf Arena (Koramangala Pitch 1)</div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('stadium', 'var(--turf-emerald)', 15)} Turf Arena (Koramangala Pitch 1)</div>
               <div style="font-size: 0.72rem; color: var(--text-muted);">4-Hour Match Slot (14:00 - 18:00) • Reservation Lock Confirmed</div>
             </div>
             <div style="text-align: right;">
@@ -8633,7 +8723,7 @@ export function getDashboardHtml() {
 
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
             <div>
-              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">👨‍⚖️ Lead Umpire (Rajesh Sharma)</div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('scale', '#FBBF24', 15)} Lead Umpire (Rajesh Sharma)</div>
               <div style="font-size: 0.72rem; color: var(--text-muted);">Level-2 MCC Certified • Venue Check-In Complete</div>
             </div>
             <div style="text-align: right;">
@@ -8644,7 +8734,7 @@ export function getDashboardHtml() {
 
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
             <div>
-              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">🏏 Official Match Balls (Box of 2)</div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('bat', '#38BDF8', 15)} Official Match Balls (Box of 2)</div>
               <div style="font-size: 0.72rem; color: var(--text-muted);">Kookaburra Turf Regulation White Balls (156g)</div>
             </div>
             <div style="text-align: right;">
@@ -8655,7 +8745,7 @@ export function getDashboardHtml() {
 
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
             <div>
-              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF;">📋 Official Scorer Console License</div>
+              <div style="font-weight: 700; font-size: 0.85rem; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('clipboard', '#A78BFA', 15)} Official Scorer Console License</div>
               <div style="font-size: 0.72rem; color: var(--text-muted);">Live SSE Real-Time Ball Stream + Worm Charts</div>
             </div>
             <div style="text-align: right;">
@@ -8688,18 +8778,18 @@ export function getDashboardHtml() {
         <!-- Record-Keeping Payment Mode (Free & Zero-Cost) -->
         <div style="background: rgba(0, 229, 153, 0.06); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px; padding: 0.85rem; margin-top: 0.85rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.78rem; font-weight: 700; color: var(--turf-emerald);">💵 Free External Settlement Record-Keeping</span>
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--turf-emerald); display: flex; align-items: center; gap: 0.35rem;">${iconSvg('coin', 'var(--turf-emerald)', 15)} Free External Settlement Record-Keeping</span>
             <span style="font-size: 0.68rem; background: rgba(0, 229, 153, 0.15); color: var(--turf-emerald); padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 700;">NO GATEWAY FEES</span>
           </div>
           <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.6rem;">CricOS records external cash/UPI exchange as the official system of record. Zero payment processing charges.</div>
           <div style="display: flex; gap: 0.5rem; margin-bottom: 0.6rem;">
             <label style="flex: 1; display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: #FFF; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.4rem 0.6rem; cursor: pointer;">
               <input type="radio" name="basketPaymentMode" value="CASH" checked>
-              <span>💵 Cash Handover</span>
+              <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('coin', '#FFF', 14)} Cash Handover</span>
             </label>
             <label style="flex: 1; display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: #FFF; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.4rem 0.6rem; cursor: pointer;">
               <input type="radio" name="basketPaymentMode" value="UPI">
-              <span>📱 Direct UPI Transfer</span>
+              <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('mobile', '#FFF', 14)} Direct UPI Transfer</span>
             </label>
           </div>
           <input type="text" id="basketPaymentNotesInput" placeholder="Reference note: e.g. Cash handed to venue manager at desk" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.45rem 0.65rem; color: #f8fafc; font-size: 0.75rem;" data-tooltip="Optional cash exchange reference note">
@@ -8716,8 +8806,8 @@ export function getDashboardHtml() {
   <div class="modal-backdrop" id="modalProviderStorefront">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-header">
-        <div class="modal-title">
-          <span>🏪 Provider Storefront &amp; Capacity Manager</span>
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>${iconSvg('cart', 'var(--turf-emerald)', 18)} Provider Storefront &amp; Capacity Manager</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeProviderStorefrontModal()" data-tooltip="Close storefront modal">✕</button>
       </div>
@@ -8778,7 +8868,7 @@ export function getDashboardHtml() {
             <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.3rem; display: block;">Facility Photos (optional)</label>
             <div class="image-dropzone" id="venueUploadDropzone" onclick="document.getElementById('venuePhotoInput').click()" data-tooltip="Click or drag & drop venue/ground facility photos here">
               <input type="file" id="venuePhotoInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleVenueImageUpload(event, 'new-slot')">
-              <div style="font-size: 1.2rem; margin-bottom: 0.25rem;">📸</div>
+              <div style="margin-bottom: 0.25rem;">${iconSvg('camera', '#94a3b8', 24)}</div>
               <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">Drop ground photos or click to upload</div>
               <div style="font-size: 0.62rem; color: #64748b; margin-top: 0.15rem;">PNG, JPG, WebP • Max 10 MB each</div>
             </div>
@@ -8827,8 +8917,8 @@ export function getDashboardHtml() {
   <div class="modal-backdrop" id="modalCreateEvent">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
-        <div class="modal-title">
-          <span>🏏 Create Cricket Event &amp; Match Wizard</span>
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>${iconSvg('bat', 'var(--turf-emerald)', 18)} Create Cricket Event &amp; Match Wizard</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCreateEventModal()" data-tooltip="Close event wizard">✕</button>
       </div>
@@ -8968,8 +9058,8 @@ export function getDashboardHtml() {
   <div class="modal-backdrop as-drawer" id="modalEventOverview">
     <div class="modal-dialog" style="max-width: 650px;">
       <div class="modal-header">
-        <div class="modal-title">
-          <span>📋 Match Event Overview &amp; Procurement Readiness</span>
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>${iconSvg('clipboard', 'var(--turf-emerald)', 18)} Match Event Overview &amp; Procurement Readiness</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeEventOverviewModal()" data-tooltip="Close readiness modal">✕</button>
       </div>
@@ -9009,28 +9099,28 @@ export function getDashboardHtml() {
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
             <div>
-              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">🏟️ Turf Arena (Chinnaswamy Ground A)</div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('stadium', 'var(--turf-emerald)', 15)} Turf Arena (Chinnaswamy Ground A)</div>
               <div style="font-size: 0.7rem; color: var(--text-muted);">4-Hour Slot • Natural Grass Pitch • Reservation Lock Active</div>
             </div>
             <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">BOOKED</span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
             <div>
-              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">👨‍⚖️ Lead Umpire (Rajesh Sharma)</div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('scale', '#FBBF24', 15)} Lead Umpire (Rajesh Sharma)</div>
               <div style="font-size: 0.7rem; color: var(--text-muted);">Level-2 MCC Certified • Venue Check-In Completed</div>
             </div>
             <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">CONFIRMED</span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
             <div>
-              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">👨‍⚖️ Leg Umpire (Vikram Rao)</div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('scale', '#FBBF24', 15)} Leg Umpire (Vikram Rao)</div>
               <div style="font-size: 0.7rem; color: var(--text-muted);">State Board Certified • Ready at Bowler's End</div>
             </div>
             <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">CONFIRMED</span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 0.65rem 0.85rem; border-radius: 6px;">
             <div>
-              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;">📋 Official Scorer (Amit Patel)</div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: #FFF; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('clipboard', '#A78BFA', 15)} Official Scorer (Amit Patel)</div>
               <div style="font-size: 0.7rem; color: var(--text-muted);">Digital Scorer Console • SSE Live Stream Synchronized</div>
             </div>
             <span style="background: rgba(0,229,153,0.15); color: var(--turf-emerald); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">ACTIVE</span>
@@ -9044,7 +9134,7 @@ export function getDashboardHtml() {
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
         <button class="btn btn-secondary" onclick="closeEventOverviewModal()" style="width: auto;" data-tooltip="Close Readiness Checklist modal" aria-label="Close readiness checklist">Close</button>
-        <button class="btn btn-primary" onclick="closeEventOverviewModal(); openEventBasketModal();" data-tooltip="Inspect escrow financial deposit breakdown" style="width: auto;">🧺 View Event Basket</button>
+        <button class="btn btn-primary" onclick="closeEventOverviewModal(); openEventBasketModal();" data-tooltip="Inspect escrow financial deposit breakdown" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('basket', '#04070D', 15)} View Event Basket</button>
       </div>
     </div>
   </div>
@@ -9054,7 +9144,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>📅 Official Availability Calendar &amp; Slot Manager</span>
+          <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('calendar', 'var(--turf-emerald)', 18)} Official Availability Calendar &amp; Slot Manager</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeOfficialCalendarModal()" data-tooltip="Close calendar modal">✕</button>
       </div>
@@ -9115,7 +9205,7 @@ export function getDashboardHtml() {
 
         <!-- Conflict Detector Interactive Bar -->
         <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.85rem; margin-bottom: 1rem;">
-          <div style="font-size: 0.75rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">⏱️ Test Booking Slot for Conflict Overlap</div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('clock', 'var(--cyan)', 15)} Test Booking Slot for Conflict Overlap</div>
           <div style="display: flex; gap: 0.5rem; align-items: flex-end; flex-wrap: wrap;">
             <div>
               <label style="font-size: 0.65rem; color: var(--text-muted); display: block;">Start Hour (24h)</label>
@@ -9148,7 +9238,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 680px; height: 600px; display: flex; flex-direction: column;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>💬 Match Coordination &amp; Contextual Messaging</span>
+          <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('chat', 'var(--turf-emerald)', 18)} Match Coordination &amp; Contextual Messaging</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMessagingModal()" data-tooltip="Close messaging modal">✕</button>
       </div>
@@ -9166,13 +9256,13 @@ export function getDashboardHtml() {
         <div id="messagingStream" style="flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
           <!-- System message -->
           <div style="text-align: center; margin: 0.25rem 0;">
-            <span style="background: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 9999px;">🔒 Match created with ₹15,885.00 secured in double-entry escrow</span>
+            <span style="background: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('lock', 'var(--text-muted)', 13)} Match created with ₹15,885.00 secured in double-entry escrow</span>
           </div>
 
           <!-- Provider Message -->
           <div style="align-self: flex-start; max-width: 80%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.65rem 0.85rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; gap: 1rem;">
-              <span style="font-size: 0.75rem; font-weight: 700; color: var(--cyan);">🏟️ Chinnaswamy Turf Manager</span>
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('stadium', 'var(--cyan)', 14)} Chinnaswamy Turf Manager</span>
               <span style="font-size: 0.65rem; color: var(--text-muted);">13:10</span>
             </div>
             <div style="font-size: 0.8rem; color: #e2e8f0;">Ground staff has prepped Pitch #3 with freshly marked regulation white bowling creases. Floodlights operational for second innings.</div>
@@ -9181,7 +9271,7 @@ export function getDashboardHtml() {
           <!-- Official Quote Card Message -->
           <div style="align-self: flex-start; max-width: 85%; background: rgba(0,229,153,0.05); border: 1px solid rgba(0,229,153,0.25); border-radius: 8px; padding: 0.75rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-              <span style="font-size: 0.75rem; font-weight: 700; color: var(--turf-emerald);">👨‍⚖️ Rajesh Sharma (Level-2 Umpire)</span>
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('scale', 'var(--turf-emerald)', 14)} Rajesh Sharma (Level-2 Umpire)</span>
               <span style="font-size: 0.65rem; color: var(--text-muted);">13:15</span>
             </div>
             <div style="font-size: 0.8rem; color: #FFF; margin-bottom: 0.5rem;">Official Umpiring Quote for Match #M-101 (4-Hour Assignment)</div>
@@ -9207,9 +9297,9 @@ export function getDashboardHtml() {
 
         <!-- Quick Actions Chips -->
         <div style="padding: 0.4rem 1rem; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 0.4rem; overflow-x: auto;">
-          <button onclick="sendQuickAction('Confirm Arrival')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;" data-tooltip="Send fast check-in update">📍 Confirm Arrival</button>
-          <button onclick="sendQuickAction('Request Pitch Inspection')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;" data-tooltip="Ask umpires for pitch clearance">🏏 Inspect Pitch</button>
-          <button onclick="sendQuickAction('Ready for Toss')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer;" data-tooltip="Notify scorer and officials">🪙 Ready for Toss</button>
+          <button onclick="sendQuickAction('Confirm Arrival')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Send fast check-in update">${iconSvg('pin', 'var(--text-muted)', 13)} Confirm Arrival</button>
+          <button onclick="sendQuickAction('Request Pitch Inspection')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Ask umpires for pitch clearance">${iconSvg('bat', 'var(--text-muted)', 13)} Inspect Pitch</button>
+          <button onclick="sendQuickAction('Ready for Toss')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Notify scorer and officials">${iconSvg('coin', 'var(--text-muted)', 13)} Ready for Toss</button>
         </div>
 
         <!-- Message Input Bar -->
@@ -9226,7 +9316,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>🔄 Cancellation Policy &amp; Rescheduling Engine</span>
+          <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('refresh', 'var(--turf-emerald)', 18)} Cancellation Policy &amp; Rescheduling Engine</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeBookingLifecycleModal()" data-tooltip="Close cancellation modal">✕</button>
       </div>
@@ -9265,7 +9355,7 @@ export function getDashboardHtml() {
 
         <!-- Rescheduling Calculator -->
         <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
-          <div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem;">🔄 Reschedule Slot &amp; Price Adjustment Calculator</div>
+          <div style="font-size: 0.82rem; font-weight: 700; color: #f8fafc; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">${iconSvg('refresh', 'var(--cyan)', 16)} Reschedule Slot &amp; Price Adjustment Calculator</div>
           <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
             <div>
               <label style="font-size: 0.68rem; color: var(--text-muted);">Current Slot Rate</label>
@@ -9294,12 +9384,16 @@ export function getDashboardHtml() {
         <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Special Protections &amp; Dispute Actions</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
           <div style="background: rgba(0,210,255,0.05); border: 1px solid rgba(0,210,255,0.2); border-radius: 8px; padding: 0.75rem;">
-            <div style="font-weight: 700; font-size: 0.82rem; color: var(--cyan); margin-bottom: 0.25rem;">🌧️ Weather Washout Claim</div>
+            <div style="font-weight: 700; font-size: 0.82rem; color: var(--cyan); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('rain', 'var(--cyan)', 16)} Weather Washout Claim</div>
             <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">Unplayable rain interruption triggers 100% full refund with zero cancellation penalty under force-majeure clause.</div>
             <button class="btn btn-secondary" onclick="triggerWeatherWashout()" data-tooltip="Execute 100% full refund journal entry" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; width: auto;">Claim Weather Refund</button>
           </div>
           <div style="background: rgba(255,51,102,0.05); border: 1px solid rgba(255,51,102,0.2); border-radius: 8px; padding: 0.75rem;">
-            <div style="font-weight: 700; font-size: 0.82rem; color: var(--rose); margin-bottom: 0.25rem;">⚠️ Report Provider No-Show</div>
+            <div style="font-weight: 700; font-size: 0.82rem; color: var(--rose); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('alert', 'var(--rose)', 16)} Report Provider No-Show</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">Applies -15 trust penalty points, 10% provider penalty fine, and automatic customer refund from escrow.</div>
+            <button class="btn btn-secondary" onclick="reportNoShowProvider()" data-tooltip="Escalate provider failure to Fair Play desk" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; width: auto; color: var(--rose);">Report No-Show</button>
+          </div>
+        </div>
             <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">Applies -15 trust penalty points, 10% provider penalty fine, and automatic customer refund from escrow.</div>
             <button class="btn btn-secondary" onclick="reportNoShowProvider()" data-tooltip="Escalate provider failure to Fair Play desk" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; width: auto; color: var(--rose);">Report No-Show</button>
           </div>
@@ -9317,7 +9411,7 @@ export function getDashboardHtml() {
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title">
-          <span>📑 Daily Financial Reconciliation &amp; Ledger Audit</span>
+          <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('document', 'var(--turf-emerald)', 18)} Daily Financial Reconciliation &amp; Ledger Audit</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeReconciliationModal()" data-tooltip="Close reconciliation modal">✕</button>
       </div>
@@ -9325,7 +9419,7 @@ export function getDashboardHtml() {
         <!-- Configurable Platform Fee Controller (Stakeholder Policy) -->
         <div style="background: rgba(0, 210, 255, 0.06); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 8px; padding: 0.85rem; margin-bottom: 1.25rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.78rem; font-weight: 700; color: var(--cyan);">⚙️ Configurable Platform Facilitation Fee (Stakeholder Policy)</span>
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('gear', 'var(--cyan)', 15)} Configurable Platform Facilitation Fee (Stakeholder Policy)</span>
             <span id="platformFeePercentDisplay" style="font-family: var(--font-mono); font-weight: 700; color: var(--turf-emerald); font-size: 0.9rem;">5%</span>
           </div>
           <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.6rem;">Adjust the platform facilitation fee rate applied to match bookings. Calculates integer minor unit debits/credits in real-time.</div>
@@ -9411,7 +9505,7 @@ export function getDashboardHtml() {
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
         <button class="btn btn-secondary" onclick="closeReconciliationModal()" style="width: auto;" data-tooltip="Close settlement reconciliation modal" aria-label="Close settlement reconciliation">Close</button>
-        <button class="btn btn-primary" onclick="downloadReconciliationCsv()" data-tooltip="Download full reconciliation audit ledger as RFC 4180 CSV" style="width: auto;">📥 Export Reconciliation CSV</button>
+        <button class="btn btn-primary" onclick="downloadReconciliationCsv()" data-tooltip="Download full reconciliation audit ledger as RFC 4180 CSV" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('download', '#04070D', 15)} Export Reconciliation CSV</button>
       </div>
     </div>
   </div>
@@ -9421,7 +9515,7 @@ export function getDashboardHtml() {
     <div class="modal-card" id="qrMobileDemoModal" style="max-width: 500px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">📱</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('mobile', 'var(--turf-emerald)', 20)}</span>
           <div>
             <div class="modal-title">CricOS Mobile App &amp; Android APK</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Consumer iOS &amp; Native Android Experience (Target SDK 33 / AGP 8.1.4)</div>
@@ -9433,7 +9527,7 @@ export function getDashboardHtml() {
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px;">
           <span style="font-size: 0.78rem; color: var(--turf-emerald); font-weight: 700;">✓ Edge-to-Edge Native Android &bull; WCAG 2.2 AA</span>
           <div style="display: flex; gap: 0.4rem;">
-            <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: #FFF; background: rgba(0, 229, 153, 0.15); border-color: var(--turf-emerald);" data-tooltip="Direct download standalone Android APK (3.0 MB)">📦 APK (3.0MB)</a>
+            <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: #FFF; background: rgba(0, 229, 153, 0.15); border-color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Direct download standalone Android APK (3.0 MB)">${iconSvg('download', 'var(--turf-emerald)', 13)} APK (3.0MB)</a>
             <a href="/mobile" target="_blank" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);" data-tooltip="Open mobile simulator in standalone browser window">↗ Fullscreen</a>
           </div>
         </div>
@@ -9485,9 +9579,9 @@ export function getDashboardHtml() {
         <button class="btn btn-secondary" onclick="closeMobilePreviewModal()" style="width: auto;" data-tooltip="Close mobile preview modal" aria-label="Close mobile preview">Close</button>
         <div style="display: flex; gap: 0.5rem;">
           <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="btn btn-secondary" style="width: auto; padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Download compiled Android package">
-            <span>📦</span> Save APK
+            <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('download', 'currentColor', 14)} Save APK</span>
           </a>
-          <button class="btn btn-primary" onclick="window.open('/mobile', '_blank')" style="width: auto;" data-tooltip="Launch full-screen mobile experience">🚀 Launch Standalone</button>
+          <button class="btn btn-primary" onclick="window.open('/mobile', '_blank')" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Launch full-screen mobile experience">${iconSvg('rocket', '#04070D', 15)} Launch Standalone</button>
         </div>
       </div>
     </div>
@@ -9498,7 +9592,7 @@ export function getDashboardHtml() {
     <div class="modal-card" style="max-width: 660px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">📖</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('book', 'var(--cyan)', 20)}</span>
           <div>
             <div class="modal-title">OpenAPI 3.0.3 Documentation &amp; Schemas</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">26 Production Endpoints across 8 Workspace Modules</div>
@@ -9545,7 +9639,7 @@ export function getDashboardHtml() {
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
         <button class="btn btn-secondary" onclick="closeApiDocsModal()" style="width: auto;" data-tooltip="Close API documentation modal" aria-label="Close API docs">Close</button>
         <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeApiDocsModal();" style="width: auto;" data-tooltip="Open operations explorer tab" aria-label="Open operations explorer">⚡ Explorer Tab</button>
+          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeApiDocsModal();" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Open operations explorer tab" aria-label="Open operations explorer">${iconSvg('lightning', 'var(--amber)', 14)} Explorer Tab</button>
           <button class="btn btn-primary" onclick="window.open('/docs', '_blank')" style="width: auto;" data-tooltip="Open full OpenAPI documentation in new tab">↗ Open /docs Portal</button>
         </div>
       </div>
@@ -9557,7 +9651,7 @@ export function getDashboardHtml() {
     <div class="modal-card" style="max-width: 600px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">🩺</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('activity', 'var(--turf-emerald)', 20)}</span>
           <div>
             <div class="modal-title">System Health &amp; Readiness Diagnostics</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Fastify Server &bull; PostgreSQL Database &bull; Health Probes</div>
@@ -9601,7 +9695,7 @@ export function getDashboardHtml() {
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
         <button class="btn btn-secondary" onclick="closeHealthModal()" style="width: auto;" data-tooltip="Close system health modal" aria-label="Close health modal">Close</button>
-        <button class="btn btn-primary" onclick="runHealthProbePing()" style="width: auto;" data-tooltip="Ping Fastify server live and readiness endpoints">⚡ Run Probe Ping</button>
+        <button class="btn btn-primary" onclick="runHealthProbePing()" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Ping Fastify server live and readiness endpoints">${iconSvg('lightning', '#04070D', 15)} Run Probe Ping</button>
       </div>
     </div>
   </div>
@@ -9611,7 +9705,7 @@ export function getDashboardHtml() {
     <div class="modal-card" style="max-width: 640px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">📊</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('chart', 'var(--cyan)', 20)}</span>
           <div>
             <div class="modal-title">Operational Telemetry &amp; OpenMetrics</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Real-time Prometheus Exposition &bull; Sub-Millisecond Profiling</div>
@@ -9653,7 +9747,7 @@ cricos_active_sse_connections 1</pre>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
         <button class="btn btn-secondary" onclick="closeMetricsModal()" style="width: auto;" data-tooltip="Close Prometheus metrics modal" aria-label="Close metrics modal">Close</button>
         <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeMetricsModal();" style="width: auto;" data-tooltip="Open operations explorer tab" aria-label="Open operations explorer">⚡ Switch to Explorer</button>
+          <button class="btn btn-secondary" onclick="switchTab('explorer'); closeMetricsModal();" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Open operations explorer tab" aria-label="Open operations explorer">${iconSvg('lightning', 'var(--amber)', 14)} Switch to Explorer</button>
           <button class="btn btn-primary" onclick="window.open('/metrics', '_blank')" style="width: auto;" data-tooltip="View raw Prometheus text exposition">↗ Raw /metrics</button>
         </div>
       </div>
@@ -9748,7 +9842,7 @@ cricos_active_sse_connections 1</pre>
       <div class="modal-header" style="border-bottom: 1px solid var(--border-subtle); padding: 1rem 1.35rem;">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 1rem; flex-wrap: wrap;">
           <div style="display: flex; align-items: center; gap: 0.7rem;">
-            <span style="font-size: 1.55rem; background: rgba(0,229,153,0.14); border: 1px solid rgba(0,229,153,0.35); width: 42px; height: 42px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;">🛍️</span>
+            <span style="background: rgba(0,229,153,0.14); border: 1px solid rgba(0,229,153,0.35); width: 42px; height: 42px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: var(--turf-emerald);">${iconSvg('cart', 'var(--turf-emerald)', 22)}</span>
             <div>
               <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <div class="modal-title" style="font-size: 1.1rem; font-weight: 800;">CricOS Pro Gear, Match Balls &amp; Pavilion Equipment Store</div>
@@ -9760,11 +9854,11 @@ cricos_active_sse_connections 1</pre>
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 0.55rem;">
-            <button type="button" id="btnToggleGearPublisher" class="btn btn-secondary btn-sm" onclick="toggleGearVendorPublisher()" data-tooltip="For Turf Providers, Organisers &amp; Equipment Vendors: Publish a new cricket gear or rental listing to the store" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 800; border-color: rgba(0,229,153,0.45); color: var(--turf-emerald);">
-              ➕ List New Gear / Equipment
+            <button type="button" id="btnToggleGearPublisher" class="btn btn-secondary btn-sm" onclick="toggleGearVendorPublisher()" data-tooltip="For Turf Providers, Organisers &amp; Equipment Vendors: Publish a new cricket gear or rental listing to the store" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 800; border-color: rgba(0,229,153,0.45); color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;">
+              ${iconSvg('plus', 'var(--turf-emerald)', 14)} List New Gear / Equipment
             </button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="open3DBatCustomizerModal()" data-tooltip="Design a custom 3D English/Kashmir willow bat and add it directly to your Gear Bag" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(0,210,255,0.45); color: var(--cyan);">
-              🏏 3D Bat Customizer
+            <button type="button" class="btn btn-secondary btn-sm" onclick="open3DBatCustomizerModal()" data-tooltip="Design a custom 3D English/Kashmir willow bat and add it directly to your Gear Bag" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 700; border-color: rgba(0,210,255,0.45); color: var(--cyan); display: inline-flex; align-items: center; gap: 0.35rem;">
+              ${iconSvg('bat', 'var(--cyan)', 14)} 3D Bat Customizer
             </button>
             <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modalCommerce')" data-tooltip="Close gear store">×</button>
           </div>
@@ -9776,7 +9870,7 @@ cricos_active_sse_connections 1</pre>
         <div id="gearVendorPublisherPanel" style="display: none; margin-bottom: 1rem; padding: 0.95rem 1.1rem; border-radius: 10px; background: rgba(0,229,153,0.07); border: 1.5px solid rgba(0,229,153,0.35);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
-              <div style="font-size: 0.85rem; font-weight: 800; color: var(--turf-emerald);">🏪 Vendor &amp; Turf Provider Gear Listing Publisher</div>
+              <div style="font-size: 0.85rem; font-weight: 800; color: var(--turf-emerald); display: flex; align-items: center; gap: 0.4rem;">${iconSvg('cart', 'var(--turf-emerald)', 16)} Vendor &amp; Turf Provider Gear Listing Publisher</div>
               <div style="font-size: 0.7rem; color: var(--text-muted);">Authorized Personas: <strong>TURF_PROVIDER</strong> (Rental Nets/Machines/Match Balls), <strong>ORGANISER</strong> (Tournament Trophies/Kits), <strong>ADMIN</strong> (Certified Pro Gear)</div>
             </div>
             <span class="badge badge-emerald" style="font-size: 0.62rem;">INSTANT CATALOG SYNC</span>
@@ -9793,11 +9887,11 @@ cricos_active_sse_connections 1</pre>
             <div>
               <label for="newGearCategorySelect" style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.2rem;">CATEGORY *</label>
               <select id="newGearCategorySelect" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--text-primary); font-size: 0.74rem;">
-                <option value="BATS">🏏 Bats (English / Kashmir Willow)</option>
-                <option value="BALLS">🔴 Match Balls (White / Red / Pink)</option>
-                <option value="PROTECTIVE">🛡️ Protective (Helmets / Pads / Gloves)</option>
-                <option value="NETS_TECH">📡 Nets, Bowling Machines &amp; Sensors</option>
-                <option value="TROPHIES">🏆 Trophies &amp; Engraved Medals</option>
+                <option value="BATS">Bats (English / Kashmir Willow)</option>
+                <option value="BALLS">Match Balls (White / Red / Pink)</option>
+                <option value="PROTECTIVE">Protective (Helmets / Pads / Gloves)</option>
+                <option value="NETS_TECH">Nets, Bowling Machines &amp; Sensors</option>
+                <option value="TROPHIES">Trophies &amp; Engraved Medals</option>
               </select>
             </div>
             <div>
@@ -9811,8 +9905,8 @@ cricos_active_sse_connections 1</pre>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
             <input type="text" id="newGearDescInput" value="Hand-selected air-dried Grade 1 willow with massive 40mm edges and concaved profile for T20 boundary clearing." placeholder="Short technical description..." style="flex: 1; min-width: 240px; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: var(--text-primary); font-size: 0.73rem;" />
-            <button type="button" id="btnPublishNewGearListing" class="btn btn-primary btn-sm" onclick="publishNewGearCatalogItem()" style="width: auto; padding: 0.42rem 0.95rem; font-size: 0.75rem; font-weight: 800;" data-tooltip="Publish this cricket gear or equipment listing immediately to the store">
-              ⚡ Publish Gear Listing to Store
+            <button type="button" id="btnPublishNewGearListing" class="btn btn-primary btn-sm" onclick="publishNewGearCatalogItem()" style="width: auto; padding: 0.42rem 0.95rem; font-size: 0.75rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Publish this cricket gear or equipment listing immediately to the store">
+              ${iconSvg('lightning', '#04070D', 14)} Publish Gear Listing to Store
             </button>
           </div>
         </div>
@@ -9820,16 +9914,16 @@ cricos_active_sse_connections 1</pre>
         <!-- Store Search, Category Filter Pills & Sort Controls -->
         <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; padding: 0.75rem 0.9rem; border-radius: 10px; background: rgba(15,23,42,0.55); border: 1px solid var(--border-subtle);">
           <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 240px;">
-            <span style="font-size: 0.9rem; opacity: 0.8;">🔍</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.8; color: var(--text-muted);">${iconSvg('search', 'currentColor', 16)}</span>
             <input type="text" id="gearStoreSearchInput" oninput="filterGearStoreCatalog()" placeholder="Search bats, Kookaburra balls, LHB/RHB pads, smart sensors, trophies..." aria-label="Search cricket gear catalog" style="flex: 1; padding: 0.45rem 0.75rem; border-radius: 7px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.78rem;" />
           </div>
           <div id="gearCategoryFilterBar" style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
             <button type="button" id="gearCat_ALL" class="btn btn-primary btn-sm" onclick="setGearStoreCategory('ALL')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Show all 10 cricket gear &amp; equipment products">All Gear (10)</button>
-            <button type="button" id="gearCat_BATS" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('BATS')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter English Willow &amp; Carbon T20 Bats">🏏 Bats</button>
-            <button type="button" id="gearCat_BALLS" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('BALLS')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter White, Red &amp; Pink Leather Match Balls">🔴 Match Balls</button>
-            <button type="button" id="gearCat_PROTECTIVE" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('PROTECTIVE')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter Helmets, Batting Pads &amp; Gloves (RHB/LHB)">🛡️ Protective</button>
-            <button type="button" id="gearCat_NETS_TECH" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('NETS_TECH')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter Smart Gyro Balls &amp; Practice Net Cages">📡 Nets &amp; Tech</button>
-            <button type="button" id="gearCat_TROPHIES" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('TROPHIES')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem;" data-tooltip="Filter Tournament Trophies &amp; Engraved Medals">🏆 Trophies</button>
+            <button type="button" id="gearCat_BATS" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('BATS')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Filter English Willow &amp; Carbon T20 Bats">${iconSvg('bat', 'currentColor', 13)} Bats</button>
+            <button type="button" id="gearCat_BALLS" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('BALLS')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Filter White, Red &amp; Pink Leather Match Balls">${iconSvg('target', 'currentColor', 13)} Match Balls</button>
+            <button type="button" id="gearCat_PROTECTIVE" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('PROTECTIVE')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Filter Helmets, Batting Pads &amp; Gloves (RHB/LHB)">${iconSvg('shield', 'currentColor', 13)} Protective</button>
+            <button type="button" id="gearCat_NETS_TECH" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('NETS_TECH')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Filter Smart Gyro Balls &amp; Practice Net Cages">${iconSvg('satellite', 'currentColor', 13)} Nets &amp; Tech</button>
+            <button type="button" id="gearCat_TROPHIES" class="btn btn-secondary btn-sm" onclick="setGearStoreCategory('TROPHIES')" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Filter Tournament Trophies &amp; Engraved Medals">${iconSvg('trophy', 'currentColor', 13)} Trophies</button>
           </div>
           <div style="display: flex; align-items: center; gap: 0.4rem;">
             <label for="gearStoreSortSelect" style="font-size: 0.68rem; color: var(--text-muted); font-weight: 700;">SORT:</label>
@@ -9859,7 +9953,7 @@ cricos_active_sse_connections 1</pre>
           <div id="gearStoreCartPanel" class="glass-panel" style="padding: 1rem; border-radius: 12px; background: rgba(10,16,28,0.82); border: 1px solid rgba(0,229,153,0.28); position: sticky; top: 0;">
             <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 0.75rem;">
               <div style="display: flex; align-items: center; gap: 0.45rem;">
-                <span style="font-size: 1.1rem;">🧺</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; color: var(--turf-emerald);">${iconSvg('basket', 'var(--turf-emerald)', 18)}</span>
                 <div>
                   <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary);">Your Match Kit Bag</div>
                   <div id="gearCartCountSubtext" style="font-size: 0.68rem; color: var(--text-muted);">2 items selected &bull; Ready for dispatch</div>
@@ -9875,17 +9969,17 @@ cricos_active_sse_connections 1</pre>
 
             <!-- Delivery Mode & Stadium/Turf Pavilion Selector -->
             <div style="padding: 0.65rem; border-radius: 8px; background: rgba(0,210,255,0.06); border: 1px solid rgba(0,210,255,0.2); margin-bottom: 0.75rem;">
-              <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--cyan); margin-bottom: 0.35rem;">🚚 Delivery &amp; Turf Drop Destination</div>
+              <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--cyan); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('cart', 'var(--cyan)', 14)} Delivery &amp; Turf Drop Destination</div>
               <select id="gearDeliveryModeSelect" onchange="updateGearDeliveryMode()" aria-label="Select gear delivery mode" style="width: 100%; padding: 0.38rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.72rem; font-weight: 600; margin-bottom: 0.4rem;">
-                <option value="PAVILION_DROP" selected>🏟️ Express Stadium / Turf Pavilion Drop (45 mins • FREE)</option>
-                <option value="CLUBHOUSE_COURIER">📦 Clubhouse / Home Courier Delivery (₹199 • Free &gt; ₹5,000)</option>
+                <option value="PAVILION_DROP" selected>Express Stadium / Turf Pavilion Drop (45 mins • FREE)</option>
+                <option value="CLUBHOUSE_COURIER">Clubhouse / Home Courier Delivery (₹199 • Free &gt; ₹5,000)</option>
               </select>
               <select id="gearDeliveryVenueSelect" onchange="updateGearDeliveryMode()" aria-label="Select target stadium or turf pavilion" style="width: 100%; padding: 0.36rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(0,229,153,0.3); color: var(--turf-emerald); font-size: 0.71rem; font-weight: 700;">
-                <option value="M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)">📍 M. Chinnaswamy Turf Arena — Pitch 1 Umpire &amp; Scorer Desk</option>
-                <option value="Wankhede Arena Turf Club (North Stand Dugout)">📍 Wankhede Arena Turf Club — North Stand Dugout</option>
-                <option value="Eden Gardens Royal Turf (Clubhouse Gate 2)">📍 Eden Gardens Royal Turf — Clubhouse Gate 2</option>
-                <option value="HPCA Himalayan Stadium (Practice Nets Bay A)">📍 HPCA Himalayan Stadium — Practice Nets Bay A</option>
-                <option value="M. A. Chidambaram Marina (Pavilion Locker 4)">📍 M. A. Chidambaram Marina — Pavilion Locker 4</option>
+                <option value="M. Chinnaswamy Turf Arena (Pitch 1 Pavilion)">M. Chinnaswamy Turf Arena — Pitch 1 Umpire &amp; Scorer Desk</option>
+                <option value="Wankhede Arena Turf Club (North Stand Dugout)">Wankhede Arena Turf Club — North Stand Dugout</option>
+                <option value="Eden Gardens Royal Turf (Clubhouse Gate 2)">Eden Gardens Royal Turf — Clubhouse Gate 2</option>
+                <option value="HPCA Himalayan Stadium (Practice Nets Bay A)">HPCA Himalayan Stadium — Practice Nets Bay A</option>
+                <option value="M. A. Chidambaram Marina (Pavilion Locker 4)">M. A. Chidambaram Marina — Pavilion Locker 4</option>
               </select>
             </div>
 
@@ -9931,19 +10025,19 @@ cricos_active_sse_connections 1</pre>
             <div style="margin-bottom: 0.75rem;">
               <label for="gearPaymentMethodSelect" style="font-size: 0.66rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.28rem;">PAYMENT &amp; SETTLEMENT METHOD:</label>
               <select id="gearPaymentMethodSelect" aria-label="Select gear payment method" style="width: 100%; padding: 0.4rem 0.55rem; border-radius: 6px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.16); color: var(--text-primary); font-size: 0.72rem; font-weight: 600; margin-bottom: 0.55rem;">
-                <option value="TEAM_ESCROW">⚡ Team Escrow Wallet (Instant Settlement • ₹42,500 Avail)</option>
-                <option value="UPI_INSTANT">📱 UPI Instant Pay / QR Scan</option>
-                <option value="CLUB_GST_CARD">💳 Club / Corporate GST Credit Card</option>
-                <option value="PAY_AT_PAVILION">🏟️ Pay at Turf Pavilion Desk on Delivery</option>
+                <option value="TEAM_ESCROW">Team Escrow Wallet (Instant Settlement • ₹42,500 Avail)</option>
+                <option value="UPI_INSTANT">UPI Instant Pay / QR Scan</option>
+                <option value="CLUB_GST_CARD">Club / Corporate GST Credit Card</option>
+                <option value="PAY_AT_PAVILION">Pay at Turf Pavilion Desk on Delivery</option>
               </select>
               <button type="button" id="btnGearCheckoutSubmit" class="btn btn-primary" onclick="submitGearStoreCheckout()" style="width: 100%; padding: 0.6rem 1rem; font-size: 0.82rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 0.45rem;" data-tooltip="Place gear order and dispatch to selected venue pavilion">
-                <span>⚡ Complete Gear Order &amp; Dispatch</span>
+                <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('lightning', '#04070D', 15)} Complete Gear Order &amp; Dispatch</span>
               </button>
             </div>
 
             <!-- Recent / Active Gear Orders & Live Dispatch Tracker -->
             <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.65rem;">
-              <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.4rem;">📦 Active Pavilion Dispatch &amp; Order History</div>
+              <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('download', 'var(--text-muted)', 14)} Active Pavilion Dispatch &amp; Order History</div>
               <div id="gearOrderHistoryList" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 150px; overflow-y: auto;">
                 <!-- Populated dynamically by renderGearOrderHistory() -->
               </div>
@@ -9953,8 +10047,8 @@ cricos_active_sse_connections 1</pre>
       </div>
 
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.35rem;">
-        <div style="font-size: 0.72rem; color: var(--text-muted);">
-          🛡️ Covered by CricOS Authentic Willow &amp; MCC Leather Replacement Guarantee
+        <div style="font-size: 0.72rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem;">
+          ${iconSvg('shield', 'var(--turf-emerald)', 14)} Covered by CricOS Authentic Willow &amp; MCC Leather Replacement Guarantee
         </div>
         <button class="btn btn-secondary" onclick="closeModal('modalCommerce')" data-tooltip="Close cricket commerce store" aria-label="Close gear store">Close Store</button>
       </div>
@@ -9966,7 +10060,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 750px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">📊</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('trophy', 'var(--turf-emerald)', 20)}</span>
           <div>
             <div class="modal-title">Tournament Fixture Board &amp; Command Centre</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Round-Robin Schedule &bull; Conflict Engine &bull; Bulk CSV Upload</div>
@@ -9980,7 +10074,7 @@ cricos_active_sse_connections 1</pre>
             <span class="badge badge-emerald">✓ Zero Conflicts Detected</span>
             <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 0.5rem;">Overall Readiness: <strong style="color: var(--turf-emerald);">100%</strong></span>
           </div>
-          <button class="btn btn-primary btn-sm" onclick="showBulkImportPrompt()" data-tooltip="Upload fixture schedule via CSV">📤 Bulk Import</button>
+          <button class="btn btn-primary btn-sm" onclick="showBulkImportPrompt()" data-tooltip="Upload fixture schedule via CSV" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('download', '#04070D', 14)} Bulk Import</button>
         </div>
 
         <div style="overflow-x: auto;">
@@ -10004,7 +10098,7 @@ cricos_active_sse_connections 1</pre>
                 <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sat, 13:00</td>
                 <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
                 <td style="padding: 0.65rem 0.75rem; text-align: right;">
-                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')" data-tooltip="Tournament procurement checklist verified" aria-label="Procurement verified">📋 Verified</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')" data-tooltip="Tournament procurement checklist verified" aria-label="Procurement verified" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('check', 'var(--turf-emerald)', 13)} Verified</button>
                 </td>
               </tr>
               <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
@@ -10016,7 +10110,7 @@ cricos_active_sse_connections 1</pre>
                 <td style="padding: 0.65rem 0.75rem; color: #CBD5E1;">Sun, 09:00</td>
                 <td style="padding: 0.65rem 0.75rem;"><span class="badge badge-emerald">100%</span></td>
                 <td style="padding: 0.65rem 0.75rem; text-align: right;">
-                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')" data-tooltip="Tournament procurement checklist verified" aria-label="Procurement verified">📋 Verified</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('Procurement verified')" data-tooltip="Tournament procurement checklist verified" aria-label="Procurement verified" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('check', 'var(--turf-emerald)', 13)} Verified</button>
                 </td>
               </tr>
             </tbody>
@@ -10034,7 +10128,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 650px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">📈</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('chart', 'var(--cyan)', 20)}</span>
           <div>
             <div class="modal-title">Match Intelligence &amp; MVP Impact Analysis</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Algorithmic POTM &bull; Tactical Phase Recap &bull; Turning Point Swing</div>
@@ -10046,7 +10140,7 @@ cricos_active_sse_connections 1</pre>
         <!-- MVP Card -->
         <div style="padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 184, 0, 0.35); background: linear-gradient(135deg, rgba(255, 184, 0, 0.08), rgba(10, 16, 28, 0.85)); margin-bottom: 1.25rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span class="badge badge-amber" style="font-weight: 700;">🏆 PLAYER OF THE MATCH (MVP)</span>
+            <span class="badge badge-amber" style="font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('trophy', 'var(--amber)', 13)} PLAYER OF THE MATCH (MVP)</span>
             <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.2rem; color: var(--amber);">96 pts</span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: flex-end;">
@@ -10071,7 +10165,7 @@ cricos_active_sse_connections 1</pre>
         <!-- Turning Point -->
         <div style="padding: 0.85rem; border-radius: 8px; background: rgba(0, 229, 153, 0.05); border: 1px solid rgba(0, 229, 153, 0.2);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--turf-emerald);">⚡ MATCH TURNING POINT (Over 16.4)</span>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('lightning', 'var(--turf-emerald)', 14)} MATCH TURNING POINT (Over 16.4)</span>
             <span class="badge badge-emerald">+34% Win Prob Swing</span>
           </div>
           <div style="font-size: 0.8rem; color: #fff;">Decisive boundary and dropped catch in over 16 shifted match win probability decisively.</div>
@@ -10088,7 +10182,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 560px;">
       <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.9rem;">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">📍</div>
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); display: flex; align-items: center; justify-content: center; color: var(--turf-emerald); flex-shrink: 0;">${iconSvg('pin', 'var(--turf-emerald)', 20)}</div>
           <div>
             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
               <div class="modal-title" style="font-size: 1.05rem;">Provider Check-In &amp; Match Sign-Off</div>
@@ -10105,7 +10199,7 @@ cricos_active_sse_connections 1</pre>
         <div id="checkinVenueContextStrip" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; padding: 0.65rem 0.75rem; border-radius: 10px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08);">
           <div>
             <div style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8; font-weight: 700;">Active Venue</div>
-            <div style="font-size: 0.76rem; font-weight: 700; color: #F8FAFC; margin-top: 0.1rem;">🏟️ Chinnaswamy Turf A</div>
+            <div style="font-size: 0.76rem; font-weight: 700; color: #F8FAFC; margin-top: 0.1rem; display: flex; align-items: center; gap: 0.3rem;">${iconSvg('stadium', 'var(--cyan)', 13)} Chinnaswamy Turf A</div>
           </div>
           <div>
             <div style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8; font-weight: 700;">Geofence Telemetry</div>
@@ -10127,9 +10221,9 @@ cricos_active_sse_connections 1</pre>
 
           <!-- Quick Official PIN Selector Pills -->
           <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem;">
-            <button type="button" class="checkin-role-chip active" id="btnCheckinPinUmpire" onclick="window.selectCheckinRolePin('UMPIRE', '4821', 'Rajesh Sharma (MCC L2 Umpire)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(0, 229, 153, 0.45); background: rgba(0, 229, 153, 0.14); color: #00E599; cursor: pointer;" data-tooltip="Load Lead Umpire PIN 4821">👨‍⚖️ Umpire • 4821</button>
-            <button type="button" class="checkin-role-chip" id="btnCheckinPinScorer" onclick="window.selectCheckinRolePin('SCORER', '7390', 'Ananya Verma (Official Scorer)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: #CBD5E1; cursor: pointer;" data-tooltip="Load Official Scorer PIN 7390">📝 Scorer • 7390</button>
-            <button type="button" class="checkin-role-chip" id="btnCheckinPinGroundsman" onclick="window.selectCheckinRolePin('GROUNDSMAN', '9104', 'K. Gowda (Head Curator)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: #CBD5E1; cursor: pointer;" data-tooltip="Load Turf Curator PIN 9104">🌿 Curator • 9104</button>
+            <button type="button" class="checkin-role-chip active" id="btnCheckinPinUmpire" onclick="window.selectCheckinRolePin('UMPIRE', '4821', 'Rajesh Sharma (MCC L2 Umpire)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(0, 229, 153, 0.45); background: rgba(0, 229, 153, 0.14); color: #00E599; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Load Lead Umpire PIN 4821">${iconSvg('scale', '#00E599', 13)} Umpire • 4821</button>
+            <button type="button" class="checkin-role-chip" id="btnCheckinPinScorer" onclick="window.selectCheckinRolePin('SCORER', '7390', 'Ananya Verma (Official Scorer)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: #CBD5E1; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Load Official Scorer PIN 7390">${iconSvg('clipboard', 'currentColor', 13)} Scorer • 7390</button>
+            <button type="button" class="checkin-role-chip" id="btnCheckinPinGroundsman" onclick="window.selectCheckinRolePin('GROUNDSMAN', '9104', 'K. Gowda (Head Curator)')" style="padding: 0.28rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: #CBD5E1; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Load Turf Curator PIN 9104">${iconSvg('leaf', 'currentColor', 13)} Curator • 9104</button>
           </div>
 
           <div style="display: grid; grid-template-columns: 148px 1fr; gap: 0.65rem; align-items: stretch;">
@@ -10161,7 +10255,7 @@ cricos_active_sse_connections 1</pre>
             <label for="chkSignoffHomeCaptain" id="signoffRow_HOME" class="checkin-stakeholder-card">
               <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
                 <input type="checkbox" id="chkSignoffHomeCaptain" checked onchange="window.updateCheckinSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />
-                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(0, 229, 153, 0.15); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">🏏</div>
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(0, 229, 153, 0.15); display: flex; align-items: center; justify-content: center; color: var(--turf-emerald); flex-shrink: 0;">${iconSvg('bat', 'var(--turf-emerald)', 16)}</div>
                 <div style="min-width: 0;">
                   <div class="checkin-stakeholder-title">Home Captain (Virat Sharma)</div>
                   <div class="checkin-stakeholder-sub">Bengaluru Strikers XI &bull; Playing XI &amp; NRR Verified</div>
@@ -10174,7 +10268,7 @@ cricos_active_sse_connections 1</pre>
             <label for="chkSignoffAwayCaptain" id="signoffRow_AWAY" class="checkin-stakeholder-card">
               <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
                 <input type="checkbox" id="chkSignoffAwayCaptain" checked onchange="window.updateCheckinSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />
-                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">🛡️</div>
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--cyan); flex-shrink: 0;">${iconSvg('shield', 'var(--cyan)', 16)}</div>
                 <div style="min-width: 0;">
                   <div class="checkin-stakeholder-title">Away Captain (David Warner)</div>
                   <div class="checkin-stakeholder-sub">Mumbai Titans XI &bull; Innings Totals &amp; Extras Confirmed</div>
@@ -10187,7 +10281,7 @@ cricos_active_sse_connections 1</pre>
             <label for="chkSignoffLeadUmpire" id="signoffRow_UMPIRE" class="checkin-stakeholder-card">
               <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
                 <input type="checkbox" id="chkSignoffLeadUmpire" checked onchange="window.updateCheckinSignoffState()" style="width: 18px !important; height: 18px !important; flex: 0 0 18px !important; margin: 0;" />
-                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.16); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">👨‍⚖️</div>
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.16); display: flex; align-items: center; justify-content: center; color: var(--amber); flex-shrink: 0;">${iconSvg('scale', 'var(--amber)', 16)}</div>
                 <div style="min-width: 0;">
                   <div class="checkin-stakeholder-title">Lead Umpire (Certified Official)</div>
                   <div class="checkin-stakeholder-sub">Rajesh Sharma (MCC Level-2) &bull; Zero Code-of-Conduct Holds</div>
@@ -10199,12 +10293,12 @@ cricos_active_sse_connections 1</pre>
 
           <!-- Escrow Disbursement Breakdown Strip -->
           <div id="checkinEscrowSummaryStrip" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; padding: 0.55rem 0.75rem; border-radius: 8px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.22); margin-bottom: 0.8rem; font-size: 0.7rem; color: #CBD5E1;">
-            <span style="font-weight: 700; color: #00E599;">💸 Automated Escrow Split:</span>
+            <span style="font-weight: 700; color: #00E599; display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('coin', '#00E599', 14)} Automated Escrow Split:</span>
             <span style="font-family: var(--font-mono);">Turf ₹8,500 &bull; Umpire ₹2,500 &bull; Scorer ₹1,000 &bull; Platform ₹500</span>
           </div>
 
           <button type="button" class="btn btn-primary" id="btnCompleteDigitalSignOff" style="width: 100%; font-weight: 800; padding: 0.7rem 1rem; border-radius: 9px;" onclick="window.completeMatchDigitalSignOff()" data-tooltip="Submit 3-party scorecard sign-off and unlock escrow" aria-label="Sign off match and unlock escrow">
-            ✍ Complete Digital Sign-Off
+            <span style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('check', '#04070D', 16)} Complete Digital Sign-Off</span>
           </button>
         </div>
       </div>
@@ -10220,7 +10314,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">🤝</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('handshake', 'var(--cyan)', 20)}</span>
           <div>
             <div class="modal-title">Sponsorship Inventory &amp; Player Auction Desk</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Prize Pool Pledges &bull; Live Franchise Bidding &bull; Double-Entry Escrow</div>
@@ -10282,7 +10376,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 780px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">⚖️</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('scale', 'var(--turf-emerald)', 20)}</span>
           <div>
             <div class="modal-title">Match Day Umpire Desk &amp; Integrity Review</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Lead: Nitin Menon &bull; Leg: Sundaram Ravi &bull; Referee: Javagal Srinath</div>
@@ -10297,13 +10391,13 @@ cricos_active_sse_connections 1</pre>
             <div style="font-size: 0.85rem; font-weight: 700; color: #fff;">Official Match Card Status</div>
             <div id="umpireSignOffStatusText" style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem;">Pending Final In-Match Sign-off &bull; Escrows Held Safely</div>
           </div>
-          <button class="btn btn-primary btn-sm" id="btnDeskSignOff" onclick="signOffUmpireDesk()" data-tooltip="Cryptographically certify match card and release double-entry escrows">✍️ Certify &amp; Sign Off</button>
+          <button class="btn btn-primary btn-sm" id="btnDeskSignOff" onclick="signOffUmpireDesk()" data-tooltip="Cryptographically certify match card and release double-entry escrows" style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('check', '#04070D', 14)} Certify &amp; Sign Off</button>
         </div>
 
         <!-- Hawk-Eye DRS Reviews Section -->
         <div style="margin-bottom: 1.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-            <div style="font-size: 0.85rem; font-weight: 700; color: var(--cyan); font-family: var(--font-display);">🎯 Hawk-Eye DRS Ball-Tracking Reviews</div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--cyan); font-family: var(--font-display); display: flex; align-items: center; gap: 0.35rem;">${iconSvg('target', 'var(--cyan)', 16)} Hawk-Eye DRS Ball-Tracking Reviews</div>
             <button class="btn btn-secondary btn-sm" id="btnDeskAddDrs" onclick="logUmpireDeskDrs()" data-tooltip="Log simulated LBW or caught-behind DRS review">+ Log DRS Review</button>
           </div>
           <div id="umpireDrsList" style="display: flex; flex-direction: column; gap: 0.5rem;">
@@ -10329,7 +10423,7 @@ cricos_active_sse_connections 1</pre>
         <!-- MCC Law 41 & 42 Code of Conduct Section -->
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-            <div style="font-size: 0.85rem; font-weight: 700; color: var(--rose); font-family: var(--font-display);">🚨 MCC Code of Conduct &amp; Sanctions</div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--rose); font-family: var(--font-display); display: flex; align-items: center; gap: 0.35rem;">${iconSvg('alert', 'var(--rose)', 16)} MCC Code of Conduct &amp; Sanctions</div>
             <div style="display: flex; gap: 0.4rem;">
               <button class="btn btn-secondary btn-sm" id="btnDeskAddSanction" onclick="logUmpireDeskSanction()" data-tooltip="Record official player conduct sanction">+ Record Breach</button>
               <button class="btn btn-warning btn-sm" id="btnDeskAddPenaltyRuns" onclick="awardUmpirePenaltyRuns(5)" data-tooltip="Award 5 penalty runs to batting team per MCC Law 41/42">+5 Penalty Runs</button>
@@ -10364,7 +10458,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 780px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">⚡</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('document', 'var(--turf-emerald)', 20)}</span>
           <div>
             <div class="modal-title">Live Scorer Studio &amp; Cricsheet / XML Export</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Cricsheet.org v1.0.0 Specification &bull; Federation XML &bull; Speech-to-Score Voice Telemetry</div>
@@ -10376,20 +10470,20 @@ cricos_active_sse_connections 1</pre>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
           <span style="font-size: 0.8rem; color: #94a3b8;">Download official federation archives:</span>
           <div style="display: flex; gap: 0.5rem;">
-            <button class="btn btn-primary btn-sm" id="btnDownloadCricsheetJson" onclick="downloadCricsheetFile('json')" data-tooltip="Download match as official Cricsheet JSON">📥 Cricsheet (JSON)</button>
-            <button class="btn btn-secondary btn-sm" id="btnDownloadCricketXml" onclick="downloadCricsheetFile('xml')" data-tooltip="Download match as Federation XML">📥 Federation (XML)</button>
+            <button class="btn btn-primary btn-sm" id="btnDownloadCricsheetJson" onclick="downloadCricsheetFile('json')" data-tooltip="Download match as official Cricsheet JSON" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('download', '#04070D', 14)} Cricsheet (JSON)</button>
+            <button class="btn btn-secondary btn-sm" id="btnDownloadCricketXml" onclick="downloadCricsheetFile('xml')" data-tooltip="Download match as Federation XML" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('download', 'currentColor', 14)} Federation (XML)</button>
           </div>
         </div>
 
         <!-- Speech-to-Score Audio Commentary Input -->
         <div style="background: rgba(10, 16, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.82rem; font-weight: 700; color: var(--cyan);">🎙️ Speech-to-Score Audio Telemetry</span>
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('mic', 'var(--cyan)', 16)} Speech-to-Score Audio Telemetry</span>
             <span style="font-size: 0.68rem; color: var(--turf-emerald); background: rgba(0,229,153,0.1); padding: 0.15rem 0.4rem; border-radius: 4px;">● NLP Parser Ready</span>
           </div>
           <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
             <input type="text" id="audioTranscriptInput" placeholder="Speak or type (e.g. 'Four runs driven cleanly through extra cover')" style="flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #fff; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem;" />
-            <button class="btn btn-primary btn-sm" id="btnSubmitSpeechDelivery" onclick="submitSpeechCommentary()" data-tooltip="Parse commentary audio transcript to automated delivery record">⚡ Record Spoken Ball</button>
+            <button class="btn btn-primary btn-sm" id="btnSubmitSpeechDelivery" onclick="submitSpeechCommentary()" data-tooltip="Parse commentary audio transcript to automated delivery record" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('lightning', '#04070D', 14)} Record Spoken Ball</button>
           </div>
           <div id="speechAudioLogList" style="display: flex; flex-direction: column; gap: 0.4rem;">
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; align-items: center;">
@@ -10430,7 +10524,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 820px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">🏆</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 184, 0, 0.1); border: 1px solid rgba(255, 184, 0, 0.25); color: var(--amber);">${iconSvg('trophy', 'var(--amber)', 20)}</span>
           <div>
             <div class="modal-title">Multi-Division League Ladders &amp; Playoff Seeding</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Tier 1 Premier League &bull; Tier 2 Championship &bull; Automatic Season Promotion/Relegation</div>
@@ -10441,7 +10535,7 @@ cricos_active_sse_connections 1</pre>
       <div class="modal-body" style="padding: 1.25rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
           <span style="font-size: 0.8rem; color: #94a3b8;">ICC Section 16 Net Run Rate Standings</span>
-          <button class="btn btn-secondary btn-sm" id="btnSimulatePromotion" onclick="simulateSeasonTransitionAction()" data-tooltip="Simulate season transition with automatic promotion and relegation">🔄 Simulate Rollover</button>
+          <button class="btn btn-secondary btn-sm" id="btnSimulatePromotion" onclick="simulateSeasonTransitionAction()" data-tooltip="Simulate season transition with automatic promotion and relegation" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('refresh', 'currentColor', 14)} Simulate Rollover</button>
         </div>
 
         <!-- Premier Division (Tier 1) Table -->
@@ -10535,7 +10629,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="font-size: 1.4rem;">🌧️</span>
+          <span style="display: flex; align-items: center;">${getDesktopIconSvg('rain', '#00D2FF', 22)}</span>
           <div>
             <div class="modal-title">Duckworth-Lewis-Stern (DLS) Target Engine</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Rain Interruption Modeling • Standard T20 Resource Curves • Revised Targets</div>
@@ -10607,8 +10701,8 @@ cricos_active_sse_connections 1</pre>
           </div>
         </div>
 
-        <button class="btn btn-primary" onclick="applyDlsTargetToMatch()" style="width: 100%; padding: 0.65rem; font-weight: 700;" data-tooltip="Push revised DLS target equation to live match scoreboard">
-          ⚡ Apply Revised DLS Target to Live Match
+        <button class="btn btn-primary" onclick="applyDlsTargetToMatch()" style="width: 100%; padding: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Push revised DLS target equation to live match scoreboard">
+          ${getDesktopIconSvg('lightning', '#050B14', 16)} Apply Revised DLS Target to Live Match
         </button>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
@@ -10621,19 +10715,19 @@ cricos_active_sse_connections 1</pre>
   <div class="modal-backdrop" id="modal3DTrophyCabinet">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-header">
-        <div class="modal-title">
-          <span>🏆 3D Championship Trophy Cabinet</span>
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.45rem;">
+          ${getDesktopIconSvg('trophy', '#FFB800', 18)} <span>3D Championship Trophy Cabinet</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modal3DTrophyCabinet')" data-tooltip="Close Trophy Cabinet">✕</button>
       </div>
       <div class="modal-body">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
           <div style="display: flex; gap: 0.35rem;">
-            <button type="button" class="btn btn-secondary active" id="btnTrophyPremier" onclick="switch3DTrophy('PREMIER_CUP')" data-tooltip="Premier Championship Gold Cup">🏆 Premier Cup</button>
-            <button type="button" class="btn btn-secondary" id="btnTrophyMvp" onclick="switch3DTrophy('MVP_SHIELD')" data-tooltip="Tournament MVP Silver Shield">🛡️ MVP Shield</button>
-            <button type="button" class="btn btn-secondary" id="btnTrophyBat" onclick="switch3DTrophy('GOLDEN_BAT')" data-tooltip="Leading Run Scorer Golden Bat">🏏 Golden Bat</button>
+            <button type="button" class="btn btn-secondary active" id="btnTrophyPremier" onclick="switch3DTrophy('PREMIER_CUP')" data-tooltip="Premier Championship Gold Cup" style="display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('trophy', '#FFB800', 14)} Premier Cup</button>
+            <button type="button" class="btn btn-secondary" id="btnTrophyMvp" onclick="switch3DTrophy('MVP_SHIELD')" data-tooltip="Tournament MVP Silver Shield" style="display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('shield', '#00D2FF', 14)} MVP Shield</button>
+            <button type="button" class="btn btn-secondary" id="btnTrophyBat" onclick="switch3DTrophy('GOLDEN_BAT')" data-tooltip="Leading Run Scorer Golden Bat" style="display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('bat', '#FFB800', 14)} Golden Bat</button>
           </div>
-          <button type="button" class="three-cam-btn" id="btnTrophyAutoCam" onclick="toggle3DTrophyAutoRotate()" data-tooltip="Toggle 360° Trophy Auto-Rotation">🛰 Auto-Orbit</button>
+          <button type="button" class="three-cam-btn" id="btnTrophyAutoCam" onclick="toggle3DTrophyAutoRotate()" data-tooltip="Toggle 360° Trophy Auto-Rotation" style="display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('satellite', '#00E599', 14)} Auto-Orbit</button>
         </div>
 
         <div class="three-modal-canvas-wrap">
@@ -10663,8 +10757,8 @@ cricos_active_sse_connections 1</pre>
   <div class="modal-backdrop" id="modal3DPlayerCard">
     <div class="modal-dialog" style="max-width: 600px;">
       <div class="modal-header">
-        <div class="modal-title">
-          <span>🃏 Holographic 3D Player Card Inspector</span>
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.45rem;">
+          ${getDesktopIconSvg('card', '#A855F7', 18)} <span>Holographic 3D Player Card Inspector</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modal3DPlayerCard')" data-tooltip="Close Player Card">✕</button>
       </div>
@@ -10713,8 +10807,8 @@ cricos_active_sse_connections 1</pre>
   <div class="modal-backdrop" id="modal3DBatCustomizer">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-header">
-        <div class="modal-title">
-          <span>🏏 3D Cricket Bat &amp; Gear Customizer</span>
+        <div class="modal-title" style="display: flex; align-items: center; gap: 0.45rem;">
+          ${getDesktopIconSvg('bat', '#00E599', 18)} <span>3D Cricket Bat &amp; Gear Customizer</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modal3DBatCustomizer')" data-tooltip="Close Bat Customizer">✕</button>
       </div>
@@ -10738,10 +10832,10 @@ cricos_active_sse_connections 1</pre>
           <div>
             <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Grip Color Accent</label>
             <div style="display: flex; gap: 0.4rem; margin-top: 0.2rem;">
-              <button type="button" class="three-cam-btn active" id="btnGripEmerald" onclick="set3DBatGripColor(0x00E599, this)" data-tooltip="Turf Emerald Grip">🟢 Emerald</button>
-              <button type="button" class="three-cam-btn" id="btnGripCyan" onclick="set3DBatGripColor(0x00D2FF, this)" data-tooltip="Cyan Neon Grip">🔵 Cyan</button>
-              <button type="button" class="three-cam-btn" id="btnGripRuby" onclick="set3DBatGripColor(0xEF4444, this)" data-tooltip="Ruby Strike Grip">🔴 Ruby</button>
-              <button type="button" class="three-cam-btn" id="btnGripMidnight" onclick="set3DBatGripColor(0x1E293B, this)" data-tooltip="Midnight Stealth Grip">⚫ Midnight</button>
+              <button type="button" class="three-cam-btn active" id="btnGripEmerald" onclick="set3DBatGripColor(0x00E599, this)" data-tooltip="Turf Emerald Grip"><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00E599; margin-right: 4px;"></span>Emerald</button>
+              <button type="button" class="three-cam-btn" id="btnGripCyan" onclick="set3DBatGripColor(0x00D2FF, this)" data-tooltip="Cyan Neon Grip"><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00D2FF; margin-right: 4px;"></span>Cyan</button>
+              <button type="button" class="three-cam-btn" id="btnGripRuby" onclick="set3DBatGripColor(0xEF4444, this)" data-tooltip="Ruby Strike Grip"><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #EF4444; margin-right: 4px;"></span>Ruby</button>
+              <button type="button" class="three-cam-btn" id="btnGripMidnight" onclick="set3DBatGripColor(0x1E293B, this)" data-tooltip="Midnight Stealth Grip"><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #1E293B; border: 1px solid #475569; margin-right: 4px;"></span>Midnight</button>
             </div>
           </div>
         </div>
@@ -10751,8 +10845,8 @@ cricos_active_sse_connections 1</pre>
             <div style="font-size: 0.82rem; font-weight: 700; color: #FFF;" id="batSpecsTitle">Grade 2 Kashmir Willow • 40mm Thick Edges</div>
             <div style="font-size: 0.72rem; color: var(--text-muted);">Weight: 1,180g (2lb 9.6oz) • Balance Point: Mid-Low • Handle: 12-Piece Cane</div>
           </div>
-          <button type="button" class="btn btn-primary" onclick="addCustomBatToBasket()" style="width: auto; padding: 0.45rem 0.95rem; font-size: 0.8rem;" data-tooltip="Add customized bat to Event Basket checkout">
-            🧺 Add to Basket
+          <button type="button" class="btn btn-primary" onclick="addCustomBatToBasket()" style="width: auto; padding: 0.45rem 0.95rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Add customized bat to Event Basket checkout">
+            ${getDesktopIconSvg('basket', '#050B14', 15)} Add to Basket
           </button>
         </div>
       </div>
@@ -10767,7 +10861,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
         <div class="modal-title" style="display: flex; align-items: center; gap: 0.6rem;">
-          <span>⚡ Athlete Analytical Dossier</span>
+          <span style="display: inline-flex; align-items: center; gap: 0.4rem;">${getDesktopIconSvg('activity', '#00E599', 18)} Athlete Analytical Dossier</span>
           <span class="player-role-badge" id="drawerRoleBadge" style="background: rgba(0,229,153,0.18); color: var(--turf-emerald);">ALL</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closePlayerStatsDrawer()" data-tooltip="Close athlete dossier (Esc)">✕</button>
@@ -10856,7 +10950,9 @@ cricos_active_sse_connections 1</pre>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
         <button type="button" class="btn btn-secondary" onclick="closePlayerStatsDrawer()" style="width: auto;" data-tooltip="Dismiss player statistics drawer" aria-label="Dismiss player drawer">Dismiss</button>
-        <button type="button" class="btn btn-primary" onclick="showToast('✓ Athlete Dossier exported to PDF / CSV')" style="width: auto;" data-tooltip="Download certified player analytical report">📥 Export Athlete Report</button>
+        <button type="button" class="btn btn-primary" onclick="showToast('✓ Athlete Dossier exported to PDF / CSV')" style="width: auto; display: inline-flex; align-items: center; gap: 0.4rem;" data-tooltip="Download certified player analytical report">
+          ${getDesktopIconSvg('download', '#050B14', 15)} Export Athlete Report
+        </button>
       </div>
     </div>
   </div>
@@ -10905,7 +11001,7 @@ cricos_active_sse_connections 1</pre>
     <div class="modal-dialog" style="max-width: 640px; width: 95vw;">
       <div class="modal-header" style="padding: 0.9rem 1.25rem;">
         <div class="modal-title" id="cmdPaletteTitle" style="display: flex; align-items: center; gap: 0.5rem;">
-          <span>⚡</span>
+          <span style="display: flex; align-items: center;">${getDesktopIconSvg('lightning', '#FFB800', 18)}</span>
           <span>CricOS Command Palette &amp; Omnisearch</span>
           <span class="cmd-kbd-badge">⌘K</span>
         </div>
@@ -10924,10 +11020,10 @@ cricos_active_sse_connections 1</pre>
         </div>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.85rem;" id="cmdPaletteCategoryPills">
           <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('ALL')" data-tooltip="Show all commands and search items" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">All</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('TACTICS_3D')" data-tooltip="Filter tactical radar, pitch map, auction &amp; 3D tools" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🎯 Tactics &amp; 3D</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('LIVE_SCORING')" data-tooltip="Filter quick scoring and undo actions" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🏏 Live Scoring</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('PLAYERS')" data-tooltip="Filter athlete 3D cards &amp; career dossiers" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🃏 Athletes</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('THEMES_PERSONAS')" data-tooltip="Filter visual themes (Stadium, Swiss, Nordic)" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">🎨 Themes</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('TACTICS_3D')" data-tooltip="Filter tactical radar, pitch map, auction &amp; 3D tools" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('target', '#00E599', 13)} Tactics &amp; 3D</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('LIVE_SCORING')" data-tooltip="Filter quick scoring and undo actions" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('bat', '#00D2FF', 13)} Live Scoring</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('PLAYERS')" data-tooltip="Filter athlete 3D cards &amp; career dossiers" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('card', '#A855F7', 13)} Athletes</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="filterCommandPaletteByCategory('THEMES_PERSONAS')" data-tooltip="Filter visual themes (Stadium, Swiss, Nordic)" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('palette', '#FFB800', 13)} Themes</button>
         </div>
         <div id="cmdPaletteResultsList" style="display: flex; flex-direction: column; gap: 0.45rem; max-height: 360px; overflow-y: auto; padding-right: 0.25rem;">
           <!-- Dynamically populated by renderCommandPaletteItems() -->
@@ -10946,7 +11042,9 @@ cricos_active_sse_connections 1</pre>
   <div class="modal-backdrop as-drawer" id="modalFieldPlanner" role="dialog" aria-modal="true" aria-labelledby="fieldPlannerTitle">
     <div class="modal-card" style="max-width: 880px; width: 95vw;">
       <div class="modal-header">
-        <div class="modal-title" id="fieldPlannerTitle">🎯 Interactive 11-Fielder Tactical Radar, Drag-and-Drop &amp; Live Commentary Engine</div>
+        <div class="modal-title" id="fieldPlannerTitle" style="display: flex; align-items: center; gap: 0.5rem;">
+          ${getDesktopIconSvg('target', '#00E599', 18)} <span>Interactive 11-Fielder Tactical Radar, Drag-and-Drop &amp; Live Commentary Engine</span>
+        </div>
         <button type="button" class="modal-close-btn" aria-label="Close Field Planner" onclick="closeModal('modalFieldPlanner')" data-tooltip="Close Tactical Field Placement Planner">×</button>
       </div>
       <div class="modal-body" style="padding: 1.15rem;">
@@ -10958,22 +11056,22 @@ cricos_active_sse_connections 1</pre>
             <button type="button" id="btnFieldPhaseDeath" class="btn btn-secondary btn-sm" onclick="setFieldPlannerPhase('DEATH_OVERS_16_20')" data-tooltip="Death Overs (Overs 16-20): Max 5 fielders allowed outside 30-yard circle" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem;">Death (Overs 16-20 • Max 5 Out)</button>
           </div>
           <div style="display: flex; gap: 0.4rem;">
-            <button type="button" id="btnFieldHandRHB" class="btn btn-secondary btn-sm" onclick="setFieldPlannerHand('RHB')" data-tooltip="Configure field geometry for Right-Handed Batter (RHB)" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem; border-color: var(--cyan); color: var(--cyan);">🏏 RHB</button>
-            <button type="button" id="btnFieldHandLHB" class="btn btn-secondary btn-sm" onclick="setFieldPlannerHand('LHB')" data-tooltip="Mirror field geometry horizontally for Left-Handed Batter (LHB)" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem;">🏏 LHB (Mirror)</button>
+            <button type="button" id="btnFieldHandRHB" class="btn btn-secondary btn-sm" onclick="setFieldPlannerHand('RHB')" data-tooltip="Configure field geometry for Right-Handed Batter (RHB)" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem; border-color: var(--cyan); color: var(--cyan); display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('bat', 'currentColor', 13)} RHB</button>
+            <button type="button" id="btnFieldHandLHB" class="btn btn-secondary btn-sm" onclick="setFieldPlannerHand('LHB')" data-tooltip="Mirror field geometry horizontally for Left-Handed Batter (LHB)" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.74rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('bat', 'currentColor', 13)} LHB (Mirror)</button>
           </div>
         </div>
 
         <!-- 8 Pro Tactical Fielder Configurations Strip -->
         <div style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.35rem;">8 Tactical Fielder Configurations (Click to Apply &amp; Emit Live Commentary):</div>
         <div id="fieldPlannerPresetGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 0.4rem; margin-bottom: 0.85rem;">
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="POWERPLAY_ATTACK" onclick="applyFieldPreset('POWERPLAY_ATTACK')" data-tooltip="Overs 1-6: 2 Slips, Gully, Point, Extra Cover, Mid-Off, Mid-On, Deep Third Man, Deep Fine Leg" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">⚡ PP1 Attack (2 Slips + Gully)</button>
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="POWERPLAY_SWING_TRAP" onclick="applyFieldPreset('POWERPLAY_SWING_TRAP')" data-tooltip="Overs 1-6: Inswing pad trap with Leg Slip, Short Mid-Wicket, 1st Slip, and 2 boundary riders" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🎯 PP1 Inswing Pad Trap</button>
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="MIDDLE_SPIN_TRAP" onclick="applyFieldPreset('MIDDLE_SPIN_TRAP')" data-tooltip="Overs 7-15: Spin web with Short Leg, Silly Point, Slip, and 4 boundary sweepers" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🛡️ Middle Spin Web (Short Leg)</button>
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="BOUNCER_SHORT_TRAP" onclick="applyFieldPreset('BOUNCER_SHORT_TRAP')" data-tooltip="Overs 7-15: Short-ball bumper trap with Leg Gully, Short Mid-Wicket, Deep Fine Leg & Deep Square Leg" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">💥 Bodyline Bouncer Trap</button>
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="OFFSIDE_RING_SQUEEZE" onclick="applyFieldPreset('OFFSIDE_RING_SQUEEZE')" data-tooltip="Overs 7-15: 7-2 off-side dry channel squeeze packing Backward Point, Point, Cover & Extra Cover" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🔒 7-2 Off-Side Squeeze</button>
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="DEATH_YORKER_DEFENSE" onclick="applyFieldPreset('DEATH_YORKER_DEFENSE')" data-tooltip="Overs 16-20: Wide 6th-stump yorker defense with 5 boundary riders" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🔥 Death Wide Yorker (5 Out)</button>
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="DEATH_SLOWER_CUTTER" onclick="applyFieldPreset('DEATH_SLOWER_CUTTER')" data-tooltip="Overs 16-20: Slower-ball cutter trap protecting Cow Corner, Deep Mid-Wicket & Long-On" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🌀 Death Slower-Cutter Trap</button>
-          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="SUPER_OVER_UMBRELLA" onclick="applyFieldPreset('SUPER_OVER_UMBRELLA')" data-tooltip="Final Over / Super Over boundary umbrella with 5 rope riders & saving-one inner ring" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem;">🏆 Super Over Umbrella</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="POWERPLAY_ATTACK" onclick="applyFieldPreset('POWERPLAY_ATTACK')" data-tooltip="Overs 1-6: 2 Slips, Gully, Point, Extra Cover, Mid-Off, Mid-On, Deep Third Man, Deep Fine Leg" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('lightning', '#FFB800', 13)} PP1 Attack (2 Slips + Gully)</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="POWERPLAY_SWING_TRAP" onclick="applyFieldPreset('POWERPLAY_SWING_TRAP')" data-tooltip="Overs 1-6: Inswing pad trap with Leg Slip, Short Mid-Wicket, 1st Slip, and 2 boundary riders" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('target', '#00D2FF', 13)} PP1 Inswing Pad Trap</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="MIDDLE_SPIN_TRAP" onclick="applyFieldPreset('MIDDLE_SPIN_TRAP')" data-tooltip="Overs 7-15: Spin web with Short Leg, Silly Point, Slip, and 4 boundary sweepers" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('shield', '#00E599', 13)} Middle Spin Web (Short Leg)</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="BOUNCER_SHORT_TRAP" onclick="applyFieldPreset('BOUNCER_SHORT_TRAP')" data-tooltip="Overs 7-15: Short-ball bumper trap with Leg Gully, Short Mid-Wicket, Deep Fine Leg & Deep Square Leg" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('fire', '#EF4444', 13)} Bodyline Bouncer Trap</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="OFFSIDE_RING_SQUEEZE" onclick="applyFieldPreset('OFFSIDE_RING_SQUEEZE')" data-tooltip="Overs 7-15: 7-2 off-side dry channel squeeze packing Backward Point, Point, Cover & Extra Cover" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('lock', '#A855F7', 13)} 7-2 Off-Side Squeeze</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="DEATH_YORKER_DEFENSE" onclick="applyFieldPreset('DEATH_YORKER_DEFENSE')" data-tooltip="Overs 16-20: Wide 6th-stump yorker defense with 5 boundary riders" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('fire', '#FFB800', 13)} Death Wide Yorker (5 Out)</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="DEATH_SLOWER_CUTTER" onclick="applyFieldPreset('DEATH_SLOWER_CUTTER')" data-tooltip="Overs 16-20: Slower-ball cutter trap protecting Cow Corner, Deep Mid-Wicket & Long-On" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('wind', '#00D2FF', 13)} Death Slower-Cutter Trap</button>
+          <button type="button" class="btn btn-secondary btn-sm field-preset-btn" data-preset="SUPER_OVER_UMBRELLA" onclick="applyFieldPreset('SUPER_OVER_UMBRELLA')" data-tooltip="Final Over / Super Over boundary umbrella with 5 rope riders & saving-one inner ring" style="width: 100%; justify-content: flex-start; padding: 0.34rem 0.6rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('trophy', '#FFB800', 13)} Super Over Umbrella</button>
         </div>
 
         <!-- Live MCC Law 28.4 & ICC Powerplay Validation Status Banner -->
@@ -10986,7 +11084,7 @@ cricos_active_sse_connections 1</pre>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(295px, 1fr)); gap: 1.1rem; align-items: start;">
           <div style="display: flex; flex-direction: column; align-items: center; background: rgba(4, 15, 10, 0.78); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 12px; padding: 0.85rem;">
             <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.68rem; color: #94A3B8; margin-bottom: 0.35rem; font-family: var(--font-mono);">
-              <span>🖐️ DRAG &amp; DROP ENABLED</span>
+              <span>DRAG &amp; DROP ENABLED</span>
               <span id="fieldDragStatusBadge" style="color: #00E599; font-weight: 700;">Ready • Drag any node</span>
             </div>
             <svg id="fieldPlannerSvg" viewBox="0 0 320 320" style="width: 100%; max-width: 300px; height: auto; overflow: visible; touch-action: none; user-select: none; cursor: crosshair;" role="img" aria-label="Interactive 11-Fielder Drag-and-Drop Cricket Turf Radar">
@@ -11018,11 +11116,11 @@ cricos_active_sse_connections 1</pre>
             <!-- Live Auto-Generated Tactical Field Commentary Box -->
             <div style="margin-top: 0.25rem; padding: 0.65rem 0.75rem; border-radius: 10px; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(0, 210, 255, 0.28);">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                <span style="font-size: 0.68rem; font-weight: 800; color: #00D2FF; letter-spacing: 0.05em;">🎙️ AUTO-GENERATED LIVE FIELD COMMENTARY</span>
+                <span style="font-size: 0.68rem; font-weight: 800; color: #00D2FF; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('mic', '#00D2FF', 14)} AUTO-GENERATED LIVE FIELD COMMENTARY</span>
                 <span style="font-size: 0.62rem; color: #00E599; font-family: var(--font-mono);">Synced to #scoringFeed</span>
               </div>
               <div id="fieldPlannerCommentaryLog" style="display: flex; flex-direction: column; gap: 0.35rem; max-height: 110px; overflow-y: auto; font-size: 0.72rem; color: #E2E8F0;">
-                <div style="color: #94A3B8;">🎯 Tactical radar active — drag any fielder or select a preset to broadcast live field commentary.</div>
+                <div style="color: #94A3B8; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('target', '#00E599', 13)} Tactical radar active — drag any fielder or select a preset to broadcast live field commentary.</div>
               </div>
             </div>
           </div>
@@ -11030,7 +11128,9 @@ cricos_active_sse_connections 1</pre>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
         <button type="button" class="btn btn-secondary" onclick="closeModal('modalFieldPlanner')" style="width: auto;" data-tooltip="Close Field Placement Planner">Close</button>
-        <button type="button" id="btnSyncFieldTo3D" class="btn btn-primary" onclick="syncFieldPlannerTo3DStadium()" style="width: auto;" data-tooltip="Apply this 11-fielder formation directly to the live 3D Stadium Pitch viewport">🌐 Sync Field to 3D Stadium</button>
+        <button type="button" id="btnSyncFieldTo3D" class="btn btn-primary" onclick="syncFieldPlannerTo3DStadium()" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Apply this 11-fielder formation directly to the live 3D Stadium Pitch viewport">
+          ${getDesktopIconSvg('stadium', '#050B14', 15)} Sync Field to 3D Stadium
+        </button>
       </div>
     </div>
   </div>
@@ -11041,14 +11141,18 @@ cricos_active_sse_connections 1</pre>
   <div class="modal-backdrop as-drawer" id="modalPitchMapSimulator" role="dialog" aria-modal="true" aria-labelledby="pitchMapModalTitle">
     <div class="modal-card" style="max-width: 840px; width: 95vw;">
       <div class="modal-header">
-        <div class="modal-title" id="pitchMapModalTitle">🧬 Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator</div>
+        <div class="modal-title" id="pitchMapModalTitle" style="display: flex; align-items: center; gap: 0.5rem;">
+          ${getDesktopIconSvg('dna', '#A855F7', 18)} <span>Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator</span>
+        </div>
         <button type="button" class="modal-close-btn" aria-label="Close Pitch Map Simulator" onclick="closeModal('modalPitchMapSimulator')" data-tooltip="Close Pitch Map &amp; Win Simulator">×</button>
       </div>
       <div class="modal-body" style="padding: 1.15rem;">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.15rem;">
           <!-- Left Column: Pitch Length Heatmap & Beehive Stump Arrival -->
           <div class="studio-subpanel">
-            <div style="font-size: 0.82rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.6rem;">🎯 22-Yard Pitch Length Zones &amp; Impact Heatmap</div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
+              ${getDesktopIconSvg('target', '#00D2FF', 15)} 22-Yard Pitch Length Zones &amp; Impact Heatmap
+            </div>
             <svg id="pitchMapSvg" viewBox="0 0 260 300" style="width: 100%; max-width: 260px; height: auto; display: block; margin: 0 auto; border-radius: 8px; background: #1E293B;" role="img" aria-label="Pitch Length Zone Heatmap">
               <!-- Length Zone Bands -->
               <rect x="20" y="20" width="220" height="40" fill="rgba(0, 229, 153, 0.18)" stroke="rgba(255,255,255,0.1)" />
@@ -11069,10 +11173,10 @@ cricos_active_sse_connections 1</pre>
               <circle cx="108" cy="82" r="6.5" fill="#00E599" stroke="#FFF" stroke-width="1.5" />
             </svg>
             <div style="display: flex; justify-content: center; gap: 0.65rem; font-size: 0.68rem; color: var(--text-muted); margin-top: 0.55rem; flex-wrap: wrap;">
-              <span>🟢 4 Runs</span>
-              <span>🟣 6 Runs</span>
-              <span>🔴 Wicket</span>
-              <span>⚪ Dot Ball</span>
+              <span><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00E599; margin-right: 4px;"></span>4 Runs</span>
+              <span><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #A855F7; margin-right: 4px;"></span>6 Runs</span>
+              <span><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #FF3366; margin-right: 4px;"></span>Wicket</span>
+              <span><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94A3B8; margin-right: 4px;"></span>Dot Ball</span>
             </div>
           </div>
 
@@ -11080,7 +11184,7 @@ cricos_active_sse_connections 1</pre>
           <div class="studio-subpanel" style="display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <span style="font-size: 0.82rem; font-weight: 700; color: var(--turf-emerald);">📈 "What-If" Chase Win Probability</span>
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('chart', '#00E599', 15)} "What-If" Chase Win Probability</span>
                 <span id="simPressureBadge" style="font-size: 0.68rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 999px; background: rgba(255, 184, 0, 0.15); color: var(--amber); border: 1px solid rgba(255, 184, 0, 0.35);">HIGH PRESSURE</span>
               </div>
 
@@ -11117,10 +11221,10 @@ cricos_active_sse_connections 1</pre>
               <!-- Interactive What-If Scenario Triggers -->
               <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.45rem;">Simulate Next Over (6 Balls) Scenario:</div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
-                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 18, 0)" data-tooltip="Simulate explosive 18-run over with 0 wickets lost" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">⚡ Big Over (+18r, 0w)</button>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 5, 0)" data-tooltip="Simulate tight 5-run bowling over with 0 wickets" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">🛡️ Tight Over (+5r, 0w)</button>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 4, 2)" data-tooltip="Simulate double-wicket collapse (+4 runs, 2 wickets lost)" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">💥 Double Wicket (+4r, 2w)</button>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(0, 0, 0)" data-tooltip="Reset simulator to live scoreboard equation (Need 36 in 20 balls)" style="font-size: 0.72rem; padding: 0.38rem 0.5rem;">🔄 Reset Live State</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 18, 0)" data-tooltip="Simulate explosive 18-run over with 0 wickets lost" style="font-size: 0.72rem; padding: 0.38rem 0.5rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('lightning', '#FFB800', 13)} Big Over (+18r, 0w)</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 5, 0)" data-tooltip="Simulate tight 5-run bowling over with 0 wickets" style="font-size: 0.72rem; padding: 0.38rem 0.5rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('shield', '#00E599', 13)} Tight Over (+5r, 0w)</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(6, 4, 2)" data-tooltip="Simulate double-wicket collapse (+4 runs, 2 wickets lost)" style="font-size: 0.72rem; padding: 0.38rem 0.5rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('fire', '#EF4444', 13)} Double Wicket (+4r, 2w)</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="runWinProbScenario(0, 0, 0)" data-tooltip="Reset simulator to live scoreboard equation (Need 36 in 20 balls)" style="font-size: 0.72rem; padding: 0.38rem 0.5rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('refresh', '#00D2FF', 13)} Reset Live State</button>
               </div>
             </div>
           </div>
@@ -11138,7 +11242,9 @@ cricos_active_sse_connections 1</pre>
   <div class="modal-backdrop as-drawer" id="modalPlayerAuction" role="dialog" aria-modal="true" aria-labelledby="playerAuctionTitle">
     <div class="modal-card" style="max-width: 840px; width: 95vw;">
       <div class="modal-header">
-        <div class="modal-title" id="playerAuctionTitle">🔨 Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room</div>
+        <div class="modal-title" id="playerAuctionTitle" style="display: flex; align-items: center; gap: 0.5rem;">
+          ${getDesktopIconSvg('gavel', '#FFB800', 18)} <span>Live Player Auction Gavel, Franchise Salary Cap Purse &amp; RTM Draft Room</span>
+        </div>
         <button type="button" class="modal-close-btn" aria-label="Close Player Auction" onclick="closeModal('modalPlayerAuction')" data-tooltip="Close Live Player Auction Room">×</button>
       </div>
       <div class="modal-body" style="padding: 1.15rem;">
@@ -11159,16 +11265,18 @@ cricos_active_sse_connections 1</pre>
 
           <!-- Interactive Bidding Paddles & RTM / Gavel Controls -->
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.95rem; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1);">
-            <button type="button" id="btnAuctionBidRoyal" class="btn btn-primary btn-sm" onclick="placePlayerAuctionBid('fr-royal', 'Royal Strikers', 10000)" data-tooltip="Place +₹10,000 increment bid for Royal Strikers" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">🙋‍♂️ +₹10K (Royal Strikers)</button>
-            <button type="button" id="btnAuctionBidTitan" class="btn btn-secondary btn-sm" onclick="placePlayerAuctionBid('fr-titan', 'Titan XI', 25000)" data-tooltip="Place +₹25,000 increment bid for Titan XI" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">🙋‍♂️ +₹25K (Titan XI)</button>
-            <button type="button" id="btnAuctionBidMetro" class="btn btn-secondary btn-sm" onclick="placePlayerAuctionBid('fr-metro', 'Metro Spartans', 50000)" data-tooltip="Place +₹50,000 jump bid for Metro Spartans" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">🚀 +₹50K (Metro Spartans)</button>
-            <button type="button" id="btnAuctionRtm" class="btn btn-secondary btn-sm" onclick="exerciseAuctionRtmCard()" data-tooltip="Exercise Right-To-Match (RTM) card for Titan XI to match current highest bid" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem; border-color: var(--amber); color: var(--amber);">🃏 Exercise RTM Card</button>
-            <button type="button" id="btnAuctionGavelSold" class="btn btn-secondary btn-sm" onclick="gavelPlayerAuctionSold()" data-tooltip="Strike auctioneer gavel: mark player SOLD, deduct franchise salary purse, and advance lot" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; border-color: var(--rose); color: var(--rose);">🔨 GAVEL SOLD!</button>
+            <button type="button" id="btnAuctionBidRoyal" class="btn btn-primary btn-sm" onclick="placePlayerAuctionBid('fr-royal', 'Royal Strikers', 10000)" data-tooltip="Place +₹10,000 increment bid for Royal Strikers" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">+₹10K (Royal Strikers)</button>
+            <button type="button" id="btnAuctionBidTitan" class="btn btn-secondary btn-sm" onclick="placePlayerAuctionBid('fr-titan', 'Titan XI', 25000)" data-tooltip="Place +₹25,000 increment bid for Titan XI" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem;">+₹25K (Titan XI)</button>
+            <button type="button" id="btnAuctionBidMetro" class="btn btn-secondary btn-sm" onclick="placePlayerAuctionBid('fr-metro', 'Metro Spartans', 50000)" data-tooltip="Place +₹50,000 jump bid for Metro Spartans" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('rocket', '#00D2FF', 13)} +₹50K (Metro Spartans)</button>
+            <button type="button" id="btnAuctionRtm" class="btn btn-secondary btn-sm" onclick="exerciseAuctionRtmCard()" data-tooltip="Exercise Right-To-Match (RTM) card for Titan XI to match current highest bid" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.75rem; border-color: var(--amber); color: var(--amber); display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('card', '#FFB800', 13)} Exercise RTM Card</button>
+            <button type="button" id="btnAuctionGavelSold" class="btn btn-secondary btn-sm" onclick="gavelPlayerAuctionSold()" data-tooltip="Strike auctioneer gavel: mark player SOLD, deduct franchise salary purse, and advance lot" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.75rem; border-color: var(--rose); color: var(--rose); display: inline-flex; align-items: center; gap: 0.35rem;">${getDesktopIconSvg('gavel', '#EF4444', 13)} GAVEL SOLD!</button>
           </div>
         </div>
 
         <!-- Franchise Salary Cap Purse & Squad Slots Table -->
-        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.45rem;">🏦 Franchise Salary Cap Purse &amp; Squad Composition Ledger (Cap: ₹15,00,000):</div>
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.4rem;">
+          ${getDesktopIconSvg('building', '#00D2FF', 15)} Franchise Salary Cap Purse &amp; Squad Composition Ledger (Cap: ₹15,00,000):
+        </div>
         <div style="overflow-x: auto;">
           <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">
             <thead>
@@ -11218,7 +11326,9 @@ cricos_active_sse_connections 1</pre>
   <div class="modal-backdrop" id="modalKeyboardShortcuts" role="dialog" aria-modal="true" aria-labelledby="kbdShortcutsTitle">
     <div class="modal-dialog" style="max-width: 540px; width: 95vw;">
       <div class="modal-header">
-        <div class="modal-title" id="kbdShortcutsTitle">⌨️ CricOS Cockpit Keyboard Shortcuts &amp; Accessibility</div>
+        <div class="modal-title" id="kbdShortcutsTitle" style="display: flex; align-items: center; gap: 0.5rem;">
+          ${getDesktopIconSvg('keyboard', '#00E599', 18)} <span>CricOS Cockpit Keyboard Shortcuts &amp; Accessibility</span>
+        </div>
         <button type="button" class="modal-close-btn" onclick="closeModal('modalKeyboardShortcuts')" aria-label="Close Keyboard Shortcuts" data-tooltip="Close Keyboard Shortcuts Guide">×</button>
       </div>
       <div class="modal-body" style="padding: 1.15rem;">
@@ -11256,6 +11366,9 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <script>
+    // Centralized Desktop Iconsax SVG Icon Generator
+    window.iconSvg = window.getDesktopIconSvg = ${getDesktopIconSvg.toString()};
+
     // ==========================================
     // In-App Dialog System (replaces alert/confirm/prompt)
     // ==========================================
@@ -11352,6 +11465,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'teams',
         badgeColor: '#00E599',
         badgeBg: 'rgba(0, 229, 153, 0.15)',
+        iconName: 'crown',
         icon: '👑',
         label: 'Captain',
         description: 'Manage Playing XI, toss, declarations, and tactical pad',
@@ -11368,6 +11482,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'teams',
         badgeColor: '#00D2FF',
         badgeBg: 'rgba(0, 210, 255, 0.15)',
+        iconName: 'bat',
         icon: '🏏',
         label: 'Player',
         description: 'Career stats, RSVP, squad roster, and match fixtures',
@@ -11384,6 +11499,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'studio',
         badgeColor: '#FFB800',
         badgeBg: 'rgba(255, 184, 0, 0.15)',
+        iconName: 'clipboard',
         icon: '📋',
         label: 'Official Scorer',
         description: 'Ball-by-ball scoring, dismissals, wagon wheel, and match sign-off',
@@ -11400,6 +11516,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'scoring',
         badgeColor: '#C084FC',
         badgeBg: 'rgba(192, 132, 252, 0.15)',
+        iconName: 'stadium',
         icon: '🎪',
         label: 'Fan',
         description: 'Live spectator broadcast, cheering console, polls, and MVP insights',
@@ -11416,6 +11533,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'incidents',
         badgeColor: '#38BDF8',
         badgeBg: 'rgba(56, 189, 248, 0.15)',
+        iconName: 'scale',
         icon: '⚖️',
         label: 'Official Umpire',
         description: 'Fair play reports, code of conduct breaches, DRS reviews, and sign-off',
@@ -11432,6 +11550,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'explorer',
         badgeColor: '#FF3366',
         badgeBg: 'rgba(255, 51, 102, 0.15)',
+        iconName: 'lightning',
         icon: '⚡',
         label: 'Admin',
         description: 'Unrestricted access across all consoles, ledgers, audit desk, and APIs',
@@ -11448,6 +11567,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'tournaments',
         badgeColor: '#A855F7',
         badgeBg: 'rgba(168, 85, 247, 0.15)',
+        iconName: 'trophy',
         icon: '🏆',
         label: 'Organiser',
         description: 'Fixture brackets, round-robin scheduler, and venue RFQs',
@@ -11464,6 +11584,7 @@ cricos_active_sse_connections 1</pre>
         defaultTab: 'marketplace',
         badgeColor: '#34D399',
         badgeBg: 'rgba(52, 211, 153, 0.15)',
+        iconName: 'stadium',
         icon: '🏟️',
         label: 'Provider',
         description: 'Turf ground slots, surge pricing, and escrow payouts',
@@ -12478,21 +12599,21 @@ cricos_active_sse_connections 1</pre>
       const sidebarStrip = document.getElementById('sidebarAllowedPersonaStrip');
       if (sidebarStrip) {
         const roleBadges = {
-          CAPTAIN: '👑 Cpt',
-          PLAYER: '🏏 Ply',
-          SCORER: '📋 Scr',
-          FAN: '🎪 Fan',
-          UMPIRE: '⚖️ Ump',
-          ORGANISER: '🏆 Org',
-          TURF_PROVIDER: '🏟️ Trf',
-          ADMIN: '⚡ Adm'
+          CAPTAIN: (window.iconSvg ? window.iconSvg('crown', '#FFB800', 12) + ' ' : '') + 'Cpt',
+          PLAYER: (window.iconSvg ? window.iconSvg('bat', '#00D2FF', 12) + ' ' : '') + 'Ply',
+          SCORER: (window.iconSvg ? window.iconSvg('clipboard', '#FFB800', 12) + ' ' : '') + 'Scr',
+          FAN: (window.iconSvg ? window.iconSvg('stadium', '#FF3366', 12) + ' ' : '') + 'Fan',
+          UMPIRE: (window.iconSvg ? window.iconSvg('scale', '#A855F7', 12) + ' ' : '') + 'Ump',
+          ORGANISER: (window.iconSvg ? window.iconSvg('trophy', '#FFB800', 12) + ' ' : '') + 'Org',
+          TURF_PROVIDER: (window.iconSvg ? window.iconSvg('stadium', '#00E599', 12) + ' ' : '') + 'Trf',
+          ADMIN: (window.iconSvg ? window.iconSvg('lightning', '#00D2FF', 12) + ' ' : '') + 'Adm'
         };
         sidebarStrip.innerHTML = allowed.map(r => {
           const isAct = currentUser.persona === r;
           const bg = isAct ? 'rgba(0, 229, 153, 0.22)' : 'rgba(255,255,255,0.05)';
           const bdr = isAct ? '#00E599' : 'rgba(255,255,255,0.12)';
           const col = isAct ? '#00E599' : '#94a3b8';
-          return '<button type="button" class="sidebar-persona-chip sidebar-quick-persona-chip' + (isAct ? ' active' : '') + '" data-role="' + r + '" data-sidebar-persona="' + r + '" onclick="selectPersona(this.dataset.sidebarPersona)" style="background:' + bg + '; border:1px solid ' + bdr + '; color:' + col + '; border-radius:5px; padding:0.18rem 0.42rem; font-size:0.62rem; font-weight:700; cursor:pointer;" data-tooltip="Switch active workspace to ' + r + '">' + (roleBadges[r] || r) + '</button>';
+          return '<button type="button" class="sidebar-persona-chip sidebar-quick-persona-chip' + (isAct ? ' active' : '') + '" data-role="' + r + '" data-sidebar-persona="' + r + '" onclick="selectPersona(this.dataset.sidebarPersona)" style="background:' + bg + '; border:1px solid ' + bdr + '; color:' + col + '; border-radius:5px; padding:0.18rem 0.42rem; font-size:0.62rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:0.25rem;" data-tooltip="Switch active workspace to ' + r + '">' + (roleBadges[r] || r) + '</button>';
         }).join('');
       }
     }
@@ -12578,7 +12699,8 @@ cricos_active_sse_connections 1</pre>
       const iconEl = document.getElementById('cleanViewToggleIcon');
       const labelEl = document.getElementById('cleanViewToggleLabel');
       if (titleEl) {
-        titleEl.innerHTML = perms.icon + ' ' + perms.label + ' Extended Workspace';
+        const roleIconSvg = (window.iconSvg && perms.iconName) ? window.iconSvg(perms.iconName, perms.badgeColor, 15) : perms.icon;
+        titleEl.innerHTML = '<span style="display:inline-flex;align-items:center;gap:0.4rem;">' + roleIconSvg + ' ' + perms.label + ' Extended Workspace</span>';
       }
       if (sumEl) {
         sumEl.textContent = window.desktopCleanFocusMode
@@ -12586,12 +12708,14 @@ cricos_active_sse_connections 1</pre>
           : '• Extended Telemetry View active (showing all secondary panels)';
       }
       if (iconEl && labelEl) {
-        iconEl.textContent = window.desktopCleanFocusMode ? '✨' : '📊';
+        iconEl.innerHTML = window.desktopCleanFocusMode
+          ? (window.iconSvg ? window.iconSvg('clean', 'var(--turf-emerald)', 15) : '✨')
+          : (window.iconSvg ? window.iconSvg('chart', 'var(--text-muted)', 15) : '📊');
         labelEl.textContent = window.desktopCleanFocusMode ? 'Clean View' : 'Extended View';
       } else if (btnEl) {
-        btnEl.textContent = window.desktopCleanFocusMode
-          ? '✨ Clean View: ON'
-          : '📊 Extended View: ON';
+        btnEl.innerHTML = window.desktopCleanFocusMode
+          ? ((window.iconSvg ? window.iconSvg('clean', 'var(--turf-emerald)', 15) : '✨') + ' Clean View: ON')
+          : ((window.iconSvg ? window.iconSvg('chart', 'var(--text-muted)', 15) : '📊') + ' Extended View: ON');
       }
       if (btnEl) {
         btnEl.setAttribute('data-tooltip', window.desktopCleanFocusMode
@@ -13335,7 +13459,8 @@ cricos_active_sse_connections 1</pre>
         badge.style.color = perms.badgeColor;
         badge.style.background = perms.badgeBg;
         badge.style.borderColor = perms.badgeColor;
-        badge.innerHTML = '<span id="activePersonaIcon">' + perms.icon + '</span> <span id="activePersonaTextLabel" class="clean-view-hide-label">' + perms.label.toUpperCase() + '</span>';
+        const roleIconSvg = (window.iconSvg && perms.iconName) ? window.iconSvg(perms.iconName, perms.badgeColor, 15) : perms.icon;
+        badge.innerHTML = '<span id="activePersonaIcon" style="display:inline-flex;align-items:center;">' + roleIconSvg + '</span> <span id="activePersonaTextLabel" class="clean-view-hide-label">' + perms.label.toUpperCase() + '</span>';
         badge.setAttribute('data-tooltip', 'Active Persona: ' + perms.label + ' • ' + (perms.description || ''));
       }
 
@@ -23550,9 +23675,22 @@ cricos_active_sse_connections 1</pre>
         const labelEl = document.getElementById('designThemeLabel');
         const outdoorIcon = document.getElementById('outdoorModeIcon');
 
-        if (iconEl) iconEl.textContent = DESIGN_THEMES[themeId].icon;
+        if (iconEl) {
+          iconEl.setAttribute('data-theme-icon', DESIGN_THEMES[themeId].icon);
+          const themeSvgMap = {
+            swiss: 'flag',
+            nordic: 'leaf',
+            stadium: 'moon'
+          };
+          const iconKey = themeSvgMap[themeId] || 'palette';
+          iconEl.innerHTML = window.iconSvg ? window.iconSvg(iconKey, 'currentColor', 16) : DESIGN_THEMES[themeId].icon;
+        }
         if (labelEl) labelEl.textContent = DESIGN_THEMES[themeId].name;
-        if (outdoorIcon) outdoorIcon.textContent = (themeId === 'stadium') ? '☀️' : '🌙';
+        if (outdoorIcon) {
+          outdoorIcon.innerHTML = (themeId === 'stadium')
+            ? (window.iconSvg ? window.iconSvg('sun', '#FFB800', 14) : '☀️')
+            : (window.iconSvg ? window.iconSvg('moon', '#94A3B8', 14) : '🌙');
+        }
       }
 
       try {

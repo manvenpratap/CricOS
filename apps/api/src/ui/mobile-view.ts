@@ -1,4 +1,5 @@
 import { ICC_CRICKET_LAWS_DIRECTORY } from '@cricket-platform/scoring';
+import { getDesktopIconSvg } from './dashboard.js';
 
 export function getMobileAppHtml(): string {
   return `<!DOCTYPE html>
@@ -3162,14 +3163,14 @@ export function getMobileAppHtml(): string {
 
   <div class="preview-header">
     <div class="preview-badge">
-      <span>📱</span>
-      <span>CricOS Mobile Client (iOS & Android)</span>
+      <span style="display: flex; align-items: center;">${getDesktopIconSvg('mobile', '#00E599', 16)}</span>
+      <span>CricOS Mobile Client (iOS &amp; Android)</span>
     </div>
     <h1 class="preview-title">Consumer Mobile Experience</h1>
     <p class="preview-desc">Complete multi-persona mobile client covering Captain, Player, Scorer, Fan, Umpire, Organiser, Turf Provider, and Admin.</p>
     <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; justify-content: center;">
       <a href="/" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;" data-tooltip="Switch to Platform Console">← Back to Platform Console</a>
-      <a href="/docs" target="_blank" style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;" data-tooltip="Inspect REST & WebSocket API Specs">📖 OpenAPI Specs</a>
+      <a href="/docs" target="_blank" style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #00E599; text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Inspect REST & WebSocket API Specs">${getDesktopIconSvg('book', '#00E599', 14)} OpenAPI Specs</a>
     </div>
   </div>
 
@@ -4067,19 +4068,19 @@ export function getMobileAppHtml(): string {
         var container = document.getElementById('mobileToastContainer');
         if (!container) return;
         var icons = {
-          success: '✓',
-          error: '✕',
-          warning: '!',
-          info: 'ℹ'
+          success: this.iconSvg ? this.iconSvg('check', '#00E599', 16) : '✓',
+          error: this.iconSvg ? this.iconSvg('cross', '#FF3366', 16) : '✕',
+          warning: this.iconSvg ? this.iconSvg('alert', '#FFB800', 16) : '!',
+          info: this.iconSvg ? this.iconSvg('chat', '#00D2FF', 16) : 'ℹ'
         };
         var h = '';
         for (var i = 0; i < this.toasts.length; i++) {
           var t = this.toasts[i];
           var dur = (t.duration || 2200) + 'ms';
           h += '<div class="mobile-toast ' + (t.type || 'info') + (t.exiting ? ' is-exiting' : '') + '" data-toast-id="' + t.id + '" style="--toast-duration: ' + dur + ';" onclick="window.cricosMobileApp.dismissToast(this.dataset.toastId)">';
-          h += '<span class="mobile-toast-icon">' + (icons[t.type] || 'ℹ') + '</span>';
+          h += '<span class="mobile-toast-icon" style="display:inline-flex;align-items:center;">' + (icons[t.type] || (this.iconSvg ? this.iconSvg('chat', '#00D2FF', 16) : 'ℹ')) + '</span>';
           h += '<span class="mobile-toast-text" style="flex: 1; font-weight: 700; line-height: 1.3; letter-spacing: 0.01em;">' + t.msg + '</span>';
-          h += '<span class="mobile-toast-dismiss" style="font-size: 0.72rem; opacity: 0.7; font-weight: 800; padding-left: 0.25rem;">✕</span>';
+          h += '<span class="mobile-toast-dismiss" style="font-size: 0.72rem; opacity: 0.7; font-weight: 800; padding-left: 0.25rem; display:inline-flex;align-items:center;">' + (this.iconSvg ? this.iconSvg('cross', 'currentColor', 12) : '✕') + '</span>';
           h += '<span class="mobile-toast-progress"></span>';
           h += '</div>';
         }
@@ -12709,7 +12710,7 @@ export function getMobileAppHtml(): string {
         // Fixed Top Header Inside Viewport (Locked at top, never scrolls)
         h += '<header class="mobile-header">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
-        h += '<button type="button" id="btnMobileSidebarToggle" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 6px; padding: 0.2rem 0.5rem; font-size: 0.85rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Open Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios)" aria-label="Open Left Sidebar Navigation Drawer">☰</button>';
+        h += '<button type="button" id="btnMobileSidebarToggle" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 6px; padding: 0.2rem 0.5rem; font-size: 0.85rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Open Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios)" aria-label="Open Left Sidebar Navigation Drawer">' + (this.iconSvg ? this.iconSvg('menu', '#00E599', 18) : '☰') + '</button>';
         h += '<span id="mobileHeaderBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(25) + '</span>';
         h += '<span style="font-family: Space Grotesk, sans-serif; font-weight: 800; font-size: 1rem; color: #f8fafc;">Cric<span style="color: #00E599;">OS</span></span>';
         h += '</div>';

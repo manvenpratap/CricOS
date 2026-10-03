@@ -62,7 +62,7 @@ async def test_desktop_themes_working_and_distinct():
                 cardBg: card ? window.getComputedStyle(card).backgroundColor : null,
                 cardBorder: card ? window.getComputedStyle(card).borderColor : null,
                 btnLabel: label ? label.textContent.trim() : '',
-                btnIcon: icon ? icon.textContent.trim() : ''
+                btnIcon: icon ? (icon.getAttribute('data-theme-icon') || icon.textContent.trim()) : ''
             };
         }""")
 
@@ -92,7 +92,7 @@ async def test_desktop_themes_working_and_distinct():
                 cardBg: card ? window.getComputedStyle(card).backgroundColor : null,
                 cardBorder: card ? window.getComputedStyle(card).borderColor : null,
                 btnLabel: label ? label.textContent.trim() : '',
-                btnIcon: icon ? icon.textContent.trim() : ''
+                btnIcon: icon ? (icon.getAttribute('data-theme-icon') || icon.textContent.trim()) : ''
             };
         }""")
 
@@ -122,7 +122,7 @@ async def test_desktop_themes_working_and_distinct():
                 cardBg: card ? window.getComputedStyle(card).backgroundColor : null,
                 cardBorder: card ? window.getComputedStyle(card).borderColor : null,
                 btnLabel: label ? label.textContent.trim() : '',
-                btnIcon: icon ? icon.textContent.trim() : ''
+                btnIcon: icon ? (icon.getAttribute('data-theme-icon') || icon.textContent.trim()) : ''
             };
         }""")
 
