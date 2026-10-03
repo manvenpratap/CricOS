@@ -1,27 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-03 23:25:00
-**Version:** 1.0.0-phase2da (Elimination of Duplicate Laws Buttons & Scoring Pad Redundant Labels)  
+**Last Updated:** 2026-10-03 23:35:00
+**Version:** 1.0.0-phase2db (Mobile Preview & Android APK File Protocol Auto-Resolution)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DA Completed — Elimination of Duplicate Laws Buttons & Scoring Pad Redundant Labels (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_69_deduplicate_laws_buttons_and_labels.py`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
-  - **1. Elimination of Duplicate Laws Buttons**:
-    - **Mobile Scorer Studio Pad (`#mobileScorerStudioPad`)**: Completely removed the redundant `#btnMobileIccLawsHeader` (`📖 LAWS`) from the card header. Standardized on the single canonical `#btnMobileIccLaws` button located in the Dedicated Penalty Runs & Laws Reference Bar below Extras.
-    - **Desktop Scoring Keypad (`#cardStudioKeypad`)**: Completely removed the redundant `#btnDesktopIccLaws` from the card header. Standardized on the single canonical `#btnDesktopIccLaws` button in the Dedicated Penalty Runs & Laws Reference Bar inside `#studioScoringControlsGroup`, replacing the duplicate `#btnStudioIccLawsPad`.
-  - **2. Elimination of Duplicate Labels & Iconsax SVG Upgrade**:
-    - **Removed Redundant `TACTICAL SCORER` Pill**: Eliminated the redundant right-aligned `<span ...>TACTICAL SCORER</span>` pill in `#mobileScorerStudioPad` header, keeping the header clean and uncluttered with the primary title `Scorer Studio & Tactical Pad`.
-    - **Iconsax Two-Tone SVG Integration**: Upgraded the card header icon from raw unicode emoji `🎯` to Iconsax Two-Tone SVG `this.iconSvg('target', '#00E599', 16)`. Replaced raw emojis in the action bar with `this.iconSvg('scale', '#eab308', 14)` for `+5 Penalty Runs` and `this.iconSvg('book', '#38bdf8', 14)` for `ICC Laws Rulebook`. Upgraded Captain (`crown`), Umpire (`scale`), and Facility (`stadium`) persona headers to Iconsax SVGs.
+- **Active Phase**: Phase 2DB Completed — Mobile Preview & Android APK File Protocol Auto-Resolution (`apps/api/src/ui/dashboard.ts`, `scripts/package-distribution.mjs`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_70_mobile_preview_file_protocol_resolution.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Diagnosis & Dynamic Protocol URL Resolution Engine**:
+    - **Root Cause Remediation**: Resolved the blank mobile preview and Chrome `ERR_FILE_NOT_FOUND` ("It may have been moved, edited or deleted") error when `index.html` was opened via `file:///` filesystem URLs. In static HTML, `#modalMobileAppPreview` iframe hardcoded `src="/mobile"`, causing Chromium to query `file:///mobile` at filesystem root.
+    - **Context- & Protocol-Aware Resolver**: Added `getMobileAppUrl()` and `getApkDownloadUrl()` in `dashboard.ts`:
+      - Under `file:` protocol from root `index.html`: dynamically resolves iframe and fullscreen link to `dist/mobile.html`.
+      - Under `file:` protocol from `dist/index.html`: dynamically resolves iframe and fullscreen link to `mobile.html`, and APK download links to `cricos-debug.apk`.
+      - Under `http:`/`https:` protocol: routes iframe and fullscreen links to `/mobile` Fastify route, and APK downloads to `dist/cricos-debug.apk`.
+    - **Safe Initial State**: Initialized `#mobilePreviewIframe` with `src="about:blank"`, preventing premature broken file network queries during DOM parsing.
+    - **Dynamic Sync & Standalone Launcher**: Implemented `syncMobilePreviewSources()` and `launchStandaloneMobileApp()`, auto-syncing `#mobilePreviewIframe.src`, `#btnMobileFullscreenLink.href`, `#linkMobileApkDownloadPill.href`, and `#btnMobileApkDownloadFooter.href` on script startup and upon invoking `openMobilePreviewModal()`.
+  - **2. Root Distribution Redundancy (`package-distribution.mjs`)**:
+    - Updated packaging pipeline to write `mobile.html` directly to the workspace root directory alongside `dist/mobile.html` and `dist/public/mobile.html`.
   - **3. Verification & Testing Health**:
-    - Created sequential E2E suite `tests/test_69_deduplicate_laws_buttons_and_labels.py`: verified absence of `#btnMobileIccLawsHeader` and `TACTICAL SCORER` pill, single canonical `#btnMobileIccLaws` and `#btnDesktopIccLaws`, real SVG icons (`.cricos-icon`), modal/sheet opening, and zero console errors.
-    - Verified all 231 unit/domain tests in 64 suites pass in 532ms via `./pipeline.sh test --summary`.
-    - Verified all regression Playwright suites passing 100%: `test_61_icc_laws_scorer_reference_and_enforcement.py`, `test_65_deduplicated_entry_points.py`, `test_67_mobile_singular_navigation_audit.py`, `test_68_icon_replacement_and_3d_cards.py`, and `test_69_deduplicate_laws_buttons_and_labels.py`.
-    - Captured verified visual screenshots: `test_69_mobile_deduplicated_scoring_pad.png` and `test_69_desktop_deduplicated_scoring_pad.png`.
+    - Added Suite 11 (Mobile Preview & Android APK File Protocol Auto-Resolution) to `tests/domain-mobile-journeys-and-native.test.ts`.
+    - Created sequential E2E suite `tests/test_70_mobile_preview_file_protocol_resolution.py`: verified root and dist `file://` auto-resolution, live child frame loading with `#mobile-app-root` and `.mobile-bottom-nav`, correct fullscreen and APK download links, and zero console errors.
+    - Verified all 234 unit/domain tests in 65 suites pass in 458ms via `./pipeline.sh test --summary`.
+    - Verified regression Playwright suites passing 100%: `test_65_deduplicated_entry_points.py`, `test_67_mobile_singular_navigation_audit.py`, `test_68_icon_replacement_and_3d_cards.py`, `test_69_deduplicate_laws_buttons_and_labels.py`, and `test_70_mobile_preview_file_protocol_resolution.py` (8 passed, 0 errors).
+    - Captured verified visual screenshots: `tests/screenshots/test_70_root_mobile_preview_modal.png` (223 KB) and `tests/screenshots/test_70_dist_mobile_preview_modal.png` (223 KB).
     - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
-- **Preceding Phase**: Phase 2CZ Completed — Bespoke Iconsax SVG Separation for 8-Zone Wagon Wheel & 11-Fielder Tactical Radar (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_68_icon_replacement_and_3d_cards.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `dist/index.html`, `dist/mobile.html`):
+- **Preceding Phase**: Phase 2DA Completed — Elimination of Duplicate Laws Buttons & Scoring Pad Redundant Labels (`apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `tests/test_69_deduplicate_laws_buttons_and_labels.py`, `tests/test_61_icc_laws_scorer_reference_and_enforcement.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Dedicated Cricket 8-Zone Wagon Wheel Icon (`wagon` / `wagon-wheel`)**:
     - Created an authentic cricket Wagon Wheel Iconsax Two-Tone SVG: 24×24 viewBox, outer boundary rope circle (`r=9`), 8 radial sector spokes radiating from center hub at 0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°, central batting crease hub (`r=2.5`), two-tone shaded scoring sector wedges (`fill-opacity="0.28"` and `"0.22"`), and boundary shot impact dots.
     - Added to `getDesktopIconSvg` (`apps/api/src/ui/dashboard.ts`) and `this.iconSvg` (`apps/api/src/ui/mobile-view.ts`).

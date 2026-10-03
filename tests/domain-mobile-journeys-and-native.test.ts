@@ -28,6 +28,7 @@ import {
   type MobileUserRole
 } from '../apps/mobile/dist/index.js';
 import { getMobileAppHtml } from '../apps/api/dist/ui/mobile-view.js';
+import { getDashboardHtml } from '../apps/api/dist/ui/dashboard.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -512,7 +513,37 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes("this.iconSvg('radar',"), 'Mobile sidebar must render radar icon for Field Radar');
     });
   });
+
+  // =========================================================================
+  // Suite 11: Mobile Preview & Android APK File Protocol Auto-Resolution (70)
+  // =========================================================================
+  describe('Suite 11: Mobile Preview & Android APK File Protocol Auto-Resolution (70)', () => {
+    it('1. Defines getMobileAppUrl, getApkDownloadUrl, and syncMobilePreviewSources in dashboard', () => {
+      const dashHtml = getDashboardHtml();
+      assert.ok(dashHtml.includes('function getMobileAppUrl()'), 'getMobileAppUrl must be defined');
+      assert.ok(dashHtml.includes('function getApkDownloadUrl()'), 'getApkDownloadUrl must be defined');
+      assert.ok(dashHtml.includes('function syncMobilePreviewSources()'), 'syncMobilePreviewSources must be defined');
+      assert.ok(dashHtml.includes('function launchStandaloneMobileApp()'), 'launchStandaloneMobileApp must be defined');
+    });
+
+    it('2. Initializes mobilePreviewIframe safely with about:blank preventing ERR_FILE_NOT_FOUND', () => {
+      const dashHtml = getDashboardHtml();
+      assert.ok(dashHtml.includes('id="mobilePreviewIframe"'), 'mobilePreviewIframe ID must exist');
+      assert.ok(dashHtml.includes('src="about:blank"'), 'mobilePreviewIframe must initialize with about:blank');
+      assert.ok(!dashHtml.includes('iframe src="/mobile"'), 'Hardcoded iframe src="/mobile" must not exist');
+    });
+
+    it('3. Auto-syncs fullscreen link, standalone launch, and APK download endpoints', () => {
+      const dashHtml = getDashboardHtml();
+      assert.ok(dashHtml.includes('id="btnMobileFullscreenLink"'), 'Fullscreen link ID must exist');
+      assert.ok(dashHtml.includes('id="btnMobileLaunchStandalone"'), 'Standalone launch button ID must exist');
+      assert.ok(dashHtml.includes('id="linkMobileApkDownloadPill"'), 'Pill APK download ID must exist');
+      assert.ok(dashHtml.includes('id="btnMobileApkDownloadFooter"'), 'Footer APK download ID must exist');
+      assert.ok(dashHtml.includes('syncMobilePreviewSources();'), 'syncMobilePreviewSources must be called on page load and modal open');
+    });
+  });
 });
+
 
 
 

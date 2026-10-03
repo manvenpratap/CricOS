@@ -9526,8 +9526,8 @@ export function getDashboardHtml() {
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); border-radius: 8px;">
           <span style="font-size: 0.78rem; color: var(--turf-emerald); font-weight: 700;">✓ Edge-to-Edge Native Android &bull; WCAG 2.2 AA</span>
           <div style="display: flex; gap: 0.4rem;">
-            <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: #FFF; background: rgba(0, 229, 153, 0.15); border-color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Direct download standalone Android APK (3.0 MB)">${iconSvg('download', 'var(--turf-emerald)', 13)} APK (3.0MB)</a>
-            <a href="/mobile" target="_blank" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);" data-tooltip="Open mobile simulator in standalone browser window">↗ Fullscreen</a>
+            <a id="linkMobileApkDownloadPill" href="dist/cricos-debug.apk" download="cricos-debug.apk" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: #FFF; background: rgba(0, 229, 153, 0.15); border-color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Direct download standalone Android APK (3.0 MB)">${iconSvg('download', 'var(--turf-emerald)', 13)} APK (3.0MB)</a>
+            <a id="btnMobileFullscreenLink" href="/mobile" target="_blank" class="nav-pill" style="font-size: 0.72rem; padding: 0.2rem 0.6rem; color: var(--turf-emerald); border-color: rgba(0,229,153,0.3);" data-tooltip="Open mobile simulator in standalone browser window">↗ Fullscreen</a>
           </div>
         </div>
 
@@ -9571,16 +9571,16 @@ export function getDashboardHtml() {
         </div>
 
         <div style="display: inline-block; width: 340px; height: 460px; border: 8px solid #1E293B; border-radius: 28px; overflow: hidden; box-shadow: 0 16px 36px rgba(0,0,0,0.6); position: relative; background: #000;">
-          <iframe src="/mobile" style="width: 100%; height: 100%; border: none;" title="CricOS Mobile App Preview"></iframe>
+          <iframe id="mobilePreviewIframe" src="about:blank" style="width: 100%; height: 100%; border: none;" title="CricOS Mobile App Preview"></iframe>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
         <button class="btn btn-secondary" onclick="closeMobilePreviewModal()" style="width: auto;" data-tooltip="Close mobile preview modal" aria-label="Close mobile preview">Close</button>
         <div style="display: flex; gap: 0.5rem;">
-          <a href="dist/cricos-debug.apk" download="cricos-debug.apk" class="btn btn-secondary" style="width: auto; padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Download compiled Android package">
+          <a id="btnMobileApkDownloadFooter" href="dist/cricos-debug.apk" download="cricos-debug.apk" class="btn btn-secondary" style="width: auto; padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Download compiled Android package">
             <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('download', 'currentColor', 14)} Save APK</span>
           </a>
-          <button class="btn btn-primary" onclick="window.open('/mobile', '_blank')" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Launch full-screen mobile experience">${iconSvg('rocket', '#04070D', 15)} Launch Standalone</button>
+          <button id="btnMobileLaunchStandalone" class="btn btn-primary" onclick="launchStandaloneMobileApp()" style="width: auto; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Launch full-screen mobile experience">${iconSvg('rocket', '#04070D', 15)} Launch Standalone</button>
         </div>
       </div>
     </div>
@@ -23391,8 +23391,66 @@ cricos_active_sse_connections 1</pre>
     // Top Bar Interactive Modals & Probes
     // ==========================================
 
-    // Mobile App Preview Modal
+    // Mobile App Preview Modal & Dynamic Protocol Auto-Resolution
+    function getMobileAppUrl() {
+      if (window.location.protocol === 'file:') {
+        const p = window.location.pathname || '';
+        if (p.includes('/dist/') || p.endsWith('/dist/index.html') || p.endsWith('/dist/')) {
+          return 'mobile.html';
+        }
+        return 'dist/mobile.html';
+      }
+      return '/mobile';
+    }
+
+    function getApkDownloadUrl() {
+      if (window.location.protocol === 'file:') {
+        const p = window.location.pathname || '';
+        if (p.includes('/dist/') || p.endsWith('/dist/index.html') || p.endsWith('/dist/')) {
+          return 'cricos-debug.apk';
+        }
+        return 'dist/cricos-debug.apk';
+      }
+      return 'dist/cricos-debug.apk';
+    }
+
+    function launchStandaloneMobileApp() {
+      window.open(getMobileAppUrl(), '_blank');
+    }
+
+    function syncMobilePreviewSources() {
+      const mobileUrl = getMobileAppUrl();
+      const apkUrl = getApkDownloadUrl();
+
+      const iframe = document.getElementById('mobilePreviewIframe') || document.querySelector('#modalMobileAppPreview iframe');
+      if (iframe) {
+        if (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('about:blank') || (window.location.protocol === 'file:' && iframe.src.includes('/mobile'))) {
+          iframe.src = mobileUrl;
+        }
+      }
+
+      const fullscreenLink = document.getElementById('btnMobileFullscreenLink');
+      if (fullscreenLink) {
+        fullscreenLink.href = mobileUrl;
+      }
+
+      const pillApk = document.getElementById('linkMobileApkDownloadPill');
+      if (pillApk) {
+        pillApk.href = apkUrl;
+      }
+
+      const footerApk = document.getElementById('btnMobileApkDownloadFooter');
+      if (footerApk) {
+        footerApk.href = apkUrl;
+      }
+    }
+
     function openMobilePreviewModal() {
+      syncMobilePreviewSources();
+      const iframe = document.getElementById('mobilePreviewIframe') || document.querySelector('#modalMobileAppPreview iframe');
+      if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('about:blank') || (window.location.protocol === 'file:' && iframe.src.includes('/mobile')))) {
+        iframe.src = getMobileAppUrl();
+      }
       const m = document.getElementById('modalMobileAppPreview');
       if (m) m.classList.add('active');
     }
@@ -23400,6 +23458,13 @@ cricos_active_sse_connections 1</pre>
       const m = document.getElementById('modalMobileAppPreview');
       if (m) m.classList.remove('active');
     }
+
+    window.getMobileAppUrl = getMobileAppUrl;
+    window.getApkDownloadUrl = getApkDownloadUrl;
+    window.launchStandaloneMobileApp = launchStandaloneMobileApp;
+    window.syncMobilePreviewSources = syncMobilePreviewSources;
+    window.openMobilePreviewModal = openMobilePreviewModal;
+    window.closeMobilePreviewModal = closeMobilePreviewModal;
 
     // API Docs Modal
     function openApiDocsModal() {
@@ -25033,6 +25098,7 @@ cricos_active_sse_connections 1</pre>
       }
     });
     window.applyDesignTheme = window.setDesignTheme;
+    syncMobilePreviewSources();
     enforceThemeContrastInvariants();
   </script>
 </body>

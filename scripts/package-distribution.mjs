@@ -95,9 +95,11 @@ async function runPackaging() {
     mobileHtml = getMobileAppHtml();
     const distMobilePath = path.join(distDir, 'mobile.html');
     const distPublicMobilePath = path.join(distPublicDir, 'mobile.html');
+    const rootMobilePath = path.join(rootDir, 'mobile.html');
     fs.writeFileSync(distMobilePath, mobileHtml, 'utf8');
     fs.writeFileSync(distPublicMobilePath, mobileHtml, 'utf8');
-    console.log('✓ Generated dist/mobile.html & dist/public/mobile.html');
+    fs.writeFileSync(rootMobilePath, mobileHtml, 'utf8');
+    console.log('✓ Generated mobile.html, dist/mobile.html & dist/public/mobile.html');
 
     const androidAssetPath = path.join(rootDir, 'apps/mobile/android/app/src/main/assets/index.html');
     const iosAssetPath = path.join(rootDir, 'apps/mobile/ios/CricOS/Resources/www/index.html');
