@@ -367,13 +367,14 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('#00E599') && mobileHtml.includes('#00D2FF') && mobileHtml.includes('#FFB800') && mobileHtml.includes('#1E293B'), 'Grip color chips must exist');
     });
 
-    it('6. Interactive 3D Holographic Player Card with touch & tilt physics', () => {
+    it('6. Interactive 3D Flip Player Card (CSS flip card with front/back faces)', () => {
       assert.ok(mobileHtml.includes('open3DPlayerCardSheet'), 'open3DPlayerCardSheet must exist');
-      assert.ok(mobileHtml.includes('id="mobileHoloCard"'), 'mobileHoloCard element must exist');
-      assert.ok(mobileHtml.includes('id="mobileHoloSheen"'), 'mobileHoloSheen overlay must exist');
-      assert.ok(mobileHtml.includes('onHoloCardMove'), 'touch/pointer move handler must exist');
-      assert.ok(mobileHtml.includes('onHoloCardLeave'), 'tilt reset handler must exist');
-      assert.ok(mobileHtml.includes('perspective: 900px') || mobileHtml.includes('perspective(900px)'), '3D perspective style must exist');
+      assert.ok(mobileHtml.includes('player-flip-card'), '3D flip card CSS class must be present');
+      assert.ok(mobileHtml.includes('player-flip-front'), 'Flip card front face must exist');
+      assert.ok(mobileHtml.includes('player-flip-back'), 'Flip card back face must exist');
+      assert.ok(mobileHtml.includes('player-flip-scene'), 'Flip card scene perspective wrapper must exist');
+      assert.ok(mobileHtml.includes('flipped'), 'Flip toggle class must be referenced');
+      assert.ok(mobileHtml.includes('onHoloCardMove'), 'Legacy tilt handler stub must remain for CSS compat');
     });
 
     it('7. Organic 3D features integrated across core product workflows without redundant showpiece cards', () => {

@@ -1,14 +1,37 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-03 09:10:00
-**Version:** 1.0.0-phase2cw (Mobile UI-UX Navigation Simplification & Linear User Journeys)  
+**Last Updated:** 2026-10-03 20:20:00
+**Version:** 1.0.0-phase2cx (Iconsax SVG System & Dynamic Flippable 3D Player Cards)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2CW Completed — Mobile UI-UX Navigation Simplification & Linear User Journeys (`apps/api/src/ui/mobile-view.ts`, `tests/test_67_mobile_singular_navigation_audit.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2CX Completed — Iconsax Real SVG Icon System & Flippable 3D Player Cards (`apps/api/src/ui/mobile-view.ts`, `tests/test_68_icon_replacement_and_3d_cards.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Real SVG Icon Replacement across UI**:
+    - Replaced all raw emoji characters across Bottom Navigation, Sidebar Drawer Nav, Tactical Studios, Sidebar Footer, Animated Hero Quick Launch, and Profile action buttons with consistent, professional Iconsax Two-Tone inline SVGs via `iconSvg(name, color, size)`.
+    - Established strict visual token consistency with 24x24 icon grid, 18-32% opacity background accent fill, and 1.6-1.9 stroke outlines.
+    - Replaced emojis in persona picker sheet, role configuration cards, and match action sheets.
+  - **2. Interactive 3D Flippable Stat Cards**:
+    - Replaced flat career batting figure cards with interactive CSS 3D flip cards (`.stat-3d-card-scene > .stat-3d-card`).
+    - Added front identity face (`.stat-3d-front`) showing career values and back benchmark face (`.stat-3d-back`) showing innings context and T20 comparisons.
+    - Interactive 3D flip transition with `perspective: 600px`, `transform-style: preserve-3d`, and `toggleFlipCard(this)`.
+  - **3. Interactive Dynamic 3D Player Card**:
+    - Transformed `open3DPlayerCardSheet()` into a full CSS 3D holographic flip card (`#playerFlipCard3D`).
+    - Dynamically defaults to the match's active striker or squad player with dynamic squad chips, eliminating the 3 hardcoded samples.
+    - Front face renders athlete identity, jersey #, rating, rank, and form badge; back face reveals a 6-stat career figure grid (Runs, Average, Strike Rate, Boundary %, Impact, Power).
+  - **4. Verification & Testing Health**:
+    - Verified all 220 unit/domain tests in 62 suites pass in 504ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+    - Created Playwright E2E suite `tests/test_68_icon_replacement_and_3d_cards.py` passing 100%:
+      - Verified real SVG icons (.cricos-icon) in bottom navigation and absence of emojis.
+      - Verified real SVG icons across sidebar drawer nav, studios, and footer buttons.
+      - Verified 3D stat cards on Profile page and interactive flip/unflip on tap.
+      - Verified 3D Player Card modal, dynamic striker data binding, and flip toggle.
+      - Verified zero critical console errors and captured screenshots in `tests/screenshots/`.
+    - Verified `test_67_mobile_singular_navigation_audit.py` passes 100%.
+    - Verified single-file distribution packaging via `./pipeline.sh package` (`dist/index.html` byte-for-byte identical, `dist/mobile.html`, `dist/release-manifest.json`).
+- **Preceding Phase**: Phase 2CW Completed — Mobile UI-UX Navigation Simplification & Linear User Journeys (`apps/api/src/ui/mobile-view.ts`, `tests/test_67_mobile_singular_navigation_audit.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Elimination of In-Card Navigation Duplications**:
     - **Wagon Wheel Singular Linear Journey**: Removed duplicate `renderMobile8ZoneWagonWheel()` render from bottom of `SCORE` subtab. `SCORE` remains exclusively dedicated to live match scoring pad, batter/bowler cards, and DRS telemetry. The Wagon Wheel is canonically accessed via the dedicated `WAGON` subtab or the `ANALYTICS` chart view.
     - **Removed In-Card 2D/3D Mode Toggles**: Eliminated duplicate `2D Map` vs `🌐 3D Stadium` navigation buttons from within the 3D Stadium header, 8-Zone Wagon Wheel header, and Analytics Wagon Wheel header. 3D Stadium is accessed with a singular linear path via the subnav pill (`STADIUM_3D`) and sidebar drawer (`#btnMobileSidebar3DStadium`).
