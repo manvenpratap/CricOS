@@ -1,14 +1,34 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 03:20:00
-**Version:** 1.0.0-phase2di (Space-Efficient Scoring Crease, Subtle Multi-Match HUD & Consolidated Playwright Suite)  
+**Last Updated:** 2026-10-04 03:55:00
+**Version:** 1.0.0-phase2dj (3D Holographic Main Player Card, 15-Squad Selector & Full Web Analytical Radar Dossier)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DI Completed — Space-Efficient Scoring Crease, Subtle Multi-Match HUD & Full Playwright Test Consolidation (`apps/api/src/ui/mobile-view.ts`, `tests/test_consolidated_*.py`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DJ Completed — 3D Holographic Main Player Card, 15-Squad Selector Strip & Full Web Analytical Radar Dossier (`apps/api/src/ui/mobile-view.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Direct Main 3D Holographic Player Card Integration**:
+    - Converted `#mobileAthleticStatsCard` in Teams Hub into `#playerFlipCard3D` (`.player-flip-scene`, `.player-flip-card`, `.player-flip-front`, `.player-flip-back`) directly in-place, eliminating the need to open a separate pane just to experience the 3D card.
+    - Main card flips smoothly on tap between front identity face and back career telemetry face.
+  - **2. 15-Player Squad Selector Chips Strip**:
+    - Embedded dynamic squad chips strip (`#mobileSquadChipsStrip`) directly above the 3D card in the Teams Hub with 1-tap switching (`selectPlayer(id)`), supporting all 15 squad players (`p1`–`p11` and `b1`–`b4`).
+  - **3. Zero Data Loss Invariant (100% Telemetry Preservation)**:
+    - **Front Face**: Identity badge ("CRICOS ATHLETE • KYC CERTIFIED"), Player Name, Full Name, Role, Batting/Bowling style, glowing `#jersey` (2.1rem), circular 44px rating ring with score (`98`), ICC rating label, ELO score (`2,580`), rank ribbon (`#1 WORLD ICC T20`), and form pill (`PEAK`).
+    - **Back Face**: Player name & `#jersey`, 8-cell career stats grid (`Runs`, `Avg`, `S/R`, `Bdry%`, `Matches`, `W/Econ`, `Catches`, `Impact`), 20-match momentum spectrum with trend ("Surging +14%"), and interactive spectrum bars (`.athletic-spectrum-bar`).
+  - **4. Provisions for Full Player Analysis (Matching Web Version)**:
+    - **Provision 1 (Inline Expandable Dossier)**: Toggleable via `#btnToggleInlineAnalysis` (`toggleInlinePlayerAnalysis()`) expanding `#mobileInlinePlayerAnalysisDossier` directly below the card.
+    - **Provision 2 (Full Analysis Action Sheet)**: Dedicated launcher `#btnOpenPlayerAnalysisSheet` (`openPlayerAnalysisSheet(playerId)`, aliased to `openPlayerStatsDrawer(playerId)`), wrapped in `#sheetFullPlayerAnalysis` with dynamic squad chips.
+    - **Dossier Telemetry**: Certified Athlete & KYC badge with ELO score; 6-Axis Radar Capability Polygon SVG (`Bat Power`, `Strike Rot`, `Boundary %`, `Bowl Control`, `Wicket Threat`, `Fielding`); Tactical Skill Breakdown progress bars (`/100`); Situational Splits table (Home Pitch, Away Turf, 1st Innings, 2nd Innings, Powerplay); and Recent 5-Match Performance Logs table (Date, Opponent, Batting, Bowling, Match MVP).
+  - **5. Comprehensive Playwright Suite & Domain Verification**:
+    - Enhanced `tests/test_consolidated_3d_and_packaging.py` with 8 sequential assertions verifying direct 3D card rendering, squad chips, front/back flip interactions, 100% data preservation, inline dossier accordion toggle, and dedicated analysis sheet.
+    - All 13 consolidated tests pass in ~50s with zero critical console errors (`assert_no_critical_errors(page)`).
+    - All 243 domain/unit tests pass in ~500ms via `./pipeline.sh test --summary` (Minimal Tokens Protocol - Rule 2).
+  - **6. Packaging & Android Native Compilation (Rule 6)**:
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
+    - Compiled and verified Play-Protect-compliant Android 15 (targetSdk 35) Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DI Completed — Space-Efficient Scoring Crease, Subtle Multi-Match HUD & Full Playwright Test Consolidation (`apps/api/src/ui/mobile-view.ts`, `tests/test_consolidated_*.py`, `tests/domain-scoring-and-match-ops.test.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/domain-3d-stadium-and-visual-graphics.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Space-Efficient Batting Crease & Floating Bridge Strike Swap FAB**:
     - Re-architected mobile scorer studio batting crease into perfectly symmetrical dual batter cards (`#mobileBatterCard1`, `#mobileBatterCard2`), each featuring clear strike indicator badges (`.mobile-crease-batter-badge`), strike rate, and boundaries metrics.
     - Extracted the strike swap action into a centered floating bridge FAB (`#btnMobileSwapStrike`) positioned between the two batter cards with high-contrast Iconsax swap icon, eliminating all card width skew and horizontal overflow.

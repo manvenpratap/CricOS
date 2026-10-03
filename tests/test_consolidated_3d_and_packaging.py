@@ -141,6 +141,78 @@ async def test_mobile_3d_cards_and_drawer_studios():
             assert is_unflipped, "Card must unflip after second tap"
 
         # -------------------------------------------------------------
+        # 1b. Main 3D Player Card on Teams Hub (Direct Card & Full Analysis)
+        # -------------------------------------------------------------
+        await page.evaluate("() => window.cricosMobileApp.navigateTo('TEAMS')")
+        await page.wait_for_timeout(300)
+
+        # 1. Direct Main Player Card: converted into 3D flippable card directly in Teams Hub
+        main_card = await page.query_selector("#mobileAthleticStatsCard #playerFlipCard3D")
+        assert main_card is not None and await main_card.is_visible(), "Main player card must be direct 3D flippable card"
+
+        # 2. 15-Player Squad Selector Chips Strip
+        squad_chips = await page.query_selector_all("#mobileSquadChipsStrip button")
+        assert len(squad_chips) >= 11, f"Squad chips strip must have at least 11 players, found {len(squad_chips)}"
+
+        # 3. Front Face Data Completeness: identity, jersey, ICC rank, ELO score
+        front_text = await page.evaluate("() => document.querySelector('#playerFlipCard3D .player-flip-front')?.textContent || ''")
+        assert "#18" in front_text or "18" in front_text, "Front face must include jersey number"
+        assert "WORLD ICC" in front_text or "ICC" in front_text, "Front face must include ICC rank ribbon"
+        assert "2,580" in front_text or "2580" in front_text, "Front face must include ELO rating"
+
+        # 4. Flip interaction directly on the main card
+        await main_card.click()
+        await page.wait_for_timeout(250)
+        card_is_flipped = await main_card.evaluate("el => el.classList.contains('flipped')")
+        assert card_is_flipped, "Main player card must flip on tap"
+
+        # 5. Back Face Data Completeness: 8 career figures cells & 20-match momentum spectrum
+        back_text = await page.evaluate("() => document.querySelector('#playerFlipCard3D .player-flip-back')?.textContent || ''")
+        assert "RUNS" in back_text or "Runs" in back_text, "Back face must include career runs"
+        assert "AVG" in back_text or "Avg" in back_text, "Back face must include batting average"
+        assert "S/R" in back_text or "SR" in back_text, "Back face must include strike rate"
+        spectrum_bars = await page.query_selector_all("#playerFlipCard3D .athletic-spectrum-bar")
+        assert len(spectrum_bars) == 20, f"Must have 20 momentum spectrum bars, found {len(spectrum_bars)}"
+
+        # Unflip main card
+        await main_card.click()
+        await page.wait_for_timeout(200)
+
+        # 6. 1-Tap Player Switching updates the card
+        if len(squad_chips) > 1:
+            await squad_chips[1].click()
+            await page.wait_for_timeout(250)
+            updated_name = await page.evaluate("() => document.querySelector('#playerFlipCard3D .athletic-player-name')?.textContent || ''")
+            assert "Rohit" in updated_name, f"Switching chip must update player card to Rohit, got '{updated_name}'"
+
+        # 7. Inline Analysis Accordion Toggle (Provision 1)
+        inline_btn = await page.query_selector("#btnToggleInlineAnalysis")
+        assert inline_btn is not None, "Inline analysis toggle button must exist"
+        await inline_btn.click()
+        await page.wait_for_timeout(300)
+        dossier = await page.query_selector("#mobileInlinePlayerAnalysisDossier")
+        assert dossier is not None and await dossier.is_visible(), "Inline analysis dossier must expand"
+        dossier_text = await page.evaluate("() => document.querySelector('#mobileInlinePlayerAnalysisDossier')?.textContent || ''")
+        dossier_lower = dossier_text.lower()
+        assert "tactical skill breakdown" in dossier_lower, "Inline dossier must include tactical skill breakdown"
+        assert "situational splits" in dossier_lower, "Inline dossier must include situational splits"
+        assert "recent match performance logs" in dossier_lower, "Inline dossier must include recent match logs"
+        radar_svg = await page.query_selector("#mobileInlinePlayerAnalysisDossier svg")
+        assert radar_svg is not None, "Inline dossier must include 6-axis radar SVG polygon"
+
+        # 8. Full Analysis Action Sheet (Provision 2)
+        sheet_btn = await page.query_selector("#btnOpenPlayerAnalysisSheet")
+        assert sheet_btn is not None, "Full analysis drawer button must exist"
+        await sheet_btn.click()
+        await page.wait_for_timeout(350)
+        analysis_sheet = await page.query_selector("#sheetFullPlayerAnalysis")
+        assert analysis_sheet is not None and await analysis_sheet.is_visible(), "Player analysis sheet must be visible"
+
+        # Close analysis sheet
+        await page.evaluate("() => window.cricosMobileApp.closeActionSheet()")
+        await page.wait_for_timeout(200)
+
+        # -------------------------------------------------------------
         # 2. 3D Holographic Player Card Sheet
         # -------------------------------------------------------------
         await page.evaluate("() => window.cricosMobileApp.open3DPlayerCardSheet('Virat Kohli')")

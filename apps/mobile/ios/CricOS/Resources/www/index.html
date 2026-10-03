@@ -3105,7 +3105,7 @@
     .player-flip-card {
       position: relative;
       width: 100%;
-      height: 210px;
+      height: 250px;
       cursor: pointer;
       transform-style: preserve-3d;
       transition: transform 580ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -3990,23 +3990,329 @@
         this.toasts = [];
         this.selectedPlayerId = 'p1';
         this._screenChanged = false;
+        this.inlineAnalysisExpanded = false;
 
         this.playerDatabase = {
-          'p1': { id: 'p1', name: 'Virat K.', role: 'CAPTAIN', jersey: 18, rating: 98.4, rank: '#1 WORLD ICC T20', runs: 4892, avg: 53.8, sr: 138.2, boundaryRate: 19.4, trueImpact: '+18.2', form: 'PEAK', momentum: [12, 14, 15, 18, 16, 20, 22, 19, 24, 21, 25, 27, 26, 28, 27, 29, 31, 30, 32, 34] },
-          'p2': { id: 'p2', name: 'Rohit S.', role: 'BATTER', jersey: 45, rating: 96.1, rank: '#3 ICC OPENER', runs: 4231, avg: 48.2, sr: 142.6, boundaryRate: 21.1, trueImpact: '+16.5', form: 'EXCELLENT', momentum: [10, 12, 16, 15, 18, 17, 22, 20, 23, 22, 25, 24, 26, 28, 25, 29, 30, 28, 31, 33] },
-          'p3': { id: 'p3', name: 'Shubman G.', role: 'BATTER', jersey: 77, rating: 92.5, rank: '#7 ICC ANCHOR', runs: 2840, avg: 44.5, sr: 134.1, boundaryRate: 17.8, trueImpact: '+12.4', form: 'SURGING', momentum: [8, 11, 13, 14, 16, 18, 17, 19, 21, 23, 22, 25, 24, 26, 28, 27, 29, 30, 28, 31] },
-          'p4': { id: 'p4', name: 'Shreyas I.', role: 'BATTER', jersey: 96, rating: 89.8, rank: '#12 ICC MIDDLE', runs: 2310, avg: 41.2, sr: 131.5, boundaryRate: 16.2, trueImpact: '+9.8', form: 'STABLE', momentum: [14, 15, 13, 16, 18, 17, 19, 18, 20, 21, 22, 20, 23, 24, 22, 25, 24, 26, 25, 27] },
-          'p5': { id: 'p5', name: 'KL Rahul', role: 'WICKETKEEPER', jersey: 1, rating: 91.2, rank: '#6 ICC KEEPER-BAT', runs: 3410, avg: 46.1, sr: 136.0, boundaryRate: 18.0, trueImpact: '+14.1', form: 'SOLID', momentum: [12, 14, 13, 15, 17, 19, 18, 20, 22, 21, 23, 25, 24, 26, 27, 25, 28, 29, 27, 30] },
-          'p6': { id: 'p6', name: 'Hardik P.', role: 'ALL_ROUNDER', jersey: 33, rating: 95.8, rank: '#2 ALL-ROUNDER', runs: 2680, avg: 37.8, sr: 154.2, boundaryRate: 24.3, trueImpact: '+22.4', form: 'EXPLOSIVE', momentum: [15, 18, 20, 22, 25, 24, 26, 28, 27, 30, 29, 32, 31, 33, 35, 34, 36, 38, 37, 40] },
-          'p7': { id: 'p7', name: 'Ravindra J.', role: 'ALL_ROUNDER', jersey: 8, rating: 94.0, rank: '#4 ALL-ROUNDER', runs: 2150, avg: 34.6, sr: 129.8, boundaryRate: 15.5, trueImpact: '+19.8', form: 'ELITE', momentum: [16, 17, 19, 18, 20, 22, 21, 23, 25, 24, 26, 27, 29, 28, 30, 31, 33, 32, 34, 35] },
-          'p8': { id: 'p8', name: 'Axar P.', role: 'ALL_ROUNDER', jersey: 20, rating: 88.6, rank: '#14 ALL-ROUNDER', runs: 1420, avg: 29.5, sr: 132.4, boundaryRate: 16.0, trueImpact: '+11.2', form: 'RELIABLE', momentum: [11, 13, 12, 14, 16, 17, 19, 18, 20, 22, 21, 23, 24, 22, 25, 26, 27, 28, 26, 29] },
-          'p9': { id: 'p9', name: 'Jasprit B.', role: 'BOWLER', jersey: 93, rating: 99.2, rank: '#1 WORLD BOWLER', runs: 120, avg: 8.5, sr: 85.0, boundaryRate: 5.2, trueImpact: '+31.5', form: 'UNSTOPPABLE', momentum: [20, 22, 25, 27, 29, 31, 30, 33, 35, 34, 36, 38, 37, 39, 41, 40, 42, 44, 43, 45] },
-          'p10': { id: 'p10', name: 'Kuldeep Y.', role: 'BOWLER', jersey: 23, rating: 93.4, rank: '#5 SPINNER', runs: 85, avg: 6.2, sr: 72.0, boundaryRate: 3.1, trueImpact: '+18.9', form: 'WIZARD', momentum: [14, 16, 18, 17, 19, 21, 20, 22, 24, 23, 25, 27, 26, 28, 30, 29, 31, 33, 32, 34] },
-          'p11': { id: 'p11', name: 'Mohammed S.', role: 'BOWLER', jersey: 11, rating: 92.8, rank: '#8 SEAMER', runs: 95, avg: 7.1, sr: 78.5, boundaryRate: 4.0, trueImpact: '+17.4', form: 'LETHAL', momentum: [13, 15, 17, 16, 18, 20, 19, 22, 23, 22, 24, 26, 25, 27, 29, 28, 30, 32, 31, 33] },
-          'b1': { id: 'b1', name: 'Rishabh P.', role: 'WICKETKEEPER', jersey: 17, rating: 93.1, rank: '#4 DYNAMIC KEEPER', runs: 2450, avg: 39.8, sr: 152.6, boundaryRate: 23.5, trueImpact: '+17.9', form: 'IMPACT', momentum: [12, 15, 17, 19, 22, 24, 23, 26, 28, 27, 30, 29, 32, 34, 33, 35, 37, 36, 38, 41] },
-          'b2': { id: 'b2', name: 'Surya Y.', role: 'BATTER', jersey: 63, rating: 97.9, rank: '#2 360-BATTER', runs: 3120, avg: 47.4, sr: 172.5, boundaryRate: 28.4, trueImpact: '+26.8', form: 'SUPERNOVA', momentum: [18, 21, 24, 26, 29, 31, 33, 35, 34, 37, 39, 38, 41, 43, 42, 44, 46, 45, 47, 49] },
-          'b3': { id: 'b3', name: 'Arshdeep S.', role: 'BOWLER', jersey: 2, rating: 89.5, rank: '#11 DEATH SEAMER', runs: 42, avg: 5.2, sr: 65.0, boundaryRate: 2.5, trueImpact: '+13.8', form: 'CLUTCH', momentum: [10, 12, 14, 13, 15, 17, 16, 18, 20, 22, 21, 23, 25, 24, 26, 28, 27, 29, 31, 32] },
-          'b4': { id: 'b4', name: 'Yuzvendra C.', role: 'BOWLER', jersey: 3, rating: 90.2, rank: '#9 LEGGIE', runs: 58, avg: 5.8, sr: 62.0, boundaryRate: 2.1, trueImpact: '+15.2', form: 'CRAFTY', momentum: [11, 13, 15, 14, 16, 18, 17, 19, 21, 23, 22, 24, 26, 25, 27, 28, 30, 29, 31, 33] }
+          'p1': {
+            id: 'p1', name: 'Virat K.', fullName: 'Virat Kohli', shortName: 'Virat', role: 'CAPTAIN', jersey: 18,
+            rating: 98.4, rank: '#1 WORLD ICC T20', runs: 4892, avg: 53.8, sr: 138.2, boundaryRate: 19.4, trueImpact: '+18.2',
+            form: 'PEAK', power: 98, matches: 48, wickets: 4, economy: '7.20', catches: 32, elo: '2,580',
+            style: 'Right-Hand Bat • Right-Arm Medium', initials: 'VK', trend: '+9.2%',
+            radar: [96, 98, 92, 45, 38, 94],
+            momentum: [85, 90, 78, 92, 95, 88, 99, 94, 91, 86, 95, 98, 92, 89, 96, 100, 94, 97, 95, 99],
+            splits: [
+              { cond: 'Home Pitch', inn: 24, runs: '1,180 (152.4)', avg: '53.6', wkts: 2, econ: '6.80' },
+              { cond: 'Away Turf', inn: 24, runs: '960 (144.8)', avg: '43.6', wkts: 2, econ: '7.50' },
+              { cond: '1st Innings (Setting)', inn: 26, runs: '1,240 (150.2)', avg: '51.7', wkts: 3, econ: '7.10' },
+              { cond: '2nd Innings (Chasing)', inn: 22, runs: '900 (146.3)', avg: '47.4', wkts: 1, econ: '7.30' },
+              { cond: 'Powerplay (Overs 1-6)', inn: 48, runs: '840 (142.0)', avg: '60.0', wkts: 0, econ: '0.00' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '68* (42)', bowl: '0/12 (1.0)', mvp: '★ 98.4 (POTM)' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '82 (51)', bowl: '1/18 (2.0)', mvp: '★ 95.0' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '45 (28)', bowl: 'DNB', mvp: '82.5' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '74* (46)', bowl: 'DNB', mvp: '★ 96.2' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '54 (36)', bowl: '0/8 (1.0)', mvp: '88.0' }
+            ]
+          },
+          'p2': {
+            id: 'p2', name: 'Rohit S.', fullName: 'Rohit Sharma', shortName: 'Rohit', role: 'BATTER', jersey: 45,
+            rating: 96.1, rank: '#3 ICC OPENER', runs: 4231, avg: 48.2, sr: 142.6, boundaryRate: 21.1, trueImpact: '+16.5',
+            form: 'EXCELLENT', power: 96, matches: 46, wickets: 2, economy: '8.10', catches: 26, elo: '2,490',
+            style: 'Right-Hand Bat • Right-Arm Off-Break', initials: 'RS', trend: '+6.8%',
+            radar: [98, 88, 99, 40, 30, 88],
+            momentum: [70, 85, 92, 80, 88, 96, 75, 90, 85, 92, 94, 89, 95, 98, 86, 92, 94, 96, 92, 95],
+            splits: [
+              { cond: 'Home Pitch', inn: 23, runs: '1,060 (160.2)', avg: '48.2', wkts: 1, econ: '7.80' },
+              { cond: 'Away Turf', inn: 23, runs: '920 (152.0)', avg: '41.8', wkts: 1, econ: '8.40' },
+              { cond: 'Powerplay (Overs 1-6)', inn: 46, runs: '980 (164.5)', avg: '54.4', wkts: 0, econ: '0.00' },
+              { cond: '1st Innings', inn: 25, runs: '1,120 (158.0)', avg: '46.7', wkts: 1, econ: '8.00' },
+              { cond: '2nd Innings', inn: 21, runs: '860 (153.8)', avg: '43.0', wkts: 1, econ: '8.20' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '54 (32)', bowl: 'DNB', mvp: '89.2' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '68 (39)', bowl: 'DNB', mvp: '92.4' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '88* (48)', bowl: '0/10 (1.0)', mvp: '★ 97.6 (POTM)' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '38 (21)', bowl: 'DNB', mvp: '78.5' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '61 (35)', bowl: 'DNB', mvp: '91.0' }
+            ]
+          },
+          'p3': {
+            id: 'p3', name: 'Shubman G.', fullName: 'Shubman Gill', shortName: 'Shubman', role: 'BATTER', jersey: 77,
+            rating: 92.5, rank: '#7 ICC ANCHOR', runs: 2840, avg: 44.5, sr: 134.1, boundaryRate: 17.8, trueImpact: '+12.4',
+            form: 'SURGING', power: 92, matches: 38, wickets: 0, economy: '0.00', catches: 22, elo: '2,380',
+            style: 'Right-Hand Bat • Right-Arm Off-Break', initials: 'SG', trend: '+8.1%',
+            radar: [91, 94, 88, 25, 20, 90],
+            momentum: [75, 80, 84, 88, 86, 90, 89, 93, 91, 94, 92, 95, 93, 96, 94, 97, 95, 98, 94, 97],
+            splits: [
+              { cond: 'Home Pitch', inn: 19, runs: '1,480 (138.2)', avg: '46.2', wkts: 0, econ: '0.00' },
+              { cond: 'Away Turf', inn: 19, runs: '1,360 (130.0)', avg: '42.5', wkts: 0, econ: '0.00' },
+              { cond: 'Powerplay (Overs 1-6)', inn: 38, runs: '780 (136.0)', avg: '48.0', wkts: 0, econ: '0.00' },
+              { cond: 'Chasing Targets', inn: 18, runs: '840 (138.5)', avg: '46.6', wkts: 0, econ: '0.00' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '58 (41)', bowl: 'DNB', mvp: '88.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '71* (49)', bowl: 'DNB', mvp: '★ 94.2' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '42 (30)', bowl: 'DNB', mvp: '81.0' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '89* (55)', bowl: 'DNB', mvp: '★ 98.0 (POTM)' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '34 (25)', bowl: 'DNB', mvp: '76.5' }
+            ]
+          },
+          'p4': {
+            id: 'p4', name: 'Shreyas I.', fullName: 'Shreyas Iyer', shortName: 'Shreyas', role: 'BATTER', jersey: 96,
+            rating: 89.8, rank: '#12 ICC MIDDLE', runs: 2310, avg: 41.2, sr: 131.5, boundaryRate: 16.2, trueImpact: '+9.8',
+            form: 'STABLE', power: 90, matches: 36, wickets: 0, economy: '0.00', catches: 19, elo: '2,310',
+            style: 'Right-Hand Bat • Right-Arm Leg-Break', initials: 'SI', trend: '+5.4%',
+            radar: [88, 90, 85, 30, 20, 89],
+            momentum: [80, 82, 85, 87, 84, 88, 86, 89, 91, 88, 90, 87, 92, 89, 91, 93, 89, 92, 90, 91],
+            splits: [
+              { cond: 'Middle Overs (7-15)', inn: 36, runs: '1,420 (133.0)', avg: '44.0', wkts: 0, econ: '0.00' },
+              { cond: 'Spin Matchup', inn: 36, runs: '980 (145.0)', avg: '49.0', wkts: 0, econ: '0.00' },
+              { cond: '1st Innings', inn: 19, runs: '1,180 (134.0)', avg: '42.0', wkts: 0, econ: '0.00' },
+              { cond: '2nd Innings', inn: 17, runs: '1,130 (129.0)', avg: '40.3', wkts: 0, econ: '0.00' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '44 (33)', bowl: 'DNB', mvp: '82.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '52 (38)', bowl: 'DNB', mvp: '86.4' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '65* (44)', bowl: 'DNB', mvp: '★ 92.5' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '31 (24)', bowl: 'DNB', mvp: '74.0' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '48 (36)', bowl: 'DNB', mvp: '84.2' }
+            ]
+          },
+          'p5': {
+            id: 'p5', name: 'KL Rahul', fullName: 'KL Rahul', shortName: 'KL', role: 'WICKETKEEPER', jersey: 1,
+            rating: 91.2, rank: '#6 ICC KEEPER-BAT', runs: 3410, avg: 46.1, sr: 136.0, boundaryRate: 18.0, trueImpact: '+14.1',
+            form: 'SOLID', power: 91, matches: 42, wickets: 0, economy: '0.00', catches: 44, elo: '2,360',
+            style: 'Right-Hand Bat • Wicketkeeper', initials: 'KL', trend: '+4.5%',
+            radar: [90, 92, 86, 20, 15, 96],
+            momentum: [80, 82, 85, 76, 88, 90, 84, 86, 92, 88, 85, 89, 91, 86, 90, 88, 92, 89, 87, 91],
+            splits: [
+              { cond: 'Home Pitch', inn: 21, runs: '880 (142.1)', avg: '46.3', wkts: 0, econ: '0.00' },
+              { cond: 'Away Turf', inn: 21, runs: '740 (136.5)', avg: '38.9', wkts: 0, econ: '0.00' },
+              { cond: 'Death Overs (16-20)', inn: 25, runs: '420 (178.2)', avg: '35.0', wkts: 0, econ: '0.00' },
+              { cond: '1st Innings', inn: 22, runs: '860 (140.2)', avg: '43.0', wkts: 0, econ: '0.00' },
+              { cond: '2nd Innings', inn: 20, runs: '760 (138.5)', avg: '42.2', wkts: 0, econ: '0.00' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '42* (29)', bowl: '3 Catches', mvp: '87.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '56 (40)', bowl: '2 Catches, 1 Stumping', mvp: '91.5' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '31 (24)', bowl: '1 Catch', mvp: '74.2' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '64* (44)', bowl: '2 Catches', mvp: '90.8' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '48 (33)', bowl: '1 Stumping', mvp: '82.0' }
+            ]
+          },
+          'p6': {
+            id: 'p6', name: 'Hardik P.', fullName: 'Hardik Patel', shortName: 'Hardik', role: 'ALL_ROUNDER', jersey: 33,
+            rating: 95.8, rank: '#2 ALL-ROUNDER', runs: 2680, avg: 37.8, sr: 154.2, boundaryRate: 24.3, trueImpact: '+22.4',
+            form: 'EXPLOSIVE', power: 96, matches: 44, wickets: 42, economy: '7.64', catches: 22, elo: '2,410',
+            style: 'Left-Hand Bat • Right-Arm Fast Medium', initials: 'HP', trend: '+8.4%',
+            radar: [94, 86, 95, 84, 88, 91],
+            momentum: [82, 88, 76, 94, 85, 91, 98, 84, 90, 87, 95, 92, 89, 96, 91, 97, 88, 94, 90, 95],
+            splits: [
+              { cond: 'Home Pitch', inn: 22, runs: '680 (168.2)', avg: '37.8', wkts: 24, econ: '7.40' },
+              { cond: 'Away Turf', inn: 22, runs: '600 (156.4)', avg: '33.3', wkts: 18, econ: '7.90' },
+              { cond: 'Death Overs (16-20)', inn: 38, runs: '560 (188.0)', avg: '35.0', wkts: 19, econ: '8.80' },
+              { cond: '1st Innings', inn: 24, runs: '720 (164.0)', avg: '36.0', wkts: 22, econ: '7.55' },
+              { cond: '2nd Innings', inn: 20, runs: '560 (160.2)', avg: '35.0', wkts: 20, econ: '7.75' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '38* (18)', bowl: '2/24 (4.0)', mvp: '★ 94.2' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '45 (24)', bowl: '1/31 (3.0)', mvp: '86.8' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '22 (11)', bowl: '3/18 (4.0)', mvp: '★ 95.6 (POTM)' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '51* (26)', bowl: '1/28 (4.0)', mvp: '91.0' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '19 (12)', bowl: '2/30 (3.4)', mvp: '82.4' }
+            ]
+          },
+          'p7': {
+            id: 'p7', name: 'Ravindra J.', fullName: 'Ravindra Singh', shortName: 'Ravindra', role: 'ALL_ROUNDER', jersey: 8,
+            rating: 94.0, rank: '#4 ALL-ROUNDER', runs: 2150, avg: 34.6, sr: 129.8, boundaryRate: 15.5, trueImpact: '+19.8',
+            form: 'ELITE', power: 94, matches: 45, wickets: 52, economy: '6.42', catches: 38, elo: '2,460',
+            style: 'Left-Hand Bat • Slow Left-Arm Orthodox', initials: 'RS', trend: '+7.1%',
+            radar: [86, 90, 84, 94, 89, 99],
+            momentum: [84, 86, 90, 92, 88, 94, 96, 90, 88, 95, 93, 91, 97, 89, 94, 96, 92, 95, 91, 96],
+            splits: [
+              { cond: 'Home Pitch', inn: 23, runs: '590 (146.0)', avg: '34.7', wkts: 31, econ: '6.15' },
+              { cond: 'Away Turf', inn: 22, runs: '530 (138.0)', avg: '31.2', wkts: 21, econ: '6.70' },
+              { cond: 'Middle Overs (7-15)', inn: 45, runs: '380 (135.0)', avg: '38.0', wkts: 38, econ: '6.20' },
+              { cond: '1st Innings', inn: 24, runs: '600 (144.0)', avg: '33.3', wkts: 28, econ: '6.35' },
+              { cond: '2nd Innings', inn: 21, runs: '520 (140.0)', avg: '32.5', wkts: 24, econ: '6.50' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '24* (14)', bowl: '2/19 (4.0)', mvp: '91.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '35 (19)', bowl: '3/22 (4.0)', mvp: '★ 96.4 (POTM)' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '18 (12)', bowl: '1/26 (4.0)', mvp: '81.5' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '28* (15)', bowl: '2/21 (4.0)', mvp: '89.2' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '41 (22)', bowl: '1/24 (4.0)', mvp: '88.5' }
+            ]
+          },
+          'p8': {
+            id: 'p8', name: 'Axar P.', fullName: 'Axar Patel', shortName: 'Axar', role: 'ALL_ROUNDER', jersey: 20,
+            rating: 88.6, rank: '#14 ALL-ROUNDER', runs: 1420, avg: 29.5, sr: 132.4, boundaryRate: 16.0, trueImpact: '+11.2',
+            form: 'RELIABLE', power: 88, matches: 38, wickets: 46, economy: '6.35', catches: 19, elo: '2,320',
+            style: 'Left-Hand Bat • Slow Left-Arm Orthodox', initials: 'AP', trend: '+5.2%',
+            radar: [82, 85, 80, 95, 88, 89],
+            momentum: [80, 82, 85, 87, 84, 88, 91, 85, 89, 86, 90, 88, 92, 87, 91, 90, 89, 93, 88, 91],
+            splits: [
+              { cond: 'Home Pitch', inn: 19, runs: '420 (140.0)', avg: '28.0', wkts: 26, econ: '6.10' },
+              { cond: 'Away Turf', inn: 19, runs: '360 (135.8)', avg: '25.7', wkts: 20, econ: '6.60' },
+              { cond: 'Powerplay Overs', inn: 22, runs: '90 (120.0)', avg: '22.5', wkts: 12, econ: '5.90' },
+              { cond: '1st Innings', inn: 20, runs: '410 (139.0)', avg: '27.3', wkts: 24, econ: '6.25' },
+              { cond: '2nd Innings', inn: 18, runs: '370 (137.0)', avg: '26.4', wkts: 22, econ: '6.45' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '15* (8)', bowl: '1/22 (4.0)', mvp: '82.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '28 (16)', bowl: '2/18 (4.0)', mvp: '89.0' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '12 (9)', bowl: '2/24 (4.0)', mvp: '84.2' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '34* (18)', bowl: '1/25 (4.0)', mvp: '88.0' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '8 (6)', bowl: '2/20 (4.0)', mvp: '85.4' }
+            ]
+          },
+          'p9': {
+            id: 'p9', name: 'Jasprit B.', fullName: 'Jasprit Bumrah', shortName: 'Jasprit', role: 'BOWLER', jersey: 93,
+            rating: 99.2, rank: '#1 WORLD BOWLER', runs: 120, avg: 8.5, sr: 85.0, boundaryRate: 5.2, trueImpact: '+31.5',
+            form: 'UNSTOPPABLE', power: 99, matches: 50, wickets: 74, economy: '5.82', catches: 16, elo: '2,620',
+            style: 'Right-Hand Bat • Right-Arm Fast Yorker Specialist', initials: 'JB', trend: '+12.0%',
+            radar: [45, 50, 40, 99, 99, 88],
+            momentum: [92, 95, 98, 96, 100, 94, 98, 99, 95, 98, 97, 100, 96, 99, 98, 100, 97, 100, 99, 100],
+            splits: [
+              { cond: 'Powerplay (Overs 1-6)', inn: 50, runs: '0', avg: '0', wkts: 28, econ: '4.80' },
+              { cond: 'Death Overs (16-20)', inn: 48, runs: '0', avg: '0', wkts: 36, econ: '6.20' },
+              { cond: 'Home Pitch', inn: 25, runs: '95', avg: '11.8', wkts: 42, econ: '5.60' },
+              { cond: 'Away Turf', inn: 25, runs: '85', avg: '10.6', wkts: 32, econ: '6.04' },
+              { cond: 'Dot Ball Ratio', inn: 50, runs: '0', avg: '0', wkts: 74, econ: '56.4% Dots' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '8* (4)', bowl: '3/14 (4.0)', mvp: '★ 98.6 (POTM)' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: 'DNB', bowl: '2/18 (4.0)', mvp: '93.2' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '3/12 (4.0)', mvp: '★ 97.4' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: 'DNB', bowl: '1/19 (4.0)', mvp: '88.5' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '6 (5)', bowl: '4/15 (4.0)', mvp: '★ 99.4 (POTM)' }
+            ]
+          },
+          'p10': {
+            id: 'p10', name: 'Kuldeep Y.', fullName: 'Kuldeep Yadav', shortName: 'Kuldeep', role: 'BOWLER', jersey: 23,
+            rating: 93.4, rank: '#5 SPINNER', runs: 85, avg: 6.2, sr: 72.0, boundaryRate: 3.1, trueImpact: '+18.9',
+            form: 'WIZARD', power: 93, matches: 36, wickets: 58, economy: '6.75', catches: 12, elo: '2,420',
+            style: 'Left-Hand Bat • Left-Arm Wrist Spin (Chinaman)', initials: 'KY', trend: '+9.6%',
+            radar: [30, 40, 25, 92, 98, 82],
+            momentum: [82, 85, 89, 94, 88, 92, 96, 85, 91, 89, 94, 96, 90, 93, 95, 98, 92, 95, 91, 96],
+            splits: [
+              { cond: 'Home Pitch', inn: 18, runs: '70 (95.0)', avg: '10.0', wkts: 34, econ: '6.45' },
+              { cond: 'Away Turf', inn: 18, runs: '50 (88.0)', avg: '8.3', wkts: 24, econ: '7.05' },
+              { cond: 'Middle Overs (7-15)', inn: 36, runs: '0', avg: '0', wkts: 48, econ: '6.50' },
+              { cond: '1st Innings', inn: 19, runs: '65', avg: '9.2', wkts: 31, econ: '6.65' },
+              { cond: '2nd Innings', inn: 17, runs: '55', avg: '9.1', wkts: 27, econ: '6.85' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: 'DNB', bowl: '3/21 (4.0)', mvp: '★ 94.8' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '4 (5)', bowl: '2/26 (4.0)', mvp: '87.5' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '4/16 (4.0)', mvp: '★ 99.0 (POTM)' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '2* (4)', bowl: '1/28 (4.0)', mvp: '81.2' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: 'DNB', bowl: '2/22 (4.0)', mvp: '88.0' }
+            ]
+          },
+          'p11': {
+            id: 'p11', name: 'Mohammed S.', fullName: 'Mohammed Siraj', shortName: 'Mohammed', role: 'BOWLER', jersey: 11,
+            rating: 92.8, rank: '#8 SEAMER', runs: 95, avg: 7.1, sr: 78.5, boundaryRate: 4.0, trueImpact: '+17.4',
+            form: 'LETHAL', power: 92, matches: 39, wickets: 48, economy: '7.45', catches: 14, elo: '2,310',
+            style: 'Right-Hand Bat • Right-Arm Fast Seam', initials: 'MS', trend: '+4.8%',
+            radar: [25, 35, 20, 89, 93, 84],
+            momentum: [80, 82, 85, 88, 83, 86, 91, 84, 88, 86, 90, 88, 92, 86, 89, 91, 87, 90, 85, 89],
+            splits: [
+              { cond: 'Powerplay (Overs 1-6)', inn: 39, runs: '0', avg: '0', wkts: 26, econ: '6.90' },
+              { cond: 'Home Pitch', inn: 20, runs: '55', avg: '7.8', wkts: 28, econ: '7.20' },
+              { cond: 'Away Turf', inn: 19, runs: '35', avg: '7.0', wkts: 20, econ: '7.70' },
+              { cond: '1st Innings', inn: 20, runs: '50', avg: '7.1', wkts: 26, econ: '7.35' },
+              { cond: '2nd Innings', inn: 19, runs: '40', avg: '8.0', wkts: 22, econ: '7.55' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: 'DNB', bowl: '2/28 (4.0)', mvp: '85.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: 'DNB', bowl: '1/32 (4.0)', mvp: '78.2' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '3/24 (4.0)', mvp: '91.0' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '2 (3)', bowl: '2/26 (4.0)', mvp: '86.4' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: 'DNB', bowl: '1/30 (4.0)', mvp: '79.0' }
+            ]
+          },
+          'b1': {
+            id: 'b1', name: 'Rishabh P.', fullName: 'Rishabh Pant', shortName: 'Rishabh', role: 'WICKETKEEPER', jersey: 17,
+            rating: 93.1, rank: '#4 DYNAMIC KEEPER', runs: 2450, avg: 39.8, sr: 152.6, boundaryRate: 23.5, trueImpact: '+17.9',
+            form: 'IMPACT', power: 93, matches: 38, wickets: 0, economy: '0.00', catches: 36, elo: '2,390',
+            style: 'Left-Hand Bat • Wicketkeeper', initials: 'RP', trend: '+8.0%',
+            radar: [94, 88, 95, 20, 15, 94],
+            momentum: [82, 85, 88, 92, 89, 94, 91, 95, 88, 93, 96, 91, 95, 97, 92, 96, 94, 98, 95, 99],
+            splits: [
+              { cond: 'Middle Overs (7-15)', inn: 38, runs: '1,120 (148.0)', avg: '41.0', wkts: 0, econ: '0.00' },
+              { cond: 'Death Overs (16-20)', inn: 28, runs: '680 (185.0)', avg: '34.0', wkts: 0, econ: '0.00' },
+              { cond: 'Chasing Targets', inn: 18, runs: '890 (156.0)', avg: '44.5', wkts: 0, econ: '0.00' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '52 (31)', bowl: '2 Catches', mvp: '91.2' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '38 (24)', bowl: '1 Stumping', mvp: '82.0' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '76* (41)', bowl: '2 Catches', mvp: '★ 96.5 (POTM)' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '45 (27)', bowl: '1 Catch', mvp: '85.0' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '29 (18)', bowl: 'DNB', mvp: '74.5' }
+            ]
+          },
+          'b2': {
+            id: 'b2', name: 'Surya Y.', fullName: 'Suryakumar Yadav', shortName: 'Surya', role: 'BATTER', jersey: 63,
+            rating: 97.9, rank: '#2 360-BATTER', runs: 3120, avg: 47.4, sr: 172.5, boundaryRate: 28.4, trueImpact: '+26.8',
+            form: 'SUPERNOVA', power: 98, matches: 40, wickets: 0, economy: '0.00', catches: 28, elo: '2,540',
+            style: 'Right-Hand Bat • 360° Innovation', initials: 'SY', trend: '+11.4%',
+            radar: [99, 90, 99, 25, 20, 92],
+            momentum: [78, 88, 95, 92, 100, 85, 94, 99, 86, 98, 92, 95, 99, 91, 97, 100, 96, 98, 94, 99],
+            splits: [
+              { cond: 'Middle Overs (7-15)', inn: 40, runs: '980 (168.4)', avg: '49.0', wkts: 0, econ: '0.00' },
+              { cond: 'Death Overs (16-20)', inn: 32, runs: '620 (212.5)', avg: '38.8', wkts: 0, econ: '0.00' },
+              { cond: 'Chasing Targets', inn: 18, runs: '780 (182.0)', avg: '52.0', wkts: 0, econ: '0.00' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: '72 (36)', bowl: 'DNB', mvp: '★ 96.8' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: '46 (22)', bowl: 'DNB', mvp: '89.4' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: '84* (38)', bowl: 'DNB', mvp: '★ 99.2 (POTM)' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: '28 (14)', bowl: 'DNB', mvp: '76.0' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: '65 (31)', bowl: 'DNB', mvp: '93.5' }
+            ]
+          },
+          'b3': {
+            id: 'b3', name: 'Arshdeep S.', fullName: 'Arshdeep Singh', shortName: 'Arshdeep', role: 'BOWLER', jersey: 2,
+            rating: 89.5, rank: '#11 DEATH SEAMER', runs: 42, avg: 5.2, sr: 65.0, boundaryRate: 2.5, trueImpact: '+13.8',
+            form: 'CLUTCH', power: 90, matches: 35, wickets: 45, economy: '7.55', catches: 11, elo: '2,330',
+            style: 'Left-Hand Bat • Left-Arm Fast Medium', initials: 'AS', trend: '+6.3%',
+            radar: [20, 30, 18, 91, 94, 85],
+            momentum: [82, 84, 86, 88, 85, 89, 92, 84, 87, 89, 91, 88, 93, 86, 90, 92, 88, 91, 87, 90],
+            splits: [
+              { cond: 'Powerplay (Overs 1-6)', inn: 35, runs: '0', avg: '0', wkts: 22, econ: '7.10' },
+              { cond: 'Death Overs (16-20)', inn: 32, runs: '0', avg: '0', wkts: 18, econ: '8.10' },
+              { cond: 'Home Pitch', inn: 18, runs: '35', avg: '5.8', wkts: 25, econ: '7.30' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: 'DNB', bowl: '2/26 (4.0)', mvp: '86.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: 'DNB', bowl: '2/30 (4.0)', mvp: '84.0' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '1/28 (4.0)', mvp: '80.5' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: 'DNB', bowl: '3/22 (4.0)', mvp: '★ 92.4' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: 'DNB', bowl: '1/31 (4.0)', mvp: '78.0' }
+            ]
+          },
+          'b4': {
+            id: 'b4', name: 'Yuzvendra C.', fullName: 'Yuzvendra Chahal', shortName: 'Yuzvendra', role: 'BOWLER', jersey: 3,
+            rating: 90.2, rank: '#9 LEGGIE', runs: 58, avg: 5.8, sr: 62.0, boundaryRate: 2.1, trueImpact: '+15.2',
+            form: 'CRAFTY', power: 90, matches: 41, wickets: 56, economy: '7.12', catches: 10, elo: '2,350',
+            style: 'Right-Hand Bat • Legbreak Googly', initials: 'YC', trend: '+5.7%',
+            radar: [25, 30, 20, 93, 96, 80],
+            momentum: [80, 83, 87, 85, 89, 91, 88, 92, 90, 94, 91, 95, 93, 89, 94, 96, 92, 95, 91, 94],
+            splits: [
+              { cond: 'Middle Overs (7-15)', inn: 41, runs: '0', avg: '0', wkts: 44, econ: '6.90' },
+              { cond: 'Right-Hand Matchups', inn: 41, runs: '0', avg: '0', wkts: 36, econ: '6.80' },
+              { cond: 'Home Pitch', inn: 21, runs: '30', avg: '6.0', wkts: 32, econ: '6.95' }
+            ],
+            gameLogs: [
+              { date: 'Sep 24', opp: 'Mumbai Super Strikers', bat: 'DNB', bowl: '3/25 (4.0)', mvp: '★ 93.0' },
+              { date: 'Sep 20', opp: 'Chennai Super Kings', bat: 'DNB', bowl: '1/28 (4.0)', mvp: '80.0' },
+              { date: 'Sep 16', opp: 'Kolkata Knights', bat: 'DNB', bowl: '2/22 (4.0)', mvp: '87.2' },
+              { date: 'Sep 11', opp: 'Gujarat Titans', bat: 'DNB', bowl: '2/31 (4.0)', mvp: '85.0' },
+              { date: 'Sep 06', opp: 'Rajasthan Royals', bat: 'DNB', bowl: '4/18 (4.0)', mvp: '★ 98.2 (POTM)' }
+            ]
+          }
         };
 
         this.currentSelectedZone = 'EXTRA_COVER';
@@ -4622,9 +4928,252 @@
         this.render();
       }
 
-      renderAthleticCard(playerId) {
-        var p = (this.playerDatabase && this.playerDatabase[playerId]) || (this.playerDatabase ? this.playerDatabase['p1'] : null);
+      getPlayer(playerId) {
+        if (!this.playerDatabase) return null;
+        if (!playerId) {
+          return this.playerDatabase[this.selectedPlayerId] || this.playerDatabase['p1'];
+        }
+        if (this.playerDatabase[playerId]) return this.playerDatabase[playerId];
+        var pidClean = String(playerId).toLowerCase().replace(/[^a-z0-9]/g, '');
+        var pids = Object.keys(this.playerDatabase);
+        for (var i = 0; i < pids.length; i++) {
+          var k = pids[i];
+          var cand = this.playerDatabase[k];
+          if (cand.id && cand.id.toLowerCase().replace(/[^a-z0-9]/g, '') === pidClean) return cand;
+          if (cand.shortName && cand.shortName.toLowerCase().replace(/[^a-z0-9]/g, '') === pidClean) return cand;
+          if (cand.fullName && cand.fullName.toLowerCase().replace(/[^a-z0-9]/g, '').includes(pidClean)) return cand;
+          if (cand.name && cand.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(pidClean)) return cand;
+        }
+        return this.playerDatabase[this.selectedPlayerId] || this.playerDatabase['p1'];
+      }
+
+      generateRadarSvg(radarValues, width, height) {
+        width = width || 260;
+        height = height || 240;
+        var cx = width / 2;
+        var cy = height / 2 - 2;
+        var r = Math.min(width, height) * 0.32;
+        var labels = ['Bat Power', 'Strike Rot', 'Boundary %', 'Bowl Control', 'Wicket Threat', 'Fielding'];
+        var values = radarValues || [80, 80, 80, 80, 80, 80];
+
+        var gridSvg = '';
+        for (var ring = 1; ring <= 5; ring++) {
+          var ringR = r * (ring / 5);
+          var ringPts = [];
+          for (var a = 0; a < 6; a++) {
+            var ang = -Math.PI / 2 + a * (2 * Math.PI / 6);
+            ringPts.push((cx + ringR * Math.cos(ang)).toFixed(1) + ',' + (cy + ringR * Math.sin(ang)).toFixed(1));
+          }
+          gridSvg += '<polygon points="' + ringPts.join(' ') + '" fill="none" stroke="rgba(255,255,255,' + (ring === 5 ? '0.2' : '0.07') + ')" stroke-width="1" />';
+        }
+
+        var spokesSvg = '';
+        var labelsSvg = '';
+        for (var a = 0; a < 6; a++) {
+          var ang = -Math.PI / 2 + a * (2 * Math.PI / 6);
+          var x2 = cx + r * Math.cos(ang);
+          var y2 = cy + r * Math.sin(ang);
+          spokesSvg += '<line x1="' + cx + '" y1="' + cy + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2 2" />';
+          var lx = cx + (r + 17) * Math.cos(ang);
+          var ly = cy + (r + 14) * Math.sin(ang) + 4;
+          labelsSvg += '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" font-size="8.5" fill="#94A3B8" font-family="var(--font-display), sans-serif" font-weight="700" text-anchor="middle">' + labels[a] + '</text>';
+        }
+
+        var polyPts = [];
+        var dotsSvg = '';
+        for (var a = 0; a < 6; a++) {
+          var ang = -Math.PI / 2 + a * (2 * Math.PI / 6);
+          var val = values[a] || 50;
+          var px = cx + r * (val / 100) * Math.cos(ang);
+          var py = cy + r * (val / 100) * Math.sin(ang);
+          polyPts.push(px.toFixed(1) + ',' + py.toFixed(1));
+          dotsSvg += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="3" fill="#00D2FF" stroke="#FFFFFF" stroke-width="1.5" />';
+        }
+
+        return '<svg width="' + width + '" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" aria-label="6-Axis Capability Radar">' +
+          gridSvg + spokesSvg +
+          '<polygon points="' + polyPts.join(' ') + '" fill="rgba(0, 229, 153, 0.22)" stroke="#00E599" stroke-width="2" style="filter: drop-shadow(0 0 6px rgba(0,229,153,0.4));" />' +
+          dotsSvg + labelsSvg +
+        '</svg>';
+      }
+
+      generateSkillsHtml(radarValues) {
+        var labels = ['Batting Power', 'Strike Rotation', 'Boundary Impact', 'Bowling Control', 'Wicket Threat', 'Athletic Fielding'];
+        var values = radarValues || [80, 80, 80, 80, 80, 80];
+        var out = '';
+        for (var i = 0; i < labels.length; i++) {
+          var lbl = labels[i];
+          var val = values[i] || 50;
+          var barColor = val >= 90 ? '#00E599' : (val >= 75 ? '#00D2FF' : '#FFB800');
+          out += '<div style="margin-bottom: 0.45rem;">' +
+            '<div style="display: flex; justify-content: space-between; font-size: 0.68rem; margin-bottom: 0.15rem;">' +
+              '<span style="color: #F8FAFC; font-weight: 600;">' + lbl + '</span>' +
+              '<span style="font-weight: 700; color: ' + barColor + '; font-family: var(--font-score);">' + val + '/100</span>' +
+            '</div>' +
+            '<div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">' +
+              '<div style="height: 100%; width: ' + val + '%; background: ' + barColor + '; border-radius: 999px; transition: width 0.3s ease;"></div>' +
+            '</div>' +
+          '</div>';
+        }
+        return out;
+      }
+
+      generateSplitsTableHtml(splits) {
+        if (!splits || !splits.length) return '<div style="font-size: 0.7rem; color: #94A3B8;">No situational splits recorded.</div>';
+        var rows = '';
+        for (var i = 0; i < splits.length; i++) {
+          var s = splits[i];
+          rows += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.7rem;">' +
+            '<td style="padding: 0.38rem 0.45rem; font-weight: 700; color: #FFF; white-space: nowrap;">' + s.cond + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #94A3B8; text-align: center;">' + s.inn + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #00E599; font-weight: 700; font-family: var(--font-score); white-space: nowrap;">' + s.runs + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #FFF; font-family: var(--font-score); text-align: right;">' + s.avg + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #00D2FF; font-weight: 700; font-family: var(--font-score); text-align: right;">' + s.wkts + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #FFB800; font-family: var(--font-score); text-align: right;">' + s.econ + '</td>' +
+          '</tr>';
+        }
+        return '<div style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">' +
+          '<table style="width: 100%; min-width: 320px; border-collapse: collapse; font-size: 0.72rem; text-align: left;">' +
+            '<thead>' +
+              '<tr style="border-bottom: 1px solid rgba(255,255,255,0.12); color: #94A3B8; font-size: 0.62rem; text-transform: uppercase;">' +
+                '<th style="padding: 0.35rem 0.45rem;">Split Condition</th>' +
+                '<th style="padding: 0.35rem 0.45rem; text-align: center;">Inn</th>' +
+                '<th style="padding: 0.35rem 0.45rem;">Runs (SR)</th>' +
+                '<th style="padding: 0.35rem 0.45rem; text-align: right;">Bat Avg</th>' +
+                '<th style="padding: 0.35rem 0.45rem; text-align: right;">Wkts</th>' +
+                '<th style="padding: 0.35rem 0.45rem; text-align: right;">Econ</th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody>' + rows + '</tbody>' +
+          '</table>' +
+        '</div>';
+      }
+
+      generateGameLogsTableHtml(gameLogs) {
+        if (!gameLogs || !gameLogs.length) return '<div style="font-size: 0.7rem; color: #94A3B8;">No recent performance logs recorded.</div>';
+        var rows = '';
+        for (var i = 0; i < gameLogs.length; i++) {
+          var l = gameLogs[i];
+          rows += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.7rem;">' +
+            '<td style="padding: 0.38rem 0.45rem; color: #94A3B8; white-space: nowrap;">' + l.date + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; font-weight: 700; color: #FFF; white-space: nowrap;">' + l.opp + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #00E599; font-weight: 700; font-family: var(--font-score);">' + l.bat + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #00D2FF; font-family: var(--font-score);">' + l.bowl + '</td>' +
+            '<td style="padding: 0.38rem 0.45rem; color: #FFB800; font-weight: 700; font-size: 0.65rem; white-space: nowrap;">' + l.mvp + '</td>' +
+          '</tr>';
+        }
+        return '<div style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">' +
+          '<table style="width: 100%; min-width: 320px; border-collapse: collapse; font-size: 0.72rem; text-align: left;">' +
+            '<thead>' +
+              '<tr style="border-bottom: 1px solid rgba(255,255,255,0.12); color: #94A3B8; font-size: 0.62rem; text-transform: uppercase;">' +
+                '<th style="padding: 0.35rem 0.45rem;">Date</th>' +
+                '<th style="padding: 0.35rem 0.45rem;">Opponent</th>' +
+                '<th style="padding: 0.35rem 0.45rem;">Batting</th>' +
+                '<th style="padding: 0.35rem 0.45rem;">Bowling</th>' +
+                '<th style="padding: 0.35rem 0.45rem;">Match MVP</th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody>' + rows + '</tbody>' +
+          '</table>' +
+        '</div>';
+      }
+
+      renderPlayerAnalysisDossier(p, isInline) {
         if (!p) return '';
+        var h = '<div class="player-analysis-dossier" style="background: rgba(4, 7, 13, 0.75); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem; margin-top: 0.4rem;">';
+
+        // Header info
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.55rem; border-bottom: 1px solid rgba(255,255,255,0.08);">';
+        h += '<div style="display: flex; align-items: center; gap: 0.55rem;">';
+        h += '<div class="athletic-avatar" style="width: 38px; height: 38px; font-size: 0.85rem;">' + (p.initials || 'AT') + '</div>';
+        h += '<div>';
+        h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+        h += '<span style="font-weight: 800; font-size: 0.95rem; font-family: var(--font-display); color: #FFF;">' + p.fullName + '</span>';
+        h += '<span style="font-size: 0.75rem; color: #00D2FF; font-weight: 800; font-family: var(--font-score);">#' + p.jersey + '</span>';
+        h += '</div>';
+        h += '<div style="font-size: 0.64rem; color: #94A3B8;">Division A Certified Athlete • KYC Verified</div>';
+        h += '</div></div>';
+        h += '<div style="text-align: right;">';
+        h += '<div style="font-size: 0.58rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">ELO Score</div>';
+        h += '<div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 900; color: #00E599; line-height: 1;">' + (p.elo || '2,400') + '</div>';
+        h += '</div></div>';
+
+        // 6-Axis Radar & Tactical Breakdown
+        h += '<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 0.65rem; margin-bottom: 0.65rem;">';
+        h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #00D2FF; margin-bottom: 0.4rem; display: flex; justify-content: space-between; align-items: center;">';
+        h += '<span style="display: inline-flex; align-items: center; gap: 0.3rem;">' + this.iconSvg('radar', '#00D2FF', 14) + ' 6-Axis Capability Radar</span>';
+        h += '<span style="color: #94A3B8; font-size: 0.6rem;">Power Index ' + p.power + '/100</span>';
+        h += '</div>';
+        h += this.generateRadarSvg(p.radar, 240, 210);
+        h += '<div style="margin-top: 0.65rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.55rem;">';
+        h += '<div style="font-size: 0.66rem; text-transform: uppercase; font-weight: 800; color: #00E599; margin-bottom: 0.45rem;">Tactical Skill Breakdown</div>';
+        h += this.generateSkillsHtml(p.radar);
+        h += '</div></div>';
+
+        // Situational Splits
+        h += '<div style="margin-bottom: 0.65rem;">';
+        h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #94A3B8; margin-bottom: 0.35rem;">Situational Splits</div>';
+        h += this.generateSplitsTableHtml(p.splits);
+        h += '</div>';
+
+        // Recent 5-Match Logs
+        h += '<div style="margin-bottom: 0.4rem;">';
+        h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #94A3B8; margin-bottom: 0.35rem;">Recent Match Performance Logs</div>';
+        h += this.generateGameLogsTableHtml(p.gameLogs);
+        h += '</div>';
+
+        if (isInline) {
+          h += '<div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">';
+          h += '<button type="button" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" style="padding: 0.25rem 0.6rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94A3B8; font-size: 0.64rem; font-weight: 600; cursor: pointer;">▲ Collapse Analysis</button>';
+          h += '</div>';
+        }
+
+        h += '</div>';
+        return h;
+      }
+
+      openPlayerAnalysisSheet(playerId) {
+        var self = this;
+        var p = this.getPlayer(playerId);
+        if (!p) return;
+        this.selectedPlayerId = p.id;
+
+        // Squad chips row
+        var pdb = this.playerDatabase || {};
+        var pids = Object.keys(pdb);
+        var chipsHtml = '<div style="display: flex; gap: 0.28rem; margin-bottom: 0.65rem; flex-wrap: wrap;">';
+        for (var i = 0; i < pids.length; i++) {
+          var se = pdb[pids[i]];
+          var isCur = se.id === p.id;
+          chipsHtml += '<button type="button" class="mobile-chip' + (isCur ? ' active' : '') + '" onclick="window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + se.id + '&apos;)" style="padding: 0.2rem 0.5rem; font-size: 0.65rem; border-radius: 20px; flex-shrink: 0;' + (isCur ? ' background: #00E599; color: #04070D; font-weight: 700;' : '') + '" data-tooltip="Inspect ' + se.fullName + ' full dossier" aria-label="' + se.fullName + '">' + (se.shortName || se.name) + '</button>';
+        }
+        chipsHtml += '</div>';
+
+        var bodyHtml = '<div id="sheetFullPlayerAnalysis">' + chipsHtml + this.renderPlayerAnalysisDossier(p, false) + '</div>';
+
+        this.openActionSheet({
+          title: this.iconSvg('radar', '#00E599', 18) + ' ' + p.name + ' · Full Analysis Dossier',
+          bodyHtml: bodyHtml,
+          confirmText: 'Done',
+          confirmStyle: 'background: linear-gradient(135deg, #00D2FF, #00E599); color: #04070D;',
+          onConfirm: function() { self.closeActionSheet(); }
+        });
+      }
+
+      openPlayerStatsDrawer(playerId) {
+        this.openPlayerAnalysisSheet(playerId);
+      }
+
+      toggleInlinePlayerAnalysis() {
+        this.inlineAnalysisExpanded = !this.inlineAnalysisExpanded;
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.render();
+      }
+
+      renderAthleticCard(playerId, showSquadChips) {
+        var p = this.getPlayer(playerId);
+        if (!p) return '';
+
         var maxMomentum = Math.max.apply(null, p.momentum) || 50;
         var barsHtml = '';
         for (var i = 0; i < p.momentum.length; i++) {
@@ -4635,42 +5184,114 @@
           barsHtml += '<div class="athletic-spectrum-bar" style="height: ' + heightPct + '%; ' + barBg + '" title="Match ' + (i+1) + ': ' + val + ' pts"></div>';
         }
 
+        var ratingColor = (p.rating >= 95) ? '#FFB800' : (p.rating >= 88) ? '#00E599' : '#00D2FF';
+        var formColor = (p.form === 'PEAK') ? '#00E599' : (p.form === 'GOOD' || p.form === 'EXCELLENT' || p.form === 'SURGING' || p.form === 'CLUTCH') ? '#00D2FF' : '#FFB800';
+
         var h = '<div class="athletic-stats-card" id="mobileAthleticStatsCard">';
-        h += '<div class="athletic-hero-section">';
-        h += '<div class="athletic-player-meta">';
-        h += '<div class="athletic-avatar">#' + p.jersey + '</div>';
+
+        // 1. Squad Selector Chips Strip (if enabled, default true)
+        if (showSquadChips !== false) {
+          var pdb = this.playerDatabase || {};
+          var pids = Object.keys(pdb);
+          h += '<div class="mobile-squad-chips-strip" id="mobileSquadChipsStrip" style="display: flex; gap: 0.28rem; margin-bottom: 0.65rem; flex-wrap: wrap;">';
+          for (var ci = 0; ci < pids.length; ci++) {
+            var se = pdb[pids[ci]];
+            var isCur = se.id === p.id;
+            var chipStyle = isCur
+              ? 'background: #00E599; color: #04070D; font-weight: 700; border: 1px solid #00E599;'
+              : 'background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #94A3B8;';
+            h += '<button type="button" class="mobile-chip' + (isCur ? ' active' : '') + '" onclick="window.cricosMobileApp.selectPlayer(&apos;' + se.id + '&apos;)" style="padding: 0.22rem 0.52rem; font-size: 0.68rem; border-radius: 20px; flex-shrink: 0; cursor: pointer; ' + chipStyle + '" data-tooltip="Inspect ' + se.fullName + ' card" aria-label="' + se.fullName + '">' + (se.shortName || se.name.split(' ')[0]) + '</button>';
+          }
+          h += '</div>';
+        }
+
+        // 2. 3D Holographic Flippable Player Card
+        h += '<div class="player-flip-scene" data-tooltip="Tap card to flip between identity and career figures">';
+        h += '<div id="playerFlipCard3D" class="player-flip-card" onclick="window.cricosMobileApp.toggleFlipCard(this)" role="button" tabindex="0" aria-label="3D flip card for ' + p.fullName + '">';
+
+        // Front Face
+        h += '<div class="player-flip-front">';
+        h += '<div class="player-flip-sheen"></div>';
+        h += '<div style="position: relative; z-index: 2; padding: 0.85rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">';
+
+        // Top Meta
+        h += '<div style="display: flex; justify-content: space-between; align-items: flex-start;">';
         h += '<div>';
-        h += '<div class="athletic-player-name" style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display);">' + p.name + '</div>';
-        h += '<div class="athletic-player-sub" style="font-size: 0.7rem;">' + p.role + ' • ' + p.form + '</div>';
-        h += '<div class="athletic-ranking-ribbon">';
-        h += '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>';
-        h += '<span>' + p.rank + '</span>';
+        h += '<div style="font-size: 0.56rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem;"><span>CRICOS ATHLETE</span><span style="color: rgba(255,255,255,0.3);">•</span><span style="color: #94A3B8;">KYC CERTIFIED</span></div>';
+        h += '<div class="athletic-player-name" style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.12rem;">' + p.name + '</div>';
+        h += '<div class="athletic-player-sub" style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.08rem;">' + p.role + ' • ' + p.style + '</div>';
         h += '</div>';
-        h += '</div></div>';
-
-        h += '<div class="athletic-hero-kpi">';
-        h += '<div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Overall Rating</div>';
-        h += '<div class="athletic-rating-val">' + p.rating + '</div>';
-        h += '<div style="font-size: 0.65rem; color: #00E599; font-weight: 700;">Impact ' + p.trueImpact + '</div>';
-        h += '</div></div>';
-
-        h += '<div class="athletic-substats-grid">';
-        h += '<div class="athletic-stat-pill" data-tooltip="Total Career Runs"><div class="athletic-stat-lbl">Runs</div><div class="athletic-stat-num" style="color: #00E599;">' + p.runs + '</div></div>';
-        h += '<div class="athletic-stat-pill" data-tooltip="Batting Average"><div class="athletic-stat-lbl">Average</div><div class="athletic-stat-num">' + p.avg + '</div></div>';
-        h += '<div class="athletic-stat-pill" data-tooltip="Strike Rate"><div class="athletic-stat-lbl">Strike Rate</div><div class="athletic-stat-num" style="color: #00D2FF;">' + p.sr + '</div></div>';
-        h += '<div class="athletic-stat-pill" data-tooltip="Boundary Frequency"><div class="athletic-stat-lbl">Boundary %</div><div class="athletic-stat-num">' + p.boundaryRate + '%</div></div>';
-        h += '<div class="athletic-stat-pill" data-tooltip="Calculated Win Impact"><div class="athletic-stat-lbl">True Impact</div><div class="athletic-stat-num" style="color: #FFB800;">' + p.trueImpact + '</div></div>';
-        h += '<div class="athletic-stat-pill" data-tooltip="Current Form Phase"><div class="athletic-stat-lbl">Form</div><div class="athletic-stat-num" style="color: #c084fc; font-size: 0.8rem;">' + p.form + '</div></div>';
+        h += '<div style="font-family: var(--font-score); font-size: 2.1rem; font-weight: 900; color: #00D2FF; text-shadow: 0 0 16px rgba(0,210,255,0.55); line-height: 1;">#' + p.jersey + '</div>';
         h += '</div>';
 
-        h += '<div class="athletic-momentum-section">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem;">';
-        h += '<span class="athletic-momentum-title" style="font-weight: 700;">' + this.iconSvg('lightning', '#00E599', 14) + ' 20-Match Momentum Spectrum</span>';
-        h += '<span style="color: #00E599; font-weight: 800;">Surging +14%</span>';
+        // Middle Rating & Rank
+        h += '<div style="display: flex; align-items: center; gap: 0.55rem;">';
+        h += '<div style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(0,229,153,0.32), rgba(0,30,60,0.95)); border: 2px solid ' + ratingColor + '; display: flex; align-items: center; justify-content: center; font-family: var(--font-score); font-size: 1.15rem; font-weight: 900; color: ' + ratingColor + '; flex-shrink: 0; box-shadow: 0 0 12px rgba(0,229,153,0.25);">' + Math.round(p.rating) + '</div>';
+        h += '<div>';
+        h += '<div style="font-size: 0.56rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.04em;">ICC Rating • ELO ' + p.elo + '</div>';
+        h += '<div class="athletic-ranking-ribbon" style="margin-top: 0.1rem;"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg> <span>' + p.rank + '</span></div>';
         h += '</div>';
-        h += '<div class="athletic-spectrum-track">' + barsHtml + '</div>';
+        h += '<div style="margin-left: auto; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.38); border-radius: 4px; padding: 0.12rem 0.38rem; font-size: 0.62rem; font-weight: 800; color: ' + formColor + ';">' + p.form + '</div>';
         h += '</div>';
+
+        // Bottom Hint & Quick Analysis
+        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,229,153,0.7); font-size: 0.62rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.7)', 13) + ' <span>Tap to flip for career stats</span></div>';
+        h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.62rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Inspect full analytical dossier & radar">Analysis ↗</button>';
         h += '</div>';
+
+        h += '</div></div>'; // closes .player-flip-front
+
+        // Back Face
+        h += '<div class="player-flip-back">';
+        h += '<div style="position: relative; z-index: 2; padding: 0.75rem 0.85rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">';
+
+        // Back Header
+        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="font-size: 0.62rem; color: #00D2FF; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;">' + p.name + ' · Career Telemetry</div>';
+        h += '<div style="font-size: 0.62rem; color: #94A3B8; font-weight: 700;">#' + p.jersey + ' · ' + p.role + '</div>';
+        h += '</div>';
+
+        // Back Substats Grid (8 items)
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Runs</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00E599;">' + p.runs + '</div></div>';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Avg</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + p.avg + '</div></div>';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">S/R</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + p.sr + '</div></div>';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Bdry%</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + p.boundaryRate + '%</div></div>';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Matches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + p.matches + '</div></div>';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">W/Econ</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + p.wickets + ' / ' + p.economy + '</div></div>';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Catches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #c084fc;">' + p.catches + '</div></div>';
+        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Impact</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + p.trueImpact + '</div></div>';
+        h += '</div>';
+
+        // Momentum section
+        h += '<div style="background: rgba(0,0,0,0.3); border-radius: 6px; padding: 0.3rem 0.45rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.56rem;">';
+        h += '<span style="font-weight: 700; color: #cbd5e1; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg('lightning', '#00E599', 11) + ' 20-Match Momentum Spectrum</span>';
+        h += '<span style="color: #00E599; font-weight: 800;">Surging ' + (p.trend || '+14%') + '</span>';
+        h += '</div>';
+        h += '<div class="athletic-spectrum-track" style="height: 18px; margin-top: 0.2rem;">' + barsHtml + '</div>';
+        h += '</div>';
+
+        // Flip back hint
+        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,210,255,0.65); font-size: 0.6rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,210,255,0.65)', 12) + ' <span>Tap to flip back</span></div>';
+        h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.toggleInlinePlayerAnalysis();" style="padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.6rem; font-weight: 700; cursor: pointer;">Radar &amp; Splits ▾</button>';
+        h += '</div>';
+
+        h += '</div></div>'; // closes .player-flip-back
+        h += '</div></div>'; // closes #playerFlipCard3D and .player-flip-scene
+
+        // 3. Action Controls Below Card
+        h += '<div style="display: flex; gap: 0.4rem; margin-top: 0.55rem; align-items: center;">';
+        h += '<button type="button" id="btnToggleInlineAnalysis" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" style="flex: 1; padding: 0.42rem 0.6rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.35); background: rgba(0, 229, 153, 0.1); color: #00E599; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; cursor: pointer;" data-tooltip="Toggle full player analysis dossier inline">' + this.iconSvg('radar', '#00E599', 14) + ' <span>' + (this.inlineAnalysisExpanded ? '▲ Collapse Tactical Dossier' : '▼ Full Player Analysis & Radar') + '</span></button>';
+        h += '<button type="button" id="btnOpenPlayerAnalysisSheet" onclick="window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;)" style="padding: 0.42rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; cursor: pointer;" data-tooltip="Open complete player analysis sheet">' + this.iconSvg('chart', '#00D2FF', 14) + ' <span>Full Sheet ↗</span></button>';
+        // 4. Inline Dossier Accordion Container
+        if (this.inlineAnalysisExpanded) {
+          h += '<div id="mobileInlinePlayerAnalysisDossier" style="margin-top: 0.65rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.65rem;">' + this.renderPlayerAnalysisDossier(p, true) + '</div>';
+        }
+
+        h += '</div>'; // closes #mobileAthleticStatsCard
         return h;
       }
 
@@ -9897,53 +10518,27 @@
 
       open3DPlayerCardSheet(playerId) {
         var self = this;
+        var p = this.getPlayer(playerId);
+        if (!p) return;
+        this.selectedPlayerId = p.id;
 
-        // Build player list from playerDatabase (p1–p6) — dynamic squad, not hardcoded
+        // Dynamic squad entries from playerDatabase
         var squadEntries = [];
         var pdb = this.playerDatabase || {};
         var pids = Object.keys(pdb);
         for (var ki = 0; ki < pids.length; ki++) {
           squadEntries.push(pdb[pids[ki]]);
         }
-        // Fallback: build one card from user profile if no squad data
         if (squadEntries.length === 0) {
-          squadEntries.push({
-            id: 'user',
-            name: this.profile.name || 'You',
-            role: this.profile.persona || 'PLAYER',
-            jersey: this.profile.jerseyNumber || 10,
-            rating: 85.0,
-            rank: 'LOCAL',
-            runs: (this.profile.batting && this.profile.batting.runs) || 0,
-            avg: (this.profile.batting && this.profile.batting.avg) || 36.0,
-            sr: (this.profile.batting && this.profile.batting.sr) || 128.0,
-            boundaryRate: 12.0,
-            trueImpact: '+4.5',
-            form: 'GOOD',
-            momentum: [40, 55, 62, 48, 70]
-          });
+          squadEntries.push(p);
         }
 
-        // Default to current striker if match is live, else first squad player
-        var defaultId = null;
-        var striker = this.matchState && this.matchState.striker;
-        if (striker && striker.name) {
-          for (var si = 0; si < squadEntries.length; si++) {
-            if (squadEntries[si].name && squadEntries[si].name.indexOf(striker.name.split(' ')[0]) >= 0) {
-              defaultId = squadEntries[si].id;
-              break;
-            }
-          }
-        }
-        var activeId = playerId || defaultId || (squadEntries[0] && squadEntries[0].id) || 'p1';
-        var p = pdb[activeId] || squadEntries[0] || { name: 'Player', jersey: 10, role: 'BATTER', rating: 88, avg: 38.2, sr: 135.0, runs: 1200, boundaryRate: 14, trueImpact: '+6.2', form: 'GOOD', rank: '#REG', momentum: [40, 55, 62] };
-
-        // Chip row — dynamic squad
-        var chipsHtml = '<div style="display: flex; gap: 0.3rem; margin-bottom: 0.75rem; flex-wrap: wrap;">';
+        // Chip row
+        var chipsHtml = '<div style="display: flex; gap: 0.28rem; margin-bottom: 0.65rem; flex-wrap: wrap;">';
         for (var ci = 0; ci < squadEntries.length; ci++) {
           var se = squadEntries[ci];
-          var isCur = se.id === activeId;
-          chipsHtml += '<button type="button" class="mobile-chip' + (isCur ? ' active' : '') + '" onclick="window.cricosMobileApp.open3DPlayerCardSheet(&apos;' + se.id + '&apos;)" style="padding: 0.24rem 0.55rem; font-size: 0.68rem; border-radius: 20px; flex-shrink: 0;" data-tooltip="Inspect ' + (se.name || 'Player') + ' 3D card" aria-label="' + (se.name || 'Player') + '">' + (se.name || 'Player').split(' ')[0] + '</button>';
+          var isCur = se.id === p.id;
+          chipsHtml += '<button type="button" class="mobile-chip' + (isCur ? ' active' : '') + '" onclick="window.cricosMobileApp.open3DPlayerCardSheet(&apos;' + se.id + '&apos;)" style="padding: 0.22rem 0.52rem; font-size: 0.68rem; border-radius: 20px; flex-shrink: 0;' + (isCur ? ' background: #00E599; color: #04070D; font-weight: 700;' : '') + '" data-tooltip="Inspect ' + (se.fullName || se.name) + ' 3D card" aria-label="' + (se.fullName || se.name) + '">' + (se.shortName || se.name.split(' ')[0]) + '</button>';
         }
         chipsHtml += '</div>';
 
@@ -9951,50 +10546,59 @@
         var jerseyDisplay = '#' + (p.jersey || '00');
         var roleFmt = (p.role || 'BATTER').replace(/_/g, ' ');
         var ratingColor = (p.rating >= 95) ? '#FFB800' : (p.rating >= 88) ? '#00E599' : '#00D2FF';
-        var formColor = (p.form === 'PEAK') ? '#00E599' : (p.form === 'GOOD') ? '#00D2FF' : '#FFB800';
+        var formColor = (p.form === 'PEAK') ? '#00E599' : (p.form === 'GOOD' || p.form === 'EXCELLENT' || p.form === 'SURGING' || p.form === 'CLUTCH') ? '#00D2FF' : '#FFB800';
 
         var cardHtml = '<div class="player-flip-scene" data-tooltip="Tap card to flip and view detailed stats">' +
-          '<div id="playerFlipCard3D" class="player-flip-card" onclick="window.cricosMobileApp.toggleFlipCard(this)" role="button" tabindex="0" aria-label="3D flip card for ' + (p.name || 'Player') + '">' +
+          '<div id="mobileHoloCard" class="player-flip-card" onclick="window.cricosMobileApp.toggleFlipCard(this)" role="button" tabindex="0" aria-label="3D flip card for ' + p.fullName + '">' +
 
             // Front face
             '<div class="player-flip-front">' +
               '<div class="player-flip-sheen"></div>' +
-              '<div style="position: relative; z-index: 2; padding: 1rem; display: flex; flex-direction: column; height: 100%; box-sizing: border-box;">' +
-                '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.55rem;">' +
+              '<div style="position: relative; z-index: 2; padding: 0.85rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">' +
+                '<div style="display: flex; justify-content: space-between; align-items: flex-start;">' +
                   '<div>' +
-                    '<div style="font-size: 0.58rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;">CricOS Athlete</div>' +
-                    '<div style="font-size: 1.2rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.1rem;">' + (p.name || 'Player') + '</div>' +
-                    '<div style="font-size: 0.7rem; color: #94A3B8; margin-top: 0.08rem;">' + roleFmt + '</div>' +
+                    '<div style="font-size: 0.56rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem;"><span>CRICOS ATHLETE</span><span style="color: rgba(255,255,255,0.3);">•</span><span style="color: #94A3B8;">KYC CERTIFIED</span></div>' +
+                    '<div style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.12rem;">' + p.name + '</div>' +
+                    '<div style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.08rem;">' + roleFmt + ' • ' + (p.style || 'Right-Hand Bat') + '</div>' +
                   '</div>' +
-                  '<div style="font-family: var(--font-score); font-size: 1.9rem; font-weight: 900; color: #00D2FF; text-shadow: 0 0 14px rgba(0,210,255,0.5); line-height: 1;">' + jerseyDisplay + '</div>' +
+                  '<div style="font-family: var(--font-score); font-size: 2.1rem; font-weight: 900; color: #00D2FF; text-shadow: 0 0 16px rgba(0,210,255,0.55); line-height: 1;">' + jerseyDisplay + '</div>' +
                 '</div>' +
-                '<div style="display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.5rem;">' +
-                  '<div style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(0,229,153,0.32), rgba(0,30,60,0.9)); border: 2px solid rgba(0,229,153,0.5); display: flex; align-items: center; justify-content: center; font-family: var(--font-score); font-size: 1.1rem; font-weight: 900; color: ' + ratingColor + ';">' + Math.round(p.rating || 85) + '</div>' +
+                '<div style="display: flex; align-items: center; gap: 0.55rem;">' +
+                  '<div style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(0,229,153,0.32), rgba(0,30,60,0.95)); border: 2px solid ' + ratingColor + '; display: flex; align-items: center; justify-content: center; font-family: var(--font-score); font-size: 1.15rem; font-weight: 900; color: ' + ratingColor + '; flex-shrink: 0; box-shadow: 0 0 12px rgba(0,229,153,0.25);">' + Math.round(p.rating || 85) + '</div>' +
                   '<div>' +
-                    '<div style="font-size: 0.56rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.04em;">ICC Rating</div>' +
-                    '<div style="font-size: 0.7rem; font-weight: 700; color: ' + ratingColor + ';">' + (p.rank || 'REGIONAL') + '</div>' +
+                    '<div style="font-size: 0.56rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.04em;">ICC Rating • ELO ' + (p.elo || '2,400') + '</div>' +
+                    '<div class="athletic-ranking-ribbon" style="margin-top: 0.1rem;"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg> <span>' + (p.rank || 'REGIONAL') + '</span></div>' +
                   '</div>' +
-                  '<div style="margin-left: auto; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.38); border-radius: 4px; padding: 0.1rem 0.32rem; font-size: 0.62rem; font-weight: 800; color: ' + formColor + ';">' + (p.form || 'GOOD') + '</div>' +
+                  '<div style="margin-left: auto; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.38); border-radius: 4px; padding: 0.12rem 0.38rem; font-size: 0.62rem; font-weight: 800; color: ' + formColor + ';">' + (p.form || 'GOOD') + '</div>' +
                 '</div>' +
-                '<div style="flex: 1; display: flex; align-items: flex-end;">' +
-                  '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,229,153,0.65); font-size: 0.62rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.65)', 14) + ' Tap to flip for stats</div>' +
+                '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                  '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,229,153,0.7); font-size: 0.62rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.7)', 13) + ' <span>Tap to flip for career stats</span></div>' +
+                  '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.62rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Inspect full analytical dossier & radar">Analysis ↗</button>' +
                 '</div>' +
               '</div>' +
             '</div>' +
 
             // Back face
             '<div class="player-flip-back">' +
-              '<div style="position: relative; z-index: 2; padding: 0.85rem; display: flex; flex-direction: column; height: 100%; box-sizing: border-box;">' +
-                '<div style="font-size: 0.6rem; color: #00D2FF; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.5rem;">' + (p.name || 'Player') + ' · Full Career Stats</div>' +
-                '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.32rem; flex: 1;">' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 7px; padding: 0.42rem 0.15rem;"><div style="font-size: 0.52rem; color: #64748B; text-transform: uppercase; margin-bottom: 0.08rem;">Runs</div><div style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-score); color: #00E599;">' + (p.runs || 0) + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 7px; padding: 0.42rem 0.15rem;"><div style="font-size: 0.52rem; color: #64748B; text-transform: uppercase; margin-bottom: 0.08rem;">Avg</div><div style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-score); color: #00E599;">' + (p.avg || '—') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 7px; padding: 0.42rem 0.15rem;"><div style="font-size: 0.52rem; color: #64748B; text-transform: uppercase; margin-bottom: 0.08rem;">S/R</div><div style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + (p.sr || '—') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 7px; padding: 0.42rem 0.15rem;"><div style="font-size: 0.52rem; color: #64748B; text-transform: uppercase; margin-bottom: 0.08rem;">Bdry%</div><div style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + (p.boundaryRate || '—') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 7px; padding: 0.42rem 0.15rem;"><div style="font-size: 0.52rem; color: #64748B; text-transform: uppercase; margin-bottom: 0.08rem;">Impact</div><div style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-score); color: #00E599;">' + (p.trueImpact || '—') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 7px; padding: 0.42rem 0.15rem;"><div style="font-size: 0.52rem; color: #64748B; text-transform: uppercase; margin-bottom: 0.08rem;">Power</div><div style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-score); color: #FF3366;">' + Math.round(p.rating || 85) + '</div></div>' +
+              '<div style="position: relative; z-index: 2; padding: 0.75rem 0.85rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">' +
+                '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                  '<div style="font-size: 0.62rem; color: #00D2FF; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;">' + p.name + ' · Full Career Stats</div>' +
+                  '<div style="font-size: 0.62rem; color: #94A3B8; font-weight: 700;">#' + p.jersey + ' · ' + p.role + '</div>' +
                 '</div>' +
-                '<div style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; margin-top: 0.4rem; color: rgba(0,210,255,0.6); font-size: 0.6rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,210,255,0.6)', 13) + ' Tap to flip back</div>' +
+                '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Runs</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00E599;">' + (p.runs || 0) + '</div></div>' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Avg</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + (p.avg || '—') + '</div></div>' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">S/R</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + (p.sr || '—') + '</div></div>' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Bdry%</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + (p.boundaryRate || '—') + '</div></div>' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Matches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + (p.matches || 0) + '</div></div>' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">W/Econ</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + (p.wickets || 0) + ' / ' + (p.economy || '0.00') + '</div></div>' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Catches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #c084fc;">' + (p.catches || 0) + '</div></div>' +
+                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Impact</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + (p.trueImpact || '—') + '</div></div>' +
+                '</div>' +
+                '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                  '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,210,255,0.65); font-size: 0.6rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,210,255,0.65)', 12) + ' <span>Tap to flip back</span></div>' +
+                  '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.6rem; font-weight: 700; cursor: pointer;">Dossier ↗</button>' +
+                '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -13022,7 +13626,7 @@
         var isAthlete = this.profile.persona === 'CAPTAIN' || this.profile.persona === 'PLAYER';
         if (isAthlete) {
           var userAthleteId = this.profile.persona === 'PLAYER' ? 'p6' : 'p1';
-          h += this.renderAthleticCard(userAthleteId);
+          h += this.renderAthleticCard(userAthleteId, false);
 
           // Career Figures
           h += '<div style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.35rem;">'+this.iconSvg('bat','#00E599',14)+' Career Batting Figures</div>';
