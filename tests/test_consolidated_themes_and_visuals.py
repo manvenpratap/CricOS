@@ -417,6 +417,55 @@ async def test_mobile_themes_typography_and_visuals():
         assert p_bg[0] > 240 and p_bg[1] > 240 and p_bg[2] > 240
         assert contrast_ratio(p_fg, p_bg) >= 7.0
 
+        # -------------------------------------------------------------
+        # 7. Light Theme 3D Player Card on Swiss & Nordic (Teams Screen)
+        # -------------------------------------------------------------
+        await page.evaluate("""() => {
+            window.cricosMobileApp.navigateTo('TEAMS');
+        }""")
+        await page.wait_for_timeout(250)
+
+        # Check Swiss Theme 3D Player Card
+        await page.evaluate("() => window.cricosMobileApp.setTheme('swiss', false)")
+        await page.wait_for_timeout(200)
+
+        swiss_card_check = await page.evaluate("""() => {
+            const cardFront = document.querySelector('#playerFlipCard3D .player-flip-front');
+            const playerName = document.querySelector('#playerFlipCard3D .athletic-player-name');
+            const jersey = document.querySelector('#playerFlipCard3D .athletic-player-jersey');
+            const playItem = document.querySelector('.player-list-item');
+            return {
+                cardFrontBg: cardFront ? window.getComputedStyle(cardFront).backgroundColor : null,
+                nameColor: playerName ? window.getComputedStyle(playerName).color : null,
+                jerseyColor: jersey ? window.getComputedStyle(jersey).color : null,
+                itemBg: playItem ? window.getComputedStyle(playItem).backgroundColor : null,
+                itemColor: playItem ? window.getComputedStyle(playItem).color : null
+            };
+        }""")
+        c_bg = parse_rgb(swiss_card_check["cardFrontBg"])
+        c_fg = parse_rgb(swiss_card_check["nameColor"])
+        assert c_bg[0] > 235 and c_bg[1] > 235 and c_bg[2] > 235, f"Swiss card front must be luminous light: {swiss_card_check['cardFrontBg']}"
+        assert contrast_ratio(c_fg, c_bg) >= 7.0, f"Swiss card name contrast must be >= 7.0:1, got {contrast_ratio(c_fg, c_bg)}"
+        await save_screenshot_async(page, "test_consolidated_teams_card_swiss")
+
+        # Check Nordic Theme 3D Player Card
+        await page.evaluate("() => window.cricosMobileApp.setTheme('nordic', false)")
+        await page.wait_for_timeout(200)
+
+        nordic_card_check = await page.evaluate("""() => {
+            const cardFront = document.querySelector('#playerFlipCard3D .player-flip-front');
+            const playerName = document.querySelector('#playerFlipCard3D .athletic-player-name');
+            return {
+                cardFrontBg: cardFront ? window.getComputedStyle(cardFront).backgroundColor : null,
+                nameColor: playerName ? window.getComputedStyle(playerName).color : null
+            };
+        }""")
+        n_bg = parse_rgb(nordic_card_check["cardFrontBg"])
+        n_fg = parse_rgb(nordic_card_check["nameColor"])
+        assert n_bg[0] > 235 and n_bg[1] > 235 and n_bg[2] > 235, f"Nordic card front must be paper light: {nordic_card_check['cardFrontBg']}"
+        assert contrast_ratio(n_fg, n_bg) >= 7.0, f"Nordic card name contrast must be >= 7.0:1, got {contrast_ratio(n_fg, n_bg)}"
+        await save_screenshot_async(page, "test_consolidated_teams_card_nordic")
+
         catalog_screenshots()
         assert_no_critical_errors(page)
         await browser.close()

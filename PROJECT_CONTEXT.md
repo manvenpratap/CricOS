@@ -1,29 +1,31 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 12:26:00
-**Version:** 1.0.0-phase2dr (Elimination of Redundant Main Navigation from Sidebar Drawer & Canonical Bottom Nav Bar)  
+**Last Updated:** 2026-10-04 12:45:00
+**Version:** 1.0.0-phase2ds (Light Themes Swiss Minimalist & Nordic Editorial 3D Player Card & Roster Visibility Resolution)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DR Completed — Elimination of Redundant Main Navigation from Sidebar Drawer & Canonical Bottom Nav Bar (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_navigation_and_studios.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
-  - **1. Elimination of Duplicate Main Navigation in Sidebar Drawer**:
-    - Completely removed `Section 0: Main Navigation` and `var navItems = [];` from `renderMobileSidebarDrawer()`.
-    - Main navigation across primary modules (Matches, Teams, Tournaments, Gear/Store, Profile) is now 100% canonical in the dock-anchored `<nav class="mobile-bottom-nav">`.
-    - Eliminates redundant buttons taking up vertical viewport height, preventing drawer clutter and duplicate routing paths.
-  - **2. Preserved Functional Drawer Responsibilities**:
-    - Drawer now opens immediately into Section 1: Provisioned Account Personas (`#mobileSidebarPersonaStrip` with 1-tap switching between Captain, Scorer, Umpire, Admin, etc.).
-    - Followed immediately by Section 2: Tactical Studios & Officiating (`#mobileSidebarStudios` with 3D Stadium Pitch Viewport, 360° Wagon Wheel, Live Scoring Studio, DRS Review, and DLS Calculator).
-    - Footer co-locates fast utility controls: Theme Cycle (`#btnCycleMobileThemeSidebar`), Clean View toggle (`#btnToggleCleanViewSidebar`), CricOS App Settings Hub (`#btnOpenMobileSettingsFromSidebar`), and Sign Out (`#btnMobileSidebarSignOut`).
+- **Active Phase**: Phase 2DS Completed — Light Themes (Swiss Minimalist & Nordic Editorial) 3D Player Card & Roster Visibility Resolution (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_consolidated_themes_and_visuals.py`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Root Cause Identification & Architectural Redesign**:
+    - Previously, `#playerFlipCard3D` (`.player-flip-front` and `.player-flip-back`) on the Teams Hub and Profile tab rendered with a dark broadcast night gradient (`linear-gradient(145deg, rgba(16, 24, 40, 0.97), rgba(4, 7, 13, 0.99))`).
+    - In light themes (Swiss Minimalist and Nordic Editorial), global typography rules forced text elements (`.athletic-player-name`, `.athletic-player-sub`) to near-black (`#0F172A` / `#1C1917`), producing unreadable black-on-black text over dark muddy card surfaces.
+    - Replaced hardcoded inline styles in `renderAthleticCard(p)` and `open3DPlayerCardSheet()` with theme-responsive semantic CSS classes: `.athletic-card-avatar`, `.athletic-card-brand`, `.athletic-badge-athlete`, `.athletic-brand-dot`, `.athletic-badge-kyc`, `.athletic-player-name`, `.athletic-player-sub`, `.athletic-player-jersey`, `.athletic-rating-circle`, `.athletic-rating-meta`, `.athletic-form-badge`, `.athletic-flip-hint`, `.athletic-back-title`, `.athletic-back-subtitle`, `.athletic-back-stat-box`, `.athletic-back-stat-lbl`, `.athletic-back-stat-val`, `.athletic-back-momentum`, `.athletic-back-flip-hint`, `.btn-card-radar-splits`, `.btn-toggle-inline-analysis`, `.btn-open-player-analysis`.
+  - **2. Theme-Specific Visual Treatments**:
+    - **Swiss Minimalist (`data-theme="swiss"`)**: Luminous architectural passport card face (`#FFFFFF` to `#EDF2F7` gradient) with crisp `#059669` emerald borders, `#0284C7` Alpine cyan jersey and accents, high-contrast `#0F172A` text (WCAG AAA >= 7.0:1), and soft iridescent sheen.
+    - **Nordic Editorial (`data-theme="nordic"`)**: Warm natural paper collector card face (`#FCFBF8` to `#EAE5DC` gradient) with rich `#15803D` pine emerald borders, `#0369A1` fjord blue accents, warm ink `#1C1917` text, and tactile paper shadows.
+    - **Playing XI Roster Items**: Removed inline background/border overrides from `.player-list-item`; added clean daylight cards with distinct green selection highlights (`.player-list-item.active-player`) and bench item styling (`.player-list-item.bench-item`).
+    - **Momentum Spectrum Bars**: Added `.is-latest` and `.is-older` classes to render high-contrast emerald/cyan gradients on light backgrounds instead of unreadable faint white bars.
   - **3. Domain & E2E Test Suite Health**:
-    - Added assertion 7 to Suite 9 in `tests/domain-mobile-journeys-and-native.test.ts` verifying drawer has zero main navigation items and bottom nav bar remains canonical (253 domain/unit tests passing 100% via `./pipeline.sh test --summary`).
-    - Verified all Playwright E2E suites pass 100% (`tests/test_consolidated_navigation_and_studios.py` and `tests/test_consolidated_3d_and_packaging.py`) with zero console errors (`assert_no_critical_errors(page)`).
+    - Updated Suite 8 Test 5 in `tests/domain-identity-personas-and-themes.test.ts` to assert Swiss/Nordic `#playerFlipCard3D`, `.player-flip-front`, `.player-flip-back`, `.player-list-item` (253 domain/unit tests passing 100% via `./pipeline.sh test --summary`).
+    - Added Step 7 to `tests/test_consolidated_themes_and_visuals.py` verifying card front background luminance (> 235 RGB) and text contrast (contrast ratio >= 7.0:1) on Swiss and Nordic in the Teams Hub with Playwright visual screenshots (`test_consolidated_teams_card_swiss.png` and `test_consolidated_teams_card_nordic.png`).
+    - Verified all 4 tests in `tests/test_consolidated_3d_and_packaging.py` and 2 tests in `tests/test_consolidated_navigation_and_studios.py` pass 100% with zero critical console errors (`assert_no_critical_errors(page)`).
   - **4. Packaging & Android Native Compilation (Rule 6)**:
     - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
     - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
-- **Preceding Phase**: Phase 2DQ Completed — Athletic Broadcast Passport Profile Redesign, Zero Duplication & Session Relocation:
+- **Preceding Phase**: Phase 2DR Completed — Elimination of Redundant Main Navigation from Sidebar Drawer & Canonical Bottom Nav Bar:
 - **Preceding Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face:
   - **1. Complete Elimination of Redundant Card Front Button**:
     - Stripped `#btnCardFrontAnalysis` from the front face of `#playerFlipCard3D`, strictly aligning with the clean reference design (`media_1791062167739.png`).

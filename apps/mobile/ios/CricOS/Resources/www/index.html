@@ -491,66 +491,280 @@
       border: 1px solid #FCD34D !important;
       color: #92400E !important;
     }
+    /* Swiss Minimalist 3D Player Card & Flip Invariants (Luminous Architectural Grid) */
+    body[data-theme="swiss"] #playerFlipCard3D,
+    html[data-theme="swiss"] #playerFlipCard3D,
     body[data-theme="swiss"] #mobileHoloCard,
     html[data-theme="swiss"] #mobileHoloCard,
-    body[data-theme="swiss"] .mobile-holo-card,
-    html[data-theme="swiss"] .mobile-holo-card {
+    body[data-theme="swiss"] .player-flip-card,
+    html[data-theme="swiss"] .player-flip-card {
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+    }
+    body[data-theme="swiss"] .player-flip-front,
+    html[data-theme="swiss"] .player-flip-front {
       background-color: #FFFFFF !important;
-      background-image: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 60%, #EEF2F6 100%) !important;
+      background-image: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 55%, #EDF2F7 100%) !important;
       border: 2px solid #059669 !important;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(5, 150, 105, 0.2) inset !important;
       color: #0F172A !important;
     }
+    body[data-theme="swiss"] .player-flip-back,
+    html[data-theme="swiss"] .player-flip-back {
+      background-color: #F8FAFC !important;
+      background-image: linear-gradient(145deg, #F8FAFC 0%, #F1F5F9 55%, #E2E8F0 100%) !important;
+      border: 2px solid #0284C7 !important;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(2, 132, 199, 0.2) inset !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .player-flip-sheen,
+    html[data-theme="swiss"] .player-flip-sheen,
     body[data-theme="swiss"] .mobile-holo-sheen,
     html[data-theme="swiss"] .mobile-holo-sheen {
-      background: radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.22) 0%, rgba(2, 132, 199, 0.18) 40%, rgba(124, 58, 237, 0.14) 70%, transparent 85%) !important;
-      opacity: 0.45 !important;
+      background: radial-gradient(ellipse at 30% 25%, rgba(5, 150, 105, 0.18) 0%, rgba(2, 132, 199, 0.15) 45%, rgba(124, 58, 237, 0.10) 75%, transparent 90%) !important;
+      opacity: 0.55 !important;
     }
+    body[data-theme="swiss"] .athletic-card-avatar,
+    html[data-theme="swiss"] .athletic-card-avatar {
+      border-color: #059669 !important;
+      background: #ECFDF5 !important;
+      box-shadow: 0 0 12px rgba(5, 150, 105, 0.25) !important;
+    }
+    body[data-theme="swiss"] .athletic-badge-athlete,
+    html[data-theme="swiss"] .athletic-badge-athlete,
     body[data-theme="swiss"] .mobile-holo-badge,
     html[data-theme="swiss"] .mobile-holo-badge {
       color: #059669 !important;
+      font-weight: 800 !important;
     }
+    body[data-theme="swiss"] .athletic-brand-dot,
+    html[data-theme="swiss"] .athletic-brand-dot {
+      color: #94A3B8 !important;
+    }
+    body[data-theme="swiss"] .athletic-badge-kyc,
+    html[data-theme="swiss"] .athletic-badge-kyc {
+      color: #475569 !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="swiss"] .athletic-player-name,
+    html[data-theme="swiss"] .athletic-player-name,
     body[data-theme="swiss"] .mobile-holo-name,
     html[data-theme="swiss"] .mobile-holo-name {
       color: #0F172A !important;
+      font-weight: 800 !important;
     }
+    body[data-theme="swiss"] .athletic-player-sub,
+    html[data-theme="swiss"] .athletic-player-sub,
     body[data-theme="swiss"] .mobile-holo-role,
     html[data-theme="swiss"] .mobile-holo-role {
-      color: #334155 !important;
+      color: #475569 !important;
+      font-weight: 600 !important;
     }
+    body[data-theme="swiss"] .athletic-player-jersey,
+    html[data-theme="swiss"] .athletic-player-jersey,
     body[data-theme="swiss"] .mobile-holo-jersey,
     html[data-theme="swiss"] .mobile-holo-jersey {
       color: #0284C7 !important;
-      text-shadow: none !important;
+      text-shadow: 0 0 12px rgba(2, 132, 199, 0.25) !important;
     }
-    body[data-theme="swiss"] .mobile-holo-stats-grid,
-    html[data-theme="swiss"] .mobile-holo-stats-grid {
-      background: #F1F5F9 !important;
-      border: 1px solid #CBD5E1 !important;
+    body[data-theme="swiss"] .athletic-rating-circle,
+    html[data-theme="swiss"] .athletic-rating-circle {
+      background: #FFFFFF !important;
+      border: 2.5px solid #059669 !important;
+      color: #059669 !important;
+      box-shadow: 0 2px 10px rgba(5, 150, 105, 0.2) !important;
     }
-    body[data-theme="swiss"] .mobile-holo-stat-lbl,
-    html[data-theme="swiss"] .mobile-holo-stat-lbl {
+    body[data-theme="swiss"] .athletic-rating-meta,
+    html[data-theme="swiss"] .athletic-rating-meta {
+      color: #475569 !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="swiss"] .athletic-form-badge,
+    html[data-theme="swiss"] .athletic-form-badge {
+      background: #ECFDF5 !important;
+      border: 1px solid #A7F3D0 !important;
+      color: #059669 !important;
+      font-weight: 800 !important;
+    }
+    body[data-theme="swiss"] .athletic-flip-hint,
+    html[data-theme="swiss"] .athletic-flip-hint,
+    body[data-theme="swiss"] .mobile-holo-hint,
+    html[data-theme="swiss"] .mobile-holo-hint {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-title,
+    html[data-theme="swiss"] .athletic-back-title {
+      color: #0284C7 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-subtitle,
+    html[data-theme="swiss"] .athletic-back-subtitle {
       color: #475569 !important;
     }
+    body[data-theme="swiss"] .athletic-back-stat-box,
+    html[data-theme="swiss"] .athletic-back-stat-box {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+    }
+    body[data-theme="swiss"] .athletic-back-stat-lbl,
+    html[data-theme="swiss"] .athletic-back-stat-lbl,
+    body[data-theme="swiss"] .mobile-holo-stat-lbl,
+    html[data-theme="swiss"] .mobile-holo-stat-lbl {
+      color: #64748B !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-stat-val,
+    html[data-theme="swiss"] .athletic-back-stat-val {
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .athletic-back-stat-val.val-runs,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-runs {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-stat-val.val-avg,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-avg,
     body[data-theme="swiss"] .mobile-holo-stat-val.val-avg,
     html[data-theme="swiss"] .mobile-holo-stat-val.val-avg {
       color: #059669 !important;
     }
+    body[data-theme="swiss"] .athletic-back-stat-val.val-sr,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-sr,
     body[data-theme="swiss"] .mobile-holo-stat-val.val-sr,
     html[data-theme="swiss"] .mobile-holo-stat-val.val-sr {
       color: #0284C7 !important;
     }
-    body[data-theme="swiss"] .mobile-holo-stat-val.val-wkts,
-    html[data-theme="swiss"] .mobile-holo-stat-val.val-wkts {
+    body[data-theme="swiss"] .athletic-back-stat-val.val-bdry,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-bdry {
       color: #D97706 !important;
     }
-    body[data-theme="swiss"] .mobile-holo-stat-val.val-power,
-    html[data-theme="swiss"] .mobile-holo-stat-val.val-power {
-      color: #DC2626 !important;
+    body[data-theme="swiss"] .athletic-back-stat-val.val-matches,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-matches {
+      color: #0F172A !important;
     }
-    body[data-theme="swiss"] .mobile-holo-hint,
-    html[data-theme="swiss"] .mobile-holo-hint {
+    body[data-theme="swiss"] .athletic-back-stat-val.val-wecon,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-wecon {
+      color: #0284C7 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-stat-val.val-catches,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-catches {
+      color: #7C3AED !important;
+    }
+    body[data-theme="swiss"] .athletic-back-stat-val.val-impact,
+    html[data-theme="swiss"] .athletic-back-stat-val.val-impact {
+      color: #D97706 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-momentum,
+    html[data-theme="swiss"] .athletic-back-momentum {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-momentum-title,
+    html[data-theme="swiss"] .athletic-back-momentum-title {
+      color: #334155 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-momentum-trend,
+    html[data-theme="swiss"] .athletic-back-momentum-trend {
       color: #059669 !important;
+    }
+    body[data-theme="swiss"] .athletic-back-flip-hint,
+    html[data-theme="swiss"] .athletic-back-flip-hint {
+      color: #0284C7 !important;
+    }
+    body[data-theme="swiss"] .btn-card-radar-splits,
+    html[data-theme="swiss"] .btn-card-radar-splits,
+    body[data-theme="swiss"] #btnCardRadarSplits,
+    html[data-theme="swiss"] #btnCardRadarSplits {
+      background: #F0F9FF !important;
+      border: 1px solid #BAE6FD !important;
+      color: #0284C7 !important;
+    }
+    body[data-theme="swiss"] #btnToggleInlineAnalysis,
+    html[data-theme="swiss"] #btnToggleInlineAnalysis,
+    body[data-theme="swiss"] .btn-toggle-inline-analysis,
+    html[data-theme="swiss"] .btn-toggle-inline-analysis {
+      background: #ECFDF5 !important;
+      border: 1px solid #A7F3D0 !important;
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] #btnOpenPlayerAnalysisSheet,
+    html[data-theme="swiss"] #btnOpenPlayerAnalysisSheet,
+    body[data-theme="swiss"] .btn-open-player-analysis,
+    html[data-theme="swiss"] .btn-open-player-analysis {
+      background: #F0F9FF !important;
+      border: 1px solid #BAE6FD !important;
+      color: #0284C7 !important;
+    }
+    body[data-theme="swiss"] .player-list-item,
+    html[data-theme="swiss"] .player-list-item {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+    }
+    body[data-theme="swiss"] .player-list-item.bench-item,
+    html[data-theme="swiss"] .player-list-item.bench-item {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    body[data-theme="swiss"] .player-list-item.active-player,
+    html[data-theme="swiss"] .player-list-item.active-player {
+      background: #ECFDF5 !important;
+      border-color: #059669 !important;
+    }
+    body[data-theme="swiss"] .player-list-item .active-card-chip,
+    html[data-theme="swiss"] .player-list-item .active-card-chip {
+      color: #065F46 !important;
+      background: #D1FAE5 !important;
+      border: 1px solid #6EE7B7 !important;
+    }
+    body[data-theme="swiss"] .player-list-item button,
+    html[data-theme="swiss"] .player-list-item button {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #334155 !important;
+    }
+    body[data-theme="swiss"] .athletic-spectrum-bar.is-older,
+    html[data-theme="swiss"] .athletic-spectrum-bar.is-older {
+      background: #CBD5E1 !important;
+    }
+    body[data-theme="swiss"] .athletic-spectrum-bar.is-latest,
+    html[data-theme="swiss"] .athletic-spectrum-bar.is-latest {
+      background: linear-gradient(180deg, #059669 0%, #0284C7 100%) !important;
+    }
+    body[data-theme="swiss"] .stat-3d-front,
+    html[data-theme="swiss"] .stat-3d-front {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+    }
+    body[data-theme="swiss"] .stat-3d-front .stat-val,
+    html[data-theme="swiss"] .stat-3d-front .stat-val {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] .stat-3d-front .stat-lbl,
+    html[data-theme="swiss"] .stat-3d-front .stat-lbl {
+      color: #475569 !important;
+    }
+    body[data-theme="swiss"] .stat-3d-back,
+    html[data-theme="swiss"] .stat-3d-back {
+      background: #F0F9FF !important;
+      border: 1px solid #BAE6FD !important;
+    }
+    body[data-theme="swiss"] .stat-3d-back .stat-ctx-lbl,
+    html[data-theme="swiss"] .stat-3d-back .stat-ctx-lbl {
+      color: #64748B !important;
+    }
+    body[data-theme="swiss"] .stat-3d-back .stat-ctx-val,
+    html[data-theme="swiss"] .stat-3d-back .stat-ctx-val {
+      color: #0284C7 !important;
+    }
+    body[data-theme="swiss"] .stat-3d-back .stat-ctx-sub,
+    html[data-theme="swiss"] .stat-3d-back .stat-ctx-sub {
+      color: #059669 !important;
+    }
+    body[data-theme="swiss"] .player-analysis-dossier,
+    html[data-theme="swiss"] .player-analysis-dossier {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
     }
 
     /* Swiss Minimalist — Official Match Scorecard & Analytics Panel */
@@ -1028,66 +1242,280 @@
       border: 1px solid #FDE68A !important;
       color: #78350F !important;
     }
+    /* Nordic Editorial 3D Player Card & Flip Invariants (Warm Natural Paper & Earth Tones) */
+    body[data-theme="nordic"] #playerFlipCard3D,
+    html[data-theme="nordic"] #playerFlipCard3D,
     body[data-theme="nordic"] #mobileHoloCard,
     html[data-theme="nordic"] #mobileHoloCard,
-    body[data-theme="nordic"] .mobile-holo-card,
-    html[data-theme="nordic"] .mobile-holo-card {
+    body[data-theme="nordic"] .player-flip-card,
+    html[data-theme="nordic"] .player-flip-card {
+      box-shadow: 0 10px 30px rgba(28, 25, 23, 0.08) !important;
+    }
+    body[data-theme="nordic"] .player-flip-front,
+    html[data-theme="nordic"] .player-flip-front {
       background-color: #FCFBF8 !important;
       background-image: linear-gradient(145deg, #FCFBF8 0%, #F5F2EB 60%, #EAE5DC 100%) !important;
       border: 2px solid #15803D !important;
-      box-shadow: 0 12px 30px rgba(28, 25, 23, 0.10) !important;
+      box-shadow: 0 12px 28px rgba(28, 25, 23, 0.08), 0 0 0 1px rgba(21, 128, 61, 0.2) inset !important;
       color: #1C1917 !important;
     }
+    body[data-theme="nordic"] .player-flip-back,
+    html[data-theme="nordic"] .player-flip-back {
+      background-color: #F5F2EB !important;
+      background-image: linear-gradient(145deg, #F5F2EB 0%, #EAE5DC 60%, #DFD8CC 100%) !important;
+      border: 2px solid #0369A1 !important;
+      box-shadow: 0 12px 28px rgba(28, 25, 23, 0.08), 0 0 0 1px rgba(3, 105, 161, 0.2) inset !important;
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .player-flip-sheen,
+    html[data-theme="nordic"] .player-flip-sheen,
     body[data-theme="nordic"] .mobile-holo-sheen,
     html[data-theme="nordic"] .mobile-holo-sheen {
-      background: radial-gradient(circle at 50% 50%, rgba(21, 128, 61, 0.20) 0%, rgba(3, 105, 161, 0.18) 40%, rgba(109, 40, 217, 0.14) 70%, transparent 85%) !important;
-      opacity: 0.45 !important;
+      background: radial-gradient(ellipse at 30% 25%, rgba(21, 128, 61, 0.16) 0%, rgba(3, 105, 161, 0.14) 45%, rgba(109, 40, 217, 0.08) 75%, transparent 90%) !important;
+      opacity: 0.55 !important;
     }
+    body[data-theme="nordic"] .athletic-card-avatar,
+    html[data-theme="nordic"] .athletic-card-avatar {
+      border-color: #15803D !important;
+      background: #F0FDF4 !important;
+      box-shadow: 0 0 12px rgba(21, 128, 61, 0.25) !important;
+    }
+    body[data-theme="nordic"] .athletic-badge-athlete,
+    html[data-theme="nordic"] .athletic-badge-athlete,
     body[data-theme="nordic"] .mobile-holo-badge,
     html[data-theme="nordic"] .mobile-holo-badge {
       color: #15803D !important;
+      font-weight: 800 !important;
     }
+    body[data-theme="nordic"] .athletic-brand-dot,
+    html[data-theme="nordic"] .athletic-brand-dot {
+      color: #A8A29E !important;
+    }
+    body[data-theme="nordic"] .athletic-badge-kyc,
+    html[data-theme="nordic"] .athletic-badge-kyc {
+      color: #57534E !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="nordic"] .athletic-player-name,
+    html[data-theme="nordic"] .athletic-player-name,
     body[data-theme="nordic"] .mobile-holo-name,
     html[data-theme="nordic"] .mobile-holo-name {
       color: #1C1917 !important;
+      font-weight: 800 !important;
     }
+    body[data-theme="nordic"] .athletic-player-sub,
+    html[data-theme="nordic"] .athletic-player-sub,
     body[data-theme="nordic"] .mobile-holo-role,
     html[data-theme="nordic"] .mobile-holo-role {
-      color: #44403C !important;
+      color: #57534E !important;
+      font-weight: 600 !important;
     }
+    body[data-theme="nordic"] .athletic-player-jersey,
+    html[data-theme="nordic"] .athletic-player-jersey,
     body[data-theme="nordic"] .mobile-holo-jersey,
     html[data-theme="nordic"] .mobile-holo-jersey {
       color: #0369A1 !important;
-      text-shadow: none !important;
+      text-shadow: 0 0 12px rgba(3, 105, 161, 0.2) !important;
     }
-    body[data-theme="nordic"] .mobile-holo-stats-grid,
-    html[data-theme="nordic"] .mobile-holo-stats-grid {
-      background: #F0ECE1 !important;
-      border: 1px solid #E6DFD5 !important;
+    body[data-theme="nordic"] .athletic-rating-circle,
+    html[data-theme="nordic"] .athletic-rating-circle {
+      background: #FCFBF8 !important;
+      border: 2.5px solid #15803D !important;
+      color: #15803D !important;
+      box-shadow: 0 2px 10px rgba(21, 128, 61, 0.15) !important;
     }
-    body[data-theme="nordic"] .mobile-holo-stat-lbl,
-    html[data-theme="nordic"] .mobile-holo-stat-lbl {
+    body[data-theme="nordic"] .athletic-rating-meta,
+    html[data-theme="nordic"] .athletic-rating-meta {
+      color: #57534E !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="nordic"] .athletic-form-badge,
+    html[data-theme="nordic"] .athletic-form-badge {
+      background: #F0FDF4 !important;
+      border: 1px solid #BBF7D0 !important;
+      color: #15803D !important;
+      font-weight: 800 !important;
+    }
+    body[data-theme="nordic"] .athletic-flip-hint,
+    html[data-theme="nordic"] .athletic-flip-hint,
+    body[data-theme="nordic"] .mobile-holo-hint,
+    html[data-theme="nordic"] .mobile-holo-hint {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .athletic-back-title,
+    html[data-theme="nordic"] .athletic-back-title {
+      color: #0369A1 !important;
+    }
+    body[data-theme="nordic"] .athletic-back-subtitle,
+    html[data-theme="nordic"] .athletic-back-subtitle {
       color: #57534E !important;
     }
+    body[data-theme="nordic"] .athletic-back-stat-box,
+    html[data-theme="nordic"] .athletic-back-stat-box {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04) !important;
+    }
+    body[data-theme="nordic"] .athletic-back-stat-lbl,
+    html[data-theme="nordic"] .athletic-back-stat-lbl,
+    body[data-theme="nordic"] .mobile-holo-stat-lbl,
+    html[data-theme="nordic"] .mobile-holo-stat-lbl {
+      color: #78716C !important;
+      font-weight: 700 !important;
+    }
+    body[data-theme="nordic"] .athletic-back-stat-val,
+    html[data-theme="nordic"] .athletic-back-stat-val {
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .athletic-back-stat-val.val-runs,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-runs {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .athletic-back-stat-val.val-avg,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-avg,
     body[data-theme="nordic"] .mobile-holo-stat-val.val-avg,
     html[data-theme="nordic"] .mobile-holo-stat-val.val-avg {
       color: #15803D !important;
     }
+    body[data-theme="nordic"] .athletic-back-stat-val.val-sr,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-sr,
     body[data-theme="nordic"] .mobile-holo-stat-val.val-sr,
     html[data-theme="nordic"] .mobile-holo-stat-val.val-sr {
       color: #0369A1 !important;
     }
-    body[data-theme="nordic"] .mobile-holo-stat-val.val-wkts,
-    html[data-theme="nordic"] .mobile-holo-stat-val.val-wkts {
-      color: #C2410C !important;
+    body[data-theme="nordic"] .athletic-back-stat-val.val-bdry,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-bdry {
+      color: #B45309 !important;
     }
-    body[data-theme="nordic"] .mobile-holo-stat-val.val-power,
-    html[data-theme="nordic"] .mobile-holo-stat-val.val-power {
-      color: #BE123C !important;
+    body[data-theme="nordic"] .athletic-back-stat-val.val-matches,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-matches {
+      color: #1C1917 !important;
     }
-    body[data-theme="nordic"] .mobile-holo-hint,
-    html[data-theme="nordic"] .mobile-holo-hint {
+    body[data-theme="nordic"] .athletic-back-stat-val.val-wecon,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-wecon {
+      color: #0369A1 !important;
+    }
+    body[data-theme="nordic"] .athletic-back-stat-val.val-catches,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-catches {
+      color: #6D28D9 !important;
+    }
+    body[data-theme="nordic"] .athletic-back-stat-val.val-impact,
+    html[data-theme="nordic"] .athletic-back-stat-val.val-impact {
+      color: #B45309 !important;
+    }
+    body[data-theme="nordic"] .athletic-back-momentum,
+    html[data-theme="nordic"] .athletic-back-momentum {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+    }
+    body[data-theme="nordic"] .athletic-back-momentum-title,
+    html[data-theme="nordic"] .athletic-back-momentum-title {
+      color: #44403C !important;
+    }
+    body[data-theme="nordic"] .athletic-back-momentum-trend,
+    html[data-theme="nordic"] .athletic-back-momentum-trend {
       color: #15803D !important;
+    }
+    body[data-theme="nordic"] .athletic-back-flip-hint,
+    html[data-theme="nordic"] .athletic-back-flip-hint {
+      color: #0369A1 !important;
+    }
+    body[data-theme="nordic"] .btn-card-radar-splits,
+    html[data-theme="nordic"] .btn-card-radar-splits,
+    body[data-theme="nordic"] #btnCardRadarSplits,
+    html[data-theme="nordic"] #btnCardRadarSplits {
+      background: #F0F9FF !important;
+      border: 1px solid #BAE6FD !important;
+      color: #0369A1 !important;
+    }
+    body[data-theme="nordic"] #btnToggleInlineAnalysis,
+    html[data-theme="nordic"] #btnToggleInlineAnalysis,
+    body[data-theme="nordic"] .btn-toggle-inline-analysis,
+    html[data-theme="nordic"] .btn-toggle-inline-analysis {
+      background: #F0FDF4 !important;
+      border: 1px solid #BBF7D0 !important;
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] #btnOpenPlayerAnalysisSheet,
+    html[data-theme="nordic"] #btnOpenPlayerAnalysisSheet,
+    body[data-theme="nordic"] .btn-open-player-analysis,
+    html[data-theme="nordic"] .btn-open-player-analysis {
+      background: #F0F9FF !important;
+      border: 1px solid #BAE6FD !important;
+      color: #0369A1 !important;
+    }
+    body[data-theme="nordic"] .player-list-item,
+    html[data-theme="nordic"] .player-list-item {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #1C1917 !important;
+    }
+    body[data-theme="nordic"] .player-list-item.bench-item,
+    html[data-theme="nordic"] .player-list-item.bench-item {
+      background: #F7F5F0 !important;
+      border: 1px solid #EFECE6 !important;
+    }
+    body[data-theme="nordic"] .player-list-item.active-player,
+    html[data-theme="nordic"] .player-list-item.active-player {
+      background: #F0FDF4 !important;
+      border-color: #15803D !important;
+    }
+    body[data-theme="nordic"] .player-list-item .active-card-chip,
+    html[data-theme="nordic"] .player-list-item .active-card-chip {
+      color: #14532D !important;
+      background: #DCFCE7 !important;
+      border: 1px solid #86EFAC !important;
+    }
+    body[data-theme="nordic"] .player-list-item button,
+    html[data-theme="nordic"] .player-list-item button {
+      background: #F5F2EB !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #44403C !important;
+    }
+    body[data-theme="nordic"] .athletic-spectrum-bar.is-older,
+    html[data-theme="nordic"] .athletic-spectrum-bar.is-older {
+      background: #D6D3D1 !important;
+    }
+    body[data-theme="nordic"] .athletic-spectrum-bar.is-latest,
+    html[data-theme="nordic"] .athletic-spectrum-bar.is-latest {
+      background: linear-gradient(180deg, #15803D 0%, #0369A1 100%) !important;
+    }
+    body[data-theme="nordic"] .stat-3d-front,
+    html[data-theme="nordic"] .stat-3d-front {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      box-shadow: 0 1px 3px rgba(28, 25, 23, 0.05) !important;
+    }
+    body[data-theme="nordic"] .stat-3d-front .stat-val,
+    html[data-theme="nordic"] .stat-3d-front .stat-val {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .stat-3d-front .stat-lbl,
+    html[data-theme="nordic"] .stat-3d-front .stat-lbl {
+      color: #57534E !important;
+    }
+    body[data-theme="nordic"] .stat-3d-back,
+    html[data-theme="nordic"] .stat-3d-back {
+      background: #F0F9FF !important;
+      border: 1px solid #BAE6FD !important;
+    }
+    body[data-theme="nordic"] .stat-3d-back .stat-ctx-lbl,
+    html[data-theme="nordic"] .stat-3d-back .stat-ctx-lbl {
+      color: #78716C !important;
+    }
+    body[data-theme="nordic"] .stat-3d-back .stat-ctx-val,
+    html[data-theme="nordic"] .stat-3d-back .stat-ctx-val {
+      color: #0369A1 !important;
+    }
+    body[data-theme="nordic"] .stat-3d-back .stat-ctx-sub,
+    html[data-theme="nordic"] .stat-3d-back .stat-ctx-sub {
+      color: #15803D !important;
+    }
+    body[data-theme="nordic"] .player-analysis-dossier,
+    html[data-theme="nordic"] .player-analysis-dossier {
+      background: #FCFBF8 !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #1C1917 !important;
     }
 
     /* Nordic Editorial — Official Match Scorecard & Analytics Panel */
@@ -1855,6 +2283,14 @@
     .player-list-item {
       cursor: pointer;
       transition: background 0.2s, border-color 0.2s;
+      background: rgba(10, 16, 28, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      color: #F8FAFC;
+    }
+    .player-list-item.bench-item {
+      background: rgba(10, 16, 28, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .player-list-item.active-player {
       border-color: #00E599 !important;
@@ -2538,6 +2974,12 @@
       min-height: 4px;
       transform-origin: bottom;
       transition: transform 0.25s ease, background-color 0.25s ease;
+    }
+    .athletic-spectrum-bar.is-latest {
+      background: linear-gradient(180deg, #00E599 0%, #00D2FF 100%);
+    }
+    .athletic-spectrum-bar.is-older {
+      background: rgba(255, 255, 255, 0.18);
     }
 
     /* Skill 15: Design Spells — Kinetic Motion Graphics & Stadium FX */
@@ -3256,6 +3698,207 @@
       margin-top: 0.45rem;
       letter-spacing: 0.02em;
     }
+    .athletic-card-avatar {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      border: 2px solid #00E599;
+      overflow: hidden;
+      background: rgba(0, 229, 153, 0.15);
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .athletic-card-brand {
+      font-size: 0.56rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .athletic-badge-athlete { color: #00E599; }
+    .athletic-brand-dot { color: rgba(255, 255, 255, 0.3); }
+    .athletic-badge-kyc { color: #94A3B8; }
+    .athletic-player-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: #F8FAFC;
+      line-height: 1.15;
+      margin-top: 0.12rem;
+    }
+    .athletic-player-sub {
+      font-size: 0.68rem;
+      color: #94A3B8;
+      margin-top: 0.08rem;
+    }
+    .athletic-player-jersey {
+      font-family: var(--font-score);
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #00D2FF;
+      text-shadow: 0 0 16px rgba(0, 210, 255, 0.55);
+      line-height: 1;
+    }
+    .athletic-rating-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, rgba(0, 229, 153, 0.32), rgba(0, 30, 60, 0.95));
+      border: 2px solid #00E599;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-score);
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #00E599;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.25);
+    }
+    .athletic-rating-meta {
+      font-size: 0.56rem;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .athletic-form-badge {
+      margin-left: auto;
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid rgba(0, 229, 153, 0.38);
+      border-radius: 4px;
+      padding: 0.12rem 0.38rem;
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #00E599;
+    }
+    .athletic-flip-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: rgba(0, 229, 153, 0.75);
+      font-size: 0.64rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+    .athletic-back-title {
+      font-size: 0.62rem;
+      color: #00D2FF;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .athletic-back-subtitle {
+      font-size: 0.62rem;
+      color: #94A3B8;
+      font-weight: 700;
+    }
+    .athletic-back-stat-box {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.38);
+      border-radius: 6px;
+      padding: 0.3rem 0.15rem;
+    }
+    .athletic-back-stat-lbl {
+      font-size: 0.5rem;
+      color: #64748B;
+      text-transform: uppercase;
+    }
+    .athletic-back-stat-val {
+      font-size: 0.88rem;
+      font-weight: 800;
+      font-family: var(--font-score);
+      color: #FFFFFF;
+    }
+    .athletic-back-stat-val.val-runs { color: #00E599; }
+    .athletic-back-stat-val.val-avg { color: #FFFFFF; }
+    .athletic-back-stat-val.val-sr { color: #00D2FF; }
+    .athletic-back-stat-val.val-bdry { color: #FFB800; }
+    .athletic-back-stat-val.val-matches { color: #FFFFFF; }
+    .athletic-back-stat-val.val-wecon { color: #00D2FF; }
+    .athletic-back-stat-val.val-catches { color: #C084FC; }
+    .athletic-back-stat-val.val-impact { color: #FFB800; }
+    .athletic-back-momentum {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+      padding: 0.3rem 0.45rem;
+    }
+    .athletic-back-momentum-title {
+      font-weight: 700;
+      color: #CBD5E1;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .athletic-back-momentum-trend {
+      color: #00E599;
+      font-weight: 800;
+    }
+    .athletic-back-flip-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: rgba(0, 210, 255, 0.65);
+      font-size: 0.6rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+    .btn-card-radar-splits {
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 210, 255, 0.4);
+      background: rgba(0, 210, 255, 0.15);
+      color: #00D2FF;
+      font-size: 0.62rem;
+      font-weight: 700;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+    .btn-toggle-inline-analysis {
+      flex: 1;
+      padding: 0.42rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      background: rgba(0, 229, 153, 0.1);
+      color: #00E599;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      cursor: pointer;
+    }
+    .btn-open-player-analysis {
+      padding: 0.42rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 210, 255, 0.35);
+      background: rgba(0, 210, 255, 0.1);
+      color: #00D2FF;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      cursor: pointer;
+    }
+    .player-list-item .active-card-chip {
+      color: #00E599;
+      background: rgba(0, 229, 153, 0.12);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+    }
+
     /* 3D Stat Cards in Profile */
     .stat-3d-card-scene {
       perspective: 600px;
@@ -5534,12 +6177,8 @@
           var val = p.momentum[i];
           var heightPct = Math.round((val / maxMomentum) * 100);
           var isLatest = i >= p.momentum.length - 4;
-          var barBg = isLatest ? 'background: linear-gradient(180deg, #00E599 0%, #00D2FF 100%);' : 'background: rgba(255,255,255,0.18);';
-          barsHtml += '<div class="athletic-spectrum-bar" style="height: ' + heightPct + '%; ' + barBg + '" title="Match ' + (i+1) + ': ' + val + ' pts"></div>';
+          barsHtml += '<div class="athletic-spectrum-bar' + (isLatest ? ' is-latest' : ' is-older') + '" style="height: ' + heightPct + '%;" title="Match ' + (i+1) + ': ' + val + ' pts"></div>';
         }
-
-        var ratingColor = (p.rating >= 95) ? '#FFB800' : (p.rating >= 88) ? '#00E599' : '#00D2FF';
-        var formColor = (p.form === 'PEAK') ? '#00E599' : (p.form === 'GOOD' || p.form === 'EXCELLENT' || p.form === 'SURGING' || p.form === 'CLUTCH') ? '#00D2FF' : '#FFB800';
 
         var h = '<div class="athletic-stats-card" id="mobileAthleticStatsCard">';
 
@@ -5557,31 +6196,31 @@
         var playerAvatarUrl = this.getPlayerAvatar(p);
         h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
         h += '<div style="display: flex; align-items: center; gap: 0.65rem;">';
-        h += '<div class="athletic-card-avatar" style="width: 48px; height: 48px; min-width: 48px; border-radius: 50%; border: 2px solid ' + ratingColor + '; overflow: hidden; background: rgba(0,229,153,0.15); box-shadow: 0 0 12px rgba(0,229,153,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;" data-tooltip="' + p.name + ' · KYC Verified Headshot">';
+        h += '<div class="athletic-card-avatar" data-tooltip="' + p.name + ' · KYC Verified Headshot">';
         h += '<img src="' + playerAvatarUrl + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + p.name + '">';
         h += '</div>';
         h += '<div>';
-        h += '<div style="font-size: 0.56rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem;"><span>CRICOS ATHLETE</span><span style="color: rgba(255,255,255,0.3);">•</span><span style="color: #94A3B8;">KYC CERTIFIED</span></div>';
-        h += '<div class="athletic-player-name" style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.12rem;">' + p.name + '</div>';
-        h += '<div class="athletic-player-sub" style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.08rem;">' + p.role + ' • ' + p.style + '</div>';
+        h += '<div class="athletic-card-brand"><span class="athletic-badge-athlete">CRICOS ATHLETE</span><span class="athletic-brand-dot">•</span><span class="athletic-badge-kyc">KYC CERTIFIED</span></div>';
+        h += '<div class="athletic-player-name">' + p.name + '</div>';
+        h += '<div class="athletic-player-sub">' + p.role + ' • ' + p.style + '</div>';
         h += '</div>';
         h += '</div>';
-        h += '<div style="font-family: var(--font-score); font-size: 2.1rem; font-weight: 900; color: #00D2FF; text-shadow: 0 0 16px rgba(0,210,255,0.55); line-height: 1;">#' + p.jersey + '</div>';
+        h += '<div class="athletic-player-jersey">#' + p.jersey + '</div>';
         h += '</div>';
 
         // Middle Rating & Rank
         h += '<div style="display: flex; align-items: center; gap: 0.55rem;">';
-        h += '<div style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(0,229,153,0.32), rgba(0,30,60,0.95)); border: 2px solid ' + ratingColor + '; display: flex; align-items: center; justify-content: center; font-family: var(--font-score); font-size: 1.15rem; font-weight: 900; color: ' + ratingColor + '; flex-shrink: 0; box-shadow: 0 0 12px rgba(0,229,153,0.25);">' + Math.round(p.rating) + '</div>';
+        h += '<div class="athletic-rating-circle">' + Math.round(p.rating) + '</div>';
         h += '<div>';
-        h += '<div style="font-size: 0.56rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.04em;">ICC Rating • ELO ' + p.elo + '</div>';
+        h += '<div class="athletic-rating-meta">ICC Rating • ELO ' + p.elo + '</div>';
         h += '<div class="athletic-ranking-ribbon" style="margin-top: 0.1rem;"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg> <span>' + p.rank + '</span></div>';
         h += '</div>';
-        h += '<div style="margin-left: auto; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.38); border-radius: 4px; padding: 0.12rem 0.38rem; font-size: 0.62rem; font-weight: 800; color: ' + formColor + ';">' + p.form + '</div>';
+        h += '<div class="athletic-form-badge">' + p.form + '</div>';
         h += '</div>';
 
         // Bottom Hint (Clean, uncluttered, matching reference design)
         h += '<div style="display: flex; justify-content: center; align-items: center; padding: 0.15rem 0;">';
-        h += '<div style="display: flex; align-items: center; gap: 0.35rem; color: rgba(0,229,153,0.75); font-size: 0.64rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.75)', 13) + ' <span>Tap to flip for career stats</span></div>';
+        h += '<div class="athletic-flip-hint">' + this.iconSvg('flip', 'currentColor', 13) + ' <span>Tap to flip for career stats</span></div>';
         h += '</div>';
 
         h += '</div></div>'; // closes .player-flip-front
@@ -5592,35 +6231,35 @@
 
         // Back Header
         h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
-        h += '<div style="font-size: 0.62rem; color: #00D2FF; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;">' + p.name + ' · Career Telemetry</div>';
-        h += '<div style="font-size: 0.62rem; color: #94A3B8; font-weight: 700;">#' + p.jersey + ' · ' + p.role + '</div>';
+        h += '<div class="athletic-back-title">' + p.name + ' · Career Telemetry</div>';
+        h += '<div class="athletic-back-subtitle">#' + p.jersey + ' · ' + p.role + '</div>';
         h += '</div>';
 
         // Back Substats Grid (8 items)
         h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Runs</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00E599;">' + p.runs + '</div></div>';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Avg</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + p.avg + '</div></div>';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">S/R</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + p.sr + '</div></div>';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Bdry%</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + p.boundaryRate + '%</div></div>';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Matches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + p.matches + '</div></div>';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">W/Econ</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + p.wickets + ' / ' + p.economy + '</div></div>';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Catches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #c084fc;">' + p.catches + '</div></div>';
-        h += '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Impact</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + p.trueImpact + '</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Runs</div><div class="athletic-back-stat-val val-runs">' + p.runs + '</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Avg</div><div class="athletic-back-stat-val val-avg">' + p.avg + '</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">S/R</div><div class="athletic-back-stat-val val-sr">' + p.sr + '</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Bdry%</div><div class="athletic-back-stat-val val-bdry">' + p.boundaryRate + '%</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Matches</div><div class="athletic-back-stat-val val-matches">' + p.matches + '</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">W/Econ</div><div class="athletic-back-stat-val val-wecon">' + p.wickets + ' / ' + p.economy + '</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Catches</div><div class="athletic-back-stat-val val-catches">' + p.catches + '</div></div>';
+        h += '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Impact</div><div class="athletic-back-stat-val val-impact">' + p.trueImpact + '</div></div>';
         h += '</div>';
 
         // Momentum section
-        h += '<div style="background: rgba(0,0,0,0.3); border-radius: 6px; padding: 0.3rem 0.45rem;">';
+        h += '<div class="athletic-back-momentum">';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.56rem;">';
-        h += '<span style="font-weight: 700; color: #cbd5e1; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg('lightning', '#00E599', 11) + ' 20-Match Momentum Spectrum</span>';
-        h += '<span style="color: #00E599; font-weight: 800;">Surging ' + (p.trend || '+14%') + '</span>';
+        h += '<span class="athletic-back-momentum-title">' + this.iconSvg('lightning', 'currentColor', 11) + ' 20-Match Momentum Spectrum</span>';
+        h += '<span class="athletic-back-momentum-trend">Surging ' + (p.trend || '+14%') + '</span>';
         h += '</div>';
         h += '<div class="athletic-spectrum-track" style="height: 18px; margin-top: 0.2rem;">' + barsHtml + '</div>';
         h += '</div>';
 
         // Flip back hint & Dedicated Radar & Splits Toggle
         h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
-        h += '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,210,255,0.65); font-size: 0.6rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,210,255,0.65)', 12) + ' <span>Tap to flip back</span></div>';
-        h += '<button type="button" id="btnCardRadarSplits" onclick="event.stopPropagation(); window.cricosMobileApp.toggleInlineRadarSplits(event);" style="padding: 0.18rem 0.5rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.62rem; font-weight: 700; cursor: pointer; position: relative; z-index: 10; pointer-events: auto; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Toggle 6-axis capability radar and situational splits">Radar &amp; Splits ▾</button>';
+        h += '<div class="athletic-back-flip-hint">' + this.iconSvg('flip', 'currentColor', 12) + ' <span>Tap to flip back</span></div>';
+        h += '<button type="button" id="btnCardRadarSplits" class="btn-card-radar-splits" onclick="event.stopPropagation(); window.cricosMobileApp.toggleInlineRadarSplits(event);" data-tooltip="Toggle 6-axis capability radar and situational splits">Radar &amp; Splits ▾</button>';
         h += '</div>';
 
         h += '</div></div>'; // closes .player-flip-back
@@ -5628,8 +6267,8 @@
 
         // 3. Action Controls Below Card: Clear distinction between Inline Radar & Splits vs Full Analytics Sheet
         h += '<div style="display: flex; gap: 0.4rem; margin-top: 0.55rem; align-items: center;">';
-        h += '<button type="button" id="btnToggleInlineAnalysis" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" style="flex: 1; padding: 0.42rem 0.6rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.35); background: rgba(0, 229, 153, 0.1); color: #00E599; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; cursor: pointer;" data-tooltip="Toggle radar and tactical breakdown inline">' + this.iconSvg('radar', '#00E599', 14) + ' <span>' + (this.inlineAnalysisExpanded ? '▲ Collapse Tactical Dossier' : '▼ Radar &amp; Splits (Inline)') + '</span></button>';
-        h += '<button type="button" id="btnOpenPlayerAnalysisSheet" onclick="window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;)" style="padding: 0.42rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; cursor: pointer;" data-tooltip="Expand complete player analytical dossier matching web console">' + this.iconSvg('chart', '#00D2FF', 14) + ' <span>Expand Analytics ↗</span></button>';
+        h += '<button type="button" id="btnToggleInlineAnalysis" class="btn-toggle-inline-analysis" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" data-tooltip="Toggle radar and tactical breakdown inline">' + this.iconSvg('radar', 'currentColor', 14) + ' <span>' + (this.inlineAnalysisExpanded ? '▲ Collapse Tactical Dossier' : '▼ Radar &amp; Splits (Inline)') + '</span></button>';
+        h += '<button type="button" id="btnOpenPlayerAnalysisSheet" class="btn-open-player-analysis" onclick="window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;)" data-tooltip="Expand complete player analytical dossier matching web console">' + this.iconSvg('chart', 'currentColor', 14) + ' <span>Expand Analytics ↗</span></button>';
         h += '</div>';
 
         // 4. Inline Dossier Accordion Container
@@ -10947,28 +11586,28 @@
               '<div style="position: relative; z-index: 2; padding: 0.85rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">' +
                 '<div style="display: flex; justify-content: space-between; align-items: center;">' +
                   '<div style="display: flex; align-items: center; gap: 0.65rem;">' +
-                    '<div class="athletic-card-avatar" style="width: 48px; height: 48px; min-width: 48px; border-radius: 50%; border: 2px solid ' + ratingColor + '; overflow: hidden; background: rgba(0,229,153,0.15); box-shadow: 0 0 12px rgba(0,229,153,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;" data-tooltip="' + p.name + ' · KYC Verified Headshot">' +
+                    '<div class="athletic-card-avatar" data-tooltip="' + p.name + ' · KYC Verified Headshot">' +
                       '<img src="' + playerAvatarUrl + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + p.name + '">' +
                     '</div>' +
                     '<div>' +
-                      '<div style="font-size: 0.56rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem;"><span>CRICOS ATHLETE</span><span style="color: rgba(255,255,255,0.3);">•</span><span style="color: #94A3B8;">KYC CERTIFIED</span></div>' +
-                      '<div class="athletic-player-name" style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.12rem;">' + p.name + '</div>' +
-                      '<div class="athletic-player-sub" style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.08rem;">' + roleFmt + ' • ' + (p.style || 'Right-Hand Bat') + '</div>' +
+                      '<div class="athletic-card-brand"><span class="athletic-badge-athlete">CRICOS ATHLETE</span><span class="athletic-brand-dot">•</span><span class="athletic-badge-kyc">KYC CERTIFIED</span></div>' +
+                      '<div class="athletic-player-name">' + p.name + '</div>' +
+                      '<div class="athletic-player-sub">' + roleFmt + ' • ' + (p.style || 'Right-Hand Bat') + '</div>' +
                     '</div>' +
                   '</div>' +
-                  '<div style="font-family: var(--font-score); font-size: 2.1rem; font-weight: 900; color: #00D2FF; text-shadow: 0 0 16px rgba(0,210,255,0.55); line-height: 1;">' + jerseyDisplay + '</div>' +
+                  '<div class="athletic-player-jersey">' + jerseyDisplay + '</div>' +
                 '</div>' +
                 '<div style="display: flex; align-items: center; gap: 0.55rem;">' +
-                  '<div style="width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(0,229,153,0.32), rgba(0,30,60,0.95)); border: 2px solid ' + ratingColor + '; display: flex; align-items: center; justify-content: center; font-family: var(--font-score); font-size: 1.15rem; font-weight: 900; color: ' + ratingColor + '; flex-shrink: 0; box-shadow: 0 0 12px rgba(0,229,153,0.25);">' + Math.round(p.rating || 85) + '</div>' +
+                  '<div class="athletic-rating-circle">' + Math.round(p.rating || 85) + '</div>' +
                   '<div>' +
-                    '<div style="font-size: 0.56rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.04em;">ICC Rating • ELO ' + (p.elo || '2,400') + '</div>' +
+                    '<div class="athletic-rating-meta">ICC Rating • ELO ' + (p.elo || '2,400') + '</div>' +
                     '<div class="athletic-ranking-ribbon" style="margin-top: 0.1rem;"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg> <span>' + (p.rank || 'REGIONAL') + '</span></div>' +
                   '</div>' +
-                  '<div style="margin-left: auto; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.38); border-radius: 4px; padding: 0.12rem 0.38rem; font-size: 0.62rem; font-weight: 800; color: ' + formColor + ';">' + (p.form || 'GOOD') + '</div>' +
+                  '<div class="athletic-form-badge">' + (p.form || 'GOOD') + '</div>' +
                 '</div>' +
                 '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-                  '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,229,153,0.7); font-size: 0.62rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.7)', 13) + ' <span>Tap to flip for career stats</span></div>' +
-                  '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.62rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Inspect full analytical dossier & radar">Analysis ↗</button>' +
+                  '<div class="athletic-flip-hint">' + this.iconSvg('flip', 'currentColor', 13) + ' <span>Tap to flip for career stats</span></div>' +
+                  '<button type="button" class="btn-card-radar-splits" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" data-tooltip="Inspect full analytical dossier & radar">Analysis ↗</button>' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -10977,22 +11616,22 @@
             '<div class="player-flip-back">' +
               '<div style="position: relative; z-index: 2; padding: 0.75rem 0.85rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">' +
                 '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-                  '<div style="font-size: 0.62rem; color: #00D2FF; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;">' + p.name + ' · Full Career Stats</div>' +
-                  '<div style="font-size: 0.62rem; color: #94A3B8; font-weight: 700;">#' + p.jersey + ' · ' + p.role + '</div>' +
+                  '<div class="athletic-back-title">' + p.name + ' · Full Career Stats</div>' +
+                  '<div class="athletic-back-subtitle">#' + p.jersey + ' · ' + p.role + '</div>' +
                 '</div>' +
                 '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Runs</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00E599;">' + (p.runs || 0) + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Avg</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + (p.avg || '—') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">S/R</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + (p.sr || '—') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Bdry%</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + (p.boundaryRate || '—') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Matches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFF;">' + (p.matches || 0) + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">W/Econ</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #00D2FF;">' + (p.wickets || 0) + ' / ' + (p.economy || '0.00') + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Catches</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #c084fc;">' + (p.catches || 0) + '</div></div>' +
-                  '<div style="text-align: center; background: rgba(0,0,0,0.38); border-radius: 6px; padding: 0.3rem 0.15rem;"><div style="font-size: 0.5rem; color: #64748B; text-transform: uppercase;">Impact</div><div style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-score); color: #FFB800;">' + (p.trueImpact || '—') + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Runs</div><div class="athletic-back-stat-val val-runs">' + (p.runs || 0) + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Avg</div><div class="athletic-back-stat-val val-avg">' + (p.avg || '—') + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">S/R</div><div class="athletic-back-stat-val val-sr">' + (p.sr || '—') + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Bdry%</div><div class="athletic-back-stat-val val-bdry">' + (p.boundaryRate || '—') + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Matches</div><div class="athletic-back-stat-val val-matches">' + (p.matches || 0) + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">W/Econ</div><div class="athletic-back-stat-val val-wecon">' + (p.wickets || 0) + ' / ' + (p.economy || '0.00') + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Catches</div><div class="athletic-back-stat-val val-catches">' + (p.catches || 0) + '</div></div>' +
+                  '<div class="athletic-back-stat-box"><div class="athletic-back-stat-lbl">Impact</div><div class="athletic-back-stat-val val-impact">' + (p.trueImpact || '—') + '</div></div>' +
                 '</div>' +
                 '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-                  '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,210,255,0.65); font-size: 0.6rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,210,255,0.65)', 12) + ' <span>Tap to flip back</span></div>' +
-                  '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.6rem; font-weight: 700; cursor: pointer;">Dossier ↗</button>' +
+                  '<div class="athletic-back-flip-hint">' + this.iconSvg('flip', 'currentColor', 12) + ' <span>Tap to flip back</span></div>' +
+                  '<button type="button" class="btn-card-radar-splits" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);">Dossier ↗</button>' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -13476,7 +14115,7 @@
           var p = this.playingXI[i];
           var isSel = p.id === activeTeamPlayerId;
           var pAv = this.getPlayerAvatar(p);
-          h += '<div class="player-list-item ' + (isSel ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + p.id + '" role="button" tabindex="0" aria-label="Select ' + p.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="background: ' + (isSel ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.8)') + '; border: 1px solid ' + (isSel ? '#00E599' : 'rgba(255,255,255,0.08)') + '; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" data-tooltip="Select ' + p.name + ' to view card at top">';
+          h += '<div class="player-list-item ' + (isSel ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + p.id + '" role="button" tabindex="0" aria-label="Select ' + p.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="padding: 0.45rem 0.65rem; display: flex; justify-content: space-between; align-items: center;" data-tooltip="Select ' + p.name + ' to view card at top">';
           h += '<div style="display: flex; align-items: center; gap: 0.55rem;">';
           h += '<div style="width: 28px; height: 28px; min-width: 28px; border-radius: 50%; overflow: hidden; border: 1.5px solid ' + (isSel ? '#00E599' : 'rgba(255,255,255,0.18)') + '; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="' + pAv + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + p.name + '"></div>';
           h += '<span style="font-family: var(--font-score); font-size: 0.72rem; color: #94a3b8; width: 20px;">#' + p.jersey + '</span>';
@@ -13487,13 +14126,13 @@
           if (isCaptain) {
             h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
             if (isSel) {
-              h += '<span style="font-size: 0.58rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
+              h += '<span class="active-card-chip" style="font-size: 0.58rem; font-weight: 700; border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
             }
             h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.benchPlayer(' + i + ')" style="padding: 0.22rem 0.45rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #cbd5e1; font-size: 0.62rem;" data-tooltip="Move player to bench">Bench ⇄</button>';
             h += '</div>';
           } else {
             if (isSel) {
-              h += '<span style="font-size: 0.62rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-radius: 4px; padding: 0.12rem 0.4rem; display: inline-flex; align-items: center; gap: 0.25rem;">' + this.iconSvg('check', '#00E599', 11) + ' Card Active</span>';
+              h += '<span class="active-card-chip" style="font-size: 0.62rem; font-weight: 700; border-radius: 4px; padding: 0.12rem 0.4rem; display: inline-flex; align-items: center; gap: 0.25rem;">' + this.iconSvg('check', 'currentColor', 11) + ' Card Active</span>';
             } else {
               h += '<span style="font-size: 0.62rem; color: #64748b; display: inline-flex; align-items: center; gap: 0.2rem;">' + this.iconSvg('user', '#64748b', 11) + ' View Card</span>';
             }
@@ -13509,13 +14148,13 @@
           var bp = this.bench[b];
           var isSelB = bp.id === (this.selectedPlayerId || 'p1');
           var bpAv = this.getPlayerAvatar(bp);
-          h += '<div class="player-list-item ' + (isSelB ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + bp.id + '" role="button" tabindex="0" aria-label="Select ' + bp.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="background: ' + (isSelB ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.5)') + '; border: 1px solid ' + (isSelB ? '#00E599' : 'rgba(255,255,255,0.05)') + '; border-radius: 8px; padding: 0.35rem 0.65rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" data-tooltip="Select ' + bp.name + ' to view card at top">';
+          h += '<div class="player-list-item bench-item ' + (isSelB ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + bp.id + '" role="button" tabindex="0" aria-label="Select ' + bp.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="padding: 0.35rem 0.65rem; display: flex; justify-content: space-between; align-items: center;" data-tooltip="Select ' + bp.name + ' to view card at top">';
           h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
           h += '<div style="width: 24px; height: 24px; min-width: 24px; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="' + bpAv + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + bp.name + '"></div>';
           h += '<div style="font-size: 0.75rem; color: #94a3b8;">#' + bp.jersey + ' ' + bp.name + ' <small>(' + bp.role + ')</small></div>';
           h += '</div>';
           if (isSelB) {
-            h += '<span style="font-size: 0.58rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
+            h += '<span class="active-card-chip" style="font-size: 0.58rem; font-weight: 700; border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
           } else {
             h += '<span style="font-size: 0.62rem; color: #64748b;">Reserve • View</span>';
           }
