@@ -1,14 +1,30 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 14:00:00
-**Version:** 1.0.0-phase2dt (Impeccable v4.5.0 Upgrade & PRODUCT.md Schema 1 Alignment)  
+**Last Updated:** 2026-10-04 16:15:00
+**Version:** 1.0.0-phase2du (WCAG 2.2 AA Modal Dialog & Mobile Sheet Accessibility Compliance)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DT Completed — Impeccable v4.5.0 Upgrade & PRODUCT.md Schema 1 Alignment (`PRODUCT.md`, `.agents/skills/impeccable/`, `.github/skills/impeccable/`, `PROJECT_CONTEXT.md`):
+- **Active Phase**: Phase 2DU Completed — Full-Stack WCAG 2.2 AA Modal & Sheet Accessibility Architecture (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Comprehensive WAI-ARIA Modal Attributes across Desktop & Mobile**:
+    - **Desktop Web Console (`apps/api/src/ui/dashboard.ts`)**: Added `role="dialog" aria-modal="true" aria-labelledby="<titleId>"` and matching title element IDs to all 28 modal and drawer dialogs (`modalUserProfile`, `modalDismissal`, `modalBowlerRotation`, `modalCreateTeam`, `modalCheckout`, `modalEndMatchConfirmation`, `modalScorecardExport`, `modalMatchToss`, `modalMatchRating`, `modalLegalPolicies`, `modalEventBasket`, `modalProviderStorefront`, `modalCreateEvent`, `modalEventOverview`, `modalOfficialCalendar`, `modalMessaging`, `modalBookingLifecycle`, `modalFinancialReconciliation`, `modalMobileAppPreview`, `modalApiDocs`, `modalSystemHealth`, `modalMetricsTelemetry`, `modalRfq`, `modalCommerce`, `modalTournamentOps`, `modalMatchInsights`, `modalCheckIn`, `modalSponsorshipAuction`, `modalUmpireDesk`, `modalCricsheetExport`, `modalLeagueDivisions`, `modalDlsCalculator`, `modal3DTrophyCabinet`, `modal3DPlayerCard`, `modal3DBatCustomizer`, `modalPlayerStatsDrawer`, `modalAppDialog`, `modalCommandPalette`, `modalFieldPlanner`, `modalPitchMapSimulator`, `modalPlayerAuction`, `modalKeyboardShortcuts`, `notificationsDrawer`).
+    - **Mobile App View (`apps/api/src/ui/mobile-view.ts`)**: Added `role="dialog" aria-modal="true" aria-labelledby="<titleId>"` and matching title element IDs to all 10 action sheets (`actionSheetModal`, `mobilePersonaSheet`, `mobileSettingsSheet`, `extraRunsPickerSheet`, `wagonPickerSheet`, `mobileSidebarDrawer`, `mobileDismissalSheet`, `mobileIccLawsSheet`, `mobilePenaltyRunsSheet`, `mobileBowlerRotationSheet`).
+  - **2. Focus Trapping & Keyboard Ergonomics**:
+    - Universal focus trapping observer on mobile action sheets and drawers (`mobileModalObserver`), trapping `Tab` and `Shift-Tab` focus loops within active sheets, dismissing on `Escape`, and restoring focus to the initiating trigger on dismissal.
+    - Verified desktop modal backdrop click and `Escape` dismissals.
+  - **3. Mobile View Navbar & Precision Roster Auto-Scroll Resolution**:
+    - Fixed undefined `activeClass` in `renderMobileNavBar()` ensuring clean client-side bootstrapping without console errors.
+    - Enhanced `selectPlayer(id)` with exact `getBoundingClientRect()` relative scroll calculation, eliminating subpixel clipping against fixed header bounds and allowing smooth roster player inspection.
+  - **4. Domain & E2E Test Suite Health**:
+    - Added Test 11 to Suite 9 in `tests/domain-identity-personas-and-themes.test.ts` (all 254 unit/domain tests in 67 suites pass 100% via `./pipeline.sh test --summary`).
+    - Verified all 13 consolidated Playwright tests pass 100% across all 5 test suites (`tests/test_consolidated_*.py`) with zero critical console errors (`assert_no_critical_errors(page)`).
+  - **5. Packaging & Android Native Compilation (Rule 6)**:
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DT Completed — Impeccable v4.5.0 Upgrade & PRODUCT.md Schema 1 Alignment (`PRODUCT.md`, `.agents/skills/impeccable/`, `.github/skills/impeccable/`, `PROJECT_CONTEXT.md`):
   - **1. Impeccable Skill Upgrade to v4.5.0**:
     - Executed `npx impeccable update` targeting both `.agents` and `.github` skill installations.
     - Updated skills, hooks, and standalone engine binary (`impeccable engine v0.1.11 darwin-arm64`).

@@ -210,21 +210,22 @@ export function getDashboardHtml() {
       outline-offset: 2px !important;
     }
 
-    /* Reduced Motion Safeguard */
+    /* Reduced Motion Safeguard - Targeted Motion Reduction */
     @media (prefers-reduced-motion: reduce) {
       *, ::before, ::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
       }
-      .live-dot, .telemetry-pulse {
+      .live-dot, .telemetry-pulse, .radar-sweep, .cricos-celebration-canvas {
         animation: none !important;
         opacity: 1 !important;
       }
       .modal-backdrop.active .modal-dialog,
-      .ball-bubble {
+      .ball-bubble,
+      .kinetic-boundary-banner,
+      .holo-foil-card::before,
+      .ball-gyro-sphere {
         animation: none !important;
+        transform: none !important;
       }
     }
 
@@ -7245,10 +7246,10 @@ export function getDashboardHtml() {
 </div>
 
   <!-- User Profile & Persona Switcher Modal -->
-  <div class="modal-backdrop" id="modalUserProfile">
+  <div class="modal-backdrop" id="modalUserProfile" role="dialog" aria-modal="true" aria-labelledby="userProfileTitle">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="userProfileTitle">
           <span>${iconSvg('user', 'var(--turf-emerald)', 18)} User Profile &amp; Persona Switcher</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeUserModal()" data-tooltip="Close modal">✕</button>
@@ -8156,10 +8157,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Dismissal / Wicket Modal -->
-  <div class="modal-backdrop" id="modalDismissal">
+  <div class="modal-backdrop" id="modalDismissal" role="dialog" aria-modal="true" aria-labelledby="dismissalTitle">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="dismissalTitle">
           <span style="color: var(--rose); display: flex; align-items: center; gap: 0.4rem;">${iconSvg('lightning', 'var(--rose)', 18)} Record Wicket Dismissal</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeDismissalModal()" data-tooltip="Cancel wicket">✕</button>
@@ -8259,10 +8260,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Bowler Rotation / Over End Modal -->
-  <div class="modal-backdrop" id="modalBowlerRotation">
+  <div class="modal-backdrop" id="modalBowlerRotation" role="dialog" aria-modal="true" aria-labelledby="bowlerRotationModalTitle">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="bowlerRotationModalTitle">
           <span style="color: var(--amber); display: flex; align-items: center; gap: 0.4rem;">${iconSvg('bat', 'var(--amber)', 18)} Over Completed — Select Next Bowler</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeBowlerModal()" data-tooltip="Dismiss dialog">✕</button>
@@ -8378,10 +8379,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Create Team Modal -->
-  <div class="modal-backdrop" id="modalCreateTeam">
+  <div class="modal-backdrop" id="modalCreateTeam" role="dialog" aria-modal="true" aria-labelledby="createTeamModalTitle">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="createTeamModalTitle">
           <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('trophy', 'var(--gold, #F59E0B)', 18)} Create Cricket Team / Club</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCreateTeamModal()">✕</button>
@@ -8422,10 +8423,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Instant Hold Checkout Modal -->
-  <div class="modal-backdrop" id="modalCheckout">
+  <div class="modal-backdrop" id="modalCheckout" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="checkoutModalTitle">
           <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('cart', 'var(--cyan)', 18)} Turf Booking &amp; 15-Minute Reservation Hold</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCheckoutModal()">✕</button>
@@ -8470,10 +8471,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal: Scorer End Match / Innings Confirmation -->
-  <div class="modal-backdrop" id="modalEndMatchConfirmation">
+  <div class="modal-backdrop" id="modalEndMatchConfirmation" role="dialog" aria-modal="true" aria-labelledby="endMatchConfirmTitle">
     <div class="modal-dialog" style="max-width: 480px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="modal-title" id="endMatchConfirmTitle" style="display: flex; align-items: center; gap: 0.5rem;">
           <span style="display: flex; align-items: center;">${iconSvg('flag', 'var(--turf-emerald)', 20)}</span>
           <span>Officially Conclude Match / Innings</span>
         </div>
@@ -8510,10 +8511,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Official Scorecard Export Modal -->
-  <div class="modal-backdrop" id="modalScorecardExport">
+  <div class="modal-backdrop" id="modalScorecardExport" role="dialog" aria-modal="true" aria-labelledby="scorecardExportTitle">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="scorecardExportTitle">
           <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('download', 'var(--cyan)', 18)} Official Match Scorecard &amp; Export</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeScorecardModal()" data-tooltip="Close modal">✕</button>
@@ -8585,10 +8586,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Official Match Toss Modal -->
-  <div class="modal-backdrop" id="modalMatchToss">
+  <div class="modal-backdrop" id="modalMatchToss" role="dialog" aria-modal="true" aria-labelledby="matchTossModalTitle">
     <div class="modal-dialog" style="max-width: 540px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="matchTossModalTitle">
           <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('coin', 'var(--gold, #F59E0B)', 18)} Official Match Toss &amp; Lineup Confirmation</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeTossModal()" data-tooltip="Close toss modal">✕</button>
@@ -8636,10 +8637,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Post-Match 5-Star Rating Modal -->
-  <div class="modal-backdrop" id="modalMatchRating">
+  <div class="modal-backdrop" id="modalMatchRating" role="dialog" aria-modal="true" aria-labelledby="matchRatingModalTitle">
     <div class="modal-dialog" style="max-width: 540px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="matchRatingModalTitle">
           <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('star', 'var(--gold, #F59E0B)', 18)} Post-Match Verification &amp; Ratings</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMatchRatingModal()" data-tooltip="Close rating modal">✕</button>
@@ -8701,10 +8702,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Store Compliance, Privacy Policy & Terms Modal -->
-  <div class="modal-backdrop" id="modalLegalPolicies">
+  <div class="modal-backdrop" id="modalLegalPolicies" role="dialog" aria-modal="true" aria-labelledby="legalPoliciesModalTitle">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="legalPoliciesModalTitle">
           <span style="display: flex; align-items: center; gap: 0.4rem;">${iconSvg('scroll', 'var(--cyan)', 18)} CricOS Store Compliance, Privacy &amp; Terms</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeLegalModal()" data-tooltip="Close legal modal">✕</button>
@@ -8750,14 +8751,14 @@ export function getDashboardHtml() {
   </div>
   <!-- Notification Center Drawer -->
   <div id="notificationsDrawerOverlay" class="modal-backdrop" onclick="closeNotificationsDrawer()" style="display: none; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);"></div>
-  <div id="notificationsDrawer" style="position: fixed; top: 0; right: 0; transform: translateX(100%); width: 380px; max-width: 92vw; height: 100vh; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6); z-index: 10000; transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;">
+  <div id="notificationsDrawer" role="dialog" aria-modal="true" aria-labelledby="notificationCenterTitle" style="position: fixed; top: 0; right: 0; transform: translateX(100%); width: 380px; max-width: 92vw; height: 100vh; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6); z-index: 10000; transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;">
     <div style="padding: 1.25rem 1rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
       <div style="display: flex; align-items: center; gap: 0.5rem;">
         <span style="font-size: 1.15rem; display: inline-flex; align-items: center;">${iconSvg('bell', 'currentColor', 18)}</span>
-        <span style="font-weight: 700; font-family: var(--font-display); font-size: 1rem; color: #FFF;">Notification Center</span>
+        <span id="notificationCenterTitle" style="font-weight: 700; font-family: var(--font-display); font-size: 1rem; color: #FFF;">Notification Center</span>
         <span id="drawerUnreadCountBadge" style="font-size: 0.7rem; background: var(--turf-emerald); color: #04070D; font-weight: 800; padding: 0.1rem 0.45rem; border-radius: 9999px;">3 unread</span>
       </div>
-      <button onclick="closeNotificationsDrawer()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;" data-tooltip="Close notification drawer">&times;</button>
+      <button onclick="closeNotificationsDrawer()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;" data-tooltip="Close notification drawer" aria-label="Close notification drawer">&times;</button>
     </div>
     <div style="padding: 0.5rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2);">
       <div style="display: flex; gap: 0.35rem;">
@@ -8772,10 +8773,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Event Basket Modal -->
-  <div class="modal-backdrop" id="modalEventBasket">
+  <div class="modal-backdrop" id="modalEventBasket" role="dialog" aria-modal="true" aria-labelledby="eventBasketModalTitle">
     <div class="modal-dialog" style="max-width: 600px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="modal-title" id="eventBasketModalTitle" style="display: flex; align-items: center; gap: 0.5rem;">
           <span>${iconSvg('basket', 'var(--turf-emerald)', 18)} Match Event Basket &amp; Resource Procurement</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeEventBasketModal()" data-tooltip="Close basket modal">✕</button>
@@ -8879,10 +8880,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Provider Storefront Modal -->
-  <div class="modal-backdrop" id="modalProviderStorefront">
+  <div class="modal-backdrop" id="modalProviderStorefront" role="dialog" aria-modal="true" aria-labelledby="providerStorefrontModalTitle">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="modal-title" id="providerStorefrontModalTitle" style="display: flex; align-items: center; gap: 0.5rem;">
           <span>${iconSvg('cart', 'var(--turf-emerald)', 18)} Provider Storefront &amp; Capacity Manager</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeProviderStorefrontModal()" data-tooltip="Close storefront modal">✕</button>
@@ -8990,10 +8991,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal 1: Create Match Wizard -->
-  <div class="modal-backdrop" id="modalCreateEvent">
+  <div class="modal-backdrop" id="modalCreateEvent" role="dialog" aria-modal="true" aria-labelledby="createEventModalTitle">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="modal-title" id="createEventModalTitle" style="display: flex; align-items: center; gap: 0.5rem;">
           <span>${iconSvg('bat', 'var(--turf-emerald)', 18)} Create Cricket Event &amp; Match Wizard</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeCreateEventModal()" data-tooltip="Close event wizard">✕</button>
@@ -9131,10 +9132,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal 2: Event Overview & Readiness -->
-  <div class="modal-backdrop as-drawer" id="modalEventOverview">
+  <div class="modal-backdrop as-drawer" id="modalEventOverview" role="dialog" aria-modal="true" aria-labelledby="eventOverviewModalTitle">
     <div class="modal-dialog" style="max-width: 650px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="modal-title" id="eventOverviewModalTitle" style="display: flex; align-items: center; gap: 0.5rem;">
           <span>${iconSvg('clipboard', 'var(--turf-emerald)', 18)} Match Event Overview &amp; Procurement Readiness</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeEventOverviewModal()" data-tooltip="Close readiness modal">✕</button>
@@ -9216,10 +9217,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal 3: Official Calendar & Availability -->
-  <div class="modal-backdrop as-drawer" id="modalOfficialCalendar">
+  <div class="modal-backdrop as-drawer" id="modalOfficialCalendar" role="dialog" aria-modal="true" aria-labelledby="officialCalendarModalTitle">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="officialCalendarModalTitle">
           <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('calendar', 'var(--turf-emerald)', 18)} Official Availability Calendar &amp; Slot Manager</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeOfficialCalendarModal()" data-tooltip="Close calendar modal">✕</button>
@@ -9310,10 +9311,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal 4: Contextual Match Messaging -->
-  <div class="modal-backdrop as-drawer" id="modalMessaging">
+  <div class="modal-backdrop as-drawer" id="modalMessaging" role="dialog" aria-modal="true" aria-labelledby="messagingModalTitle">
     <div class="modal-dialog" style="max-width: 680px; height: 600px; display: flex; flex-direction: column;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="messagingModalTitle">
           <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('chat', 'var(--turf-emerald)', 18)} Match Coordination &amp; Contextual Messaging</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeMessagingModal()" data-tooltip="Close messaging modal">✕</button>
@@ -9388,10 +9389,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal 5: Booking Lifecycle, Cancellation & Rescheduling -->
-  <div class="modal-backdrop as-drawer" id="modalBookingLifecycle">
+  <div class="modal-backdrop as-drawer" id="modalBookingLifecycle" role="dialog" aria-modal="true" aria-labelledby="bookingLifecycleModalTitle">
     <div class="modal-dialog" style="max-width: 680px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="bookingLifecycleModalTitle">
           <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('refresh', 'var(--turf-emerald)', 18)} Cancellation Policy &amp; Rescheduling Engine</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeBookingLifecycleModal()" data-tooltip="Close cancellation modal">✕</button>
@@ -9470,10 +9471,6 @@ export function getDashboardHtml() {
             <button class="btn btn-secondary" onclick="reportNoShowProvider()" data-tooltip="Escalate provider failure to Fair Play desk" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; width: auto; color: var(--rose);">Report No-Show</button>
           </div>
         </div>
-            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">Applies -15 trust penalty points, 10% provider penalty fine, and automatic customer refund from escrow.</div>
-            <button class="btn btn-secondary" onclick="reportNoShowProvider()" data-tooltip="Escalate provider failure to Fair Play desk" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; width: auto; color: var(--rose);">Report No-Show</button>
-          </div>
-        </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
         <button class="btn btn-secondary" onclick="closeBookingLifecycleModal()" style="width: auto;" data-tooltip="Close booking lifecycle modal" aria-label="Close booking lifecycle">Close</button>
@@ -9483,10 +9480,10 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal 6: Daily Financial Reconciliation -->
-  <div class="modal-backdrop as-drawer" id="modalFinancialReconciliation">
+  <div class="modal-backdrop as-drawer" id="modalFinancialReconciliation" role="dialog" aria-modal="true" aria-labelledby="financialReconciliationModalTitle">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" id="financialReconciliationModalTitle">
           <span style="display: inline-flex; align-items: center; gap: 0.5rem;">${iconSvg('document', 'var(--turf-emerald)', 18)} Daily Financial Reconciliation &amp; Ledger Audit</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeReconciliationModal()" data-tooltip="Close reconciliation modal">✕</button>
@@ -9587,13 +9584,13 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal: Mobile App Preview & APK Demo Desk -->
-  <div class="modal-backdrop" id="modalMobileAppPreview">
+  <div class="modal-backdrop" id="modalMobileAppPreview" role="dialog" aria-modal="true" aria-labelledby="mobileAppPreviewModalTitle">
     <div class="modal-card" id="qrMobileDemoModal" style="max-width: 500px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('mobile', 'var(--turf-emerald)', 20)}</span>
           <div>
-            <div class="modal-title">CricOS Mobile App &amp; Android APK</div>
+            <div class="modal-title" id="mobileAppPreviewModalTitle">CricOS Mobile App &amp; Android APK</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Consumer iOS &amp; Native Android Experience (Target SDK 35 / Gradle 8.5)</div>
           </div>
         </div>
@@ -9654,13 +9651,13 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal: API Docs & Explorer -->
-  <div class="modal-backdrop" id="modalApiDocs">
+  <div class="modal-backdrop" id="modalApiDocs" role="dialog" aria-modal="true" aria-labelledby="apiDocsModalTitle">
     <div class="modal-card" style="max-width: 660px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('book', 'var(--cyan)', 20)}</span>
           <div>
-            <div class="modal-title">OpenAPI 3.0.3 Documentation &amp; Schemas</div>
+            <div class="modal-title" id="apiDocsModalTitle">OpenAPI 3.0.3 Documentation &amp; Schemas</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">26 Production Endpoints across 8 Workspace Modules</div>
           </div>
         </div>
@@ -9713,13 +9710,13 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal: System Health & Readiness -->
-  <div class="modal-backdrop" id="modalSystemHealth">
+  <div class="modal-backdrop" id="modalSystemHealth" role="dialog" aria-modal="true" aria-labelledby="systemHealthModalTitle">
     <div class="modal-card" style="max-width: 600px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('activity', 'var(--turf-emerald)', 20)}</span>
           <div>
-            <div class="modal-title">System Health &amp; Readiness Diagnostics</div>
+            <div class="modal-title" id="systemHealthModalTitle">System Health &amp; Readiness Diagnostics</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Fastify Server &bull; PostgreSQL Database &bull; Health Probes</div>
           </div>
         </div>
@@ -9767,13 +9764,13 @@ export function getDashboardHtml() {
   </div>
 
   <!-- Modal: Operational Metrics & Telemetry -->
-  <div class="modal-backdrop" id="modalMetricsTelemetry">
+  <div class="modal-backdrop" id="modalMetricsTelemetry" role="dialog" aria-modal="true" aria-labelledby="metricsTelemetryModalTitle">
     <div class="modal-card" style="max-width: 640px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('chart', 'var(--cyan)', 20)}</span>
           <div>
-            <div class="modal-title">Operational Telemetry &amp; OpenMetrics</div>
+            <div class="modal-title" id="metricsTelemetryModalTitle">Operational Telemetry &amp; OpenMetrics</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Real-time Prometheus Exposition &bull; Sub-Millisecond Profiling</div>
           </div>
         </div>
@@ -9821,7 +9818,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-001: Modal RFQ & Quote Negotiation -->
-  <div class="modal-backdrop as-drawer" id="modalRfq">
+  <div class="modal-backdrop as-drawer" id="modalRfq" role="dialog" aria-modal="true" aria-labelledby="rfqModalTitle">
     <div class="modal-card" style="max-width: 720px; border-radius: 20px; background: linear-gradient(145deg, rgba(12, 18, 34, 0.92) 0%, rgba(7, 10, 20, 0.96) 100%); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 25px 50px -12px rgba(0, 0, 0, 0.65); backdrop-filter: blur(20px);">
       <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.07); padding: 1.25rem 1.5rem;">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -9829,7 +9826,7 @@ cricos_active_sse_connections 1</pre>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
           </div>
           <div>
-            <div class="modal-title" style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: #FFFFFF;">Procurement RFQ &amp; Quote Negotiation Desk</div>
+            <div class="modal-title" id="rfqModalTitle" style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: #FFFFFF;">Procurement RFQ &amp; Quote Negotiation Desk</div>
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Tournament Requirements &bull; Competitive Bidding &bull; Escrow Contract Awarding</div>
           </div>
         </div>
@@ -9903,7 +9900,7 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-002: Modal Commerce & Cricket Gear Store (Full-Featured E-Commerce & Pavilion Dispatch) -->
-  <div class="modal-backdrop as-drawer" id="modalCommerce">
+  <div class="modal-backdrop as-drawer" id="modalCommerce" role="dialog" aria-modal="true" aria-labelledby="commerceModalTitle">
     <div class="modal-card" style="max-width: 1120px; width: 96vw;">
       <div class="modal-header" style="border-bottom: 1px solid var(--border-subtle); padding: 1rem 1.35rem;">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 1rem; flex-wrap: wrap;">
@@ -9911,7 +9908,7 @@ cricos_active_sse_connections 1</pre>
             <span style="background: rgba(0,229,153,0.14); border: 1px solid rgba(0,229,153,0.35); width: 42px; height: 42px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: var(--turf-emerald);">${iconSvg('cart', 'var(--turf-emerald)', 22)}</span>
             <div>
               <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <div class="modal-title" style="font-size: 1.1rem; font-weight: 800;">CricOS Pro Gear, Match Balls &amp; Pavilion Equipment Store</div>
+                <div class="modal-title" id="commerceModalTitle" style="font-size: 1.1rem; font-weight: 800;">CricOS Pro Gear, Match Balls &amp; Pavilion Equipment Store</div>
                 <span class="badge badge-emerald" style="font-size: 0.62rem; padding: 0.15rem 0.5rem;">MCC LAW 4 &amp; 5 CERTIFIED</span>
               </div>
               <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;">
@@ -10122,13 +10119,13 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-006 & P1-007: Modal Tournament Ops & Fixture Board -->
-  <div class="modal-backdrop as-drawer" id="modalTournamentOps">
+  <div class="modal-backdrop as-drawer" id="modalTournamentOps" role="dialog" aria-modal="true" aria-labelledby="tournamentOpsModalTitle">
     <div class="modal-card" style="max-width: 750px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('trophy', 'var(--turf-emerald)', 20)}</span>
           <div>
-            <div class="modal-title">Tournament Fixture Board &amp; Command Centre</div>
+            <div class="modal-title" id="tournamentOpsModalTitle">Tournament Fixture Board &amp; Command Centre</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Round-Robin Schedule &bull; Conflict Engine &bull; Bulk CSV Upload</div>
           </div>
         </div>
@@ -10190,13 +10187,13 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-010 & P2-001: Modal Match Insights & AI Recap -->
-  <div class="modal-backdrop as-drawer" id="modalMatchInsights">
+  <div class="modal-backdrop as-drawer" id="modalMatchInsights" role="dialog" aria-modal="true" aria-labelledby="matchInsightsModalTitle">
     <div class="modal-card" style="max-width: 650px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('chart', 'var(--cyan)', 20)}</span>
           <div>
-            <div class="modal-title">Match Intelligence &amp; MVP Impact Analysis</div>
+            <div class="modal-title" id="matchInsightsModalTitle">Match Intelligence &amp; MVP Impact Analysis</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Algorithmic POTM &bull; Tactical Phase Recap &bull; Turning Point Swing</div>
           </div>
         </div>
@@ -10244,14 +10241,14 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P1-011: Modal Provider Check-In & Match Sign-Off -->
-  <div class="modal-backdrop as-drawer" id="modalCheckIn">
+  <div class="modal-backdrop as-drawer" id="modalCheckIn" role="dialog" aria-modal="true" aria-labelledby="checkInModalTitle">
     <div class="modal-card" style="max-width: 560px;">
       <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.9rem;">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); display: flex; align-items: center; justify-content: center; color: var(--turf-emerald); flex-shrink: 0;">${iconSvg('pin', 'var(--turf-emerald)', 20)}</div>
           <div>
             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-              <div class="modal-title" style="font-size: 1.05rem;">Provider Check-In &amp; Match Sign-Off</div>
+              <div class="modal-title" id="checkInModalTitle" style="font-size: 1.05rem;">Provider Check-In &amp; Match Sign-Off</div>
               <span id="checkinHeaderStatusPill" style="font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; padding: 0.18rem 0.5rem; border-radius: 999px; background: rgba(0, 210, 255, 0.14); color: #00D2FF; border: 1px solid rgba(0, 210, 255, 0.35);">ESCROW ACTIVE</span>
             </div>
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;">Arrival OTP Verification &bull; GPS Geofence Lock &bull; 3-Party Digital Sign-Off</div>
@@ -10376,13 +10373,13 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- P2-004 & P3-001: Modal Sponsorship & Player Auction -->
-  <div class="modal-backdrop as-drawer" id="modalSponsorshipAuction">
+  <div class="modal-backdrop as-drawer" id="modalSponsorshipAuction" role="dialog" aria-modal="true" aria-labelledby="sponsorshipAuctionModalTitle">
     <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: var(--cyan);">${iconSvg('handshake', 'var(--cyan)', 20)}</span>
           <div>
-            <div class="modal-title">Sponsorship Inventory &amp; Player Auction Desk</div>
+            <div class="modal-title" id="sponsorshipAuctionModalTitle">Sponsorship Inventory &amp; Player Auction Desk</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Prize Pool Pledges &bull; Live Franchise Bidding &bull; Double-Entry Escrow</div>
           </div>
         </div>
@@ -10438,13 +10435,13 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal: Official Umpire Match Day Desk & DRS Incident Review -->
-  <div class="modal-backdrop as-drawer" id="modalUmpireDesk">
+  <div class="modal-backdrop as-drawer" id="modalUmpireDesk" role="dialog" aria-modal="true" aria-labelledby="umpireDeskModalTitle">
     <div class="modal-card" style="max-width: 780px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('scale', 'var(--turf-emerald)', 20)}</span>
           <div>
-            <div class="modal-title">Match Day Umpire Desk &amp; Integrity Review</div>
+            <div class="modal-title" id="umpireDeskModalTitle">Match Day Umpire Desk &amp; Integrity Review</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Lead: Nitin Menon &bull; Leg: Sundaram Ravi &bull; Referee: Javagal Srinath</div>
           </div>
         </div>
@@ -10520,13 +10517,13 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal: Live Digital Match Scorer Studio & Audio Telemetry / Cricsheet Export -->
-  <div class="modal-backdrop as-drawer" id="modalCricsheetExport">
+  <div class="modal-backdrop as-drawer" id="modalCricsheetExport" role="dialog" aria-modal="true" aria-labelledby="cricsheetExportModalTitle">
     <div class="modal-card" style="max-width: 780px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald);">${iconSvg('document', 'var(--turf-emerald)', 20)}</span>
           <div>
-            <div class="modal-title">Live Scorer Studio &amp; Cricsheet / XML Export</div>
+            <div class="modal-title" id="cricsheetExportModalTitle">Live Scorer Studio &amp; Cricsheet / XML Export</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Cricsheet.org v1.0.0 Specification &bull; Federation XML &bull; Speech-to-Score Voice Telemetry</div>
           </div>
         </div>
@@ -10586,13 +10583,13 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal: Multi-Division League Brackets & Promotion/Relegation -->
-  <div class="modal-backdrop as-drawer" id="modalLeagueDivisions">
+  <div class="modal-backdrop as-drawer" id="modalLeagueDivisions" role="dialog" aria-modal="true" aria-labelledby="leagueDivisionsModalTitle">
     <div class="modal-card" style="max-width: 820px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 184, 0, 0.1); border: 1px solid rgba(255, 184, 0, 0.25); color: var(--amber);">${iconSvg('trophy', 'var(--amber)', 20)}</span>
           <div>
-            <div class="modal-title">Multi-Division League Ladders &amp; Playoff Seeding</div>
+            <div class="modal-title" id="leagueDivisionsModalTitle">Multi-Division League Ladders &amp; Playoff Seeding</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Tier 1 Premier League &bull; Tier 2 Championship &bull; Automatic Season Promotion/Relegation</div>
           </div>
         </div>
@@ -10691,13 +10688,13 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal 12: Duckworth-Lewis-Stern (DLS) Rain Target Calculator -->
-  <div class="modal-backdrop as-drawer" id="modalDlsCalculator">
+  <div class="modal-backdrop as-drawer" id="modalDlsCalculator" role="dialog" aria-modal="true" aria-labelledby="dlsCalculatorModalTitle">
     <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: flex; align-items: center;">${getDesktopIconSvg('rain', '#00D2FF', 22)}</span>
           <div>
-            <div class="modal-title">Duckworth-Lewis-Stern (DLS) Target Engine</div>
+            <div class="modal-title" id="dlsCalculatorModalTitle">Duckworth-Lewis-Stern (DLS) Target Engine</div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">Rain Interruption Modeling • Standard T20 Resource Curves • Revised Targets</div>
           </div>
         </div>
@@ -10778,10 +10775,10 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal: 3D Championship Trophy Cabinet -->
-  <div class="modal-backdrop" id="modal3DTrophyCabinet">
+  <div class="modal-backdrop" id="modal3DTrophyCabinet" role="dialog" aria-modal="true" aria-labelledby="trophyCabinetModalTitle">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.45rem;">
+        <div class="modal-title" id="trophyCabinetModalTitle" style="display: flex; align-items: center; gap: 0.45rem;">
           ${getDesktopIconSvg('trophy', '#FFB800', 18)} <span>3D Championship Trophy Cabinet</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modal3DTrophyCabinet')" data-tooltip="Close Trophy Cabinet">✕</button>
@@ -10820,10 +10817,10 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal: Holographic 3D Player Card Inspector -->
-  <div class="modal-backdrop" id="modal3DPlayerCard">
+  <div class="modal-backdrop" id="modal3DPlayerCard" role="dialog" aria-modal="true" aria-labelledby="playerCardModalTitle">
     <div class="modal-dialog" style="max-width: 600px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.45rem;">
+        <div class="modal-title" id="playerCardModalTitle" style="display: flex; align-items: center; gap: 0.45rem;">
           ${getDesktopIconSvg('card', '#A855F7', 18)} <span>Holographic 3D Player Card Inspector</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modal3DPlayerCard')" data-tooltip="Close Player Card">✕</button>
@@ -10870,10 +10867,10 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal: 3D Cricket Bat & Gear Configurator -->
-  <div class="modal-backdrop" id="modal3DBatCustomizer">
+  <div class="modal-backdrop" id="modal3DBatCustomizer" role="dialog" aria-modal="true" aria-labelledby="batCustomizerModalTitle">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.45rem;">
+        <div class="modal-title" id="batCustomizerModalTitle" style="display: flex; align-items: center; gap: 0.45rem;">
           ${getDesktopIconSvg('bat', '#00E599', 18)} <span>3D Cricket Bat &amp; Gear Customizer</span>
         </div>
         <button class="modal-close-btn" aria-label="Close dialog" onclick="closeModal('modal3DBatCustomizer')" data-tooltip="Close Bat Customizer">✕</button>
@@ -10923,10 +10920,10 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- Modal: 21st.dev Athletic Career Stats Drawer -->
-  <div class="modal-backdrop as-drawer" id="modalPlayerStatsDrawer">
+  <div class="modal-backdrop as-drawer" id="modalPlayerStatsDrawer" role="dialog" aria-modal="true" aria-labelledby="playerStatsDrawerTitle">
     <div class="modal-dialog" style="max-width: 720px;">
       <div class="modal-header">
-        <div class="modal-title" style="display: flex; align-items: center; gap: 0.6rem;">
+        <div class="modal-title" id="playerStatsDrawerTitle" style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="display: inline-flex; align-items: center; gap: 0.4rem;">${getDesktopIconSvg('activity', '#00E599', 18)} Athlete Analytical Dossier</span>
           <span class="player-role-badge" id="drawerRoleBadge" style="background: rgba(0,229,153,0.18); color: var(--turf-emerald);">ALL</span>
         </div>
@@ -11038,7 +11035,7 @@ cricos_active_sse_connections 1</pre>
   </nav>
 
   <!-- Reusable In-App Dialog (replaces native alert/confirm/prompt) -->
-  <div class="modal-backdrop" id="modalAppDialog">
+  <div class="modal-backdrop" id="modalAppDialog" role="dialog" aria-modal="true" aria-labelledby="appDialogTitle">
     <div class="modal-dialog" style="max-width: 420px;">
       <div class="modal-header">
         <div class="modal-title">

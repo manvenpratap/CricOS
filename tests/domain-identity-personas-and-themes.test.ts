@@ -970,6 +970,54 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(sessionBadgeIndex !== -1, 'mobileActiveSessionBadge must exist');
       assert.ok(sessionBadgeIndex > accountComplianceIndex, 'mobileActiveSessionBadge must be placed inside Account & Compliance section');
     });
+
+    it('11. Universal WCAG 2.2 AA Modal Dialog Accessibility Invariants (Desktop & Mobile)', () => {
+      // 1. Desktop: All modal backdrops (except pure backdrop overlay divs) must have WAI-ARIA role="dialog", aria-modal="true", and aria-labelledby
+      const modalRegex = /<div[^>]*class="modal-backdrop[^"]*"[^>]*id="([^"]+)"[^>]*>/g;
+      let match;
+      let modalCount = 0;
+      while ((match = modalRegex.exec(dashboardHtml)) !== null) {
+        const fullTag = match[0];
+        const modalId = match[1];
+        if (modalId === 'notificationsDrawerOverlay') continue; // Pure click-backdrop overlay
+
+        modalCount++;
+        assert.ok(fullTag.includes('role="dialog"'), `Modal #${modalId} must have role="dialog"`);
+        assert.ok(fullTag.includes('aria-modal="true"'), `Modal #${modalId} must have aria-modal="true"`);
+        
+        const labelledByMatch = fullTag.match(/aria-labelledby="([^"]+)"/);
+        assert.ok(labelledByMatch, `Modal #${modalId} must have aria-labelledby attribute`);
+        const titleId = labelledByMatch[1];
+        assert.ok(dashboardHtml.includes(`id="${titleId}"`), `Target title element #${titleId} for modal #${modalId} must exist in DOM`);
+      }
+      assert.ok(modalCount >= 25, `Expected at least 25 desktop modals, found ${modalCount}`);
+
+      // 2. Desktop Notification Drawer
+      assert.ok(dashboardHtml.includes('id="notificationsDrawer" role="dialog" aria-modal="true" aria-labelledby="notificationCenterTitle"'));
+      assert.ok(dashboardHtml.includes('id="notificationCenterTitle"'));
+
+      // 3. Desktop Focus Trapping and Escape listener
+      assert.ok(dashboardSrc.includes("e.key === 'Tab'") && dashboardSrc.includes("e.shiftKey"), 'Desktop must implement Tab / Shift-Tab focus trapping');
+      assert.ok(dashboardSrc.includes("e.key === 'Escape'"), 'Desktop must dismiss modals on Escape');
+
+      // 4. Mobile: Sheets & Drawers WAI-ARIA invariants
+      assert.ok(mobileSrc.includes('id="actionSheetModal" role="dialog" aria-modal="true" aria-labelledby="actionSheetTitle"'));
+      assert.ok(mobileSrc.includes('id="mobilePersonaSheet" role="dialog" aria-modal="true" aria-labelledby="personaSheetTitle"'));
+      assert.ok(mobileSrc.includes('id="mobileSettingsSheet" role="dialog" aria-modal="true" aria-labelledby="settingsSheetTitle"'));
+      assert.ok(mobileSrc.includes('id="extraRunsPickerSheet" role="dialog" aria-modal="true" aria-labelledby="extraRunsPickerTitle"'));
+      assert.ok(mobileSrc.includes('id="wagonPickerSheet" role="dialog" aria-modal="true" aria-labelledby="wagonPickerTitle"'));
+      assert.ok(mobileSrc.includes('id="mobileSidebarDrawer" data-sidebar-theme="\' + activeTheme + \'" role="dialog" aria-modal="true" aria-labelledby="mobileSidebarTitle"'));
+      assert.ok(mobileSrc.includes('id="mobileDismissalSheet" role="dialog" aria-modal="true" aria-labelledby="dismissalSheetTitle"'));
+      assert.ok(mobileSrc.includes('id="mobileIccLawsSheet" role="dialog" aria-modal="true" aria-labelledby="iccLawsSheetTitle"'));
+      assert.ok(mobileSrc.includes('id="mobilePenaltyRunsSheet" role="dialog" aria-modal="true" aria-labelledby="penaltyRunsSheetTitle"'));
+      assert.ok(mobileSrc.includes('id="mobileBowlerRotationSheet" role="dialog" aria-modal="true" aria-labelledby="bowlerRotationTitle"'));
+
+      // 5. Mobile Universal Sheet & Drawer Focus Trapping & Restoration
+      assert.ok(mobileSrc.includes('Universal Mobile Sheet & Drawer Focus Trapping & Restoration (WCAG 2.2 AA)'));
+      assert.ok(mobileSrc.includes('mobileModalObserver'));
+      assert.ok(mobileSrc.includes("e.key === 'Escape'"));
+      assert.ok(mobileSrc.includes("e.key === 'Tab'"));
+    });
   });
 });
 

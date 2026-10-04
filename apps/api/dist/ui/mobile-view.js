@@ -146,8 +146,14 @@ export function getMobileAppHtml() {
       color: #475569 !important;
     }
     body[data-theme="swiss"] .mobile-nav-item.active {
-      color: #0F172A !important;
+      color: #047857 !important;
       font-weight: 800 !important;
+      background: rgba(4, 120, 87, 0.08) !important;
+      border: 1px solid rgba(4, 120, 87, 0.3) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 2px 0 #047857 !important;
+    }
+    body[data-theme="swiss"] .mobile-nav-item.active::after {
+      background: #047857 !important;
     }
     body[data-theme="swiss"] .mobile-card,
     body[data-theme="swiss"] .mobile-sheet,
@@ -202,8 +208,8 @@ export function getMobileAppHtml() {
     }
     body[data-theme="swiss"] .mobile-match-switch-tab.active {
       background: #ECFDF5 !important;
-      border-color: #059669 !important;
-      color: #059669 !important;
+      border-color: #047857 !important;
+      color: #047857 !important;
     }
     body[data-theme="swiss"] .btn-mobile-undo {
       background: #F1F5F9 !important;
@@ -529,15 +535,15 @@ export function getMobileAppHtml() {
     }
     body[data-theme="swiss"] .athletic-card-avatar,
     html[data-theme="swiss"] .athletic-card-avatar {
-      border-color: #059669 !important;
+      border-color: #047857 !important;
       background: #ECFDF5 !important;
-      box-shadow: 0 0 12px rgba(5, 150, 105, 0.25) !important;
+      box-shadow: 0 4px 12px rgba(4, 120, 87, 0.15) !important;
     }
     body[data-theme="swiss"] .athletic-badge-athlete,
     html[data-theme="swiss"] .athletic-badge-athlete,
     body[data-theme="swiss"] .mobile-holo-badge,
     html[data-theme="swiss"] .mobile-holo-badge {
-      color: #059669 !important;
+      color: #047857 !important;
       font-weight: 800 !important;
     }
     body[data-theme="swiss"] .athletic-brand-dot,
@@ -567,15 +573,15 @@ export function getMobileAppHtml() {
     html[data-theme="swiss"] .athletic-player-jersey,
     body[data-theme="swiss"] .mobile-holo-jersey,
     html[data-theme="swiss"] .mobile-holo-jersey {
-      color: #0284C7 !important;
-      text-shadow: 0 0 12px rgba(2, 132, 199, 0.25) !important;
+      color: #0369A1 !important;
+      text-shadow: 0 0 12px rgba(3, 105, 161, 0.2) !important;
     }
     body[data-theme="swiss"] .athletic-rating-circle,
     html[data-theme="swiss"] .athletic-rating-circle {
       background: #FFFFFF !important;
-      border: 2.5px solid #059669 !important;
-      color: #059669 !important;
-      box-shadow: 0 2px 10px rgba(5, 150, 105, 0.2) !important;
+      border: 2.5px solid #047857 !important;
+      color: #047857 !important;
+      box-shadow: 0 2px 10px rgba(4, 120, 87, 0.15) !important;
     }
     body[data-theme="swiss"] .athletic-rating-meta,
     html[data-theme="swiss"] .athletic-rating-meta {
@@ -586,18 +592,18 @@ export function getMobileAppHtml() {
     html[data-theme="swiss"] .athletic-form-badge {
       background: #ECFDF5 !important;
       border: 1px solid #A7F3D0 !important;
-      color: #059669 !important;
+      color: #047857 !important;
       font-weight: 800 !important;
     }
     body[data-theme="swiss"] .athletic-flip-hint,
     html[data-theme="swiss"] .athletic-flip-hint,
     body[data-theme="swiss"] .mobile-holo-hint,
     html[data-theme="swiss"] .mobile-holo-hint {
-      color: #059669 !important;
+      color: #047857 !important;
     }
     body[data-theme="swiss"] .athletic-back-title,
     html[data-theme="swiss"] .athletic-back-title {
-      color: #0284C7 !important;
+      color: #0369A1 !important;
     }
     body[data-theme="swiss"] .athletic-back-subtitle,
     html[data-theme="swiss"] .athletic-back-subtitle {
@@ -622,23 +628,23 @@ export function getMobileAppHtml() {
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-runs,
     html[data-theme="swiss"] .athletic-back-stat-val.val-runs {
-      color: #059669 !important;
+      color: #047857 !important;
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-avg,
     html[data-theme="swiss"] .athletic-back-stat-val.val-avg,
     body[data-theme="swiss"] .mobile-holo-stat-val.val-avg,
     html[data-theme="swiss"] .mobile-holo-stat-val.val-avg {
-      color: #059669 !important;
+      color: #047857 !important;
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-sr,
     html[data-theme="swiss"] .athletic-back-stat-val.val-sr,
     body[data-theme="swiss"] .mobile-holo-stat-val.val-sr,
     html[data-theme="swiss"] .mobile-holo-stat-val.val-sr {
-      color: #0284C7 !important;
+      color: #0369A1 !important;
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-bdry,
     html[data-theme="swiss"] .athletic-back-stat-val.val-bdry {
-      color: #D97706 !important;
+      color: #B45309 !important;
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-matches,
     html[data-theme="swiss"] .athletic-back-stat-val.val-matches {
@@ -646,15 +652,15 @@ export function getMobileAppHtml() {
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-wecon,
     html[data-theme="swiss"] .athletic-back-stat-val.val-wecon {
-      color: #0284C7 !important;
+      color: #0369A1 !important;
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-catches,
     html[data-theme="swiss"] .athletic-back-stat-val.val-catches {
-      color: #7C3AED !important;
+      color: #6D28D9 !important;
     }
     body[data-theme="swiss"] .athletic-back-stat-val.val-impact,
     html[data-theme="swiss"] .athletic-back-stat-val.val-impact {
-      color: #D97706 !important;
+      color: #B45309 !important;
     }
     body[data-theme="swiss"] .athletic-back-momentum,
     html[data-theme="swiss"] .athletic-back-momentum {
@@ -667,11 +673,11 @@ export function getMobileAppHtml() {
     }
     body[data-theme="swiss"] .athletic-back-momentum-trend,
     html[data-theme="swiss"] .athletic-back-momentum-trend {
-      color: #059669 !important;
+      color: #047857 !important;
     }
     body[data-theme="swiss"] .athletic-back-flip-hint,
     html[data-theme="swiss"] .athletic-back-flip-hint {
-      color: #0284C7 !important;
+      color: #0369A1 !important;
     }
     body[data-theme="swiss"] .btn-card-radar-splits,
     html[data-theme="swiss"] .btn-card-radar-splits,
@@ -679,7 +685,7 @@ export function getMobileAppHtml() {
     html[data-theme="swiss"] #btnCardRadarSplits {
       background: #F0F9FF !important;
       border: 1px solid #BAE6FD !important;
-      color: #0284C7 !important;
+      color: #0369A1 !important;
     }
     body[data-theme="swiss"] #btnToggleInlineAnalysis,
     html[data-theme="swiss"] #btnToggleInlineAnalysis,
@@ -687,15 +693,15 @@ export function getMobileAppHtml() {
     html[data-theme="swiss"] .btn-toggle-inline-analysis {
       background: #ECFDF5 !important;
       border: 1px solid #A7F3D0 !important;
-      color: #059669 !important;
+      color: #047857 !important;
     }
     body[data-theme="swiss"] #btnOpenPlayerAnalysisSheet,
     html[data-theme="swiss"] #btnOpenPlayerAnalysisSheet,
     body[data-theme="swiss"] .btn-open-player-analysis,
     html[data-theme="swiss"] .btn-open-player-analysis {
-      background: #F0F9FF !important;
-      border: 1px solid #BAE6FD !important;
-      color: #0284C7 !important;
+      background: #F0FDF4 !important;
+      border: 1px solid #BBF7D0 !important;
+      color: #047857 !important;
     }
     body[data-theme="swiss"] .player-list-item,
     html[data-theme="swiss"] .player-list-item {
@@ -924,6 +930,12 @@ export function getMobileAppHtml() {
     body[data-theme="nordic"] .mobile-nav-item.active {
       color: #15803D !important;
       font-weight: 700 !important;
+      background: rgba(21, 128, 61, 0.08) !important;
+      border: 1px solid rgba(21, 128, 61, 0.3) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 2px 0 #15803D !important;
+    }
+    body[data-theme="nordic"] .mobile-nav-item.active::after {
+      background: #15803D !important;
     }
     body[data-theme="nordic"] .mobile-card,
     body[data-theme="nordic"] .mobile-sheet,
@@ -2046,13 +2058,41 @@ export function getMobileAppHtml() {
       transform: scale(0.97);
     }
 
-    /* Vestibular Motion Safeguard (WCAG 2.2 AA) */
+    /* Vestibular Motion Safeguard (WCAG 2.2 AA) - Targeted Motion Reduction */
     @media (prefers-reduced-motion: reduce) {
       *, ::before, ::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+      }
+      /* Suppress large spatial translations and 3D card flips */
+      .player-flip-inner,
+      .stat-3d-card-inner,
+      .mobile-sheet,
+      .mobile-wagon-picker-sheet,
+      .mobile-extra-picker-sheet,
+      .mobile-persona-sheet,
+      .mobile-action-sheet,
+      .mobile-settings-sheet,
+      .mobile-dismissal-sheet,
+      .mobile-icc-laws-sheet,
+      .mobile-penalty-runs-sheet,
+      .mobile-bowler-sheet,
+      #mobileSidebarDrawer {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        transform: none !important;
+      }
+      /* Suppress continuous looping pulses, telemetry waves, and infinite rotations */
+      .live-pulse-dot,
+      .telemetry-pulse,
+      .live-dot,
+      .radar-sweep,
+      .loading-spinner {
+        animation: none !important;
+        opacity: 1 !important;
+      }
+      /* Suppress button active scale bouncing */
+      button:active, .role-pill:active, .slot-pill:active, .mobile-chip:active, .pad-touch-btn:active {
+        transform: none !important;
       }
     }
 
@@ -2638,13 +2678,16 @@ export function getMobileAppHtml() {
       gap: 0.35rem;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
-      padding: 0.2rem 0.5rem;
-      font-size: 0.65rem;
+      border-radius: 8px;
+      min-height: 44px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.74rem;
       color: #94a3b8;
       cursor: pointer;
       user-select: none;
       white-space: nowrap;
+      touch-action: manipulation;
+      box-sizing: border-box;
       transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
     .mobile-match-switch-tab.active {
@@ -2839,34 +2882,60 @@ export function getMobileAppHtml() {
       align-items: center;
       justify-content: center;
       min-width: max-content;
-      height: 26px;
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
-      font-size: 0.68rem;
+      min-height: 44px;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      font-size: 0.72rem;
       font-weight: 700;
       font-family: var(--font-display);
       white-space: nowrap;
       flex-shrink: 0;
       cursor: pointer;
+      position: relative;
+      touch-action: manipulation;
       box-sizing: border-box;
       transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .wagon-sector-chip::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 44px;
+      min-height: 44px;
+      width: 100%;
+      height: 100%;
     }
     .worm-over-chip {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-width: 44px;
-      height: 26px;
-      padding: 0.2rem 0.45rem;
-      border-radius: 6px;
-      font-size: 0.68rem;
+      min-height: 44px;
+      padding: 0.35rem 0.55rem;
+      border-radius: 8px;
+      font-size: 0.72rem;
       font-weight: 800;
       font-family: var(--font-score);
       white-space: nowrap;
       flex-shrink: 0;
       cursor: pointer;
+      position: relative;
+      touch-action: manipulation;
       box-sizing: border-box;
       transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .worm-over-chip::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 44px;
+      min-height: 44px;
+      width: 100%;
+      height: 100%;
     }
 
     /* 21st.dev Athletic KPI & Career Stats Card in Mobile View */
@@ -5584,18 +5653,17 @@ export function getMobileAppHtml() {
           var card = document.getElementById('mobileAthleticStatsCard') || document.getElementById('playerFlipCard3D');
           var scrollBody = document.getElementById('mobileScrollBody');
           if (scrollBody && card) {
-            var cardTop = card.offsetTop;
-            var targetY = Math.max(0, cardTop - 8);
+            var cardRect = card.getBoundingClientRect();
+            var bodyRect = scrollBody.getBoundingClientRect();
+            var targetY = Math.max(0, scrollBody.scrollTop + (cardRect.top - bodyRect.top) - 8);
+            scrollBody.scrollTop = targetY;
             scrollBody.scrollTo({ top: targetY, behavior: 'smooth' });
-            try {
-              card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } catch (e) {}
           } else if (card) {
             try {
               card.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } catch (e) {}
           } else if (scrollBody) {
-            scrollBody.scrollTo({ top: 0, behavior: 'smooth' });
+            scrollBody.scrollTop = 0;
           } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
@@ -6674,30 +6742,30 @@ export function getMobileAppHtml() {
             '<input type="file" id="editProfilePhotoInput" accept="image/*" style="display: none;" onchange="window.cricosMobileApp.handleMobileProfilePhoto(event); window.cricosMobileApp.closeActionSheet();">' +
             '<div style="margin-top: 0.45rem;">' +
               '<div style="font-size: 0.62rem; color: #64748b; margin-bottom: 0.25rem;">Or choose a preset portrait:</div>' +
-              '<div style="display: flex; gap: 0.4rem; justify-content: center;">' +
-                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(0); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Premier Batsman"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL" style="width:100%;height:100%;object-fit:cover;" alt="Preset 1"></button>' +
-                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(1); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Fast Bowler"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS" style="width:100%;height:100%;object-fit:cover;" alt="Preset 2"></button>' +
-                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(2); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Official Scorer"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM" style="width:100%;height:100%;object-fit:cover;" alt="Preset 3"></button>' +
-                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(3); window.cricosMobileApp.closeActionSheet();" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent;" data-tooltip="Lofted Drive"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td" style="width:100%;height:100%;object-fit:cover;" alt="Preset 4"></button>' +
+              '<div style="display: flex; gap: 0.55rem; justify-content: center; align-items: center;">' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(0); window.cricosMobileApp.closeActionSheet();" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent; touch-action: manipulation;" data-tooltip="Premier Batsman" aria-label="Premier Batsman Preset"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL" style="width:100%;height:100%;object-fit:cover;" alt="Preset 1"></button>' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(1); window.cricosMobileApp.closeActionSheet();" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent; touch-action: manipulation;" data-tooltip="Fast Bowler" aria-label="Fast Bowler Preset"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS" style="width:100%;height:100%;object-fit:cover;" alt="Preset 2"></button>' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(2); window.cricosMobileApp.closeActionSheet();" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent; touch-action: manipulation;" data-tooltip="Official Scorer" aria-label="Official Scorer Preset"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM" style="width:100%;height:100%;object-fit:cover;" alt="Preset 3"></button>' +
+                '<button type="button" onclick="window.cricosMobileApp.selectMobilePresetAvatar(3); window.cricosMobileApp.closeActionSheet();" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); overflow: hidden; cursor: pointer; padding: 0; background: transparent; touch-action: manipulation;" data-tooltip="Lofted Drive" aria-label="Lofted Drive Preset"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td" style="width:100%;height:100%;object-fit:cover;" alt="Preset 4"></button>' +
               '</div>' +
             '</div>' +
           '</div>' +
           '<div style="border-top: 1px solid rgba(255,255,255,0.06);"></div>' +
           '<div>' +
-            '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Full Name</label>' +
+            '<label for="editProfileNameInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Full Name</label>' +
             '<input type="text" id="editProfileNameInput" value="' + (p.name || '') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.9rem;" />' +
           '</div>' +
           '<div>' +
-            '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Cricket Bio / About You</label>' +
+            '<label for="editProfileBioInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Cricket Bio / About You</label>' +
             '<textarea id="editProfileBioInput" rows="3" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem; line-height: 1.4; resize: none;">' + (p.bio || '') + '</textarea>' +
           '</div>' +
           '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">' +
             '<div>' +
-              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Jersey Number</label>' +
+              '<label for="editProfileJerseyInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Jersey Number</label>' +
               '<input type="number" id="editProfileJerseyInput" value="' + (p.jerseyNumber || 18) + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #00E599; font-weight: 700; font-size: 0.9rem;" />' +
             '</div>' +
             '<div>' +
-              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Batting Stance</label>' +
+              '<label for="editProfileStanceInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Batting Stance</label>' +
               '<select id="editProfileStanceInput" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem;">' +
                 '<option value="RHB"' + (p.stance === 'RHB' ? ' selected' : '') + '>RHB (Right-Hand)</option>' +
                 '<option value="LHB"' + (p.stance === 'LHB' ? ' selected' : '') + '>LHB (Left-Hand)</option>' +
@@ -6706,11 +6774,11 @@ export function getMobileAppHtml() {
           '</div>' +
           '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">' +
             '<div>' +
-              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Bowling Style</label>' +
+              '<label for="editProfileBowlingInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Bowling Style</label>' +
               '<input type="text" id="editProfileBowlingInput" value="' + (p.bowlingStyle || 'Right-Arm Fast') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem;" />' +
             '</div>' +
             '<div>' +
-              '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Team / Club</label>' +
+              '<label for="editProfileTeamInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.35rem;">Team / Club</label>' +
               '<input type="text" id="editProfileTeamInput" value="' + (p.teamName || 'Delhi Daredevils') + '" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.85rem;" />' +
             '</div>' +
           '</div>' +
@@ -6764,6 +6832,54 @@ export function getMobileAppHtml() {
       closeSidebarDrawer() {
         this.sidebarDrawerOpen = false;
         this.render();
+      }
+
+      handleNativeBack() {
+        if (this.sidebarDrawerOpen) {
+          this.closeSidebarDrawer();
+          return true;
+        }
+        if (this.extraPickerOpen) {
+          this.closeExtraRunsPickerSheet();
+          return true;
+        }
+        if (this.wagonPickerOpen) {
+          this.closeWagonPickerSheet();
+          return true;
+        }
+        if (this.activeActionSheet) {
+          this.closeActionSheet();
+          return true;
+        }
+        if (this.personaSheetOpen) {
+          this.closePersonaSheet();
+          return true;
+        }
+        if (this.settingsSheetOpen) {
+          this.closeSettingsSheet();
+          return true;
+        }
+        if (this.bowlerRotationSheetOpen) {
+          this.closeMobileBowlerRotationSheet();
+          return true;
+        }
+        if (this.dismissalSheetOpen) {
+          this.closeMobileDismissalSheet();
+          return true;
+        }
+        if (this.iccLawsSheetOpen) {
+          this.closeIccLawsSheet();
+          return true;
+        }
+        if (this.penaltyRunsSheetOpen) {
+          this.closePenaltyRunsSheet();
+          return true;
+        }
+        if (this.weatherForecastExpanded) {
+          this.toggleMobileWeatherForecast();
+          return true;
+        }
+        return false;
       }
 
       navigateToFromSidebar(screenId, subTab) {
@@ -6937,16 +7053,16 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="settingsSheetBackdrop" onclick="window.cricosMobileApp.closeSettingsSheet()"></div>';
-        h += '<div class="mobile-settings-sheet active" id="mobileSettingsSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid ' + bdrColor + ';">';
+        h += '<div class="mobile-settings-sheet active" id="mobileSettingsSheet" role="dialog" aria-modal="true" aria-labelledby="settingsSheetTitle" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid ' + bdrColor + ';">';
         
         // Drag Indicator & Header
         h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '<span style="display: inline-flex; align-items: center;">' + this.iconSvg('settings', '#00E599', 18) + '</span>';
-        h += '<span style="font-family: var(--font-display); font-size: 1rem; font-weight: 800; color: ' + ink + ';">App Settings</span>';
+        h += '<span id="settingsSheetTitle" style="font-family: var(--font-display); font-size: 1rem; font-weight: 800; color: ' + ink + ';">App Settings</span>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeSettingsSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Close Settings">✕</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeSettingsSheet()" style="background: transparent; border: none; font-size: 1.2rem; color: ' + muted + '; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Close Settings" aria-label="Close settings"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
 
         // 1. Appearance & Themes Card
@@ -7068,15 +7184,15 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div id="mobileSidebarBackdrop" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="position: fixed; inset: 0; z-index: 9490; background: ' + (isLight ? 'rgba(15, 23, 42, 0.42)' : 'rgba(2, 6, 14, 0.72)') + '; backdrop-filter: blur(4px); display: ' + (isOpen ? 'block' : 'none') + ';"></div>';
-        h += '<aside id="mobileSidebarDrawer" data-sidebar-theme="' + activeTheme + '" aria-label="Mobile Sidebar Navigation" style="position: fixed; top: 0; left: 0; bottom: 0; width: 282px; max-width: 84vw; z-index: 9500; background: ' + drawerBg + '; border-right: 1px solid ' + drawerBorder + '; display: ' + (isOpen ? 'flex' : 'none') + '; flex-direction: column; overflow-y: auto; padding: 0.9rem; box-shadow: ' + drawerShadow + '; color: ' + primaryInk + ';">';
+        h += '<aside id="mobileSidebarDrawer" data-sidebar-theme="' + activeTheme + '" role="dialog" aria-modal="true" aria-labelledby="mobileSidebarTitle" style="position: fixed; top: 0; left: 0; bottom: 0; width: 282px; max-width: 84vw; z-index: 9500; background: ' + drawerBg + '; border-right: 1px solid ' + drawerBorder + '; display: ' + (isOpen ? 'flex' : 'none') + '; flex-direction: column; overflow-y: auto; padding: 0.9rem; box-shadow: ' + drawerShadow + '; color: ' + primaryInk + ';">';
 
         // Header
         h += '<div class="mobile-sidebar-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid ' + dividerColor + '; margin-bottom: 0.75rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
         h += '<span id="mobileSidebarBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(28) + '</span>';
-        h += '<div><div style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">Cric<span style="color: ' + accentBrandInk + ';">OS</span> Tactical</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg({'CAPTAIN':'bat','PLAYER':'user','SCORER':'lightning','FAN':'wave','UMPIRE':'scale','ORGANISER':'trophy','TURF_PROVIDER':'stadium','ADMIN':'shield'}[role]||'bat', accentBrandInk, 12) + ' ' + role + ' WORKSPACE</div></div>';
+        h += '<div><div id="mobileSidebarTitle" style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">Cric<span style="color: ' + accentBrandInk + ';">OS</span> Tactical</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg({'CAPTAIN':'bat','PLAYER':'user','SCORER':'lightning','FAN':'wave','UMPIRE':'scale','ORGANISER':'trophy','TURF_PROVIDER':'stadium','ADMIN':'shield'}[role]||'bat', accentBrandInk, 12) + ' ' + role + ' WORKSPACE</div></div>';
         h += '</div>';
-        h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="' + closeBtnStyle + ' border-radius: 6px; padding: 0.22rem 0.5rem; font-size: 0.8rem; cursor: pointer;" data-tooltip="Close Sidebar">✕</button>';
+        h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="' + closeBtnStyle + ' border-radius: 8px; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; cursor: pointer; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Close Sidebar" aria-label="Close Sidebar"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
 
         // Section 1: Allowed Account Personas
@@ -7602,6 +7718,9 @@ export function getMobileAppHtml() {
             stadium: 'Stadium Night'
           };
           this.showToast((themeNames[themeId] || themeId) + ' Activated', 'success');
+        }
+        if (typeof window !== 'undefined' && window.AndroidBridge && typeof window.AndroidBridge.setSystemTheme === 'function') {
+          try { window.AndroidBridge.setSystemTheme(themeId); } catch (_) {}
         }
         if (typeof this.render === 'function') {
           this.render();
@@ -8586,15 +8705,15 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="dismissalSheetBackdrop" onclick="window.cricosMobileApp.closeMobileDismissalSheet()"></div>';
-        h += '<div class="mobile-dismissal-sheet active" id="mobileDismissalSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(255, 51, 102, 0.45); max-height: 88vh; overflow-y: auto;">';
+        h += '<div class="mobile-dismissal-sheet active" id="mobileDismissalSheet" role="dialog" aria-modal="true" aria-labelledby="dismissalSheetTitle" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(255, 51, 102, 0.45); max-height: 88vh; overflow-y: auto;">';
         
         h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '' + this.iconSvg('alert', '#ff3366', 18) + '';
-        h += '<span style="font-family: var(--font-display); font-size: 0.98rem; font-weight: 800; color: #ff3366;">Fall of Wicket (W)</span>';
+        h += '<span id="dismissalSheetTitle" style="font-family: var(--font-display); font-size: 0.98rem; font-weight: 800; color: #ff3366;">Fall of Wicket (W)</span>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeMobileDismissalSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Cancel dismissal">✕</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeMobileDismissalSheet()" style="background: transparent; border: none; font-size: 1.2rem; color: ' + muted + '; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Cancel dismissal" aria-label="Cancel dismissal"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
 
         // Free Hit Active Warning Banner (ICC Standard Playing Conditions Clause 21.19)
@@ -8824,15 +8943,15 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="iccLawsSheetBackdrop" onclick="window.cricosMobileApp.closeIccLawsSheet()"></div>';
-        h += '<div class="mobile-icc-laws-sheet active" id="mobileIccLawsSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(56, 189, 248, 0.45); max-height: 88vh; overflow-y: auto; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; border-radius: 16px 16px 0 0; padding: 1rem; box-shadow: 0 -8px 32px rgba(0,0,0,0.6);">';
+        h += '<div class="mobile-icc-laws-sheet active" id="mobileIccLawsSheet" role="dialog" aria-modal="true" aria-labelledby="iccLawsSheetTitle" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(56, 189, 248, 0.45); max-height: 88vh; overflow-y: auto; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; border-radius: 16px 16px 0 0; padding: 1rem; box-shadow: 0 -8px 32px rgba(0,0,0,0.6);">';
 
         h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '' + this.iconSvg('book', '#38bdf8', 18) + '';
-        h += '<span style="font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; color: #38bdf8;">ICC Laws &amp; Playing Conditions</span>';
+        h += '<span id="iccLawsSheetTitle" style="font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; color: #38bdf8;">ICC Laws &amp; Playing Conditions</span>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeIccLawsSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Close laws rulebook">✕</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeIccLawsSheet()" style="background: transparent; border: none; font-size: 1.2rem; color: ' + muted + '; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Close laws rulebook" aria-label="Close laws rulebook"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
 
         // Search Input
@@ -9001,15 +9120,15 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="penaltyRunsSheetBackdrop" onclick="window.cricosMobileApp.closePenaltyRunsSheet()"></div>';
-        h += '<div class="mobile-penalty-runs-sheet active" id="mobilePenaltyRunsSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(234, 179, 8, 0.45); max-height: 85vh; overflow-y: auto; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; border-radius: 16px 16px 0 0; padding: 1rem; box-shadow: 0 -8px 32px rgba(0,0,0,0.6);">';
+        h += '<div class="mobile-penalty-runs-sheet active" id="mobilePenaltyRunsSheet" role="dialog" aria-modal="true" aria-labelledby="penaltyRunsSheetTitle" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid rgba(234, 179, 8, 0.45); max-height: 85vh; overflow-y: auto; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; border-radius: 16px 16px 0 0; padding: 1rem; box-shadow: 0 -8px 32px rgba(0,0,0,0.6);">';
 
         h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '' + this.iconSvg('scale', '#eab308', 18) + '';
-        h += '<span style="font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; color: #eab308;">Award +5 Penalty Runs</span>';
+        h += '<span id="penaltyRunsSheetTitle" style="font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; color: #eab308;">Award +5 Penalty Runs</span>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closePenaltyRunsSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Cancel penalty award">✕</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closePenaltyRunsSheet()" style="background: transparent; border: none; font-size: 1.2rem; color: ' + muted + '; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Cancel penalty award" aria-label="Cancel penalty award"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
 
         h += '<div style="font-size: 0.72rem; color: ' + (isLight ? '#475569' : '#cbd5e1') + '; line-height: 1.4; margin-bottom: 0.75rem;">';
@@ -9159,15 +9278,15 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="bowlerRotationBackdrop" onclick="window.cricosMobileApp.closeMobileBowlerRotationSheet()"></div>';
-        h += '<div class="mobile-bowler-sheet active" id="mobileBowlerRotationSheet" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid ' + bdrColor + ';">';
+        h += '<div class="mobile-bowler-sheet active" id="mobileBowlerRotationSheet" role="dialog" aria-modal="true" aria-labelledby="bowlerRotationTitle" style="background: ' + sheetBg + '; color: ' + ink + '; border-top: 1px solid ' + bdrColor + ';">';
         
         h += '<div style="width: 36px; height: 4px; background: rgba(148, 163, 184, 0.4); border-radius: 2px; margin: 0 auto 0.75rem;"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.5rem; border-bottom: 1px solid ' + bdrColor + ';">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '<span style="display: inline-flex; align-items: center;">' + this.iconSvg('bowler', '#00E599', 18) + '</span>';
-        h += '<span style="font-family: var(--font-display); font-size: 0.98rem; font-weight: 800; color: ' + ink + ';">Select Next Bowler (Over ' + (overNum + 1) + ')</span>';
+        h += '<span id="bowlerRotationTitle" style="font-family: var(--font-display); font-size: 0.98rem; font-weight: 800; color: ' + ink + ';">Select Next Bowler (Over ' + (overNum + 1) + ')</span>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeMobileBowlerRotationSheet()" style="background: transparent; border: none; font-size: 1.1rem; color: ' + muted + '; cursor: pointer; padding: 0.2rem 0.4rem;" data-tooltip="Close bowler rotation sheet">✕</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeMobileBowlerRotationSheet()" style="background: transparent; border: none; font-size: 1.2rem; color: ' + muted + '; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Close bowler rotation sheet" aria-label="Close bowler rotation sheet"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
 
         h += '<div style="background: rgba(255, 184, 0, 0.12); border: 1px solid rgba(255, 184, 0, 0.35); border-radius: 8px; padding: 0.5rem 0.65rem; color: #ffb800; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.45rem;">';
@@ -9597,14 +9716,14 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="wagonPickerBackdrop" onclick="window.cricosMobileApp.closeWagonPickerSheet()"></div>';
-        h += '<div class="mobile-wagon-picker-sheet active" id="wagonPickerSheet">';
+        h += '<div class="mobile-wagon-picker-sheet active" id="wagonPickerSheet" role="dialog" aria-modal="true" aria-labelledby="wagonPickerTitle">';
         h += '<div class="sheet-drag-handle"></div>';
 
         // Header
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
         h += '<div>';
         h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: #f8fafc; display: flex; align-items: center; gap: 0.4rem;">';
-        h += '<span>Select Shot Direction</span>';
+        h += '<span id="wagonPickerTitle">Select Shot Direction</span>';
         h += '<span style="font-size: 0.65rem; font-family: var(--font-score); font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(0, 229, 153, 0.15); color: ' + runsColor + '; border: 1px solid ' + runsColor + '40;">' + runsLabel + '</span>';
         h += '</div>';
         h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.15rem;">Batter: <strong style="color: #f8fafc;">' + striker.name + '</strong> (' + this.currentStance + ' • ' + (isLhb ? '◀ ON-Side | OFF-Side ▶' : '◀ OFF-Side | ON-Side ▶') + ')</div>';
@@ -9615,7 +9734,7 @@ export function getMobileAppHtml() {
         h += '<button type="button" data-stance="RHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'RHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'RHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Right-handed batter stance">RHB</button>';
         h += '<button type="button" data-stance="LHB" onclick="window.cricosMobileApp.setBatterStance(this.dataset.stance)" style="font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; border: none; background: ' + (this.currentStance === 'LHB' ? '#00E599' : 'transparent') + '; color: ' + (this.currentStance === 'LHB' ? '#04070D' : '#94a3b8') + '; cursor: pointer;" data-tooltip="Left-handed batter stance">LHB</button>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeWagonPickerSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; padding: 0 0.3rem;" data-tooltip="Dismiss wagon wheel">&times;</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeWagonPickerSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Dismiss wagon wheel" aria-label="Dismiss shot direction picker"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
         h += '</div>';
 
@@ -9787,19 +9906,19 @@ export function getMobileAppHtml() {
 
         var h = '';
         h += '<div class="mobile-sheet-backdrop active" id="extraPickerBackdrop" onclick="window.cricosMobileApp.closeExtraRunsPickerSheet()"></div>';
-        h += '<div class="mobile-extra-picker-sheet active" id="extraRunsPickerSheet" style="border-top-color: ' + themeColor + ';">';
+        h += '<div class="mobile-extra-picker-sheet active" id="extraRunsPickerSheet" role="dialog" aria-modal="true" aria-labelledby="extraRunsPickerTitle" style="border-top-color: ' + themeColor + ';">';
         h += '<div class="sheet-drag-handle"></div>';
 
         // Header
         h += '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem;">';
         h += '<div>';
         h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: #f8fafc; display: flex; align-items: center; gap: 0.4rem;">';
-        h += '<span>' + extraDef.name + '</span>';
+        h += '<span id="extraRunsPickerTitle">' + extraDef.name + '</span>';
         h += '<span style="font-size: 0.65rem; font-family: var(--font-score); font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px; background: ' + themeColor + '20; color: ' + themeColor + '; border: 1px solid ' + themeColor + '50;">' + extraDef.badgeText + '</span>';
         h += '</div>';
         h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.15rem;">Choose total runs scored off this delivery</div>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closeExtraRunsPickerSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; padding: 0 0.3rem;" data-tooltip="Dismiss extra runs picker">&times;</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closeExtraRunsPickerSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Dismiss extra runs picker" aria-label="Dismiss extra runs picker"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
 
         // Segmented Switcher for Extra Type (Wide, No Ball, Leg Bye, Bye)
@@ -12485,7 +12604,7 @@ export function getMobileAppHtml() {
             var presetLabels = ['Premier Batsman', 'Fast Bowler', 'Official / Umpire Specialist', 'Power Batter'];
             for (var pi = 0; pi < ATHLETE_PRESET_AVATARS.length; pi++) {
               var isPresetActive = curSignupAvatar === ATHLETE_PRESET_AVATARS[pi];
-              h += '<button type="button" class="signup-preset-avatar-btn' + (isPresetActive ? ' active' : '') + '" onclick="window.cricosMobileApp.selectSignupPresetAvatar(' + pi + ')" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid ' + (isPresetActive ? '#00E599' : 'rgba(255,255,255,0.18)') + '; overflow: hidden; cursor: pointer; padding: 0; background: transparent; box-shadow: ' + (isPresetActive ? '0 0 10px rgba(0,229,153,0.5)' : 'none') + ';" data-tooltip="' + presetLabels[pi] + ' Preset" aria-label="' + presetLabels[pi] + '">';
+              h += '<button type="button" class="signup-preset-avatar-btn' + (isPresetActive ? ' active' : '') + '" onclick="window.cricosMobileApp.selectSignupPresetAvatar(' + pi + ')" style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; border: 2px solid ' + (isPresetActive ? '#00E599' : 'rgba(255,255,255,0.18)') + '; overflow: hidden; cursor: pointer; padding: 0; background: transparent; touch-action: manipulation; box-shadow: ' + (isPresetActive ? '0 0 10px rgba(0,229,153,0.5)' : 'none') + ';" data-tooltip="' + presetLabels[pi] + ' Preset" aria-label="' + presetLabels[pi] + '">';
               h += '<img src="' + ATHLETE_PRESET_AVATARS[pi] + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + presetLabels[pi] + '">';
               h += '</button>';
             }
@@ -12495,20 +12614,20 @@ export function getMobileAppHtml() {
 
             // Full Name
             h += '<div style="margin-bottom: 0.85rem;">';
-            h += '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Full Name *</label>';
+            h += '<label for="signupNameInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Full Name *</label>';
             h += '<input type="text" id="signupNameInput" value="' + (this.signupData.name || '') + '" placeholder="e.g. Virat Sharma" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.9rem;" />';
             h += '</div>';
 
             // Identifier (Mobile or Email)
             h += '<div style="margin-bottom: 0.85rem;">';
-            h += '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Mobile Phone or Email *</label>';
+            h += '<label for="signupIdentifierInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Mobile Phone or Email *</label>';
             h += '<input type="text" id="signupIdentifierInput" value="' + (this.signupData.identifier || this.identifier) + '" placeholder="+91 98765 43210" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.9rem;" />';
             h += '</div>';
 
             // Primary Persona / Role Selection (8 personas)
             h += '<div style="margin-bottom: 1rem;">';
             h += '<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">';
-            h += '<label style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">Select Primary Role & System Experience</label>';
+            h += '<span style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">Select Primary Role & System Experience</span>';
             h += '<span style="font-size: 0.65rem; color: #00E599; font-weight: 600;">8 Automated Personas</span>';
             h += '</div>';
             h += '<div class="signup-roles-grid" id="signupRolesGrid">';
@@ -12545,7 +12664,7 @@ export function getMobileAppHtml() {
 
             // Custom Cricket Bio / Mission Statement
             h += '<div style="margin-bottom: 0.85rem;">';
-            h += '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Personal Cricket Bio / Mission Statement</label>';
+            h += '<label for="signupBioInput" style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Personal Cricket Bio / Mission Statement</label>';
             h += '<textarea id="signupBioInput" rows="3" placeholder="Tell the team about your playing philosophy, clutch strengths, or officiating experience..." style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.65rem; color: #f8fafc; font-size: 0.82rem; line-height: 1.4; resize: none;">' + (this.signupData.bio || '') + '</textarea>';
             h += '</div>';
 
@@ -13519,7 +13638,7 @@ export function getMobileAppHtml() {
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.35rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
         h += '<span class="mobile-live-pill" id="mobileLiveMatchPill" data-tooltip="Real-time telemetry and score engine active"><span class="live-pulse-dot"></span><span>Live</span></span>';
-        h += '<button type="button" id="mobileActiveVenueBadge" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 9999px; padding: 0.12rem 0.48rem; font-size: 0.66rem; color: #38bdf8; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Tap to toggle 5-Hour Turf Weather Forecast">' + this.getWeatherIconSvg(activeWeather.icon, '#38bdf8', 12) + ' <span>' + activeWeather.name + ' (' + activeWeather.tempC + '°C) ' + (this.weatherForecastExpanded ? '▴' : '▾') + '</span></button>';
+        h += '<button type="button" id="mobileActiveVenueBadge" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 9999px; min-height: 44px; padding: 0.35rem 0.65rem; font-size: 0.72rem; color: #38bdf8; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Tap to toggle 5-Hour Turf Weather Forecast">' + this.getWeatherIconSvg(activeWeather.icon, '#38bdf8', 14) + ' <span>' + activeWeather.name + ' (' + activeWeather.tempC + '°C) ' + (this.weatherForecastExpanded ? '▴' : '▾') + '</span></button>';
         h += '</div></div>';
 
         // LED Scoreboard HUD
@@ -14906,20 +15025,25 @@ export function getMobileAppHtml() {
           content = this.renderProfile();
         }
 
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var toggleIconColor = (activeTheme === 'swiss') ? '#047857' : ((activeTheme === 'nordic') ? '#15803D' : '#00E599');
+        var toggleBg = (activeTheme === 'swiss') ? '#ECFDF5' : ((activeTheme === 'nordic') ? 'rgba(21, 128, 61, 0.08)' : 'rgba(0, 229, 153, 0.14)');
+        var toggleBdr = (activeTheme === 'swiss') ? '#A7F3D0' : ((activeTheme === 'nordic') ? 'rgba(21, 128, 61, 0.3)' : 'rgba(0, 229, 153, 0.35)');
+        var brandOsColor = (activeTheme === 'swiss') ? '#047857' : ((activeTheme === 'nordic') ? '#15803D' : '#00E599');
+        var pulseBg = isLight ? '#ECFDF5' : 'rgba(0, 229, 153, 0.12)';
+        var pulseBdr = isLight ? (activeTheme === 'swiss' ? '#047857' : '#15803D') : 'rgba(0, 229, 153, 0.28)';
+        var pulseInk = isLight ? (activeTheme === 'swiss' ? '#047857' : '#15803D') : '#00E599';
+        var pulseDot = isLight ? (activeTheme === 'swiss' ? '#047857' : '#15803D') : '#00E599';
+
         var h = '';
         // Fixed Top Header Inside Viewport (Locked at top, never scrolls)
         h += '<header class="mobile-header">';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
-        h += '<button type="button" id="btnMobileSidebarToggle" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: rgba(0, 229, 153, 0.14); color: #00E599; border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 6px; padding: 0.2rem 0.5rem; font-size: 0.85rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Open Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios)" aria-label="Open Left Sidebar Navigation Drawer">' + this.iconSvg('menu', '#00E599', 18) + '</button>';
+        h += '<button type="button" id="btnMobileSidebarToggle" onclick="window.cricosMobileApp.toggleSidebarDrawer()" style="background: ' + toggleBg + '; color: ' + toggleIconColor + '; border: 1px solid ' + toggleBdr + '; border-radius: 8px; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 800; cursor: pointer; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Open Left Sidebar Navigation Drawer (Workspaces, Personas, 3D Studios)" aria-label="Open Left Sidebar Navigation Drawer">' + this.iconSvg('menu', toggleIconColor, 20) + '</button>';
         h += '<span id="mobileHeaderBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(25) + '</span>';
-        h += '<span class="mobile-app-title" style="font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: inherit;">Cric<span style="color: #00E599;">OS</span></span>';
+        h += '<span class="mobile-app-title" style="font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: inherit;">Cric<span style="color: ' + brandOsColor + ';">OS</span></span>';
         h += '</div>';
-        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
-        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
-        var pulseBg = isLight ? '#ECFDF5' : 'rgba(0, 229, 153, 0.12)';
-        var pulseBdr = isLight ? '#059669' : 'rgba(0, 229, 153, 0.28)';
-        var pulseInk = isLight ? '#064E3B' : '#00E599';
-        var pulseDot = isLight ? '#059669' : '#00E599';
 
         // Streamlined Right Side: Clean Live Pulse Indicator (All redundant persona, theme, settings, sound & command search moved to sidebar drawer)
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
@@ -14988,7 +15112,9 @@ export function getMobileAppHtml() {
           var item = navItems[i];
           var active = this.currentScreen === item[0];
           var activeClass = active ? ' active' : '';
-          var navIconColor = active ? '#00E599' : '#64748B';
+          var activeNavColor = (this.currentTheme === 'swiss') ? '#047857' : ((this.currentTheme === 'nordic') ? '#15803D' : '#00E599');
+          var inactiveNavColor = (this.currentTheme === 'swiss') ? '#475569' : ((this.currentTheme === 'nordic') ? '#57534E' : '#64748B');
+          var navIconColor = active ? activeNavColor : inactiveNavColor;
           h += '<button type="button" class="mobile-nav-item' + activeClass + '" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="' + item[0] + '" data-tooltip="Navigate to ' + item[2] + '" aria-label="' + item[2] + '" aria-current="' + (active ? 'page' : 'false') + '">';
           h += '<span class="mobile-nav-icon">' + this.iconSvg(item[1], navIconColor, 22) + '</span>';
           h += '<span>' + item[2] + '</span>';
@@ -15002,13 +15128,13 @@ export function getMobileAppHtml() {
           : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
         var isPersonaActive = this.personaSheetOpen ? 'active' : '';
         h += '<div class="mobile-sheet-backdrop ' + isPersonaActive + '" id="mobileSheetBackdrop" onclick="window.cricosMobileApp.closePersonaSheet()"></div>';
-        h += '<div class="mobile-persona-sheet ' + isPersonaActive + '" id="mobilePersonaSheet">';
+        h += '<div class="mobile-persona-sheet ' + isPersonaActive + '" id="mobilePersonaSheet" role="dialog" aria-modal="true" aria-labelledby="personaSheetTitle">';
         h += '<div class="sheet-drag-handle"></div>';
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
-        h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: #f8fafc;">Switch Persona Experience</div>';
+        h += '<div id="personaSheetTitle" style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: #f8fafc;">Switch Persona Experience</div>';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
         h += '<button type="button" id="btnMobileSheetSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.4); color: #00D2FF; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Sign out to Animated Hero Page">'+this.iconSvg('signout','#f8fafc',14)+' Sign Out</button>';
-        h += '<button type="button" onclick="window.cricosMobileApp.closePersonaSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer;" data-tooltip="Close persona switcher">&times;</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.closePersonaSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Close persona switcher" aria-label="Close persona switcher"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
         h += '</div>';
         h += '<div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.75rem;">Personas provisioned for your account (' + sheetAllowedList.join(', ') + '):</div>';
@@ -15039,11 +15165,11 @@ export function getMobileAppHtml() {
         if (this.activeActionSheet) {
           var cfg = this.activeActionSheet;
           h += '<div class="mobile-sheet-backdrop active" id="actionSheetBackdrop" onclick="window.cricosMobileApp.closeActionSheet()"></div>';
-          h += '<div class="mobile-action-sheet active" id="actionSheetModal">';
+          h += '<div class="mobile-action-sheet active" id="actionSheetModal" role="dialog" aria-modal="true" aria-labelledby="actionSheetTitle">';
           h += '<div class="sheet-drag-handle"></div>';
           h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">';
-          h += '<div style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: #f8fafc;">' + cfg.title + '</div>';
-          h += '<button type="button" onclick="window.cricosMobileApp.closeActionSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;" data-tooltip="Dismiss sheet">&times;</button>';
+          h += '<div id="actionSheetTitle" style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: #f8fafc;">' + cfg.title + '</div>';
+          h += '<button type="button" onclick="window.cricosMobileApp.closeActionSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Dismiss sheet" aria-label="Dismiss sheet"><span aria-hidden="true">&times;</span></button>';
           h += '</div>';
           h += '<div style="margin-bottom: 1rem;">' + (cfg.bodyHtml || '') + '</div>';
           h += '<div style="display: flex; gap: 0.5rem;">';
@@ -16833,25 +16959,52 @@ export function getMobileAppHtml() {
       CricOSMotionFX.init();
     }
 
+    // Universal Mobile Sheet & Drawer Focus Trapping & Restoration (WCAG 2.2 AA)
+    let lastFocusedElementBeforeMobileModal = null;
+
+    const mobileModalObserver = new MutationObserver((mutations) => {
+      mutations.forEach(mutation => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const target = mutation.target;
+          if (target && target.classList && target.classList.contains('active')) {
+            lastFocusedElementBeforeMobileModal = document.activeElement;
+            const focusable = target.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+            if (focusable.length > 0) {
+              try { focusable[0].focus(); } catch (_) {}
+            }
+          } else {
+            if (lastFocusedElementBeforeMobileModal && document.querySelectorAll('.mobile-sheet-backdrop.active, #mobileSidebarBackdrop[style*="display: block"]').length === 0) {
+              try { lastFocusedElementBeforeMobileModal.focus(); } catch (_) {}
+              lastFocusedElementBeforeMobileModal = null;
+            }
+          }
+        }
+      });
+    });
+
+    document.querySelectorAll('.mobile-sheet-backdrop, .mobile-wagon-picker-sheet, .mobile-extra-picker-sheet, .mobile-persona-sheet, .mobile-action-sheet, .mobile-settings-sheet, .mobile-dismissal-sheet, .mobile-icc-laws-sheet, .mobile-penalty-runs-sheet, .mobile-bowler-sheet, #mobileSidebarDrawer').forEach(el => {
+      mobileModalObserver.observe(el, { attributes: true });
+    });
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && window.cricosMobileApp) {
-        if (window.cricosMobileApp.extraPickerOpen) {
-          window.cricosMobileApp.closeExtraRunsPickerSheet();
-        } else if (window.cricosMobileApp.wagonPickerOpen) {
-          window.cricosMobileApp.closeWagonPickerSheet();
-        } else if (window.cricosMobileApp.activeActionSheet) {
-          window.cricosMobileApp.closeActionSheet();
-        } else if (window.cricosMobileApp.personaSheetOpen) {
-          window.cricosMobileApp.closePersonaSheet();
-
-        } else if (window.cricosMobileApp.bowlerRotationSheetOpen) {
-          window.cricosMobileApp.closeMobileBowlerRotationSheet();
-        } else if (window.cricosMobileApp.dismissalSheetOpen) {
-          window.cricosMobileApp.closeMobileDismissalSheet();
-        } else if (window.cricosMobileApp.iccLawsSheetOpen) {
-          window.cricosMobileApp.closeIccLawsSheet();
-        } else if (window.cricosMobileApp.penaltyRunsSheetOpen) {
-          window.cricosMobileApp.closePenaltyRunsSheet();
+        window.cricosMobileApp.handleNativeBack();
+      }
+      if (e.key === 'Tab') {
+        const activeModal = document.querySelector('.mobile-sheet.active, .mobile-wagon-picker-sheet.active, .mobile-extra-picker-sheet.active, .mobile-persona-sheet.active, .mobile-action-sheet.active, .mobile-settings-sheet.active, .mobile-dismissal-sheet.active, .mobile-icc-laws-sheet.active, .mobile-penalty-runs-sheet.active, .mobile-bowler-sheet.active, #mobileSidebarDrawer[style*="display: flex"]');
+        if (activeModal) {
+          const focusables = Array.from(activeModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled && el.offsetParent !== null);
+          if (focusables.length > 0) {
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
         }
       }
     });

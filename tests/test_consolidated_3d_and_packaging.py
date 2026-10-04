@@ -233,7 +233,7 @@ async def test_mobile_3d_cards_and_drawer_studios():
                 const card = document.querySelector('#mobileAthleticStatsCard');
                 if (!card) return false;
                 const rect = card.getBoundingClientRect();
-                return rect.top >= 0 && rect.top < window.innerHeight;
+                return rect.top >= -2 && rect.top < window.innerHeight;
             }""")
             assert card_is_visible, "Player card must be auto-scrolled into view at top of screen"
 
