@@ -7268,7 +7268,7 @@ export function getMobileAppHtml() {
         h += '<button type="button" id="btnMobileSidebar3DStadium" data-screen="MATCHES" data-subtab="STADIUM_3D" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studio3dStyle + '" data-tooltip="Open 60fps 3D Stadium Pitch">' + this.iconSvg('stadium', '#00D2FF', 17) + '<span>3D Stadium Pitch</span></button>';
         h += '<button type="button" id="btnMobileSidebarWagonWheel" data-screen="MATCHES" data-subtab="WAGON" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen, this.dataset.subtab)" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioWagonStyle + '" data-tooltip="Open 8-Zone Precision Wagon Wheel">' + this.iconSvg('wagon', '#00E599', 17) + '<span>8-Zone Wagon Wheel</span></button>';
         h += '<button type="button" id="btnMobileSidebarFieldRadar" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openFieldPlannerSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioFieldStyle + '" data-tooltip="Open 11-Fielder Tactical Radar &amp; MCC Law 28.4 Engine">' + this.iconSvg('radar', '#38BDF8', 17) + '<span>Field Radar (11-Fielder)</span></button>';
-        h += '<button type="button" id="btnMobileSidebarPitchMap" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPitchMapSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioPitchStyle + '" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator">' + this.iconSvg('dna', '#00D2FF', 17) + '<span>Pitch &amp; Win Simulator</span></button>';
+        h += '<button type="button" id="btnMobileSidebarPitchMap" data-feature="pitch-weather" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPitchWeatherSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioPitchStyle + '" data-tooltip="Open Pitch &amp; Weather Conditions Studio">' + this.iconSvg('sun', '#00D2FF', 17) + '<span>Pitch &amp; Weather</span></button>';
         h += '<button type="button" id="btnMobileSidebarAuction" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openPlayerAuctionSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioAuctionStyle + '" data-tooltip="Open Live Player Auction Gavel &amp; Salary Purse">' + this.iconSvg('gavel', '#C084FC', 17) + '<span>Live Player Auction</span></button>';
         h += '<button type="button" id="btnMobileSidebarDrsReview" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openDrsReviewSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioPitchStyle + '" data-tooltip="Launch Hawk-Eye DRS Review">' + this.iconSvg('satellite', '#00D2FF', 17) + '<span>Hawk-Eye DRS Review</span></button>';
         h += '<button type="button" id="btnMobileSidebarDlsTarget" onclick="window.cricosMobileApp.closeSidebarDrawer(); window.cricosMobileApp.openDlsCalculatorSheet();" style="display: flex; align-items: center; gap: 0.55rem; width: 100%; text-align: left; padding: 0.45rem 0.65rem; border-radius: 8px; font-size: 0.73rem; cursor: pointer; ' + studioDlsStyle + '" data-tooltip="Open Duckworth-Lewis-Stern Target Calculator">' + this.iconSvg('rain', '#FFB800', 17) + '<span>DLS Target Calculator</span></button>';
@@ -11772,9 +11772,9 @@ export function getMobileAppHtml() {
             '<span style="display: flex; align-items: center; gap: 0.55rem;">'+this.iconSvg('radar','#00E599',16)+'<span>11-Fielder Tactical Radar</span></span>' +
             '<span style="font-size: 0.65rem; color: #00E599; font-family: var(--font-score);">MCC 28.4</span>' +
           '</button>' +
-          '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openPitchMapSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator">' +
-            '<span style="display: flex; align-items: center; gap: 0.55rem;">'+this.iconSvg('dna','#00D2FF',16)+'<span>Pitch Beehive &amp; Win Simulator</span></span>' +
-            '<span style="font-size: 0.65rem; color: #00D2FF; font-family: var(--font-score);">Monte Carlo</span>' +
+          '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openPitchWeatherSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Open Pitch &amp; Weather Conditions Studio">' +
+            '<span style="display: flex; align-items: center; gap: 0.55rem;">'+this.iconSvg('sun','#00D2FF',16)+'<span>Pitch &amp; Weather Conditions</span></span>' +
+            '<span style="font-size: 0.65rem; color: #00D2FF; font-family: var(--font-score);">Micro-Climate</span>' +
           '</button>' +
           '<button type="button" onclick="window.cricosMobileApp.closeActionSheet(); window.cricosMobileApp.openPlayerAuctionSheet();" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.35); background: rgba(168, 85, 247, 0.1); color: #C084FC; font-weight: 700; font-size: 0.78rem; text-align: left; cursor: pointer;" data-tooltip="Open Live Player Auction Gavel &amp; Salary Purse">' +
             '<span style="display: flex; align-items: center; gap: 0.55rem;">'+this.iconSvg('gavel','#C084FC',16)+'<span>Live Player Auction Room</span></span>' +
@@ -11810,7 +11810,7 @@ export function getMobileAppHtml() {
             '</div>' +
             '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">' +
               '<button type="button" onclick="window.cricosMobileApp.openFieldPlannerSheet()" style="background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.35); border-radius: 8px; padding: 0.55rem; color: #00E599; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Open 11-Fielder Tactical Radar">'+this.iconSvg('radar','#00E599',14)+' Field Planner</button>' +
-              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet()" style="background: rgba(0,210,255,0.12); border: 1px solid rgba(0,210,255,0.35); border-radius: 8px; padding: 0.55rem; color: #00D2FF; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Open Pitch Beehive & Win Sim">'+this.iconSvg('dna','#00D2FF',14)+' Pitch & Win Sim</button>' +
+              '<button type="button" onclick="window.cricosMobileApp.openPitchWeatherSheet()" style="background: rgba(0,210,255,0.12); border: 1px solid rgba(0,210,255,0.35); border-radius: 8px; padding: 0.55rem; color: #00D2FF; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Open Pitch &amp; Weather Conditions Studio">'+this.iconSvg('sun','#00D2FF',14)+' Pitch &amp; Weather</button>' +
               '<button type="button" onclick="window.cricosMobileApp.openPlayerAuctionSheet()" style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.35); border-radius: 8px; padding: 0.55rem; color: #C084FC; font-size: 0.75rem; font-weight: 700; text-align: left;" data-tooltip="Open Live Player Auction Room">'+this.iconSvg('gavel','#C084FC',14)+' Player Auction</button>' +
               '<button type="button" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="background: rgba(255,184,0,0.12); border: 1px solid rgba(255,184,0,0.35); border-radius: 8px; padding: 0.55rem; color: #FFB800; font-size: 0.75rem; font-weight: 700; text-align: left; display: flex; align-items: center; gap: 0.35rem;" data-tooltip="Inspect 3D Holographic Card">' + this.iconSvg('card', '#FFB800', 15) + ' 3D Player Card</button>' +
               '<button type="button" onclick="window.cricosMobileApp.setTheme(&apos;swiss&apos;); window.cricosMobileApp.closeActionSheet();" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem; color: #f8fafc; font-size: 0.72rem; font-weight: 700; text-align: left;" data-tooltip="Switch to Swiss Minimalist Theme">'+this.iconSvg('palette','#f8fafc',14)+' Swiss Theme</button>' +
@@ -12219,31 +12219,180 @@ export function getMobileAppHtml() {
       }
 
       openPitchMapSheet(simMode) {
+        return this.openPitchWeatherSheet(simMode);
+      }
+
+      openPitchWeatherSheet(simMode) {
         var self = this;
-        var winPct = simMode === 'BIG' ? '82.4%' : (simMode === 'COLLAPSE' ? '31.5%' : '64.2%');
-        var bowlPct = simMode === 'BIG' ? '15.8%' : (simMode === 'COLLAPSE' ? '65.7%' : '33.0%');
+        var activeTheme = this.currentTheme || (typeof document !== 'undefined' && document.body && document.body.getAttribute('data-theme')) || 'swiss';
+        var isLight = (activeTheme === 'swiss' || activeTheme === 'nordic');
+        var isNordic = (activeTheme === 'nordic');
+
+        var cardBg = isLight ? (isNordic ? '#FAF8F5' : '#FFFFFF') : 'rgba(10, 18, 32, 0.95)';
+        var cardBorder = isLight ? (isNordic ? '#D6D0C4' : '#CBD5E1') : 'rgba(0, 210, 255, 0.32)';
+        var primaryInk = isLight ? (isNordic ? '#1C1917' : '#0F172A') : '#F8FAFC';
+        var secondaryInk = isLight ? (isNordic ? '#44403C' : '#334155') : '#94A3B8';
+        var panelBg = isLight ? '#F1F5F9' : 'rgba(15, 23, 42, 0.85)';
+        var selectBg = isLight ? '#FFFFFF' : 'rgba(10, 16, 28, 0.95)';
+        var selectBorder = isLight ? '#64748B' : 'rgba(0, 210, 255, 0.45)';
+
+        var w = this.getActiveVenueWeather();
+        var mode = simMode || 'LIVE';
+        var winPct = mode === 'BIG' ? '82.4%' : (mode === 'COLLAPSE' ? '31.5%' : '64.2%');
+        var bowlPct = mode === 'BIG' ? '15.8%' : (mode === 'COLLAPSE' ? '65.7%' : '33.0%');
+        var tiePct = '2.8%';
+
+        var bodyHtml = '<div style="color: ' + primaryInk + '; font-size: 0.76rem; display: flex; flex-direction: column; gap: 0.75rem;">';
+
+        // 1. Turf & Stadium Selector Header
+        bodyHtml += '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 10px; padding: 0.6rem 0.75rem;">' +
+          '<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.35rem;">' +
+            '<label for="mobilePitchWeatherVenueSelect" style="font-size: 0.68rem; font-weight: 800; color: #00D2FF; display: inline-flex; align-items: center; gap: 0.25rem;">' +
+              this.iconSvg('pin', '#00D2FF', 13) + ' Turf / Ground Venue:' +
+            '</label>' +
+            '<span style="font-size: 0.62rem; font-family: var(--font-mono, monospace); color: ' + secondaryInk + '; background: rgba(255,255,255,0.06); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);" data-tooltip="Verified Stadium GPS Coordinates">' +
+              w.coords +
+            '</span>' +
+          '</div>' +
+          '<select id="mobilePitchWeatherVenueSelect" aria-label="Select Turf or Ground Location" onchange="window.cricosMobileApp.selectVenueWeatherLocation(this.value, false); window.cricosMobileApp.openPitchWeatherSheet(&apos;' + mode + '&apos;);" style="width: 100%; box-sizing: border-box; background: ' + selectBg + '; color: ' + primaryInk + '; border: 1px solid ' + selectBorder + '; border-radius: 6px; padding: 0.45rem 0.6rem; font-size: 0.76rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch Turf / Stadium location for localized micro-climate and pitch conditions">' +
+            '<option value="chinnaswamy_turf_a"' + (w.id === 'chinnaswamy_turf_a' ? ' selected' : '') + '>M. Chinnaswamy Arena (Bengaluru • 920m Alt)</option>' +
+            '<option value="wankhede_arena"' + (w.id === 'wankhede_arena' ? ' selected' : '') + '>Wankhede Arena Turf Club (Mumbai • Coastal Breeze)</option>' +
+            '<option value="eden_gardens_turf"' + (w.id === 'eden_gardens_turf' ? ' selected' : '') + '>Eden Gardens Royal Turf (Kolkata • Riverfront)</option>' +
+            '<option value="dharamshala_hpca"' + (w.id === 'dharamshala_hpca' ? ' selected' : '') + '>HPCA Himalayan Stadium (Dharamshala • 1,457m Alt)</option>' +
+            '<option value="chepauk_marina"' + (w.id === 'chepauk_marina' ? ' selected' : '') + '>M. A. Chidambaram Marina (Chennai • Dry Clay Spin)</option>' +
+          '</select>' +
+        '</div>';
+
+        // 2. Meteorological Micro-Climate Engine & Badges
+        bodyHtml += '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 10px; padding: 0.65rem 0.75rem;">' +
+          '<div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem;">' +
+            this.getWeatherIconSvg(w.icon, '#FBBF24', 18) +
+            '<div style="font-size: 0.78rem; font-weight: 800; color: ' + primaryInk + ';">' + w.headline + '</div>' +
+          '</div>' +
+          '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; margin-bottom: 0.5rem;">' +
+            '<div style="background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 6px; padding: 0.32rem 0.5rem; font-size: 0.68rem; font-weight: 700; color: ' + (isLight ? '#065F46' : '#00E599') + ';" data-tooltip="Ambient Temperature &amp; Feels Like">' +
+              '🌡️ ' + w.tempC + '°C (Feels ' + w.feelsLikeC + '°C)' +
+            '</div>' +
+            '<div style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 6px; padding: 0.32rem 0.5rem; font-size: 0.68rem; font-weight: 700; color: #00D2FF;" data-tooltip="Wind Vector &amp; Relative Humidity">' +
+              '💨 ' + w.wind + ' • ' + w.humidity +
+            '</div>' +
+            '<div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.28); border-radius: 6px; padding: 0.32rem 0.5rem; font-size: 0.68rem; font-weight: 700; color: #C084FC;" data-tooltip="Aerodynamic Swing Index &amp; Dew Onset">' +
+              '🎯 Swing ' + w.swingIndex + ' • Dew: ' + w.dewStatus +
+            '</div>' +
+            '<div style="background: rgba(255, 184, 0, 0.1); border: 1px solid rgba(255, 184, 0, 0.28); border-radius: 6px; padding: 0.32rem 0.5rem; font-size: 0.68rem; font-weight: 700; color: #FFB800;" data-tooltip="Rain Probability &amp; DLS Interruption Risk">' +
+              '🌧️ Rain ' + w.rainProb + ' • DLS: ' + w.dlsRisk +
+            '</div>' +
+          '</div>' +
+          '<div style="padding: 0.42rem 0.6rem; border-radius: 6px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.22); color: ' + (isLight ? '#065F46' : '#00E599') + '; font-size: 0.7rem; font-weight: 700; line-height: 1.35;" data-tooltip="Tactical Toss Intelligence Recommendation">' +
+            '⚡ Tactical Toss Intelligence: ' + w.tossAdvice +
+          '</div>' +
+        '</div>';
+
+        // 3. 5-Hour Match Window Meteorological Timeline
+        bodyHtml += '<div>' +
+          '<div style="font-size: 0.68rem; font-weight: 800; color: #00D2FF; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">' +
+            this.iconSvg('rain', '#00D2FF', 13) + ' 5-Hour Match Window Meteorological Timeline' +
+          '</div>' +
+          '<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.3rem; overflow-x: auto;">';
+        if (Array.isArray(w.hourly)) {
+          for (var hIdx = 0; hIdx < w.hourly.length; hIdx++) {
+            var hr = w.hourly[hIdx];
+            bodyHtml += '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 6px; padding: 0.35rem 0.2rem; text-align: center;" data-tooltip="Timeline forecast for ' + hr[0] + '">' +
+              '<div style="font-size: 0.6rem; color: ' + secondaryInk + '; font-weight: 700;">' + hr[0] + '</div>' +
+              '<div style="margin: 0.15rem 0;">' + this.getWeatherIconSvg(hr[1], '#FBBF24', 13) + '</div>' +
+              '<div style="font-size: 0.66rem; font-weight: 800; color: ' + primaryInk + ';">' + hr[2] + '</div>' +
+              '<div style="font-size: 0.58rem; color: #00D2FF;">' + hr[3] + '</div>' +
+              '<div style="font-size: 0.55rem; color: ' + (isLight ? '#065F46' : '#00E599') + '; font-weight: 700; margin-top: 0.1rem;">' + hr[4] + '</div>' +
+            '</div>';
+          }
+        }
+        bodyHtml += '</div></div>';
+
+        // 4. Pitch Soil Composition & Aerodynamics Grid
+        bodyHtml += '<div>' +
+          '<div style="font-size: 0.68rem; font-weight: 800; color: #00E599; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">' +
+            this.iconSvg('stadium', '#00E599', 13) + ' Pitch Soil Composition &amp; Surface Aerodynamics' +
+          '</div>' +
+          '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem;">' +
+            '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 6px; padding: 0.35rem 0.5rem;" data-tooltip="Core soil moisture content and clay rigidity">' +
+              '<div style="font-size: 0.6rem; color: ' + secondaryInk + '; text-transform: uppercase;">Soil Moisture</div>' +
+              '<div style="font-size: 0.74rem; font-weight: 800; color: ' + primaryInk + ';">14.2% • Clay: High</div>' +
+            '</div>' +
+            '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 6px; padding: 0.35rem 0.5rem;" data-tooltip="Outfield grass friction and bounce coefficient">' +
+              '<div style="font-size: 0.6rem; color: ' + secondaryInk + '; text-transform: uppercase;">Outfield Friction</div>' +
+              '<div style="font-size: 0.74rem; font-weight: 800; color: ' + primaryInk + ';">0.34 μ • True Bounce</div>' +
+            '</div>' +
+            '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 6px; padding: 0.35rem 0.5rem;" data-tooltip="Pitch wear and natural surface degeneration">' +
+              '<div style="font-size: 0.6rem; color: ' + secondaryInk + '; text-transform: uppercase;">Natural Wear</div>' +
+              '<div style="font-size: 0.74rem; font-weight: 800; color: ' + primaryInk + ';">Day 1 Match 2 • Firm</div>' +
+            '</div>' +
+            '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 6px; padding: 0.35rem 0.5rem;" data-tooltip="Micro-climate aerodynamic ball drift">' +
+              '<div style="font-size: 0.6rem; color: ' + secondaryInk + '; text-transform: uppercase;">Aerodynamic Drift</div>' +
+              '<div style="font-size: 0.74rem; font-weight: 800; color: #00D2FF;">+2.4° Inswing @ 135k</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+        // 5. 22-Yard Pitch Length Zones & Biomechanics SVG
+        bodyHtml += '<div>' +
+          '<div style="font-size: 0.68rem; font-weight: 800; color: #00D2FF; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">' +
+            this.iconSvg('target', '#00D2FF', 13) + ' 22-Yard Pitch Length Zones &amp; Impact Heatmap' +
+          '</div>' +
+          '<div style="background: #1E293B; border-radius: 8px; padding: 0.6rem 0.4rem; text-align: center;">' +
+            '<svg id="mobilePitchMapSvg" viewBox="0 0 260 260" style="width: 100%; max-width: 240px; height: auto; display: block; margin: 0 auto;" role="img" aria-label="Pitch Length Zone Heatmap">' +
+              '<rect x="20" y="15" width="220" height="35" fill="rgba(0, 229, 153, 0.18)" stroke="rgba(255,255,255,0.1)" />' +
+              '<text x="28" y="38" fill="#00E599" font-size="9" font-weight="700">YORKER (0–3m) • 18%</text>' +
+              '<rect x="20" y="50" width="220" height="50" fill="rgba(0, 210, 255, 0.16)" stroke="rgba(255,255,255,0.1)" />' +
+              '<text x="28" y="80" fill="#00D2FF" font-size="9" font-weight="700">FULL DRIVING (3–5.5m) • 24%</text>' +
+              '<rect x="20" y="100" width="220" height="65" fill="rgba(168, 85, 247, 0.22)" stroke="rgba(255,255,255,0.1)" />' +
+              '<text x="28" y="138" fill="#C084FC" font-size="9" font-weight="700">GOOD LENGTH (5.5–8m) • 42%</text>' +
+              '<rect x="20" y="165" width="220" height="80" fill="rgba(255, 51, 102, 0.16)" stroke="rgba(255,255,255,0.1)" />' +
+              '<text x="28" y="210" fill="#FF8099" font-size="9" font-weight="700">SHORT / BOUNCER (8m+) • 16%</text>' +
+              '<line x1="130" y1="10" x2="130" y2="250" stroke="rgba(255,255,255,0.22)" stroke-dasharray="3 3" />' +
+              '<circle cx="118" cy="30" r="5" fill="#94A3B8" stroke="#FFF" stroke-width="1.2" />' +
+              '<circle cx="96" cy="125" r="6" fill="#00E599" stroke="#FFF" stroke-width="1.2" />' +
+              '<circle cx="136" cy="195" r="6" fill="#A855F7" stroke="#FFF" stroke-width="1.2" />' +
+              '<circle cx="124" cy="120" r="6" fill="#FF3366" stroke="#FFF" stroke-width="1.2" />' +
+              '<circle cx="108" cy="72" r="5.5" fill="#00E599" stroke="#FFF" stroke-width="1.2" />' +
+            '</svg>' +
+            '<div style="display: flex; justify-content: center; gap: 0.55rem; font-size: 0.62rem; color: #94A3B8; margin-top: 0.45rem; flex-wrap: wrap;">' +
+              '<span><span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #00E599; margin-right: 3px;"></span>4 Runs</span>' +
+              '<span><span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #A855F7; margin-right: 3px;"></span>6 Runs</span>' +
+              '<span><span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #FF3366; margin-right: 3px;"></span>Wicket</span>' +
+              '<span><span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #94A3B8; margin-right: 3px;"></span>Dot Ball</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+        // 6. Monte Carlo "What-If" Chase Win Probability Simulator
+        bodyHtml += '<div style="background: ' + panelBg + '; border: 1px solid ' + cardBorder + '; border-radius: 10px; padding: 0.65rem 0.75rem;">' +
+          '<div style="font-size: 0.68rem; font-weight: 800; color: #00E599; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.3rem;">' +
+            this.iconSvg('chart', '#00E599', 13) + ' Monte Carlo "What-If" Chase Win Simulator' +
+          '</div>' +
+          '<div style="display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 800; margin-bottom: 0.35rem;">' +
+            '<span style="color: #00E599;">Batting Win: ' + winPct + '</span>' +
+            '<span style="color: #FFB800;">Tie: ' + tiePct + '</span>' +
+            '<span style="color: #00D2FF;">Bowling Win: ' + bowlPct + '</span>' +
+          '</div>' +
+          '<div style="height: 10px; border-radius: 999px; overflow: hidden; display: flex; background: rgba(255,255,255,0.1); margin-bottom: 0.55rem;">' +
+            '<div style="width: ' + winPct + '; background: #00E599;"></div>' +
+            '<div style="width: ' + tiePct + '; background: #FFB800;"></div>' +
+            '<div style="width: ' + bowlPct + '; background: #00D2FF;"></div>' +
+          '</div>' +
+          '<div style="display: flex; gap: 0.35rem;">' +
+            '<button type="button" onclick="window.cricosMobileApp.openPitchWeatherSheet(&apos;BIG&apos;)" style="flex: 1; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.4); color: ' + (isLight ? '#065F46' : '#00E599') + '; border-radius: 6px; padding: 0.42rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Simulate +18r big over impact on chase win probability">+18r Over</button>' +
+            '<button type="button" onclick="window.cricosMobileApp.openPitchWeatherSheet(&apos;COLLAPSE&apos;)" style="flex: 1; background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.4); color: #FF8099; border-radius: 6px; padding: 0.42rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Simulate 2-wicket collapse impact on chase win probability">2 Wickets</button>' +
+            '<button type="button" onclick="window.cricosMobileApp.openPitchWeatherSheet(&apos;LIVE&apos;)" style="flex: 1; background: rgba(0,210,255,0.15); border: 1px solid rgba(0,210,255,0.4); color: #00D2FF; border-radius: 6px; padding: 0.42rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Reset simulation to live match score state">Live State</button>' +
+          '</div>' +
+        '</div>';
+
+        bodyHtml += '</div>';
+
         this.openActionSheet({
-          title: this.iconSvg('dna', '#00D2FF', 16) + ' Pitch Beehive & Win Simulator',
-          bodyHtml: '<div style="margin-bottom: 0.65rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.6rem;">' +
-            '<div style="display: flex; justify-content: space-between; font-size: 0.74rem; font-weight: 700; margin-bottom: 0.35rem;">' +
-              '<span style="color: #00E599;">Batting Win: ' + winPct + '</span>' +
-              '<span style="color: #FFB800;">Tie: 2.8%</span>' +
-              '<span style="color: #00D2FF;">Bowling Win: ' + bowlPct + '</span>' +
-            '</div>' +
-            '<div style="height: 10px; border-radius: 999px; overflow: hidden; display: flex; background: rgba(255,255,255,0.1);">' +
-              '<div style="width: ' + winPct + '; background: #00E599;"></div>' +
-              '<div style="width: 2.8%; background: #FFB800;"></div>' +
-              '<div style="width: ' + bowlPct + '; background: #00D2FF;"></div>' +
-            '</div>' +
-            '</div>' +
-            '<div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.45rem;">Pitch Length Zones: Good Length (42%) • Full (24%) • Yorker (18%) • Short (16%)</div>' +
-            '<div style="display: flex; gap: 0.35rem;">' +
-              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet(&apos;BIG&apos;)" style="flex: 1; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.4); color: #00E599; border-radius: 6px; padding: 0.4rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Simulate 18-run big over">+18r Over</button>' +
-              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet(&apos;COLLAPSE&apos;)" style="flex: 1; background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.4); color: #FF8099; border-radius: 6px; padding: 0.4rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Simulate double wicket collapse">2 Wickets</button>' +
-              '<button type="button" onclick="window.cricosMobileApp.openPitchMapSheet(&apos;LIVE&apos;)" style="flex: 1; background: rgba(0,210,255,0.15); border: 1px solid rgba(0,210,255,0.4); color: #00D2FF; border-radius: 6px; padding: 0.4rem; font-size: 0.68rem; font-weight: 700;" data-tooltip="Reset to live match state">Live State</button>' +
-            '</div>',
-          confirmText: 'Done',
-          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D;',
+          title: this.iconSvg('sun', '#00D2FF', 18) + ' Pitch &amp; Weather Conditions Studio',
+          bodyHtml: bodyHtml,
+          confirmText: 'Done ✓',
+          confirmStyle: 'background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; font-weight: 800;',
           onConfirm: function() {
             self.closeActionSheet();
           }
@@ -13654,7 +13803,7 @@ export function getMobileAppHtml() {
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.35rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
         h += '<span class="mobile-live-pill" id="mobileLiveMatchPill" data-tooltip="Real-time telemetry and score engine active"><span class="live-pulse-dot"></span><span>Live</span></span>';
-        h += '<button type="button" id="mobileActiveVenueBadge" onclick="window.cricosMobileApp.toggleMobileWeatherForecast()" style="background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 9999px; min-height: 44px; padding: 0.35rem 0.65rem; font-size: 0.72rem; color: #38bdf8; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Tap to toggle 5-Hour Turf Weather Forecast">' + this.getWeatherIconSvg(activeWeather.icon, '#38bdf8', 14) + ' <span>' + activeWeather.name + ' (' + activeWeather.tempC + '°C) ' + (this.weatherForecastExpanded ? '▴' : '▾') + '</span></button>';
+        h += '<button type="button" id="mobileActiveVenueBadge" onclick="window.cricosMobileApp.openPitchWeatherSheet()" style="background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 9999px; min-height: 44px; padding: 0.35rem 0.65rem; font-size: 0.72rem; color: #38bdf8; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Open Unified Pitch &amp; Weather Conditions Studio">' + this.getWeatherIconSvg(activeWeather.icon, '#38bdf8', 14) + ' <span>' + activeWeather.name + ' (' + activeWeather.tempC + '°C) ⚡</span></button>';
         h += '</div></div>';
 
         // LED Scoreboard HUD

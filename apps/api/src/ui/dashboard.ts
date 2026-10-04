@@ -5630,10 +5630,11 @@ export function getDashboardHtml(): string {
               <span class="tab-icon">${iconSvg('radar', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Field Placement Radar</span>
             </button>
-            <button type="button" id="sidebarBtnPitchMap" onclick="openPitchMapSimulatorModal()" class="sidebar-nav-item" data-tooltip="Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator (Shortcut: Shift+P)">
-              <span class="tab-icon">${iconSvg('dna', 'currentColor', 18)}</span>
-              <span class="sidebar-nav-label">Pitch &amp; Win Simulator</span>
+            <button type="button" id="sidebarBtnPitchWeather" onclick="openPitchWeatherModal()" class="sidebar-nav-item" data-tooltip="Unified Pitch &amp; Weather Conditions Studio: Live micro-climate, 5-hr forecast, soil moisture, aerodynamics &amp; pitch heatmap (Shortcut: Shift+P)">
+              <span class="tab-icon">${iconSvg('sun', 'currentColor', 18)}</span>
+              <span class="sidebar-nav-label">Pitch &amp; Weather</span>
             </button>
+            <button type="button" id="sidebarBtnPitchMap" onclick="openPitchWeatherModal()" style="display: none;" aria-hidden="true"></button>
             <button type="button" onclick="openModal('modalMatchInsights')" class="sidebar-nav-item" data-tooltip="Match narrative recap, turning points, and Player of the Match MVP">
               <span class="tab-icon">${iconSvg('chart', 'currentColor', 18)}</span>
               <span class="sidebar-nav-label">Match Intelligence</span>
@@ -5881,46 +5882,6 @@ export function getDashboardHtml(): string {
           </div>
           <div class="target-progress-track" data-tooltip="Match chase progression: 142 of 178 runs completed (79.7%)">
             <div class="target-progress-fill" id="targetProgressFill" style="width: 79.8%;"></div>
-          </div>
-        </div>
-
-        <!-- Intelligent Turf / Stadium / Ground Location Weather & Micro-Climate Engine -->
-        <div id="matchVenueWeatherBar" class="glass-panel" style="margin-top: 0.75rem; padding: 0.65rem 0.95rem; border-radius: 10px; border: 1px solid rgba(0, 210, 255, 0.28); background: rgba(8, 15, 28, 0.78); display: flex; flex-direction: column; gap: 0.55rem;" data-venue-id="chinnaswamy_turf_a">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-              <span id="weatherConditionIcon" style="display: inline-flex; align-items: center;" data-tooltip="Live Stadium Micro-Climate Condition">${iconSvg('sun', '#FBBF24', 18)}</span>
-              <div style="display: flex; flex-direction: column;">
-                <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                  <label for="venueWeatherLocationSelect" style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.25rem;">${iconSvg('pin', 'var(--cyan)', 13)} Turf / Ground:</label>
-                  <select id="venueWeatherLocationSelect" aria-label="Select Turf or Stadium Location for Weather Forecast" onchange="selectVenueWeatherLocation(this.value, true)" style="background: rgba(15, 23, 42, 0.9); color: #F8FAFC; border: 1px solid rgba(0, 210, 255, 0.38); border-radius: 6px; padding: 0.18rem 0.5rem; font-size: 0.74rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch Turf / Stadium Location to compute localized weather, swing/seam drift, dew onset, and DLS rain forecast">
-                    <option value="chinnaswamy_turf_a">M. Chinnaswamy Turf Arena (Bengaluru • 920m Alt)</option>
-                    <option value="wankhede_arena">Wankhede Arena Turf Club (Mumbai • Coastal Breeze)</option>
-                    <option value="eden_gardens_turf">Eden Gardens Royal Turf (Kolkata • Riverfront)</option>
-                    <option value="dharamshala_hpca">HPCA Himalayan Stadium (Dharamshala • 1,457m Alt)</option>
-                    <option value="chepauk_marina">M. A. Chidambaram Marina (Chennai • Dry Spin Clay)</option>
-                  </select>
-                  <span id="weatherGpsCoordsBadge" style="font-size: 0.64rem; font-family: var(--font-mono, monospace); color: var(--text-muted);" data-tooltip="Verified Stadium GPS Coordinates &amp; Elevation">12.9788° N, 77.5996° E • 920m</span>
-                </div>
-                <div id="weatherConditionHeadline" style="font-size: 0.76rem; font-weight: 700; color: #F8FAFC; margin-top: 0.12rem;">Partly Cloudy • High-Altitude Cross-Breeze (+4.2m Six Carry)</div>
-              </div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-              <span id="weatherTempBadge" class="badge" style="background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); color: var(--turf-emerald); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Ambient Air Temperature &amp; Heat Index on Turf">${iconSvg('thermometer', 'var(--turf-emerald)', 13)} 26°C (Feels 27°C)</span>
-              <span id="weatherWindHumidityBadge" class="badge" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.35); color: var(--cyan); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="10m Anemometer Wind Vector &amp; Relative Humidity">${iconSvg('wind', 'var(--cyan)', 13)} 16 km/h ENE • ${iconSvg('drop', 'var(--cyan)', 13)} 64% RH</span>
-              <span id="weatherSwingDewBadge" class="badge" style="background: rgba(168, 85, 247, 0.14); border: 1px solid rgba(168, 85, 247, 0.35); color: var(--purple-light); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Aerodynamic Swing/Seam Index &amp; Evening Dew Factor">${iconSvg('radar', 'var(--purple-light)', 13)} Swing 6.8/10 • Dew: MODERATE-HIGH</span>
-              <span id="weatherDlsRiskBadge" class="badge" style="background: rgba(255, 184, 0, 0.14); border: 1px solid rgba(255, 184, 0, 0.35); color: var(--amber); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Precipitation Probability &amp; DLS Interruption Risk">${iconSvg('rain', 'var(--amber)', 13)} Rain 18% • DLS: LOW</span>
-              <button type="button" id="btnToggleWeatherForecastDrawer" class="btn btn-secondary" onclick="toggleVenueWeatherForecast()" style="width: auto; padding: 0.22rem 0.6rem; font-size: 0.7rem; font-weight: 800; border-color: rgba(0, 210, 255, 0.4); color: var(--cyan); display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Expand 5-Hour Match Window Forecast, Pitch Micro-Climate &amp; Toss Strategy">${iconSvg('rain', 'var(--cyan)', 13)} 5-Hr Forecast &amp; Pitch Impact ▾</button>
-            </div>
-          </div>
-
-          <!-- Expandable 5-Hour Forecast Timeline & Pitch Aerodynamics Breakdown -->
-          <div id="venueWeatherForecastPanel" style="display: none; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.6rem; margin-top: 0.15rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.4rem;">
-              <div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); display: inline-flex; align-items: center; gap: 0.35rem;" id="weatherTossRecommendationText">${iconSvg('coin', 'var(--turf-emerald)', 13)} Tactical Toss Intelligence: BOWL FIRST (Chasing Advantage 64%) — Exploit early Cubbon Park breeze; evening dew speeds up outfield after 19:30 IST.</div>
-              <button type="button" id="btnSyncLiveGpsWeather" class="btn btn-secondary" onclick="syncLiveGpsVenueWeather()" style="width: auto; padding: 0.18rem 0.55rem; font-size: 0.66rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Fetch live satellite weather telemetry for active stadium coordinates via Open-Meteo API">${iconSvg('refresh', 'currentColor', 12)} Sync Live Satellite Telemetry</button>
-            </div>
-            <div id="weatherHourlyTimelineGrid" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.45rem; margin-bottom: 0.55rem;"></div>
-            <div id="weatherPitchImpactGrid" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.45rem;"></div>
           </div>
         </div>
 
@@ -6704,7 +6665,6 @@ export function getDashboardHtml(): string {
             <div style="margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.35rem;">${iconSvg('crown', 'var(--turf-emerald)', 14)} <span>Captain Tactical View: Precision 8-Zone Wagon Wheel &amp; Shot Telemetry (Official ball-by-ball scoring is managed exclusively by the Scorer)</span></div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--turf-emerald); border-color: rgba(0, 229, 153, 0.35); display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openFieldPlannerModal()" data-tooltip="Open 11-Fielder Tactical Radar &amp; MCC Law 28.4 Engine">${iconSvg('radar', 'var(--turf-emerald)', 13)} Field Placement Radar</button>
-              <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--cyan); border-color: rgba(0, 210, 255, 0.35); display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openPitchMapSimulatorModal()" data-tooltip="Open Pitch Beehive Map &amp; Monte Carlo Win Simulator">${iconSvg('dna', 'var(--cyan)', 13)} Pitch &amp; Win Simulator</button>
               <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: var(--amber); border-color: rgba(255, 184, 0, 0.35); display: inline-flex; align-items: center; gap: 0.3rem;" onclick="openTossModal()" data-tooltip="Conduct Match Toss or adjust DLS target">${iconSvg('coin', 'var(--amber)', 13)} Toss &amp; DLS</button>
             </div>
           </div>
@@ -11202,17 +11162,71 @@ cricos_active_sse_connections 1</pre>
   </div>
 
   <!-- =========================================================================
-       FLAGSHIP STUDIO 3: BIOMECHANICS PITCH BEEHIVE MAP & WIN PROBABILITY SIMULATOR
+       FLAGSHIP STUDIO 3: UNIFIED PITCH & WEATHER CONDITIONS STUDIO
        ========================================================================= -->
   <div class="modal-backdrop as-drawer" id="modalPitchMapSimulator" role="dialog" aria-modal="true" aria-labelledby="pitchMapModalTitle">
-    <div class="modal-card" style="max-width: 840px; width: 95vw;">
+    <div class="modal-card" style="max-width: 920px; width: 95vw; max-height: 92vh; overflow-y: auto;">
       <div class="modal-header">
-        <div class="modal-title" id="pitchMapModalTitle" style="display: flex; align-items: center; gap: 0.5rem;">
-          ${getDesktopIconSvg('dna', '#A855F7', 18)} <span>Biomechanics Pitch Beehive Map &amp; Monte Carlo Win Probability Simulator</span>
+        <div class="modal-title" id="pitchMapModalTitle" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          ${getDesktopIconSvg('sun', '#00D2FF', 20)} <span>Pitch &amp; Weather Conditions Studio</span>
+          <span style="font-size: 0.65rem; color: var(--turf-emerald); background: rgba(0,229,153,0.12); padding: 0.15rem 0.5rem; border-radius: 9999px; font-weight: 800; border: 1px solid rgba(0,229,153,0.25);">LIVE METEOROLOGY &amp; BIOMECHANICS</span>
         </div>
-        <button type="button" class="modal-close-btn" aria-label="Close Pitch Map Simulator" onclick="closeModal('modalPitchMapSimulator')" data-tooltip="Close Pitch Map &amp; Win Simulator">×</button>
+        <button type="button" class="modal-close-btn" aria-label="Close Pitch and Weather Conditions Studio" onclick="closeModal('modalPitchMapSimulator')" data-tooltip="Close Pitch &amp; Weather Studio">×</button>
       </div>
       <div class="modal-body" style="padding: 1.15rem;">
+
+        <!-- Venue Selection & Live GPS Satellite Bar -->
+        <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 10px; padding: 0.65rem 0.85rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <label for="venueWeatherLocationSelect" style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cyan); display: inline-flex; align-items: center; gap: 0.25rem;">
+              ${getDesktopIconSvg('pin', 'var(--cyan)', 13)} Turf / Stadium:
+            </label>
+            <select id="venueWeatherLocationSelect" aria-label="Select Turf or Stadium Location for Weather Forecast" onchange="selectVenueWeatherLocation(this.value, true)" style="background: rgba(10, 16, 28, 0.95); color: #F8FAFC; border: 1px solid rgba(0, 210, 255, 0.38); border-radius: 6px; padding: 0.22rem 0.55rem; font-size: 0.74rem; font-weight: 700; cursor: pointer;" data-tooltip="Switch Turf / Stadium Location to compute localized weather, swing/seam drift, dew onset, and DLS rain forecast">
+              <option value="chinnaswamy_turf_a">M. Chinnaswamy Turf Arena (Bengaluru • 920m Alt)</option>
+              <option value="wankhede_arena">Wankhede Arena Turf Club (Mumbai • Coastal Breeze)</option>
+              <option value="eden_gardens_turf">Eden Gardens Royal Turf (Kolkata • Riverfront)</option>
+              <option value="dharamshala_hpca">HPCA Himalayan Stadium (Dharamshala • 1,457m Alt)</option>
+              <option value="chepauk_marina">M. A. Chidambaram Marina (Chennai • Dry Spin Clay)</option>
+            </select>
+            <span id="weatherGpsCoordsBadge" style="font-size: 0.65rem; font-family: var(--font-mono, monospace); color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 0.2rem 0.45rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);" data-tooltip="Verified Stadium GPS Coordinates &amp; Elevation">12.9788° N, 77.5996° E • 920m</span>
+          </div>
+          <button type="button" id="btnSyncLiveGpsWeather" class="btn btn-secondary" onclick="syncLiveGpsVenueWeather()" style="width: auto; padding: 0.22rem 0.6rem; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Fetch live satellite weather telemetry for active stadium coordinates via Open-Meteo API">
+            ${getDesktopIconSvg('refresh', 'currentColor', 12)} Sync Live Satellite Telemetry
+          </button>
+        </div>
+
+        <!-- Section 1: Live Meteorological Micro-Climate Engine -->
+        <div id="matchVenueWeatherBar" class="glass-panel" style="background: rgba(10, 16, 28, 0.75); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 10px; padding: 0.75rem 0.95rem; margin-bottom: 0.95rem;" data-venue-id="chinnaswamy_turf_a">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.45rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span id="weatherConditionIcon" style="display: inline-flex; align-items: center;" data-tooltip="Live Stadium Micro-Climate Condition">${getDesktopIconSvg('sun', '#FBBF24', 20)}</span>
+              <div id="weatherConditionHeadline" style="font-size: 0.82rem; font-weight: 800; color: #F8FAFC;">Partly Cloudy • High-Altitude Cross-Breeze (+4.2m Six Carry)</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+              <span id="weatherTempBadge" class="badge" style="background: rgba(0, 229, 153, 0.14); border: 1px solid rgba(0, 229, 153, 0.35); color: var(--turf-emerald); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Ambient Air Temperature &amp; Heat Index on Turf">${getDesktopIconSvg('thermometer', 'var(--turf-emerald)', 13)} 26°C (Feels 27°C)</span>
+              <span id="weatherWindHumidityBadge" class="badge" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.35); color: var(--cyan); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="10m Anemometer Wind Vector &amp; Relative Humidity">${getDesktopIconSvg('wind', 'var(--cyan)', 13)} 16 km/h ENE • 64% RH</span>
+              <span id="weatherSwingDewBadge" class="badge" style="background: rgba(168, 85, 247, 0.14); border: 1px solid rgba(168, 85, 247, 0.35); color: var(--purple-light); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Aerodynamic Swing/Seam Index &amp; Evening Dew Factor">${getDesktopIconSvg('radar', 'var(--purple-light)', 13)} Swing 6.8/10 • Dew: MODERATE-HIGH</span>
+              <span id="weatherDlsRiskBadge" class="badge" style="background: rgba(255, 184, 0, 0.14); border: 1px solid rgba(255, 184, 0, 0.35); color: var(--amber); font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" data-tooltip="Precipitation Probability &amp; DLS Interruption Risk">${getDesktopIconSvg('rain', 'var(--amber)', 13)} Rain 18% • DLS: LOW</span>
+            </div>
+          </div>
+          <div id="weatherTossRecommendationText" style="padding: 0.42rem 0.7rem; border-radius: 6px; background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25); color: var(--turf-emerald); font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.65rem;">
+            Tactical Toss Intelligence: BOWL FIRST (Chasing Advantage 64%) — Exploit early Cubbon Park breeze; evening dew speeds up outfield after 19:30 IST.
+          </div>
+          <div style="font-size: 0.68rem; font-weight: 800; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">
+            ${getDesktopIconSvg('rain', 'var(--cyan)', 13)} 5-Hour Match Window Meteorological Timeline
+          </div>
+          <div id="weatherHourlyTimelineGrid" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.45rem;"></div>
+        </div>
+
+        <!-- Section 2: Pitch Micro-Climate & Surface Aerodynamics Grid -->
+        <div style="margin-bottom: 0.95rem;">
+          <div style="font-size: 0.68rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem; display: flex; align-items: center; gap: 0.3rem;">
+            ${getDesktopIconSvg('stadium', 'var(--turf-emerald)', 13)} Pitch Soil Composition &amp; Micro-Climate Aerodynamics
+          </div>
+          <div id="weatherPitchImpactGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.45rem;"></div>
+        </div>
+
+        <!-- Section 3: Dual Column - 22-Yard Pitch Heatmap & Monte Carlo Win Probability -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.15rem;">
           <!-- Left Column: Pitch Length Heatmap & Beehive Stump Arrival -->
           <div class="studio-subpanel">
@@ -11297,7 +11311,7 @@ cricos_active_sse_connections 1</pre>
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-        <button type="button" class="btn btn-secondary" onclick="closeModal('modalPitchMapSimulator')" style="width: auto;" data-tooltip="Close Pitch Map &amp; Win Probability Simulator">Close</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalPitchMapSimulator')" style="width: auto;" data-tooltip="Close Pitch &amp; Weather Conditions Studio">Close</button>
       </div>
     </div>
   </div>
@@ -12742,7 +12756,7 @@ cricos_active_sse_connections 1</pre>
       // 2. Scope Left Sidebar (#appSidebar) secondary studio & officiating items per persona
       const sidebarItemAllowMap = {
         sidebarBtnFieldPlanner: ['CAPTAIN', 'PLAYER', 'ADMIN'],
-        sidebarBtnPitchMap: ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN'],
+        sidebarBtnPitchWeather: ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ADMIN'],
         sidebarBtnCricsheetExport: ['SCORER', 'ORGANISER', 'ADMIN'],
         sidebarBtnUmpireDesk: ['UMPIRE', 'ADMIN'],
         sidebarBtnPlayerAuction: ['CAPTAIN', 'PLAYER', 'ORGANISER', 'ADMIN'],
@@ -24166,7 +24180,7 @@ cricos_active_sse_connections 1</pre>
     // =========================================================================
     const COMMAND_PALETTE_ITEMS = [
       { id: 'cmd-tactics-field-planner', title: 'Open Tactical Field Placement & Powerplay Planner', subtitle: 'Interactive 11-fielder radar with MCC Law 28.4 circle validation & presets', category: 'TACTICS_3D', shortcut: 'Shift+F', icon: 'radar', fn: function() { openFieldPlannerModal(); } },
-      { id: 'cmd-tactics-pitch-map', title: 'Open Pitch Beehive Map & Win Probability Simulator', subtitle: 'Pitching length heatmap (Yorker/Good/Short) & What-If chase Monte Carlo', category: 'TACTICS_3D', shortcut: 'Shift+P', icon: 'chart', fn: function() { openPitchMapSimulatorModal(); } },
+      { id: 'cmd-tactics-pitch-map', title: 'Open Pitch & Weather Conditions Studio', subtitle: 'Pitching length heatmap, micro-climate weather, soil moisture & What-If chase Monte Carlo', category: 'TACTICS_3D', shortcut: 'Shift+P', icon: 'chart', fn: function() { openPitchWeatherModal(); } },
       { id: 'cmd-tactics-player-auction', title: 'Open Live Player Auction & Franchise Draft Room', subtitle: 'Real-time bidding gavel, franchise salary cap purse & RTM cards', category: 'TACTICS_3D', shortcut: 'Shift+A', icon: 'scale', fn: function() { openPlayerAuctionModal(); } },
       { id: 'cmd-tactics-3d-stadium', title: 'Switch to 3D WebGL Floodlit Stadium Pitch', subtitle: '8 broadcast camera angles, Hawk-Eye ball tracking & 11 live fielders', category: 'TACTICS_3D', shortcut: '3', icon: 'stadium', fn: function() { if (typeof setWagonDisplayMode === 'function') setWagonDisplayMode('3D'); showToast('Switched to 3D WebGL Floodlit Stadium Pitch'); } },
       { id: 'cmd-tactics-dls', title: 'Open Duckworth-Lewis-Stern (DLS) Target Calculator', subtitle: 'Rain interruption par score & revised target calculator', category: 'TACTICS_3D', shortcut: 'D', icon: 'rain', fn: function() { openModal('modalDlsCalculator'); } },
@@ -24802,11 +24816,21 @@ cricos_active_sse_connections 1</pre>
       showToast('11-Fielder Tactical Formation synchronized to 3D Floodlit Stadium Pitch!');
     }
 
-    // 3. Biomechanics Pitch Beehive Map & Monte Carlo Win Probability Simulator
-    function openPitchMapSimulatorModal() {
+    // 3. Biomechanics Pitch Beehive Map & Unified Weather Conditions Studio
+    function openPitchWeatherModal() {
       openModal('modalPitchMapSimulator');
-      runWinProbScenario(0, 0, 0);
+      if (typeof selectVenueWeatherLocation === 'function') {
+        selectVenueWeatherLocation(window.currentVenueWeatherId || 'chinnaswamy_turf_a', false);
+      }
+      if (typeof runWinProbScenario === 'function') {
+        runWinProbScenario(0, 0, 0);
+      }
     }
+    function openPitchMapSimulatorModal() {
+      openPitchWeatherModal();
+    }
+    window.openPitchWeatherModal = openPitchWeatherModal;
+    window.openPitchMapSimulatorModal = openPitchWeatherModal;
 
     function runWinProbScenario(simBalls, simRuns, simWickets) {
       const target = 178;
@@ -24955,7 +24979,8 @@ cricos_active_sse_connections 1</pre>
     window.applyFieldPreset = applyFieldPreset;
     window.toggleFielderRingDepth = toggleFielderRingDepth;
     window.syncFieldPlannerTo3DStadium = syncFieldPlannerTo3DStadium;
-    window.openPitchMapSimulatorModal = openPitchMapSimulatorModal;
+    window.openPitchWeatherModal = openPitchWeatherModal;
+    window.openPitchMapSimulatorModal = openPitchWeatherModal;
     window.runWinProbScenario = runWinProbScenario;
     window.openPlayerAuctionModal = openPlayerAuctionModal;
     window.placePlayerAuctionBid = placePlayerAuctionBid;
@@ -25208,6 +25233,7 @@ cricos_active_sse_connections 1</pre>
       'openDesktopWagonWheelFromSidebar',
       'openFieldPlannerModal',
       'renderFieldPlannerSvg',
+      'openPitchWeatherModal',
       'openPitchMapSimulatorModal',
       'renderPitchMapSimulator',
       'openPlayerAuctionModal',

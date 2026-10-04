@@ -1,14 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 16:45:00
-**Version:** 1.0.0-phase2dv (5-Step Impeccable Quality & Anti-Pattern Remediation)  
+**Last Updated:** 2026-10-04 17:35:00
+**Version:** 1.0.0-phase2dw (Unified Pitch & Weather Conditions Studio & Sidebar Navigation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DV Completed — 5-Step Impeccable Technical Quality & Anti-Pattern Remediation (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DW Completed — Unified Pitch & Weather Conditions Studio with Consolidated Sidebar Navigation (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Unified Pitch & Weather Conditions Studio**:
+    - **Desktop Web Console (`apps/api/src/ui/dashboard.ts`)**: Upgraded `#modalPitchMapSimulator` (`#pitchMapModalTitle`) into the single, unified **Pitch & Weather Conditions Studio**. Combines turf/stadium selector with live GPS coordinates, Open-Meteo satellite sync, meteorological micro-climate engine (`#matchVenueWeatherBar`), 5-hour match window timeline forecast, pitch soil composition & micro-climate aerodynamics grid, 22-yard pitch length heatmap SVG (`#pitchMapSvg`) with delivery impact points, and Monte Carlo "What-If" Chase Win Probability simulator.
+    - **Mobile App View (`apps/api/src/ui/mobile-view.ts`)**: Implemented `openPitchWeatherSheet(simMode)` action sheet combining active turf venue picker, verified GPS badge, micro-climate weather badges (temperature, feels-like, wind vector, humidity, aerodynamic swing, dew onset, rain %, and DLS risk), tactical toss recommendations, 5-hour timeline grid, soil moisture & friction cards, 22-yard pitch length heatmap SVG, and Monte Carlo scenario triggers (+18r Over, 2 Wickets, Live State). Aliased `openPitchMapSheet` to `openPitchWeatherSheet` for full backward compatibility.
+  - **2. Consolidated Sidebar Navigation Across Desktop & Mobile**:
+    - **Desktop Left Sidebar (`#appSidebar`)**: Added `#sidebarBtnPitchWeather` ("Pitch & Weather", icon `sun`, tooltip: "Unified Pitch & Weather Conditions Studio...") in Section 2 ("Tactical & 3D Studios"), wired to `openPitchWeatherModal()`. Retained compatibility anchor `#sidebarBtnPitchMap`.
+    - **Clean Main Content Area**: Removed bulky embedded `#matchVenueWeatherBar` from the main match dashboard body (lines 5888–5925), allowing seamless transition from target progression track to momentum waveform. Removed redundant inline pitch button from `#captainTacticalNotice` in match notices.
+    - **Mobile Sidebar Drawer (`#mobileSidebarDrawer`)**: Updated `#btnMobileSidebarPitchMap` to "Pitch & Weather", icon `sun`, opening `openPitchWeatherSheet()`. Updated match context actions, command palette items, and `#mobileActiveVenueBadge` to open the unified studio sheet.
+    - **Command Palette & Keyboard Shortcuts**: Updated palette item `cmd-tactics-pitch-map` and keyboard shortcut `Shift+P` to open the unified studio via `openPitchWeatherModal()`.
+  - **3. Verification & Pipeline Integrity**:
+    - 254 domain unit tests passing 100% via `./pipeline.sh test --summary`.
+    - All 13 consolidated Playwright tests passing 100% with zero critical console errors across desktop and mobile.
+    - Zero new anti-patterns detected via `impeccable detect`.
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
+    - Android 15 Release & Debug APKs compiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DV Completed — 5-Step Impeccable Technical Quality & Anti-Pattern Remediation (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Touch Target Ergonomics (`$impeccable adapt`)**:
     - Expanded mobile interactive controls to meet >= 44px ergonomic touch bounds (`.btn-card-radar-splits`, `.btn-toggle-inline-analysis`, `.btn-open-player-analysis`, 3D Player Card trigger, join code copy triggers, official toss triggers, roster swap actions, 3D silverware controls, and sheet sign-out).
   - **2. Contrast Accessibility Compliance (`$impeccable colorize`)**:

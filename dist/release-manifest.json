@@ -2,8 +2,8 @@
   "name": "cricos",
   "version": "1.0.0-phase1v",
   "release_name": "CricOS Unified Cricket Operating System",
-  "built_at": "2026-10-04T11:13:47.249Z",
-  "git_commit": "b2987403c76b872e1cbf5a466a322dd823523064",
+  "built_at": "2026-10-04T11:59:47.874Z",
+  "git_commit": "8cc0d4ab6418f59c5b070b8a30f9b591bd03fcd4",
   "architectures": [
     "linux/amd64",
     "linux/arm64",
@@ -23,12 +23,12 @@
   ],
   "artifacts": {
     "dist/index.html": {
-      "bytes": 1677502,
-      "sha256": "ae7ee1ba33fd8da1e222c2b8db1dd0f095ea3cb6db5c61f11a6049e0f0470079"
+      "bytes": 1677866,
+      "sha256": "4273f3900465bfd7e5aa1001b97f1eb76e01d2a6f88e12fdc7e132d848b7739a"
     },
     "index.html": {
-      "bytes": 1677502,
-      "sha256": "ae7ee1ba33fd8da1e222c2b8db1dd0f095ea3cb6db5c61f11a6049e0f0470079"
+      "bytes": 1677866,
+      "sha256": "4273f3900465bfd7e5aa1001b97f1eb76e01d2a6f88e12fdc7e132d848b7739a"
     },
     "dist/docs.html": {
       "bytes": 9436,
@@ -39,8 +39,8 @@
       "sha256": "50d986e54f28521b46917b16aff836dc825cdbea03e556deed97389db450409d"
     },
     "dist/mobile.html": {
-      "bytes": 1062653,
-      "sha256": "7eefc0a565f7c46537d23c877823ffe1c0e787eab28f7a297892f424b1405563"
+      "bytes": 1076497,
+      "sha256": "5da214cefc10c7e331dcae14ba2206905e1ebd7e04353f396c9215a7b426cc5f"
     }
   },
   "single_file_sync_verified": true
