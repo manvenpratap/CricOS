@@ -3535,7 +3535,7 @@
     <div class="home-indicator"></div>
   </div>
 
-  <script type="module">
+  <script>
     // Auto-detect native mobile app / standalone mode to strip emulator framing
     (function initNativePlatformMode() {
       const isNative = window.location.protocol === 'file:' ||
@@ -4021,6 +4021,7 @@
         this.selectedPlayerId = 'p1';
         this._screenChanged = false;
         this.inlineAnalysisExpanded = false;
+        this.inlineAnalysisTab = 'RADAR_SPLITS';
         this.playerCardFlipped = false;
 
         this.playerDatabase = {
@@ -5110,28 +5111,186 @@
         '</div>';
       }
 
+      renderTournamentLogsHtml(p) {
+        var tournaments = (this.profile && this.profile.tournaments) || [
+          { tournamentName: 'T20 Premier Cup', year: '2026', matches: 14, runs: 680, average: 56.6, strikeRate: 148.2, wickets: 2 },
+          { tournamentName: 'Champions Trophy', year: '2025', matches: 11, runs: 512, average: 51.2, strikeRate: 142.0, wickets: 1 },
+          { tournamentName: 'National T20 Cup', year: '2025', matches: 8, runs: 420, average: 60.0, strikeRate: 155.5, wickets: 0 }
+        ];
+        var out = '<div style="margin-top: 0.65rem;">' +
+          '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #00D2FF; margin-bottom: 0.35rem; display: flex; justify-content: space-between; align-items: center;">' +
+            '<span>Tournament Performance History</span>' +
+            '<span style="color: #94A3B8; font-size: 0.6rem;">Multi-Season Records</span>' +
+          '</div>' +
+          '<div style="display: flex; flex-direction: column; gap: 0.35rem;">';
+        for (var t = 0; t < tournaments.length; t++) {
+          var tr = tournaments[t];
+          out += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.45rem 0.6rem;">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">' +
+              '<span style="font-size: 0.75rem; font-weight: 700; color: #f8fafc;">' + tr.tournamentName + '</span>' +
+              '<span style="font-size: 0.62rem; color: #00D2FF; font-weight: 600;">' + tr.year + '</span>' +
+            '</div>' +
+            '<div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: #94a3b8;">' +
+              '<span>Mat: <strong style="color: #FFF;">' + tr.matches + '</strong></span>' +
+              '<span>Runs: <strong style="color: #00E599;">' + tr.runs + '</strong></span>' +
+              '<span>Avg: <strong style="color: #FFF;">' + tr.average + '</strong></span>' +
+              '<span>SR: <strong style="color: #00D2FF;">' + tr.strikeRate + '</strong></span>' +
+              '<span>Wkts: <strong style="color: #FFB800;">' + tr.wickets + '</strong></span>' +
+            '</div>' +
+          '</div>';
+        }
+        out += '</div></div>';
+        return out;
+      }
+
+      renderMilestoneBadgesHtml(p) {
+        var badges = (this.profile && this.profile.badges) || [
+          { icon: '🏆', title: '5,000 Runs Milestone', description: 'Elite T20 franchise career aggregate', rarity: 'LEGENDARY' },
+          { icon: '⚡', title: 'Century in 48 Balls', description: 'Fastest championship hundred recorded', rarity: 'RARE' },
+          { icon: '🎖️', title: '15x Match MVP', description: 'Certified Division A match-winning impact', rarity: 'COMMON' }
+        ];
+        var out = '<div style="margin-top: 0.65rem;">' +
+          '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #FFB800; margin-bottom: 0.35rem;">Milestone Achievement Badges</div>' +
+          '<div style="display: flex; flex-direction: column; gap: 0.3rem;">';
+        for (var b = 0; b < badges.length; b++) {
+          var bg = badges[b];
+          var borderClr = bg.rarity === 'LEGENDARY' ? '#FFB800' : (bg.rarity === 'RARE' ? '#00D2FF' : 'rgba(255,255,255,0.08)');
+          var badgeClr = bg.rarity === 'LEGENDARY' ? '#FFB800' : (bg.rarity === 'RARE' ? '#00D2FF' : '#00E599');
+          out += '<div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(10, 16, 28, 0.7); border: 1px solid ' + borderClr + '; border-radius: 8px; padding: 0.35rem 0.55rem;">' +
+            '<div style="font-size: 1rem;">' + bg.icon + '</div>' +
+            '<div style="flex: 1;">' +
+              '<div style="font-size: 0.72rem; font-weight: 700; color: #f8fafc;">' + bg.title + '</div>' +
+              '<div style="font-size: 0.6rem; color: #94a3b8;">' + bg.description + '</div>' +
+            '</div>' +
+            '<span style="font-size: 0.58rem; color: ' + badgeClr + '; font-weight: 700;">' + bg.rarity + '</span>' +
+          '</div>';
+        }
+        out += '</div></div>';
+        return out;
+      }
+
+      switchInlineAnalysisTab(tab) {
+        this.inlineAnalysisTab = tab || 'RADAR_SPLITS';
+        this.inlineAnalysisExpanded = true;
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.render();
+      }
+
+      toggleInlineRadarSplits(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        if (this.inlineAnalysisExpanded && this.inlineAnalysisTab === 'RADAR_SPLITS') {
+          this.inlineAnalysisExpanded = false;
+        } else {
+          this.inlineAnalysisExpanded = true;
+          this.inlineAnalysisTab = 'RADAR_SPLITS';
+        }
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.render();
+        if (this.inlineAnalysisExpanded) {
+          setTimeout(function() {
+            var el = document.getElementById('mobileInlinePlayerAnalysisDossier');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }, 60);
+        }
+      }
+
+      exportAthleteReport(playerName) {
+        if (this.triggerHaptic) this.triggerHaptic('success');
+        this.showToast((playerName || 'Athlete') + ' Dossier exported to PDF / CSV', 'success');
+      }
+
       renderPlayerAnalysisDossier(p, isInline) {
         if (!p) return '';
+        var activeTab = this.inlineAnalysisTab || 'RADAR_SPLITS';
+
+        if (isInline) {
+          var h = '<div class="player-analysis-dossier" style="background: rgba(4, 7, 13, 0.75); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem; margin-top: 0.4rem;">';
+
+          // Inline Segment Tabs: Radar & Splits vs Match Logs & Analytics
+          h += '<div style="display: flex; gap: 0.35rem; margin-bottom: 0.65rem;">';
+          h += '<button type="button" class="analytics-tab-btn' + (activeTab === 'RADAR_SPLITS' ? ' active' : '') + '" id="tabInlineRadarSplits" onclick="window.cricosMobileApp.switchInlineAnalysisTab(&apos;RADAR_SPLITS&apos;)" style="flex: 1; padding: 0.35rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;' + (activeTab === 'RADAR_SPLITS' ? ' background: rgba(0,229,153,0.18); border: 1px solid #00E599; color: #00E599;' : ' background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #94A3B8;') + '" data-tooltip="View 6-axis capability radar and situational splits">' + this.iconSvg('radar', activeTab === 'RADAR_SPLITS' ? '#00E599' : '#94A3B8', 13) + ' <span>🎯 Radar &amp; Splits</span></button>';
+          h += '<button type="button" class="analytics-tab-btn' + (activeTab === 'ANALYTICS' ? ' active' : '') + '" id="tabInlineAnalytics" onclick="window.cricosMobileApp.switchInlineAnalysisTab(&apos;ANALYTICS&apos;)" style="flex: 1; padding: 0.35rem 0.5rem; border-radius: 6px; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;' + (activeTab === 'ANALYTICS' ? ' background: rgba(0,210,255,0.18); border: 1px solid #00D2FF; color: #00D2FF;' : ' background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #94A3B8;') + '" data-tooltip="View recent match performance logs and game history">' + this.iconSvg('chart', activeTab === 'ANALYTICS' ? '#00D2FF' : '#94A3B8', 13) + ' <span>📊 Match Logs &amp; Analytics</span></button>';
+          h += '</div>';
+
+          // 1. Radar & Splits View Section
+          h += '<div id="inlineRadarSplitsSection" style="display: ' + (activeTab === 'RADAR_SPLITS' ? 'block' : 'none') + ';">';
+          h += '<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 0.65rem; margin-bottom: 0.65rem;">';
+          h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #00D2FF; margin-bottom: 0.4rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<span style="display: inline-flex; align-items: center; gap: 0.3rem;">' + this.iconSvg('radar', '#00D2FF', 14) + ' 6-Axis Capability Radar</span>';
+          h += '<span style="color: #94A3B8; font-size: 0.6rem;">Power Index ' + p.power + '/100</span>';
+          h += '</div>';
+          h += this.generateRadarSvg(p.radar, 240, 210);
+          h += '<div style="margin-top: 0.65rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.55rem;">';
+          h += '<div style="font-size: 0.66rem; text-transform: uppercase; font-weight: 800; color: #00E599; margin-bottom: 0.45rem;">Tactical Skill Breakdown</div>';
+          h += this.generateSkillsHtml(p.radar);
+          h += '</div></div>';
+          h += '<div style="margin-bottom: 0.65rem;">';
+          h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #94A3B8; margin-bottom: 0.35rem;">Situational Splits</div>';
+          h += this.generateSplitsTableHtml(p.splits);
+          h += '</div>';
+          h += '</div>';
+
+          // 2. Performance Logs & Analytics View Section
+          h += '<div id="inlineAnalyticsSection" style="display: ' + (activeTab === 'ANALYTICS' ? 'block' : 'none') + ';">';
+          h += '<div style="margin-bottom: 0.65rem;">';
+          h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #00D2FF; margin-bottom: 0.35rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<span>Recent Match Performance Logs</span>';
+          h += '<span style="color: #94A3B8; font-size: 0.6rem;">Last 5 Innings Telemetry</span>';
+          h += '</div>';
+          h += this.generateGameLogsTableHtml(p.gameLogs);
+          h += '</div>';
+          h += this.renderTournamentLogsHtml(p);
+          h += this.renderMilestoneBadgesHtml(p);
+          h += '</div>';
+
+          // Footer Controls
+          h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.65rem; padding-top: 0.45rem; border-top: 1px solid rgba(255,255,255,0.08);">';
+          h += '<button type="button" onclick="window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;)" style="padding: 0.28rem 0.65rem; border-radius: 6px; border: 1px solid rgba(0,210,255,0.4); background: rgba(0,210,255,0.15); color: #00D2FF; font-size: 0.66rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="Open full player analysis dossier in modal sheet">' + this.iconSvg('chart', '#00D2FF', 13) + ' <span>Expand Full Dossier ↗</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" style="padding: 0.28rem 0.6rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94A3B8; font-size: 0.66rem; font-weight: 600; cursor: pointer;">▲ Collapse</button>';
+          h += '</div>';
+
+          h += '</div>';
+          return h;
+        }
+
+        // Full Action Sheet Dossier (Matching Web Modal/Drawer)
         var h = '<div class="player-analysis-dossier" style="background: rgba(4, 7, 13, 0.75); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem; margin-top: 0.4rem;">';
 
         // Header info
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.55rem; border-bottom: 1px solid rgba(255,255,255,0.08);">';
         h += '<div style="display: flex; align-items: center; gap: 0.55rem;">';
-        h += '<div class="athletic-avatar" style="width: 38px; height: 38px; font-size: 0.85rem;">' + (p.initials || 'AT') + '</div>';
+        h += '<div class="athletic-avatar" style="width: 42px; height: 42px; font-size: 0.95rem;">' + (p.initials || 'AT') + '</div>';
         h += '<div>';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
-        h += '<span style="font-weight: 800; font-size: 0.95rem; font-family: var(--font-display); color: #FFF;">' + p.fullName + '</span>';
-        h += '<span style="font-size: 0.75rem; color: #00D2FF; font-weight: 800; font-family: var(--font-score);">#' + p.jersey + '</span>';
+        h += '<span style="font-weight: 800; font-size: 1rem; font-family: var(--font-display); color: #FFF;">' + p.fullName + '</span>';
+        h += '<span style="font-size: 0.8rem; color: #00D2FF; font-weight: 800; font-family: var(--font-score);">#' + p.jersey + '</span>';
         h += '</div>';
-        h += '<div style="font-size: 0.64rem; color: #94A3B8;">Division A Certified Athlete • KYC Verified</div>';
+        h += '<div style="font-size: 0.66rem; color: #94A3B8;">Division A Certified Athlete • KYC Verified</div>';
         h += '</div></div>';
         h += '<div style="text-align: right;">';
-        h += '<div style="font-size: 0.58rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">ELO Score</div>';
-        h += '<div style="font-family: var(--font-score); font-size: 1.25rem; font-weight: 900; color: #00E599; line-height: 1;">' + (p.elo || '2,400') + '</div>';
+        h += '<div style="font-size: 0.58rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Overall ELO Score</div>';
+        h += '<div style="font-family: var(--font-score); font-size: 1.35rem; font-weight: 900; color: #00E599; line-height: 1;">' + (p.elo || '2,400') + '</div>';
         h += '</div></div>';
 
-        // 6-Axis Radar & Tactical Breakdown
-        h += '<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 0.65rem; margin-bottom: 0.65rem;">';
+        // 1. Recent 5-Match Logs (Primary in Performance Analytics)
+        h += '<div style="margin-bottom: 0.65rem;">';
+        h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #00D2FF; margin-bottom: 0.35rem; display: flex; justify-content: space-between; align-items: center;">';
+        h += '<span>Recent Match Performance Logs</span>';
+        h += '<span style="color: #94A3B8; font-size: 0.6rem;">Last 5 Innings Telemetry</span>';
+        h += '</div>';
+        h += this.generateGameLogsTableHtml(p.gameLogs);
+        h += '</div>';
+
+        // 2. Tournament Performance Logs
+        h += this.renderTournamentLogsHtml(p);
+
+        // 3. Milestone Achievement Badges
+        h += this.renderMilestoneBadgesHtml(p);
+
+        // 4. 6-Axis Radar & Tactical Breakdown
+        h += '<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 0.65rem; margin-top: 0.65rem; margin-bottom: 0.65rem;">';
         h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #00D2FF; margin-bottom: 0.4rem; display: flex; justify-content: space-between; align-items: center;">';
         h += '<span style="display: inline-flex; align-items: center; gap: 0.3rem;">' + this.iconSvg('radar', '#00D2FF', 14) + ' 6-Axis Capability Radar</span>';
         h += '<span style="color: #94A3B8; font-size: 0.6rem;">Power Index ' + p.power + '/100</span>';
@@ -5142,23 +5301,14 @@
         h += this.generateSkillsHtml(p.radar);
         h += '</div></div>';
 
-        // Situational Splits
+        // 5. Situational Splits
         h += '<div style="margin-bottom: 0.65rem;">';
         h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #94A3B8; margin-bottom: 0.35rem;">Situational Splits</div>';
         h += this.generateSplitsTableHtml(p.splits);
         h += '</div>';
 
-        // Recent 5-Match Logs
-        h += '<div style="margin-bottom: 0.4rem;">';
-        h += '<div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; color: #94A3B8; margin-bottom: 0.35rem;">Recent Match Performance Logs</div>';
-        h += this.generateGameLogsTableHtml(p.gameLogs);
-        h += '</div>';
-
-        if (isInline) {
-          h += '<div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">';
-          h += '<button type="button" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" style="padding: 0.25rem 0.6rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94A3B8; font-size: 0.64rem; font-weight: 600; cursor: pointer;">▲ Collapse Analysis</button>';
-          h += '</div>';
-        }
+        // 6. Export Athlete Report
+        h += '<button type="button" onclick="window.cricosMobileApp.exportAthleteReport(&apos;' + p.name + '&apos;)" style="width: 100%; margin-top: 0.75rem; padding: 0.5rem; border-radius: 8px; border: 1px solid rgba(0,229,153,0.4); background: rgba(0,229,153,0.15); color: #00E599; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Download certified player analytical report (PDF / CSV)">' + this.iconSvg('download', '#00E599', 15) + ' <span>Export Athlete Report (PDF / CSV)</span></button>';
 
         h += '</div>';
         return h;
@@ -5184,7 +5334,7 @@
         var bodyHtml = '<div id="sheetFullPlayerAnalysis">' + chipsHtml + this.renderPlayerAnalysisDossier(p, false) + '</div>';
 
         this.openActionSheet({
-          title: this.iconSvg('radar', '#00E599', 18) + ' ' + p.name + ' · Full Analysis Dossier',
+          title: this.iconSvg('chart', '#00D2FF', 18) + ' ' + p.name + ' · Full Analytics Dossier',
           bodyHtml: bodyHtml,
           confirmText: 'Done',
           confirmStyle: 'background: linear-gradient(135deg, #00D2FF, #00E599); color: #04070D;',
@@ -5276,10 +5426,9 @@
         h += '<div style="margin-left: auto; background: rgba(0,229,153,0.15); border: 1px solid rgba(0,229,153,0.38); border-radius: 4px; padding: 0.12rem 0.38rem; font-size: 0.62rem; font-weight: 800; color: ' + formColor + ';">' + p.form + '</div>';
         h += '</div>';
 
-        // Bottom Hint & Quick Analysis
-        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
-        h += '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,229,153,0.7); font-size: 0.62rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.7)', 13) + ' <span>Tap to flip for career stats</span></div>';
-        h += '<button type="button" id="btnCardFrontAnalysis" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.62rem; font-weight: 700; cursor: pointer; position: relative; z-index: 10; pointer-events: auto; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Inspect full analytical dossier & radar">Analysis ↗</button>';
+        // Bottom Hint (Clean, uncluttered, matching reference design)
+        h += '<div style="display: flex; justify-content: center; align-items: center; padding: 0.15rem 0;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.35rem; color: rgba(0,229,153,0.75); font-size: 0.64rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.75)', 13) + ' <span>Tap to flip for career stats</span></div>';
         h += '</div>';
 
         h += '</div></div>'; // closes .player-flip-front
@@ -5315,19 +5464,21 @@
         h += '<div class="athletic-spectrum-track" style="height: 18px; margin-top: 0.2rem;">' + barsHtml + '</div>';
         h += '</div>';
 
-        // Flip back hint
+        // Flip back hint & Dedicated Radar & Splits Toggle
         h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
         h += '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,210,255,0.65); font-size: 0.6rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,210,255,0.65)', 12) + ' <span>Tap to flip back</span></div>';
-        h += '<button type="button" id="btnCardRadarSplits" onclick="event.stopPropagation(); window.cricosMobileApp.toggleInlinePlayerAnalysis(event);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.62rem; font-weight: 700; cursor: pointer; position: relative; z-index: 10; pointer-events: auto; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Toggle radar and situational splits analysis">Radar &amp; Splits ▾</button>';
+        h += '<button type="button" id="btnCardRadarSplits" onclick="event.stopPropagation(); window.cricosMobileApp.toggleInlineRadarSplits(event);" style="padding: 0.18rem 0.5rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.62rem; font-weight: 700; cursor: pointer; position: relative; z-index: 10; pointer-events: auto; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Toggle 6-axis capability radar and situational splits">Radar &amp; Splits ▾</button>';
         h += '</div>';
 
         h += '</div></div>'; // closes .player-flip-back
         h += '</div></div>'; // closes #playerFlipCard3D and .player-flip-scene
 
-        // 3. Action Controls Below Card
+        // 3. Action Controls Below Card: Clear distinction between Inline Radar & Splits vs Full Analytics Sheet
         h += '<div style="display: flex; gap: 0.4rem; margin-top: 0.55rem; align-items: center;">';
-        h += '<button type="button" id="btnToggleInlineAnalysis" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" style="flex: 1; padding: 0.42rem 0.6rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.35); background: rgba(0, 229, 153, 0.1); color: #00E599; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; cursor: pointer;" data-tooltip="Toggle full player analysis dossier inline">' + this.iconSvg('radar', '#00E599', 14) + ' <span>' + (this.inlineAnalysisExpanded ? '▲ Collapse Tactical Dossier' : '▼ Full Player Analysis & Radar') + '</span></button>';
-        h += '<button type="button" id="btnOpenPlayerAnalysisSheet" onclick="window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;)" style="padding: 0.42rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; cursor: pointer;" data-tooltip="Open complete player analysis sheet">' + this.iconSvg('chart', '#00D2FF', 14) + ' <span>Full Sheet ↗</span></button>';
+        h += '<button type="button" id="btnToggleInlineAnalysis" onclick="window.cricosMobileApp.toggleInlinePlayerAnalysis()" style="flex: 1; padding: 0.42rem 0.6rem; border-radius: 8px; border: 1px solid rgba(0, 229, 153, 0.35); background: rgba(0, 229, 153, 0.1); color: #00E599; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; cursor: pointer;" data-tooltip="Toggle radar and tactical breakdown inline">' + this.iconSvg('radar', '#00E599', 14) + ' <span>' + (this.inlineAnalysisExpanded ? '▲ Collapse Tactical Dossier' : '▼ Radar &amp; Splits (Inline)') + '</span></button>';
+        h += '<button type="button" id="btnOpenPlayerAnalysisSheet" onclick="window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;)" style="padding: 0.42rem 0.65rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.35); background: rgba(0, 210, 255, 0.1); color: #00D2FF; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; cursor: pointer;" data-tooltip="Expand complete player analytical dossier matching web console">' + this.iconSvg('chart', '#00D2FF', 14) + ' <span>Expand Analytics ↗</span></button>';
+        h += '</div>';
+
         // 4. Inline Dossier Accordion Container
         if (this.inlineAnalysisExpanded) {
           h += '<div id="mobileInlinePlayerAnalysisDossier" style="margin-top: 0.65rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.65rem;">' + this.renderPlayerAnalysisDossier(p, true) + '</div>';

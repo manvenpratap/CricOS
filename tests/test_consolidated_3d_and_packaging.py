@@ -159,6 +159,7 @@ async def test_mobile_3d_cards_and_drawer_studios():
         assert "#18" in front_text or "18" in front_text, "Front face must include jersey number"
         assert "WORLD ICC" in front_text or "ICC" in front_text, "Front face must include ICC rank ribbon"
         assert "2,580" in front_text or "2580" in front_text, "Front face must include ELO rating"
+        assert await page.query_selector("#btnCardFrontAnalysis") is None, "Front face must not contain duplicate Analysis button"
 
         # 4. Flip interaction directly on the main card
         await main_card.click()
@@ -219,6 +220,21 @@ async def test_mobile_3d_cards_and_drawer_studios():
         radar_svg = await page.query_selector("#mobileInlinePlayerAnalysisDossier svg")
         assert radar_svg is not None, "Inline dossier must include 6-axis radar SVG polygon"
 
+        # Interactive subtab switching between Radar & Splits and Performance Analytics
+        tab_analytics = await page.query_selector("#tabInlineAnalytics")
+        assert tab_analytics is not None, "Subtab for Match Logs & Analytics must exist"
+        await tab_analytics.click()
+        await page.wait_for_timeout(200)
+        analytics_section = await page.query_selector("#inlineAnalyticsSection")
+        assert analytics_section is not None and await analytics_section.is_visible(), "Inline analytics section must become visible on tab switch"
+
+        tab_radar = await page.query_selector("#tabInlineRadarSplits")
+        assert tab_radar is not None, "Subtab for Radar & Splits must exist"
+        await tab_radar.click()
+        await page.wait_for_timeout(200)
+        radar_section = await page.query_selector("#inlineRadarSplitsSection")
+        assert radar_section is not None and await radar_section.is_visible(), "Inline radar section must become visible on tab switch"
+
         # 8. Full Analysis Action Sheet (Provision 2)
         sheet_btn = await page.query_selector("#btnOpenPlayerAnalysisSheet")
         assert sheet_btn is not None, "Full analysis drawer button must exist"
@@ -226,6 +242,10 @@ async def test_mobile_3d_cards_and_drawer_studios():
         await page.wait_for_timeout(350)
         analysis_sheet = await page.query_selector("#sheetFullPlayerAnalysis")
         assert analysis_sheet is not None and await analysis_sheet.is_visible(), "Player analysis sheet must be visible"
+        sheet_text = await page.evaluate("() => document.querySelector('#sheetFullPlayerAnalysis')?.textContent || ''")
+        assert "Tournament Performance History" in sheet_text, "Full sheet must include tournament history"
+        assert "Milestone Achievement Badges" in sheet_text, "Full sheet must include milestone badges"
+        assert "Export Athlete Report" in sheet_text, "Full sheet must include export athlete report action"
 
         # Close analysis sheet
         await page.evaluate("() => window.cricosMobileApp.closeActionSheet()")

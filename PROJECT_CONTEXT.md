@@ -1,14 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 08:08:00
-**Version:** 1.0.0-phase2dk (3D Flip Card Pointer Hit-Testing Resolution, State Preservation & Inline Radar Expansion)  
+**Last Updated:** 2026-10-04 08:20:00
+**Version:** 1.0.0-phase2dl (Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DK Completed — 3D Flip Card Pointer Hit-Testing Resolution, Flip State Preservation & Inline Radar Expansion (`apps/api/src/ui/mobile-view.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Complete Elimination of Redundant Card Front Button**:
+    - Stripped `#btnCardFrontAnalysis` from the front face of `#playerFlipCard3D`, strictly aligning with the clean reference design (`media_1791062167739.png`).
+    - Preserved clean, centered `Tap to flip for career stats` instruction with zero button clutter.
+  - **2. Distinct Functional Segregation: Radar & Splits vs Full Analytics Sheet**:
+    - **Focused Radar & Splits**: Back face button `#btnCardRadarSplits` (`Radar & Splits ▾`) and below-card button `#btnToggleInlineAnalysis` (`▼ Radar & Splits (Inline)`) open the inline accordion focused directly on the 6-Axis Capability Radar SVG polygon, Power Index, Tactical Skill Breakdown bars, and Situational Splits table.
+    - **Comprehensive Analytics Action Sheet**: `#btnOpenPlayerAnalysisSheet` (`Expand Analytics ↗`) opens the full-screen modal `#sheetFullPlayerAnalysis` matching desktop `#modalPlayerStatsDrawer`, containing athlete avatar, ELO score, Division A KYC status, Last 5 Innings Telemetry Game Logs with MVP ratings, Multi-Season Tournament Performance History, Milestone Achievement Badges, Radar & Splits deep-dive, and interactive "Export Athlete Report (PDF / CSV)" button.
+  - **3. Interactive Segmented Subtabs in Inline Dossier**:
+    - Added `#tabInlineRadarSplits` (`🎯 Radar & Splits`) and `#tabInlineAnalytics` (`📊 Match Logs & Analytics`) to toggle smoothly between `#inlineRadarSplitsSection` and `#inlineAnalyticsSection` without page refresh or flipping the card back.
+  - **4. Domain & E2E Test Suite Health**:
+    - Added Suite 13 to `tests/domain-mobile-journeys-and-native.test.ts` (5 new assertions; 248 total tests in 67 suites passing 100% via `./pipeline.sh test --summary`).
+    - Enhanced `tests/test_consolidated_3d_and_packaging.py` Step 3, 7, and 8 to verify front face cleanliness, tab switching, and complete sheet contents.
+  - **5. Packaging & Android Native Compilation (Rule 6)**:
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DK Completed — 3D Flip Card Pointer Hit-Testing Resolution, Flip State Preservation & Inline Radar Expansion:
   - **1. CSS 3D Transforms Hit-Testing Invariant Fix**:
     - Resolved WebKit/Chromium pointer-events interception where `.player-flip-front` intercepted taps meant for `#btnCardRadarSplits` on `.player-flip-back` when the card was flipped.
     - Enforced explicit 3D transform layers and pointer event toggles:

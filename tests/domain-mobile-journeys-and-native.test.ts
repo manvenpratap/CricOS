@@ -605,7 +605,44 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('selectLiveMatch('), 'selectLiveMatch method must exist');
     });
   });
+
+  // ---- Suite 13: Distinct Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card ----
+  describe('Suite 13: Distinct Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card', () => {
+    it('1. Eliminates redundant front-face analysis button ensuring uncluttered player card', () => {
+      assert.ok(!mobileHtml.includes('id="btnCardFrontAnalysis"'), 'Front card face must not contain duplicate analysis button');
+      assert.ok(mobileHtml.includes('Tap to flip for career stats'), 'Front face must preserve tap to flip instruction');
+    });
+
+    it('2. Back face card provides dedicated Radar & Splits button targeting toggleInlineRadarSplits', () => {
+      assert.ok(mobileHtml.includes('id="btnCardRadarSplits"'), 'Back face must feature btnCardRadarSplits');
+      assert.ok(mobileHtml.includes('toggleInlineRadarSplits(event)'), 'Radar button must invoke toggleInlineRadarSplits');
+      assert.ok(mobileHtml.includes('Radar &amp; Splits ▾'), 'Button label must clearly say Radar & Splits');
+    });
+
+    it('3. Provides distinct below-card action buttons for inline radar vs full action sheet', () => {
+      assert.ok(mobileHtml.includes('id="btnToggleInlineAnalysis"'), 'btnToggleInlineAnalysis button must exist');
+      assert.ok(mobileHtml.includes('id="btnOpenPlayerAnalysisSheet"'), 'btnOpenPlayerAnalysisSheet button must exist');
+      assert.ok(mobileHtml.includes('Radar &amp; Splits (Inline)'), 'Inline button must indicate Radar & Splits focus');
+      assert.ok(mobileHtml.includes('Expand Analytics ↗'), 'Action sheet button must indicate Expand Analytics focus');
+    });
+
+    it('4. Inline dossier provides interactive segmented tabs separating radar and analytics', () => {
+      assert.ok(mobileHtml.includes('id="tabInlineRadarSplits"'), 'tabInlineRadarSplits button must exist');
+      assert.ok(mobileHtml.includes('id="tabInlineAnalytics"'), 'tabInlineAnalytics button must exist');
+      assert.ok(mobileHtml.includes('id="inlineRadarSplitsSection"'), 'inlineRadarSplitsSection container must exist');
+      assert.ok(mobileHtml.includes('id="inlineAnalyticsSection"'), 'inlineAnalyticsSection container must exist');
+      assert.ok(mobileHtml.includes('switchInlineAnalysisTab('), 'switchInlineAnalysisTab method must be defined');
+    });
+
+    it('5. Full action sheet renders tournament history, milestone badges, and export report', () => {
+      assert.ok(mobileHtml.includes('renderTournamentLogsHtml('), 'renderTournamentLogsHtml method must exist');
+      assert.ok(mobileHtml.includes('renderMilestoneBadgesHtml('), 'renderMilestoneBadgesHtml method must exist');
+      assert.ok(mobileHtml.includes('exportAthleteReport('), 'exportAthleteReport method must exist');
+      assert.ok(mobileHtml.includes('Export Athlete Report (PDF / CSV)'), 'Export report action button must exist');
+    });
+  });
 });
+
 
 
 
