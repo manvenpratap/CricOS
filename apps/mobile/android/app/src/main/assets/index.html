@@ -3128,12 +3128,27 @@
       background: linear-gradient(145deg, rgba(16, 24, 40, 0.97), rgba(4, 7, 13, 0.99));
       border: 2px solid rgba(0, 229, 153, 0.5);
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 229, 153, 0.1) inset;
+      transform: rotateY(0deg) translateZ(1px);
+      pointer-events: auto;
+      z-index: 2;
     }
     .player-flip-back {
       background: linear-gradient(145deg, rgba(4, 7, 13, 0.99), rgba(0, 20, 40, 0.97));
       border: 2px solid rgba(0, 210, 255, 0.5);
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 210, 255, 0.1) inset;
-      transform: rotateY(180deg);
+      transform: rotateY(180deg) translateZ(0px);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .player-flip-card.flipped .player-flip-front {
+      pointer-events: none !important;
+      z-index: 1 !important;
+      transform: rotateY(0deg) translateZ(0px) !important;
+    }
+    .player-flip-card.flipped .player-flip-back {
+      pointer-events: auto !important;
+      z-index: 5 !important;
+      transform: rotateY(180deg) translateZ(2px) !important;
     }
     .player-flip-sheen {
       position: absolute;
@@ -3184,11 +3199,26 @@
     .stat-3d-front {
       background: rgba(10, 16, 28, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: rotateY(0deg) translateZ(1px);
+      pointer-events: auto;
+      z-index: 2;
     }
     .stat-3d-back {
       background: rgba(0, 30, 50, 0.9);
       border: 1px solid rgba(0, 210, 255, 0.35);
-      transform: rotateY(180deg);
+      transform: rotateY(180deg) translateZ(0px);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .stat-3d-card.flipped .stat-3d-front {
+      pointer-events: none !important;
+      z-index: 1 !important;
+      transform: rotateY(0deg) translateZ(0px) !important;
+    }
+    .stat-3d-card.flipped .stat-3d-back {
+      pointer-events: auto !important;
+      z-index: 5 !important;
+      transform: rotateY(180deg) translateZ(2px) !important;
     }
     .stat-3d-front .stat-val { font-family: var(--font-score); font-size: 1rem; font-weight: 800; line-height: 1; margin-bottom: 0.18rem; }
     .stat-3d-front .stat-lbl { font-size: 0.58rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -3505,7 +3535,7 @@
     <div class="home-indicator"></div>
   </div>
 
-  <script>
+  <script type="module">
     // Auto-detect native mobile app / standalone mode to strip emulator framing
     (function initNativePlatformMode() {
       const isNative = window.location.protocol === 'file:' ||
@@ -3991,6 +4021,7 @@
         this.selectedPlayerId = 'p1';
         this._screenChanged = false;
         this.inlineAnalysisExpanded = false;
+        this.playerCardFlipped = false;
 
         this.playerDatabase = {
           'p1': {
@@ -4924,6 +4955,7 @@
 
       selectPlayer(id) {
         this.selectedPlayerId = id;
+        this.playerCardFlipped = false;
         if (window.CricOSSound) window.CricOSSound.playClick();
         this.render();
       }
@@ -5164,10 +5196,19 @@
         this.openPlayerAnalysisSheet(playerId);
       }
 
-      toggleInlinePlayerAnalysis() {
+      toggleInlinePlayerAnalysis(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
         this.inlineAnalysisExpanded = !this.inlineAnalysisExpanded;
         if (window.CricOSSound) window.CricOSSound.playClick();
         this.render();
+        if (this.inlineAnalysisExpanded) {
+          setTimeout(function() {
+            var el = document.getElementById('mobileInlinePlayerAnalysisDossier');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }, 60);
+        }
       }
 
       renderAthleticCard(playerId, showSquadChips) {
@@ -5206,8 +5247,9 @@
         }
 
         // 2. 3D Holographic Flippable Player Card
+        var isCardFlipped = Boolean(this.playerCardFlipped);
         h += '<div class="player-flip-scene" data-tooltip="Tap card to flip between identity and career figures">';
-        h += '<div id="playerFlipCard3D" class="player-flip-card" onclick="window.cricosMobileApp.toggleFlipCard(this)" role="button" tabindex="0" aria-label="3D flip card for ' + p.fullName + '">';
+        h += '<div id="playerFlipCard3D" class="player-flip-card' + (isCardFlipped ? ' flipped' : '') + '" onclick="window.cricosMobileApp.toggleFlipCard(this, event)" role="button" tabindex="0" aria-label="3D flip card for ' + p.fullName + '">';
 
         // Front Face
         h += '<div class="player-flip-front">';
@@ -5237,7 +5279,7 @@
         // Bottom Hint & Quick Analysis
         h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
         h += '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,229,153,0.7); font-size: 0.62rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,229,153,0.7)', 13) + ' <span>Tap to flip for career stats</span></div>';
-        h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.62rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Inspect full analytical dossier & radar">Analysis ↗</button>';
+        h += '<button type="button" id="btnCardFrontAnalysis" onclick="event.stopPropagation(); window.cricosMobileApp.openPlayerAnalysisSheet(&apos;' + p.id + '&apos;);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 229, 153, 0.4); background: rgba(0, 229, 153, 0.15); color: #00E599; font-size: 0.62rem; font-weight: 700; cursor: pointer; position: relative; z-index: 10; pointer-events: auto; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Inspect full analytical dossier & radar">Analysis ↗</button>';
         h += '</div>';
 
         h += '</div></div>'; // closes .player-flip-front
@@ -5276,7 +5318,7 @@
         // Flip back hint
         h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
         h += '<div style="display: flex; align-items: center; gap: 0.3rem; color: rgba(0,210,255,0.65); font-size: 0.6rem; font-weight: 700; font-family: var(--font-display);">' + this.iconSvg('flip', 'rgba(0,210,255,0.65)', 12) + ' <span>Tap to flip back</span></div>';
-        h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.toggleInlinePlayerAnalysis();" style="padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.6rem; font-weight: 700; cursor: pointer;">Radar &amp; Splits ▾</button>';
+        h += '<button type="button" id="btnCardRadarSplits" onclick="event.stopPropagation(); window.cricosMobileApp.toggleInlinePlayerAnalysis(event);" style="padding: 0.18rem 0.45rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.62rem; font-weight: 700; cursor: pointer; position: relative; z-index: 10; pointer-events: auto; display: inline-flex; align-items: center; gap: 0.2rem;" data-tooltip="Toggle radar and situational splits analysis">Radar &amp; Splits ▾</button>';
         h += '</div>';
 
         h += '</div></div>'; // closes .player-flip-back
@@ -10613,13 +10655,20 @@
         });
       }
 
-      toggleFlipCard(el) {
+      toggleFlipCard(el, e) {
+        var ev = e || (typeof window !== 'undefined' ? window.event : null);
+        if (ev && ev.target && ev.target.closest('button, a, input, select, .mobile-chip')) {
+          return;
+        }
         if (!el) return;
         var target = el.classList.contains('player-flip-card') || el.classList.contains('stat-3d-card')
           ? el
           : (el.closest('.player-flip-card') || el.closest('.stat-3d-card'));
         if (target) {
           target.classList.toggle('flipped');
+          if (target.id === 'playerFlipCard3D') {
+            this.playerCardFlipped = target.classList.contains('flipped');
+          }
         }
       }
 

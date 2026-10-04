@@ -174,13 +174,32 @@ async def test_mobile_3d_cards_and_drawer_studios():
         spectrum_bars = await page.query_selector_all("#playerFlipCard3D .athletic-spectrum-bar")
         assert len(spectrum_bars) == 20, f"Must have 20 momentum spectrum bars, found {len(spectrum_bars)}"
 
-        # Unflip main card
-        await main_card.click()
+        # 5b. Click Radar & Splits button directly on back face
+        card_radar_btn = await page.query_selector("#btnCardRadarSplits")
+        assert card_radar_btn is not None, "#btnCardRadarSplits must exist on back face"
+        await card_radar_btn.click()
+        await page.wait_for_timeout(300)
+        card_remains_flipped = await page.evaluate("() => document.querySelector('#playerFlipCard3D').classList.contains('flipped')")
+        assert card_remains_flipped, "Clicking Radar & Splits button MUST NOT flip the card back to front"
+        dossier_from_card = await page.query_selector("#mobileInlinePlayerAnalysisDossier")
+        assert dossier_from_card is not None and await dossier_from_card.is_visible(), "Inline dossier must expand when Radar & Splits button is clicked"
+
+        # Collapse dossier
+        card_radar_btn = await page.query_selector("#btnCardRadarSplits")
+        await card_radar_btn.click()
+        await page.wait_for_timeout(250)
+
+        # Unflip main card by clicking card body
+        fresh_card = await page.query_selector("#playerFlipCard3D")
+        await fresh_card.click(position={"x": 30, "y": 30})
         await page.wait_for_timeout(200)
+        card_is_unflipped = await page.evaluate("() => !document.querySelector('#playerFlipCard3D').classList.contains('flipped')")
+        assert card_is_unflipped, "Tapping card body must unflip card back to front"
 
         # 6. 1-Tap Player Switching updates the card
-        if len(squad_chips) > 1:
-            await squad_chips[1].click()
+        squad_chips_fresh = await page.query_selector_all("#mobileSquadChipsStrip button")
+        if len(squad_chips_fresh) > 1:
+            await squad_chips_fresh[1].click()
             await page.wait_for_timeout(250)
             updated_name = await page.evaluate("() => document.querySelector('#playerFlipCard3D .athletic-player-name')?.textContent || ''")
             assert "Rohit" in updated_name, f"Switching chip must update player card to Rohit, got '{updated_name}'"

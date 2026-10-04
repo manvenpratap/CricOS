@@ -513,7 +513,7 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
     });
 
     it('5. toggleFlipCard method cleanly manages flip state across 3D cards', () => {
-      assert.ok(mobileHtml.includes('toggleFlipCard(el)'), 'toggleFlipCard method must exist');
+      assert.ok(mobileHtml.includes('toggleFlipCard(el, e)') || mobileHtml.includes('toggleFlipCard(el)'), 'toggleFlipCard method must exist');
       assert.ok(mobileHtml.includes("target.classList.toggle('flipped')"), 'Must toggle flipped class');
     });
 
