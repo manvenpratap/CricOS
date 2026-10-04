@@ -646,6 +646,13 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('selectPlayer(this.dataset.playerId)'), 'Roster list items must trigger selectPlayer');
       assert.ok(mobileHtml.includes('scrollIntoView') || mobileHtml.includes('scrollTo'), 'selectPlayer must auto-scroll to show selected player card');
     });
+
+    it('7. Milestone achievement badges render Two-Tone Iconsax SVGs instead of raw icon string text', () => {
+      assert.ok(mobileHtml.includes('renderBadgeIconHtml('), 'renderBadgeIconHtml method must exist');
+      assert.ok(mobileHtml.includes('cricos-badge-icon-box'), 'Milestone achievement badges must use cricos-badge-icon-box');
+      assert.ok(!mobileHtml.includes("'<div style=\"font-size: 1rem;\">' + bg.icon + '</div>'"), 'Must not render bg.icon as raw font-size 1rem text node');
+      assert.ok(!mobileHtml.includes("'<div style=\"font-size: 1.2rem;\">' + bg.icon + '</div>'"), 'Must not render profile bg.icon as raw font-size 1.2rem text node');
+    });
   });
 });
 

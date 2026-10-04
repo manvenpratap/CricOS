@@ -1,28 +1,30 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 08:52:00
-**Version:** 1.0.0-phase2dm (Elimination of Short Player Name Chips & Auto-Scroll Roster List Selection)  
+**Last Updated:** 2026-10-04 10:05:00
+**Version:** 1.0.0-phase2dn (Milestone Achievement Badges Iconsax Two-Tone SVG Integration)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DM Completed — Elimination of Short Player Name Chips & Auto-Scroll Roster List Selection (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
-  - **1. Elimination of Short Player Name Chips Strip (`#mobileSquadChipsStrip`)**:
-    - Completely stripped the 3-row cluster of short player names ("Virat", "Rohit", "Shubman", ...) from above `#playerFlipCard3D`.
-    - Main 3D Holographic Player Card sits cleanly directly below Match Toss Certification, maximizing screen real estate and eliminating redundant buttons.
-  - **2. Canonical Roster List Selection Below Card**:
-    - Playing XI (11) and Bench Reserves lists below the card serve as the single canonical mechanism for player inspection and squad management.
-    - Added dedicated `Card Active` badge, keyboard accessibility (`Enter`/`Space`), and touch feedback to `.player-list-item`.
-  - **3. Smooth Auto-Scroll to Top on Selection**:
-    - `selectPlayer(id)` computes `#mobileAthleticStatsCard` target offset and smoothly scrolls `#mobileScrollBody` (`card.scrollIntoView({ behavior: 'smooth', block: 'start' })`), immediately focusing the selected athlete's 3D card at the top.
-  - **4. Domain & E2E Test Suite Health**:
-    - Added assertion 6 to Suite 13 in `tests/domain-mobile-journeys-and-native.test.ts` (249 total unit/domain tests in 67 suites passing 100% via `./pipeline.sh test --summary`).
-    - Updated `tests/test_consolidated_3d_and_packaging.py` Step 2 & 6 to verify chip elimination, roster list selection, and viewport auto-scroll (4 tests passing in 18s).
-  - **5. Packaging & Android Native Compilation (Rule 6)**:
+- **Active Phase**: Phase 2DN Completed — Milestone Achievement Badges Iconsax Two-Tone SVG Integration & Icon String Resolution (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Iconsax Two-Tone SVG Milestone Badge System**:
+    - Replaced raw text string concatenation (`'<div style="font-size: 1rem;">' + bg.icon + '</div>'`) with `this.renderBadgeIconHtml(bg.icon, badgeClr, 18, true, bg.rarity)`.
+    - Eliminated raw text strings (`"medal"`, `"rocket"`, `"crown"`, `"lightning"`) across both the inline dossier, full analytics action sheet, and player profile tabs.
+    - Wrapped SVGs in authentic, rarity-themed glassmorphic icon badge containers (`.cricos-badge-icon-box`) with subtle inner borders, translucent backgrounds, and dynamic color-coding (`#FFB800` for LEGENDARY, `#00D2FF` for RARE, `#00E599` for COMMON).
+  - **2. Resilient Icon Key and Legacy Emoji Mapping**:
+    - Created `renderBadgeIconHtml` supporting icon names (`'medal'`, `'rocket'`, `'crown'`, `'lightning'`, `'trophy'`, `'star'`, `'fire'`) and aliases (`'speed'`, `'captain'`, `'monarch'`, `'finisher'`, `'century'`, `'mvp'`), as well as backward-compatible emoji mappings (`'🏆'`, `'⚡'`, `'🎖️'`, `'🏅'`, `'🚀'`, `'👑'`, `'🔥'`, `'⭐'`).
+    - Added first-class Iconsax Two-Tone SVGs for `'download'`, `'bowler'`, `'chat'`, `'globe'`, and `'refresh'` into `this.iconSvg()`, preventing any fallbacks to the default bat icon.
+    - Fixed profile bio card role badge tag (`.profile-bio-tag`) to render SVG instead of raw persona icon name string.
+  - **3. Domain & E2E Test Suite Health**:
+    - Added assertion 7 to Suite 13 in `tests/domain-mobile-journeys-and-native.test.ts` verifying `renderBadgeIconHtml` presence and zero raw icon text nodes (250 total unit/domain tests in 67 suites passing 100% via `./pipeline.sh test --summary`).
+    - Enhanced `tests/test_consolidated_3d_and_packaging.py` Step 8 to verify that `#sheetFullPlayerAnalysis` renders `.cricos-badge-icon-box svg` without any bare text keys (4 tests passing in 18s).
+    - Verified all 13 consolidated Playwright tests pass 100% in 83s with zero console errors (`assert_no_critical_errors(page)`).
+  - **4. Packaging & Android Native Compilation (Rule 6)**:
     - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
     - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DM Completed — Elimination of Short Player Name Chips & Auto-Scroll Roster List Selection:
 - **Preceding Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face:
   - **1. Complete Elimination of Redundant Card Front Button**:
     - Stripped `#btnCardFrontAnalysis` from the front face of `#playerFlipCard3D`, strictly aligning with the clean reference design (`media_1791062167739.png`).

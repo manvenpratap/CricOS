@@ -256,6 +256,21 @@ async def test_mobile_3d_cards_and_drawer_studios():
         assert "Milestone Achievement Badges" in sheet_text, "Full sheet must include milestone badges"
         assert "Export Athlete Report" in sheet_text, "Full sheet must include export athlete report action"
 
+        # Verify Milestone Achievement Badges render Two-Tone SVGs in styled frames and not raw text
+        badge_boxes = await page.query_selector_all("#sheetFullPlayerAnalysis .cricos-badge-icon-box")
+        assert len(badge_boxes) >= 4, f"Must render at least 4 milestone achievement badge icon boxes, found {len(badge_boxes)}"
+        badge_svgs = await page.query_selector_all("#sheetFullPlayerAnalysis .cricos-badge-icon-box svg")
+        assert len(badge_svgs) >= 4, f"All badge icon boxes must contain SVG icons, found {len(badge_svgs)}"
+
+        badge_cards_text = await page.evaluate("() => Array.from(document.querySelectorAll('#sheetFullPlayerAnalysis .mobile-milestone-badge-card')).map(el => el.textContent)")
+        for card_text in badge_cards_text:
+            assert any(t in card_text for t in ["Century Master", "Boundary Monarch", "Tactical Captain", "The Finisher"]), f"Badge title missing in {card_text}"
+            words = [w.strip().lower() for w in card_text.split()]
+            assert "medal" not in words, "Raw icon key 'medal' must not be rendered as bare text"
+            assert "rocket" not in words, "Raw icon key 'rocket' must not be rendered as bare text"
+            assert "crown" not in words, "Raw icon key 'crown' must not be rendered as bare text"
+            assert "lightning" not in words, "Raw icon key 'lightning' must not be rendered as bare text"
+
         # Close analysis sheet
         await page.evaluate("() => window.cricosMobileApp.closeActionSheet()")
         await page.wait_for_timeout(200)
