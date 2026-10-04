@@ -141,6 +141,11 @@ async def test_mobile_3d_cards_and_drawer_studios():
             is_unflipped = await card.evaluate("el => !el.classList.contains('flipped')")
             assert is_unflipped, "Card must unflip after second tap"
 
+        profile_avatar_img = await page.query_selector("#mobileProfileAvatar img")
+        assert profile_avatar_img is not None, "#mobileProfileAvatar must display avatar img"
+        p_src = await profile_avatar_img.get_attribute("src")
+        assert p_src and len(p_src) > 10, "#mobileProfileAvatar img must display valid image URL"
+
         # -------------------------------------------------------------
         # 1b. Main 3D Player Card on Teams Hub (Direct Card & Full Analysis)
         # -------------------------------------------------------------
@@ -155,6 +160,8 @@ async def test_mobile_3d_cards_and_drawer_studios():
         assert await page.query_selector("#mobileSquadChipsStrip") is None, "Short player name chips strip above card must be eliminated"
         player_items = await page.query_selector_all(".player-list-item")
         assert len(player_items) >= 11, f"Playing XI and roster list must have at least 11 players, found {len(player_items)}"
+        roster_thumbs = await page.query_selector_all(".player-list-item img")
+        assert len(roster_thumbs) >= 11, f"Playing XI roster items must have athlete headshots, found {len(roster_thumbs)}"
 
         # 3. Front Face Data Completeness: identity, jersey, ICC rank, ELO score
         front_text = await page.evaluate("() => document.querySelector('#playerFlipCard3D .player-flip-front')?.textContent || ''")
@@ -162,6 +169,11 @@ async def test_mobile_3d_cards_and_drawer_studios():
         assert "WORLD ICC" in front_text or "ICC" in front_text, "Front face must include ICC rank ribbon"
         assert "2,580" in front_text or "2580" in front_text, "Front face must include ELO rating"
         assert await page.query_selector("#btnCardFrontAnalysis") is None, "Front face must not contain duplicate Analysis button"
+
+        card_avatar_img = await page.query_selector("#playerFlipCard3D .player-flip-front .athletic-card-avatar img")
+        assert card_avatar_img is not None, "Player card front face must have .athletic-card-avatar img"
+        avatar_src = await card_avatar_img.get_attribute("src")
+        assert avatar_src and len(avatar_src) > 10, "Player card front face must display valid athlete image URL"
 
         # 4. Flip interaction directly on the main card
         await main_card.click()
@@ -283,6 +295,8 @@ async def test_mobile_3d_cards_and_drawer_studios():
 
         holo_card = await page.query_selector("#playerFlipCard3D, #mobileHoloCard")
         assert holo_card is not None and await holo_card.is_visible()
+        holo_card_avatar_img = await page.query_selector("#mobileHoloCard .player-flip-front .athletic-card-avatar img")
+        assert holo_card_avatar_img is not None, "Modal holo card front face must have .athletic-card-avatar img"
 
         # Close action sheet
         await page.evaluate("() => window.cricosMobileApp.closeActionSheet()")
@@ -301,6 +315,32 @@ async def test_mobile_3d_cards_and_drawer_studios():
         stadium_vp = await page.query_selector("#mobileThreeStadiumViewport")
         assert stadium_vp is not None, "#mobileThreeStadiumViewport must exist"
         assert await stadium_vp.is_visible(), "#mobileThreeStadiumViewport must be visible"
+
+        # -------------------------------------------------------------
+        # 4. Sign-Up Profile Creation Avatar Upload & Presets
+        # -------------------------------------------------------------
+        await page.evaluate("""() => {
+            window.cricosMobileApp.client.clearSession();
+            window.cricosMobileApp.heroGatewayStage = 'GATEWAY';
+            window.cricosMobileApp.navigateTo('AUTH');
+            window.cricosMobileApp.setAuthMode('SIGN_UP');
+        }""")
+        await page.wait_for_timeout(250)
+
+        signup_preview = await page.query_selector("#signupAvatarUploadPreview")
+        assert signup_preview is not None and await signup_preview.is_visible(), "Sign-up form must show #signupAvatarUploadPreview"
+        assert await page.query_selector("#signupProfilePhotoInput") is not None, "Sign-up form must have #signupProfilePhotoInput"
+
+        preset_row = await page.query_selector("#signupPresetAvatarsRow")
+        assert preset_row is not None, "Sign-up form must have #signupPresetAvatarsRow"
+        preset_btns = await page.query_selector_all("#signupPresetAvatarsRow button")
+        assert len(preset_btns) == 4, f"Must have 4 athletic preset portrait buttons, found {len(preset_btns)}"
+
+        # Click preset 1 (Fast Bowler)
+        await preset_btns[1].click()
+        await page.wait_for_timeout(200)
+        selected_src = await page.evaluate("() => window.cricosMobileApp.signupData.avatarUrl")
+        assert selected_src and "AB6AXuC2Xvvt" in selected_src, "Selecting preset 1 must update signup avatarUrl to Fast Bowler preset"
 
         assert_no_critical_errors(page)
         await browser.close()

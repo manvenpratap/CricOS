@@ -2992,14 +2992,84 @@
       color: #cbd5e1;
     }
 
-    /* Mobile Avatar Upload Overlay */
+    /* Mobile Avatar Upload & Headshot Overlays */
     #mobileProfileAvatar:active .mobile-avatar-cam-overlay,
-    #mobileProfileAvatar:hover .mobile-avatar-cam-overlay {
+    #mobileProfileAvatar:hover .mobile-avatar-cam-overlay,
+    #signupAvatarUploadPreview:active .signup-avatar-cam-overlay,
+    #signupAvatarUploadPreview:hover .signup-avatar-cam-overlay {
       opacity: 1;
     }
     #editSheetAvatarPreview:active,
-    #editSheetAvatarPreview:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    #editSheetAvatarPreview:hover,
+    #signupAvatarUploadPreview:active,
+    #signupAvatarUploadPreview:hover {
+      box-shadow: 0 0 18px rgba(0, 229, 153, 0.55);
+    }
+    .athletic-card-avatar {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: rgba(0, 229, 153, 0.15);
+      border: 2px solid var(--turf-emerald);
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .athletic-card-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    #signupAvatarUploadPreview {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      border-radius: 50%;
+      background: rgba(0, 229, 153, 0.15);
+      border: 2.5px solid var(--turf-emerald);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #signupAvatarUploadPreview:hover {
+      transform: scale(1.04);
+    }
+    .signup-preset-avatar-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+      background: transparent;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      flex-shrink: 0;
+    }
+    .signup-preset-avatar-btn:hover,
+    .signup-preset-avatar-btn.active {
+      border-color: var(--turf-emerald);
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.5);
+      transform: scale(1.08);
+    }
+    .signup-preset-avatar-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
     }
 
     /* Mobile Profile Cards & Dossiers */
@@ -3820,6 +3890,17 @@
       window.ICC_CRICKET_LAWS_DIRECTORY = ICC_CRICKET_LAWS_DIRECTORY;
     }
 
+    const ATHLETE_PRESET_AVATARS = [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL', // 0: Premier Batsman
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS', // 1: Fast Bowler
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM', // 2: Official Scorer / Umpire Specialist
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td'  // 3: Dynamic Power Batter
+    ];
+
+    if (typeof window !== 'undefined') {
+      window.ATHLETE_PRESET_AVATARS = ATHLETE_PRESET_AVATARS;
+    }
+
     class StandaloneMobileApp {
       constructor() {
         this.client = new StandaloneMobileClient();
@@ -3907,7 +3988,9 @@
           bowlingStyle: 'Right-Arm Fast',
           jerseyNumber: 45,
           teamName: 'Mumbai Super Strikers',
-          bio: 'Opening batsman and attacking team leader with clean hitting mechanics and passion for strategic play.'
+          bio: 'Opening batsman and attacking team leader with clean hitting mechanics and passion for strategic play.',
+          avatarUrl: ATHLETE_PRESET_AVATARS[0],
+          hasCustomPhoto: false
         };
         this.roleExperienceConfig = {
           CAPTAIN: {
@@ -4027,6 +4110,7 @@
         this.playerDatabase = {
           'p1': {
             id: 'p1', name: 'Virat K.', fullName: 'Virat Kohli', shortName: 'Virat', role: 'CAPTAIN', jersey: 18,
+            avatarUrl: ATHLETE_PRESET_AVATARS[0],
             rating: 98.4, rank: '#1 WORLD ICC T20', runs: 4892, avg: 53.8, sr: 138.2, boundaryRate: 19.4, trueImpact: '+18.2',
             form: 'PEAK', power: 98, matches: 48, wickets: 4, economy: '7.20', catches: 32, elo: '2,580',
             style: 'Right-Hand Bat • Right-Arm Medium', initials: 'VK', trend: '+9.2%',
@@ -4049,6 +4133,7 @@
           },
           'p2': {
             id: 'p2', name: 'Rohit S.', fullName: 'Rohit Sharma', shortName: 'Rohit', role: 'BATTER', jersey: 45,
+            avatarUrl: ATHLETE_PRESET_AVATARS[3],
             rating: 96.1, rank: '#3 ICC OPENER', runs: 4231, avg: 48.2, sr: 142.6, boundaryRate: 21.1, trueImpact: '+16.5',
             form: 'EXCELLENT', power: 96, matches: 46, wickets: 2, economy: '8.10', catches: 26, elo: '2,490',
             style: 'Right-Hand Bat • Right-Arm Off-Break', initials: 'RS', trend: '+6.8%',
@@ -4071,6 +4156,7 @@
           },
           'p3': {
             id: 'p3', name: 'Shubman G.', fullName: 'Shubman Gill', shortName: 'Shubman', role: 'BATTER', jersey: 77,
+            avatarUrl: ATHLETE_PRESET_AVATARS[0],
             rating: 92.5, rank: '#7 ICC ANCHOR', runs: 2840, avg: 44.5, sr: 134.1, boundaryRate: 17.8, trueImpact: '+12.4',
             form: 'SURGING', power: 92, matches: 38, wickets: 0, economy: '0.00', catches: 22, elo: '2,380',
             style: 'Right-Hand Bat • Right-Arm Off-Break', initials: 'SG', trend: '+8.1%',
@@ -4092,6 +4178,7 @@
           },
           'p4': {
             id: 'p4', name: 'Shreyas I.', fullName: 'Shreyas Iyer', shortName: 'Shreyas', role: 'BATTER', jersey: 96,
+            avatarUrl: ATHLETE_PRESET_AVATARS[3],
             rating: 89.8, rank: '#12 ICC MIDDLE', runs: 2310, avg: 41.2, sr: 131.5, boundaryRate: 16.2, trueImpact: '+9.8',
             form: 'STABLE', power: 90, matches: 36, wickets: 0, economy: '0.00', catches: 19, elo: '2,310',
             style: 'Right-Hand Bat • Right-Arm Leg-Break', initials: 'SI', trend: '+5.4%',
@@ -4113,6 +4200,7 @@
           },
           'p5': {
             id: 'p5', name: 'KL Rahul', fullName: 'KL Rahul', shortName: 'KL', role: 'WICKETKEEPER', jersey: 1,
+            avatarUrl: ATHLETE_PRESET_AVATARS[0],
             rating: 91.2, rank: '#6 ICC KEEPER-BAT', runs: 3410, avg: 46.1, sr: 136.0, boundaryRate: 18.0, trueImpact: '+14.1',
             form: 'SOLID', power: 91, matches: 42, wickets: 0, economy: '0.00', catches: 44, elo: '2,360',
             style: 'Right-Hand Bat • Wicketkeeper', initials: 'KL', trend: '+4.5%',
@@ -4135,6 +4223,7 @@
           },
           'p6': {
             id: 'p6', name: 'Hardik P.', fullName: 'Hardik Patel', shortName: 'Hardik', role: 'ALL_ROUNDER', jersey: 33,
+            avatarUrl: ATHLETE_PRESET_AVATARS[3],
             rating: 95.8, rank: '#2 ALL-ROUNDER', runs: 2680, avg: 37.8, sr: 154.2, boundaryRate: 24.3, trueImpact: '+22.4',
             form: 'EXPLOSIVE', power: 96, matches: 44, wickets: 42, economy: '7.64', catches: 22, elo: '2,410',
             style: 'Left-Hand Bat • Right-Arm Fast Medium', initials: 'HP', trend: '+8.4%',
@@ -4157,6 +4246,7 @@
           },
           'p7': {
             id: 'p7', name: 'Ravindra J.', fullName: 'Ravindra Singh', shortName: 'Ravindra', role: 'ALL_ROUNDER', jersey: 8,
+            avatarUrl: ATHLETE_PRESET_AVATARS[2],
             rating: 94.0, rank: '#4 ALL-ROUNDER', runs: 2150, avg: 34.6, sr: 129.8, boundaryRate: 15.5, trueImpact: '+19.8',
             form: 'ELITE', power: 94, matches: 45, wickets: 52, economy: '6.42', catches: 38, elo: '2,460',
             style: 'Left-Hand Bat • Slow Left-Arm Orthodox', initials: 'RS', trend: '+7.1%',
@@ -4179,6 +4269,7 @@
           },
           'p8': {
             id: 'p8', name: 'Axar P.', fullName: 'Axar Patel', shortName: 'Axar', role: 'ALL_ROUNDER', jersey: 20,
+            avatarUrl: ATHLETE_PRESET_AVATARS[2],
             rating: 88.6, rank: '#14 ALL-ROUNDER', runs: 1420, avg: 29.5, sr: 132.4, boundaryRate: 16.0, trueImpact: '+11.2',
             form: 'RELIABLE', power: 88, matches: 38, wickets: 46, economy: '6.35', catches: 19, elo: '2,320',
             style: 'Left-Hand Bat • Slow Left-Arm Orthodox', initials: 'AP', trend: '+5.2%',
@@ -4201,6 +4292,7 @@
           },
           'p9': {
             id: 'p9', name: 'Jasprit B.', fullName: 'Jasprit Bumrah', shortName: 'Jasprit', role: 'BOWLER', jersey: 93,
+            avatarUrl: ATHLETE_PRESET_AVATARS[1],
             rating: 99.2, rank: '#1 WORLD BOWLER', runs: 120, avg: 8.5, sr: 85.0, boundaryRate: 5.2, trueImpact: '+31.5',
             form: 'UNSTOPPABLE', power: 99, matches: 50, wickets: 74, economy: '5.82', catches: 16, elo: '2,620',
             style: 'Right-Hand Bat • Right-Arm Fast Yorker Specialist', initials: 'JB', trend: '+12.0%',
@@ -4223,6 +4315,7 @@
           },
           'p10': {
             id: 'p10', name: 'Kuldeep Y.', fullName: 'Kuldeep Yadav', shortName: 'Kuldeep', role: 'BOWLER', jersey: 23,
+            avatarUrl: ATHLETE_PRESET_AVATARS[2],
             rating: 93.4, rank: '#5 SPINNER', runs: 85, avg: 6.2, sr: 72.0, boundaryRate: 3.1, trueImpact: '+18.9',
             form: 'WIZARD', power: 93, matches: 36, wickets: 58, economy: '6.75', catches: 12, elo: '2,420',
             style: 'Left-Hand Bat • Left-Arm Wrist Spin (Chinaman)', initials: 'KY', trend: '+9.6%',
@@ -4245,6 +4338,7 @@
           },
           'p11': {
             id: 'p11', name: 'Mohammed S.', fullName: 'Mohammed Siraj', shortName: 'Mohammed', role: 'BOWLER', jersey: 11,
+            avatarUrl: ATHLETE_PRESET_AVATARS[1],
             rating: 92.8, rank: '#8 SEAMER', runs: 95, avg: 7.1, sr: 78.5, boundaryRate: 4.0, trueImpact: '+17.4',
             form: 'LETHAL', power: 92, matches: 39, wickets: 48, economy: '7.45', catches: 14, elo: '2,310',
             style: 'Right-Hand Bat • Right-Arm Fast Seam', initials: 'MS', trend: '+4.8%',
@@ -4267,6 +4361,7 @@
           },
           'b1': {
             id: 'b1', name: 'Rishabh P.', fullName: 'Rishabh Pant', shortName: 'Rishabh', role: 'WICKETKEEPER', jersey: 17,
+            avatarUrl: ATHLETE_PRESET_AVATARS[3],
             rating: 93.1, rank: '#4 DYNAMIC KEEPER', runs: 2450, avg: 39.8, sr: 152.6, boundaryRate: 23.5, trueImpact: '+17.9',
             form: 'IMPACT', power: 93, matches: 38, wickets: 0, economy: '0.00', catches: 36, elo: '2,390',
             style: 'Left-Hand Bat • Wicketkeeper', initials: 'RP', trend: '+8.0%',
@@ -4287,6 +4382,7 @@
           },
           'b2': {
             id: 'b2', name: 'Surya Y.', fullName: 'Suryakumar Yadav', shortName: 'Surya', role: 'BATTER', jersey: 63,
+            avatarUrl: ATHLETE_PRESET_AVATARS[0],
             rating: 97.9, rank: '#2 360-BATTER', runs: 3120, avg: 47.4, sr: 172.5, boundaryRate: 28.4, trueImpact: '+26.8',
             form: 'SUPERNOVA', power: 98, matches: 40, wickets: 0, economy: '0.00', catches: 28, elo: '2,540',
             style: 'Right-Hand Bat • 360° Innovation', initials: 'SY', trend: '+11.4%',
@@ -4307,6 +4403,7 @@
           },
           'b3': {
             id: 'b3', name: 'Arshdeep S.', fullName: 'Arshdeep Singh', shortName: 'Arshdeep', role: 'BOWLER', jersey: 2,
+            avatarUrl: ATHLETE_PRESET_AVATARS[1],
             rating: 89.5, rank: '#11 DEATH SEAMER', runs: 42, avg: 5.2, sr: 65.0, boundaryRate: 2.5, trueImpact: '+13.8',
             form: 'CLUTCH', power: 90, matches: 35, wickets: 45, economy: '7.55', catches: 11, elo: '2,330',
             style: 'Left-Hand Bat • Left-Arm Fast Medium', initials: 'AS', trend: '+6.3%',
@@ -4326,7 +4423,8 @@
             ]
           },
           'b4': {
-            id: 'b4', name: 'Yuzvendra C.', fullName: 'Yuzvendra Chahal', shortName: 'Yuzvendra', role: 'BOWLER', jersey: 3,
+            id: 'b4', name: 'Yuzvendra C.', fullName: 'Yuzvendra Chahal', shortName: 'Chahal', role: 'BOWLER', jersey: 3,
+            avatarUrl: ATHLETE_PRESET_AVATARS[2],
             rating: 90.2, rank: '#9 LEGGIE', runs: 58, avg: 5.8, sr: 62.0, boundaryRate: 2.1, trueImpact: '+15.2',
             form: 'CRAFTY', power: 90, matches: 41, wickets: 56, economy: '7.12', catches: 10, elo: '2,350',
             style: 'Right-Hand Bat • Legbreak Googly', initials: 'YC', trend: '+5.7%',
@@ -4646,7 +4744,7 @@
           bio: 'Relentless run-machine, tactical captain, and high-intensity leader on and off the 22 yards.',
           stance: 'RHB',
           bowlingStyle: 'Right-arm medium',
-          avatarUrl: '',
+          avatarUrl: ATHLETE_PRESET_AVATARS[0],
           batting: { runs: 4892, innings: 118, notOuts: 19, ballsFaced: 3624 },
           bowling: { wickets: 8, overs: 48, runsConceded: 384, bestBowling: '2/18' },
           tournaments: [
@@ -4838,6 +4936,7 @@
 
         if (this._restoredSession) {
           if (this._restoredSession.name) this.profile.name = this._restoredSession.name;
+          if (this._restoredSession.avatarUrl) this.profile.avatarUrl = this._restoredSession.avatarUrl;
           if (this._restoredSession.role) {
             this.profile.persona = this._restoredSession.role;
             if (this._restoredSession.role === 'CAPTAIN') this.currentScreen = 'TEAMS';
@@ -4846,6 +4945,9 @@
             else if (this._restoredSession.role === 'TURF_PROVIDER') this.currentScreen = 'MARKETPLACE';
             else this.currentScreen = 'MATCHES';
           }
+        }
+        if (this.playerDatabase && this.playerDatabase['p1'] && this.profile.avatarUrl) {
+          this.playerDatabase['p1'].avatarUrl = this.profile.avatarUrl;
         }
       }
 
@@ -4998,7 +5100,20 @@
           if (cand.fullName && cand.fullName.toLowerCase().replace(/[^a-z0-9]/g, '').includes(pidClean)) return cand;
           if (cand.name && cand.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(pidClean)) return cand;
         }
-        return this.playerDatabase[this.selectedPlayerId] || this.playerDatabase['p1'];
+        var res = this.playerDatabase[this.selectedPlayerId] || this.playerDatabase['p1'];
+        if (res && !res.avatarUrl) res.avatarUrl = ATHLETE_PRESET_AVATARS[0];
+        return res;
+      }
+
+      getPlayerAvatar(p) {
+        if (!p) return (this.profile && this.profile.avatarUrl) || ATHLETE_PRESET_AVATARS[0];
+        if (p.id === 'p1' && this.profile && this.profile.avatarUrl) {
+          return this.profile.avatarUrl;
+        }
+        if (this.selectedPlayerId && p.id === this.selectedPlayerId && this.profile && this.profile.avatarUrl && (this.role === 'PLAYER' || this.role === 'CAPTAIN')) {
+          return this.profile.avatarUrl;
+        }
+        return p.avatarUrl || ATHLETE_PRESET_AVATARS[0];
       }
 
       generateRadarSvg(radarValues, width, height) {
@@ -5284,9 +5399,12 @@
         var h = '<div class="player-analysis-dossier" style="background: rgba(4, 7, 13, 0.75); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem; margin-top: 0.4rem;">';
 
         // Header info
+        var pAvatarUrl = this.getPlayerAvatar(p);
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; padding-bottom: 0.55rem; border-bottom: 1px solid rgba(255,255,255,0.08);">';
-        h += '<div style="display: flex; align-items: center; gap: 0.55rem;">';
-        h += '<div class="athletic-avatar" style="width: 42px; height: 42px; font-size: 0.95rem;">' + (p.initials || 'AT') + '</div>';
+        h += '<div style="display: flex; align-items: center; gap: 0.6rem;">';
+        h += '<div class="athletic-avatar" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; border: 2px solid #00E599; overflow: hidden; background: rgba(0,229,153,0.15); box-shadow: 0 0 10px rgba(0,229,153,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;" data-tooltip="' + p.name + ' · KYC Headshot">';
+        h += '<img src="' + pAvatarUrl + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + p.fullName + '">';
+        h += '</div>';
         h += '<div>';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
         h += '<span style="font-weight: 800; font-size: 1rem; font-family: var(--font-display); color: #FFF;">' + p.fullName + '</span>';
@@ -5416,11 +5534,17 @@
         h += '<div style="position: relative; z-index: 2; padding: 0.85rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">';
 
         // Top Meta
-        h += '<div style="display: flex; justify-content: space-between; align-items: flex-start;">';
+        var playerAvatarUrl = this.getPlayerAvatar(p);
+        h += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        h += '<div style="display: flex; align-items: center; gap: 0.65rem;">';
+        h += '<div class="athletic-card-avatar" style="width: 48px; height: 48px; min-width: 48px; border-radius: 50%; border: 2px solid ' + ratingColor + '; overflow: hidden; background: rgba(0,229,153,0.15); box-shadow: 0 0 12px rgba(0,229,153,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;" data-tooltip="' + p.name + ' · KYC Verified Headshot">';
+        h += '<img src="' + playerAvatarUrl + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + p.name + '">';
+        h += '</div>';
         h += '<div>';
         h += '<div style="font-size: 0.56rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem;"><span>CRICOS ATHLETE</span><span style="color: rgba(255,255,255,0.3);">•</span><span style="color: #94A3B8;">KYC CERTIFIED</span></div>';
         h += '<div class="athletic-player-name" style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.12rem;">' + p.name + '</div>';
         h += '<div class="athletic-player-sub" style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.08rem;">' + p.role + ' • ' + p.style + '</div>';
+        h += '</div>';
         h += '</div>';
         h += '<div style="font-family: var(--font-score); font-size: 2.1rem; font-weight: 900; color: #00D2FF; text-shadow: 0 0 16px rgba(0,210,255,0.55); line-height: 1;">#' + p.jersey + '</div>';
         h += '</div>';
@@ -5696,6 +5820,20 @@
         else if (role === 'ORGANISER') this.signupData.playingRole = 'TOURNAMENT_ORGANISER';
         else if (role === 'TURF_PROVIDER') this.signupData.playingRole = 'VENUE_OPERATOR';
         else if (role === 'ADMIN') this.signupData.playingRole = 'PLATFORM_SUPERUSER';
+
+        if (!this.signupData.hasCustomPhoto) {
+          if (role === 'SCORER' || role === 'UMPIRE' || role === 'ORGANISER' || role === 'TURF_PROVIDER' || role === 'ADMIN') {
+            this.signupData.avatarUrl = ATHLETE_PRESET_AVATARS[2];
+          } else if (role === 'PLAYER') {
+            this.signupData.avatarUrl = ATHLETE_PRESET_AVATARS[3];
+          } else {
+            this.signupData.avatarUrl = ATHLETE_PRESET_AVATARS[0];
+          }
+          this.profile.avatarUrl = this.signupData.avatarUrl;
+          if (this.playerDatabase && this.playerDatabase['p1']) {
+            this.playerDatabase['p1'].avatarUrl = this.signupData.avatarUrl;
+          }
+        }
         this.render();
       }
 
@@ -5706,6 +5844,7 @@
 
         if (isSignup && this.signupData) {
           if (this.signupData.name) this.profile.name = this.signupData.name;
+          if (this.signupData.avatarUrl) this.profile.avatarUrl = this.signupData.avatarUrl;
           if (this.signupData.bio) this.profile.bio = this.signupData.bio;
           if (this.signupData.jerseyNumber) this.profile.jerseyNumber = Number(this.signupData.jerseyNumber);
           if (this.signupData.playingRole) this.profile.role = this.signupData.playingRole;
@@ -5715,6 +5854,10 @@
             this.currentStance = this.signupData.stance;
           }
           if (this.signupData.bowlingStyle) this.profile.bowlingStyle = this.signupData.bowlingStyle;
+          if (this.playerDatabase && this.playerDatabase['p1']) {
+            if (this.profile.avatarUrl) this.playerDatabase['p1'].avatarUrl = this.profile.avatarUrl;
+            if (this.profile.name) this.playerDatabase['p1'].name = this.profile.name;
+          }
         } else {
           var defaultRoleProfiles = {
             CAPTAIN: { name: 'Virat K.', jersey: 18, role: 'BATTER', teamName: 'Delhi Daredevils', bio: 'Relentless run-machine, tactical captain, and high-intensity leader on and off the 22 yards.', stance: 'RHB', playerId: 'p1', runs: 4892, avg: 53.8, sr: 138.2 },
@@ -5775,11 +5918,13 @@
       finalizeAuthAndApplyRole(isSignup) {
         var chosenRole = isSignup ? (this.signupData.role || 'PLAYER') : (this.role || 'CAPTAIN');
         var userName = isSignup ? (this.signupData.name || 'Rohit Sharma') : (this.profile.name || 'Virat Sharma');
+        var userAvatar = isSignup ? (this.signupData.avatarUrl || this.profile.avatarUrl) : this.profile.avatarUrl;
         this.heroGatewayStage = 'AUTHENTICATED';
         this.persistMobileSession({
           token: 'jwt_otp_' + chosenRole.toLowerCase(),
           refreshToken: 'rt_otp_' + chosenRole.toLowerCase(),
           name: userName,
+          avatarUrl: userAvatar,
           identifier: this.identifier,
           role: chosenRole,
           allowedPersonas: this.allowedPersonas.slice(),
@@ -5845,6 +5990,12 @@
         var reader = new FileReader();
         reader.onload = function(e) {
           self.profile.avatarUrl = e.target.result;
+          if (self.playerDatabase && self.playerDatabase['p1']) {
+            self.playerDatabase['p1'].avatarUrl = e.target.result;
+          }
+          if (self.selectedPlayerId && self.playerDatabase && self.playerDatabase[self.selectedPlayerId]) {
+            self.playerDatabase[self.selectedPlayerId].avatarUrl = e.target.result;
+          }
           self.showToast('✓ Profile photo updated!', 'success');
           self._screenChanged = true;
           self.render();
@@ -5856,25 +6007,97 @@
       }
 
       resetMobileAvatar() {
-        this.profile.avatarUrl = '';
+        this.profile.avatarUrl = ATHLETE_PRESET_AVATARS[0];
+        if (this.playerDatabase && this.playerDatabase['p1']) {
+          this.playerDatabase['p1'].avatarUrl = ATHLETE_PRESET_AVATARS[0];
+        }
+        if (this.selectedPlayerId && this.playerDatabase && this.playerDatabase[this.selectedPlayerId]) {
+          this.playerDatabase[this.selectedPlayerId].avatarUrl = ATHLETE_PRESET_AVATARS[0];
+        }
         this._screenChanged = true;
         this.render();
-        this.showToast('↺ Avatar reset to jersey number', 'info');
+        this.showToast('↺ Avatar reset to default headshot', 'info');
       }
 
       selectMobilePresetAvatar(index) {
-        var presetUrls = [
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL',
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS',
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM',
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td'
-        ];
-        if (presetUrls[index]) {
-          this.profile.avatarUrl = presetUrls[index];
+        if (ATHLETE_PRESET_AVATARS[index]) {
+          this.profile.avatarUrl = ATHLETE_PRESET_AVATARS[index];
+          if (this.playerDatabase && this.playerDatabase['p1']) {
+            this.playerDatabase['p1'].avatarUrl = ATHLETE_PRESET_AVATARS[index];
+          }
+          if (this.selectedPlayerId && this.playerDatabase && this.playerDatabase[this.selectedPlayerId]) {
+            this.playerDatabase[this.selectedPlayerId].avatarUrl = ATHLETE_PRESET_AVATARS[index];
+          }
           this.showToast('✓ Preset portrait #' + (index + 1) + ' selected', 'success');
           this._screenChanged = true;
           this.render();
         }
+      }
+
+      handleSignupProfilePhoto(event) {
+        var self = this;
+        var file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        var validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/avif'];
+        if (validTypes.indexOf(file.type) === -1) {
+          self.showToast('Invalid format. Use PNG, JPG, WebP, or GIF.', 'error');
+          return;
+        }
+        if (file.size > 8 * 1024 * 1024) {
+          self.showToast('File too large. Maximum 8 MB.', 'error');
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          self.signupData.avatarUrl = e.target.result;
+          self.signupData.hasCustomPhoto = true;
+          self.profile.avatarUrl = e.target.result;
+          if (self.playerDatabase && self.playerDatabase['p1']) {
+            self.playerDatabase['p1'].avatarUrl = e.target.result;
+          }
+          self.showToast('✓ Photo uploaded for profile creation!', 'success');
+          self.render();
+        };
+        reader.onerror = function() {
+          self.showToast('Failed to read image.', 'error');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      selectSignupPresetAvatar(index) {
+        if (ATHLETE_PRESET_AVATARS[index]) {
+          this.signupData.avatarUrl = ATHLETE_PRESET_AVATARS[index];
+          this.signupData.hasCustomPhoto = true;
+          this.profile.avatarUrl = ATHLETE_PRESET_AVATARS[index];
+          if (this.playerDatabase && this.playerDatabase['p1']) {
+            this.playerDatabase['p1'].avatarUrl = ATHLETE_PRESET_AVATARS[index];
+          }
+          this.showToast('✓ Preset portrait #' + (index + 1) + ' selected', 'success');
+          this.render();
+        }
+      }
+
+      resetSignupAvatar() {
+        this.signupData.avatarUrl = ATHLETE_PRESET_AVATARS[0];
+        this.signupData.hasCustomPhoto = false;
+        this.profile.avatarUrl = ATHLETE_PRESET_AVATARS[0];
+        if (this.playerDatabase && this.playerDatabase['p1']) {
+          this.playerDatabase['p1'].avatarUrl = ATHLETE_PRESET_AVATARS[0];
+        }
+        this.showToast('↺ Photo reset to default headshot', 'info');
+        this.render();
+      }
+
+      triggerSignupPhoto() {
+        var el = document.getElementById('signupProfilePhotoInput');
+        if (el) el.click();
+      }
+
+      triggerProfilePhoto() {
+        var el = document.getElementById('mobileProfilePhotoInput');
+        if (el) el.click();
       }
 
       handleMobileVenuePhoto(event) {
@@ -10749,6 +10972,7 @@
         var roleFmt = (p.role || 'BATTER').replace(/_/g, ' ');
         var ratingColor = (p.rating >= 95) ? '#FFB800' : (p.rating >= 88) ? '#00E599' : '#00D2FF';
         var formColor = (p.form === 'PEAK') ? '#00E599' : (p.form === 'GOOD' || p.form === 'EXCELLENT' || p.form === 'SURGING' || p.form === 'CLUTCH') ? '#00D2FF' : '#FFB800';
+        var playerAvatarUrl = this.getPlayerAvatar(p);
 
         var cardHtml = '<div class="player-flip-scene" data-tooltip="Tap card to flip and view detailed stats">' +
           '<div id="mobileHoloCard" class="player-flip-card" onclick="window.cricosMobileApp.toggleFlipCard(this)" role="button" tabindex="0" aria-label="3D flip card for ' + p.fullName + '">' +
@@ -10757,11 +10981,16 @@
             '<div class="player-flip-front">' +
               '<div class="player-flip-sheen"></div>' +
               '<div style="position: relative; z-index: 2; padding: 0.85rem 0.95rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">' +
-                '<div style="display: flex; justify-content: space-between; align-items: flex-start;">' +
-                  '<div>' +
-                    '<div style="font-size: 0.56rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem;"><span>CRICOS ATHLETE</span><span style="color: rgba(255,255,255,0.3);">•</span><span style="color: #94A3B8;">KYC CERTIFIED</span></div>' +
-                    '<div style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.12rem;">' + p.name + '</div>' +
-                    '<div style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.08rem;">' + roleFmt + ' • ' + (p.style || 'Right-Hand Bat') + '</div>' +
+                '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                  '<div style="display: flex; align-items: center; gap: 0.65rem;">' +
+                    '<div class="athletic-card-avatar" style="width: 48px; height: 48px; min-width: 48px; border-radius: 50%; border: 2px solid ' + ratingColor + '; overflow: hidden; background: rgba(0,229,153,0.15); box-shadow: 0 0 12px rgba(0,229,153,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;" data-tooltip="' + p.name + ' · KYC Verified Headshot">' +
+                      '<img src="' + playerAvatarUrl + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + p.name + '">' +
+                    '</div>' +
+                    '<div>' +
+                      '<div style="font-size: 0.56rem; color: #00E599; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem;"><span>CRICOS ATHLETE</span><span style="color: rgba(255,255,255,0.3);">•</span><span style="color: #94A3B8;">KYC CERTIFIED</span></div>' +
+                      '<div class="athletic-player-name" style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: #F8FAFC; line-height: 1.15; margin-top: 0.12rem;">' + p.name + '</div>' +
+                      '<div class="athletic-player-sub" style="font-size: 0.68rem; color: #94A3B8; margin-top: 0.08rem;">' + roleFmt + ' • ' + (p.style || 'Right-Hand Bat') + '</div>' +
+                    '</div>' +
                   '</div>' +
                   '<div style="font-family: var(--font-score); font-size: 2.1rem; font-weight: 900; color: #00D2FF; text-shadow: 0 0 16px rgba(0,210,255,0.55); line-height: 1;">' + jerseyDisplay + '</div>' +
                 '</div>' +
@@ -11769,6 +11998,43 @@
           h += '</div>';
 
           if (this.authStep === 'IDENTIFIER') {
+            // Profile Photo Upload & Headshot Selection
+            var curSignupAvatar = this.signupData.avatarUrl || ATHLETE_PRESET_AVATARS[0];
+            h += '<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.85rem; margin-bottom: 1rem; text-align: center;">';
+            h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">';
+            h += '<label style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em;">Athlete Photo & Headshot</label>';
+            h += '<span style="font-size: 0.64rem; color: #00E599; font-weight: 600;">Visible on Player Card & Profile</span>';
+            h += '</div>';
+
+            h += '<div style="display: flex; align-items: center; justify-content: center; gap: 0.95rem; margin-bottom: 0.75rem;">';
+            h += '<div id="signupAvatarUploadPreview" onclick="window.cricosMobileApp.triggerSignupPhoto()" data-tooltip="Tap to upload your photo from device" role="button" tabindex="0" aria-label="Upload profile photo">';
+            h += '<img id="signupAvatarImg" src="' + curSignupAvatar + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="Profile Preview">';
+            h += '<div class="signup-avatar-cam-overlay" style="position: absolute; inset: 0; background: rgba(4, 7, 13, 0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; border-radius: 50%;">' + this.iconSvg('camera', '#FFFFFF', 20) + '</div>';
+            h += '</div>';
+
+            h += '<div style="display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-start;">';
+            h += '<button type="button" id="btnUploadSignupPhoto" onclick="window.cricosMobileApp.triggerSignupPhoto()" style="padding: 0.35rem 0.75rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.45); background: rgba(0, 229, 153, 0.15); color: #00E599; font-weight: 700; font-size: 0.72rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem;" data-tooltip="Upload JPEG, PNG or WebP photo from device">' + this.iconSvg('camera', '#00E599', 14) + ' <span>Upload Photo</span></button>';
+            h += '<button type="button" id="btnResetSignupAvatar" onclick="window.cricosMobileApp.resetSignupAvatar()" style="padding: 0.25rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #94A3B8; font-weight: 600; font-size: 0.66rem; cursor: pointer;" data-tooltip="Reset to default headshot">↺ Reset to Default</button>';
+            h += '</div>';
+            h += '</div>';
+
+            h += '<input type="file" id="signupProfilePhotoInput" accept="image/*" style="display: none;" onchange="window.cricosMobileApp.handleSignupProfilePhoto(event)">';
+
+            // Preset Quick Picks
+            h += '<div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.55rem;">';
+            h += '<div style="font-size: 0.64rem; color: #94A3B8; margin-bottom: 0.4rem;">Or quick-select athletic headshot preset:</div>';
+            h += '<div id="signupPresetAvatarsRow" style="display: flex; gap: 0.55rem; justify-content: center; align-items: center;">';
+            var presetLabels = ['Premier Batsman', 'Fast Bowler', 'Official / Umpire Specialist', 'Power Batter'];
+            for (var pi = 0; pi < ATHLETE_PRESET_AVATARS.length; pi++) {
+              var isPresetActive = curSignupAvatar === ATHLETE_PRESET_AVATARS[pi];
+              h += '<button type="button" class="signup-preset-avatar-btn' + (isPresetActive ? ' active' : '') + '" onclick="window.cricosMobileApp.selectSignupPresetAvatar(' + pi + ')" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid ' + (isPresetActive ? '#00E599' : 'rgba(255,255,255,0.18)') + '; overflow: hidden; cursor: pointer; padding: 0; background: transparent; box-shadow: ' + (isPresetActive ? '0 0 10px rgba(0,229,153,0.5)' : 'none') + ';" data-tooltip="' + presetLabels[pi] + ' Preset" aria-label="' + presetLabels[pi] + '">';
+              h += '<img src="' + ATHLETE_PRESET_AVATARS[pi] + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + presetLabels[pi] + '">';
+              h += '</button>';
+            }
+            h += '</div>';
+            h += '</div>';
+            h += '</div>';
+
             // Full Name
             h += '<div style="margin-bottom: 0.85rem;">';
             h += '<label style="display: block; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.35rem;">Full Name *</label>';
@@ -13245,8 +13511,10 @@
         for (var i = 0; i < this.playingXI.length; i++) {
           var p = this.playingXI[i];
           var isSel = p.id === activeTeamPlayerId;
+          var pAv = this.getPlayerAvatar(p);
           h += '<div class="player-list-item ' + (isSel ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + p.id + '" role="button" tabindex="0" aria-label="Select ' + p.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="background: ' + (isSel ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.8)') + '; border: 1px solid ' + (isSel ? '#00E599' : 'rgba(255,255,255,0.08)') + '; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" data-tooltip="Select ' + p.name + ' to view card at top">';
-          h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
+          h += '<div style="display: flex; align-items: center; gap: 0.55rem;">';
+          h += '<div style="width: 28px; height: 28px; min-width: 28px; border-radius: 50%; overflow: hidden; border: 1.5px solid ' + (isSel ? '#00E599' : 'rgba(255,255,255,0.18)') + '; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="' + pAv + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + p.name + '"></div>';
           h += '<span style="font-family: var(--font-score); font-size: 0.72rem; color: #94a3b8; width: 20px;">#' + p.jersey + '</span>';
           h += '<div>';
           h += '<div style="font-size: 0.8rem; font-weight: 700;">' + p.name + ' ' + (p.role === 'CAPTAIN' ? '<span style="color: #00E599; font-size: 0.62rem;">(C)</span>' : '') + '</div>';
@@ -13276,8 +13544,12 @@
         for (var b = 0; b < this.bench.length; b++) {
           var bp = this.bench[b];
           var isSelB = bp.id === (this.selectedPlayerId || 'p1');
+          var bpAv = this.getPlayerAvatar(bp);
           h += '<div class="player-list-item ' + (isSelB ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + bp.id + '" role="button" tabindex="0" aria-label="Select ' + bp.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="background: ' + (isSelB ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.5)') + '; border: 1px solid ' + (isSelB ? '#00E599' : 'rgba(255,255,255,0.05)') + '; border-radius: 8px; padding: 0.35rem 0.65rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" data-tooltip="Select ' + bp.name + ' to view card at top">';
+          h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
+          h += '<div style="width: 24px; height: 24px; min-width: 24px; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="' + bpAv + '" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;" alt="' + bp.name + '"></div>';
           h += '<div style="font-size: 0.75rem; color: #94a3b8;">#' + bp.jersey + ' ' + bp.name + ' <small>(' + bp.role + ')</small></div>';
+          h += '</div>';
           if (isSelB) {
             h += '<span style="font-size: 0.58rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
           } else {
@@ -13821,8 +14093,8 @@
         } else {
           avatarContent = '<span style="font-size: 1.1rem; font-weight: 800; color: #00E599; font-family: var(--font-score);">#' + this.profile.jerseyNumber + '</span>';
         }
-        h += '<div id="mobileProfileAvatar" style="position: relative; width: 52px; height: 52px; min-width: 52px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2px solid #00E599; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);" onclick="document.getElementById(&#39;mobileProfilePhotoInput&#39;).click()" data-tooltip="Tap to upload your profile photo">';
-        h += '<div id="mobileAvatarContent">' + avatarContent + '</div>';
+        h += '<div id="mobileProfileAvatar" style="position: relative; width: 52px; height: 52px; min-width: 52px; border-radius: 50%; background: rgba(0, 229, 153, 0.15); border: 2px solid #00E599; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);" onclick="window.cricosMobileApp.triggerProfilePhoto()" data-tooltip="Tap to upload your profile photo">';
+        h += '<div id="mobileAvatarContent" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">' + avatarContent + '</div>';
         h += '<div style="position: absolute; inset: 0; background: rgba(4, 7, 13, 0.65); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; border-radius: 50%;" class="mobile-avatar-cam-overlay">' + this.iconSvg('camera', 'rgba(255,255,255,0.9)', 18) + '</div>';
         h += '</div>';
         h += '<input type="file" id="mobileProfilePhotoInput" accept="image/*" style="display: none;" onchange="window.cricosMobileApp.handleMobileProfilePhoto(event)">';

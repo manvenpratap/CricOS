@@ -653,6 +653,17 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(!mobileHtml.includes("'<div style=\"font-size: 1rem;\">' + bg.icon + '</div>'"), 'Must not render bg.icon as raw font-size 1rem text node');
       assert.ok(!mobileHtml.includes("'<div style=\"font-size: 1.2rem;\">' + bg.icon + '</div>'"), 'Must not render profile bg.icon as raw font-size 1.2rem text node');
     });
+
+    it('8. Athlete headshots render on front face of 3D player cards and profile creation avatar upload is present', () => {
+      assert.ok(mobileHtml.includes('athletic-card-avatar'), 'Front face of player card must feature athletic-card-avatar container');
+      assert.ok(mobileHtml.includes('getPlayerAvatar('), 'getPlayerAvatar resolution method must exist');
+      assert.ok(mobileHtml.includes('ATHLETE_PRESET_AVATARS'), 'ATHLETE_PRESET_AVATARS constant array must be defined');
+      assert.ok(mobileHtml.includes('id="signupAvatarUploadPreview"'), 'Sign up profile creation must feature signupAvatarUploadPreview');
+      assert.ok(mobileHtml.includes('id="signupProfilePhotoInput"'), 'Sign up profile creation must feature file input for photo upload');
+      assert.ok(mobileHtml.includes('id="signupPresetAvatarsRow"'), 'Sign up profile creation must provide preset avatar options row');
+      assert.ok(mobileHtml.includes('handleSignupProfilePhoto('), 'handleSignupProfilePhoto method must exist');
+      assert.ok(mobileHtml.includes('selectSignupPresetAvatar('), 'selectSignupPresetAvatar method must exist');
+    });
   });
 });
 

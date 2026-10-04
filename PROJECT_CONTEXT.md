@@ -1,30 +1,34 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 10:05:00
-**Version:** 1.0.0-phase2dn (Milestone Achievement Badges Iconsax Two-Tone SVG Integration)  
+**Last Updated:** 2026-10-04 11:15:00
+**Version:** 1.0.0-phase2do (Player Card Front Athlete Headshots, Squad Roster Lineup Avatars & Profile Creation Photo Upload System)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DN Completed — Milestone Achievement Badges Iconsax Two-Tone SVG Integration & Icon String Resolution (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
-  - **1. Iconsax Two-Tone SVG Milestone Badge System**:
-    - Replaced raw text string concatenation (`'<div style="font-size: 1rem;">' + bg.icon + '</div>'`) with `this.renderBadgeIconHtml(bg.icon, badgeClr, 18, true, bg.rarity)`.
-    - Eliminated raw text strings (`"medal"`, `"rocket"`, `"crown"`, `"lightning"`) across both the inline dossier, full analytics action sheet, and player profile tabs.
-    - Wrapped SVGs in authentic, rarity-themed glassmorphic icon badge containers (`.cricos-badge-icon-box`) with subtle inner borders, translucent backgrounds, and dynamic color-coding (`#FFB800` for LEGENDARY, `#00D2FF` for RARE, `#00E599` for COMMON).
-  - **2. Resilient Icon Key and Legacy Emoji Mapping**:
-    - Created `renderBadgeIconHtml` supporting icon names (`'medal'`, `'rocket'`, `'crown'`, `'lightning'`, `'trophy'`, `'star'`, `'fire'`) and aliases (`'speed'`, `'captain'`, `'monarch'`, `'finisher'`, `'century'`, `'mvp'`), as well as backward-compatible emoji mappings (`'🏆'`, `'⚡'`, `'🎖️'`, `'🏅'`, `'🚀'`, `'👑'`, `'🔥'`, `'⭐'`).
-    - Added first-class Iconsax Two-Tone SVGs for `'download'`, `'bowler'`, `'chat'`, `'globe'`, and `'refresh'` into `this.iconSvg()`, preventing any fallbacks to the default bat icon.
-    - Fixed profile bio card role badge tag (`.profile-bio-tag`) to render SVG instead of raw persona icon name string.
-  - **3. Domain & E2E Test Suite Health**:
-    - Added assertion 7 to Suite 13 in `tests/domain-mobile-journeys-and-native.test.ts` verifying `renderBadgeIconHtml` presence and zero raw icon text nodes (250 total unit/domain tests in 67 suites passing 100% via `./pipeline.sh test --summary`).
-    - Enhanced `tests/test_consolidated_3d_and_packaging.py` Step 8 to verify that `#sheetFullPlayerAnalysis` renders `.cricos-badge-icon-box svg` without any bare text keys (4 tests passing in 18s).
-    - Verified all 13 consolidated Playwright tests pass 100% in 83s with zero console errors (`assert_no_critical_errors(page)`).
-  - **4. Packaging & Android Native Compilation (Rule 6)**:
+- **Active Phase**: Phase 2DO Completed — Player Card Front Athlete Headshots, Squad Roster Lineup Avatars & Profile Creation Photo Upload System (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Main 3D Card Front Face Athlete Headshots (`#playerFlipCard3D` & `#mobileHoloCard`)**:
+    - Integrated high-fidelity athlete headshots into the front face of `#playerFlipCard3D` and modal 3D holographic card `#mobileHoloCard`.
+    - Enforced `.athletic-card-avatar` (48×48px, circular frame, `border: 2px solid var(--turf-emerald)`, subtle box shadow, and `overflow: hidden`) with high-resolution portrait imagery (`object-fit: cover; object-position: center top;`).
+    - Bound dynamic player headshot resolution via `this.getPlayerAvatar(player)`: resolving user's profile avatar for `p1` (captain/signed-in player), team roster member avatars (`p1`–`p11`, `b1`–`b4`), and graceful static fallbacks.
+  - **2. Squad Roster Lineup Avatars & Full Analysis Dossier Header**:
+    - Added circular athlete thumbnails (`.player-list-item img`, 36×36px, `border-radius: 50%`) beside player names, jersey numbers, and roles in the Playing XI and Bench reserves roster list (`renderTeams()`).
+    - Added high-resolution athlete headshot in the header of the full analytics action sheet `#sheetFullPlayerAnalysis`.
+  - **3. Interactive Sign-Up Profile Creation Avatar Upload & Presets**:
+    - Added athlete headshot photo card to Account Creation flow (`this.authMode === 'SIGN_UP'`) at the identifier/role selection step.
+    - Added interactive avatar preview card `#signupAvatarUploadPreview` with camera hover overlay, file input `#signupProfilePhotoInput`, upload button `#btnUploadSignupPhoto`, and reset button `#btnResetSignupAvatar`.
+    - Added 4 quick-pick athletic portrait presets `#signupPresetAvatarsRow` (`ATHLETE_PRESET_AVATARS`: Premier Batsman, Fast Bowler, Official / Umpire Specialist, Power Batter) with active selection state and glow ring.
+    - Bound role selection (`setSignupRole`) to auto-suggest appropriate presets when user hasn't uploaded a custom photo, and synchronized uploaded or preset photos to profile avatar, session storage, and roster card on sign up completion.
+  - **4. Domain & E2E Test Suite Health**:
+    - Added assertion 8 to Suite 13 in `tests/domain-mobile-journeys-and-native.test.ts` verifying player card avatar markup, roster thumbnails, and signup avatar controls (251 total unit/domain tests in 67 suites passing 100% via `./pipeline.sh test --summary`).
+    - Enhanced `tests/test_consolidated_3d_and_packaging.py` Step 1b, Step 2, and Step 4 to verify: `.athletic-card-avatar img` on 3D card front, roster list `.player-list-item img`, `#mobileHoloCard` avatar, and sign-up avatar upload preview `#signupAvatarUploadPreview` & preset selection (4 tests passing in 19s).
+    - Verified all 13 consolidated Playwright tests pass 100% in 55s with zero critical console errors (`assert_no_critical_errors(page)`).
+  - **5. Packaging & Android Native Compilation (Rule 6)**:
     - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
     - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
-- **Preceding Phase**: Phase 2DM Completed — Elimination of Short Player Name Chips & Auto-Scroll Roster List Selection:
+- **Preceding Phase**: Phase 2DN Completed — Milestone Achievement Badges Iconsax Two-Tone SVG Integration & Icon String Resolution:
 - **Preceding Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face:
   - **1. Complete Elimination of Redundant Card Front Button**:
     - Stripped `#btnCardFrontAnalysis` from the front face of `#playerFlipCard3D`, strictly aligning with the clean reference design (`media_1791062167739.png`).
