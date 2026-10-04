@@ -928,14 +928,14 @@ export function getMobileAppHtml() {
       color: #57534E !important;
     }
     body[data-theme="nordic"] .mobile-nav-item.active {
-      color: #15803D !important;
-      font-weight: 700 !important;
-      background: rgba(21, 128, 61, 0.08) !important;
-      border: 1px solid rgba(21, 128, 61, 0.3) !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 2px 0 #15803D !important;
+      color: #166534 !important;
+      font-weight: 800 !important;
+      background: rgba(22, 101, 52, 0.08) !important;
+      border: 1px solid rgba(22, 101, 52, 0.3) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 2px 0 #166534 !important;
     }
     body[data-theme="nordic"] .mobile-nav-item.active::after {
-      background: #15803D !important;
+      background: #166534 !important;
     }
     body[data-theme="nordic"] .mobile-card,
     body[data-theme="nordic"] .mobile-sheet,
@@ -3922,49 +3922,65 @@ export function getMobileAppHtml() {
       font-family: var(--font-display);
     }
     .btn-card-radar-splits {
-      padding: 0.18rem 0.5rem;
-      border-radius: 4px;
+      padding: 0.28rem 0.65rem;
+      min-height: 32px;
+      border-radius: 6px;
       border: 1px solid rgba(0, 210, 255, 0.4);
       background: rgba(0, 210, 255, 0.15);
       color: #00D2FF;
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       font-weight: 700;
       cursor: pointer;
       position: relative;
       z-index: 10;
       pointer-events: auto;
+      touch-action: manipulation;
       display: inline-flex;
       align-items: center;
       gap: 0.2rem;
     }
+    .btn-card-radar-splits::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      bottom: -6px;
+      left: -6px;
+      right: -6px;
+    }
     .btn-toggle-inline-analysis {
       flex: 1;
-      padding: 0.42rem 0.6rem;
+      min-height: 44px;
+      padding: 0.5rem 0.75rem;
       border-radius: 8px;
       border: 1px solid rgba(0, 229, 153, 0.35);
       background: rgba(0, 229, 153, 0.1);
       color: #00E599;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
       cursor: pointer;
+      touch-action: manipulation;
+      box-sizing: border-box;
     }
     .btn-open-player-analysis {
-      padding: 0.42rem 0.65rem;
+      min-height: 44px;
+      padding: 0.5rem 0.8rem;
       border-radius: 8px;
       border: 1px solid rgba(0, 210, 255, 0.35);
       background: rgba(0, 210, 255, 0.1);
       color: #00D2FF;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.3rem;
       cursor: pointer;
+      touch-action: manipulation;
+      box-sizing: border-box;
     }
     .player-list-item .active-card-chip {
       color: #00E599;
@@ -5766,7 +5782,7 @@ export function getMobileAppHtml() {
               '<span style="font-weight: 700; color: ' + barColor + '; font-family: var(--font-score);">' + val + '/100</span>' +
             '</div>' +
             '<div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">' +
-              '<div style="height: 100%; width: ' + val + '%; background: ' + barColor + '; border-radius: 999px; transition: width 0.3s ease;"></div>' +
+              '<div style="height: 100%; width: ' + val + '%; background: ' + barColor + '; border-radius: 999px; transition: transform 0.3s ease, opacity 0.3s ease;"></div>' +
             '</div>' +
           '</div>';
         }
@@ -13853,7 +13869,7 @@ export function getMobileAppHtml() {
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Balls Left</div><div style="font-weight: 800; font-size: 0.82rem; color: #00D2FF; font-family: var(--font-score);">' + remainingBalls + '</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Required RR</div><div style="font-weight: 800; font-size: 0.82rem; color: #FFB800; font-family: var(--font-score);">' + rrr + '</div></div>';
             h += '</div>';
-            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
+            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.4rem 0.6rem; background: rgba(0,229,153,0.06); border-radius: 8px; border: 1px solid rgba(0,229,153,0.22);">';
             h += '<strong>Tactical Directive:</strong> Target deep mid-wicket &amp; cover corridors against spin. Official ball-by-ball scoring is managed exclusively by the match Scorer.';
             h += '</div>';
             h += '</div>';
@@ -13871,7 +13887,7 @@ export function getMobileAppHtml() {
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">DRS Retained</div><div style="font-weight: 800; font-size: 0.82rem; color: #00D2FF; font-family: var(--font-score);">' + (this.drsState.battingReviewsLeft + this.drsState.bowlingReviewsLeft) + ' Left</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Fair Play</div><div style="font-weight: 800; font-size: 0.82rem; color: #FFB800; font-family: var(--font-score);">' + (10 - this.incidents.length) + '/10 Pts</div></div>';
             h += '</div>';
-            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #38BDF8;">';
+            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.4rem 0.6rem; background: rgba(56,189,248,0.06); border-radius: 8px; border: 1px solid rgba(56,189,248,0.22);">';
             h += '<strong>MCC Playing Conditions:</strong> 20-minute innings break scheduled at 18:45 IST. Ball tracking camera arrays calibrated with 100% telemetry sync.';
             h += '</div>';
             h += '</div>';
@@ -13889,7 +13905,7 @@ export function getMobileAppHtml() {
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Slot Window</div><div style="font-weight: 800; font-size: 0.82rem; color: #00D2FF; font-family: var(--font-score);">Until 22:00</div></div>';
             h += '<div style="background: rgba(0,0,0,0.4); padding: 0.35rem; border-radius: 5px;"><div style="font-size: 0.58rem; color: #94a3b8;">Pitch Wear</div><div style="font-weight: 800; font-size: 0.82rem; color: #FFB800; font-family: var(--font-score);">Grade A True</div></div>';
             h += '</div>';
-            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.35rem 0.55rem; background: rgba(255,255,255,0.03); border-radius: 5px; border-left: 2px solid #00E599;">';
+            h += '<div class="mobile-secondary-clutter" data-clean-hide="true" style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.3; padding: 0.4rem 0.6rem; background: rgba(0,229,153,0.06); border-radius: 8px; border: 1px solid rgba(0,229,153,0.22);">';
             h += '<strong>Facility Invariants:</strong> Natural clay pitch holding firm with consistent bounce. GiST slot reservation active with zero double-booking overlap.';
             h += '</div>';
             h += '</div>';
@@ -14038,13 +14054,13 @@ export function getMobileAppHtml() {
         h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.2rem;">Official Playing XI squad roster, 3D equipment customization &amp; career telemetry</div>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">';
-        h += '<button type="button" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="padding: 0.22rem 0.55rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.28rem;" data-tooltip="Inspect Holographic 3D Player Card and telemetry" aria-label="3D Player Card">' + this.iconSvg('card', '#00D2FF', 13) + ' 3D Player Card</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.open3DPlayerCardSheet()" style="min-height: 40px; padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Inspect Holographic 3D Player Card and telemetry" aria-label="3D Player Card">' + this.iconSvg('card', '#00D2FF', 14) + ' 3D Player Card</button>';
         h += '</div>';
         h += '</div>';
         if (isCaptain || this.profile.persona === 'PLAYER') {
           h += '<div style="margin-top: 0.45rem; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">';
           h += '<div><span style="font-size: 0.68rem; color: #94a3b8;">Code:</span> <strong style="color: #00D2FF; font-family: var(--font-score); letter-spacing: 0.5px;">CRIC-BLR-4821</strong></div>';
-          h += '<button type="button" onclick="window.cricosMobileApp.copyJoinCode()" style="padding: 0.18rem 0.5rem; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.65rem; font-weight: 600;" data-tooltip="Copy team code to share with squad">Copy</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.copyJoinCode()" style="min-height: 36px; min-width: 48px; padding: 0.3rem 0.65rem; border-radius: 5px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.7rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Copy team code to share with squad">Copy</button>';
           h += '</div>';
         } else if (this.profile.persona === 'ORGANISER' || this.profile.persona === 'ADMIN') {
           h += '<div style="margin-top: 0.45rem; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 229, 153, 0.08); padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(0, 229, 153, 0.25);">';
@@ -14067,7 +14083,7 @@ export function getMobileAppHtml() {
         h += '</div>';
         h += '<div style="font-size: 0.75rem; color: #cbd5e1; margin-bottom: 0.45rem;">Winner: <strong style="color: #f8fafc;">' + this.toss.winner + '</strong> (Elected to <strong>' + this.toss.decision + '</strong>)</div>';
         if (isCaptain) {
-          h += '<button type="button" onclick="window.cricosMobileApp.conductTossModal()" style="width: 100%; padding: 0.45rem; border-radius: 6px; border: none; background: linear-gradient(135deg, #ffb800, #ff8800); color: #04070D; font-weight: 700; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.35rem;" data-tooltip="Conduct pre-match coin toss">' + this.iconSvg('coin', '#04070D', 14) + ' <span>Conduct Official Toss →</span></button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.conductTossModal()" style="width: 100%; min-height: 44px; padding: 0.55rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #ffb800, #ff8800); color: #04070D; font-weight: 700; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; gap: 0.35rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Conduct pre-match coin toss">' + this.iconSvg('coin', '#04070D', 15) + ' <span>Conduct Official Toss →</span></button>';
         }
         h += '</div>';
 
@@ -14102,7 +14118,7 @@ export function getMobileAppHtml() {
             if (isSel) {
               h += '<span class="active-card-chip" style="font-size: 0.58rem; font-weight: 700; border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
             }
-            h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.benchPlayer(' + i + ')" style="padding: 0.22rem 0.45rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #cbd5e1; font-size: 0.62rem;" data-tooltip="Move player to bench">Bench ⇄</button>';
+            h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.benchPlayer(' + i + ')" style="min-height: 36px; padding: 0.3rem 0.55rem; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #cbd5e1; font-size: 0.68rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Move player to bench">Bench ⇄</button>';
             h += '</div>';
           } else {
             if (isSel) {
@@ -14151,7 +14167,7 @@ export function getMobileAppHtml() {
         h += '<h2 style="margin: 0.15rem 0 0; font-size: 1.15rem; font-family: var(--font-display);">' + (this.activeTournamentName || 'Club Premier League 2026') + '</h2>';
         h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.2rem;">Multi-division standings, automated NRR progression matrix &amp; knockout brackets</div>';
         h += '</div>';
-        h += '<button type="button" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet()" style="padding: 0.22rem 0.5rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #FFB800; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.28rem;" data-tooltip="Inspect 3D Tournament Championship Silverware" aria-label="3D Silverware">' + this.iconSvg('trophy', '#FFB800', 13) + ' Silverware</button>';
+        h += '<button type="button" onclick="window.cricosMobileApp.open3DTrophyCabinetSheet()" style="min-height: 40px; padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(255, 184, 0, 0.4); background: rgba(255, 184, 0, 0.15); color: #FFB800; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.32rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Inspect 3D Tournament Championship Silverware" aria-label="3D Silverware">' + this.iconSvg('trophy', '#FFB800', 14) + ' Silverware</button>';
         h += '</div>';
         h += '<div style="display: flex; gap: 0.25rem; margin-top: 0.5rem;">';
         var stages = ['REGISTRATION', 'GROUP_STAGE', 'PLAYOFFS', 'COMPLETED'];
@@ -14724,7 +14740,7 @@ export function getMobileAppHtml() {
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: var(--font-score);">99.2%</div><div style="font-size: 0.58rem; color: #94a3b8;">DRS Accuracy</div></div>';
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: var(--font-score);">14</div><div style="font-size: 0.58rem; color: #94a3b8;">Sanctions</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,210,255,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00D2FF;">';
+            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,210,255,0.06); padding: 0.45rem; border-radius: 8px; border: 1px solid rgba(0,210,255,0.22);">';
             h += '<strong>Accreditation:</strong> ICC Elite Panel Level 3 Official. Certified for Hawk-Eye DRS telemetry review, Law 41/42 sanctions, and cryptographic match card signing.';
             h += '</div>';
           } else if (roleRole === 'SCORER') {
@@ -14733,7 +14749,7 @@ export function getMobileAppHtml() {
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: var(--font-score);">99.9%</div><div style="font-size: 0.58rem; color: #94a3b8;">Sync Accuracy</div></div>';
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: var(--font-score);">0</div><div style="font-size: 0.58rem; color: #94a3b8;">DNB Errors</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00E599;">';
+            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 8px; border: 1px solid rgba(0,229,153,0.22);">';
             h += '<strong>Accreditation:</strong> BCCI Grade-A Certified Digital Scorer. Sub-second delivery telemetry, 8-zone wagon wheel precision, and Cricsheet JSON / XML export certified.';
             h += '</div>';
           } else if (roleRole === 'TURF_PROVIDER') {
@@ -14742,7 +14758,7 @@ export function getMobileAppHtml() {
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: var(--font-score);">1,420h</div><div style="font-size: 0.58rem; color: #94a3b8;">Hours Booked</div></div>';
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: var(--font-score);">98.4%</div><div style="font-size: 0.58rem; color: #94a3b8;">True Bounce</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00E599;">';
+            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 8px; border: 1px solid rgba(0,229,153,0.22);">';
             h += '<strong>Operations:</strong> Commercial Turf Operator with authoritative 15-min GiST double-booking immunity, floodlight telemetry, and automated escrow payout settlement.';
             h += '</div>';
           } else if (roleRole === 'ORGANISER') {
@@ -14751,7 +14767,7 @@ export function getMobileAppHtml() {
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: var(--font-score);">64</div><div style="font-size: 0.58rem; color: #94a3b8;">Clubs</div></div>';
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: var(--font-score);">₹4.5M</div><div style="font-size: 0.58rem; color: #94a3b8;">Prize Purse</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,210,255,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00D2FF;">';
+            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,210,255,0.06); padding: 0.45rem; border-radius: 8px; border: 1px solid rgba(0,210,255,0.22);">';
             h += '<strong>Organiser Directorate:</strong> Tournament Organiser managing Multi-Division promotion &amp; relegation ladders, NRR computations, and automated fixture calendars.';
             h += '</div>';
           } else if (roleRole === 'ADMIN') {
@@ -14760,7 +14776,7 @@ export function getMobileAppHtml() {
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: var(--font-score);">99.99%</div><div style="font-size: 0.58rem; color: #94a3b8;">Uptime</div></div>';
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #FFB800; font-family: var(--font-score);">₹0.00</div><div style="font-size: 0.58rem; color: #94a3b8;">Imbalance</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #00E599;">';
+            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(0,229,153,0.06); padding: 0.45rem; border-radius: 8px; border: 1px solid rgba(0,229,153,0.22);">';
             h += '<strong>Governance:</strong> Root platform authority supervising 5-account double-entry journals, dispute arbitration, and microservice cluster health.';
             h += '</div>';
           } else {
@@ -14770,7 +14786,7 @@ export function getMobileAppHtml() {
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00E599; font-family: var(--font-score);">1,450</div><div style="font-size: 0.58rem; color: #94a3b8;">Live Cheers</div></div>';
             h += '<div class="profile-dossier-stat" style="background: rgba(0,0,0,0.4); padding: 0.4rem; border-radius: 6px;"><div style="font-size: 1rem; font-weight: 800; color: #00D2FF; font-family: var(--font-score);">88%</div><div style="font-size: 0.58rem; color: #94a3b8;">Poll Win Rate</div></div>';
             h += '</div>';
-            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(249,115,22,0.06); padding: 0.45rem; border-radius: 6px; border-left: 2px solid #f97316;">';
+            h += '<div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.35; background: rgba(249,115,22,0.06); padding: 0.45rem; border-radius: 8px; border: 1px solid rgba(249,115,22,0.22);">';
             h += '<strong>Supporter Pass:</strong> Verified Stadium Ultra member. Real-time broadcast telemetry, live cheer participation, and match prediction voting enabled.';
             h += '</div>';
           }
@@ -15112,7 +15128,7 @@ export function getMobileAppHtml() {
           var item = navItems[i];
           var active = this.currentScreen === item[0];
           var activeClass = active ? ' active' : '';
-          var activeNavColor = (this.currentTheme === 'swiss') ? '#047857' : ((this.currentTheme === 'nordic') ? '#15803D' : '#00E599');
+          var activeNavColor = (this.currentTheme === 'swiss') ? '#047857' : ((this.currentTheme === 'nordic') ? '#166534' : '#00E599');
           var inactiveNavColor = (this.currentTheme === 'swiss') ? '#475569' : ((this.currentTheme === 'nordic') ? '#57534E' : '#64748B');
           var navIconColor = active ? activeNavColor : inactiveNavColor;
           h += '<button type="button" class="mobile-nav-item' + activeClass + '" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="' + item[0] + '" data-tooltip="Navigate to ' + item[2] + '" aria-label="' + item[2] + '" aria-current="' + (active ? 'page' : 'false') + '">';
@@ -15133,7 +15149,7 @@ export function getMobileAppHtml() {
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">';
         h += '<div id="personaSheetTitle" style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: #f8fafc;">Switch Persona Experience</div>';
         h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
-        h += '<button type="button" id="btnMobileSheetSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="background: rgba(0, 210, 255, 0.14); border: 1px solid rgba(0, 210, 255, 0.4); color: #00D2FF; border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.65rem; font-weight: 700; cursor: pointer;" data-tooltip="Sign out to Animated Hero Page">'+this.iconSvg('signout','#f8fafc',14)+' Sign Out</button>';
+        h += '<button type="button" id="btnMobileSheetSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="min-height: 36px; padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.14); color: #00D2FF; font-size: 0.68rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Sign out to Animated Hero Page">'+this.iconSvg('signout','#f8fafc',14)+' Sign Out</button>';
         h += '<button type="button" onclick="window.cricosMobileApp.closePersonaSheet()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Close persona switcher" aria-label="Close persona switcher"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
         h += '</div>';

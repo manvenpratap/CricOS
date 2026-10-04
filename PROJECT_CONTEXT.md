@@ -1,14 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 16:15:00
-**Version:** 1.0.0-phase2du (WCAG 2.2 AA Modal Dialog & Mobile Sheet Accessibility Compliance)  
+**Last Updated:** 2026-10-04 16:45:00
+**Version:** 1.0.0-phase2dv (5-Step Impeccable Quality & Anti-Pattern Remediation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DU Completed — Full-Stack WCAG 2.2 AA Modal & Sheet Accessibility Architecture (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DV Completed — 5-Step Impeccable Technical Quality & Anti-Pattern Remediation (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Touch Target Ergonomics (`$impeccable adapt`)**:
+    - Expanded mobile interactive controls to meet >= 44px ergonomic touch bounds (`.btn-card-radar-splits`, `.btn-toggle-inline-analysis`, `.btn-open-player-analysis`, 3D Player Card trigger, join code copy triggers, official toss triggers, roster swap actions, 3D silverware controls, and sheet sign-out).
+  - **2. Contrast Accessibility Compliance (`$impeccable colorize`)**:
+    - Resolved Nordic Editorial active navigation color token from `#15803D` (4.36:1, failing AA) to `#166534` (5.98:1, passing AA), guaranteeing crisp readability against warm paper surfaces (`#FCFBF8`).
+  - **3. Smooth Animations & Layout Reflow Elimination (`$impeccable optimize`)**:
+    - Replaced layout-thrashing `transition: width` across sidebar containers, target progress indicators, wagon wheel containers, and fan vote gauges with hardware-accelerated `transform: scaleX()`, `contain: layout paint;`, and `opacity`.
+    - Removed SVG stroke-width layout transitions on field nodes and wagon wheel rays.
+  - **4. Tooltip & Accessibility Invariant Coverage (`$impeccable clarify`)**:
+    - Added accessible `data-tooltip` and `aria-label` attributes to remaining desktop controls: outdoor mode toggle, tactile feedback switcher, RHB/LHB stance options, dismissal modal quick fielder selection chips, custom LAN IP QR code trigger, and ICC law quick action buttons.
+  - **5. Callout Card Modernization (`$impeccable polish`)**:
+    - Modernized 9 AI-archetype `border-left: 2px solid ...` side-tab callouts across tactical directives, umpire telemetry, ground facility telemetry, and role dossiers into uniform, subtle glassmorphic cards (`border: 1px solid rgba(..., 0.22)`).
+    - Reduced `impeccable detect` anti-patterns from 17 down to 6 (with the only 6 remaining being intentional brand typography tokens Fraunces and Space Grotesk).
+  - **6. Verification & Pipeline Integrity**:
+    - 254 domain unit tests passing 100% via `./pipeline.sh test --summary`.
+    - All 13 consolidated Playwright tests passing 100% with zero critical console errors.
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
+    - Android 15 Release & Debug APKs compiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DU Completed — Full-Stack WCAG 2.2 AA Modal & Sheet Accessibility Architecture (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Comprehensive WAI-ARIA Modal Attributes across Desktop & Mobile**:
     - **Desktop Web Console (`apps/api/src/ui/dashboard.ts`)**: Added `role="dialog" aria-modal="true" aria-labelledby="<titleId>"` and matching title element IDs to all 28 modal and drawer dialogs (`modalUserProfile`, `modalDismissal`, `modalBowlerRotation`, `modalCreateTeam`, `modalCheckout`, `modalEndMatchConfirmation`, `modalScorecardExport`, `modalMatchToss`, `modalMatchRating`, `modalLegalPolicies`, `modalEventBasket`, `modalProviderStorefront`, `modalCreateEvent`, `modalEventOverview`, `modalOfficialCalendar`, `modalMessaging`, `modalBookingLifecycle`, `modalFinancialReconciliation`, `modalMobileAppPreview`, `modalApiDocs`, `modalSystemHealth`, `modalMetricsTelemetry`, `modalRfq`, `modalCommerce`, `modalTournamentOps`, `modalMatchInsights`, `modalCheckIn`, `modalSponsorshipAuction`, `modalUmpireDesk`, `modalCricsheetExport`, `modalLeagueDivisions`, `modalDlsCalculator`, `modal3DTrophyCabinet`, `modal3DPlayerCard`, `modal3DBatCustomizer`, `modalPlayerStatsDrawer`, `modalAppDialog`, `modalCommandPalette`, `modalFieldPlanner`, `modalPitchMapSimulator`, `modalPlayerAuction`, `modalKeyboardShortcuts`, `notificationsDrawer`).
     - **Mobile App View (`apps/api/src/ui/mobile-view.ts`)**: Added `role="dialog" aria-modal="true" aria-labelledby="<titleId>"` and matching title element IDs to all 10 action sheets (`actionSheetModal`, `mobilePersonaSheet`, `mobileSettingsSheet`, `extraRunsPickerSheet`, `wagonPickerSheet`, `mobileSidebarDrawer`, `mobileDismissalSheet`, `mobileIccLawsSheet`, `mobilePenaltyRunsSheet`, `mobileBowlerRotationSheet`).

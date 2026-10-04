@@ -288,7 +288,8 @@ export function getDashboardHtml() {
       position: sticky;
       top: 0;
       z-index: 120;
-      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      contain: layout paint;
+      transition: opacity 0.2s ease;
       box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
     }
 
@@ -1076,7 +1077,7 @@ export function getDashboardHtml() {
       height: 100%;
       background: linear-gradient(90deg, var(--turf-emerald), var(--cyan));
       border-radius: 9999px;
-      transition: width 0.4s ease;
+      transition: transform 0.4s var(--ease-out), opacity 0.3s ease;
     }
 
     /* Fall of Wickets Timeline */
@@ -4404,7 +4405,7 @@ export function getDashboardHtml() {
     }
     .field-node-circle {
       cursor: pointer;
-      transition: transform 0.18s ease, stroke-width 0.18s ease;
+      transition: transform 0.18s ease;
     }
     .field-node-circle:hover {
       stroke-width: 3px;
@@ -4537,7 +4538,7 @@ export function getDashboardHtml() {
       align-items: center;
       justify-content: center;
       user-select: none;
-      transition: max-width var(--duration-normal) var(--ease-out);
+      transition: opacity var(--duration-normal) var(--ease-out);
     }
     .wagon-wheel-card.is-3d .wagon-wheel-container,
     .wagon-wheel-container.is-3d {
@@ -4707,7 +4708,7 @@ export function getDashboardHtml() {
       font-weight: 700;
     }
     .wagon-shot-ray {
-      transition: opacity 0.3s ease, stroke-width 0.2s ease;
+      transition: opacity 0.3s ease, filter 0.2s ease;
       cursor: pointer;
     }
     .wagon-shot-ray:hover {
@@ -5803,10 +5804,10 @@ export function getDashboardHtml() {
               <span id="appSettingsIcon">${iconSvg('gear', 'currentColor', 15)}</span>
               <span id="appSettingsLabel" class="clean-view-hide-label">Settings</span>
             </button>
-            <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" style="display: none;" aria-hidden="true">
+            <button type="button" id="btnOutdoorModeToggle" onclick="toggleOutdoorMode()" class="nav-pill" style="display: none;" aria-hidden="true" data-tooltip="Toggle outdoor high-contrast daylight mode" aria-label="Toggle Outdoor Mode">
               <span class="pill-icon" id="outdoorModeIcon">${iconSvg('sun', 'currentColor', 15)}</span>
             </button>
-            <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="display: none;" aria-hidden="true">
+            <button type="button" id="btnTactilePrototypeToggle" onclick="cycleTactileVariant()" class="nav-pill" style="display: none;" aria-hidden="true" data-tooltip="Cycle tactile feedback intensity: Off, Subtle, Crisp, Haptic Stadium" aria-label="Cycle Tactile Haptic Profile">
               <span id="tactilePrototypeLabel" style="display: inline-flex; align-items: center; gap: 0.3rem;">${iconSvg('lightning', 'currentColor', 14)} HAPTIC STADIUM</span>
             </button>
           </div>
@@ -6041,8 +6042,8 @@ export function getDashboardHtml() {
               <span style="color: var(--text-muted);"><span id="fanVotePctBLR" style="color: var(--turf-emerald); font-weight: 700;">68% Bangalore</span> vs <span id="fanVotePctMUM" style="color: var(--cyan); font-weight: 700;">32% Mumbai</span></span>
             </div>
             <div style="height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; display: flex; margin-bottom: 0.5rem;">
-              <div id="fanVoteBarBLR" style="width: 68%; background: var(--turf-emerald); transition: width 0.3s;"></div>
-              <div id="fanVoteBarMUM" style="width: 32%; background: var(--cyan); transition: width 0.3s;"></div>
+              <div id="fanVoteBarBLR" style="width: 68%; background: var(--turf-emerald); transition: transform 0.3s ease, opacity 0.3s ease;"></div>
+              <div id="fanVoteBarMUM" style="width: 32%; background: var(--cyan); transition: transform 0.3s ease, opacity 0.3s ease;"></div>
             </div>
             <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
               <button class="btn btn-secondary" onclick="voteFanPoll('BLR')" style="width: auto; padding: 0.2rem 0.6rem; font-size: 0.7rem;" data-tooltip="Vote for Bangalore Blasters to win">Vote BLR</button>
@@ -7666,8 +7667,8 @@ export function getDashboardHtml() {
                   <div class="settings-row-desc">Mirrors pitch maps, wagon wheels, and fielding coordinates for right-handed vs left-handed batters.</div>
                 </div>
                 <div style="display: flex; gap: 0.4rem;">
-                  <button type="button" class="btn btn-secondary btn-sm" id="btnStanceSettingRHB" onclick="updateAppSetting('batterStance', 'RHB')" style="padding: 0.32rem 0.75rem; font-weight: 800;">RHB</button>
-                  <button type="button" class="btn btn-secondary btn-sm" id="btnStanceSettingLHB" onclick="updateAppSetting('batterStance', 'LHB')" style="padding: 0.32rem 0.75rem; font-weight: 800;">LHB</button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnStanceSettingRHB" onclick="updateAppSetting('batterStance', 'RHB')" style="padding: 0.32rem 0.75rem; font-weight: 800;" data-tooltip="Set default stance orientation to Right-Handed Batter (RHB)" aria-label="Right-Handed Batter Stance">RHB</button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnStanceSettingLHB" onclick="updateAppSetting('batterStance', 'LHB')" style="padding: 0.32rem 0.75rem; font-weight: 800;" data-tooltip="Set default stance orientation to Left-Handed Batter (LHB)" aria-label="Left-Handed Batter Stance">LHB</button>
                 </div>
               </div>
 
@@ -8198,10 +8199,10 @@ export function getDashboardHtml() {
           <label id="dismissalFielderLabel">Fielder Involved</label>
           <input type="text" id="dismissalFielder" placeholder="e.g. Ravindra Jadeja or KL Rahul (WK)" style="width: 100%; box-sizing: border-box;">
           <div id="dismissalFielderQuickChips" style="display: flex; gap: 0.35rem; margin-top: 0.35rem; flex-wrap: wrap;">
-            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Ravindra Jadeja'">Ravindra Jadeja</button>
-            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='KL Rahul (WK)'">KL Rahul (WK)</button>
-            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Hardik Pandya'">Hardik Pandya</button>
-            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Sub Fielder'">Sub Fielder</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Ravindra Jadeja'" data-tooltip="Select Ravindra Jadeja as fielder" aria-label="Select fielder Ravindra Jadeja">Ravindra Jadeja</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='KL Rahul (WK)'" data-tooltip="Select KL Rahul (WK) as wicket-keeper / fielder" aria-label="Select fielder KL Rahul (WK)">KL Rahul (WK)</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Hardik Pandya'" data-tooltip="Select Hardik Pandya as fielder" aria-label="Select fielder Hardik Pandya">Hardik Pandya</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; border-radius: 4px;" onclick="document.getElementById('dismissalFielder').value='Sub Fielder'" data-tooltip="Select Substitute Fielder" aria-label="Select substitute fielder">Sub Fielder</button>
           </div>
         </div>
 
@@ -9624,7 +9625,7 @@ export function getDashboardHtml() {
             <div id="customQrInputRow" style="display: none; margin-top: 0.35rem;">
               <div style="display: flex; gap: 0.3rem;">
                 <input type="text" id="inputCustomQrUrl" placeholder="http://192.168.1.X:3000/mobile" style="background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.68rem; font-family: var(--font-mono); padding: 0.2rem 0.4rem; border-radius: 4px; flex-grow: 1;" />
-                <button type="button" id="btnApplyCustomQrUrl" onclick="applyCustomQrUrl()" style="background: var(--turf-emerald); color: #04070D; font-weight: 700; border: none; font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer;">Apply</button>
+                <button type="button" id="btnApplyCustomQrUrl" onclick="applyCustomQrUrl()" style="background: var(--turf-emerald); color: #04070D; font-weight: 700; border: none; font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer;" data-tooltip="Apply custom LAN IP / URL to QR code" aria-label="Apply Custom QR URL">Apply</button>
               </div>
             </div>
             <div style="margin-top: 0.4rem; display: flex; gap: 0.4rem;">
@@ -18009,7 +18010,7 @@ cricos_active_sse_connections 1</pre>
           : '';
 
         const actionBtn = item.quickAction
-          ? '<div style="margin-top: 0.35rem;"><button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1);" onclick="executeDesktopLawQuickAction(&apos;' + item.quickAction + '&apos;)">' + (item.quickActionText || 'Apply Quick Action') + ' ➔</button></div>'
+          ? '<div style="margin-top: 0.35rem;"><button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; font-weight: 700; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1);" onclick="executeDesktopLawQuickAction(&apos;' + item.quickAction + '&apos;)" data-tooltip="Execute official ICC law quick action: ' + (item.quickActionText || 'Apply Quick Action') + '" aria-label="' + (item.quickActionText || 'Apply Quick Action') + '">' + (item.quickActionText || 'Apply Quick Action') + ' ➔</button></div>'
           : '';
 
         return '<div class="card desktop-law-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.85rem 1rem;">' +
@@ -18667,7 +18668,7 @@ cricos_active_sse_connections 1</pre>
                 <span style="font-weight: 700; color: \${barColor};">\${val}/100</span>
               </div>
               <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
-                <div style="height: 100%; width: \${val}%; background: \${barColor}; border-radius: 999px; transition: width 0.3s var(--ease-out);"></div>
+                <div style="height: 100%; width: \${val}%; background: \${barColor}; border-radius: 999px; transition: transform 0.3s var(--ease-out), opacity 0.3s ease;"></div>
               </div>
             </div>
           \`;
