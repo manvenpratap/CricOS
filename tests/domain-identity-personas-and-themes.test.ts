@@ -949,6 +949,18 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       const signOutMatches = profileRenderMatch[1].match(/Sign Out/g) || [];
       // Exactly 1 Sign Out button in renderProfile (inside Account & Compliance)
       assert.strictEqual(signOutMatches.length, 1, `renderProfile must contain exactly 1 Sign Out button, found ${signOutMatches.length}`);
+
+      // 4. Clean Redesign: Theme switcher and Settings cards removed from Profile tab (co-located in sidebar & settings sheet)
+      assert.ok(!profileRenderMatch[1].includes('class="theme-selection-card"'), 'renderProfile must not contain theme switcher card');
+      assert.ok(!profileRenderMatch[1].includes('class="profile-settings-card"'), 'renderProfile must not contain settings card');
+      assert.ok(!profileRenderMatch[1].includes('id="btnMobileProfileSettings"'), 'renderProfile must not contain duplicate settings button');
+
+      // 5. Active session badge moved to Account & Compliance section
+      const accountComplianceIndex = profileRenderMatch[1].indexOf('Account &amp; Compliance');
+      const sessionBadgeIndex = profileRenderMatch[1].indexOf('id="mobileActiveSessionBadge"');
+      assert.ok(accountComplianceIndex !== -1, 'Account & Compliance section must exist');
+      assert.ok(sessionBadgeIndex !== -1, 'mobileActiveSessionBadge must exist');
+      assert.ok(sessionBadgeIndex > accountComplianceIndex, 'mobileActiveSessionBadge must be placed inside Account & Compliance section');
     });
   });
 });

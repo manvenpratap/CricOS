@@ -395,11 +395,21 @@ export function getMobileAppHtml(): string {
     body[data-theme="swiss"] .profile-stat-box,
     html[data-theme="swiss"] .profile-stat-box,
     body[data-theme="swiss"] .profile-badge-item,
-    html[data-theme="swiss"] .profile-badge-item {
+    html[data-theme="swiss"] .profile-badge-item,
+    body[data-theme="swiss"] .profile-account-compliance-card,
+    html[data-theme="swiss"] .profile-account-compliance-card,
+    body[data-theme="swiss"] #mobileActiveSessionBadge,
+    html[data-theme="swiss"] #mobileActiveSessionBadge {
       background: #FFFFFF !important;
       border: 1px solid #CBD5E1 !important;
       color: #0F172A !important;
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05) !important;
+    }
+    body[data-theme="swiss"] #mobileActiveSessionBadge button,
+    html[data-theme="swiss"] #mobileActiveSessionBadge button {
+      background: #F1F5F9 !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
     }
     body[data-theme="swiss"] .profile-bio-quote-icon,
     html[data-theme="swiss"] .profile-bio-quote-icon {
@@ -922,11 +932,21 @@ export function getMobileAppHtml(): string {
     body[data-theme="nordic"] .profile-stat-box,
     html[data-theme="nordic"] .profile-stat-box,
     body[data-theme="nordic"] .profile-badge-item,
-    html[data-theme="nordic"] .profile-badge-item {
+    html[data-theme="nordic"] .profile-badge-item,
+    body[data-theme="nordic"] .profile-account-compliance-card,
+    html[data-theme="nordic"] .profile-account-compliance-card,
+    body[data-theme="nordic"] #mobileActiveSessionBadge,
+    html[data-theme="nordic"] #mobileActiveSessionBadge {
       background: #FCFBF8 !important;
       border: 1px solid #E6DFD5 !important;
       color: #1C1917 !important;
       box-shadow: 0 4px 14px rgba(28, 25, 23, 0.05) !important;
+    }
+    body[data-theme="nordic"] #mobileActiveSessionBadge button,
+    html[data-theme="nordic"] #mobileActiveSessionBadge button {
+      background: #F5F2EB !important;
+      border: 1px solid #E6DFD5 !important;
+      color: #1C1917 !important;
     }
     body[data-theme="nordic"] .profile-bio-quote-icon,
     html[data-theme="nordic"] .profile-bio-quote-icon {
@@ -6292,7 +6312,7 @@ export function getMobileAppHtml(): string {
         h += '</div>';
 
         // 1. Appearance & Themes Card
-        h += '<div class="mobile-settings-card" style="background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
+        h += '<div class="theme-selection-card" style="background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.65rem;">';
         h += '<div style="font-size: 0.72rem; font-weight: 800; color: var(--turf-emerald); text-transform: uppercase; margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg('sparkle', 'var(--turf-emerald)', 13) + ' Design Theme</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 0.75rem;">';
         var themes = [
@@ -13880,63 +13900,6 @@ export function getMobileAppHtml(): string {
         var h = '<div style="padding: 0.65rem 0.75rem;">';
         h += this.renderRoleExperienceBanner();
 
-        // Scoped Persona Switcher Strip & Active Session Status (Filtered by allowedPersonas)
-        var allowedList = (Array.isArray(this.allowedPersonas) && this.allowedPersonas.length > 0)
-          ? this.allowedPersonas
-          : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
-        var activeSess = this.client.getSession() || { token: 'jwt_active_session', identifier: this.identifier };
-        h += '<div id="mobileActiveSessionBadge" style="background: rgba(10, 16, 28, 0.92); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 12px; padding: 0.55rem 0.65rem; margin-bottom: 0.65rem;">';
-        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">';
-        h += '<div style="font-size: 0.65rem; font-weight: 800; color: #00E599;">● JWT Session Active • ' + (this.profile.name || 'Virat Sharma') + ' (' + (this.identifier || 'virat@cricos.io') + ')</div>';
-        h += '</div>';
-        h += '<div style="font-size: 0.6rem; color: #94a3b8; margin-bottom: 0.35rem; font-family: var(--font-mono);">Token: ' + String(activeSess.token || 'jwt_active').slice(0, 22) + ' • Provisioned: ' + allowedList.join(', ') + '</div>';
-        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">';
-        var allRoles = [
-          ['CAPTAIN', 'bat', 'Cpt'],
-          ['PLAYER', 'user', 'Ply'],
-          ['SCORER', 'lightning', 'Scr'],
-          ['FAN', 'wave', 'Fan'],
-          ['UMPIRE', 'scale', 'Ump'],
-          ['ORGANISER', 'trophy', 'Org'],
-          ['TURF_PROVIDER', 'stadium', 'Trf'],
-          ['ADMIN', 'shield', 'Adm']
-        ];
-        for (var r = 0; r < allRoles.length; r++) {
-          var roleItem = allRoles[r];
-          if (allowedList.indexOf(roleItem[0]) === -1) continue;
-          var isAct = this.profile.persona === roleItem[0];
-          var st = isAct ? 'background: rgba(0, 229, 153, 0.25); border: 1px solid #00E599; color: #00E599; font-weight: 700;' : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #94a3b8;';
-          var riColor = isAct ? '#00E599' : '#64748B';
-          h += '<button type="button" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona)" data-persona="' + roleItem[0] + '" style="padding: 0.3rem 0.1rem; border-radius: 5px; font-size: 0.58rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.1rem; ' + st + '" data-tooltip="Switch persona to ' + roleItem[2] + '">' + this.iconSvg(roleItem[1], riColor, 14) + '<span>' + roleItem[2] + '</span></button>';
-        }
-        h += '</div></div>';
-
-        // Design Theme Variations Strip
-        h += '<div class="theme-selection-card" style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.55rem 0.65rem; margin-bottom: 0.65rem;">';
-        h += '<div style="font-size: 0.65rem; font-weight: 700; color: var(--turf-emerald); margin-bottom: 0.3rem;">' + this.iconSvg('palette', 'var(--turf-emerald)', 14) + ' Design Theme</div>';
-        h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem;">';
-        var themeItems = [
-          ['swiss', 'Swiss', 'Swiss Minimalist (Bright)'],
-          ['nordic', 'Nordic', 'Nordic Editorial (Warm)'],
-          ['stadium', 'Stadium', 'Stadium Night (Dark)']
-        ];
-        for (var t = 0; t < themeItems.length; t++) {
-          var tObj = themeItems[t];
-          var isActTheme = (this.currentTheme || 'swiss') === tObj[0];
-          var themeSt = isActTheme ? 'background: rgba(0, 229, 153, 0.25); border: 1px solid var(--turf-emerald); color: var(--turf-emerald); font-weight: 700;' : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #94a3b8;';
-          h += '<button type="button" class="btn-theme-chip ' + (isActTheme ? 'active' : '') + '" onclick="window.cricosMobileApp.setTheme(this.dataset.theme)" data-theme="' + tObj[0] + '" style="padding: 0.35rem 0.2rem; border-radius: 6px; font-size: 0.68rem; cursor: pointer; ' + themeSt + '" data-tooltip="Activate ' + tObj[2] + '">' + tObj[1] + '</button>';
-        }
-        h += '</div></div>';
-
-        // CricOS Unified App Settings Hub Card
-        h += '<div class="profile-settings-card" style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(0, 210, 255, 0.28); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; display: flex; justify-content: space-between; align-items: center;">';
-        h += '<div>';
-        h += '<div style="font-size: 0.78rem; font-weight: 800; color: #00D2FF; display: flex; align-items: center; gap: 0.35rem;">' + this.iconSvg('gear', '#00D2FF', 16) + '<span>CricOS App Settings</span></div>';
-        h += '<div class="mobile-section-subtitle" style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.15rem;">Theme, Clean View, Audio, Stance &amp; Units</div>';
-        h += '</div>';
-        h += '<button type="button" id="btnMobileProfileSettings" onclick="window.cricosMobileApp.openSettingsSheet()" style="padding: 0.35rem 0.75rem; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.15); color: #00D2FF; font-size: 0.72rem; font-weight: 800; cursor: pointer;" data-tooltip="Open App Settings">Configure →</button>';
-        h += '</div>';
-
         // Profile Identity Card with Avatar Upload
         h += '<div class="profile-hero-card" style="background: rgba(10, 16, 28, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 0.65rem 0.85rem; margin-bottom: 0.65rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.75rem;">';
@@ -14113,11 +14076,46 @@ export function getMobileAppHtml(): string {
           h += '</div>';
         }
 
-        // Compliance & App Store Safety
-        h += '<div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.65rem 0.75rem;">';
-        h += '<div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.45rem;">Account &amp; Compliance</div>';
-        h += '<button type="button" id="btnMobileProfileSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.48rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.08); color: #00D2FF; font-weight: 600; font-size: 0.72rem; margin-bottom: 0.35rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Sign out of current account and return to Animated Hero">' + this.iconSvg('signout', '#00D2FF', 14) + ' <span>Sign Out of CricOS</span></button>';
+        // Compliance & App Store Safety (with co-located Active JWT Session & Scoped Persona Switcher)
+        var allowedList = (Array.isArray(this.allowedPersonas) && this.allowedPersonas.length > 0)
+          ? this.allowedPersonas
+          : ['CAPTAIN', 'PLAYER', 'SCORER', 'FAN', 'UMPIRE', 'ORGANISER', 'TURF_PROVIDER', 'ADMIN'];
+        var activeSess = this.client.getSession() || { token: 'jwt_active_session', identifier: this.identifier };
+
+        h += '<div class="profile-account-compliance-card" style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem 0.85rem; margin-top: 0.5rem;">';
+        h += '<div style="font-size: 0.78rem; font-weight: 800; margin-bottom: 0.55rem; color: #f8fafc; font-family: var(--font-display); display: flex; align-items: center; gap: 0.35rem;">' + this.iconSvg('shield', '#00D2FF', 14) + ' <span>Account &amp; Compliance</span></div>';
+
+        // Scoped Persona Switcher Strip & Active Session Status (Filtered by allowedPersonas)
+        h += '<div id="mobileActiveSessionBadge" style="background: rgba(10, 16, 28, 0.92); border: 1px solid rgba(0, 229, 153, 0.28); border-radius: 10px; padding: 0.55rem 0.65rem; margin-bottom: 0.65rem;">';
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">';
+        h += '<div style="font-size: 0.65rem; font-weight: 800; color: #00E599;">● JWT Session Active • ' + (this.profile.name || 'Virat Sharma') + ' (' + (this.identifier || 'virat@cricos.io') + ')</div>';
+        h += '</div>';
+        h += '<div style="font-size: 0.6rem; color: #94a3b8; margin-bottom: 0.35rem; font-family: var(--font-mono);">Token: ' + String(activeSess.token || 'jwt_active').slice(0, 22) + ' • Provisioned: ' + allowedList.join(', ') + '</div>';
+        h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">';
+        var allRoles = [
+          ['CAPTAIN', 'bat', 'Cpt'],
+          ['PLAYER', 'user', 'Ply'],
+          ['SCORER', 'lightning', 'Scr'],
+          ['FAN', 'wave', 'Fan'],
+          ['UMPIRE', 'scale', 'Ump'],
+          ['ORGANISER', 'trophy', 'Org'],
+          ['TURF_PROVIDER', 'stadium', 'Trf'],
+          ['ADMIN', 'shield', 'Adm']
+        ];
+        for (var r = 0; r < allRoles.length; r++) {
+          var roleItem = allRoles[r];
+          if (allowedList.indexOf(roleItem[0]) === -1) continue;
+          var isAct = this.profile.persona === roleItem[0];
+          var st = isAct ? 'background: rgba(0, 229, 153, 0.25); border: 1px solid #00E599; color: #00E599; font-weight: 700;' : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #94a3b8;';
+          var riColor = isAct ? '#00E599' : '#64748B';
+          h += '<button type="button" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona)" data-persona="' + roleItem[0] + '" style="padding: 0.3rem 0.1rem; border-radius: 5px; font-size: 0.58rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.1rem; ' + st + '" data-tooltip="Switch persona to ' + roleItem[2] + '">' + this.iconSvg(roleItem[1], riColor, 14) + '<span>' + roleItem[2] + '</span></button>';
+        }
+        h += '</div></div>';
+
+        h += '<div style="display: flex; flex-direction: column; gap: 0.35rem;">';
+        h += '<button type="button" id="btnMobileProfileSignOut" onclick="window.cricosMobileApp.logoutToHero()" style="width: 100%; padding: 0.48rem; border-radius: 6px; border: 1px solid rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.08); color: #00D2FF; font-weight: 600; font-size: 0.72rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Sign out of current account and return to Animated Hero">' + this.iconSvg('signout', '#00D2FF', 14) + ' <span>Sign Out of CricOS</span></button>';
         h += '<button type="button" id="btnMobileProfileDeleteAccount" onclick="window.cricosMobileApp.promptDeleteAccount()" style="width: 100%; padding: 0.48rem; border-radius: 6px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff6688; font-weight: 600; font-size: 0.72rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" data-tooltip="Apple App Store Guideline 5.1.1(v) mandatory account deletion">' + this.iconSvg('trash', '#ff6688', 14) + ' <span>Delete Account &amp; Data (App Store 5.1.1v)</span></button>';
+        h += '</div>';
         h += '</div></div>';
         return h;
       }

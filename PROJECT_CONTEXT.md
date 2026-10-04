@@ -1,27 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 11:58:00
-**Version:** 1.0.0-phase2dp (Elimination of Duplicate Sign Out Button on Profile Tab & Canonical Account Placement)  
+**Last Updated:** 2026-10-04 12:20:00
+**Version:** 1.0.0-phase2dq (Athletic Broadcast Passport Profile Redesign, Zero Duplication & Session Relocation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DP Completed — Elimination of Duplicate Sign Out Button on Profile Tab & Canonical Account Placement (`apps/api/src/ui/mobile-view.ts`, `apps/mobile/src/screens/ProfileScreen.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
-  - **1. Elimination of Duplicate Sign Out Button**:
-    - Removed the cramped, redundant `Sign Out` button from `#mobileActiveSessionBadge` in `renderProfile()`, giving the session status header and 8-persona switcher clean layout breathing room without text truncation or wrapping.
-    - Preserved a single, canonical, prominent Sign Out action button (`#btnMobileProfileSignOut`) located exclusively in the "Account & Compliance" card at the bottom of the Profile tab, alongside Apple App Store Guideline 5.1.1(v) account deletion.
-    - Styled with authentic Iconsax Two-Tone `signout` SVG icon in athletic cyan (`#00D2FF`), high-contrast subtle border, and accessible `data-tooltip="Sign out of current account and return to Animated Hero"`.
-    - Synchronized `ProfileScreen.ts` to assign matching `id="btnMobileProfileSignOut"` and `id="btnMobileProfileDeleteAccount"`.
-  - **2. Domain & E2E Test Suite Health**:
-    - Added assertion 10 to Suite 8 in `tests/domain-identity-personas-and-themes.test.ts` verifying that `#mobileActiveSessionBadge` contains zero Sign Out buttons and that `renderProfile()` contains exactly 1 canonical `#btnMobileProfileSignOut` (252 total unit/domain tests in 67 suites passing 100% via `./pipeline.sh test --summary`).
-    - Enhanced `tests/test_consolidated_3d_and_packaging.py` Step 1 to assert: `#mobileActiveSessionBadge` does NOT contain "Sign Out", `#btnMobileProfileSignOut` is present, and exactly 1 button with text "Sign Out" exists in the Profile tab (all 4 tests passing in 19s).
-    - Verified all 13 consolidated Playwright tests pass 100% in 56s with zero critical console errors (`assert_no_critical_errors(page)`).
-  - **3. Packaging & Android Native Compilation (Rule 6)**:
+- **Active Phase**: Phase 2DQ Completed — Athletic Broadcast Passport Profile Redesign, Zero Duplication & Session Relocation (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/test_consolidated_themes_and_visuals.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Athletic Broadcast Passport Profile Redesign & Zero Duplication**:
+    - Removed redundant `.theme-selection-card` (Swiss, Nordic, Stadium) and `.profile-settings-card` (`#btnMobileProfileSettings` / "CricOS App Settings [Configure →]") from the Profile tab, as both are already canonically accessible via the sidebar drawer and the unified settings sheet.
+    - Profile tab now opens immediately with the prestigious `.profile-hero-card` (56px circular avatar `#mobileProfileAvatar` with emerald glow border, tap-to-upload camera overlay, track-tight display name `.profile-hero-name`, verified athlete chip, role, and club).
+    - Followed immediately by custom cricket bio card (`#profileBioCard`), interactive 3D batting career figures, milestone badges, and tournament performance logs.
+  - **2. Active Session Placement in Account & Compliance**:
+    - Relocated `#mobileActiveSessionBadge` (JWT active session indicator, account identifier, token hash, and provisioned persona switchers) to the bottom `.profile-account-compliance-card`.
+    - Harmonized with canonical Sign Out action (`#btnMobileProfileSignOut`) and Apple App Store Guideline 5.1.1(v) account deletion (`#btnMobileProfileDeleteAccount`).
+    - Added Swiss Minimalist and Nordic Editorial CSS overrides ensuring `#mobileActiveSessionBadge` and `.profile-account-compliance-card` maintain daylight surface contrast (WCAG AAA >= 7.0:1).
+  - **3. Domain & E2E Test Suite Health**:
+    - Enhanced Suite 8 Test 10 in `tests/domain-identity-personas-and-themes.test.ts` to assert zero theme cards, zero settings cards, and session badge situated inside Account & Compliance (252 total tests passing 100% via `./pipeline.sh test --summary`).
+    - Verified all Playwright E2E suites pass 100% (`test_consolidated_3d_and_packaging.py` and `test_consolidated_themes_and_visuals.py`) with zero console errors (`assert_no_critical_errors(page)`).
+  - **4. Packaging & Android Native Compilation (Rule 6)**:
     - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
     - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
-- **Preceding Phase**: Phase 2DO Completed — Player Card Front Athlete Headshots, Squad Roster Lineup Avatars & Profile Creation Photo Upload System:
+- **Preceding Phase**: Phase 2DP Completed — Elimination of Duplicate Sign Out Button on Profile Tab & Canonical Account Placement:
 - **Preceding Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face:
   - **1. Complete Elimination of Redundant Card Front Button**:
     - Stripped `#btnCardFrontAnalysis` from the front face of `#playerFlipCard3D`, strictly aligning with the clean reference design (`media_1791062167739.png`).
