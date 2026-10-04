@@ -6427,47 +6427,6 @@ export function getMobileAppHtml() {
           ? 'background: #F1F5F9; border: 1px solid #94A3B8; color: #0F172A; font-weight: 800;'
           : 'background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #F8FAFC; font-weight: 700;';
 
-        var navItems = [];
-        if (role === 'CAPTAIN' || role === 'PLAYER') {
-          navItems.push(['MATCHES', 'bat', 'Match Center']);
-          navItems.push(['TEAMS', 'users', 'Squad & Playing XI']);
-          navItems.push(['TOURNAMENTS', 'trophy', 'Standings & Brackets']);
-          navItems.push(['MARKETPLACE', 'cart', 'Turf Marketplace']);
-          navItems.push(['PROFILE', 'user', 'Profile & Career']);
-        } else if (role === 'SCORER') {
-          navItems.push(['MATCHES', 'lightning', 'Scorer Studio Pad']);
-          navItems.push(['TEAMS', 'users', 'Team Lineups']);
-          navItems.push(['TOURNAMENTS', 'trophy', 'Tournament Standings']);
-          navItems.push(['PROFILE', 'user', 'Official Profile']);
-        } else if (role === 'FAN') {
-          navItems.push(['MATCHES', 'wave', 'Live Stadium Pulse']);
-          navItems.push(['TOURNAMENTS', 'trophy', 'League Standings']);
-          navItems.push(['MARKETPLACE', 'cart', 'Venues & Tickets']);
-          navItems.push(['PROFILE', 'user', 'Fan Profile']);
-        } else if (role === 'UMPIRE') {
-          navItems.push(['MATCHES', 'bat', 'Match Center']);
-          navItems.push(['INCIDENTS', 'scale', 'Umpire Desk & Sanctions']);
-          navItems.push(['TOURNAMENTS', 'trophy', 'Tournament Standings']);
-          navItems.push(['PROFILE', 'user', 'Official Profile']);
-        } else if (role === 'ORGANISER') {
-          navItems.push(['MATCHES', 'bat', 'Live Match Center']);
-          navItems.push(['TOURNAMENTS', 'trophy', 'Fixtures & Brackets']);
-          navItems.push(['TEAMS', 'users', 'Registered Teams']);
-          navItems.push(['MARKETPLACE', 'basket', 'Venue Procurement']);
-          navItems.push(['PROFILE', 'user', 'Organiser Profile']);
-        } else if (role === 'TURF_PROVIDER') {
-          navItems.push(['MATCHES', 'bat', 'Live Ground Feed']);
-          navItems.push(['MARKETPLACE', 'stadium', 'Turf Slot Storefront']);
-          navItems.push(['INCIDENTS', 'scale', 'Escrow Disputes']);
-          navItems.push(['PROFILE', 'user', 'Provider Profile']);
-        } else {
-          navItems.push(['MATCHES', 'bat', 'Match Center']);
-          navItems.push(['TEAMS', 'users', 'Teams & Rosters']);
-          navItems.push(['INCIDENTS', 'scale', 'Incidents & Fair Play']);
-          navItems.push(['ADMIN', 'lightning', 'Settlement Audit Desk']);
-          navItems.push(['PROFILE', 'user', 'System Root Profile']);
-        }
-
         var h = '';
         h += '<div id="mobileSidebarBackdrop" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="position: fixed; inset: 0; z-index: 9490; background: ' + (isLight ? 'rgba(15, 23, 42, 0.42)' : 'rgba(2, 6, 14, 0.72)') + '; backdrop-filter: blur(4px); display: ' + (isOpen ? 'block' : 'none') + ';"></div>';
         h += '<aside id="mobileSidebarDrawer" data-sidebar-theme="' + activeTheme + '" aria-label="Mobile Sidebar Navigation" style="position: fixed; top: 0; left: 0; bottom: 0; width: 282px; max-width: 84vw; z-index: 9500; background: ' + drawerBg + '; border-right: 1px solid ' + drawerBorder + '; display: ' + (isOpen ? 'flex' : 'none') + '; flex-direction: column; overflow-y: auto; padding: 0.9rem; box-shadow: ' + drawerShadow + '; color: ' + primaryInk + ';">';
@@ -6476,25 +6435,10 @@ export function getMobileAppHtml() {
         h += '<div class="mobile-sidebar-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid ' + dividerColor + '; margin-bottom: 0.75rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
         h += '<span id="mobileSidebarBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(28) + '</span>';
-        h += '<div><div style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">Cric<span style="color: ' + accentBrandInk + ';">OS</span> Navigation</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg({'CAPTAIN':'bat','PLAYER':'user','SCORER':'lightning','FAN':'wave','UMPIRE':'scale','ORGANISER':'trophy','TURF_PROVIDER':'stadium','ADMIN':'shield'}[role]||'bat', accentBrandInk, 12) + ' ' + role + ' WORKSPACE</div></div>';
+        h += '<div><div style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">Cric<span style="color: ' + accentBrandInk + ';">OS</span> Tactical</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg({'CAPTAIN':'bat','PLAYER':'user','SCORER':'lightning','FAN':'wave','UMPIRE':'scale','ORGANISER':'trophy','TURF_PROVIDER':'stadium','ADMIN':'shield'}[role]||'bat', accentBrandInk, 12) + ' ' + role + ' WORKSPACE</div></div>';
         h += '</div>';
         h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="' + closeBtnStyle + ' border-radius: 6px; padding: 0.22rem 0.5rem; font-size: 0.8rem; cursor: pointer;" data-tooltip="Close Sidebar">✕</button>';
         h += '</div>';
-
-        // Section 0: Main Navigation (role-scoped screens)
-        h += '<div style="margin-bottom: 0.85rem;">';
-        h += '<div class="mobile-sidebar-section-title" style="font-size: 0.62rem; font-weight: 800; color: ' + secondaryInk + '; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem;">Main Navigation</div>';
-        h += '<div style="display: flex; flex-direction: column; gap: 0.25rem;">';
-        for (var ni = 0; ni < navItems.length; ni++) {
-          var navItem = navItems[ni];
-          var isActiveSidebarNav = this.activeScreen === navItem[0];
-          var navItemBg = isActiveSidebarNav
-            ? (isLight ? 'background: #065F46; border: 1px solid #047857; color: #FFFFFF;' : 'background: rgba(0,229,153,0.18); border: 1px solid #00E599; color: #00E599;')
-            : (isLight ? 'background: transparent; border: 1px solid transparent; color: #334155;' : 'background: transparent; border: 1px solid transparent; color: #CBD5E1;');
-          var niIconColor = isActiveSidebarNav ? (isLight ? '#FFFFFF' : '#00E599') : (isLight ? '#475569' : '#64748B');
-          h += '<button type="button" data-screen="' + navItem[0] + '" onclick="window.cricosMobileApp.navigateToFromSidebar(this.dataset.screen)" style="display: flex; align-items: center; gap: 0.5rem; width: 100%; text-align: left; padding: 0.42rem 0.6rem; border-radius: 8px; font-size: 0.73rem; font-weight: ' + (isActiveSidebarNav ? '800' : '700') + '; cursor: pointer; ' + navItemBg + '" data-tooltip="Go to ' + navItem[2] + '">' + this.iconSvg(navItem[1], niIconColor, 17) + '<span>' + navItem[2] + '</span></button>';
-        }
-        h += '</div></div>';
 
         // Section 1: Allowed Account Personas
         h += '<div style="margin-bottom: 0.85rem;">';

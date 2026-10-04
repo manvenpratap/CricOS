@@ -45,6 +45,7 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
   const distMobileHtml = readFile('dist/mobile.html');
   const rootIndexHtml = readFile('index.html');
   const distIndexHtml = readFile('dist/index.html');
+  const mobileSrc = readFile('apps/api/src/ui/mobile-view.ts');
 
   // ---- Suite 1: Mobile App User Journeys & Multi-Persona Architecture ----
   describe('Suite 1: Mobile User Journeys & Multi-Persona Architecture', () => {
@@ -480,6 +481,15 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('id="btnMobileSidebarAuction"'), 'Player Auction must live canonically in sidebar drawer');
       assert.ok(mobileHtml.includes('id="btnMobileSidebarDrsReview"'), 'DRS Review must live canonically in sidebar drawer');
       assert.ok(mobileHtml.includes('id="btnMobileSidebarDlsTarget"'), 'DLS Target must live canonically in sidebar drawer');
+    });
+
+    it('7. Main navigation is canonical in bottom bar and eliminated from sidebar drawer (Zero Duplication)', () => {
+      assert.ok(!mobileHtml.includes('>Main Navigation</div>'), 'Sidebar drawer must not contain duplicate Main Navigation title');
+      const sidebarMatch = mobileSrc.match(/renderMobileSidebarDrawer\(\)\s*\{([\s\S]*?)\n\s*renderRoleExperienceBanner/);
+      assert.ok(sidebarMatch, 'renderMobileSidebarDrawer implementation must be present');
+      assert.ok(!sidebarMatch[1].includes('Main Navigation'), 'Sidebar drawer must not render duplicate Main Navigation section');
+      assert.ok(!sidebarMatch[1].includes('var navItems ='), 'Sidebar drawer must not build redundant screen navigation items');
+      assert.ok(mobileHtml.includes('class="mobile-bottom-nav"'), 'Bottom bar must serve as the canonical main navigation');
     });
   });
 

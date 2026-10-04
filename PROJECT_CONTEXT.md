@@ -1,29 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 12:20:00
-**Version:** 1.0.0-phase2dq (Athletic Broadcast Passport Profile Redesign, Zero Duplication & Session Relocation)  
+**Last Updated:** 2026-10-04 12:26:00
+**Version:** 1.0.0-phase2dr (Elimination of Redundant Main Navigation from Sidebar Drawer & Canonical Bottom Nav Bar)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DQ Completed — Athletic Broadcast Passport Profile Redesign, Zero Duplication & Session Relocation (`apps/api/src/ui/mobile-view.ts`, `tests/domain-identity-personas-and-themes.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/test_consolidated_themes_and_visuals.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
-  - **1. Athletic Broadcast Passport Profile Redesign & Zero Duplication**:
-    - Removed redundant `.theme-selection-card` (Swiss, Nordic, Stadium) and `.profile-settings-card` (`#btnMobileProfileSettings` / "CricOS App Settings [Configure →]") from the Profile tab, as both are already canonically accessible via the sidebar drawer and the unified settings sheet.
-    - Profile tab now opens immediately with the prestigious `.profile-hero-card` (56px circular avatar `#mobileProfileAvatar` with emerald glow border, tap-to-upload camera overlay, track-tight display name `.profile-hero-name`, verified athlete chip, role, and club).
-    - Followed immediately by custom cricket bio card (`#profileBioCard`), interactive 3D batting career figures, milestone badges, and tournament performance logs.
-  - **2. Active Session Placement in Account & Compliance**:
-    - Relocated `#mobileActiveSessionBadge` (JWT active session indicator, account identifier, token hash, and provisioned persona switchers) to the bottom `.profile-account-compliance-card`.
-    - Harmonized with canonical Sign Out action (`#btnMobileProfileSignOut`) and Apple App Store Guideline 5.1.1(v) account deletion (`#btnMobileProfileDeleteAccount`).
-    - Added Swiss Minimalist and Nordic Editorial CSS overrides ensuring `#mobileActiveSessionBadge` and `.profile-account-compliance-card` maintain daylight surface contrast (WCAG AAA >= 7.0:1).
+- **Active Phase**: Phase 2DR Completed — Elimination of Redundant Main Navigation from Sidebar Drawer & Canonical Bottom Nav Bar (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_navigation_and_studios.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Elimination of Duplicate Main Navigation in Sidebar Drawer**:
+    - Completely removed `Section 0: Main Navigation` and `var navItems = [];` from `renderMobileSidebarDrawer()`.
+    - Main navigation across primary modules (Matches, Teams, Tournaments, Gear/Store, Profile) is now 100% canonical in the dock-anchored `<nav class="mobile-bottom-nav">`.
+    - Eliminates redundant buttons taking up vertical viewport height, preventing drawer clutter and duplicate routing paths.
+  - **2. Preserved Functional Drawer Responsibilities**:
+    - Drawer now opens immediately into Section 1: Provisioned Account Personas (`#mobileSidebarPersonaStrip` with 1-tap switching between Captain, Scorer, Umpire, Admin, etc.).
+    - Followed immediately by Section 2: Tactical Studios & Officiating (`#mobileSidebarStudios` with 3D Stadium Pitch Viewport, 360° Wagon Wheel, Live Scoring Studio, DRS Review, and DLS Calculator).
+    - Footer co-locates fast utility controls: Theme Cycle (`#btnCycleMobileThemeSidebar`), Clean View toggle (`#btnToggleCleanViewSidebar`), CricOS App Settings Hub (`#btnOpenMobileSettingsFromSidebar`), and Sign Out (`#btnMobileSidebarSignOut`).
   - **3. Domain & E2E Test Suite Health**:
-    - Enhanced Suite 8 Test 10 in `tests/domain-identity-personas-and-themes.test.ts` to assert zero theme cards, zero settings cards, and session badge situated inside Account & Compliance (252 total tests passing 100% via `./pipeline.sh test --summary`).
-    - Verified all Playwright E2E suites pass 100% (`test_consolidated_3d_and_packaging.py` and `test_consolidated_themes_and_visuals.py`) with zero console errors (`assert_no_critical_errors(page)`).
+    - Added assertion 7 to Suite 9 in `tests/domain-mobile-journeys-and-native.test.ts` verifying drawer has zero main navigation items and bottom nav bar remains canonical (253 domain/unit tests passing 100% via `./pipeline.sh test --summary`).
+    - Verified all Playwright E2E suites pass 100% (`tests/test_consolidated_navigation_and_studios.py` and `tests/test_consolidated_3d_and_packaging.py`) with zero console errors (`assert_no_critical_errors(page)`).
   - **4. Packaging & Android Native Compilation (Rule 6)**:
     - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
     - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
-- **Preceding Phase**: Phase 2DP Completed — Elimination of Duplicate Sign Out Button on Profile Tab & Canonical Account Placement:
+- **Preceding Phase**: Phase 2DQ Completed — Athletic Broadcast Passport Profile Redesign, Zero Duplication & Session Relocation:
 - **Preceding Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face:
   - **1. Complete Elimination of Redundant Card Front Button**:
     - Stripped `#btnCardFrontAnalysis` from the front face of `#playerFlipCard3D`, strictly aligning with the clean reference design (`media_1791062167739.png`).
