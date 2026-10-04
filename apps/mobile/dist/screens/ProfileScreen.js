@@ -208,12 +208,12 @@ export class ProfileScreenController {
         <div style="background: rgba(10, 16, 28, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
           <div style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.75rem;">Account & Session Security</div>
           
-          <button type="button" onclick="window.cricosMobileApp.signOutAction()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.75rem; cursor: pointer;" data-tooltip="Clear mobile session">
+          <button type="button" id="btnMobileProfileSignOut" onclick="window.cricosMobileApp.signOutAction()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #f8fafc; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.75rem; cursor: pointer;" data-tooltip="Clear mobile session">
             Sign Out of CricOS
           </button>
 
           <!-- Apple Guideline 5.1.1(v) Compliant Account Deletion -->
-          <button type="button" onclick="window.cricosMobileApp.promptDeleteAccount()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff6688; font-weight: 600; font-size: 0.85rem; cursor: pointer;" data-tooltip="Mandatory permanent account deletion per Apple App Store 5.1.1(v)">
+          <button type="button" id="btnMobileProfileDeleteAccount" onclick="window.cricosMobileApp.promptDeleteAccount()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.1); color: #ff6688; font-weight: 600; font-size: 0.85rem; cursor: pointer;" data-tooltip="Mandatory permanent account deletion per Apple App Store 5.1.1(v)">
             Delete Account & All Data (App Store Compliance)
           </button>
         </div>

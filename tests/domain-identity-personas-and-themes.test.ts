@@ -932,6 +932,24 @@ describe('Domain: Identity, Personas, RBAC, Scorecards & Theme System', () => {
       assert.ok(mobileSrc.includes('Full View: Detailed mode'), 'toggleCleanFocusMode must announce Full View activation');
       assert.ok(mobileSrc.includes('Switch to Clean'), 'Full View clean focus bar must offer Switch to Clean CTA');
     });
+
+    it('10. Canonical Single Sign Out on Profile tab in Account & Compliance (Zero Duplication)', () => {
+      // 1. Mobile active session badge must NOT contain a Sign Out button
+      const sessionBadgeMatch = mobileSrc.match(/id="mobileActiveSessionBadge"[^>]*>([\s\S]*?)<\/div>/);
+      assert.ok(sessionBadgeMatch, 'mobileActiveSessionBadge must exist');
+      assert.ok(!sessionBadgeMatch[1].includes('Sign Out'), 'mobileActiveSessionBadge must NOT contain a duplicate Sign Out button');
+
+      // 2. Canonical Sign Out button #btnMobileProfileSignOut must live in Account & Compliance card
+      assert.ok(mobileHtml.includes('id="btnMobileProfileSignOut"'), 'Profile screen must feature canonical #btnMobileProfileSignOut');
+      assert.ok(mobileSrc.includes('Account &amp; Compliance'), 'Profile screen must feature Account & Compliance section');
+
+      // 3. Exactly one Sign Out button on the Profile screen
+      const profileRenderMatch = mobileSrc.match(/renderProfile\(\)\s*\{([\s\S]*?)\n\s*getBrandLogoSvg/);
+      assert.ok(profileRenderMatch, 'renderProfile() implementation must be present');
+      const signOutMatches = profileRenderMatch[1].match(/Sign Out/g) || [];
+      // Exactly 1 Sign Out button in renderProfile (inside Account & Compliance)
+      assert.strictEqual(signOutMatches.length, 1, `renderProfile must contain exactly 1 Sign Out button, found ${signOutMatches.length}`);
+    });
   });
 });
 

@@ -146,6 +146,17 @@ async def test_mobile_3d_cards_and_drawer_studios():
         p_src = await profile_avatar_img.get_attribute("src")
         assert p_src and len(p_src) > 10, "#mobileProfileAvatar img must display valid image URL"
 
+        # Canonical Single Sign Out on Profile (Zero Duplication)
+        session_badge_text = await page.evaluate("() => document.querySelector('#mobileActiveSessionBadge')?.textContent || ''")
+        assert "Sign Out" not in session_badge_text, "Active session badge must NOT contain duplicate Sign Out button"
+        signout_btns = await page.query_selector_all("#btnMobileProfileSignOut")
+        assert len(signout_btns) == 1, f"Must have exactly 1 #btnMobileProfileSignOut on profile, found {len(signout_btns)}"
+        profile_signout_texts = await page.evaluate("""() => {
+            const btns = Array.from(document.querySelectorAll('#mobileScrollBody button'));
+            return btns.filter(b => b.textContent && b.textContent.includes('Sign Out')).map(b => b.textContent.trim());
+        }""")
+        assert len(profile_signout_texts) == 1, f"Must have exactly 1 Sign Out button in Profile tab, found: {profile_signout_texts}"
+
         # -------------------------------------------------------------
         # 1b. Main 3D Player Card on Teams Hub (Direct Card & Full Analysis)
         # -------------------------------------------------------------
