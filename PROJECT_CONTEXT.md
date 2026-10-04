@@ -1,14 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 08:20:00
-**Version:** 1.0.0-phase2dl (Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face)  
+**Last Updated:** 2026-10-04 08:52:00
+**Version:** 1.0.0-phase2dm (Elimination of Short Player Name Chips & Auto-Scroll Roster List Selection)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DM Completed — Elimination of Short Player Name Chips & Auto-Scroll Roster List Selection (`apps/api/src/ui/mobile-view.ts`, `tests/domain-mobile-journeys-and-native.test.ts`, `tests/test_consolidated_3d_and_packaging.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Elimination of Short Player Name Chips Strip (`#mobileSquadChipsStrip`)**:
+    - Completely stripped the 3-row cluster of short player names ("Virat", "Rohit", "Shubman", ...) from above `#playerFlipCard3D`.
+    - Main 3D Holographic Player Card sits cleanly directly below Match Toss Certification, maximizing screen real estate and eliminating redundant buttons.
+  - **2. Canonical Roster List Selection Below Card**:
+    - Playing XI (11) and Bench Reserves lists below the card serve as the single canonical mechanism for player inspection and squad management.
+    - Added dedicated `Card Active` badge, keyboard accessibility (`Enter`/`Space`), and touch feedback to `.player-list-item`.
+  - **3. Smooth Auto-Scroll to Top on Selection**:
+    - `selectPlayer(id)` computes `#mobileAthleticStatsCard` target offset and smoothly scrolls `#mobileScrollBody` (`card.scrollIntoView({ behavior: 'smooth', block: 'start' })`), immediately focusing the selected athlete's 3D card at the top.
+  - **4. Domain & E2E Test Suite Health**:
+    - Added assertion 6 to Suite 13 in `tests/domain-mobile-journeys-and-native.test.ts` (249 total unit/domain tests in 67 suites passing 100% via `./pipeline.sh test --summary`).
+    - Updated `tests/test_consolidated_3d_and_packaging.py` Step 2 & 6 to verify chip elimination, roster list selection, and viewport auto-scroll (4 tests passing in 18s).
+  - **5. Packaging & Android Native Compilation (Rule 6)**:
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package`.
+    - Recompiled and verified Play-Protect-compliant Android 15 Release & Debug APKs via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DL Completed — Segregated Radar & Splits vs Full Analytics Dossier & Uncluttered 3D Card Face:
   - **1. Complete Elimination of Redundant Card Front Button**:
     - Stripped `#btnCardFrontAnalysis` from the front face of `#playerFlipCard3D`, strictly aligning with the clean reference design (`media_1791062167739.png`).
     - Preserved clean, centered `Tap to flip for career stats` instruction with zero button clutter.

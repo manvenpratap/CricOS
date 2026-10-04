@@ -118,7 +118,8 @@ async def test_mobile_3d_cards_and_drawer_studios():
         page._console_errors = console_errors
 
         await page.goto(MOBILE_HTML, wait_until="networkidle")
-        await page.wait_for_timeout(300)
+        await page.wait_for_function("() => window.cricosMobileApp !== undefined", timeout=5000)
+        await page.wait_for_timeout(200)
 
         # -------------------------------------------------------------
         # 1. Profile 3D Flippable Career Stat Cards
@@ -150,9 +151,10 @@ async def test_mobile_3d_cards_and_drawer_studios():
         main_card = await page.query_selector("#mobileAthleticStatsCard #playerFlipCard3D")
         assert main_card is not None and await main_card.is_visible(), "Main player card must be direct 3D flippable card"
 
-        # 2. 15-Player Squad Selector Chips Strip
-        squad_chips = await page.query_selector_all("#mobileSquadChipsStrip button")
-        assert len(squad_chips) >= 11, f"Squad chips strip must have at least 11 players, found {len(squad_chips)}"
+        # 2. Roster List below card replaces cluttered short-name chips
+        assert await page.query_selector("#mobileSquadChipsStrip") is None, "Short player name chips strip above card must be eliminated"
+        player_items = await page.query_selector_all(".player-list-item")
+        assert len(player_items) >= 11, f"Playing XI and roster list must have at least 11 players, found {len(player_items)}"
 
         # 3. Front Face Data Completeness: identity, jersey, ICC rank, ELO score
         front_text = await page.evaluate("() => document.querySelector('#playerFlipCard3D .player-flip-front')?.textContent || ''")
@@ -197,13 +199,20 @@ async def test_mobile_3d_cards_and_drawer_studios():
         card_is_unflipped = await page.evaluate("() => !document.querySelector('#playerFlipCard3D').classList.contains('flipped')")
         assert card_is_unflipped, "Tapping card body must unflip card back to front"
 
-        # 6. 1-Tap Player Switching updates the card
-        squad_chips_fresh = await page.query_selector_all("#mobileSquadChipsStrip button")
-        if len(squad_chips_fresh) > 1:
-            await squad_chips_fresh[1].click()
-            await page.wait_for_timeout(250)
+        # 6. 1-Tap Player Switching from list below updates card and auto-scrolls to top
+        player_items = await page.query_selector_all(".player-list-item")
+        if len(player_items) > 1:
+            await player_items[1].click()
+            await page.wait_for_timeout(350)
             updated_name = await page.evaluate("() => document.querySelector('#playerFlipCard3D .athletic-player-name')?.textContent || ''")
-            assert "Rohit" in updated_name, f"Switching chip must update player card to Rohit, got '{updated_name}'"
+            assert "Rohit" in updated_name, f"Selecting player from roster list below must update player card to Rohit, got '{updated_name}'"
+            card_is_visible = await page.evaluate("""() => {
+                const card = document.querySelector('#mobileAthleticStatsCard');
+                if (!card) return false;
+                const rect = card.getBoundingClientRect();
+                return rect.top >= 0 && rect.top < window.innerHeight;
+            }""")
+            assert card_is_visible, "Player card must be auto-scrolled into view at top of screen"
 
         # 7. Inline Analysis Accordion Toggle (Provision 1)
         inline_btn = await page.query_selector("#btnToggleInlineAnalysis")

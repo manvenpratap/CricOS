@@ -4959,6 +4959,27 @@
         this.playerCardFlipped = false;
         if (window.CricOSSound) window.CricOSSound.playClick();
         this.render();
+
+        setTimeout(function() {
+          var card = document.getElementById('mobileAthleticStatsCard') || document.getElementById('playerFlipCard3D');
+          var scrollBody = document.getElementById('mobileScrollBody');
+          if (scrollBody && card) {
+            var cardTop = card.offsetTop;
+            var targetY = Math.max(0, cardTop - 8);
+            scrollBody.scrollTo({ top: targetY, behavior: 'smooth' });
+            try {
+              card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (e) {}
+          } else if (card) {
+            try {
+              card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (e) {}
+          } else if (scrollBody) {
+            scrollBody.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }, 50);
       }
 
       getPlayer(playerId) {
@@ -5380,23 +5401,7 @@
 
         var h = '<div class="athletic-stats-card" id="mobileAthleticStatsCard">';
 
-        // 1. Squad Selector Chips Strip (if enabled, default true)
-        if (showSquadChips !== false) {
-          var pdb = this.playerDatabase || {};
-          var pids = Object.keys(pdb);
-          h += '<div class="mobile-squad-chips-strip" id="mobileSquadChipsStrip" style="display: flex; gap: 0.28rem; margin-bottom: 0.65rem; flex-wrap: wrap;">';
-          for (var ci = 0; ci < pids.length; ci++) {
-            var se = pdb[pids[ci]];
-            var isCur = se.id === p.id;
-            var chipStyle = isCur
-              ? 'background: #00E599; color: #04070D; font-weight: 700; border: 1px solid #00E599;'
-              : 'background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #94A3B8;';
-            h += '<button type="button" class="mobile-chip' + (isCur ? ' active' : '') + '" onclick="window.cricosMobileApp.selectPlayer(&apos;' + se.id + '&apos;)" style="padding: 0.22rem 0.52rem; font-size: 0.68rem; border-radius: 20px; flex-shrink: 0; cursor: pointer; ' + chipStyle + '" data-tooltip="Inspect ' + se.fullName + ' card" aria-label="' + se.fullName + '">' + (se.shortName || se.name.split(' ')[0]) + '</button>';
-          }
-          h += '</div>';
-        }
-
-        // 2. 3D Holographic Flippable Player Card
+        // 3D Holographic Flippable Player Card (Player selection handled via Playing XI list below)
         var isCardFlipped = Boolean(this.playerCardFlipped);
         h += '<div class="player-flip-scene" data-tooltip="Tap card to flip between identity and career figures">';
         h += '<div id="playerFlipCard3D" class="player-flip-card' + (isCardFlipped ? ' flipped' : '') + '" onclick="window.cricosMobileApp.toggleFlipCard(this, event)" role="button" tabindex="0" aria-label="3D flip card for ' + p.fullName + '">';
@@ -13236,7 +13241,7 @@
         for (var i = 0; i < this.playingXI.length; i++) {
           var p = this.playingXI[i];
           var isSel = p.id === activeTeamPlayerId;
-          h += '<div class="player-list-item ' + (isSel ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + p.id + '" style="background: ' + (isSel ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.8)') + '; border: 1px solid ' + (isSel ? '#00E599' : 'rgba(255,255,255,0.08)') + '; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<div class="player-list-item ' + (isSel ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + p.id + '" role="button" tabindex="0" aria-label="Select ' + p.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="background: ' + (isSel ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.8)') + '; border: 1px solid ' + (isSel ? '#00E599' : 'rgba(255,255,255,0.08)') + '; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" data-tooltip="Select ' + p.name + ' to view card at top">';
           h += '<div style="display: flex; align-items: center; gap: 0.45rem;">';
           h += '<span style="font-family: var(--font-score); font-size: 0.72rem; color: #94a3b8; width: 20px;">#' + p.jersey + '</span>';
           h += '<div>';
@@ -13244,7 +13249,18 @@
           h += '<div style="font-size: 0.62rem; color: #94a3b8;">' + p.role + '</div>';
           h += '</div></div>';
           if (isCaptain) {
+            h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
+            if (isSel) {
+              h += '<span style="font-size: 0.58rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
+            }
             h += '<button type="button" onclick="event.stopPropagation(); window.cricosMobileApp.benchPlayer(' + i + ')" style="padding: 0.22rem 0.45rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #cbd5e1; font-size: 0.62rem;" data-tooltip="Move player to bench">Bench ⇄</button>';
+            h += '</div>';
+          } else {
+            if (isSel) {
+              h += '<span style="font-size: 0.62rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-radius: 4px; padding: 0.12rem 0.4rem; display: inline-flex; align-items: center; gap: 0.25rem;">' + this.iconSvg('check', '#00E599', 11) + ' Card Active</span>';
+            } else {
+              h += '<span style="font-size: 0.62rem; color: #64748b; display: inline-flex; align-items: center; gap: 0.2rem;">' + this.iconSvg('user', '#64748b', 11) + ' View Card</span>';
+            }
           }
           h += '</div>';
         }
@@ -13256,9 +13272,13 @@
         for (var b = 0; b < this.bench.length; b++) {
           var bp = this.bench[b];
           var isSelB = bp.id === (this.selectedPlayerId || 'p1');
-          h += '<div class="player-list-item ' + (isSelB ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + bp.id + '" style="background: ' + (isSelB ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.5)') + '; border: 1px solid ' + (isSelB ? '#00E599' : 'rgba(255,255,255,0.05)') + '; border-radius: 8px; padding: 0.35rem 0.65rem; display: flex; justify-content: space-between; align-items: center;">';
+          h += '<div class="player-list-item ' + (isSelB ? 'active-player' : '') + '" onclick="window.cricosMobileApp.selectPlayer(this.dataset.playerId)" data-player-id="' + bp.id + '" role="button" tabindex="0" aria-label="Select ' + bp.name + ' and view card" onkeydown="if(event.keyCode===13||event.keyCode===32){event.preventDefault();window.cricosMobileApp.selectPlayer(this.dataset.playerId);}" style="background: ' + (isSelB ? 'rgba(0, 229, 153, 0.12)' : 'rgba(10, 16, 28, 0.5)') + '; border: 1px solid ' + (isSelB ? '#00E599' : 'rgba(255,255,255,0.05)') + '; border-radius: 8px; padding: 0.35rem 0.65rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" data-tooltip="Select ' + bp.name + ' to view card at top">';
           h += '<div style="font-size: 0.75rem; color: #94a3b8;">#' + bp.jersey + ' ' + bp.name + ' <small>(' + bp.role + ')</small></div>';
-          h += '<span style="font-size: 0.62rem; color: #64748b;">Reserve</span>';
+          if (isSelB) {
+            h += '<span style="font-size: 0.58rem; color: #00E599; font-weight: 700; background: rgba(0,229,153,0.12); border: 1px solid rgba(0,229,153,0.3); border-radius: 4px; padding: 0.12rem 0.35rem;">Card Active</span>';
+          } else {
+            h += '<span style="font-size: 0.62rem; color: #64748b;">Reserve • View</span>';
+          }
           h += '</div>';
         }
         h += '</div></div>';

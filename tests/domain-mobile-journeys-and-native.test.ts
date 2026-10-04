@@ -640,6 +640,12 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
       assert.ok(mobileHtml.includes('exportAthleteReport('), 'exportAthleteReport method must exist');
       assert.ok(mobileHtml.includes('Export Athlete Report (PDF / CSV)'), 'Export report action button must exist');
     });
+
+    it('6. Eliminates short player name chips above card and auto-scrolls to top on list selection', () => {
+      assert.ok(!mobileHtml.includes('id="mobileSquadChipsStrip"'), 'Short player name chips strip above card must be eliminated');
+      assert.ok(mobileHtml.includes('selectPlayer(this.dataset.playerId)'), 'Roster list items must trigger selectPlayer');
+      assert.ok(mobileHtml.includes('scrollIntoView') || mobileHtml.includes('scrollTo'), 'selectPlayer must auto-scroll to show selected player card');
+    });
   });
 });
 
