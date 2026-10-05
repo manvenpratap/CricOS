@@ -8476,12 +8476,20 @@ export function getMobileAppHtml(): string {
         this.pendingDismissalFielder = '';
         this.pendingDismissalOutRole = 'STRIKER';
         this.pendingIncomingBatter = isFinalWicket ? '' : (availableBench.length > 0 ? availableBench[0].name : '');
+        this.rareDismissalModesOpen = false;
         this.dismissalSheetOpen = true;
         this.render();
       }
 
       closeMobileDismissalSheet() {
         this.dismissalSheetOpen = false;
+        this.rareDismissalModesOpen = false;
+        this.render();
+      }
+
+      toggleRareDismissalModes() {
+        if (window.CricOSSound) window.CricOSSound.playClick();
+        this.rareDismissalModesOpen = !this.rareDismissalModesOpen;
         this.render();
       }
 
@@ -8508,6 +8516,10 @@ export function getMobileAppHtml(): string {
         this.pendingDismissalMode = mode;
         if (mode !== 'CAUGHT' && mode !== 'STUMPED' && mode !== 'RUN_OUT') {
           this.pendingDismissalFielder = '';
+        }
+        var rareList = ['STUMPED', 'HIT_WICKET', 'OBSTRUCTING', 'HIT_BALL_TWICE', 'HANDLED_BALL', 'TIMED_OUT', 'RETIRED_OUT', 'RETIRED_HURT'];
+        if (rareList.indexOf(mode) !== -1) {
+          this.rareDismissalModesOpen = true;
         }
         this.render();
       }
@@ -8826,48 +8838,115 @@ export function getMobileAppHtml(): string {
         h += '</button>';
         h += '</div>';
 
-        h += '<div style="font-size: 0.72rem; font-weight: 800; color: #ff3366; text-transform: uppercase; margin-bottom: 0.35rem;">2. Mode of Dismissal (MCC Laws 30–39 &amp; 25)</div>';
-        h += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 0.75rem;">';
-        
-        var modes = [
-          ['CAUGHT', 'Caught', 'c Fielder b Bowler (Law 33)'],
-          ['BOWLED', 'Bowled', 'Clean bowled (Law 32)'],
-          ['LBW', 'LBW', 'Leg before wicket (Law 36)'],
-          ['RUN_OUT', 'Run Out', 'Run out at stumps (Law 38)'],
-          ['STUMPED', 'Stumped', 'st Keeper b Bowler (Law 39)'],
-          ['HIT_WICKET', 'Hit Wkt', 'Broken wicket (Law 35)'],
-          ['OBSTRUCTING', 'Obstructing', 'Obstructing field (Law 37)'],
-          ['HIT_BALL_TWICE', 'Hit 2x', 'Hit ball twice (Law 34)'],
-          ['HANDLED_BALL', 'Handled', 'Handled ball (Law 37)'],
-          ['TIMED_OUT', 'Timed Out', 'Timed out (Law 40)'],
-          ['RETIRED_OUT', 'Retired Out', 'Tactical retirement (Law 25.4)'],
-          ['RETIRED_HURT', 'Retired Hurt', 'Injury/Illness not out (Law 25.4)']
+        h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">';
+        h += '<span style="font-size: 0.72rem; font-weight: 800; color: #ff3366; text-transform: uppercase;">2. Mode of Dismissal (MCC Laws 30–39 &amp; 25)</span>';
+        h += '<span style="font-size: 0.65rem; color: ' + muted + '; font-weight: 600;">Tier 1: 4 Common Modes</span>';
+        h += '</div>';
+
+        var primaryModes = [
+          ['CAUGHT', 'Caught', 'c Fielder b Bowler (Law 33)', 'Law 33'],
+          ['BOWLED', 'Bowled', 'Clean bowled (Law 32)', 'Law 32'],
+          ['LBW', 'LBW', 'Leg before wicket (Law 36)', 'Law 36'],
+          ['RUN_OUT', 'Run Out', 'Run out at stumps (Law 38)', 'Law 38']
         ];
 
-        for (var m = 0; m < modes.length; m++) {
-          var md = modes[m];
-          var isM = (mode === md[0]);
-          var isProhibitedOnFreeHit = (this.freeHitActive && isStrikerActive && (
-            md[0] === 'BOWLED' || md[0] === 'CAUGHT' || md[0] === 'LBW' || md[0] === 'STUMPED' || md[0] === 'HIT_WICKET' || md[0] === 'HANDLED_BALL' || md[0] === 'TIMED_OUT'
-          ));
+        var rareModes = [
+          ['STUMPED', 'Stumped', 'st Keeper b Bowler (Law 39)', 'Law 39'],
+          ['HIT_WICKET', 'Hit Wkt', 'Broken wicket (Law 35)', 'Law 35'],
+          ['OBSTRUCTING', 'Obstructing', 'Obstructing field (Law 37)', 'Law 37'],
+          ['HIT_BALL_TWICE', 'Hit 2x', 'Hit ball twice (Law 34)', 'Law 34'],
+          ['HANDLED_BALL', 'Handled', 'Handled ball (Law 37)', 'Law 37'],
+          ['TIMED_OUT', 'Timed Out', 'Timed out (Law 40)', 'Law 40'],
+          ['RETIRED_OUT', 'Retired Out', 'Tactical retirement (Law 25.4)', 'Law 25.4'],
+          ['RETIRED_HURT', 'Retired Hurt', 'Injury/Illness not out (Law 25.4)', 'Law 25.4']
+        ];
 
-          var btnStyle = '';
-          var disAttr = '';
-          var tooltip = md[2];
+        var isRareSelected = rareModes.some(function(rm) { return rm[0] === mode; });
+        var isRareOpen = (this.rareDismissalModesOpen !== undefined) ? this.rareDismissalModesOpen : isRareSelected;
+        if (isRareSelected || (this.freeHitActive && isStrikerActive && (mode === 'OBSTRUCTING' || mode === 'HIT_BALL_TWICE'))) {
+          isRareOpen = true;
+        }
 
-          if (isProhibitedOnFreeHit) {
-            btnStyle = 'background: ' + cardBg + '; border: 1px dashed rgba(255,51,102,0.3); color: ' + muted + '; opacity: 0.35; cursor: not-allowed;';
-            disAttr = ' disabled';
-            tooltip = 'Prohibited on Free Hit (ICC Clause 21.19)';
-          } else if (isM) {
-            btnStyle = 'background: #ff3366; border: 1px solid #ff3366; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(255,51,102,0.4);';
+        // Tier 1: Prominent 2x2 Grid for 4 Primary Modes (Hick's Law: Minimal Choices <= 4)
+        h += '<div class="dismissal-tier1-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin-bottom: 0.5rem;">';
+        for (var p = 0; p < primaryModes.length; p++) {
+          var pmd = primaryModes[p];
+          var isPM = (mode === pmd[0]);
+          var isProhibitedOnFH = (this.freeHitActive && isStrikerActive && (pmd[0] === 'BOWLED' || pmd[0] === 'CAUGHT' || pmd[0] === 'LBW'));
+
+          var pBtnStyle = '';
+          var pDisAttr = '';
+          var pTooltip = pmd[2];
+
+          if (isProhibitedOnFH) {
+            pBtnStyle = 'background: ' + cardBg + '; border: 1px dashed rgba(255,51,102,0.3); color: ' + muted + '; opacity: 0.35; cursor: not-allowed;';
+            pDisAttr = ' disabled';
+            pTooltip = 'Prohibited on Free Hit (ICC Clause 21.19)';
+          } else if (isPM) {
+            pBtnStyle = 'background: #ff3366; border: 1.5px solid #ff3366; color: #fff; font-weight: 800; box-shadow: 0 4px 14px rgba(255,51,102,0.4);';
           } else {
-            btnStyle = 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; font-weight: 600;';
+            pBtnStyle = 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; font-weight: 700;';
           }
 
-          h += '<button type="button"' + disAttr + ' data-mode="' + md[0] + '" onclick="window.cricosMobileApp.selectMobileDismissalMode(&apos;' + md[0] + '&apos;)" style="min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; padding: 0.42rem 0.3rem; border-radius: 8px; font-size: 0.72rem; text-align: center; cursor: pointer; ' + btnStyle + '" data-tooltip="' + tooltip + '">' + md[1] + '</button>';
+          h += '<button type="button"' + pDisAttr + ' data-mode="' + pmd[0] + '" onclick="window.cricosMobileApp.selectMobileDismissalMode(&apos;' + pmd[0] + '&apos;)" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; padding: 0.45rem 0.5rem; border-radius: 10px; cursor: pointer; ' + pBtnStyle + '" data-tooltip="' + pTooltip + '">';
+          h += '<span style="font-size: 0.88rem; font-weight: 800; letter-spacing: -0.01em;">' + pmd[1] + '</span>';
+          h += '<span style="font-size: 0.65rem; opacity: 0.85; font-weight: 600; margin-top: 0.15rem;">' + pmd[3] + '</span>';
+          h += '</button>';
         }
         h += '</div>';
+
+        // Tier 2: Progressive Disclosure Accordion Toggle for 8 Rare Modes
+        var activeRareObj = rareModes.find(function(rm) { return rm[0] === mode; });
+        var rareToggleLabel;
+        if (activeRareObj) {
+          rareToggleLabel = isRareOpen
+            ? 'Rare Mode: ' + activeRareObj[1] + ' (' + activeRareObj[3] + ') Active ▴'
+            : 'Rare Mode: ' + activeRareObj[1] + ' (' + activeRareObj[3] + ') Active ▾';
+        } else {
+          rareToggleLabel = isRareOpen
+            ? 'Hide Rare Dismissal Modes ▴'
+            : 'More Modes (Stumped, Hit Wicket, Retired... 8 More) ▾';
+        }
+        var rareToggleBorder = activeRareObj ? 'border: 1px solid #ff3366;' : 'border: 1px dashed ' + bdrColor + ';';
+        var rareToggleBg = activeRareObj ? 'background: rgba(255, 51, 102, 0.12);' : 'background: ' + cardBg + ';';
+        var rareToggleColor = activeRareObj ? '#ff3366' : muted;
+
+        h += '<button type="button" id="btnToggleRareDismissals" onclick="window.cricosMobileApp.toggleRareDismissalModes()" style="width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; border-radius: 8px; ' + rareToggleBg + ' ' + rareToggleBorder + ' color: ' + rareToggleColor + '; font-size: 0.76rem; font-weight: 700; cursor: pointer; touch-action: manipulation; margin-bottom: ' + (isRareOpen ? '0.45rem' : '0.75rem') + ';" data-tooltip="Toggle 8 rare and tactical dismissal modes (Law 34, 35, 37, 39, 40, 25)">';
+        h += '<span>' + rareToggleLabel + '</span>';
+        h += '<span style="font-size: 0.85rem;">' + (isRareOpen ? '▲' : '▼') + '</span>';
+        h += '</button>';
+
+        // Tier 2 Collapsible Grid for Rare Modes
+        if (isRareOpen) {
+          h += '<div id="rareDismissalModesGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.35rem; margin-bottom: 0.75rem; padding: 0.45rem; border-radius: 8px; background: rgba(0,0,0,0.15); border: 1px solid ' + bdrColor + ';">';
+          for (var r = 0; r < rareModes.length; r++) {
+            var rmd = rareModes[r];
+            var isRM = (mode === rmd[0]);
+            var isProhibitedOnFH2 = (this.freeHitActive && isStrikerActive && (
+              rmd[0] === 'STUMPED' || rmd[0] === 'HIT_WICKET' || rmd[0] === 'HANDLED_BALL' || rmd[0] === 'TIMED_OUT'
+            ));
+
+            var rBtnStyle = '';
+            var rDisAttr = '';
+            var rTooltip = rmd[2];
+
+            if (isProhibitedOnFH2) {
+              rBtnStyle = 'background: ' + cardBg + '; border: 1px dashed rgba(255,51,102,0.3); color: ' + muted + '; opacity: 0.35; cursor: not-allowed;';
+              rDisAttr = ' disabled';
+              rTooltip = 'Prohibited on Free Hit (ICC Clause 21.19)';
+            } else if (isRM) {
+              rBtnStyle = 'background: #ff3366; border: 1px solid #ff3366; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(255,51,102,0.4);';
+            } else {
+              rBtnStyle = 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; color: ' + ink + '; font-weight: 600;';
+            }
+
+            h += '<button type="button"' + rDisAttr + ' data-mode="' + rmd[0] + '" onclick="window.cricosMobileApp.selectMobileDismissalMode(&apos;' + rmd[0] + '&apos;)" style="min-height: 44px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; touch-action: manipulation; padding: 0.4rem 0.55rem; border-radius: 6px; font-size: 0.72rem; cursor: pointer; ' + rBtnStyle + '" data-tooltip="' + rTooltip + '">';
+            h += '<span style="font-weight: 700;">' + rmd[1] + '</span>';
+            h += '<span style="font-size: 0.62rem; opacity: 0.75;">' + rmd[3] + '</span>';
+            h += '</button>';
+          }
+          h += '</div>';
+        }
 
         if (needsFielder) {
           var fielderLabel = mode === 'CAUGHT' ? 'Caught by (Fielder / Wicketkeeper)' : (mode === 'STUMPED' ? 'Stumped by (Wicketkeeper)' : 'Run Out by (Fielder / Thrower Assist)');

@@ -1,14 +1,33 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 06:40:00
-**Version:** 1.0.0-phase2dz (Master Match Console Unification & Desktop Tab Fragmentation Resolution)  
+**Last Updated:** 2026-10-05 06:45:00
+**Version:** 1.0.0-phase2ea (Two-Tier Progressive Disclosure Dismissal Dialog Architecture & Hick's Law Alignment)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DZ Completed — Master Match Console Unification & Tab Consolidation (`apps/api/src/ui/dashboard.ts`, `dist/index.html`, `dist/public/index.html`, `index.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EA Completed — Two-Tier Progressive Disclosure Dismissal Dialog Architecture (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_77_dismissal_modal_two_tier_progressive_disclosure.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `index.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Hick's Law & Cognitive Load Remediation ("Minimal choices ≤ 4")**:
+    - Resolved the unranked 12-mode dismissal grid/list anti-pattern that gave rare edge-case rules (Law 34 Hit Ball Twice, Law 37 Handled Ball) the same visual weight as standard dismissals.
+    - Implemented **Two-Tier Progressive Disclosure** across both Mobile and Desktop scoring interfaces.
+  - **2. Mobile Two-Tier Dismissal Sheet (`apps/api/src/ui/mobile-view.ts`)**:
+    - **Tier 1 (4 Common Modes)**: Rendered in a prominent 2x2 touch grid (`.dismissal-tier1-grid`) featuring `Caught` (Law 33), `Bowled` (Law 32), `LBW` (Law 36), and `Run Out` (Law 38). Generous $\ge 52$px touch height with large mode labels, Law citations, and rose-accented active highlights.
+    - **Tier 2 (8 Rare & Tactical Modes)**: Neatly collapsed under an accessible toggle button (`#btnToggleRareDismissals`, $\ge 44$px). Reveals `Stumped` (Law 39), `Hit Wicket` (Law 35), `Obstructing` (Law 37), `Hit Ball Twice` (Law 34), `Handled Ball` (Law 37), `Timed Out` (Law 40), `Retired Out` (Law 25.4), and `Retired Hurt` (Law 25.4) in a secondary grid (`#rareDismissalModesGrid`).
+    - **Intelligent Auto-Expansion & State Visibility**: Automatically expands and displays active mode pill (e.g. `Rare Mode: Stumped (Law 39) Active ▴`) whenever a rare mode is selected or when Free Hit rules restrict valid modes.
+  - **3. Desktop Two-Tier Dismissal Modal (`apps/api/src/ui/dashboard.ts`)**:
+    - **Tier 1**: Added 4 prominent 1-click quick-select touch cards (`#desktopDismissalTier1`, `.desktop-dismissal-card` for Caught, Bowled, LBW, Run Out).
+    - **Tier 2**: Collapsible `<details id="desktopRareDismissalDetails">` holding the comprehensive mode select (`#dismissalKind`) for the 8 rare modes, preserving full programmatic and backward test compatibility.
+    - **Bidirectional State Synchronization**: `syncDesktopDismissalCards()` automatically synchronizes card active states, borders, and auto-expands the details summary if a rare mode is picked.
+  - **4. Verification & Testing Health**:
+    - Added comprehensive sequential Playwright E2E suite `tests/test_77_dismissal_modal_two_tier_progressive_disclosure.py` verifying both Desktop and Mobile Two-Tier progressive disclosure, modal interactions, and zero critical console errors.
+    - All 254 unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - All 13 consolidated Playwright test suites passing 100% in 57s.
+    - 0 anti-patterns detected via `impeccable detect` (only sanctioned brand tokens `Space Grotesk` and `Fraunces`).
+    - Distribution parity synchronized and verified via `./pipeline.sh package` (Rule 6).
+    - Android 15 Release & Debug APKs recompiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DZ Completed — Master Match Console Unification & Tab Consolidation (`apps/api/src/ui/dashboard.ts`, `dist/index.html`, `dist/public/index.html`, `index.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Unified Master Match Console Architecture**:
     - Eliminated desktop tab fragmentation between `#tab-scoring` (broadcast telemetry) and `#tab-studio` (scoring keypad and wagon wheel).
     - Consolidated `#cardStudioKeypad` (striker/non-striker crease cards, tactile pad grid with direct numeric badges [0]-[6],[W],[⌘Z], quick extras, +5 penalty runs, ICC laws, undo ball, end match) and `#wagonWheelCard` (RHB/LHB stance switch, 2D/3D mode, 8-zone SVG, WebGL stadium viewport, batter selector pills, shot filters, telemetry, active partnership widget) directly into `#tab-scoring` inside `<div class="grid-2 master-match-ops-grid" id="masterMatchOpsGrid">` directly below the live scoreboard HUD.

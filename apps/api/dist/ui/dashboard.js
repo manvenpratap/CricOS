@@ -1607,6 +1607,22 @@ export function getDashboardHtml() {
       margin-bottom: 1rem;
     }
 
+    .desktop-dismissal-card {
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      touch-action: manipulation;
+    }
+    .desktop-dismissal-card:hover:not(:disabled) {
+      border-color: var(--rose) !important;
+      transform: translateY(-1px);
+    }
+    .desktop-dismissal-card:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+    .desktop-dismissal-card:focus-visible {
+      outline: 2px solid var(--rose) !important;
+      outline-offset: 2px !important;
+    }
+
     label {
       display: block;
       font-size: 0.8rem;
@@ -8204,22 +8220,55 @@ export function getDashboardHtml() {
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Dismissal Mode (MCC Laws 30–39 &amp; 25)</label>
-          <select id="dismissalKind" onchange="toggleFielderField()">
-            <option value="BOWLED">Bowled (Law 32)</option>
-            <option value="CAUGHT">Caught (Law 33)</option>
-            <option value="LBW">LBW - Leg Before Wicket (Law 36)</option>
-            <option value="RUN_OUT">Run Out (Law 38)</option>
-            <option value="STUMPED">Stumped (Law 39)</option>
-            <option value="HIT_WICKET">Hit Wicket (Law 35)</option>
-            <option value="OBSTRUCTING">Obstructing the Field (Law 37)</option>
-            <option value="HIT_BALL_TWICE">Hit the Ball Twice (Law 34)</option>
-            <option value="HANDLED_BALL">Handled the Ball (Law 37)</option>
-            <option value="TIMED_OUT">Timed Out (Law 40)</option>
-            <option value="RETIRED_OUT">Retired Out (Law 25.4)</option>
-            <option value="RETIRED_HURT">Retired Hurt / Illness (Not Out - Law 25.4)</option>
-          </select>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+            <label style="font-weight: 700; margin: 0;">Dismissal Mode (MCC Laws 30–39 &amp; 25)</label>
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">Tier 1: 4 Common Modes</span>
+          </div>
+
+          <!-- Desktop Tier 1: 4 Common Modes Prominent Quick Touch Cards (Hick's Law: Minimal Choices <= 4) -->
+          <div class="desktop-dismissal-tier1-grid" id="desktopDismissalTier1" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.45rem; margin-bottom: 0.5rem;">
+            <button type="button" class="btn desktop-dismissal-card" id="btnDismissModeCaught" data-mode="CAUGHT" onclick="selectDesktopDismissalMode('CAUGHT')" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.45rem 0.35rem; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--bg-card); cursor: pointer;" data-tooltip="Caught by fielder or keeper (Law 33)">
+              <span style="font-weight: 800; font-size: 0.82rem;">Caught</span>
+              <span style="font-size: 0.64rem; opacity: 0.75; margin-top: 0.15rem;">Law 33</span>
+            </button>
+            <button type="button" class="btn desktop-dismissal-card active" id="btnDismissModeBowled" data-mode="BOWLED" onclick="selectDesktopDismissalMode('BOWLED')" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.45rem 0.35rem; border-radius: 8px; border: 1.5px solid var(--rose); background: rgba(255, 51, 102, 0.15); color: var(--rose); cursor: pointer; box-shadow: 0 2px 8px rgba(255, 51, 102, 0.25);" data-tooltip="Clean Bowled (Law 32)">
+              <span style="font-weight: 800; font-size: 0.82rem;">Bowled</span>
+              <span style="font-size: 0.64rem; opacity: 0.75; margin-top: 0.15rem;">Law 32</span>
+            </button>
+            <button type="button" class="btn desktop-dismissal-card" id="btnDismissModeLbw" data-mode="LBW" onclick="selectDesktopDismissalMode('LBW')" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.45rem 0.35rem; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--bg-card); cursor: pointer;" data-tooltip="Leg Before Wicket (Law 36)">
+              <span style="font-weight: 800; font-size: 0.82rem;">LBW</span>
+              <span style="font-size: 0.64rem; opacity: 0.75; margin-top: 0.15rem;">Law 36</span>
+            </button>
+            <button type="button" class="btn desktop-dismissal-card" id="btnDismissModeRunOut" data-mode="RUN_OUT" onclick="selectDesktopDismissalMode('RUN_OUT')" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.45rem 0.35rem; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--bg-card); cursor: pointer;" data-tooltip="Run Out at stumps (Law 38)">
+              <span style="font-weight: 800; font-size: 0.82rem;">Run Out</span>
+              <span style="font-size: 0.64rem; opacity: 0.75; margin-top: 0.15rem;">Law 38</span>
+            </button>
+          </div>
+
+          <!-- Desktop Tier 2: Collapsible Details / Dropdown for 8 Rare Modes -->
+          <details id="desktopRareDismissalDetails" style="border: 1px dashed var(--border-subtle); border-radius: 8px; padding: 0.45rem 0.75rem; background: rgba(0, 0, 0, 0.12);">
+            <summary id="desktopRareDismissalSummary" style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); cursor: pointer; user-select: none; padding: 0.2rem 0;" data-tooltip="Expand to select Stumped, Hit Wicket, Obstructing, Retired, etc.">
+              Rare &amp; Tactical Modes (8 More: Stumped, Hit Wicket, Retired...) ▾
+            </summary>
+            <div style="margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid var(--border-subtle);">
+              <label for="dismissalKind" style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.25rem; display: block;">Select Full Mode:</label>
+              <select id="dismissalKind" onchange="syncDesktopDismissalCards(); toggleFielderField();" style="width: 100%; box-sizing: border-box;">
+                <option value="BOWLED">Bowled (Law 32)</option>
+                <option value="CAUGHT">Caught (Law 33)</option>
+                <option value="LBW">LBW - Leg Before Wicket (Law 36)</option>
+                <option value="RUN_OUT">Run Out (Law 38)</option>
+                <option value="STUMPED">Stumped (Law 39)</option>
+                <option value="HIT_WICKET">Hit Wicket (Law 35)</option>
+                <option value="OBSTRUCTING">Obstructing the Field (Law 37)</option>
+                <option value="HIT_BALL_TWICE">Hit the Ball Twice (Law 34)</option>
+                <option value="HANDLED_BALL">Handled the Ball (Law 37)</option>
+                <option value="TIMED_OUT">Timed Out (Law 40)</option>
+                <option value="RETIRED_OUT">Retired Out (Law 25.4)</option>
+                <option value="RETIRED_HURT">Retired Hurt / Illness (Not Out - Law 25.4)</option>
+              </select>
+            </div>
+          </details>
         </div>
 
         <div class="form-group" id="fielderGroup" style="display: none;">
@@ -17735,11 +17784,86 @@ cricos_active_sse_connections 1</pre>
       if (prohibitOnFreeHit && prohibitedModes.includes(kindSelect.value)) {
         kindSelect.value = 'RUN_OUT';
       }
+      if (typeof syncDesktopDismissalCards === 'function') {
+        syncDesktopDismissalCards();
+      }
       if (typeof toggleFielderField === 'function') {
         toggleFielderField();
       }
     }
     window.syncDismissalOptionsForFreeHit = syncDismissalOptionsForFreeHit;
+
+    function selectDesktopDismissalMode(mode) {
+      const isFreeHit = Boolean(window.desktopFreeHitActive);
+      const outRole = document.getElementById('dismissalOutBatter')?.value || 'STRIKER';
+      if (isFreeHit && outRole === 'STRIKER') {
+        const prohibited = ['BOWLED', 'CAUGHT', 'LBW', 'STUMPED', 'HIT_WICKET', 'HANDLED_BALL', 'TIMED_OUT'];
+        if (prohibited.includes(mode)) {
+          showToast('Free Hit Active: Striker cannot be dismissed ' + mode + ' (ICC Clause 21.19).');
+          return;
+        }
+      }
+      const sel = document.getElementById('dismissalKind');
+      if (sel) {
+        sel.value = mode;
+      }
+      syncDesktopDismissalCards();
+      toggleFielderField();
+    }
+    window.selectDesktopDismissalMode = selectDesktopDismissalMode;
+
+    function syncDesktopDismissalCards() {
+      const sel = document.getElementById('dismissalKind');
+      const val = sel ? sel.value : 'BOWLED';
+      const isFreeHit = Boolean(window.desktopFreeHitActive);
+      const outRole = document.getElementById('dismissalOutBatter')?.value || 'STRIKER';
+      const prohibitOnFH = isFreeHit && outRole === 'STRIKER';
+      const cards = document.querySelectorAll('.desktop-dismissal-card');
+      const rareDetails = document.getElementById('desktopRareDismissalDetails');
+      const rareSummary = document.getElementById('desktopRareDismissalSummary');
+      const rareModes = ['STUMPED', 'HIT_WICKET', 'OBSTRUCTING', 'HIT_BALL_TWICE', 'HANDLED_BALL', 'TIMED_OUT', 'RETIRED_OUT', 'RETIRED_HURT'];
+      const isRare = rareModes.includes(val);
+
+      cards.forEach(c => {
+        const m = c.getAttribute('data-mode');
+        const isProhibited = prohibitOnFH && (m === 'BOWLED' || m === 'CAUGHT' || m === 'LBW');
+        if (isProhibited) {
+          c.disabled = true;
+          c.style.opacity = '0.35';
+          c.style.cursor = 'not-allowed';
+          c.style.borderStyle = 'dashed';
+        } else {
+          c.disabled = false;
+          c.style.opacity = '1';
+          c.style.cursor = 'pointer';
+          c.style.borderStyle = 'solid';
+        }
+        if (m === val) {
+          c.classList.add('active');
+          c.style.borderColor = 'var(--rose)';
+          c.style.background = 'rgba(255, 51, 102, 0.15)';
+          c.style.color = 'var(--rose)';
+          c.style.boxShadow = '0 2px 8px rgba(255, 51, 102, 0.25)';
+        } else {
+          c.classList.remove('active');
+          c.style.borderColor = 'var(--border-subtle)';
+          c.style.background = 'var(--bg-card)';
+          c.style.color = 'var(--text-main)';
+          c.style.boxShadow = 'none';
+        }
+      });
+
+      if (rareDetails && rareSummary) {
+        if (isRare) {
+          rareDetails.open = true;
+          const optText = (sel && sel.selectedIndex >= 0 && sel.options[sel.selectedIndex]) ? sel.options[sel.selectedIndex].textContent : val;
+          rareSummary.innerHTML = 'Rare Mode: <strong style="color: var(--rose);">' + optText.split('(')[0].trim() + ' Active</strong> ▴';
+        } else {
+          rareSummary.textContent = 'Rare & Tactical Modes (8 More: Stumped, Hit Wicket, Retired...) ▾';
+        }
+      }
+    }
+    window.syncDesktopDismissalCards = syncDesktopDismissalCards;
 
     function openDismissalModal() {
       if (typeof currentUser !== 'undefined' && currentUser.persona !== 'SCORER') {
@@ -17838,6 +17962,7 @@ cricos_active_sse_connections 1</pre>
 
         const fielderInput = document.getElementById('dismissalFielder');
         if (fielderInput) fielderInput.value = '';
+        syncDesktopDismissalCards();
         toggleFielderField();
       }
     }
