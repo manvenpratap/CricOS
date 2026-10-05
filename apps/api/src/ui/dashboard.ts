@@ -5130,6 +5130,7 @@ export function getDashboardHtml(): string {
       margin-bottom: 1.25rem;
     }
     .studio-btn {
+      position: relative;
       padding: 1.1rem 0.5rem;
       font-size: 1.4rem;
       font-family: var(--font-score);
@@ -5155,7 +5156,7 @@ export function getDashboardHtml(): string {
         box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5);
       }
     }
-    .studio-btn:active {
+    .studio-btn:active, .studio-btn.active {
       transform: scale(0.97);
     }
     .studio-btn.boundary-four {
@@ -5179,6 +5180,69 @@ export function getDashboardHtml(): string {
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
+    }
+    .pad-keycap {
+      position: absolute;
+      top: 6px;
+      right: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.1rem 0.32rem;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 700;
+      line-height: 1;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      pointer-events: none;
+      letter-spacing: 0.02em;
+      transition: border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+    }
+    .studio-btn:hover .pad-keycap, .studio-btn.active .pad-keycap {
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #F8FAFC;
+      background: rgba(255, 255, 255, 0.16);
+    }
+    .studio-btn.boundary-four .pad-keycap {
+      border-color: rgba(0, 210, 255, 0.35);
+      color: var(--cyan);
+      background: rgba(0, 210, 255, 0.12);
+    }
+    .studio-btn.maximum-six .pad-keycap {
+      border-color: rgba(0, 229, 153, 0.35);
+      color: var(--turf-emerald);
+      background: rgba(0, 229, 153, 0.12);
+    }
+    .studio-btn.wicket-out .pad-keycap {
+      border-color: rgba(255, 51, 102, 0.35);
+      color: var(--rose);
+      background: rgba(255, 51, 102, 0.12);
+    }
+    #btnStudioUndo .pad-keycap {
+      border-color: rgba(255, 184, 0, 0.35);
+      color: var(--amber);
+      background: rgba(255, 184, 0, 0.12);
+    }
+    [data-theme="swiss"] .pad-keycap {
+      background: rgba(15, 23, 42, 0.06);
+      border-color: rgba(15, 23, 42, 0.18);
+      color: #64748B;
+    }
+    [data-theme="swiss"] .studio-btn:hover .pad-keycap, [data-theme="swiss"] .studio-btn.active .pad-keycap {
+      background: rgba(15, 23, 42, 0.12);
+      color: #0F172A;
+    }
+    [data-theme="nordic"] .pad-keycap {
+      background: rgba(28, 25, 23, 0.06);
+      border-color: rgba(28, 25, 23, 0.18);
+      color: #78716C;
+    }
+    [data-theme="nordic"] .studio-btn:hover .pad-keycap, [data-theme="nordic"] .studio-btn.active .pad-keycap {
+      background: rgba(28, 25, 23, 0.12);
+      color: #1C1917;
     }
 
     /* Tactile Prototype Variant Modifiers (Skill 11 - Prototyping) */
@@ -6706,14 +6770,14 @@ export function getDashboardHtml(): string {
 
             <!-- Studio Keypad -->
             <div class="studio-pad-grid">
-              <button class="studio-btn pad-btn dot" data-runs="0" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery)">0<span class="studio-sublabel">Dot</span></button>
-              <button class="studio-btn pad-btn" data-runs="1" onclick="recordStudioBall(1)" data-tooltip="Single: 1 run and strike rotates">1<span class="studio-sublabel">Single</span></button>
-              <button class="studio-btn pad-btn" data-runs="2" onclick="recordStudioBall(2)" data-tooltip="Two runs (no strike rotation)">2<span class="studio-sublabel">Double</span></button>
-              <button class="studio-btn pad-btn" data-runs="3" onclick="recordStudioBall(3)" data-tooltip="Three runs (strike rotates)">3<span class="studio-sublabel">Triple</span></button>
-              <button class="studio-btn pad-btn four boundary-four" data-runs="4" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs)">4<span class="studio-sublabel">Four</span></button>
-              <button class="studio-btn pad-btn six maximum-six" data-runs="6" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs)">6<span class="studio-sublabel">Six</span></button>
-              <button class="studio-btn pad-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (MCC Laws 30-39 &amp; 25)">W<span class="studio-sublabel">Wicket</span></button>
-              <button class="studio-btn pad-btn" id="btnStudioUndo" data-id="btnUndoBall" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber); display: inline-flex; flex-direction: column; align-items: center; justify-content: center;" data-tooltip="Undo last delivery (Shortcut: Ctrl+Z / Cmd+Z)">${iconSvg('refresh', 'var(--amber)', 14)}<span class="studio-sublabel">Undo</span></button>
+              <button class="studio-btn pad-btn dot" data-runs="0" onclick="recordStudioBall(0)" data-tooltip="Record Dot Ball (0 runs, legal delivery) [Key: 0]"><kbd class="pad-keycap">[0]</kbd>0<span class="studio-sublabel">Dot</span></button>
+              <button class="studio-btn pad-btn" data-runs="1" onclick="recordStudioBall(1)" data-tooltip="Single: 1 run and strike rotates [Key: 1]"><kbd class="pad-keycap">[1]</kbd>1<span class="studio-sublabel">Single</span></button>
+              <button class="studio-btn pad-btn" data-runs="2" onclick="recordStudioBall(2)" data-tooltip="Two runs (no strike rotation) [Key: 2]"><kbd class="pad-keycap">[2]</kbd>2<span class="studio-sublabel">Double</span></button>
+              <button class="studio-btn pad-btn" data-runs="3" onclick="recordStudioBall(3)" data-tooltip="Three runs (strike rotates) [Key: 3]"><kbd class="pad-keycap">[3]</kbd>3<span class="studio-sublabel">Triple</span></button>
+              <button class="studio-btn pad-btn four boundary-four" data-runs="4" onclick="recordStudioBall(4)" data-tooltip="Boundary Four (+4 runs) [Key: 4]"><kbd class="pad-keycap">[4]</kbd>4<span class="studio-sublabel">Four</span></button>
+              <button class="studio-btn pad-btn six maximum-six" data-runs="6" onclick="recordStudioBall(6)" data-tooltip="Maximum Six (+6 runs) [Key: 6]"><kbd class="pad-keycap">[6]</kbd>6<span class="studio-sublabel">Six</span></button>
+              <button class="studio-btn pad-btn wicket-out" onclick="openDismissalModal()" data-tooltip="Trigger Wicket Dismissal Dialog (MCC Laws 30-39 &amp; 25) [Key: W]"><kbd class="pad-keycap">[W]</kbd>W<span class="studio-sublabel">Wicket</span></button>
+              <button class="studio-btn pad-btn" id="btnStudioUndo" data-id="btnUndoBall" onclick="undoLastDelivery()" style="border-color: var(--amber); color: var(--amber); display: inline-flex; flex-direction: column; align-items: center; justify-content: center;" data-tooltip="Undo last delivery [Shortcut: Ctrl+Z / Cmd+Z]"><kbd class="pad-keycap">[⌘Z]</kbd>${iconSvg('refresh', 'var(--amber)', 14)}<span class="studio-sublabel">Undo</span></button>
             </div>
 
             <!-- Quick Extras Strip (Opens wider extra runs menu) -->
@@ -10990,9 +11054,9 @@ cricos_active_sse_connections 1</pre>
   <!-- Emil Kowalski Floating Prototype Picker (Skill 11 - prototype) -->
   <nav class="proto-picker" id="protoPicker" aria-label="Tactile Prototype Selector" data-ready style="display: none;">
     <div class="proto-picker-highlight" id="protoPickerHighlight"></div>
-    <button type="button" class="proto-picker-item" data-variant="STADIUM_HAPTIC" data-active onclick="selectTactileVariant('STADIUM_HAPTIC')" data-tooltip="Select Stadium Haptic prototype variant" aria-label="Stadium Haptic variant">1 Stadium</button>
-    <button type="button" class="proto-picker-item" data-variant="BROADCAST_MINIMAL" onclick="selectTactileVariant('BROADCAST_MINIMAL')" data-tooltip="Select Broadcast Minimal prototype variant" aria-label="Broadcast Minimal variant">2 Minimal</button>
-    <button type="button" class="proto-picker-item" data-variant="ATHLETIC_KINETIC" onclick="selectTactileVariant('ATHLETIC_KINETIC')" data-tooltip="Select Athletic Kinetic prototype variant" aria-label="Athletic Kinetic variant">3 Kinetic</button>
+    <button type="button" class="proto-picker-item" data-variant="STADIUM_HAPTIC" data-active onclick="selectTactileVariant('STADIUM_HAPTIC')" data-tooltip="Select Stadium Haptic prototype variant (Alt+1)" aria-label="Stadium Haptic variant">Alt+1 Stadium</button>
+    <button type="button" class="proto-picker-item" data-variant="BROADCAST_MINIMAL" onclick="selectTactileVariant('BROADCAST_MINIMAL')" data-tooltip="Select Broadcast Minimal prototype variant (Alt+2)" aria-label="Broadcast Minimal variant">Alt+2 Minimal</button>
+    <button type="button" class="proto-picker-item" data-variant="ATHLETIC_KINETIC" onclick="selectTactileVariant('ATHLETIC_KINETIC')" data-tooltip="Select Athletic Kinetic prototype variant (Alt+3)" aria-label="Athletic Kinetic variant">Alt+3 Kinetic</button>
     <div class="proto-picker-divider" aria-hidden="true"></div>
     <button type="button" class="proto-picker-item proto-picker-replay" aria-label="Replay tactile animation" data-tooltip="Replay animation (R)" onclick="replayTactileAnimation()">↻</button>
   </nav>
@@ -11416,6 +11480,22 @@ cricos_active_sse_connections 1</pre>
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
             <span>Command Palette</span>
             <kbd class="cmd-kbd-badge">⌘K / Ctrl+K</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Direct Scoring Keypad</span>
+            <kbd class="cmd-kbd-badge">0, 1, 2, 3, 4, 6</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Trigger Wicket (Out)</span>
+            <kbd class="cmd-kbd-badge">W</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Undo Last Delivery</span>
+            <kbd class="cmd-kbd-badge">⌘Z / Ctrl+Z</kbd>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+            <span>Tactile Variants</span>
+            <kbd class="cmd-kbd-badge">Alt + 1 / 2 / 3</kbd>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.65rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
             <span>Cycle Design Theme</span>
@@ -12536,39 +12616,76 @@ cricos_active_sse_connections 1</pre>
       setScoringTactileVariant(keys[nextIdx]);
     }
 
-    // Keyboard shortcut handler for prototyping: Alt+1, Alt+2, Alt+3, 1-3, Arrows, and R
+    // Keyboard shortcut handler for prototyping (Alt+1, Alt+2, Alt+3, Arrows, R) and Direct Scoring Keypad (0, 1, 2, 3, 4, 6, W)
     window.addEventListener('keydown', (e) => {
       const inInput = e.target.matches && e.target.matches('input, textarea, select, [contenteditable="true"]');
       if (inInput) return;
 
+      // 1. Tactile Variant Switching relegated strictly to Alt+1, Alt+2, Alt+3
       if (e.altKey && e.key === '1') {
         e.preventDefault();
         setScoringTactileVariant('STADIUM_HAPTIC');
+        return;
       } else if (e.altKey && e.key === '2') {
         e.preventDefault();
         setScoringTactileVariant('BROADCAST_MINIMAL');
+        return;
       } else if (e.altKey && e.key === '3') {
         e.preventDefault();
         setScoringTactileVariant('ATHLETIC_KINETIC');
-      } else if (e.key === '1' && !e.ctrlKey && !e.metaKey) {
-        setScoringTactileVariant('STADIUM_HAPTIC');
-      } else if (e.key === '2' && !e.ctrlKey && !e.metaKey) {
-        setScoringTactileVariant('BROADCAST_MINIMAL');
-      } else if (e.key === '3' && !e.ctrlKey && !e.metaKey) {
-        setScoringTactileVariant('ATHLETIC_KINETIC');
+        return;
       } else if (e.key === 'ArrowRight' && (e.altKey || (document.activeElement && document.activeElement.closest('.proto-picker')))) {
         e.preventDefault();
         cycleTactileVariant();
+        return;
       } else if (e.key === 'ArrowLeft' && (e.altKey || (document.activeElement && document.activeElement.closest('.proto-picker')))) {
         e.preventDefault();
         const keys = Object.keys(TACTILE_VARIANTS);
         const prevIdx = (keys.indexOf(activeTactileVariant) - 1 + keys.length) % keys.length;
         setScoringTactileVariant(keys[prevIdx]);
+        return;
       } else if (e.altKey && (e.key === 't' || e.key === 'T')) {
         e.preventDefault();
         cycleDesignTheme();
-      } else if ((e.key === 'r' || e.key === 'R') && !e.ctrlKey && !e.metaKey) {
+        return;
+      } else if ((e.key === 'r' || e.key === 'R') && !e.ctrlKey && !e.metaKey && !e.altKey && !document.querySelector('.modal-backdrop.active')) {
         replayTactileAnimation();
+        return;
+      }
+
+      // 2. Direct Numeric Scoring Keypad: unadorned 0, 1, 2, 3, 4, 6 and W
+      // Club scorers need to record balls via physical number pads without looking away from the pitch.
+      const hasActiveModal = !!document.querySelector('.modal-backdrop.active');
+      if (!hasActiveModal && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
+        let runsScored = null;
+        if (e.key === '0' || e.code === 'Numpad0') runsScored = 0;
+        else if (e.key === '1' || e.code === 'Numpad1') runsScored = 1;
+        else if (e.key === '2' || e.code === 'Numpad2') runsScored = 2;
+        else if (e.key === '3' || e.code === 'Numpad3') runsScored = 3;
+        else if (e.key === '4' || e.code === 'Numpad4') runsScored = 4;
+        else if (e.key === '6' || e.code === 'Numpad6') runsScored = 6;
+        else if (e.key === 'w' || e.key === 'W') {
+          e.preventDefault();
+          const wBtn = document.querySelector('.studio-pad-grid .wicket-out');
+          if (wBtn) {
+            wBtn.classList.add('active');
+            setTimeout(() => wBtn.classList.remove('active'), 150);
+          }
+          if (typeof openDismissalModal === 'function') openDismissalModal();
+          return;
+        }
+
+        if (runsScored !== null) {
+          e.preventDefault();
+          const targetBtn = document.querySelector('.studio-pad-grid button[data-runs="' + runsScored + '"]');
+          if (targetBtn) {
+            targetBtn.classList.add('active');
+            setTimeout(() => targetBtn.classList.remove('active'), 150);
+          }
+          if (typeof recordStudioBall === 'function') {
+            recordStudioBall(runsScored);
+          }
+        }
       }
     });
 
@@ -24182,11 +24299,16 @@ cricos_active_sse_connections 1</pre>
       { id: 'cmd-tactics-field-planner', title: 'Open Tactical Field Placement & Powerplay Planner', subtitle: 'Interactive 11-fielder radar with MCC Law 28.4 circle validation & presets', category: 'TACTICS_3D', shortcut: 'Shift+F', icon: 'radar', fn: function() { openFieldPlannerModal(); } },
       { id: 'cmd-tactics-pitch-map', title: 'Open Pitch & Weather Conditions Studio', subtitle: 'Pitching length heatmap, micro-climate weather, soil moisture & What-If chase Monte Carlo', category: 'TACTICS_3D', shortcut: 'Shift+P', icon: 'chart', fn: function() { openPitchWeatherModal(); } },
       { id: 'cmd-tactics-player-auction', title: 'Open Live Player Auction & Franchise Draft Room', subtitle: 'Real-time bidding gavel, franchise salary cap purse & RTM cards', category: 'TACTICS_3D', shortcut: 'Shift+A', icon: 'scale', fn: function() { openPlayerAuctionModal(); } },
-      { id: 'cmd-tactics-3d-stadium', title: 'Switch to 3D WebGL Floodlit Stadium Pitch', subtitle: '8 broadcast camera angles, Hawk-Eye ball tracking & 11 live fielders', category: 'TACTICS_3D', shortcut: '3', icon: 'stadium', fn: function() { if (typeof setWagonDisplayMode === 'function') setWagonDisplayMode('3D'); showToast('Switched to 3D WebGL Floodlit Stadium Pitch'); } },
+      { id: 'cmd-tactics-3d-stadium', title: 'Switch to 3D WebGL Floodlit Stadium Pitch', subtitle: '8 broadcast camera angles, Hawk-Eye ball tracking & 11 live fielders', category: 'TACTICS_3D', shortcut: '3D', icon: 'stadium', fn: function() { if (typeof setWagonDisplayMode === 'function') setWagonDisplayMode('3D'); showToast('Switched to 3D WebGL Floodlit Stadium Pitch'); } },
       { id: 'cmd-tactics-dls', title: 'Open Duckworth-Lewis-Stern (DLS) Target Calculator', subtitle: 'Rain interruption par score & revised target calculator', category: 'TACTICS_3D', shortcut: 'D', icon: 'rain', fn: function() { openModal('modalDlsCalculator'); } },
       { id: 'cmd-tactics-umpire-desk', title: 'Open Lead Umpire Match Desk & DRS Review', subtitle: 'MCC Law 41/42 disciplinary sanctions, penalty runs & LBW Hawk-Eye verdict', category: 'TACTICS_3D', shortcut: 'U', icon: 'scale', fn: function() { openModal('modalUmpireDesk'); } },
+      { id: 'cmd-score-dot', title: 'Record Dot Ball (0 Runs)', subtitle: 'Log legal dot ball delivery to active striker and advance over count', category: 'LIVE_SCORING', shortcut: '0', icon: 'target', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(0); else showToast('Dot Ball (0 runs) Recorded'); } },
+      { id: 'cmd-score-single', title: 'Record Single (1 Run)', subtitle: 'Log single run to active striker and rotate strike', category: 'LIVE_SCORING', shortcut: '1', icon: 'target', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(1); else showToast('Single (1 run) Recorded'); } },
+      { id: 'cmd-score-two', title: 'Record Two Runs', subtitle: 'Log two runs to active striker with no strike rotation', category: 'LIVE_SCORING', shortcut: '2', icon: 'target', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(2); else showToast('Two Runs Recorded'); } },
+      { id: 'cmd-score-three', title: 'Record Three Runs', subtitle: 'Log three runs to active striker and rotate strike', category: 'LIVE_SCORING', shortcut: '3', icon: 'target', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(3); else showToast('Three Runs Recorded'); } },
       { id: 'cmd-score-four', title: 'Record Boundary 4 Runs', subtitle: 'Log crisp boundary four to active striker and update wagon wheel', category: 'LIVE_SCORING', shortcut: '4', icon: 'target', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(4); else showToast('Boundary 4 Runs Recorded'); } },
       { id: 'cmd-score-six', title: 'Record Maximum 6 Runs', subtitle: 'Log towering maximum six with trajectory arc & stadium celebration', category: 'LIVE_SCORING', shortcut: '6', icon: 'sparkle', fn: function() { if (typeof recordStudioBall === 'function') recordStudioBall(6); else showToast('Maximum 6 Runs Recorded'); } },
+      { id: 'cmd-score-wicket', title: 'Record Wicket Dismissal', subtitle: 'Open official dismissal modal for fall-of-wicket validation (MCC Laws 30-39)', category: 'LIVE_SCORING', shortcut: 'W', icon: 'lightning', fn: function() { if (typeof openDismissalModal === 'function') openDismissalModal(); } },
       { id: 'cmd-score-undo', title: 'Undo Last Delivery', subtitle: 'Revert fat-finger scoring mistake and restore previous striker state', category: 'LIVE_SCORING', shortcut: '⌘Z', icon: '↺', fn: function() { if (typeof undoLastDelivery === 'function') undoLastDelivery(); else showToast('↺ Last Delivery Undone'); } },
       { id: 'cmd-player-virat', title: 'Inspect Virat Sharma — Holographic 3D Card & Radar', subtitle: 'Top-Order Batter • RHB • SR 158.4 • Avg 54.2', category: 'PLAYERS', shortcut: 'P1', icon: 'card', fn: function() { if (typeof open3DPlayerCardModal === 'function') open3DPlayerCardModal('p-1'); } },
       { id: 'cmd-player-hardik', title: 'Inspect Hardik Patel — Holographic 3D Card & Radar', subtitle: 'Elite All-Rounder • RHB / Fast-Medium • SR 174.2', category: 'PLAYERS', shortcut: 'P5', icon: 'card', fn: function() { if (typeof open3DPlayerCardModal === 'function') open3DPlayerCardModal('p-5'); } },

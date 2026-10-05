@@ -1,14 +1,33 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 06:15:00
-**Version:** 1.0.0-phase2dx (Full Mobile Ergonomic Touch Target Modernization & Impeccable Polish)  
+**Last Updated:** 2026-10-05 06:27:00
+**Version:** 1.0.0-phase2dy (Direct Numeric Scoring Keypad & Keyboard Hijacking Resolution)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DX Completed — Full Mobile Ergonomic Touch Target Modernization & Impeccable Polish (`apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DY Completed — Direct Numeric Scoring Keypad & Keyboard Hijacking Resolution (`apps/api/src/ui/dashboard.ts`, `dist/index.html`, `dist/public/index.html`, `index.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Keyboard Hijacking Resolution & Alt Modifier Relegation**:
+    - Removed unadorned numeric keys (`1`, `2`, `3`) from tactile animation variant switching. Relegated animation variant switching strictly to `Alt+1` (Stadium Haptic), `Alt+2` (Broadcast Minimal), and `Alt+3` (Athletic Kinetic), preserving backwards compatibility for automated test suites while freeing direct numeric keys for live scoring.
+    - Updated command palette shortcut for 3D Stadium from `'3'` to `'3D'` to prevent conflicts with number 3.
+  - **2. Direct Numeric Scoring Keypad for Scorers**:
+    - Bound unadorned numeric keys `0`, `1`, `2`, `3`, `4`, `6` and their numeric keypad equivalents (`Numpad0` through `Numpad6`) directly to `recordStudioBall(runs)` with active depression animation (`.active`).
+    - Bound unadorned `W` / `w` to `openDismissalModal()` with depression animation for instant official dismissal logging.
+    - Preserved safety guards: keypad hotkeys ignore input when focused in `input`, `textarea`, `select`, `contenteditable`, when modifier keys (`ctrlKey`, `metaKey`, `altKey`, `shiftKey`) are active, or when any modal backdrop is active.
+    - Updated command palette with dedicated items for Dot (0), Single (1), Two (2), Three (3), Four (4), Six (6), and Wicket (W).
+  - **3. Subtle Keycap Badges & Accessibility Enhancements**:
+    - Added high-contrast, theme-aware `<kbd class="pad-keycap">` badges (`[0]`, `[1]`, `[2]`, `[3]`, `[4]`, `[6]`, `[W]`, `[⌘Z]`) anchored to top-right corner of keypad buttons with monospace font and responsive active states.
+    - Enhanced all scoring pad button tooltips (`data-tooltip`) with explicit keyboard shortcut guides (e.g. `[Key: 1]`, `[Key: 4]`, `[Key: W]`).
+    - Updated keyboard shortcuts modal (`#modalKeyboardShortcuts`) and prototype picker (`#protoPicker`) with direct keypad and `Alt+1/2/3` badges.
+  - **4. Verification & Pipeline Integrity**:
+    - 254 domain unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2 Minimal Tokens Protocol).
+    - All 13 consolidated Playwright tests passing 100% with zero critical console errors (`assert_no_critical_errors(page)`).
+    - Custom Playwright E2E interactive testing verified strike rotation, over completion (MCC Law 18.11), dismissal modal triggering (`w`), and `Alt+1/2/3` tactile switching.
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package` (Rule 6).
+    - Android 15 Release & Debug APKs compiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DX Completed — Full Mobile Ergonomic Touch Target Modernization & Impeccable Polish (`apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Universal 44px Touch Target Modernization (`$impeccable adapt`)**:
     - Expanded all interactive controls across every screen (`MATCHES`, `TEAMS`, `TOURNAMENTS`, `INCIDENTS`, `MARKETPLACE`, `ADMIN`, `PROFILE`, `AUTH`) and modal/action sheets (`Settings`, `Dismissal`, `Bowler Rotation`, `Penalty Runs`, `Extra Runs`, `ICC Laws`, `Pitch & Weather`, `Player Auction`, `Sidebar Drawer`, `DRS Review`, `3D Bat Customizer`, `Gear Publisher`, `Event Basket`, `Full Player Dossier`) to meet Apple HIG and WCAG 2.5.5 / 2.5.8 touch target ergonomics standard ($\ge 44 \times 44\text{px}$).
     - Standardized `.wagon-picker-zone-btn`, `.mobile-subnav-btn`, `.btn` base scoring rules, `.btn-swap-strike-bridge`, `.mobile-sidebar-persona-chip`, `.wagon-pill-btn`, `.analytics-tab-btn`, `.auth-mode-tab`, `.signup-role-card`, `.mobile-chip`, `.player-list-item`, `.btn-card-radar-splits`, `#btnEditProfileBio`, turf provider/booking triggers, and gear store action controls with `min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation;`.
