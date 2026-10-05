@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "CricOS - Cricket Tournament & Match Lifecycle",
+    "output": "lifecycle.html",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "main", "label": "Match Phases" },
+    { "id": "weather", "label": "Weather & DLS Interruption" },
+    { "id": "terminal", "label": "Terminal Exits" }
+  ],
+  "states": [
+    { "id": "scheduled", "type": "start", "label": "Scheduled", "sublabel": "teams & venue assigned", "lane": "main", "col": 0, "step": "01", "tag": "fixture" },
+    { "id": "toss", "type": "active", "label": "Toss & Lineups", "sublabel": "playing XI locked", "lane": "main", "col": 1, "step": "02", "tag": "toss" },
+    { "id": "innings1", "type": "active", "label": "Innings 1 Live", "sublabel": "first innings scoring", "lane": "main", "col": 2, "step": "03", "tag": "live" },
+    { "id": "innings2", "type": "active", "label": "Innings 2 Chase", "sublabel": "chasing target", "lane": "main", "col": 3, "step": "04", "tag": "chase" },
+    { "id": "concluded", "type": "success", "label": "Match Concluded", "sublabel": "result declared", "lane": "main", "col": 4, "step": "05", "tag": "result" },
+    { "id": "rain_delay", "type": "waiting", "label": "Rain Delay (DLS)", "sublabel": "calculating revised target", "lane": "weather", "col": 3, "tag": "pause" },
+    { "id": "abandoned", "type": "failure", "label": "Match Abandoned", "sublabel": "unplayable conditions", "lane": "terminal", "col": 3, "tag": "terminal" },
+    { "id": "settled", "type": "success", "label": "Ledger Settled", "sublabel": "payouts & awards audit", "lane": "terminal", "col": 4, "tag": "terminal" }
+  ],
+  "transitions": [
+    { "from": "scheduled", "to": "toss", "label": "officials arrive" },
+    { "from": "toss", "to": "innings1", "label": "play begins" },
+    { "from": "innings1", "to": "innings2", "label": "innings break" },
+    { "from": "innings2", "to": "rain_delay", "label": "rain stoppage", "variant": "dashed" },
+    { "from": "rain_delay", "to": "innings2", "label": "DLS target set" },
+    { "from": "rain_delay", "to": "abandoned", "label": "washout", "variant": "security" },
+    { "from": "innings2", "to": "concluded", "label": "target achieved / 20 ov" },
+    { "from": "concluded", "to": "settled", "label": "official sign-off", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Automated DLS Target Engine", "items": ["Computes revised par scores based on lost overs and wickets down", "Instantly broadcasts revised targets to scorers and scoreboards"] }
+  ]
+}

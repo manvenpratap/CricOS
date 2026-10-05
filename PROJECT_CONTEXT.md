@@ -1,14 +1,37 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 08:05:00
-**Version:** 1.0.0-phase2eb (Mobile Crease Header & Strike Swap Zero Overlap Architecture & Ergonomics)  
+**Last Updated:** 2026-10-05 08:56:00
+**Version:** 1.0.0-phase2ec (Mobile Emerging Studios Drawer, Topbar Disambiguation & Match Top Declutter Architecture)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EB Completed — Mobile Crease Header & Strike Swap Zero Overlap Architecture (`apps/api/src/ui/mobile-view.ts`, `tests/test_78_mobile_crease_strike_swap_zero_overlap.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EC Completed — Mobile Emerging Studios Drawer, Topbar Disambiguation & Match Top Declutter Architecture (`apps/api/src/ui/mobile-view.ts`, `tests/test_79_mobile_emerging_subnav_and_disambiguation.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Disambiguation of Duplicate "Live" Labels**:
+    - Disambiguated topbar telemetry & real-time sync status (`#mobileHeaderLivePulse`): changed text from `LIVE` to `SYNCED` with tooltip "CricOS Real-time Telemetry & Sync Active".
+    - Changed bottom nav label for TURF_PROVIDER persona from `Live` to `Match`.
+    - The word "Live" now appears only once on the screen — strictly on `#mobileLiveMatchPill` with `.live-pulse-dot` representing the active in-play cricket match fixture.
+  - **2. Decluttered Top of Matches View & Stadium Selector Removal**:
+    - Removed the top `.mobile-subnav` bar from `renderMatches()`, reclaiming valuable vertical viewport above the scoreboard HUD.
+    - Completely eliminated `#mobileActiveVenueBadge` (the stadium selector) from beside the red Live pill in `renderMatches()`, as stadium conditions are already canonically available in the sidebar menu under Pitch & Weather.
+  - **3. Emerging Match Studios Scroll Drawer & Floating Trigger**:
+    - Relocated match studio navigation directly above `#mobileBottomNav` as an emerging horizontal scroll drawer (`#mobileMatchSubnavDrawer`, `.mobile-subnav-drawer`) with backdrop `#mobileMatchSubnavBackdrop`.
+    - Added floating trigger pill `#btnToggleMatchStudios` (`.mobile-studios-pill-trigger`) anchored above the bottom Scoring tab displaying active studio icon, name, and animated chevron.
+    - Contains horizontal scroll selection `.mobile-subnav` with all 6 studio views (`Live Score`, `3D Stadium`, `Wagon Wheel`, `Pitch & DRS`, `Commentary`, `Analytics & Card`).
+    - Selecting any option updates the studio, updates the trigger pill, and auto-closes the drawer.
+    - Dismissable via header close button, outside backdrop tap, `Escape` key (`handleNativeBack`), or by tapping the Scoring tab in the bottom navigation.
+    - Fully compatible with Stadium Night, Swiss Minimalist, and Nordic Editorial themes with $\ge 44 \times 44$px touch targets and `data-tooltip` contextual help.
+  - **4. Verification & Testing Health**:
+    - Created sequential Playwright E2E suite `tests/test_79_mobile_emerging_subnav_and_disambiguation.py` verifying topbar `SYNCED` text, singular match `Live` pill, stadium badge removal, top subnav clearing, emerging drawer toggle, studio switching, auto-closing, and zero console errors.
+    - Updated `tests/README.md` coverage map with test 79 entry.
+    - All 254 unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - All 13 consolidated Playwright test suites passing 100%.
+    - 0 anti-patterns detected via `impeccable detect` (only sanctioned brand tokens `Space Grotesk` and `Fraunces`).
+    - Distribution parity synchronized and verified via `./pipeline.sh package` (Rule 6).
+    - Android 15 Release & Debug APKs recompiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2EB Completed — Mobile Crease Header & Strike Swap Zero Overlap Architecture (`apps/api/src/ui/mobile-view.ts`, `tests/test_78_mobile_crease_strike_swap_zero_overlap.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Strike Swap Overlap Root Cause Remediation**:
     - Eliminated the floating absolute circular FAB (`.btn-swap-strike-bridge` with `left: 50%; top: 50%; transform: translate(-50%, -50%)`) that hovered directly between striker and non-striker cards, intruding 18.5px into each card and obscuring batter names and runs.
     - Implemented a dedicated **Crease Action Header Row** (`.mobile-crease-header-row`) positioned cleanly above the 2-column cards grid.
@@ -2031,6 +2054,43 @@
 13. **Store Readiness & Privacy Invariant**: All store assets and privacy manifests comply strictly with Apple App Store (WWDC 2024 Privacy Manifest, 1024x1024 RGB 24-bit no alpha icon) and Google Play Store (Target SDK 34, Data Safety, In-App Account Deletion).
 14. **Operational Governance Invariant**: Administrative dispute resolutions produce balanced double-entry refund journal entries; provider capacity slots enforce temporal GiST boundaries without overlap.
 15. **Graduated Cancellation & Zero-Drift Financial Invariant**: Booking cancellations strictly enforce the 4-tier refund schedule (>48h: 100%, 24-48h: 75%, 12-24h: 50%, <12h: 0%); financial reconciliations use integer minor units with exact rounding parity ($P_{\text{net}} = G - \lfloor 0.05 G \rfloor - \lfloor 0.18 \times \lfloor 0.05 G \rfloor \rfloor$) guaranteeing zero imbalance across all 5 ledger accounts.
+
+---
+
+## 🏛️ Compiled Archify Architecture & Domain Models
+
+CricOS platform architecture, workflows, event sequences, data flows, and lifecycles are formally compiled and verified via [Archify](https://github.com/tt-a1i/archify):
+
+* 📐 **System Architecture**: [Interactive HTML View](./docs/diagrams/architecture.html) | [Spec](./docs/diagrams/architecture.json)
+* 🔄 **Scoring Workflow**: [Interactive HTML View](./docs/diagrams/workflow.html) | [Spec](./docs/diagrams/workflow.json)
+* ⚡ **Ball Ingestion Sequence**: [Interactive HTML View](./docs/diagrams/sequence.html) | [Spec](./docs/diagrams/sequence.json)
+* 🌊 **Live Event Data Flow**: [Interactive HTML View](./docs/diagrams/dataflow.html) | [Spec](./docs/diagrams/dataflow.json)
+* ⏱️ **Match & Tournament Lifecycle**: [Interactive HTML View](./docs/diagrams/lifecycle.html) | [Spec](./docs/diagrams/lifecycle.json)
+
+```mermaid
+flowchart TD
+    Clients["📱 Client Surfaces\n(Web SPA / Capacitor Android APK)"]
+    
+    subgraph Platform["🏏 CricOS Monorepo Platform (100% Offline-Capable)"]
+        Fastify["⚡ Fastify Gateway\n(REST / WebSocket :3000)"]
+        
+        subgraph Integrity["🛡️ Rules & Financial Integrity"]
+            MCC["⚖️ MCC Laws Engine\n(42 Laws Rule Validator)"]
+            Ledger["💰 Settlement Ledger\n(Double-Entry Accounting)"]
+        end
+        
+        Match["⚡ Match State Core\n(Ball-by-ball & DLS)"]
+        SQLite[("💾 SQLite WAL Store\n(Better-SQLite3)")]
+        WS["📡 Live Broadcast WS\n(Spectator Fanout)"]
+    end
+
+    Clients -->|"REST / WS"| Fastify
+    Fastify -->|"validate ball"| MCC
+    Fastify -->|"commit event"| Match
+    Fastify -->|"payouts"| Ledger
+    Match -->|"WAL commit"| SQLite
+    Match -->|"push tick"| WS
+```
 
 ---
 

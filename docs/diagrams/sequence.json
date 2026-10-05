@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "CricOS - Ball Event Ingestion & Broadcast Sequence",
+    "output": "sequence.html",
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    { "id": "scorer", "type": "frontend", "label": "Official Tablet", "sublabel": "Scorer Console" },
+    { "id": "api", "type": "backend", "label": "Fastify API", "sublabel": "REST Controller" },
+    { "id": "mcc", "type": "security", "label": "MCC Evaluator", "sublabel": "Rule Validator" },
+    { "id": "db", "type": "database", "label": "SQLite WAL", "sublabel": "Match Database" },
+    { "id": "ws", "type": "messagebus", "label": "WebSocket Hub", "sublabel": "Broadcast Server" },
+    { "id": "fan", "type": "frontend", "label": "Fan Screen", "sublabel": "Live Stadium UI" }
+  ],
+  "segments": [
+    { "from": 150, "to": 260, "label": "Event Entry" },
+    { "from": 270, "to": 390, "label": "Validation & Persistence" },
+    { "from": 400, "to": 510, "label": "Live Broadcast" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "scorer", "to": "api", "y": 160, "label": "POST /api/match/:id/ball", "variant": "emphasis" },
+    { "id": "m2", "from": "api", "to": "mcc", "y": 195, "label": "Validate Ball Legality", "variant": "security" },
+    { "id": "m3", "from": "mcc", "to": "api", "y": 235, "label": "Legal Event Confirmed", "variant": "return" },
+    { "id": "m4", "from": "api", "to": "db", "y": 280, "label": "BEGIN TRANSACTION ... COMMIT", "variant": "emphasis" },
+    { "id": "m5", "from": "db", "to": "api", "y": 320, "label": "WAL Flush OK", "variant": "return" },
+    { "id": "m6", "from": "api", "to": "scorer", "y": 360, "label": "200 Ball Recorded", "variant": "return" },
+    { "id": "m7", "from": "api", "to": "ws", "y": 410, "label": "Emit 'match_tick' Event", "variant": "emphasis" },
+    { "id": "m8", "from": "ws", "to": "fan", "y": 450, "label": "Push Scorecard & Pitch Vector", "variant": "emphasis" },
+    { "id": "m9", "from": "fan", "to": "api", "y": 485, "label": "Render Completed (ACK)", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "api", "from": 160, "to": 420, "type": "backend" },
+    { "participant": "mcc", "from": 195, "to": 240, "type": "security" },
+    { "participant": "db", "from": 280, "to": 325, "type": "database" },
+    { "participant": "fan", "from": 450, "to": 500, "type": "frontend" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Guaranteed Ball Delivery Order", "items": ["SQLite transaction locks ball sequence numbering", "Zero race conditions when both scorers submit simultaneously"] }
+  ]
+}

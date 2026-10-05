@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "CricOS - Live Match Event Data Flow",
+    "output": "dataflow.html",
+    "viewBox": [1080, 520],
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    { "label": "Match Entry" },
+    { "label": "Fastify Core" },
+    { "label": "Rules Gate" },
+    { "label": "Database Engine" },
+    { "label": "Fan Telemetry" }
+  ],
+  "nodes": [
+    { "id": "scorer", "type": "frontend", "label": "Official Tablet", "sublabel": "scorer app", "stage": 0, "row": 1, "tag": "entry" },
+    { "id": "fastify", "type": "backend", "label": "Fastify Core", "sublabel": "match router", "stage": 1, "row": 1, "tag": "api" },
+    { "id": "mcc_rules", "type": "security", "label": "MCC Laws Guard", "sublabel": "rule validator", "stage": 2, "row": 1, "tag": "laws" },
+    { "id": "sqlite_db", "type": "database", "label": "SQLite WAL Store", "sublabel": "balls & scorecards", "stage": 3, "row": 1, "tag": "db" },
+    { "id": "ws_hub", "type": "messagebus", "label": "WebSocket Hub", "sublabel": "spectator broadcast", "stage": 4, "row": 0, "tag": "stream" },
+    { "id": "stadium_ui", "type": "frontend", "label": "3D Stadium View", "sublabel": "wagon wheel & pitch", "stage": 4, "row": 2, "tag": "ui" }
+  ],
+  "flows": [
+    { "id": "f1", "from": "scorer", "to": "fastify", "label": "ball event", "classification": "payload", "variant": "emphasis" },
+    { "id": "f2", "from": "fastify", "to": "mcc_rules", "label": "validate", "classification": "rules", "variant": "emphasis" },
+    { "id": "f3", "from": "mcc_rules", "to": "sqlite_db", "label": "commit ball", "classification": "WAL write", "variant": "security" },
+    { "id": "f4", "from": "sqlite_db", "to": "ws_hub", "label": "live match tick", "classification": "realtime", "variant": "emphasis" },
+    { "id": "f5", "from": "ws_hub", "to": "stadium_ui", "label": "render event", "classification": "UI stream", "variant": "emphasis", "labelAt": [960, 201] }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Real-time Telemetry Pipeline", "items": ["Live bowler speeds and wagon wheel vectors stream to spectators", "Zero delay between on-ground umpire signal and fan screen update"] }
+  ]
+}

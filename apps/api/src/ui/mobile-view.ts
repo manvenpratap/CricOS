@@ -250,6 +250,17 @@ export function getMobileAppHtml(): string {
       color: #FFFFFF !important;
       border-color: #0F172A !important;
     }
+    body[data-theme="swiss"] .mobile-subnav-drawer {
+      background: #FFFFFF !important;
+      border-top: 1px solid #E2E8F0 !important;
+      box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.12) !important;
+    }
+    body[data-theme="swiss"] .mobile-studios-pill-trigger {
+      background: #FFFFFF !important;
+      border: 1.5px solid #059669 !important;
+      color: #059669 !important;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12) !important;
+    }
     body[data-theme="swiss"] #mobileSidebarDrawer {
       background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
       border-right: 1px solid #CBD5E1 !important;
@@ -1006,6 +1017,17 @@ export function getMobileAppHtml(): string {
       background: #15803D !important;
       color: #FFFFFF !important;
       border-color: #15803D !important;
+    }
+    body[data-theme="nordic"] .mobile-subnav-drawer {
+      background: #FCFBF8 !important;
+      border-top: 1px solid #E6DFD5 !important;
+      box-shadow: 0 -4px 20px rgba(68, 64, 60, 0.12) !important;
+    }
+    body[data-theme="nordic"] .mobile-studios-pill-trigger {
+      background: #FCFBF8 !important;
+      border: 1.5px solid #15803D !important;
+      color: #15803D !important;
+      box-shadow: 0 4px 14px rgba(68, 64, 60, 0.1) !important;
     }
     body[data-theme="nordic"] #mobileSidebarDrawer {
       background: linear-gradient(180deg, #FAF8F5 0%, #F3EFEA 100%) !important;
@@ -2352,21 +2374,129 @@ export function getMobileAppHtml(): string {
       background: rgba(0, 229, 153, 0.12) !important;
     }
 
-    /* Sub-Tab Navigation Bar */
+    /* Emerging Match Sub-Nav Drawer & Floating Studio Trigger */
+    .mobile-subnav-backdrop {
+      position: absolute;
+      top: 0;
+      bottom: 56px;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 94;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .mobile-subnav-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-subnav-drawer {
+      position: absolute;
+      bottom: 56px;
+      left: 0;
+      right: 0;
+      z-index: 95;
+      background: rgba(10, 16, 28, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+      padding: 0.45rem 0.65rem 0.6rem;
+      transform: translateY(120%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    }
+    .mobile-subnav-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-subnav-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.15rem 0.35rem 0.35rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 0.35rem;
+      color: #94a3b8;
+    }
+    body[data-theme="swiss"] .mobile-subnav-drawer-header {
+      border-bottom: 1px solid #E2E8F0 !important;
+      color: #475569 !important;
+    }
+    body[data-theme="nordic"] .mobile-subnav-drawer-header {
+      border-bottom: 1px solid #E6DFD5 !important;
+      color: #57534E !important;
+    }
+    .mobile-subnav-drawer-close {
+      background: transparent;
+      border: none;
+      color: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.2rem 0.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      min-height: 44px;
+      touch-action: manipulation;
+      box-sizing: border-box;
+    }
+    .mobile-studios-pill-trigger {
+      position: absolute;
+      bottom: 64px;
+      left: 10px;
+      z-index: 60;
+      min-height: 44px;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      background: rgba(10, 16, 28, 0.92);
+      border: 1px solid rgba(0, 229, 153, 0.45);
+      color: #00E599;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      touch-action: manipulation;
+      box-sizing: border-box;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .mobile-studios-pill-trigger:active {
+      transform: scale(0.96);
+    }
+    .mobile-studios-pill-trigger.active {
+      border-color: #00E599;
+      background: rgba(0, 229, 153, 0.2);
+    }
+
+    /* Sub-Tab Navigation Bar inside Drawer */
     .mobile-subnav {
       display: flex;
-      gap: 0.3rem;
-      padding: 0.35rem 0.65rem;
-      background: rgba(10, 16, 28, 0.7);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      gap: 0.35rem;
+      padding: 0.2rem 0.15rem;
+      background: transparent;
+      border-bottom: none;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
     .mobile-subnav::-webkit-scrollbar { display: none; }
+    .mobile-subnav-drawer .mobile-subnav {
+      background: transparent !important;
+      border-bottom: none !important;
+    }
     .mobile-subnav-btn {
       flex: 0 0 auto;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 22px;
       padding: 0.45rem 0.85rem;
       min-height: 44px;
@@ -2383,7 +2513,7 @@ export function getMobileAppHtml(): string {
       transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
     .mobile-subnav-btn.active {
-      background: rgba(0, 229, 153, 0.15);
+      background: rgba(0, 229, 153, 0.18);
       border-color: #00E599;
       color: #00E599;
       font-weight: 800;
@@ -4572,6 +4702,7 @@ export function getMobileAppHtml(): string {
         this.currentTheme = initialTheme;
         this.currentScreen = 'MATCHES';
         this.matchSubTab = 'SCORE'; // 'SCORE' | 'STADIUM_3D' | 'TELEMETRY' | 'COMMENTARY' | 'ANALYTICS'
+        this.matchSubnavOpen = false;
         this.wagonDisplayMode = '2D'; // '2D' | '3D'
         this.threeVisualMode = 'WAGON'; // 'WAGON' | 'HAWKEYE' | 'FUSION' | 'FIELD' | 'DRS'
         this.threeCameraPreset = 'AUTO_CAM'; // 'AUTO_CAM' | 'BATSMAN' | 'PITCH' | 'HIGH' | 'GRANDSTAND' | 'PAVILION' | 'UMPIRE' | 'RESET'
@@ -6282,6 +6413,9 @@ export function getMobileAppHtml(): string {
           this.stopMobile3DViewers();
           this._screenChanged = true;
           this.currentScreen = screen;
+          this.matchSubnavOpen = false;
+        } else if (screen === 'MATCHES') {
+          this.matchSubnavOpen = !this.matchSubnavOpen;
         }
         this.render();
       }
@@ -6292,6 +6426,15 @@ export function getMobileAppHtml(): string {
 
       switchMatchSubTab(subTab) {
         this.setMatchSubTab(subTab);
+      }
+
+      toggleMatchSubnav(forceState) {
+        if (typeof forceState === 'boolean') {
+          this.matchSubnavOpen = forceState;
+        } else {
+          this.matchSubnavOpen = !this.matchSubnavOpen;
+        }
+        this.render();
       }
 
       setMatchSubTab(subTab) {
@@ -6307,6 +6450,7 @@ export function getMobileAppHtml(): string {
           this.stopMobile3DViewers();
         }
         this.matchSubTab = normSubTab;
+        this.matchSubnavOpen = false;
         if (normSubTab === 'STADIUM_3D') {
           this.wagonDisplayMode = '3D';
         } else if (normSubTab === 'WAGON' || normSubTab === 'SCORE') {
@@ -6909,6 +7053,11 @@ export function getMobileAppHtml(): string {
       }
 
       handleNativeBack() {
+        if (this.matchSubnavOpen) {
+          this.matchSubnavOpen = false;
+          this.render();
+          return true;
+        }
         if (this.sidebarDrawerOpen) {
           this.closeSidebarDrawer();
           return true;
@@ -13894,26 +14043,7 @@ export function getMobileAppHtml(): string {
         var persona = this.profile.persona;
         var activeWeather = this.getActiveVenueWeather();
 
-        var h = '<div class="mobile-subnav">';
-        var subTabs = [
-          ['SCORE', 'Live Score', 'lightning'],
-          ['STADIUM_3D', '3D Stadium', 'stadium'],
-          ['WAGON', 'Wagon Wheel', 'wagon-wheel'],
-          ['TELEMETRY', 'Pitch & DRS', 'radar'],
-          ['COMMENTARY', 'Commentary', 'mic'],
-          ['ANALYTICS', 'Analytics & Card', 'chart']
-        ];
-        for (var st = 0; st < subTabs.length; st++) {
-          var isAct = this.matchSubTab === subTabs[st][0];
-          var subtabIcon = subTabs[st][2] || 'bat';
-          var iconColor = isAct ? '#00E599' : '#94A3B8';
-          h += '<button type="button" class="mobile-subnav-btn ' + (isAct ? 'active' : '') + '" onclick="window.cricosMobileApp.setMatchSubTab(this.dataset.subtab)" data-subtab="' + subTabs[st][0] + '" data-tooltip="View ' + subTabs[st][1] + '">';
-          h += this.iconSvg(subtabIcon, iconColor, 13) + ' <span>' + subTabs[st][1] + '</span>';
-          h += '</button>';
-        }
-        h += '</div>';
-
-        h += '<div style="padding: 0.65rem 0.75rem;">';
+        var h = '<div style="padding: 0.65rem 0.75rem;">';
         h += this.renderRoleExperienceBanner();
 
         // Multi-Match Quick Switcher Strip (Rendered when multiple matches are LIVE)
@@ -13936,11 +14066,10 @@ export function getMobileAppHtml(): string {
           h += '</div>';
         }
 
-        // Match Top Badges (Subtle Live Pill + Weather Toggle)
+        // Match Top Badges (Subtle Live Pill)
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.35rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
-        h += '<span class="mobile-live-pill" id="mobileLiveMatchPill" data-tooltip="Real-time telemetry and score engine active"><span class="live-pulse-dot"></span><span>Live</span></span>';
-        h += '<button type="button" id="mobileActiveVenueBadge" onclick="window.cricosMobileApp.openPitchWeatherSheet()" style="background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 9999px; min-height: 44px; padding: 0.35rem 0.65rem; font-size: 0.72rem; color: #38bdf8; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Open Unified Pitch &amp; Weather Conditions Studio">' + this.getWeatherIconSvg(activeWeather.icon, '#38bdf8', 14) + ' <span>' + activeWeather.name + ' (' + activeWeather.tempC + '°C) ⚡</span></button>';
+        h += '<span class="mobile-live-pill" id="mobileLiveMatchPill" data-tooltip="Real-time match scoring and telemetry active"><span class="live-pulse-dot"></span><span>Live</span></span>';
         h += '</div></div>';
 
         // LED Scoreboard HUD
@@ -15348,9 +15477,9 @@ export function getMobileAppHtml(): string {
         h += '<span class="mobile-app-title" style="font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: inherit;">Cric<span style="color: ' + brandOsColor + ';">OS</span></span>';
         h += '</div>';
 
-        // Streamlined Right Side: Clean Live Pulse Indicator (All redundant persona, theme, settings, sound & command search moved to sidebar drawer)
+        // Streamlined Right Side: Engine Synced Status Indicator (Disambiguated from match in-play fixture status)
         h += '<div style="display: flex; align-items: center; gap: 0.35rem;">';
-        h += '<span id="mobileHeaderLivePulse" style="font-size: 0.65rem; font-weight: 800; color: ' + pulseInk + '; background: ' + pulseBg + '; border: 1px solid ' + pulseBdr + '; border-radius: 9999px; padding: 0.16rem 0.48rem; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="CricOS Real-time Telemetry &amp; Match Engine Active"><span style="width: 6px; height: 6px; border-radius: 50%; background: ' + pulseDot + '; display: inline-block;"></span><span>LIVE</span></span>';
+        h += '<span id="mobileHeaderLivePulse" style="font-size: 0.65rem; font-weight: 800; color: ' + pulseInk + '; background: ' + pulseBg + '; border: 1px solid ' + pulseBdr + '; border-radius: 9999px; padding: 0.16rem 0.48rem; display: inline-flex; align-items: center; gap: 0.3rem;" data-tooltip="CricOS Real-time Telemetry &amp; Sync Active"><span style="width: 6px; height: 6px; border-radius: 50%; background: ' + pulseDot + '; display: inline-block;"></span><span>SYNCED</span></span>';
         h += '</div></header>';
 
         // Dedicated Toast Container
@@ -15358,6 +15487,50 @@ export function getMobileAppHtml(): string {
 
         // Dedicated Scrollable Content Container (Only this element scrolls with momentum touch)
         h += '<main class="mobile-scroll-body" id="mobileScrollBody">' + content + '</main>';
+
+        // Emerging Match Studios Scroll Drawer & Floating Studio Trigger (When on MATCHES screen)
+        if (this.currentScreen === 'MATCHES') {
+          var _thisSub = this;
+          var subTabs = [
+            ['SCORE', 'Live Score', 'lightning'],
+            ['STADIUM_3D', '3D Stadium', 'stadium'],
+            ['WAGON', 'Wagon Wheel', 'wagon-wheel'],
+            ['TELEMETRY', 'Pitch & DRS', 'radar'],
+            ['COMMENTARY', 'Commentary', 'mic'],
+            ['ANALYTICS', 'Analytics & Card', 'chart']
+          ];
+          var activeSubTabObj = subTabs.find(function(s) { return s[0] === _thisSub.matchSubTab; }) || subTabs[0];
+
+          // Floating Studio Trigger Pill anchored above bottom navigation
+          h += '<button type="button" id="btnToggleMatchStudios" class="mobile-studios-pill-trigger' + (this.matchSubnavOpen ? ' active' : '') + '" onclick="window.cricosMobileApp.toggleMatchSubnav()" data-tooltip="Toggle Studios: 3D Stadium, Wagon Wheel, DRS &amp; Analytics" aria-label="Toggle Studios Menu">';
+          h += this.iconSvg(activeSubTabObj[2] || 'layers', 'currentColor', 13) + ' ';
+          h += '<span>' + activeSubTabObj[1] + '</span> ';
+          h += '<svg class="cricos-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.2s ease; transform: ' + (this.matchSubnavOpen ? 'rotate(180deg)' : 'none') + ';"><path d="M18 15l-6-6-6 6"/></svg>';
+          h += '</button>';
+
+          // Backdrop for emerging drawer
+          h += '<div class="mobile-subnav-backdrop' + (this.matchSubnavOpen ? ' active' : '') + '" id="mobileMatchSubnavBackdrop" onclick="window.cricosMobileApp.toggleMatchSubnav(false)"></div>';
+
+          // Emerging Horizontal Scroll Selection Drawer
+          h += '<div class="mobile-subnav-drawer' + (this.matchSubnavOpen ? ' open' : '') + '" id="mobileMatchSubnavDrawer" role="region" aria-label="Match Studios &amp; Views">';
+          h += '<div class="mobile-subnav-drawer-header">';
+          h += '<div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">' + this.iconSvg('layers', isLight ? (activeTheme === 'swiss' ? '#047857' : '#15803D') : '#00E599', 13) + ' <span>MATCH STUDIOS &amp; VIEWS</span></div>';
+          h += '<button type="button" class="mobile-subnav-drawer-close" onclick="window.cricosMobileApp.toggleMatchSubnav(false)" data-tooltip="Close Studios Selector" aria-label="Close Studios Selector">';
+          h += '<svg class="cricos-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg> <span>Close</span>';
+          h += '</button>';
+          h += '</div>';
+
+          h += '<div class="mobile-subnav">';
+          for (var st = 0; st < subTabs.length; st++) {
+            var isAct = this.matchSubTab === subTabs[st][0];
+            var subtabIcon = subTabs[st][2] || 'bat';
+            var iconColor = isAct ? (isLight ? (activeTheme === 'swiss' ? '#047857' : '#15803D') : '#00E599') : (isLight ? '#475569' : '#94A3B8');
+            h += '<button type="button" class="mobile-subnav-btn ' + (isAct ? 'active' : '') + '" onclick="window.cricosMobileApp.setMatchSubTab(this.dataset.subtab)" data-subtab="' + subTabs[st][0] + '" data-tooltip="View ' + subTabs[st][1] + '">';
+            h += this.iconSvg(subtabIcon, iconColor, 13) + ' <span>' + subTabs[st][1] + '</span>';
+            h += '</button>';
+          }
+          h += '</div></div>';
+        }
 
         // Fixed Bottom Navigation Bar tailored to Persona (Permanently pinned at bottom, never scrolls)
         // Logical ergonomic order: Live Match (Primary Left) -> Squad/Teams -> Standings/Fixtures -> Turf/Ops -> Profile (Account Right)
@@ -15394,7 +15567,7 @@ export function getMobileAppHtml(): string {
           navItems.push(['MARKETPLACE', 'basket', 'Basket']);
           navItems.push(['PROFILE', 'user', 'Profile']);
         } else if (persona === 'TURF_PROVIDER') {
-          navItems.push(['MATCHES', 'bat', 'Live']);
+          navItems.push(['MATCHES', 'bat', 'Match']);
           navItems.push(['MARKETPLACE', 'stadium', 'Storefront']);
           navItems.push(['INCIDENTS', 'scale', 'Disputes']);
           navItems.push(['PROFILE', 'user', 'Profile']);

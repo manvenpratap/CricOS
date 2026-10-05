@@ -84,6 +84,18 @@ CricOS/
 | `@cricket-platform/api`       | `apps/api` | Fastify REST API with 26 modules, JWT/RBAC middleware, and real-time SSE broadcast. |
 | `@cricket-platform/worker`    | `apps/worker` | Outbox polling and background TTL hold expiration worker. |
 
+#### 🧭 Compiled Archify Interactive Diagrams & Architecture Specs
+
+CricOS architecture, workflows, event sequences, and lifecycles are formally modeled and compiled via [Archify](https://github.com/tt-a1i/archify):
+
+* 📐 **System Architecture**: [Interactive HTML View](./docs/diagrams/architecture.html) | [Spec](./docs/diagrams/architecture.json)
+* 🔄 **Scoring Workflow**: [Interactive HTML View](./docs/diagrams/workflow.html) | [Spec](./docs/diagrams/workflow.json)
+* ⚡ **Ball Ingestion Sequence**: [Interactive HTML View](./docs/diagrams/sequence.html) | [Spec](./docs/diagrams/sequence.json)
+* 🌊 **Live Event Data Flow**: [Interactive HTML View](./docs/diagrams/dataflow.html) | [Spec](./docs/diagrams/dataflow.json)
+* ⏱️ **Match & Tournament Lifecycle**: [Interactive HTML View](./docs/diagrams/lifecycle.html) | [Spec](./docs/diagrams/lifecycle.json)
+
+See [**`PROJECT_CONTEXT.md`**](./PROJECT_CONTEXT.md) and [`wiki/01-Principal-Architecture-Guide.md`](./wiki/01-Principal-Architecture-Guide.md) for full blueprints and domain invariants.
+
 ---
 
 ## ⚙️ Core Subsystems

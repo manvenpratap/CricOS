@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "CricOS - Unified Cricket Operating System Architecture",
+    "output": "architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "clients", "type": "frontend", "label": "Client Surfaces", "sublabel": "Web SPA / Android APK", "pos": [40, 260], "size": [140, 60] },
+    { "id": "fastify", "type": "backend", "label": "Fastify Gateway", "sublabel": "Node.js REST / WS :3000", "pos": [280, 260], "size": [140, 60], "tag": "Event Core" },
+    { "id": "mcc_engine", "type": "security", "label": "MCC Laws Engine", "sublabel": "42 Laws Rule Validator", "pos": [520, 120], "size": [140, 60] },
+    { "id": "match_core", "type": "backend", "label": "Match State Engine", "sublabel": "Ball-by-ball & DLS", "pos": [520, 260], "size": [140, 60] },
+    { "id": "ledger", "type": "backend", "label": "Settlement Ledger", "sublabel": "Double-entry accounting", "pos": [520, 400], "size": [140, 60] },
+    { "id": "sqlite_wal", "type": "database", "label": "SQLite Store", "sublabel": "Better-SQLite3 WAL mode", "pos": [780, 260], "size": [140, 60] },
+    { "id": "ws_broadcast", "type": "messagebus", "label": "Live Broadcast WS", "sublabel": "Real-time Spectator Feed", "pos": [780, 120], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "CricOS Monorepo Platform (100% Offline-Capable)", "wraps": ["fastify", "mcc_engine", "match_core", "ledger", "sqlite_wal", "ws_broadcast"] },
+    { "kind": "security-group", "label": "Rules & Financial Integrity Boundary", "wraps": ["mcc_engine", "ledger"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "clients", "to": "fastify", "label": "REST / WS", "variant": "emphasis" },
+    { "id": "c2", "from": "fastify", "to": "mcc_engine", "label": "validate ball", "fromSide": "top", "toSide": "left" },
+    { "id": "c3", "from": "fastify", "to": "match_core", "label": "commit event", "variant": "emphasis" },
+    { "id": "c4", "from": "fastify", "to": "ledger", "label": "match fee payouts", "fromSide": "bottom", "toSide": "left" },
+    { "id": "c5", "from": "match_core", "to": "sqlite_wal", "label": "WAL commit", "variant": "emphasis" },
+    { "id": "c6", "from": "match_core", "to": "ws_broadcast", "label": "push tick", "fromSide": "top", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "MCC Laws Compliance", "items": ["Enforces strict ball legality, bowler quota, and dead-ball rules", "Automated DLS target calculation during rain interruptions"] },
+    { "dot": "cyan", "title": "Zero Cloud Dependency", "items": ["Runs on local Fastify server with Better-SQLite3 WAL storage", "Synchronizes across local Wi-Fi or LAN for ground tournament play"] }
+  ]
+}
