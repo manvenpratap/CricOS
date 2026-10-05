@@ -14,12 +14,91 @@ import {
 } from '@cricket-platform/scoring';
 import { broadcastHub, BroadcastEventType } from './broadcast.js';
 
+export function createPilotScoreState(): ScoreState {
+  return {
+    runs: 142,
+    wickets: 3,
+    legal_balls: 100,
+    overs: 16,
+    balls: 4,
+    overs_display: '16.4',
+    target: 178,
+    max_overs: 20,
+    is_innings_closed: false,
+    is_match_completed: false,
+    is_free_hit: false,
+    striker_id: 'virat-k',
+    non_striker_id: 'rohit-s',
+    current_bowler_id: 'jasprit-b',
+    batters: {
+      'virat-k': {
+        playerId: 'virat-k',
+        name: 'Virat K.',
+        runs: 68,
+        ballsFaced: 44,
+        fours: 6,
+        sixes: 2,
+        strikeRate: 154.55,
+        isOut: false
+      },
+      'rohit-s': {
+        playerId: 'rohit-s',
+        name: 'Rohit S.',
+        runs: 54,
+        ballsFaced: 38,
+        fours: 4,
+        sixes: 1,
+        strikeRate: 142.11,
+        isOut: false
+      }
+    },
+    bowlers: {
+      'jasprit-b': {
+        bowlerId: 'jasprit-b',
+        name: 'Jasprit B.',
+        legalBalls: 22,
+        oversDisplay: '3.4',
+        maidens: 0,
+        runsConceded: 24,
+        wickets: 2,
+        wides: 1,
+        noBalls: 0,
+        economyRate: 6.55,
+        currentOverBalls: 4,
+        currentOverRuns: 7
+      }
+    },
+    fall_of_wickets: [
+      { wicketNumber: 1, score: 12, overs: '1.4', playerOutId: 'ishan-k' },
+      { wicketNumber: 2, score: 12, overs: '1.6', playerOutId: 'surya-y' },
+      { wicketNumber: 3, score: 20, overs: '2.3', playerOutId: 'shreyas-i' }
+    ],
+    extras: {
+      wides: 5,
+      no_balls: 1,
+      byes: 4,
+      leg_byes: 2,
+      penalties: 0,
+      total: 12
+    }
+  };
+}
+
 // In-memory score states and event history cache per match
-const matchScores = new Map<string, ScoreState>();
+const matchScores = new Map<string, ScoreState>([
+  ['match-pilot-1', createPilotScoreState()]
+]);
 const matchEventHistory = new Map<string, ScoreEvent[]>();
 
 export function getMatchScore(matchId: string): ScoreState {
-  return matchScores.get(matchId) || createInitialScoreState();
+  if (!matchScores.has(matchId)) {
+    if (matchId === 'match-pilot-1') {
+      matchScores.set(matchId, createPilotScoreState());
+    } else {
+      matchScores.set(matchId, createInitialScoreState());
+    }
+  }
+  return matchScores.get(matchId)!;
 }
 
 export function setMatchScore(matchId: string, state: ScoreState): void {
@@ -86,10 +165,7 @@ export async function scoringRoutes(app: FastifyInstance) {
     const shot_zone = body.shot_zone || body.shotZone;
     const innings_id = body.innings_id || body.inningsId || '00000000-0000-0000-0000-000000000001';
 
-    let currentState = matchScores.get(id);
-    if (!currentState) {
-      currentState = createInitialScoreState();
-    }
+    let currentState = getMatchScore(id);
 
     const eventPayload: ScoreEvent = {
       client_event_id,
@@ -102,9 +178,9 @@ export async function scoringRoutes(app: FastifyInstance) {
       is_wicket,
       wicket_type,
       player_out_id,
-      bowler_id,
-      striker_id,
-      non_striker_id,
+      bowler_id: bowler_id || currentState.current_bowler_id,
+      striker_id: striker_id || currentState.striker_id,
+      non_striker_id: non_striker_id || currentState.non_striker_id,
       next_batter_id,
       fielder_id,
       is_free_hit,
@@ -178,7 +254,7 @@ export async function scoringRoutes(app: FastifyInstance) {
     if (!history || history.length === 0) {
       return reply.status(400).send({ error: 'No deliveries to undo for this match' });
     }
-    const { state: restoredState, undoneEvent } = undoDelivery(history);
+    const { state: restoredState, undoneEvent } = undoDelivery(history, id === 'match-pilot-1' ? createPilotScoreState() : undefined);
     matchScores.set(id, restoredState);
 
     broadcastHub.broadcast(id, {
@@ -222,7 +298,7 @@ export async function scoringRoutes(app: FastifyInstance) {
     if (!bowlerId) {
       return reply.status(400).send({ error: 'bowler_id is required' });
     }
-    const currentState = matchScores.get(id) || createInitialScoreState();
+    const currentState = getMatchScore(id);
     let updatedState: ScoreState;
     try {
       updatedState = changeBowler(currentState, bowlerId, body.enforce_rule !== false);
@@ -255,7 +331,7 @@ export async function scoringRoutes(app: FastifyInstance) {
   // Manual Strike Swap Endpoint
   const handleSwapStrike = async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
     const { id } = req.params;
-    const currentState = matchScores.get(id) || createInitialScoreState();
+    const currentState = getMatchScore(id);
     const updatedState = swapStrike(currentState);
     matchScores.set(id, updatedState);
 
@@ -283,7 +359,7 @@ export async function scoringRoutes(app: FastifyInstance) {
   }>, reply: FastifyReply) => {
     const { id } = req.params;
     const target = req.body?.target;
-    const currentState = matchScores.get(id) || createInitialScoreState();
+    const currentState = getMatchScore(id);
     const updatedState = closeInnings(currentState, target);
     matchScores.set(id, updatedState);
 
@@ -307,7 +383,7 @@ export async function scoringRoutes(app: FastifyInstance) {
   // Score state inquiry endpoints
   const handleScoreState = async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
     const { id } = req.params;
-    const state = matchScores.get(id) || createInitialScoreState();
+    const state = getMatchScore(id);
 
     return reply.status(200).send({
       match_id: id,
@@ -332,7 +408,7 @@ export async function scoringRoutes(app: FastifyInstance) {
       'Access-Control-Allow-Origin': '*'
     });
 
-    const currentState = matchScores.get(id) || createInitialScoreState();
+    const currentState = getMatchScore(id);
 
     // Send initial handshake and state snapshot
     reply.raw.write(`event: initial_state\ndata: ${JSON.stringify({
@@ -365,7 +441,7 @@ export async function scoringRoutes(app: FastifyInstance) {
     const { id } = req.params;
     const deliveries = (req.body as any)?.deliveries || [];
 
-    let currentState = matchScores.get(id) || createInitialScoreState();
+    let currentState = getMatchScore(id);
     let appliedCount = 0;
 
     for (const d of deliveries) {
@@ -388,7 +464,7 @@ export async function scoringRoutes(app: FastifyInstance) {
   // Sync Status Inquiry
   app.get('/scoring/matches/:id/sync-status', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
     const { id } = req.params;
-    const currentState = matchScores.get(id) || createInitialScoreState();
+    const currentState = getMatchScore(id);
 
     return reply.status(200).send({
       match_id: id,

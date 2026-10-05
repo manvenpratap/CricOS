@@ -2,11 +2,90 @@ import crypto from 'node:crypto';
 import { query } from '../../platform/db.js';
 import { createInitialScoreState, applyDelivery, undoDelivery, swapStrike, changeBowler, closeInnings } from '@cricket-platform/scoring';
 import { broadcastHub } from './broadcast.js';
+export function createPilotScoreState() {
+    return {
+        runs: 142,
+        wickets: 3,
+        legal_balls: 100,
+        overs: 16,
+        balls: 4,
+        overs_display: '16.4',
+        target: 178,
+        max_overs: 20,
+        is_innings_closed: false,
+        is_match_completed: false,
+        is_free_hit: false,
+        striker_id: 'virat-k',
+        non_striker_id: 'rohit-s',
+        current_bowler_id: 'jasprit-b',
+        batters: {
+            'virat-k': {
+                playerId: 'virat-k',
+                name: 'Virat K.',
+                runs: 68,
+                ballsFaced: 44,
+                fours: 6,
+                sixes: 2,
+                strikeRate: 154.55,
+                isOut: false
+            },
+            'rohit-s': {
+                playerId: 'rohit-s',
+                name: 'Rohit S.',
+                runs: 54,
+                ballsFaced: 38,
+                fours: 4,
+                sixes: 1,
+                strikeRate: 142.11,
+                isOut: false
+            }
+        },
+        bowlers: {
+            'jasprit-b': {
+                bowlerId: 'jasprit-b',
+                name: 'Jasprit B.',
+                legalBalls: 22,
+                oversDisplay: '3.4',
+                maidens: 0,
+                runsConceded: 24,
+                wickets: 2,
+                wides: 1,
+                noBalls: 0,
+                economyRate: 6.55,
+                currentOverBalls: 4,
+                currentOverRuns: 7
+            }
+        },
+        fall_of_wickets: [
+            { wicketNumber: 1, score: 12, overs: '1.4', playerOutId: 'ishan-k' },
+            { wicketNumber: 2, score: 12, overs: '1.6', playerOutId: 'surya-y' },
+            { wicketNumber: 3, score: 20, overs: '2.3', playerOutId: 'shreyas-i' }
+        ],
+        extras: {
+            wides: 5,
+            no_balls: 1,
+            byes: 4,
+            leg_byes: 2,
+            penalties: 0,
+            total: 12
+        }
+    };
+}
 // In-memory score states and event history cache per match
-const matchScores = new Map();
+const matchScores = new Map([
+    ['match-pilot-1', createPilotScoreState()]
+]);
 const matchEventHistory = new Map();
 export function getMatchScore(matchId) {
-    return matchScores.get(matchId) || createInitialScoreState();
+    if (!matchScores.has(matchId)) {
+        if (matchId === 'match-pilot-1') {
+            matchScores.set(matchId, createPilotScoreState());
+        }
+        else {
+            matchScores.set(matchId, createInitialScoreState());
+        }
+    }
+    return matchScores.get(matchId);
 }
 export function setMatchScore(matchId, state) {
     matchScores.set(matchId, state);
@@ -32,10 +111,7 @@ export async function scoringRoutes(app) {
         const is_free_hit = body.is_free_hit ?? body.isFreeHit;
         const shot_zone = body.shot_zone || body.shotZone;
         const innings_id = body.innings_id || body.inningsId || '00000000-0000-0000-0000-000000000001';
-        let currentState = matchScores.get(id);
-        if (!currentState) {
-            currentState = createInitialScoreState();
-        }
+        let currentState = getMatchScore(id);
         const eventPayload = {
             client_event_id,
             sequence,
@@ -47,9 +123,9 @@ export async function scoringRoutes(app) {
             is_wicket,
             wicket_type,
             player_out_id,
-            bowler_id,
-            striker_id,
-            non_striker_id,
+            bowler_id: bowler_id || currentState.current_bowler_id,
+            striker_id: striker_id || currentState.striker_id,
+            non_striker_id: non_striker_id || currentState.non_striker_id,
             next_batter_id,
             fielder_id,
             is_free_hit,
@@ -117,7 +193,7 @@ export async function scoringRoutes(app) {
         if (!history || history.length === 0) {
             return reply.status(400).send({ error: 'No deliveries to undo for this match' });
         }
-        const { state: restoredState, undoneEvent } = undoDelivery(history);
+        const { state: restoredState, undoneEvent } = undoDelivery(history, id === 'match-pilot-1' ? createPilotScoreState() : undefined);
         matchScores.set(id, restoredState);
         broadcastHub.broadcast(id, {
             type: 'UNDO_DELIVERY',
@@ -151,7 +227,7 @@ export async function scoringRoutes(app) {
         if (!bowlerId) {
             return reply.status(400).send({ error: 'bowler_id is required' });
         }
-        const currentState = matchScores.get(id) || createInitialScoreState();
+        const currentState = getMatchScore(id);
         let updatedState;
         try {
             updatedState = changeBowler(currentState, bowlerId, body.enforce_rule !== false);
@@ -181,7 +257,7 @@ export async function scoringRoutes(app) {
     // Manual Strike Swap Endpoint
     const handleSwapStrike = async (req, reply) => {
         const { id } = req.params;
-        const currentState = matchScores.get(id) || createInitialScoreState();
+        const currentState = getMatchScore(id);
         const updatedState = swapStrike(currentState);
         matchScores.set(id, updatedState);
         broadcastHub.broadcast(id, {
@@ -202,7 +278,7 @@ export async function scoringRoutes(app) {
     const handleCloseInnings = async (req, reply) => {
         const { id } = req.params;
         const target = req.body?.target;
-        const currentState = matchScores.get(id) || createInitialScoreState();
+        const currentState = getMatchScore(id);
         const updatedState = closeInnings(currentState, target);
         matchScores.set(id, updatedState);
         broadcastHub.broadcast(id, {
@@ -222,7 +298,7 @@ export async function scoringRoutes(app) {
     // Score state inquiry endpoints
     const handleScoreState = async (req, reply) => {
         const { id } = req.params;
-        const state = matchScores.get(id) || createInitialScoreState();
+        const state = getMatchScore(id);
         return reply.status(200).send({
             match_id: id,
             matchId: id,
@@ -242,7 +318,7 @@ export async function scoringRoutes(app) {
             'Connection': 'keep-alive',
             'Access-Control-Allow-Origin': '*'
         });
-        const currentState = matchScores.get(id) || createInitialScoreState();
+        const currentState = getMatchScore(id);
         // Send initial handshake and state snapshot
         reply.raw.write(`event: initial_state\ndata: ${JSON.stringify({
             type: 'INITIAL_STATE',
@@ -270,7 +346,7 @@ export async function scoringRoutes(app) {
     app.post('/scoring/matches/:id/sync', async (req, reply) => {
         const { id } = req.params;
         const deliveries = req.body?.deliveries || [];
-        let currentState = matchScores.get(id) || createInitialScoreState();
+        let currentState = getMatchScore(id);
         let appliedCount = 0;
         for (const d of deliveries) {
             try {
@@ -291,7 +367,7 @@ export async function scoringRoutes(app) {
     // Sync Status Inquiry
     app.get('/scoring/matches/:id/sync-status', async (req, reply) => {
         const { id } = req.params;
-        const currentState = matchScores.get(id) || createInitialScoreState();
+        const currentState = getMatchScore(id);
         return reply.status(200).send({
             match_id: id,
             legal_balls: currentState.legal_balls,

@@ -129,4 +129,22 @@ describe('Real-Time Live Match Broadcast & SSE Streaming (Phase 1P)', () => {
     await new Promise((r) => setTimeout(r, 50));
     assert.strictEqual(broadcastHub.getSubscriberCount(matchId), 0);
   });
+
+  it('Serves pre-seeded live chase state for match-pilot-1 (142/3 in 16.4 ov) matching mobile APK parity', async () => {
+    const res = await app.inject({
+      method: 'GET',
+      url: '/api/v1/scoring/matches/match-pilot-1/score-state'
+    });
+
+    assert.strictEqual(res.statusCode, 200);
+    const body = res.json();
+    assert.strictEqual(body.match_id, 'match-pilot-1');
+    assert.strictEqual(body.state.runs, 142);
+    assert.strictEqual(body.state.wickets, 3);
+    assert.strictEqual(body.state.overs_display, '16.4');
+    assert.strictEqual(body.state.target, 178);
+    assert.strictEqual(body.state.batters['virat-k'].runs, 68);
+    assert.strictEqual(body.state.batters['rohit-s'].runs, 54);
+    assert.strictEqual(body.state.bowlers['jasprit-b'].oversDisplay, '3.4');
+  });
 });

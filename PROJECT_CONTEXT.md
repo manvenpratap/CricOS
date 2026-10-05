@@ -1,14 +1,35 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 23:50:00
-**Version:** 1.0.0-phase2ef (Mobile Marketplace & Subcategory Filter Overlap Remediation)  
+**Last Updated:** 2026-10-06 00:15:00
+**Version:** 1.0.0-phase2eg (Live Match-Pilot-1 Score Parity Between Webapp & Mobile APK)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EF Completed — Mobile Marketplace & Subcategory Filter Overlap Remediation (`apps/api/src/ui/mobile-view.ts`, `apps/mobile/android/app/src/main/assets/index.html`, `apps/mobile/ios/CricOS/Resources/www/index.html`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EG Completed — Live Match Score Parity Between Desktop Webapp & Mobile APK (`apps/api/src/modules/scoring/routes.ts`, `apps/api/src/ui/dashboard.ts`, `apps/api/test/broadcast.test.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Root Cause Identification**:
+    - Backend in-memory state in `apps/api/src/modules/scoring/routes.ts` (`matchScores = new Map()`) was empty on server boot.
+    - When the desktop webapp connected to SSE at `/api/v1/scoring/matches/match-pilot-1/live`, the route fell back to `createInitialScoreState()`, which returned a blank match state (`runs: 0, wickets: 0, legal_balls: 0`).
+    - The desktop webapp's SSE listener `renderScoreState()` received the empty `initial_state` and overwrote the DOM to `0/0 (0.0 ov)`, `CRR: 0.00`, and reset the target equation to `Need 178 runs in 120 balls`.
+    - In contrast, the consumer mobile app (`mobile-view.ts`) initialized `this.matchState` with the realistic in-progress chase (Delhi Daredevils vs Mumbai Super Strikers, 142/3 in 16.4 overs, target 178) and runs offline in native WebView without receiving an empty SSE stream.
+  - **2. Shared Backend Seed & Unified State Getter**:
+    - Implemented `createPilotScoreState(): ScoreState` in `routes.ts` populated with the exact live chase: 142/3 in 16.4 ov (100 legal balls), target 178, batters Virat K. (68* off 44b) & Rohit S. (54 off 38b), bowler Jasprit B. (3.4-0-24-2, Econ: 6.55), current over deliveries `['1', '4', '•', '2']`, and Fall of Wickets history (12/1, 12/2, 20/3).
+    - Initialized `matchScores` with `['match-pilot-1', createPilotScoreState()]` and refactored all routes (`handleScoreEvent`, `handleBowlerChange`, `handleSwapStrike`, `handleCloseInnings`, `handleScoreState`, `handleLiveStream`, `sync`, `sync-status`) to use `getMatchScore(id)` as the single shared source of truth.
+    - Updated `undoDelivery(history, initial)` in `handleUndo` to pass `createPilotScoreState()` for `match-pilot-1`, ensuring delivery undo replays seamlessly back onto the pilot state.
+  - **3. Desktop Webapp Scoreboard HUD & Store Alignment**:
+    - Updated `apps/api/src/ui/dashboard.ts` static HTML score-display to `142/3`, `(16.4 ov)`, `CRR: 8.52`.
+    - Synchronized real-time over ball strip to `1`, `4`, `•`, `2` bubbles and "This Over: 4 deliveries bowled".
+    - Updated player stats cards to Virat K. 68* (44b), Rohit S. 54 (38b), and Jasprit B. 3.4-0-24-2 (Econ: 6.55).
+    - Initialized client-side `window.CricOSStore.state` and JS variables (`runs = 142; wickets = 3; legalBalls = 100; sequence = 4;`).
+  - **4. Verification & Pipeline Integrity**:
+    - Verified via Playwright headless browser on live server (`http://localhost:3000`): confirmed `#scoreRunsWickets` displays `142/3`, `#scoreOvers` displays `(16.4 ov)`, `#scoreRunRate` displays `CRR: 8.52`, and `#targetRunsNeeded` displays `36 in 20 balls (Req RR: 10.80)`.
+    - Verified live scoring delivery (`POST /events` -> 143/3 in 16.5 ov) and undo (`POST /undo` -> 142/3 in 16.4 ov) via REST endpoints.
+    - Added regression tests in `apps/api/test/broadcast.test.ts` and `tests/domain-scoring-and-match-ops.test.ts`.
+    - 255 domain and API tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - Android 15 Release & Debug APKs recompiled and verified via `./pipeline.sh apk` (Rule 6).
+- **Preceding Phase**: Phase 2EF Completed — Mobile Marketplace & Subcategory Filter Overlap Remediation (`apps/api/src/ui/mobile-view.ts`, `apps/mobile/android/app/src/main/assets/index.html`, `apps/mobile/ios/CricOS/Resources/www/index.html`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Root Cause Identification & Flexbox Fix**:
     - Sub-category filter pills in the Gear Store (`#mobileGearSubCatRow`) were missing `flex: 0 0 auto` (`flex-shrink: 0`).
     - Combined with `min-width: 44px` and `border-radius: 999px`, flexbox compressed all 6 items on mobile devices down to 44px circular footprints, causing wide button labels ("Balls", "Pads/Helmets", "Nets/Gyro", "Trophies") to overflow and collide directly on top of each other.

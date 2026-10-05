@@ -5848,9 +5848,9 @@
             </div>
           </div>
           <div class="score-display">
-            <div class="main-score" id="scoreRunsWickets" aria-live="polite" aria-atomic="true">0/0</div>
-            <div class="overs-score" id="scoreOvers" aria-live="polite" aria-atomic="true">(0.0 ov)</div>
-            <div class="rate-badge" id="scoreRunRate">CRR: 0.00</div>
+            <div class="main-score" id="scoreRunsWickets" aria-live="polite" aria-atomic="true">142/3</div>
+            <div class="overs-score" id="scoreOvers" aria-live="polite" aria-atomic="true">(16.4 ov)</div>
+            <div class="rate-badge" id="scoreRunRate">CRR: 8.52</div>
           </div>
         </div>
 
@@ -5908,9 +5908,12 @@
         <div class="over-strip-container">
           <div class="over-strip-label">Current Over Deliveries:</div>
           <div class="ball-strip" id="overBallStrip">
+            <div class="ball-bubble">1</div>
+            <div class="ball-bubble four">4</div>
             <div class="ball-bubble dot">•</div>
+            <div class="ball-bubble">2</div>
           </div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);" id="overSummaryText">Waiting for over to commence...</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);" id="overSummaryText">This Over: 4 deliveries bowled</div>
         </div>
 
         <!-- Live Player Stats -->
@@ -5921,17 +5924,17 @@
               <span style="color: var(--primary); display: inline-flex; align-items: center; gap: 0.25rem;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="cricos-icon" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" fill="var(--primary)" fill-opacity="0.3" stroke="var(--primary)" stroke-width="1.8" stroke-linejoin="round"/></svg> On Strike</span>
             </div>
             <div class="stat-player-name" id="strikerName">Virat K. *</div>
-            <div class="stat-player-figures" id="strikerFigures">0 <span style="font-size: 0.85rem; color: var(--text-muted);">(0b) • SR: 0.0</span></div>
+            <div class="stat-player-figures" id="strikerFigures">68 <span style="font-size: 0.85rem; color: var(--text-muted);">(44b) • 6x4 2x6 • SR: 154.5</span></div>
           </div>
           <div class="stat-mini-card">
             <div class="stat-mini-title"><span>Non-Striker</span><span>Runner</span></div>
             <div class="stat-player-name" id="nonStrikerName">Rohit S.</div>
-            <div class="stat-player-figures" id="nonStrikerFigures">0 <span style="font-size: 0.85rem; color: var(--text-muted);">(0b) • SR: 0.0</span></div>
+            <div class="stat-player-figures" id="nonStrikerFigures">54 <span style="font-size: 0.85rem; color: var(--text-muted);">(38b) • SR: 142.1</span></div>
           </div>
           <div class="stat-mini-card">
             <div class="stat-mini-title"><span>Bowler</span><span style="color: var(--amber);">Current Spell</span></div>
             <div class="stat-player-name" id="bowlerName">Jasprit B.</div>
-            <div class="stat-player-figures" id="bowlerFigures" style="color: var(--amber);">0-0-0-0 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(Econ: 0.00)</span></div>
+            <div class="stat-player-figures" id="bowlerFigures" style="color: var(--amber);">3.4-0-24-2 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">(Econ: 6.55)</span></div>
           </div>
         </div>
 
@@ -5948,9 +5951,9 @@
         <div class="fow-container">
           <div class="fow-label">Fall of Wickets (FoW):</div>
           <div class="fow-strip" id="fowStrip">
-            <span class="fow-pill" data-tooltip="Wicket 1: Rohit S. caught at mid-on off Bumrah">1/1 <small>(0.2 ov)</small></span>
-            <span class="fow-pill" data-tooltip="Wicket 2: S. Gill bowled off Shami">45/2 <small>(5.4 ov)</small></span>
-            <span class="fow-pill" data-tooltip="Wicket 3: V. Kohli caught behind off Siraj">112/3 <small>(13.1 ov)</small></span>
+            <span class="fow-pill" data-tooltip="Wicket 1: Ishan Kishan b Siraj (1.4 ov)">12/1 <small>(1.4 ov)</small></span>
+            <span class="fow-pill" data-tooltip="Wicket 2: Suryakumar Yadav c &amp; b Kuldeep (1.6 ov)">12/2 <small>(1.6 ov)</small></span>
+            <span class="fow-pill" data-tooltip="Wicket 3: Shreyas Iyer b Siraj (2.3 ov)">20/3 <small>(2.3 ov)</small></span>
           </div>
         </div>
 
@@ -24470,10 +24473,10 @@ var qrcode = function() {
     // Centralized Reactive Match State Store
     window.CricOSStore = {
       state: {
-        runs: 0,
-        wickets: 0,
-        legalBalls: 0,
-        oversDisplay: '0.0',
+        runs: 142,
+        wickets: 3,
+        legalBalls: 100,
+        oversDisplay: '16.4',
         isFreeHit: false,
         batters: {},
         bowler: null,
@@ -24507,10 +24510,10 @@ var qrcode = function() {
     };
 
     // Scoring State & Live Broadcast Engine
-    let runs = 0;
-    let wickets = 0;
-    let legalBalls = 0;
-    let sequence = 0;
+    let runs = 142;
+    let wickets = 3;
+    let legalBalls = 100;
+    let sequence = 4;
     let isSseConnected = false;
     const renderedDeliveryKeys = new Set();
     const feedDeliveryKeys = new Set();

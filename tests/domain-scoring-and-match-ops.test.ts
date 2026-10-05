@@ -860,6 +860,23 @@ describe('Domain: Scoring, Match Operations, Umpire Desk & Cricsheet Export', ()
       assert.ok(!dashboardSrc.includes("WICKET! TIMBER!</div><div style=\"font-family: var(--font-mono, monospace); font-size: 0.95rem; font-weight: 700; color: var(--rose, #FF3366); margin-top: 0.2rem;\">BOWLED OFF STUMP"), 'Desktop must not unconditionally hardcode Bowled Off Stump');
       assert.ok(!mobileSrc.includes("WICKET! TIMBER!</div><div style=\"font-size: 0.72rem; color: #FF3366; font-weight: 700; margin-top: 0.2rem;\">STUMPS SHATTERED</div>"), 'Mobile must not unconditionally hardcode Stumps Shattered');
     });
+
+    it('8. Desktop Match Console & Server State parity with mobile (142/3 in 16.4 ov chase)', async () => {
+      const html = getDashboardHtml();
+      assert.ok(html.includes('id="scoreRunsWickets" aria-live="polite" aria-atomic="true">142/3</div>'), 'Dashboard must display 142/3 runs');
+      assert.ok(html.includes('id="scoreOvers" aria-live="polite" aria-atomic="true">(16.4 ov)</div>'), 'Dashboard must display 16.4 overs');
+      assert.ok(html.includes('id="scoreRunRate">CRR: 8.52</div>'), 'Dashboard must display CRR 8.52');
+
+      const scoreRes = await app.inject({
+        method: 'GET',
+        url: '/api/v1/scoring/matches/match-pilot-1/score-state'
+      });
+      assert.strictEqual(scoreRes.statusCode, 200);
+      const scoreBody = scoreRes.json();
+      assert.strictEqual(scoreBody.state.runs, 142);
+      assert.strictEqual(scoreBody.state.wickets, 3);
+      assert.strictEqual(scoreBody.state.overs_display, '16.4');
+    });
   });
 });
 
