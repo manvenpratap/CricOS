@@ -583,8 +583,9 @@ describe('Domain: Mobile Journeys, Scoring Studio & Native Packaging', () => {
 
   // ---- Suite 12: Space-Efficient Mobile Scoring, Subtle Live Pill & Multi-Match Support ----
   describe('Suite 12: Space-Efficient Mobile Scoring, Subtle Live Pill & Multi-Match Support', () => {
-    it('1. Renders centered floating bridge strike swap FAB between symmetrical batter cards', () => {
+    it('1. Renders crease action header with strike swap pill above symmetrical batter cards', () => {
       assert.ok(mobileHtml.includes('mobile-batters-crease-container'), 'mobile-batters-crease-container container must exist');
+      assert.ok(mobileHtml.includes('mobile-crease-header-row'), 'mobile-crease-header-row header row must exist');
       assert.ok(mobileHtml.includes('btn-swap-strike-bridge'), 'btn-swap-strike-bridge CSS class must exist');
       assert.ok(mobileHtml.includes('id="btnMobileSwapStrike"'), 'btnMobileSwapStrike ID must exist');
       assert.ok(mobileHtml.includes('id="mobileStrikerCard"'), 'mobileStrikerCard ID must exist');

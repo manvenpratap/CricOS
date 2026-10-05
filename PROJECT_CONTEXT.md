@@ -1,14 +1,31 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 06:45:00
-**Version:** 1.0.0-phase2ea (Two-Tier Progressive Disclosure Dismissal Dialog Architecture & Hick's Law Alignment)  
+**Last Updated:** 2026-10-05 08:05:00
+**Version:** 1.0.0-phase2eb (Mobile Crease Header & Strike Swap Zero Overlap Architecture & Ergonomics)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EA Completed — Two-Tier Progressive Disclosure Dismissal Dialog Architecture (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_77_dismissal_modal_two_tier_progressive_disclosure.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `index.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EB Completed — Mobile Crease Header & Strike Swap Zero Overlap Architecture (`apps/api/src/ui/mobile-view.ts`, `tests/test_78_mobile_crease_strike_swap_zero_overlap.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Strike Swap Overlap Root Cause Remediation**:
+    - Eliminated the floating absolute circular FAB (`.btn-swap-strike-bridge` with `left: 50%; top: 50%; transform: translate(-50%, -50%)`) that hovered directly between striker and non-striker cards, intruding 18.5px into each card and obscuring batter names and runs.
+    - Implemented a dedicated **Crease Action Header Row** (`.mobile-crease-header-row`) positioned cleanly above the 2-column cards grid.
+    - **Header Row Left**: Athletic category title `${this.iconSvg('users', '#00E599', 13)} BATTERS AT CREASE`.
+    - **Header Row Right**: `#btnMobileSwapStrike` styled as an ergonomic athletic pill (`min-height: 44px; padding: 0.35rem 0.75rem; border-radius: 22px;`) with high-contrast icon and clear text label `Swap Strike`.
+  - **2. Zero Bounding-Box Overlap & Clean Visual Hierarchy**:
+    - Both `#mobileStrikerCard` and `#mobileNonStrikerCard` now retain 100% of their horizontal and vertical canvas with zero pixel collision or text truncation.
+    - All batter figures (names, runs, balls, boundaries, strike rate, RHB/LHB stance badges) are completely unobstructed across all themes (Stadium Night, Swiss Minimalist, Nordic Editorial).
+    - Upgraded `#btnMobileChangeBowler` (`.btn-change-bowler-pill`) to $\ge 44$px touch height to maintain universal Apple HIG / WCAG 2.5.5 ergonomic touch targets.
+  - **3. Verification & Testing Health**:
+    - Created sequential Playwright E2E suite `tests/test_78_mobile_crease_strike_swap_zero_overlap.py` verifying zero bounding-box collision, strictly above card placement (`btn.y + height <= striker.y`), $\ge 44 \times 44$px touch dimensions, functional strike rotation, theme persistence, and zero console errors.
+    - All 254 unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - All 13 consolidated Playwright suites plus tests 77 & 78 passing 100%.
+    - 0 anti-patterns detected via `impeccable detect` (only sanctioned brand tokens `Space Grotesk` and `Fraunces`).
+    - Distribution parity synchronized and verified via `./pipeline.sh package` (Rule 6).
+    - Android 15 Release & Debug APKs recompiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2EA Completed — Two-Tier Progressive Disclosure Dismissal Dialog Architecture (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `tests/test_77_dismissal_modal_two_tier_progressive_disclosure.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `index.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Hick's Law & Cognitive Load Remediation ("Minimal choices ≤ 4")**:
     - Resolved the unranked 12-mode dismissal grid/list anti-pattern that gave rare edge-case rules (Law 34 Hit Ball Twice, Law 37 Handled Ball) the same visual weight as standard dismissals.
     - Implemented **Two-Tier Progressive Disclosure** across both Mobile and Desktop scoring interfaces.

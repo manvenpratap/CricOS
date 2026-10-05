@@ -186,7 +186,7 @@ export function getMobileAppHtml(): string {
       background: #FFFFFF !important;
       border: 1.5px solid #059669 !important;
       color: #059669 !important;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12) !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08) !important;
     }
     body[data-theme="swiss"] .btn-change-bowler-pill {
       background: #F0F9FF !important;
@@ -962,7 +962,7 @@ export function getMobileAppHtml(): string {
       background: #FCFBF8 !important;
       border: 1.5px solid #15803D !important;
       color: #15803D !important;
-      box-shadow: 0 4px 12px rgba(68, 64, 60, 0.1) !important;
+      box-shadow: 0 1px 4px rgba(68, 64, 60, 0.08) !important;
     }
     body[data-theme="nordic"] .btn-change-bowler-pill {
       background: rgba(180, 83, 9, 0.08) !important;
@@ -2572,49 +2572,46 @@ export function getMobileAppHtml(): string {
       background: rgba(0, 229, 153, 0.3);
     }
 
-    /* Centered Floating Bridge Strike Swap Button */
+    /* Crease Action Header & Strike Swap Control */
     .mobile-batters-crease-container {
-      position: relative;
       margin-bottom: 0.5rem;
     }
+    .mobile-crease-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+      gap: 0.5rem;
+    }
     .btn-swap-strike-bridge {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 44px;
-      height: 44px;
-      min-width: 44px;
-      min-height: 44px;
-      border-radius: 50%;
-      background: rgba(10, 16, 28, 0.95);
-      border: 1.5px solid #00E599;
-      color: #00E599;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-sizing: border-box;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 229, 153, 0.3);
+      gap: 0.3rem;
+      min-height: 44px;
+      padding: 0.35rem 0.75rem;
+      border-radius: 22px;
+      background: rgba(0, 229, 153, 0.1);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      color: #00E599;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
       cursor: pointer;
-      z-index: 10;
       user-select: none;
       -webkit-user-select: none;
       touch-action: manipulation;
+      box-sizing: border-box;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     }
-    .btn-swap-strike-bridge::before {
-      content: '';
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-    }
     .btn-swap-strike-bridge:hover {
-      transform: translate(-50%, -50%) scale(1.1);
       background: rgba(0, 229, 153, 0.18);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6), 0 0 14px rgba(0, 229, 153, 0.5);
+      border-color: #00E599;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 229, 153, 0.25);
     }
     .btn-swap-strike-bridge:active {
-      transform: translate(-50%, -50%) scale(0.92);
+      transform: scale(0.95);
       background: rgba(0, 229, 153, 0.28);
     }
 
@@ -2622,18 +2619,21 @@ export function getMobileAppHtml(): string {
     .btn-change-bowler-pill {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.2rem;
+      min-height: 44px;
+      padding: 0.35rem 0.65rem;
       background: rgba(0, 210, 255, 0.08);
       border: 1px solid rgba(0, 210, 255, 0.35);
       color: #00D2FF;
-      padding: 0.18rem 0.48rem;
       border-radius: 6px;
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-weight: 700;
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
       touch-action: manipulation;
+      box-sizing: border-box;
       transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
       white-space: nowrap;
     }
@@ -13979,7 +13979,13 @@ export function getMobileAppHtml(): string {
           // 2. Active Batters on Field (Striker + Non-Striker)
           var strikerStanceBadge = this.getBatterStance(this.matchState.striker.name);
           var nonStrikerStanceBadge = this.getBatterStance(this.matchState.nonStriker.name);
-          h += '<div class="mobile-batters-crease-container" style="position: relative; margin-bottom: 0.5rem;">';
+          h += '<div class="mobile-batters-crease-container" style="margin-bottom: 0.5rem;">';
+          h += '<div class="mobile-crease-header-row">';
+          h += '<div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">' + this.iconSvg('users', '#00E599', 13) + ' <span>BATTERS AT CREASE</span></div>';
+          if (this.profile.persona === 'SCORER') {
+            h += '<button type="button" class="btn-swap-strike-bridge" id="btnMobileSwapStrike" onclick="event.stopPropagation(); window.cricosMobileApp.rotateStrike()" data-tooltip="Rotate strike manually (Scorer only)" aria-label="Swap Strike"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L13 16"/></svg><span>Swap Strike</span></button>';
+          }
+          h += '</div>';
           h += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">';
           
           // Striker Card
@@ -14010,11 +14016,6 @@ export function getMobileAppHtml(): string {
           h += '<div style="font-size: 0.62rem; color: #94a3b8; margin-top: 0.15rem;">SR: <strong style="color: #f8fafc;">' + nonStrikerSr + '</strong></div>';
           h += '</div>';
           h += '</div>';
-
-          // Floating Tactile Strike Swap FAB Bridge (Scorer Only)
-          if (this.profile.persona === 'SCORER') {
-            h += '<button type="button" class="btn-swap-strike-bridge" id="btnMobileSwapStrike" onclick="event.stopPropagation(); window.cricosMobileApp.rotateStrike()" data-tooltip="Rotate strike manually (Scorer only)" aria-label="Swap Strike"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L13 16"/></svg></button>';
-          }
           h += '</div>';
 
           // 3. Partnership & Bowler Figures Card
