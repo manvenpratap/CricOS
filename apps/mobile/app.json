@@ -43,7 +43,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "cricos-unified-cricket-platform"
+        "projectId": "cricos"
       },
       "apiBaseUrl": "http://localhost:3000"
     }

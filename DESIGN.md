@@ -1,5 +1,5 @@
 # CricOS — Design System & Visual Guidelines
-> Full Stitch UI design requirements and ready-to-run prompts: see [STITCH_DESIGN_REQUIREMENTS.md](file:///Volumes/Study/Projects/unified_cricket_platform/STITCH_DESIGN_REQUIREMENTS.md).
+> Full Stitch UI design requirements and ready-to-run prompts: see [STITCH_DESIGN_REQUIREMENTS.md](./STITCH_DESIGN_REQUIREMENTS.md).
 
 ## 1. Aesthetics & Atmosphere
 - **Theme**: Floodlit Stadium Broadcast & Athletic Precision Glassmorphism (DFII 17/15).

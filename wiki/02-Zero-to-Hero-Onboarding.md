@@ -17,7 +17,7 @@ CricOS is built on a high-velocity TypeScript + Native Hybrid stack:
 ## Part II: Codebase Navigation & Directory Map
 
 ```text
-unified_cricket_platform/
+CricOS/
 ├── apps/
 │   ├── api/
 │   │   └── src/

@@ -5,9 +5,9 @@ max_score: 40
 na_heuristics: 
 p0_count: 1
 p1_count: 1
-target_identity: "file:/Volumes/Study/Projects/unified_cricket_platform/apps/api/src/ui/dashboard.ts"
+target_identity: "file:/Volumes/Study/Projects/CricOS/apps/api/src/ui/dashboard.ts"
 target_fingerprint: "sha256:e48623e03c2bd1aa75caabe3b632cff082dd30d1c70cade35ad51dcc1ad3acbb"
-target_path: /Volumes/Study/Projects/unified_cricket_platform/apps/api/src/ui/dashboard.ts
+target_path: /Volumes/Study/Projects/CricOS/apps/api/src/ui/dashboard.ts
 timestamp: 2026-10-04T17-32-11Z
 slug: apps-api-src-ui-dashboard-ts
 ---
