@@ -1,14 +1,26 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 08:56:00
-**Version:** 1.0.0-phase2ec (Mobile Emerging Studios Drawer, Topbar Disambiguation & Match Top Declutter Architecture)  
+**Last Updated:** 2026-10-05 09:23:00
+**Version:** 1.0.0-phase2ed (Project Folder & Canonical References Migration to CricOS)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EC Completed — Mobile Emerging Studios Drawer, Topbar Disambiguation & Match Top Declutter Architecture (`apps/api/src/ui/mobile-view.ts`, `tests/test_79_mobile_emerging_subnav_and_disambiguation.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2ED Completed — Project Folder & Canonical References Migration to CricOS (`/Volumes/Study/Projects/CricOS`, `DESIGN.md`, `wiki/02-Zero-to-Hero-Onboarding.md`, `apps/mobile/app.json`, `.impeccable/critique/`):
+  - **1. Project Directory Canonical Renaming**:
+    - Relocated canonical project root on disk from `/Volumes/Study/Projects/unified_cricket_platform` to `/Volumes/Study/Projects/CricOS`.
+    - Maintained an explicit symlink `/Volumes/Study/Projects/unified_cricket_platform -> /Volumes/Study/Projects/CricOS` ensuring transparent backwards compatibility across existing background processes, IDE workspaces, and shell tooling.
+  - **2. Full Internal Reference Migration**:
+    - Replaced hardcoded filesystem paths in `DESIGN.md` and `.impeccable/critique/` with portable relative paths and canonical `CricOS` path references.
+    - Updated directory architecture map in `wiki/02-Zero-to-Hero-Onboarding.md` from `unified_cricket_platform/` to `CricOS/`.
+    - Updated EAS mobile project identifier in `apps/mobile/app.json` from `cricos-unified-cricket-platform` to `cricos`.
+  - **3. Verification & Pipeline Integrity**:
+    - All 254 unit and domain tests passing 100% via `./pipeline.sh test --summary`.
+    - All Playwright E2E suites passing 100% under the new `/Volumes/Study/Projects/CricOS` root.
+    - Git remote verified at `https://github.com/manvenpratap/CricOS.git`.
+- **Preceding Phase**: Phase 2EC Completed — Mobile Emerging Studios Drawer, Topbar Disambiguation & Match Top Declutter Architecture (`apps/api/src/ui/mobile-view.ts`, `tests/test_79_mobile_emerging_subnav_and_disambiguation.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/public/index.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Disambiguation of Duplicate "Live" Labels**:
     - Disambiguated topbar telemetry & real-time sync status (`#mobileHeaderLivePulse`): changed text from `LIVE` to `SYNCED` with tooltip "CricOS Real-time Telemetry & Sync Active".
     - Changed bottom nav label for TURF_PROVIDER persona from `Live` to `Match`.
