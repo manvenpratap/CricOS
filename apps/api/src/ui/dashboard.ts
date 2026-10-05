@@ -1,6 +1,7 @@
 import { ICC_CRICKET_LAWS_DIRECTORY } from '@cricket-platform/scoring';
 import { generateQrCodeSvg, getQrCodeClientScript } from './qr-code.js';
 import { getDismissalPopupConfig, getDismissalConfigClientScript } from './dismissal-config.js';
+import { ATHLETE_PRESET_AVATARS } from './preset-avatars.js';
 
 // =========================================================================
 // CricOS Icon System — Desktop Iconsax Two-Tone 24×24 SVG Engine
@@ -7375,16 +7376,16 @@ export function getDashboardHtml(): string {
             <div style="font-size: 0.68rem; color: #94a3b8; margin-bottom: 0.35rem; text-align: center;">Or choose an elite athletic preset portrait:</div>
             <div style="display: flex; gap: 0.5rem; justify-content: center; align-items: center;" id="avatarPresetsContainer">
               <button type="button" class="preset-avatar-chip active" onclick="selectPresetAvatar(0)" data-tooltip="Premier Batsman • Golden Hour Floodlit Stance">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL" alt="Premier Batsman">
+                <img src="${ATHLETE_PRESET_AVATARS[0]}" alt="Premier Batsman">
               </button>
               <button type="button" class="preset-avatar-chip" onclick="selectPresetAvatar(1)" data-tooltip="Fast Bowler • Intense Violet Floodlight Focus">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS" alt="Fast Bowler">
+                <img src="${ATHLETE_PRESET_AVATARS[1]}" alt="Fast Bowler">
               </button>
               <button type="button" class="preset-avatar-chip" onclick="selectPresetAvatar(2)" data-tooltip="Certified Official Scorer • Match Telemetry Specialist">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM" alt="Official Scorer">
+                <img src="${ATHLETE_PRESET_AVATARS[2]}" alt="Official Scorer">
               </button>
               <button type="button" class="preset-avatar-chip" onclick="selectPresetAvatar(3)" data-tooltip="Dynamic Lofted Drive Batter • Stadium Spotlight">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td" alt="Lofted Drive Batter">
+                <img src="${ATHLETE_PRESET_AVATARS[3]}" alt="Lofted Drive Batter">
               </button>
             </div>
           </div>
@@ -14051,12 +14052,7 @@ cricos_active_sse_connections 1</pre>
     // ==========================================
     // Visual Media & Image Upload Engine
     // ==========================================
-    const PRESET_AVATAR_URLS = [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC5zsi-4FBa-Z1Eee0XN9VJLMNKkpapqMKI3p-wRghSgTmdowwvWNnIAvOT3qnsVXBPY0_ie2pi8SvKF89lvnqdTNG_VkNigYJIx8LIUS4J4OkBPrDAgB4H2YPBECcopy8HFwZxjGOOk_JuMUrTBOJt6tdn8uXxiQxGG5-QSFQYOdxnNVtq-4s4fq739MXjkXft2ZTkWCLKfdJIClzlJbwhkIKUYG0F83wJ5PGWdlgVvEKfy5G-ABVL',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC2XvvtPAeW8Ga5y7tfq63z7Ij3qlbAA9JEcXfh5ekTQgCrVwtEsHHqIJQikzbyS7YKbYd5B6pcUUHdMYfuSI9EvMXjMDrnC1CaDujvq1aUTUvE4vWFvjMPSjfAHWxI7o23tMsCivrfnjEXUdrQsxpj-FVXcpmB5HdDt2qKWjvttV3owwehXAF4IOYSN9QPZfxh0jGsM-0c4p-0pLaD2N2jDCww6tb_spNt5HhgH7KG6_BWGSTCQzBS',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCTQpaVOQxypVR8RyC2bMkxnPG7zM_wNzX-NV81u-Ijjs1vvk-xA9_tvvEobZmhACZ7AqtCHa7UcooJzPUQDAP8D6p5xlo6Nq1kKvc3pc1xHdXyvx1V5FTTrO7-WF2lXjbYq6BxHCXjw-Zm5xw57jYjEw6HzUz_oclJH1moQP0o-OdPIZfhM9jJFYKmpCQzLLYrU8uKXckkZHnVYNojtnlnSWlwVgEdy-xofPTdyYPdbp4EWwUI_WaM',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAUcR9NUep6DGvuUHHsqbnQGGJ0eGgEMUC0V_oMlmfCqbIhGPdw8-KwFtNKNHDBDnyyCyHLBJJpAkQ5dSxZz4LjsFLgdinWV1k1pJKgbIZ4iFMFLPG9Vss4A4BTekvTV2De6UUo9RWkqThN_ljcXj8fDiasGTQAefCMhRIHGTMsMVFuc_2WGvJ3LuDtUjEiVsdUiLgiyedYpZhi2H8EsfTdwrpCc2KspZnDVuHykwtrh7wTTPal76Td'
-    ];
+    const PRESET_AVATAR_URLS = ${JSON.stringify(ATHLETE_PRESET_AVATARS)};
 
     let venueGalleryImages = {};
 

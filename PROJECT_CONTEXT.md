@@ -1,14 +1,26 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 09:23:00
-**Version:** 1.0.0-phase2ed (Project Folder & Canonical References Migration to CricOS)  
+**Last Updated:** 2026-10-05 23:42:00
+**Version:** 1.0.0-phase2ee (Offline Embedded Base64 Preset Athlete Portraits & Mobile APK Asset Isolation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2ED Completed — Project Folder & Canonical References Migration to CricOS (`/Volumes/Study/Projects/CricOS`, `DESIGN.md`, `wiki/02-Zero-to-Hero-Onboarding.md`, `apps/mobile/app.json`, `.impeccable/critique/`):
+- **Active Phase**: Phase 2EE Completed — Offline Embedded Base64 Preset Athlete Portraits & Mobile APK Asset Isolation (`apps/api/src/ui/preset-avatars.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/android/app/src/main/assets/index.html`, `apps/mobile/ios/CricOS/Resources/www/index.html`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Offline Preset Headshots & Base64 Data URI Inlining**:
+    - Replaced external Google temporary URLs (`lh3.googleusercontent.com`) with self-contained, high-resolution 200x200 base64 JPEG data URIs in a centralized module `apps/api/src/ui/preset-avatars.ts` (`ATHLETE_PRESET_AVATARS`).
+    - Resolved APK portrait invisibility caused by offline environment and Android 15 (targetSdk 35) WebView security restrictions blocking external image fetch from `file:///android_asset/`.
+    - Compact payload: ~55KB total for all 4 portraits (Premier Batsman, Fast Bowler, Official Scorer, Lofted Drive Batter) with Lanczos filtering and 80% quality compression.
+  - **2. DRY Cross-Platform Architecture**:
+    - Mobile App (`apps/api/src/ui/mobile-view.ts`): Injected `ATHLETE_PRESET_AVATARS` into client state; updated user profile avatar, all 16 Playing XI roster headshots, Edit Profile action sheet chips, and Signup preset quick-pick chips to use embedded data URIs without duplication.
+    - Desktop Console (`apps/api/src/ui/dashboard.ts`): Updated desktop quick-pick preset chips and `PRESET_AVATAR_URLS` engine to share the same offline base64 assets.
+  - **3. Verification & Pipeline Integrity**:
+    - 254 domain unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - Headless Playwright verification confirmed zero broken images (`complete === true && naturalWidth > 0`) across Profile, Edit Profile Sheet, Squad / Teams, and Signup screens directly from Android asset `file:///` path.
+    - Packaged and compiled Android native release & debug APKs via `./pipeline.sh apk` (Rule 6).
+- **Preceding Phase**: Phase 2ED Completed — Project Folder & Canonical References Migration to CricOS (`/Volumes/Study/Projects/CricOS`, `DESIGN.md`, `wiki/02-Zero-to-Hero-Onboarding.md`, `apps/mobile/app.json`, `.impeccable/critique/`):
   - **1. Project Directory Canonical Renaming**:
     - Relocated canonical project root on disk from `/Volumes/Study/Projects/unified_cricket_platform` to `/Volumes/Study/Projects/CricOS`.
     - Maintained an explicit symlink `/Volumes/Study/Projects/unified_cricket_platform -> /Volumes/Study/Projects/CricOS` ensuring transparent backwards compatibility across existing background processes, IDE workspaces, and shell tooling.
