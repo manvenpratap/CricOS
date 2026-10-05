@@ -26,6 +26,31 @@
       --font-score: 'Chakra Petch', monospace;
       --font-mono: 'JetBrains Mono', monospace;
 
+      /* Impeccable Typographic Scale, Tracking & Rhythm Tokens */
+      --font-size-display-2xl: clamp(2rem, 6vw, 2.75rem);
+      --font-size-display-xl: clamp(1.75rem, 5vw, 2.25rem);
+      --font-size-display-lg: 1.5rem;
+      --font-size-h1: 1.35rem;
+      --font-size-h2: 1.15rem;
+      --font-size-h3: 1rem;
+      --font-size-h4: 0.9rem;
+      --font-size-body: 0.88rem;
+      --font-size-body-sm: 0.8rem;
+      --font-size-caption: 0.72rem;
+      --font-size-micro: 0.65rem;
+
+      --leading-display: 1.08;
+      --leading-tight: 1.2;
+      --leading-snug: 1.35;
+      --leading-normal: 1.5;
+      --leading-relaxed: 1.62;
+
+      --tracking-display: -0.025em;
+      --tracking-title: -0.015em;
+      --tracking-normal: 0em;
+      --tracking-caps: 0.05em;
+      --tracking-caps-wide: 0.08em;
+
       /* Emil Kowalski Animation, Physics & Native Mobile Tokens */
       --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
       --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -37,9 +62,18 @@
     }
     * { box-sizing: border-box; }
     html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
       -webkit-tap-highlight-color: transparent;
       height: 100%;
       overscroll-behavior: none;
+    }
+
+    ::selection {
+      background: rgba(0, 229, 153, 0.3);
+      color: #FFFFFF;
     }
     button, input, select, textarea {
       touch-action: manipulation;
@@ -1768,12 +1802,71 @@
       background-image: radial-gradient(circle at 50% 0%, rgba(0, 229, 153, 0.08) 0%, transparent 65%);
       color: #f8fafc;
       font-family: var(--font-body);
+      font-size: var(--font-size-body);
+      line-height: var(--leading-normal);
+      letter-spacing: var(--tracking-normal);
+      text-rendering: optimizeLegibility;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
     }
+
+    h1, h2, h3, h4, .preview-title, .mobile-section-title, .mobile-sheet-title, .mobile-card-title {
+      font-family: var(--font-display);
+      letter-spacing: var(--tracking-title);
+      line-height: var(--leading-tight);
+      text-wrap: balance;
+    }
+
+    p, .preview-desc, .mobile-sheet-desc, .mobile-card-desc {
+      line-height: var(--leading-relaxed);
+      text-wrap: pretty;
+    }
+
+    /* Precision Tabular Numbers Alignment for all Mobile Metrics, Scores & Delivery Bubbles */
+    .mobile-hero-score,
+    .mobile-overs-val,
+    .mobile-runrate-val,
+    .mobile-target-runs,
+    .mobile-target-balls,
+    .mobile-stat-val,
+    .mobile-stat-figures,
+    .mobile-stat-num,
+    .mobile-ball-bubble,
+    .over-bubble,
+    .mobile-pad-btn,
+    .mobile-telemetry-pill,
+    .status-bar,
+    .stat-3d-front .stat-val,
+    .stat-3d-back .stat-ctx-val,
+    .athletic-rating-val,
+    .athletic-stat-num,
+    .analytics-hud-metric .value,
+    .analytics-over-chip,
+    .worm-over-chip,
+    .pitch-telemetry-val,
+    .mobile-match-score,
+    .mobile-scorecard-runs,
+    .mobile-scorecard-overs,
+    .mobile-timer-val {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    /* Positive Optical Tracking for Uppercase Badges, Chips & Micro Labels */
+    .mobile-section-label,
+    .mobile-badge,
+    .mobile-tab-label,
+    .mobile-chip,
+    .mobile-live-pill,
+    .preview-badge,
+    .mobile-telemetry-label {
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
     .preview-header {
       text-align: center;
       margin: 1.5rem 0 1rem;
@@ -4546,7 +4639,7 @@
     <div class="home-indicator"></div>
   </div>
 
-  <script type="module">
+  <script>
     // Auto-detect native mobile app / standalone mode to strip emulator framing
     (function initNativePlatformMode() {
       const isNative = window.location.protocol === 'file:' ||
