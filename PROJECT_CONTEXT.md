@@ -1,14 +1,29 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-04 17:35:00
-**Version:** 1.0.0-phase2dw (Unified Pitch & Weather Conditions Studio & Sidebar Navigation)  
+**Last Updated:** 2026-10-05 06:15:00
+**Version:** 1.0.0-phase2dx (Full Mobile Ergonomic Touch Target Modernization & Impeccable Polish)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DW Completed — Unified Pitch & Weather Conditions Studio with Consolidated Sidebar Navigation (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DX Completed — Full Mobile Ergonomic Touch Target Modernization & Impeccable Polish (`apps/api/src/ui/mobile-view.ts`, `dist/mobile.html`, `dist/public/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Universal 44px Touch Target Modernization (`$impeccable adapt`)**:
+    - Expanded all interactive controls across every screen (`MATCHES`, `TEAMS`, `TOURNAMENTS`, `INCIDENTS`, `MARKETPLACE`, `ADMIN`, `PROFILE`, `AUTH`) and modal/action sheets (`Settings`, `Dismissal`, `Bowler Rotation`, `Penalty Runs`, `Extra Runs`, `ICC Laws`, `Pitch & Weather`, `Player Auction`, `Sidebar Drawer`, `DRS Review`, `3D Bat Customizer`, `Gear Publisher`, `Event Basket`, `Full Player Dossier`) to meet Apple HIG and WCAG 2.5.5 / 2.5.8 touch target ergonomics standard ($\ge 44 \times 44\text{px}$).
+    - Standardized `.wagon-picker-zone-btn`, `.mobile-subnav-btn`, `.btn` base scoring rules, `.btn-swap-strike-bridge`, `.mobile-sidebar-persona-chip`, `.wagon-pill-btn`, `.analytics-tab-btn`, `.auth-mode-tab`, `.signup-role-card`, `.mobile-chip`, `.player-list-item`, `.btn-card-radar-splits`, `#btnEditProfileBio`, turf provider/booking triggers, and gear store action controls with `min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation;`.
+  - **2. Layout & Viewport Verification (`$impeccable polish`)**:
+    - Verified across viewports (390px standard iPhone and 360px Android compact floor):
+      - 0 touch target violations across all 8 screens and 14 action sheets / drawers.
+      - Zero horizontal overflow (`document.documentElement.scrollWidth <= window.innerWidth`).
+      - Zero console errors or warnings (`pageerror`, `console.error`).
+  - **3. Verification & Pipeline Integrity**:
+    - 254 domain unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2 Minimal Tokens Protocol).
+    - All 13 consolidated Playwright tests passing 100% with zero critical console errors (`assert_no_critical_errors(page)`).
+    - Clean `impeccable detect` telemetry with zero anti-patterns (sole warning is sanctioned brand token `fraunces`).
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package` (Rule 6).
+    - Android 15 Release & Debug APKs recompiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DW Completed — Unified Pitch & Weather Conditions Studio with Consolidated Sidebar Navigation (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Unified Pitch & Weather Conditions Studio**:
     - **Desktop Web Console (`apps/api/src/ui/dashboard.ts`)**: Upgraded `#modalPitchMapSimulator` (`#pitchMapModalTitle`) into the single, unified **Pitch & Weather Conditions Studio**. Combines turf/stadium selector with live GPS coordinates, Open-Meteo satellite sync, meteorological micro-climate engine (`#matchVenueWeatherBar`), 5-hour match window timeline forecast, pitch soil composition & micro-climate aerodynamics grid, 22-yard pitch length heatmap SVG (`#pitchMapSvg`) with delivery impact points, and Monte Carlo "What-If" Chase Win Probability simulator.
     - **Mobile App View (`apps/api/src/ui/mobile-view.ts`)**: Implemented `openPitchWeatherSheet(simMode)` action sheet combining active turf venue picker, verified GPS badge, micro-climate weather badges (temperature, feels-like, wind vector, humidity, aerodynamic swing, dew onset, rain %, and DLS risk), tactical toss recommendations, 5-hour timeline grid, soil moisture & friction cards, 22-yard pitch length heatmap SVG, and Monte Carlo scenario triggers (+18r Over, 2 Wickets, Live State). Aliased `openPitchMapSheet` to `openPitchWeatherSheet` for full backward compatibility.
