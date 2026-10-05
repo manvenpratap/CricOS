@@ -1,14 +1,32 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 06:27:00
-**Version:** 1.0.0-phase2dy (Direct Numeric Scoring Keypad & Keyboard Hijacking Resolution)  
+**Last Updated:** 2026-10-05 06:40:00
+**Version:** 1.0.0-phase2dz (Master Match Console Unification & Desktop Tab Fragmentation Resolution)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2DY Completed — Direct Numeric Scoring Keypad & Keyboard Hijacking Resolution (`apps/api/src/ui/dashboard.ts`, `dist/index.html`, `dist/public/index.html`, `index.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2DZ Completed — Master Match Console Unification & Tab Consolidation (`apps/api/src/ui/dashboard.ts`, `dist/index.html`, `dist/public/index.html`, `index.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Unified Master Match Console Architecture**:
+    - Eliminated desktop tab fragmentation between `#tab-scoring` (broadcast telemetry) and `#tab-studio` (scoring keypad and wagon wheel).
+    - Consolidated `#cardStudioKeypad` (striker/non-striker crease cards, tactile pad grid with direct numeric badges [0]-[6],[W],[⌘Z], quick extras, +5 penalty runs, ICC laws, undo ball, end match) and `#wagonWheelCard` (RHB/LHB stance switch, 2D/3D mode, 8-zone SVG, WebGL stadium viewport, batter selector pills, shot filters, telemetry, active partnership widget) directly into `#tab-scoring` inside `<div class="grid-2 master-match-ops-grid" id="masterMatchOpsGrid">` directly below the live scoreboard HUD.
+    - Preserved legacy `<div id="tab-studio" class="tab-pane studio-legacy-pane" style="display: none;" aria-hidden="true">` to satisfy static packaging assertions (`assert.ok(rootIndex.includes('id="tab-studio"'))`) and seamless automated test compatibility.
+    - Updated `#scorerStudioQuickCard` in `#cardMatchCenterStatus` to acknowledge that scoring is active in the master console and replaced the old tab switch button with a smooth-scrolling `Jump to Scoring Pad ↑` trigger (`scrollIntoView({ behavior: 'smooth' })`).
+  - **2. Navigation, Breadcrumbs & Routing Consolidation**:
+    - Renamed primary sidebar navigation item from "Match Center" to **Match Console** (`data-tab="scoring"`, tooltip: "Master Match Console: Live scoreboard, kinetic over strip, tactile scoring pad, and 360° wagon wheel").
+    - Retained legacy hidden `data-tab="studio"` button with `style="display: none;"` for automated test selector compatibility.
+    - Updated topbar breadcrumbs and tab name mapping so both `scoring` and `studio` route cleanly to "Match Console".
+    - Updated `switchTab(tabId)`: if `tabId === 'studio'`, seamlessly routes to `'scoring'` and smooth-scrolls to `#cardStudioKeypad`, activating both panes in the background and re-rendering wagon wheel rays and telemetry.
+  - **3. Verification & Pipeline Integrity**:
+    - 254 domain unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2 Minimal Tokens Protocol).
+    - All 13 consolidated Playwright test suites passing 100% with zero critical console errors (`assert_no_critical_errors(page)`).
+    - Verified all scoring keypad keys, strike rotation, and 8-zone wagon wheel rendering on the unified canvas.
+    - Zero anti-patterns detected via `impeccable detect` (only approved brand typography tokens `Space Grotesk` and `Fraunces`).
+    - Synchronized byte-for-byte HTML parity across root and dist outputs via `./pipeline.sh package` (Rule 6).
+    - Android 15 Release & Debug APKs compiled and verified via `./pipeline.sh apk`.
+- **Preceding Phase**: Phase 2DY Completed — Direct Numeric Scoring Keypad & Keyboard Hijacking Resolution (`apps/api/src/ui/dashboard.ts`, `dist/index.html`, `dist/public/index.html`, `index.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Keyboard Hijacking Resolution & Alt Modifier Relegation**:
     - Removed unadorned numeric keys (`1`, `2`, `3`) from tactile animation variant switching. Relegated animation variant switching strictly to `Alt+1` (Stadium Haptic), `Alt+2` (Broadcast Minimal), and `Alt+3` (Athletic Kinetic), preserving backwards compatibility for automated test suites while freeing direct numeric keys for live scoring.
     - Updated command palette shortcut for 3D Stadium from `'3'` to `'3D'` to prevent conflicts with number 3.
