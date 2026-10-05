@@ -2577,12 +2577,18 @@ export function getMobileAppHtml(): string {
       color: #94a3b8;
       font-size: 0.72rem;
       font-weight: 600;
+      white-space: nowrap;
     }
     .mobile-chip.active {
       background: rgba(0, 229, 153, 0.15);
       border-color: #00E599;
       color: #00E599;
       font-weight: 700;
+    }
+    #mobileGearSubCatRow::-webkit-scrollbar { display: none; }
+    #mobileGearSubCatRow button {
+      flex: 0 0 auto !important;
+      white-space: nowrap !important;
     }
 
     /* Tactical Scoring Studio Pad & Hold Button */
@@ -9117,7 +9123,7 @@ export function getMobileAppHtml(): string {
             var qfStyle = isQfActive
               ? 'background: rgba(0, 210, 255, 0.25); border: 1.5px solid #00D2FF; color: #00D2FF; font-weight: 800;'
               : 'background: rgba(255,255,255,0.06); border: 1px solid ' + bdrColor + '; color: ' + muted + ';';
-            h += '<button type="button" onclick="window.cricosMobileApp.setMobileDismissalFielder(&apos;' + qf + '&apos;)" style="min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; padding: 0.35rem 0.65rem; border-radius: 8px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; ' + qfStyle + '" data-tooltip="Fielder: ' + qf + '">' + qf + '</button>';
+            h += '<button type="button" onclick="window.cricosMobileApp.setMobileDismissalFielder(&apos;' + qf + '&apos;)" style="flex: 0 0 auto; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; padding: 0.35rem 0.65rem; border-radius: 8px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; ' + qfStyle + '" data-tooltip="Fielder: ' + qf + '">' + qf + '</button>';
           }
           h += '</div>';
 
@@ -9274,7 +9280,7 @@ export function getMobileAppHtml(): string {
           var chipStyle = isCatActive
             ? 'background: rgba(56, 189, 248, 0.25); border: 1.5px solid #38bdf8; color: #38bdf8; font-weight: 800;'
             : 'background: ' + cardBg + '; border: 1px solid ' + bdrColor + '; color: ' + muted + ';';
-          h += '<button type="button" onclick="window.cricosMobileApp.setMobileIccLawsCategory(&apos;' + cKey + '&apos;)" style="min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; padding: 0.35rem 0.65rem; border-radius: 9999px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; ' + chipStyle + '" data-tooltip="Filter by ' + cLabel + '">' + cLabel + '</button>';
+          h += '<button type="button" onclick="window.cricosMobileApp.setMobileIccLawsCategory(&apos;' + cKey + '&apos;)" style="flex: 0 0 auto; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; padding: 0.35rem 0.65rem; border-radius: 9999px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; ' + chipStyle + '" data-tooltip="Filter by ' + cLabel + '">' + cLabel + '</button>';
         }
         h += '</div>';
 
@@ -13904,13 +13910,13 @@ export function getMobileAppHtml(): string {
           { id: 'NETS_TECH', label: 'Nets/Gyro' },
           { id: 'TROPHIES', label: 'Trophies' }
         ];
-        h += '<div id="mobileGearSubCatRow" style="display: flex; gap: 0.3rem; overflow-x: auto; padding-bottom: 0.35rem; margin-bottom: 0.55rem;">';
+        h += '<div id="mobileGearSubCatRow" class="mobile-chip-row" style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.35rem; margin-bottom: 0.55rem; -webkit-overflow-scrolling: touch;">';
         for (var sc = 0; sc < subCats.length; sc++) {
           var isAct = this.gearSubCategory === subCats[sc].id;
           var chipStyle = isAct
             ? (isLight ? 'background: #059669; color: #FFFFFF; border: 1px solid #047857;' : 'background: #00E599; color: #04070D; border: 1px solid #00E599;')
             : (isLight ? 'background: #F1F5F9; color: #0F172A; border: 1px solid #CBD5E1;' : 'background: rgba(255,255,255,0.07); color: #F8FAFC; border: 1px solid rgba(255,255,255,0.16);');
-          h += '<button type="button" id="mobileGearCat_' + subCats[sc].id + '" data-subcat="' + subCats[sc].id + '" onclick="window.cricosMobileApp.setMobileGearSubCat(this.dataset.subcat)" style="min-height: 44px; min-width: 44px; padding: 0.35rem 0.65rem; border-radius: 999px; font-size: 0.72rem; font-weight: 800; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; ' + chipStyle + '">' + subCats[sc].label + '</button>';
+          h += '<button type="button" id="mobileGearCat_' + subCats[sc].id + '" data-subcat="' + subCats[sc].id + '" onclick="window.cricosMobileApp.setMobileGearSubCat(this.dataset.subcat)" style="flex: 0 0 auto; min-height: 44px; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; ' + chipStyle + '">' + subCats[sc].label + '</button>';
         }
         h += '</div>';
 
@@ -14188,7 +14194,7 @@ export function getMobileAppHtml(): string {
             if (d === '6' || d === '6nb') { bg = 'rgba(0, 229, 153, 0.25)'; color = '#00E599'; }
             if (d === 'W') { bg = 'rgba(255, 51, 102, 0.25)'; color = '#ff3366'; }
             if (d.indexOf('wd') !== -1 || d.indexOf('nb') !== -1) { bg = 'rgba(255, 184, 0, 0.2)'; color = '#ffb800'; }
-            h += '<span style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background:' + bg + '; color:' + color + '; font-weight: 800; font-size: 0.8rem; font-family: var(--font-score); border: 1px solid rgba(255,255,255,0.1);">' + d + '</span>';
+            h += '<span style="flex-shrink: 0; min-width: 30px; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background:' + bg + '; color:' + color + '; font-weight: 800; font-size: 0.8rem; font-family: var(--font-score); border: 1px solid rgba(255,255,255,0.1);">' + d + '</span>';
           }
           if (this.matchState.currentOverDeliveries.length === 0) {
             h += '<span style="font-size: 0.68rem; color: #64748b; font-style: italic;">Awaiting first delivery of the over...</span>';

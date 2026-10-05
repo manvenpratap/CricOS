@@ -1,14 +1,27 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-05 23:42:00
-**Version:** 1.0.0-phase2ee (Offline Embedded Base64 Preset Athlete Portraits & Mobile APK Asset Isolation)  
+**Last Updated:** 2026-10-05 23:50:00
+**Version:** 1.0.0-phase2ef (Mobile Marketplace & Subcategory Filter Overlap Remediation)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EE Completed — Offline Embedded Base64 Preset Athlete Portraits & Mobile APK Asset Isolation (`apps/api/src/ui/preset-avatars.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/android/app/src/main/assets/index.html`, `apps/mobile/ios/CricOS/Resources/www/index.html`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EF Completed — Mobile Marketplace & Subcategory Filter Overlap Remediation (`apps/api/src/ui/mobile-view.ts`, `apps/mobile/android/app/src/main/assets/index.html`, `apps/mobile/ios/CricOS/Resources/www/index.html`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Root Cause Identification & Flexbox Fix**:
+    - Sub-category filter pills in the Gear Store (`#mobileGearSubCatRow`) were missing `flex: 0 0 auto` (`flex-shrink: 0`).
+    - Combined with `min-width: 44px` and `border-radius: 999px`, flexbox compressed all 6 items on mobile devices down to 44px circular footprints, causing wide button labels ("Balls", "Pads/Helmets", "Nets/Gyro", "Trophies") to overflow and collide directly on top of each other.
+  - **2. Shared Guard & Layout Remediation**:
+    - Applied `.mobile-chip-row` class and `flex: 0 0 auto !important; white-space: nowrap !important;` to `#mobileGearSubCatRow` and all its child buttons with ergonomic `0.75rem` horizontal padding and `9999px` pill border-radius.
+    - Added defensive `flex: 0 0 auto;` guards to sibling scrollable chip rows across the mobile app (dismissal fielders at line 9126, ICC laws categories at line 9283, and `flex-shrink: 0` to delivery balls at line 14197).
+    - Enforced `white-space: nowrap;` globally on `.mobile-chip`.
+  - **3. Verification & Pipeline Integrity**:
+    - Verified via Playwright at both 360px and 390px mobile viewports: confirmed `flexShrink === '0'`, `overflow === false`, and natural pill capsule widths ranging from 51px to 102px with smooth horizontal touch scrolling.
+    - Interactive filtering verified: tapping any chip dynamically filters catalog products and toggles active emerald styling.
+    - 254 domain unit tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - Android 15 Release & Debug APKs recompiled and verified via `./pipeline.sh apk` (Rule 6).
+- **Preceding Phase**: Phase 2EE Completed — Offline Embedded Base64 Preset Athlete Portraits & Mobile APK Asset Isolation (`apps/api/src/ui/preset-avatars.ts`, `apps/api/src/ui/mobile-view.ts`, `apps/api/src/ui/dashboard.ts`, `apps/mobile/android/app/src/main/assets/index.html`, `apps/mobile/ios/CricOS/Resources/www/index.html`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Offline Preset Headshots & Base64 Data URI Inlining**:
     - Replaced external Google temporary URLs (`lh3.googleusercontent.com`) with self-contained, high-resolution 200x200 base64 JPEG data URIs in a centralized module `apps/api/src/ui/preset-avatars.ts` (`ATHLETE_PRESET_AVATARS`).
     - Resolved APK portrait invisibility caused by offline environment and Android 15 (targetSdk 35) WebView security restrictions blocking external image fetch from `file:///android_asset/`.
