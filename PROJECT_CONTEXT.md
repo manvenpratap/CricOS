@@ -8,7 +8,18 @@
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EG Completed — Live Match Score Parity Between Desktop Webapp & Mobile APK (`apps/api/src/modules/scoring/routes.ts`, `apps/api/src/ui/dashboard.ts`, `apps/api/test/broadcast.test.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EH Completed — Eradicate Raw Persona Enum Underscore Text from Frontend UI (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Root Cause Identification**:
+    - Raw enum identifiers (`TURF_PROVIDER`, `VENUE_OPERATOR`) were being surfaced to end-users via raw string joins (`allowed.join(', ')`), unformatted interpolations (`role + ' WORKSPACE'`), and hardcoded card badges (`Allowed: ORGANISER, TURF_PROVIDER`).
+    - Internal token/contract enums (`data-role="TURF_PROVIDER"`, `value="TURF_PROVIDER"`) were intact, but visible DOM labels, tooltips, toasts, and sidebar headers contained unsightly underscores.
+  - **2. DRY Formatting Engine & Human-Friendly Labels**:
+    - Desktop Webapp (`apps/api/src/ui/dashboard.ts`): Updated `ROLE_PERMISSIONS.TURF_PROVIDER.label` from `'Provider'` to `'Turf Provider'`. Mapped persona chips, allowed-list labels, and restricted-access toasts through `ROLE_PERMISSIONS[r].label`. Cleaned up hero login tooltips and organiser preset badges to human-readable Title Case ("Allowed: Organiser, Turf Provider").
+    - Consumer Mobile App (`apps/api/src/ui/mobile-view.ts`): Implemented reusable `formatPersonaName(role)` helper mapping enum constants (`TURF_PROVIDER` -> `Turf Provider`). Applied across sidebar workspace header, allowed persona selector chips, persona switch toasts, quick sign-in notices, profile header subtitles, and JWT session badges.
+  - **3. Verification & Pipeline Integrity**:
+    - Verified all 255 domain tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - Preserved programmatic invariants (`data-role="TURF_PROVIDER"`).
+    - Packaged and synchronized `dist/index.html`, `dist/mobile.html`, root `index.html`, and recompiled Android APKs via `./pipeline.sh apk` (Rule 6).
+- **Preceding Phase**: Phase 2EG Completed — Live Match Score Parity Between Desktop Webapp & Mobile APK (`apps/api/src/modules/scoring/routes.ts`, `apps/api/src/ui/dashboard.ts`, `apps/api/test/broadcast.test.ts`, `tests/domain-scoring-and-match-ops.test.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Root Cause Identification**:
     - Backend in-memory state in `apps/api/src/modules/scoring/routes.ts` (`matchScores = new Map()`) was empty on server boot.
     - When the desktop webapp connected to SSE at `/api/v1/scoring/matches/match-pilot-1/live`, the route fell back to `createInitialScoreState()`, which returned a blank match state (`runs: 0, wickets: 0, legal_balls: 0`).

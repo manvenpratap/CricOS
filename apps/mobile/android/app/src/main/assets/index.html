@@ -7616,6 +7616,20 @@
         return h;
       }
 
+      formatPersonaName(role) {
+        var names = {
+          CAPTAIN: 'Captain',
+          PLAYER: 'Player',
+          SCORER: 'Scorer',
+          FAN: 'Fan',
+          UMPIRE: 'Umpire',
+          ORGANISER: 'Organiser',
+          TURF_PROVIDER: 'Turf Provider',
+          ADMIN: 'Admin'
+        };
+        return names[role] || (role ? String(role).replace(/_/g, ' ') : '');
+      }
+
       renderMobileSidebarDrawer() {
         var isOpen = Boolean(this.sidebarDrawerOpen);
         if (this.cleanFocusMode === undefined) this.cleanFocusMode = true;
@@ -7651,7 +7665,7 @@
         h += '<div class="mobile-sidebar-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid ' + dividerColor + '; margin-bottom: 0.75rem;">';
         h += '<div style="display: flex; align-items: center; gap: 0.5rem;">';
         h += '<span id="mobileSidebarBrandLogo" style="display: inline-flex; align-items: center; justify-content: center;">' + this.getBrandLogoSvg(28) + '</span>';
-        h += '<div><div id="mobileSidebarTitle" style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">Cric<span style="color: ' + accentBrandInk + ';">OS</span> Tactical</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg({'CAPTAIN':'bat','PLAYER':'user','SCORER':'lightning','FAN':'wave','UMPIRE':'scale','ORGANISER':'trophy','TURF_PROVIDER':'stadium','ADMIN':'shield'}[role]||'bat', accentBrandInk, 12) + ' ' + role + ' WORKSPACE</div></div>';
+        h += '<div><div id="mobileSidebarTitle" style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: ' + primaryInk + ';">Cric<span style="color: ' + accentBrandInk + ';">OS</span> Tactical</div><div style="font-size: 0.62rem; color: ' + accentBrandInk + '; font-weight: 800; display: flex; align-items: center; gap: 0.25rem;">' + this.iconSvg({'CAPTAIN':'bat','PLAYER':'user','SCORER':'lightning','FAN':'wave','UMPIRE':'scale','ORGANISER':'trophy','TURF_PROVIDER':'stadium','ADMIN':'shield'}[role]||'bat', accentBrandInk, 12) + ' ' + this.formatPersonaName(role).toUpperCase() + ' WORKSPACE</div></div>';
         h += '</div>';
         h += '<button type="button" id="btnCloseMobileSidebar" onclick="window.cricosMobileApp.closeSidebarDrawer()" style="' + closeBtnStyle + ' border-radius: 8px; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; cursor: pointer; touch-action: manipulation; box-sizing: border-box;" data-tooltip="Close Sidebar" aria-label="Close Sidebar"><span aria-hidden="true">&times;</span></button>';
         h += '</div>';
@@ -7663,6 +7677,7 @@
         for (var p = 0; p < allowedList.length; p++) {
           var pKey = allowedList[p];
           var isActRole = pKey === role;
+          var pLabel = this.formatPersonaName(pKey);
           var st = '';
           if (isActRole) {
             st = isLight
@@ -7673,7 +7688,7 @@
               ? 'background: #F1F5F9; border: 1px solid #94A3B8; color: #0F172A; font-weight: 700;'
               : 'background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: #E2E8F0; font-weight: 700;';
           }
-          h += '<button type="button" class="mobile-sidebar-persona-chip' + (isActRole ? ' active' : '') + '" data-persona="' + pKey + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona); window.cricosMobileApp.closeSidebarDrawer();" style="min-height: 44px; padding: 0.45rem 0.75rem; border-radius: 8px; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; ' + st + '" data-tooltip="Switch to ' + pKey + '">' + pKey + '</button>';
+          h += '<button type="button" class="mobile-sidebar-persona-chip' + (isActRole ? ' active' : '') + '" data-persona="' + pKey + '" onclick="window.cricosMobileApp.switchUserPersona(this.dataset.persona); window.cricosMobileApp.closeSidebarDrawer();" style="min-height: 44px; padding: 0.45rem 0.75rem; border-radius: 8px; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; touch-action: manipulation; ' + st + '" data-tooltip="Switch to ' + pLabel + '">' + pLabel + '</button>';
         }
         h += '</div>';
         h += '</div>';
@@ -7796,7 +7811,7 @@
           this.allowedPersonas.length > 0 &&
           this.allowedPersonas.indexOf(role) === -1
         ) {
-          this.showToast('Access restricted: ' + role + ' is not provisioned for your user account.', 'error');
+          this.showToast('Access restricted: ' + this.formatPersonaName(role) + ' is not provisioned for your user account.', 'error');
           return false;
         }
         this._screenChanged = true;
@@ -7892,7 +7907,8 @@
         this.switchUserPersona(primaryRole);
         this.profile.name = acct.name;
         this.render();
-        this.showToast('Signed in as ' + acct.name + ' (' + acct.allowedPersonas.join(', ') + ')', 'success');
+        var that = this;
+        this.showToast('Signed in as ' + acct.name + ' (' + acct.allowedPersonas.map(function(p){ return that.formatPersonaName(p); }).join(', ') + ')', 'success');
       }
 
       completeCustomHeroLogin() {
@@ -15290,7 +15306,7 @@
 
         h += '<div style="flex: 1;">';
         h += '<div class="profile-hero-name" style="font-size: 1.05rem; font-weight: 700;">' + this.profile.name + '</div>';
-        h += '<div class="profile-hero-subtitle" style="font-size: 0.7rem;"><span style="color: #00E599; font-weight: 600;">' + this.profile.persona + '</span> • ' + this.profile.role + ' • ' + this.profile.teamName + '</div>';
+        h += '<div class="profile-hero-subtitle" style="font-size: 0.7rem;"><span style="color: #00E599; font-weight: 600;">' + this.formatPersonaName(this.profile.persona) + '</span> • ' + (this.profile.role ? String(this.profile.role).replace(/_/g, ' ') : '') + ' • ' + this.profile.teamName + '</div>';
         h += '</div></div></div>';
 
         // Custom Cricket Bio & Profile Specifications Card
@@ -15461,7 +15477,9 @@
         h += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">';
         h += '<div style="font-size: 0.65rem; font-weight: 800; color: #00E599;">● JWT Session Active • ' + (this.profile.name || 'Virat Sharma') + ' (' + (this.identifier || 'virat@cricos.io') + ')</div>';
         h += '</div>';
-        h += '<div style="font-size: 0.6rem; color: #94a3b8; margin-bottom: 0.35rem; font-family: var(--font-mono);">Token: ' + String(activeSess.token || 'jwt_active').slice(0, 22) + ' • Provisioned: ' + allowedList.join(', ') + '</div>';
+        var that = this;
+        var allowedNames = allowedList.map(function(p){ return that.formatPersonaName(p); });
+        h += '<div style="font-size: 0.6rem; color: #94a3b8; margin-bottom: 0.35rem; font-family: var(--font-mono);">Token: ' + String(activeSess.token || 'jwt_active').slice(0, 22) + ' • Provisioned: ' + allowedNames.join(', ') + '</div>';
         h += '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">';
         var allRoles = [
           ['CAPTAIN', 'bat', 'Cpt'],

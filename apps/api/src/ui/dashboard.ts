@@ -7438,7 +7438,7 @@ export function getDashboardHtml(): string {
           </button>
           <button class="persona-pill-btn" onclick="selectPersona('TURF_PROVIDER')" data-role="TURF_PROVIDER" data-tooltip="Turf Venue Owner: Manage ground slots, surge pricing, and escrow payouts">
             <span class="persona-icon">${iconSvg('stadium', 'var(--turf-emerald)', 18)}</span>
-            <span>Provider</span>
+            <span>Turf Provider</span>
           </button>
         </div>
 
@@ -8045,7 +8045,7 @@ export function getDashboardHtml(): string {
                 <button type="button" id="btnHeroQuickCaptain" onclick="loginWithHeroAccount('CAPTAIN_PLAYER')" style="background-color: #0C233B; background: rgba(12, 35, 59, 0.96); border: 1px solid rgba(56, 189, 248, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Virat Sharma (CAPTAIN, PLAYER)">${iconSvg('crown', '#38BDF8', 14)} Captain (Virat S.)</button>
                 <button type="button" id="btnHeroQuickScorer" onclick="loginWithHeroAccount('SCORER_ONLY')" style="background-color: #082923; background: rgba(8, 41, 35, 0.96); border: 1px solid rgba(16, 185, 129, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Sunil Gavaskar (SCORER)">${iconSvg('clipboard', '#10B981', 14)} Scorer (Sunil G.)</button>
                 <button type="button" id="btnHeroQuickUmpire" onclick="loginWithHeroAccount('UMPIRE_OFFICIAL')" style="background-color: #2B1F0A; background: rgba(43, 31, 10, 0.96); border: 1px solid rgba(251, 191, 36, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Nitin Menon (UMPIRE, SCORER)">${iconSvg('scale', '#FBBF24', 14)} Umpire (Nitin M.)</button>
-                <button type="button" id="btnHeroQuickOrganiser" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="background-color: #22163B; background: rgba(34, 22, 59, 0.96); border: 1px solid rgba(192, 132, 252, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Jay Shah (ORGANISER, TURF_PROVIDER)">${iconSvg('trophy', '#C084FC', 14)} Organiser (Jay S.)</button>
+                <button type="button" id="btnHeroQuickOrganiser" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="background-color: #22163B; background: rgba(34, 22, 59, 0.96); border: 1px solid rgba(192, 132, 252, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Jay Shah (Organiser, Turf Provider)">${iconSvg('trophy', '#C084FC', 14)} Organiser (Jay S.)</button>
                 <button type="button" id="btnHeroQuickAdmin" onclick="loginWithHeroAccount('ADMIN_SUPERUSER')" style="background-color: #2E1120; background: rgba(46, 17, 32, 0.96); border: 1px solid rgba(251, 113, 133, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as System Root (All 8 Personas)">${iconSvg('lightning', '#FB7185', 14)} Root Admin (All 8)</button>
               </div>
             </div>
@@ -8231,13 +8231,13 @@ export function getDashboardHtml(): string {
             <div style="font-size: 0.7rem; font-weight: 700; color: #FFB800;">Allowed: UMPIRE, SCORER</div>
           </button>
 
-          <button type="button" id="btnLoginAccountOrganiser" class="hero-login-account-card" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="text-align: left; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Jay Shah (Provisioned Personas: ORGANISER, TURF_PROVIDER)">
+          <button type="button" id="btnLoginAccountOrganiser" class="hero-login-account-card" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="text-align: left; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Jay Shah (Provisioned Personas: Organiser, Turf Provider)">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('trophy', '#a78bfa', 16)} Jay Shah</span>
               <span style="font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(167, 139, 250, 0.2); color: #a78bfa; font-weight: 800;">2 Personas</span>
             </div>
             <div style="font-size: 0.72rem; color: #94a3b8; margin: 0.2rem 0 0.45rem 0;">organiser@cricos.io • League &amp; Venue Commissioner</div>
-            <div style="font-size: 0.7rem; font-weight: 700; color: #a78bfa;">Allowed: ORGANISER, TURF_PROVIDER</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #a78bfa;">Allowed: Organiser, Turf Provider</div>
           </button>
 
           <button type="button" id="btnLoginAccountFan" class="hero-login-account-card" onclick="loginWithHeroAccount('FAN_ONLY')" style="text-align: left; background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.38); border-radius: 12px; padding: 0.85rem; color: #f8fafc; cursor: pointer;" data-tooltip="Sign in as Aarav Mehta (Provisioned Persona: FAN only)">
@@ -8285,7 +8285,7 @@ export function getDashboardHtml(): string {
             <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="FAN"> ${iconSvg('sparkle', '#f8fafc', 14)} Fan</label>
             <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="UMPIRE"> ${iconSvg('scale', '#f8fafc', 14)} Umpire</label>
             <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ORGANISER"> ${iconSvg('trophy', '#f8fafc', 14)} Organiser</label>
-            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="TURF_PROVIDER"> ${iconSvg('stadium', '#f8fafc', 14)} Provider</label>
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="TURF_PROVIDER"> ${iconSvg('stadium', '#f8fafc', 14)} Turf Provider</label>
             <label style="display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;"><input type="checkbox" class="hero-custom-persona-cb" value="ADMIN"> ${iconSvg('lightning', '#f8fafc', 14)} Admin</label>
           </div>
 
@@ -10108,7 +10108,7 @@ cricos_active_sse_connections 1</pre>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
               <div style="font-size: 0.85rem; font-weight: 800; color: var(--turf-emerald); display: flex; align-items: center; gap: 0.4rem;">${iconSvg('cart', 'var(--turf-emerald)', 16)} Vendor &amp; Turf Provider Gear Listing Publisher</div>
-              <div style="font-size: 0.7rem; color: var(--text-muted);">Authorized Personas: <strong>TURF_PROVIDER</strong> (Rental Nets/Machines/Match Balls), <strong>ORGANISER</strong> (Tournament Trophies/Kits), <strong>ADMIN</strong> (Certified Pro Gear)</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Authorized Personas: <strong>Turf Provider</strong> (Rental Nets/Machines/Match Balls), <strong>Organiser</strong> (Tournament Trophies/Kits), <strong>Admin</strong> (Certified Pro Gear)</div>
             </div>
             <span class="badge badge-emerald" style="font-size: 0.62rem;">INSTANT CATALOG SYNC</span>
           </div>
@@ -11896,7 +11896,7 @@ cricos_active_sse_connections 1</pre>
         badgeBg: 'rgba(52, 211, 153, 0.15)',
         iconName: 'stadium',
         icon: 'stadium',
-        label: 'Provider',
+        label: 'Turf Provider',
         description: 'Turf ground slots, surge pricing, and escrow payouts',
         canConductToss: false,
         canManageLineup: false,
@@ -12969,7 +12969,7 @@ cricos_active_sse_connections 1</pre>
       const lbl = document.getElementById('userAllowedPersonasListLabel');
       const titleEl = document.getElementById('userAccountStatusTitle');
       if (lbl) {
-        lbl.textContent = 'Available to ' + (currentUser.name || 'User') + ': ' + allowed.join(', ');
+        lbl.textContent = 'Available to ' + (currentUser.name || 'User') + ': ' + allowed.map(function(r) { return ROLE_PERMISSIONS[r] ? ROLE_PERMISSIONS[r].label : r.replace(/_/g, ' '); }).join(', ');
       }
       if (titleEl) {
         titleEl.textContent = currentUser.strictPersonaLock
@@ -12993,7 +12993,8 @@ cricos_active_sse_connections 1</pre>
           const bg = isAct ? 'rgba(0, 229, 153, 0.22)' : 'rgba(255,255,255,0.05)';
           const bdr = isAct ? '#00E599' : 'rgba(255,255,255,0.12)';
           const col = isAct ? '#00E599' : '#94a3b8';
-          return '<button type="button" class="sidebar-persona-chip sidebar-quick-persona-chip' + (isAct ? ' active' : '') + '" data-role="' + r + '" data-sidebar-persona="' + r + '" onclick="selectPersona(this.dataset.sidebarPersona)" style="background:' + bg + '; border:1px solid ' + bdr + '; color:' + col + '; border-radius:5px; padding:0.18rem 0.42rem; font-size:0.62rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:0.25rem;" data-tooltip="Switch active workspace to ' + r + '">' + (roleBadges[r] || r) + '</button>';
+          const rLabel = ROLE_PERMISSIONS[r] ? ROLE_PERMISSIONS[r].label : r.replace(/_/g, ' ');
+          return '<button type="button" class="sidebar-persona-chip sidebar-quick-persona-chip' + (isAct ? ' active' : '') + '" data-role="' + r + '" data-sidebar-persona="' + r + '" onclick="selectPersona(this.dataset.sidebarPersona)" style="background:' + bg + '; border:1px solid ' + bdr + '; color:' + col + '; border-radius:5px; padding:0.18rem 0.42rem; font-size:0.62rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:0.25rem;" data-tooltip="Switch active workspace to ' + rLabel + '">' + (roleBadges[r] || rLabel) + '</button>';
         }).join('');
       }
     }
@@ -13995,7 +13996,8 @@ cricos_active_sse_connections 1</pre>
         currentUser.allowedPersonas.length > 0 &&
         !currentUser.allowedPersonas.includes(role)
       ) {
-        showToast('Access restricted: ' + role + ' persona is not available for your logged-in user account.');
+        const roleLabel = (ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].label) || role.replace(/_/g, ' ');
+        showToast('Access restricted: ' + roleLabel + ' persona is not available for your logged-in user account.');
         return false;
       }
       currentUser.persona = role;
