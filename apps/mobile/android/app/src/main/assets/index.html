@@ -2533,6 +2533,7 @@
       touch-action: manipulation;
       box-sizing: border-box;
     }
+    /* Mobile Bottom Nav Integrated Lens & Drawer Trigger */
     .mobile-studios-pill-trigger {
       position: absolute;
       bottom: 64px;
@@ -2563,6 +2564,42 @@
     .mobile-studios-pill-trigger.active {
       border-color: #00E599;
       background: rgba(0, 229, 153, 0.2);
+    }
+    .mobile-nav-lens-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .mobile-nav-lens-chevron {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 1px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-nav-item.drawer-open .mobile-nav-lens-chevron {
+      transform: rotate(180deg);
+    }
+    .mobile-nav-lens-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #00E599;
+      display: inline-block;
+      box-shadow: 0 0 6px rgba(0, 229, 153, 0.8);
+      animation: pulse-ring 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+    body[data-theme="swiss"] .mobile-nav-lens-dot {
+      background: #047857 !important;
+      box-shadow: 0 0 6px rgba(4, 120, 87, 0.6) !important;
+    }
+    body[data-theme="nordic"] .mobile-nav-lens-dot {
+      background: #15803D !important;
+      box-shadow: 0 0 6px rgba(21, 128, 61, 0.6) !important;
     }
 
     /* Sub-Tab Navigation Bar inside Drawer */
@@ -15744,7 +15781,7 @@
         // Dedicated Scrollable Content Container (Only this element scrolls with momentum touch)
         h += '<main class="mobile-scroll-body" id="mobileScrollBody">' + content + '</main>';
 
-        // Emerging Match Studios Scroll Drawer & Floating Studio Trigger (When on MATCHES screen)
+        // Emerging Match Studios Scroll Drawer (Anchored directly above fixed bottom nav)
         if (this.currentScreen === 'MATCHES') {
           var _thisSub = this;
           var subTabs = [
@@ -15756,13 +15793,6 @@
             ['ANALYTICS', 'Analytics & Card', 'chart']
           ];
           var activeSubTabObj = subTabs.find(function(s) { return s[0] === _thisSub.matchSubTab; }) || subTabs[0];
-
-          // Floating Studio Trigger Pill anchored above bottom navigation
-          h += '<button type="button" id="btnToggleMatchStudios" class="mobile-studios-pill-trigger' + (this.matchSubnavOpen ? ' active' : '') + '" onclick="window.cricosMobileApp.toggleMatchSubnav()" data-tooltip="Toggle Studios: 3D Stadium, Wagon Wheel, DRS &amp; Analytics" aria-label="Toggle Studios Menu">';
-          h += this.iconSvg(activeSubTabObj[2] || 'layers', 'currentColor', 13) + ' ';
-          h += '<span>' + activeSubTabObj[1] + '</span> ';
-          h += '<svg class="cricos-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.2s ease; transform: ' + (this.matchSubnavOpen ? 'rotate(180deg)' : 'none') + ';"><path d="M18 15l-6-6-6 6"/></svg>';
-          h += '</button>';
 
           // Backdrop for emerging drawer
           h += '<div class="mobile-subnav-backdrop' + (this.matchSubnavOpen ? ' active' : '') + '" id="mobileMatchSubnavBackdrop" onclick="window.cricosMobileApp.toggleMatchSubnav(false)"></div>';
@@ -15843,14 +15873,29 @@
         for (var i = 0; i < navItems.length; i++) {
           var item = navItems[i];
           var active = this.currentScreen === item[0];
+          var isMatches = item[0] === 'MATCHES';
           var activeClass = active ? ' active' : '';
           var activeNavColor = (this.currentTheme === 'swiss') ? '#047857' : ((this.currentTheme === 'nordic') ? '#166534' : '#00E599');
           var inactiveNavColor = (this.currentTheme === 'swiss') ? '#475569' : ((this.currentTheme === 'nordic') ? '#57534E' : '#64748B');
           var navIconColor = active ? activeNavColor : inactiveNavColor;
-          h += '<button type="button" class="mobile-nav-item' + activeClass + '" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="' + item[0] + '" data-tooltip="Navigate to ' + item[2] + '" aria-label="' + item[2] + '" aria-current="' + (active ? 'page' : 'false') + '">';
-          h += '<span class="mobile-nav-icon">' + this.iconSvg(item[1], navIconColor, 22) + '</span>';
-          h += '<span>' + item[2] + '</span>';
-          h += '</button>';
+
+          if (isMatches && active) {
+            // Concept A: Active Match Lens Switcher directly in bottom nav item
+            var currentSubTabObj = subTabs.find(function(s) { return s[0] === _thisSub.matchSubTab; }) || subTabs[0];
+            var lensIconName = currentSubTabObj[2] || item[1];
+            var lensLabel = currentSubTabObj[1];
+            var drawerOpenClass = this.matchSubnavOpen ? ' drawer-open' : '';
+
+            h += '<button type="button" id="btnToggleMatchStudios" class="mobile-nav-item' + activeClass + drawerOpenClass + '" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="MATCHES" data-tooltip="Studios Lens: ' + lensLabel + ' (Tap to switch)" aria-label="' + lensLabel + ' Studios Lens" aria-current="page">';
+            h += '<span class="mobile-nav-icon">' + this.iconSvg(lensIconName, navIconColor, 22) + '</span>';
+            h += '<span class="mobile-nav-lens-indicator"><span class="mobile-nav-lens-dot"></span><span>' + lensLabel + '</span><svg class="cricos-icon mobile-nav-lens-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg></span>';
+            h += '</button>';
+          } else {
+            h += '<button type="button" class="mobile-nav-item' + activeClass + '" onclick="window.cricosMobileApp.navigateTo(this.dataset.screen)" data-screen="' + item[0] + '" data-tooltip="Navigate to ' + item[2] + '" aria-label="' + item[2] + '" aria-current="' + (active ? 'page' : 'false') + '">';
+            h += '<span class="mobile-nav-icon">' + this.iconSvg(item[1], navIconColor, 22) + '</span>';
+            h += '<span>' + item[2] + '</span>';
+            h += '</button>';
+          }
         }
         h += '</nav>';
 
@@ -16071,7 +16116,7 @@
           var styledBgEls = document.querySelectorAll('div, section, article, aside, header, button, span');
           for (var b = 0; b < styledBgEls.length; b++) {
             var bgEl = styledBgEls[b];
-            if (bgEl.closest('#mobileHeroAuthOverlay, #mobileToastContainer, #universal-tooltip-popover, #mobile3DCanvas, #mobileFieldPlannerSvg, #mobilePitchMapSvg, #cricosCelebrationCanvas, svg, canvas')) continue;
+            if (bgEl.closest('#mobileHeroAuthOverlay, #mobileToastContainer, #universal-tooltip-popover, #mobile3DCanvas, #mobileFieldPlannerSvg, #mobilePitchMapSvg, #cricosCelebrationCanvas, #mobileMatchSubnavBackdrop, .mobile-sheet-backdrop, svg, canvas')) continue;
             var csBg = window.getComputedStyle(bgEl).backgroundColor;
             var parsedBg = parseRgba(csBg);
             if (parsedBg[3] > 0.06) {

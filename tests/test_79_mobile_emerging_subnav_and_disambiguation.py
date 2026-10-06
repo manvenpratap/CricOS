@@ -53,16 +53,21 @@ async def test_mobile_emerging_subnav_and_disambiguation():
         assert body_subnav is None, ".mobile-subnav must not be rendered at the top of scroll body"
 
         # -------------------------------------------------------------
-        # 4. Floating Studio Trigger Pill Anchored Above Bottom Nav
+        # 4. Integrated Bottom Nav Lens Switcher (Concept A)
         # -------------------------------------------------------------
-        trigger_pill = await page.query_selector("#btnToggleMatchStudios")
-        assert trigger_pill is not None and await trigger_pill.is_visible(), "Floating trigger pill must exist"
+        # Assert old floating trigger pill was eliminated from above bottom nav
+        floating_pill = await page.query_selector(".mobile-studios-pill-trigger")
+        assert floating_pill is None, "Floating trigger pill above bottom nav must be completely removed"
+
+        # Assert active Match bottom nav item acts as the lens trigger
+        trigger_pill = await page.query_selector("#mobileBottomNav #btnToggleMatchStudios")
+        assert trigger_pill is not None and await trigger_pill.is_visible(), "Integrated Match bottom nav lens switcher must exist and be visible"
         trigger_text = (await trigger_pill.text_content()).strip()
-        assert "Live Score" in trigger_text, f"Trigger pill should show active studio, got: {trigger_text}"
+        assert "Live Score" in trigger_text, f"Lens switcher should show active studio, got: {trigger_text}"
 
         trigger_box = await trigger_pill.bounding_box()
         assert trigger_box is not None
-        assert trigger_box["height"] >= 44.0, f"Trigger pill touch height must be >= 44px, got {trigger_box['height']}"
+        assert trigger_box["height"] >= 44.0, f"Lens switcher touch height must be >= 44px, got {trigger_box['height']}"
 
         # -------------------------------------------------------------
         # 5. Emerging Drawer and Interactive Toggle

@@ -1,14 +1,34 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-06 00:15:00
-**Version:** 1.0.0-phase2eg (Live Match-Pilot-1 Score Parity Between Webapp & Mobile APK)  
+**Last Updated:** 2026-10-06 09:35:00
+**Version:** 1.0.0-phase2ei (Concept A Integrated Bottom Nav Lens for Match Subtabs)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EH Completed — Eradicate Raw Persona Enum Underscore Text from Frontend UI (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EI Completed — Innovative Match Sub-Tab Navigation via Concept A Integrated Bottom Nav Lens (`apps/api/src/ui/mobile-view.ts`, `tests/test_79_mobile_emerging_subnav_and_disambiguation.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+  - **1. Problem & Clutter Elimination**:
+    - Previously, match subtabs (Live Score, 3D Stadium, Wagon Wheel, Pitch & DRS, Commentary, Analytics & Card) relied on a floating trigger pill (`#btnToggleMatchStudios`, `.mobile-studios-pill-trigger`) pinned at `bottom: 64px`.
+    - This created persistent double chrome stacked above the fixed 56px bottom navigation, obstructing valuable vertical scroll view for match content (crease cards, bowler spell, tactical command).
+    - Completely eliminated the floating pill trigger from the main viewport, reclaiming 100% of vertical scroll view space.
+  - **2. Concept A — Integrated Bottom Nav Lens (Active Match Tab as Switcher)**:
+    - Integrated match sub-tab switcher directly into the primary **Match / Scoring** tab on the fixed bottom navigation bar (`#mobileBottomNav`).
+    - When on the Match screen, the active Match button acts as an interactive lens switcher (`#btnToggleMatchStudios`):
+      - Renders the active studio icon (e.g. lightning for Live Score, stadium for 3D Stadium, wagon-wheel for Wagon Wheel).
+      - Displays the active lens chip with pulse dot and rotating dropdown chevron (`⚡ Live Score ▾`).
+      - Tapping the active Match tab smoothly toggles the emerging horizontal drawer (`#mobileMatchSubnavDrawer`) anchored directly above `#mobileBottomNav` (`bottom: 56px`).
+      - Selecting any subtab (e.g., Wagon Wheel) updates the lens indicator and auto-closes the drawer.
+      - Backed by dismissable backdrop, close button, and native `Escape` key handling.
+  - **3. Theme Cohesion & Backdrop Isolation**:
+    - Excluded `#mobileMatchSubnavBackdrop` from daylight theme white-out overrides, ensuring clean subtle dimming (`rgba(0, 0, 0, 0.45)`) across Swiss Minimalist, Nordic Editorial, and Stadium Night themes.
+  - **4. Verification & Pipeline Integrity**:
+    - Verified all 255 domain tests passing 100% via `./pipeline.sh test --summary` (Rule 2).
+    - Verified `tests/test_79_mobile_emerging_subnav_and_disambiguation.py` with 100% passing assertions for bottom nav lens switcher, drawer toggling, subtab switching, and dismissals.
+    - Packaged distribution artifacts via `./pipeline.sh package` (Rule 6).
+    - Recompiled Android 15 Release & Debug APKs via `./pipeline.sh apk` (Rule 6).
+- **Preceding Phase**: Phase 2EH Completed — Eradicate Raw Persona Enum Underscore Text from Frontend UI (`apps/api/src/ui/dashboard.ts`, `apps/api/src/ui/mobile-view.ts`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Root Cause Identification**:
     - Raw enum identifiers (`TURF_PROVIDER`, `VENUE_OPERATOR`) were being surfaced to end-users via raw string joins (`allowed.join(', ')`), unformatted interpolations (`role + ' WORKSPACE'`), and hardcoded card badges (`Allowed: ORGANISER, TURF_PROVIDER`).
     - Internal token/contract enums (`data-role="TURF_PROVIDER"`, `value="TURF_PROVIDER"`) were intact, but visible DOM labels, tooltips, toasts, and sidebar headers contained unsightly underscores.
