@@ -1,14 +1,21 @@
 # Project Context & Working Memory — CricOS
 
-**Last Updated:** 2026-10-06 09:35:00
-**Version:** 1.0.0-phase2ei (Concept A Integrated Bottom Nav Lens for Match Subtabs)  
+**Last Updated:** 2026-10-10 04:08:00
+**Version:** 1.0.0-phase2ej (Human-Touch Hero Redesign & Authored Entrance Choreography)  
 **Stack:** TypeScript / Node.js (Fastify, PostgreSQL, Redis, Docker, pnpm workspaces, Native Android Gradle/Java 17/SDK 35, Native iOS SwiftUI/WebKit/Xcode)  
 **Remote:** https://github.com/manvenpratap/CricOS.git (main branch)
 
 ---
 
 ## 1. Current Status & Milestones
-- **Active Phase**: Phase 2EI Completed — Innovative Match Sub-Tab Navigation via Concept A Integrated Bottom Nav Lens (`apps/api/src/ui/mobile-view.ts`, `tests/test_79_mobile_emerging_subnav_and_disambiguation.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
+- **Active Phase**: Phase 2EJ Completed — Human-Touch Hero Redesign & Authored Entrance Choreography (`apps/api/src/ui/dashboard.ts`, `tests/test_80_hero_human_redesign_and_entrance.py`, `tests/README.md`, `index.html`, `dist/index.html`, `apps/mobile/android/app/src/main/assets/index.html`):
+  - **1. Voice Overhaul (Anti AI-Slop Copy)**: Rewrote hero copy from spec-sheet jargon into plain language — headline `Match day, minus the paperwork.`, eyebrow `For the people who actually run cricket`, benefit-led subcopy, honest proof strip (`Offline` / `8 roles` / `0` double-booked grounds / `₹0.00` ledger drift), ribbon line `Settled this week ₹1,24,000 • books balanced to the paisa`, brand chip `PRO MAX 3D OS` → `CLUB EDITION`, stage badge `STAGE 1 OF 2 • ANIMATED HERO` → `WELCOME` / `SIGN IN`, and the four bento cards rewritten as `The scorer's pad`, `The skipper's sheet`, `The umpire's book`, `Turf & kit`.
+  - **2. Visual Restyle**: Hairline light-refraction borders (`rgba(255,255,255,0.08)`) replacing 1.5px neon card glows, larger editorial headline scale (`clamp(2.5rem, 4.2vw, 3.55rem)`), generous card padding and whitespace, quiet persona chips and metric cards now carrying Rule 5 `data-tooltip` contextual help.
+  - **3. Entrance Choreography**: Staged `heroRise` / `heroLineReveal` / `heroHudSettle` keyframes with expo-out `cubic-bezier(0.16, 1, 0.3, 1)` easing, armed via `#heroStageLanding.hero-anim-play` and replayed on every `openHeroGateway('HERO')`; headline reveals line-by-line and a hand-drawn SVG marker underline (`pathLength="1"` + `heroMarkDraw`) draws itself beneath "paperwork."; complete `prefers-reduced-motion` opt-out renders everything static.
+  - **4. Authored Canvas Night-Match Scene**: Replaced the mechanical swinging-beam/looping-arc renderer with a narrative rhythm — breathing floodlights, one delivery at a time (comet-trail flight with seam spin → impact ring → two dying hops → `FOUR`/`SIX` margin note → randomized rest), ghost arcs fading like memory, RADAR mode repositioning one fielder at a time under a slow sweep, mode-aware palettes (Wagon/Hawk-Eye/Radar), a static reduced-motion first frame, and `document.hidden`-aware rendering.
+  - **5. Daylight Contrast Exclusion**: Scoped `#cricosHeroAuthOverlay h1–h4 { color / -webkit-text-fill-color: #FFFFFF !important }` so `body[data-theme="swiss"] h1` `#0F172A !important` can no longer bleach the hero headline (root cause: the contrast enforcer skips opacity-0 entrance elements at boot, so the Swiss rule previously won).
+  - **6. Verification & Pipeline Integrity**: `./pipeline.sh test --summary` at 253/255 (identical to baseline; the 2 failures are pre-existing gitignored `tests/screenshots/` artifact checks). New `tests/test_80_hero_human_redesign_and_entrance.py` (2 tests) passing, existing `test_hero_pro_max_jwt_persistence_and_auth` passing, and all consolidated Playwright suites passing (the single `test_mobile_3d_cards_and_drawer_studios` failure reproduces on pristine HEAD — pre-existing mobile preset-avatar assertion, unrelated to hero). Root `index.html` verified byte-for-byte identical to `dist/index.html` via `./pipeline.sh package`, and the live preview verified on `0.0.0.0:3000` with zero new console errors (only pre-existing `file://` API fetch noise).
+- **Preceding Phase**: Phase 2EI Completed — Innovative Match Sub-Tab Navigation via Concept A Integrated Bottom Nav Lens (`apps/api/src/ui/mobile-view.ts`, `tests/test_79_mobile_emerging_subnav_and_disambiguation.py`, `tests/README.md`, `dist/index.html`, `dist/mobile.html`, `dist/cricos-release.apk`, `dist/cricos-debug.apk`):
   - **1. Problem & Clutter Elimination**:
     - Previously, match subtabs (Live Score, 3D Stadium, Wagon Wheel, Pitch & DRS, Commentary, Analytics & Card) relied on a floating trigger pill (`#btnToggleMatchStudios`, `.mobile-studios-pill-trigger`) pinned at `bottom: 64px`.
     - This created persistent double chrome stacked above the fixed 56px bottom navigation, obstructing valuable vertical scroll view for match content (crease cards, bowler spell, tactical command).
@@ -2213,6 +2220,7 @@ flowchart TD
 - [x] Phase 2CL: Light Theme Contrast for Player Profile & Holographic Cards, Organic 3D Feature Integration
 - [x] Phase 2CM: Impeccable Typographic Scale, Optical Tracking & Universal Tabular Numbers Alignment (Web Dashboard & Mobile Native View)
 - [x] **CricOS 1.0.0 Production & Mobile Store Release Milestone Achieved**
+- [x] Phase 2EJ: Human-Touch Hero Redesign & Authored Entrance Choreography
 
 
 

@@ -5691,6 +5691,65 @@ export function getDashboardHtml(): string {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 4px;
     }
+
+    /* ============ Human-Touch Hero: Entrance Choreography & Tactile Micro-Interactions ============ */
+    @keyframes heroRise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroLineReveal {
+      from { opacity: 0; transform: translateY(0.55em); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroHudSettle {
+      from { opacity: 0; transform: translateY(14px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes heroMarkDraw {
+      from { stroke-dashoffset: 1; }
+      to { stroke-dashoffset: 0; }
+    }
+    .hero-anim-play .hero-rise { animation: heroRise 0.72s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .hero-anim-play .hero-line { animation: heroLineReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .hero-anim-play .hero-hud-settle { animation: heroHudSettle 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.26s both; }
+    .hero-hand-mark { position: relative; display: inline-block; white-space: nowrap; }
+    .hero-hand-underline { position: absolute; left: -0.03em; right: -0.05em; bottom: -0.13em; width: calc(100% + 0.08em); height: 0.3em; overflow: visible; pointer-events: none; }
+    .hero-hand-underline path { stroke-dasharray: 1; stroke-dashoffset: 0; }
+    .hero-anim-play .hero-hand-underline path { animation: heroMarkDraw 0.62s cubic-bezier(0.45, 0, 0.15, 1) 0.98s both; }
+    .hero-tap { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+    .hero-tap:hover { transform: translateY(-2px); }
+    .hero-tap:active { transform: translateY(0) scale(0.975); transition-duration: 0.07s; }
+    .hero-tap .hero-arrow { display: inline-block; transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1); }
+    .hero-tap:hover .hero-arrow { transform: translateX(5px); }
+    .hero-chip { transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease, background-color 0.16s ease; }
+    .hero-chip:hover { transform: translateY(-1px); border-color: rgba(255, 255, 255, 0.34); background-color: rgba(255, 255, 255, 0.07); }
+    .hero-chip:active { transform: scale(0.97); }
+    .hero-metric-card { transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.18s ease; }
+    .hero-metric-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.22); }
+    /* The hero gateway is a permanent dark stage: daylight themes must never bleach its headlines */
+    #cricosHeroAuthOverlay h1,
+    #cricosHeroAuthOverlay h2,
+    #cricosHeroAuthOverlay h3,
+    #cricosHeroAuthOverlay h4,
+    #cricosHeroAuthOverlay .brand-title,
+    #cricosHeroAuthOverlay .card-title,
+    #cricosHeroAuthOverlay .modal-title,
+    #cricosHeroAuthOverlay .hero-title {
+      color: #FFFFFF !important;
+      -webkit-text-fill-color: #FFFFFF !important;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-anim-play .hero-rise,
+      .hero-anim-play .hero-line,
+      .hero-anim-play .hero-hud-settle,
+      .hero-anim-play .hero-hand-underline path {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        stroke-dashoffset: 0 !important;
+      }
+      .hero-tap:hover, .hero-chip:hover, .hero-metric-card:hover { transform: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -7952,19 +8011,19 @@ export function getDashboardHtml(): string {
     <!-- Live 60fps Animated Stadium Floodlight & Parabolic Trajectory Canvas -->
     <canvas id="heroStadiumCanvas" width="1280" height="720" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.72;"></canvas>
 
-    <!-- Live Broadcast Telemetry Ribbon -->
-    <div id="heroLiveBroadcastRibbon" style="position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 2rem; background-color: #02060E; background: rgba(2, 6, 14, 0.95); border-bottom: 1px solid rgba(0, 229, 153, 0.28); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #E2E8F0; gap: 1rem; flex-wrap: wrap;">
+    <!-- Live Broadcast Ribbon: the game, in the words a commentator would use -->
+    <div id="heroLiveBroadcastRibbon" style="position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 2rem; background: rgba(2, 6, 14, 0.92); border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #E2E8F0; gap: 1rem; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
-        <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #00E599; font-weight: 800;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #00E599; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); display: inline-block;"></span> LIVE TELEMETRY</span>
-        <span style="color: #64748B;">•</span>
+        <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #00E599; font-weight: 800;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #00E599; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); display: inline-block;"></span> LIVE</span>
+        <span style="color: #64748B;">&bull;</span>
         <span style="color: #FFFFFF; font-weight: 800;">BLR 186/4 (18.2 ov) vs MUM</span>
-        <span style="color: #64748B;">•</span>
-        <span style="color: #7DD3FC; font-weight: 700;">Chinnaswamy Turf A: 26°C | 920m Alt | 1.8° Out-Swing</span>
+        <span style="color: #64748B;">&bull;</span>
+        <span style="color: #7DD3FC; font-weight: 700;">Chinnaswamy Turf A &mdash; 26&deg;C, dry, dew after 8</span>
       </div>
       <div style="display: flex; align-items: center; gap: 0.85rem; color: #CBD5E1; font-weight: 600;">
-        <span>GiST Slot Lock: <strong style="color: #00E599;">0.8ms</strong></span>
-        <span style="color: #64748B;">•</span>
-        <span>Escrow Ledger: <strong style="color: #38BDF8;">5-Account Balanced</strong></span>
+        <span>Settled this week <strong style="color: #00E599;">&#8377;1,24,000</strong></span>
+        <span style="color: #64748B;">&bull;</span>
+        <span>books <strong style="color: #38BDF8;">balanced to the paisa</strong></span>
       </div>
     </div>
 
@@ -7986,9 +8045,9 @@ export function getDashboardHtml(): string {
         <div>
           <div style="display: flex; align-items: center; gap: 0.55rem;">
             <span style="font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; letter-spacing: -0.025em; color: #FFFFFF;">Cric<span style="color: #00E599;">OS</span></span>
-            <span style="font-size: 0.65rem; font-weight: 800; padding: 0.18rem 0.58rem; border-radius: 999px; background-color: #062E24; background: rgba(0, 229, 153, 0.22); color: #6EE7B7; border: 1px solid rgba(0, 229, 153, 0.5); letter-spacing: 0.04em;">PRO MAX 3D OS</span>
+            <span style="font-size: 0.65rem; font-weight: 800; padding: 0.18rem 0.58rem; border-radius: 999px; background-color: #062E24; background: rgba(0, 229, 153, 0.22); color: #6EE7B7; border: 1px solid rgba(0, 229, 153, 0.5); letter-spacing: 0.04em;">CLUB EDITION</span>
           </div>
-          <div style="font-size: 0.7rem; color: #CBD5E1; font-weight: 600;">Unified Cricket Broadcast, Officiating &amp; Venue Operating System</div>
+          <div style="font-size: 0.7rem; color: #CBD5E1; font-weight: 600;">Fixtures, scorebook &amp; settlements for the people who run cricket</div>
         </div>
       </div>
 
@@ -8000,85 +8059,88 @@ export function getDashboardHtml(): string {
       </div>
 
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <span id="heroStageBadge" style="font-size: 0.7rem; font-weight: 800; color: #7DD3FC; background-color: #08243B; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(0, 210, 255, 0.45); padding: 0.32rem 0.7rem; border-radius: 7px;">STAGE 1 OF 2 • ANIMATED HERO</span>
-        <button type="button" id="btnHeroHeaderSignIn" onclick="showHeroLoginStage()" style="background-color: #00E599; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 8px; padding: 0.5rem 1.1rem; font-size: 0.82rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 229, 153, 0.32); display: inline-flex; align-items: center; gap: 0.4rem;" data-tooltip="Proceed to Login screen">${iconSvg('lock', '#04070D', 14)} Sign In →</button>
+        <span id="heroStageBadge" style="font-size: 0.7rem; font-weight: 800; color: #7DD3FC; background-color: #08243B; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(0, 210, 255, 0.45); padding: 0.32rem 0.7rem; border-radius: 7px;">WELCOME</span>
+        <button type="button" id="btnHeroHeaderSignIn" onclick="showHeroLoginStage()" style="background-color: #00E599; background: linear-gradient(135deg, #00E599, #00D2FF); color: #04070D; border: none; border-radius: 8px; padding: 0.5rem 1.1rem; font-size: 0.82rem; font-weight: 900; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 229, 153, 0.32); display: inline-flex; align-items: center; gap: 0.4rem;" data-tooltip="Go to sign-in - it takes about ten seconds, or keep looking around first">${iconSvg('lock', '#04070D', 14)} Sign In →</button>
       </div>
     </header>
 
     <!-- STAGE 1: UI/UX PRO MAX ASYMMETRIC SPLIT HERO + INTERACTIVE 3D HUD + BENTO SHOWCASE -->
-    <section id="heroStageLanding" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem 2rem 2rem 2rem; max-width: 1320px; margin: 0 auto; width: 100%; gap: 1.35rem;">
+    <section id="heroStageLanding" style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 2rem 2rem 2.5rem 2rem; max-width: 1320px; margin: 0 auto; width: 100%; gap: 1.5rem;">
       <!-- 2-Column Split Hero Container -->
-      <div id="heroSplitGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 1.65rem; align-items: stretch; width: 100%;">
+      <div id="heroSplitGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 1.8rem; align-items: stretch; width: 100%;">
         <!-- Left Column: Frosted Obsidian Card Backing for 100% WCAG AAA Text Contrast -->
-        <div id="heroLeftCopyColumn" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; background-color: #060D1B; background: linear-gradient(155deg, rgba(6, 13, 27, 0.92) 0%, rgba(4, 9, 18, 0.95) 100%); border: 1.5px solid rgba(0, 229, 153, 0.3); border-radius: 18px; padding: 1.55rem 1.7rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); justify-content: space-between;">
+        <div id="heroLeftCopyColumn" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; background-color: #060D1B; background: linear-gradient(155deg, rgba(6, 13, 27, 0.94) 0%, rgba(4, 9, 18, 0.96) 100%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.1rem 2.2rem; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.62); backdrop-filter: blur(20px); justify-content: space-between; gap: 1.5rem;">
           <div>
-            <div style="display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.36rem 0.85rem; border-radius: 999px; background-color: #062820; background: rgba(0, 229, 153, 0.16); border: 1px solid rgba(0, 229, 153, 0.48); color: #6EE7B7; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.95rem;">
-              <span style="width: 8px; height: 8px; border-radius: 50%; background: #00E599; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);"></span>
-              <span style="display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('sparkle', '#00E599', 14)} LIVE 60FPS 3D STADIUM • RHB/LHB BIOMECHANICS • RBAC PERSONAS</span>
+            <div class="hero-rise" style="animation-delay: 0.14s;">
+              <span style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.38rem 0.9rem; border-radius: 999px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.35); color: #6EE7B7; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.015em; margin-bottom: 1.1rem;" data-tooltip="CricOS is built alongside grassroots clubs: captains, scorers, umpires, turf keepers and league organisers">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #00E599; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);"></span>
+                For the people who actually run cricket
+              </span>
             </div>
 
-            <h1 id="heroKineticHeadline" style="font-family: var(--font-display); font-size: clamp(2.1rem, 3.4vw, 3.1rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 0.85rem 0; color: #FFFFFF; text-wrap: balance;">
-              Every Ball. <span style="color: #00E599;">Every Tactic.</span> Every Persona — <span style="color: #38BDF8;">Unified in 3D.</span>
+            <h1 id="heroKineticHeadline" style="font-family: var(--font-display); font-size: clamp(2.5rem, 4.2vw, 3.55rem); font-weight: 800; line-height: 1.03; letter-spacing: -0.03em; margin: 0 0 1.05rem 0; color: #FFFFFF; text-wrap: balance;">
+              <span class="hero-line" style="display: block; animation-delay: 0.24s;">Match day,</span>
+              <span class="hero-line" style="display: block; animation-delay: 0.38s;">minus the <span class="hero-hand-mark">paperwork.<svg class="hero-hand-underline" viewBox="0 0 240 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M5 8.4 C 58 3.2, 132 2.4, 235 6.2" fill="none" stroke="#00E599" stroke-width="3.2" stroke-linecap="round"/></svg></span></span>
             </h1>
 
-            <p style="font-size: 0.94rem; color: #E2E8F0; max-width: 600px; line-height: 1.62; margin: 0 0 1.25rem 0; font-weight: 500;">
-              Command real-time 3D parabolic ball trajectories, auto-mirroring RHB/LHB wagon wheels, 5-hour turf micro-climate forecasts, and 5-account double-entry escrow. Sign in to unlock the exact workspace provisioned for your cricket persona.
+            <p class="hero-rise" style="animation-delay: 0.5s; font-size: 0.98rem; color: #E2E8F0; max-width: 620px; line-height: 1.7; margin: 0 0 1.4rem 0; font-weight: 500;">
+              Fixtures, official ball-by-ball scoring and money that always balances &mdash; in one place. Score from the boundary even when the signal drops, settle up afterwards, and keep every role in the club on the same page.
             </p>
 
-            <!-- Primary & Interactive Secondary CTA Row -->
-            <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-bottom: 1.2rem;">
-              <button type="button" id="btnHeroProceedToLogin" onclick="showHeroLoginStage()" style="background-color: #00E599; background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%); color: #04070D; border: none; border-radius: 12px; padding: 0.85rem 1.7rem; font-size: 0.96rem; font-weight: 900; cursor: pointer; box-shadow: 0 12px 32px rgba(0, 229, 153, 0.34); letter-spacing: 0.01em; display: inline-flex; align-items: center; gap: 0.5rem;" data-tooltip="Proceed from Animated Hero Page to User Login">
-                <span style="display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('lightning', '#04070D', 16)} Enter CricOS — Sign In →</span>
+            <!-- Primary CTA + a quiet way to look around first -->
+            <div class="hero-rise" style="animation-delay: 0.62s; display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-bottom: 1.3rem;">
+              <button type="button" id="btnHeroProceedToLogin" onclick="showHeroLoginStage()" class="hero-tap" style="background: linear-gradient(135deg, #00E599 0%, #00D2FF 100%); color: #04070D; border: none; border-radius: 12px; padding: 0.95rem 1.8rem; font-size: 0.98rem; font-weight: 900; cursor: pointer; box-shadow: 0 10px 28px rgba(0, 229, 153, 0.28); letter-spacing: 0.01em; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px;" data-tooltip="Proceed from the hero page to sign-in">
+                ${iconSvg('lightning', '#04070D', 16)} Sign in to CricOS <span class="hero-arrow">&rarr;</span>
               </button>
-              <button type="button" id="btnHeroCyclePreview" onclick="cycleHeroInteractivePreview()" style="background-color: #0D1B32; background: rgba(13, 27, 50, 0.96); color: #FFFFFF; border: 1.5px solid rgba(56, 189, 248, 0.55); border-radius: 12px; padding: 0.85rem 1.25rem; font-size: 0.86rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);" data-tooltip="Cycle the live 3D Command HUD preview on the right across Scorer, Captain, Umpire, and Turf Store">
-                <span>${iconSvg('wagon', '#38BDF8', 16)}</span> <span id="heroCyclePreviewBtnLabel" style="color: #FFFFFF;">Preview: Scorer 3D Pad ↻</span>
+              <button type="button" id="btnHeroCyclePreview" onclick="cycleHeroInteractivePreview()" class="hero-tap" style="background: rgba(13, 27, 50, 0.9); color: #FFFFFF; border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 12px; padding: 0.95rem 1.35rem; font-size: 0.88rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px;" data-tooltip="Cycle the live preview on the right across scorer, captain, umpire and turf views">
+                <span>${iconSvg('wagon', '#38BDF8', 16)}</span> <span id="heroCyclePreviewBtnLabel" style="color: #FFFFFF;">Next: the scorer&#8217;s pad &#8635;</span>
               </button>
             </div>
 
-            <!-- Instant 1-Click Verified Persona Quick-Launch Bar -->
-            <div id="heroQuickPersonaLaunchBar" style="width: 100%; background-color: #091326; background: rgba(9, 19, 38, 0.96); border: 1px solid rgba(56, 189, 248, 0.32); border-radius: 12px; padding: 0.72rem 0.9rem; margin-bottom: 1.15rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <span style="font-size: 0.7rem; font-weight: 800; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('rocket', '#38BDF8', 14)} Instant 1-Click Demo Account Launch (Zero-Friction Sandbox)</span>
-                <span style="font-size: 0.66rem; color: #CBD5E1; font-family: 'JetBrains Mono', monospace; font-weight: 700;">JWT + RBAC Locked</span>
+            <!-- Step in as anyone: demo accounts, no sign-up -->
+            <div id="heroQuickPersonaLaunchBar" class="hero-rise" style="animation-delay: 0.74s; width: 100%; background: rgba(9, 19, 38, 0.66); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 0.85rem 0.95rem; margin-bottom: 0.2rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; gap: 0.5rem; flex-wrap: wrap;">
+                <span style="font-size: 0.77rem; font-weight: 700; color: #7DD3FC; display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('rocket', '#38BDF8', 14)} Just looking around? Step in as anyone &mdash;</span>
+                <span style="font-size: 0.68rem; color: #94A3B8; font-family: 'JetBrains Mono', monospace; font-weight: 600;">demo accounts &middot; no sign-up</span>
               </div>
-              <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
-                <button type="button" id="btnHeroQuickCaptain" onclick="loginWithHeroAccount('CAPTAIN_PLAYER')" style="background-color: #0C233B; background: rgba(12, 35, 59, 0.96); border: 1px solid rgba(56, 189, 248, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Virat Sharma (CAPTAIN, PLAYER)">${iconSvg('crown', '#38BDF8', 14)} Captain (Virat S.)</button>
-                <button type="button" id="btnHeroQuickScorer" onclick="loginWithHeroAccount('SCORER_ONLY')" style="background-color: #082923; background: rgba(8, 41, 35, 0.96); border: 1px solid rgba(16, 185, 129, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Sunil Gavaskar (SCORER)">${iconSvg('clipboard', '#10B981', 14)} Scorer (Sunil G.)</button>
-                <button type="button" id="btnHeroQuickUmpire" onclick="loginWithHeroAccount('UMPIRE_OFFICIAL')" style="background-color: #2B1F0A; background: rgba(43, 31, 10, 0.96); border: 1px solid rgba(251, 191, 36, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Nitin Menon (UMPIRE, SCORER)">${iconSvg('scale', '#FBBF24', 14)} Umpire (Nitin M.)</button>
-                <button type="button" id="btnHeroQuickOrganiser" onclick="loginWithHeroAccount('ORGANISER_TURF')" style="background-color: #22163B; background: rgba(34, 22, 59, 0.96); border: 1px solid rgba(192, 132, 252, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Jay Shah (Organiser, Turf Provider)">${iconSvg('trophy', '#C084FC', 14)} Organiser (Jay S.)</button>
-                <button type="button" id="btnHeroQuickAdmin" onclick="loginWithHeroAccount('ADMIN_SUPERUSER')" style="background-color: #2E1120; background: rgba(46, 17, 32, 0.96); border: 1px solid rgba(251, 113, 133, 0.55); color: #FFFFFF; border-radius: 8px; padding: 0.4rem 0.72rem; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as System Root (All 8 Personas)">${iconSvg('lightning', '#FB7185', 14)} Root Admin (All 8)</button>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <button type="button" id="btnHeroQuickCaptain" onclick="loginWithHeroAccount('CAPTAIN_PLAYER')" class="hero-chip" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(56, 189, 248, 0.45); color: #E2E8F0; border-radius: 9px; padding: 0.5rem 0.8rem; font-size: 0.76rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Virat Sharma (CAPTAIN, PLAYER)">${iconSvg('crown', '#38BDF8', 14)} Captain (Virat S.)</button>
+                <button type="button" id="btnHeroQuickScorer" onclick="loginWithHeroAccount('SCORER_ONLY')" class="hero-chip" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(16, 185, 129, 0.45); color: #E2E8F0; border-radius: 9px; padding: 0.5rem 0.8rem; font-size: 0.76rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Sunil Gavaskar (SCORER)">${iconSvg('clipboard', '#10B981', 14)} Scorer (Sunil G.)</button>
+                <button type="button" id="btnHeroQuickUmpire" onclick="loginWithHeroAccount('UMPIRE_OFFICIAL')" class="hero-chip" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(251, 191, 36, 0.45); color: #E2E8F0; border-radius: 9px; padding: 0.5rem 0.8rem; font-size: 0.76rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Nitin Menon (UMPIRE, SCORER)">${iconSvg('scale', '#FBBF24', 14)} Umpire (Nitin M.)</button>
+                <button type="button" id="btnHeroQuickOrganiser" onclick="loginWithHeroAccount('ORGANISER_TURF')" class="hero-chip" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(192, 132, 252, 0.45); color: #E2E8F0; border-radius: 9px; padding: 0.5rem 0.8rem; font-size: 0.76rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as Jay Shah (Organiser, Turf Provider)">${iconSvg('trophy', '#C084FC', 14)} Organiser (Jay S.)</button>
+                <button type="button" id="btnHeroQuickAdmin" onclick="loginWithHeroAccount('ADMIN_SUPERUSER')" class="hero-chip" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(251, 113, 133, 0.45); color: #E2E8F0; border-radius: 9px; padding: 0.5rem 0.8rem; font-size: 0.76rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Instant 1-click sign-in as System Root (All 8 Personas)">${iconSvg('lightning', '#FB7185', 14)} Root Admin (All 8)</button>
               </div>
             </div>
           </div>
 
-          <!-- 4-Pillar Tabular Telemetry & Architecture Proof Strip -->
-          <div id="heroTrustMetricsStrip" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; width: 100%;">
-            <div style="background-color: #091428; background: rgba(9, 20, 40, 0.96); border: 1px solid rgba(0, 229, 153, 0.4); border-radius: 10px; padding: 0.6rem 0.7rem;">
-              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 800; color: #00E599;">60 FPS</div>
-              <div style="font-size: 0.68rem; color: #E2E8F0; font-weight: 600;">WebGL 3D Stadium</div>
+          <!-- Four honest promises instead of four benchmark numbers -->
+          <div id="heroTrustMetricsStrip" class="hero-rise" style="animation-delay: 0.86s; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; width: 100%;">
+            <div class="hero-metric-card" data-tooltip="Local-first scoring: deliveries save on the device and sync when the network returns" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 0.7rem 0.8rem;">
+              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: #00E599;">Offline</div>
+              <div style="font-size: 0.7rem; color: #CBD5E1; font-weight: 600;">Keep scoring when the signal drops</div>
             </div>
-            <div style="background-color: #091428; background: rgba(9, 20, 40, 0.96); border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 10px; padding: 0.6rem 0.7rem;">
-              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 800; color: #38BDF8;">8 Roles</div>
-              <div style="font-size: 0.68rem; color: #E2E8F0; font-weight: 600;">Scoped RBAC Access</div>
+            <div class="hero-metric-card" data-tooltip="Captain, player, scorer, umpire, organiser, turf provider, fan and admin" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 0.7rem 0.8rem;">
+              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: #38BDF8;">8 roles</div>
+              <div style="font-size: 0.7rem; color: #CBD5E1; font-weight: 600;">One app for the whole club</div>
             </div>
-            <div style="background-color: #091428; background: rgba(9, 20, 40, 0.96); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 10px; padding: 0.6rem 0.7rem;">
-              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 800; color: #FBBF24;">0.8 ms</div>
-              <div style="font-size: 0.68rem; color: #E2E8F0; font-weight: 600;">GiST Slot Exclusion</div>
+            <div class="hero-metric-card" data-tooltip="Time-slot exclusion locks grounds, umpires and scorers so nobody is ever double-booked" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 0.7rem 0.8rem;">
+              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: #FBBF24;">0</div>
+              <div style="font-size: 0.7rem; color: #CBD5E1; font-weight: 600;">Double-booked grounds or slots</div>
             </div>
-            <div style="background-color: #091428; background: rgba(9, 20, 40, 0.96); border: 1px solid rgba(167, 139, 250, 0.4); border-radius: 10px; padding: 0.6rem 0.7rem;">
-              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 800; color: #C4B5FD;">₹0.00</div>
-              <div style="font-size: 0.68rem; color: #E2E8F0; font-weight: 600;">5-Acct Ledger Drift</div>
+            <div class="hero-metric-card" data-tooltip="Every rupee is double-entry in integer minor units, so the books always net to zero" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 0.7rem 0.8rem;">
+              <div style="font-family: 'Chakra Petch', 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: #C4B5FD;">&#8377;0.00</div>
+              <div style="font-size: 0.7rem; color: #CBD5E1; font-weight: 600;">Drift between the two books</div>
             </div>
           </div>
         </div>
 
         <!-- Right Column: Interactive 3D Broadcast Command Preview HUD (#heroInteractivePreviewHud) -->
-        <div id="heroInteractivePreviewHud" style="background-color: #060D1B; background: linear-gradient(165deg, rgba(10, 20, 36, 0.95) 0%, rgba(5, 11, 22, 0.97) 100%); border: 1.5px solid rgba(0, 229, 153, 0.42); border-radius: 18px; padding: 1.35rem 1.45rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), 0 4px 16px rgba(0, 0, 0, 0.45); backdrop-filter: blur(20px); display: flex; flex-direction: column; justify-content: flex-start; gap: 0.9rem;">
+        <div id="heroInteractivePreviewHud" class="hero-hud-settle" style="background-color: #060D1B; background: linear-gradient(165deg, rgba(10, 20, 36, 0.95) 0%, rgba(5, 11, 22, 0.97) 100%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 1.35rem 1.45rem; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), 0 4px 16px rgba(0, 0, 0, 0.45); backdrop-filter: blur(20px); display: flex; flex-direction: column; justify-content: flex-start; gap: 0.9rem;">
           <!-- HUD Top Bar: Live Match Strip & Interactive Stance Mirror Toggle -->
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 0.65rem;">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="padding: 0.2rem 0.55rem; border-radius: 6px; background-color: #380D1A; background: rgba(255, 51, 102, 0.22); border: 1px solid rgba(255, 51, 102, 0.55); color: #FDA4AF; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.04em;">● LIVE 3D HUD</span>
-              <span id="heroHudActiveModeTitle" style="font-family: var(--font-display); font-size: 0.92rem; font-weight: 800; color: #FFFFFF;">Scorer 3D Ball-by-Ball &amp; Wagon Wheel</span>
+              <span style="padding: 0.2rem 0.55rem; border-radius: 6px; background-color: #380D1A; background: rgba(255, 51, 102, 0.22); border: 1px solid rgba(255, 51, 102, 0.55); color: #FDA4AF; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.04em;">● LIVE PREVIEW</span>
+              <span id="heroHudActiveModeTitle" style="font-family: var(--font-display); font-size: 0.92rem; font-weight: 800; color: #FFFFFF;">Scorer &mdash; ball by ball &amp; the wagon wheel</span>
             </div>
             <button type="button" id="btnHeroPreviewStanceToggle" onclick="toggleHeroPreviewStance()" style="background-color: #082338; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(56, 189, 248, 0.55); color: #7DD3FC; border-radius: 7px; padding: 0.28rem 0.65rem; font-size: 0.7rem; font-weight: 800; cursor: pointer; font-family: 'JetBrains Mono', monospace; display: inline-flex; align-items: center; gap: 0.35rem;" data-tooltip="Toggle RHB vs LHB batter stance to see live ON-SIDE / OFF-SIDE biomechanical mirroring">
               ${iconSvg('bat', '#7DD3FC', 13)} Stance: RHB (OFF-Left | ON-Right) ⇄
@@ -8097,7 +8159,7 @@ export function getDashboardHtml(): string {
           <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; position: relative; background-color: #041210; background: radial-gradient(circle at 50% 52%, #0a2e24 0%, #051614 62%, #030912 100%); border: 1px solid rgba(0, 229, 153, 0.35); border-radius: 12px; padding: 0.85rem 0.95rem; overflow: hidden;">
             <div style="display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: #CBD5E1; margin-bottom: 0.35rem;">
               <span id="heroSvgOffSideLabel" style="color: #7DD3FC; font-weight: 800;">◀ OFF-SIDE (Cover / Point)</span>
-              <span id="heroSvgCenterBadge" style="color: #6EE7B7; font-weight: 800;">360° BIOMECHANICAL VIEWPORT</span>
+              <span id="heroSvgCenterBadge" style="color: #6EE7B7; font-weight: 800;">Where the ball actually went</span>
               <span id="heroSvgOnSideLabel" style="color: #FDE047; font-weight: 800;">ON-SIDE (Mid-Wicket / Fine Leg) ▶</span>
             </div>
 
@@ -8148,42 +8210,42 @@ export function getDashboardHtml(): string {
         </div>
       </div>
 
-      <!-- Bottom Apple-Style Modular 4-Card Bento Grid (#heroBentoFeatureGrid) -->
-      <div id="heroBentoFeatureGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.85rem; width: 100%;">
-        <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(0, 229, 153, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #6EE7B7; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('clipboard', '#6EE7B7', 16)} Scorer 3D Studio</span>
-            <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #062C23; background: rgba(0, 229, 153, 0.18); border: 1px solid rgba(0, 229, 153, 0.4); color: #6EE7B7;">RHB / LHB Auto-Mirror</span>
+      <!-- Four cards, written the way one club member would tell another -->
+      <div id="heroBentoFeatureGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.95rem; width: 100%;">
+        <div class="hero-rise" style="animation-delay: 0.98s; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem 1.2rem; text-align: left; transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s ease;" data-tooltip="Wides, no-balls, free hits and strike rotation are handled by the engine while you tap">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; gap: 0.4rem;">
+            <span style="font-size: 0.86rem; font-weight: 800; color: #6EE7B7; display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('clipboard', '#6EE7B7', 16)} The scorer&rsquo;s pad</span>
+            <span style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.16rem 0.5rem; border-radius: 5px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); color: #6EE7B7;">Works offline</span>
           </div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">Exclusive Ball-by-Ball Keypad &amp; Wagon Wheel</div>
-          <div style="font-size: 0.73rem; color: #CBD5E1; margin-top: 0.26rem; line-height: 1.48; font-weight: 500;">Strictly gated to Official Scorers. Dynamically mirrors 8-zone ON/OFF geometry when LHB/RHB batters rotate strike.</div>
+          <div style="font-size: 0.84rem; font-weight: 800; color: #FFFFFF;">Tap by tap, the Laws do the bookkeeping</div>
+          <div style="font-size: 0.75rem; color: #CBD5E1; margin-top: 0.3rem; line-height: 1.55; font-weight: 500;">Wides, free hits and strike rotation are worked out for you, and the wagon wheel draws itself as the innings goes.</div>
         </div>
 
-        <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(56, 189, 248, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #7DD3FC; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('crown', '#7DD3FC', 16)} Captain Tactical Hub</span>
-            <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #08243A; background: rgba(0, 210, 255, 0.18); border: 1px solid rgba(56, 189, 248, 0.4); color: #7DD3FC;">MCC Law 28.4 Radar</span>
+        <div class="hero-rise" style="animation-delay: 1.06s; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem 1.2rem; text-align: left; transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s ease;" data-tooltip="Pick the XI, set the field on the draggable radar, and sanity-check your chances before toss">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; gap: 0.4rem;">
+            <span style="font-size: 0.86rem; font-weight: 800; color: #7DD3FC; display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('crown', '#7DD3FC', 16)} The skipper&rsquo;s sheet</span>
+            <span style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.16rem 0.5rem; border-radius: 5px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #7DD3FC;">Field radar</span>
           </div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">Playing XI Lineup, Toss &amp; 11-Fielder Radar</div>
-          <div style="font-size: 0.73rem; color: #CBD5E1; margin-top: 0.26rem; line-height: 1.48; font-weight: 500;">Zero scorer-pad clutter. Drag-and-drop field placement radar, powerplay circle validator, and Monte Carlo win simulator.</div>
+          <div style="font-size: 0.84rem; font-weight: 800; color: #FFFFFF;">Your XI, your field, your calls</div>
+          <div style="font-size: 0.75rem; color: #CBD5E1; margin-top: 0.3rem; line-height: 1.55; font-weight: 500;">Line up the team, take the toss, then drag eleven fielders around the ring without ever touching the scorer&rsquo;s pad.</div>
         </div>
 
-        <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(251, 191, 36, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #FDE047; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('scale', '#FDE047', 16)} Umpire DRS &amp; Weather</span>
-            <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #2B1E08; background: rgba(255, 184, 0, 0.18); border: 1px solid rgba(251, 191, 36, 0.4); color: #FDE047;">5-Hr Micro-Climate</span>
+        <div class="hero-rise" style="animation-delay: 1.14s; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem 1.2rem; text-align: left; transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s ease;" data-tooltip="Ball-tracking reviews, weather revisions and Law 41/42 sanctions, each with its citation">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; gap: 0.4rem;">
+            <span style="font-size: 0.86rem; font-weight: 800; color: #FDE047; display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('scale', '#FDE047', 16)} The umpire&rsquo;s book</span>
+            <span style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.16rem 0.5rem; border-radius: 5px; background: rgba(255, 184, 0, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); color: #FDE047;">Rain? DLS ready</span>
           </div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">Hawk-Eye Review, +5 Sanctions &amp; DLS Forecast</div>
-          <div style="font-size: 0.73rem; color: #CBD5E1; margin-top: 0.26rem; line-height: 1.48; font-weight: 500;">Stadium GPS elevation swing/seam modeling, evening dew onset alerts, and MCC Law 41/42 penalty run journals.</div>
+          <div style="font-size: 0.84rem; font-weight: 800; color: #FFFFFF;">Reviews, weather and the Laws &mdash; settled</div>
+          <div style="font-size: 0.75rem; color: #CBD5E1; margin-top: 0.3rem; line-height: 1.55; font-weight: 500;">Hawk-Eye style reviews, dew-onset warnings and every sanction written down with the law it came from.</div>
         </div>
 
-        <div style="background-color: #081224; background: rgba(8, 18, 36, 0.95); border: 1px solid rgba(192, 132, 252, 0.42); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-            <span style="font-size: 0.84rem; font-weight: 800; color: #DDD6FE; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('cart', '#DDD6FE', 16)} Turf &amp; Pro Gear Store</span>
-            <span style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.14rem 0.45rem; border-radius: 4px; background-color: #21153A; background: rgba(167, 139, 250, 0.18); border: 1px solid rgba(192, 132, 252, 0.4); color: #DDD6FE;">45m Pavilion Drop</span>
+        <div class="hero-rise" style="animation-delay: 1.22s; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.1rem 1.2rem; text-align: left; transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s ease;" data-tooltip="Slot locks prevent double-bookings, and every settlement is paid out from a balanced ledger">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; gap: 0.4rem;">
+            <span style="font-size: 0.86rem; font-weight: 800; color: #DDD6FE; display: inline-flex; align-items: center; gap: 0.4rem;">${iconSvg('cart', '#DDD6FE', 16)} Turf &amp; kit</span>
+            <span style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.16rem 0.5rem; border-radius: 5px; background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(192, 132, 252, 0.3); color: #DDD6FE;">45-min drop</span>
           </div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF;">15-Min GiST Slot Holds &amp; 3D Willow Kit Bag</div>
-          <div style="font-size: 0.73rem; color: #CBD5E1; margin-top: 0.26rem; line-height: 1.48; font-weight: 500;">Book floodlit turfs with conflict-free GiST locks and order Grade-1 English willow bats or Kookaburra match balls to the pavilion.</div>
+          <div style="font-size: 0.84rem; font-weight: 800; color: #FFFFFF;">A ground that stays booked &mdash; and kit to the pavilion</div>
+          <div style="font-size: 0.75rem; color: #CBD5E1; margin-top: 0.3rem; line-height: 1.55; font-weight: 500;">Hold a floodlit slot that nobody else can steal, order Grade-1 willow or a box of balls, and get it sent to the ground.</div>
         </div>
       </div>
     </section>
@@ -8191,7 +8253,7 @@ export function getDashboardHtml(): string {
     <!-- STAGE 2: LOGIN & PERSONA ENTITLEMENT VERIFICATION -->
     <section id="heroStageLogin" style="position: relative; z-index: 2; flex: 1; display: none; flex-direction: column; align-items: center; justify-content: flex-start; padding: 1.75rem 1.5rem 3rem 1.5rem; max-width: 980px; margin: 0 auto; width: 100%;">
       <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <button type="button" id="btnLoginBackToHero" onclick="openHeroGateway('HERO')" style="background: rgba(255,255,255,0.07); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.78rem; font-weight: 700; cursor: pointer;" data-tooltip="Return to Animated Hero Landing Page">← Back to Animated Hero</button>
+        <button type="button" id="btnLoginBackToHero" onclick="openHeroGateway('HERO')" style="background: rgba(255,255,255,0.07); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.78rem; font-weight: 700; cursor: pointer;" data-tooltip="Return to the CricOS landing page">← Back</button>
         <span style="font-size: 0.74rem; color: #00E599; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">${iconSvg('lock', '#00E599', 14)} Persona-Scoped Zero-Trust Session</span>
       </div>
 
@@ -13379,98 +13441,346 @@ cricos_active_sse_connections 1</pre>
       const canvas = document.getElementById('heroStadiumCanvas');
       if (!canvas || !canvas.getContext) return;
       const ctx = canvas.getContext('2d');
-      let t = 0;
-      function drawFrame() {
+      if (_heroCanvasRaf) {
+        window.cancelAnimationFrame(_heroCanvasRaf);
+        _heroCanvasRaf = null;
+      }
+
+      const reducedMotion = Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      const rand = (min, max) => min + Math.random() * (max - min);
+      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+      const easeInOutSine = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
+
+      const SHOT_SETS = {
+        WAGON: { colors: ['#00E599', '#00D2FF', '#FFB800'], peak: [0.2, 0.4], reach: [0.2, 0.36] },
+        HAWKEYE: { colors: ['#FF3366', '#FF7AA2', '#00E599'], peak: [0.08, 0.18], reach: [0.06, 0.16] }
+      };
+
+      let shot = null;        // one delivery at a time: bowled, landed, admired
+      let landedAt = 0;
+      let holdFor = 1200;
+      let nextShotAt = 0;
+      let ghosts = [];        // shots the eye remembers, then lets fade
+      let fielders = null;    // RADAR mode: eleven players moving one at a time
+      let nextMoveAt = 0;
+      let lastMode = window._heroCanvasVisualMode || 'WAGON';
+
+      function canvasSize() {
+        const w = canvas.width = window.innerWidth || 1280;
+        const h = canvas.height = window.innerHeight || 720;
+        return { w, h };
+      }
+
+      function drawSky(w, h) {
+        const sky = ctx.createRadialGradient(w * 0.5, h * 0.22, 30, w * 0.5, h * 0.6, Math.max(w, h) * 0.85);
+        sky.addColorStop(0, 'rgba(0, 229, 153, 0.11)');
+        sky.addColorStop(0.45, 'rgba(0, 210, 255, 0.06)');
+        sky.addColorStop(1, 'rgba(3, 7, 16, 0.92)');
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Floodlights hold still and breathe, the way a ground feels between overs
+      function drawFloodlights(w, h, now) {
+        for (let i = 0; i < 4; i++) {
+          const beamX = w * (0.15 + i * 0.23);
+          const sway = Math.sin(now / 9000 + i * 1.6) * (w * 0.018);
+          const breath = 0.5 + 0.5 * Math.sin(now / 3400 + i * 1.9);
+          const alpha = 0.045 + breath * 0.05;
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(beamX, 0);
+          ctx.lineTo(beamX + sway - w * 0.13, h * 0.88);
+          ctx.lineTo(beamX + sway + w * 0.13, h * 0.88);
+          ctx.closePath();
+          const beam = ctx.createLinearGradient(beamX, 0, beamX + sway, h * 0.88);
+          beam.addColorStop(0, i % 2 === 0 ? 'rgba(0, 229, 153, ' + alpha + ')' : 'rgba(0, 210, 255, ' + alpha + ')');
+          beam.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          ctx.fillStyle = beam;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      function drawRings(w, h, mode) {
+        const cx = w * 0.5;
+        const cy = h * 0.78;
+        [0.42, 0.31, 0.19].forEach((scale, idx) => {
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, w * scale, h * (scale * 0.32), 0, 0, Math.PI * 2);
+          ctx.strokeStyle = idx === 0
+            ? (mode === 'HAWKEYE' ? 'rgba(255, 110, 140, 0.3)' : 'rgba(0, 229, 153, 0.26)')
+            : 'rgba(0, 210, 255, 0.13)';
+          ctx.lineWidth = idx === 0 ? 1.6 : 1;
+          ctx.stroke();
+        });
+        return { cx, cy };
+      }
+
+      // Each shot is decided the moment it is bowled: a different arc, every time
+      function makeShot(now, w, h) {
+        const mode = window._heroCanvasVisualMode || 'WAGON';
+        const set = SHOT_SETS[mode] || SHOT_SETS.WAGON;
+        const ox = w * 0.5 + rand(-w * 0.014, w * 0.014);
+        const oy = h * 0.78 + rand(-h * 0.008, h * 0.008);
+        const ang = rand(Math.PI * 1.08, Math.PI * 1.92);
+        const reach = w * rand(set.reach[0], set.reach[1]);
+        return {
+          mode,
+          ox,
+          oy,
+          tx: ox + Math.cos(ang) * reach,
+          ty: oy + Math.sin(ang) * reach * 0.55,
+          peak: h * rand(set.peak[0], set.peak[1]),
+          color: set.colors[Math.floor(Math.random() * set.colors.length)],
+          runs: Math.random() < 0.34 ? '6' : '4',
+          start: now,
+          flight: rand(950, 1450)
+        };
+      }
+
+      function shotPos(s, e) {
+        const x = s.ox + (s.tx - s.ox) * e;
+        const y = s.oy + (s.ty - s.oy) * e - Math.sin(e * Math.PI) * s.peak;
+        return { x, y };
+      }
+
+      function drawArc(s, alpha) {
+        ctx.beginPath();
+        for (let e = 0; e <= 1.0001; e += 0.02) {
+          const p = shotPos(s, e);
+          if (e === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = s.color;
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth = 1.8;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      function drawNote(s, alpha) {
+        if (alpha <= 0.03) return;
+        const text = s.mode === 'HAWKEYE' ? 'IN-LINE, WICKETS HITTING' : (s.runs === '6' ? 'SIX' : 'FOUR');
+        ctx.font = '700 11px "JetBrains Mono", monospace';
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = s.color;
+        if (s.tx > canvas.width * 0.66) {
+          ctx.textAlign = 'right';
+          ctx.fillText(text, s.tx - 10, s.ty - 10);
+        } else {
+          ctx.textAlign = 'left';
+          ctx.fillText(text, s.tx + 10, s.ty - 10);
+        }
+        ctx.textAlign = 'left';
+        ctx.globalAlpha = 1;
+      }
+
+      // The flight: a fast release, a slowing carry, a seam wobbling in the light
+      function drawFlight(s, p, now) {
+        const tail = Math.max(0, p - 0.32);
+        for (let t = tail; t <= p; t += 0.016) {
+          const a = shotPos(s, t);
+          const b = shotPos(s, Math.min(p, t + 0.016));
+          const age = (t - tail) / Math.max(0.001, p - tail);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = s.color;
+          ctx.globalAlpha = 0.06 + age * 0.72;
+          ctx.lineWidth = 1 + age * 1.9;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        const head = shotPos(s, p);
+        const spin = (now / 110) % (Math.PI * 2);
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, 4.6, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.beginPath();
+        ctx.moveTo(head.x - 3.2 * Math.cos(spin), head.y - 3.2 * Math.sin(spin));
+        ctx.lineTo(head.x + 3.2 * Math.cos(spin), head.y + 3.2 * Math.sin(spin));
+        ctx.strokeStyle = '#E14B4B';
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+      }
+
+      // The landing: one soft ring, two dying hops, a note in the margin
+      function drawLanding(s, elapsed) {
+        const ringT = Math.min(1, elapsed / 450);
+        ctx.beginPath();
+        ctx.arc(s.tx, s.ty, 4 + easeOutCubic(ringT) * 17, 0, Math.PI * 2);
+        ctx.strokeStyle = s.color;
+        ctx.globalAlpha = (1 - ringT) * 0.55;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        const hopT = elapsed / 720;
+        if (hopT < 1) {
+          const hop = Math.abs(Math.sin(hopT * Math.PI * 2)) * (1 - hopT) * 15;
+          ctx.beginPath();
+          ctx.arc(s.tx, s.ty - hop, 4.4, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+        }
+      }
+
+      function ghostAlpha(age) {
+        if (age < 900) return 0.42;
+        return 0.42 * Math.max(0, 1 - (age - 900) / 700);
+      }
+
+      // RADAR mode: the field moves one fielder at a time, like a captain setting it
+      function drawRadar(w, h, now, ring) {
+        if (!fielders) {
+          fielders = [];
+          for (let i = 0; i < 11; i++) {
+            const ang = (i / 11) * Math.PI * 2 + rand(-0.14, 0.14);
+            const rx = w * rand(0.16, 0.4);
+            const ry = h * rand(0.06, 0.2);
+            const x = ring.cx + Math.cos(ang) * rx;
+            const y = ring.cy + Math.sin(ang) * ry;
+            fielders.push({ x, y, sx: x, sy: y, tx: x, ty: y, mt: 0 });
+          }
+          nextMoveAt = now + 700;
+        }
+        if (now >= nextMoveAt) {
+          const f = fielders[Math.floor(Math.random() * fielders.length)];
+          f.sx = f.x;
+          f.sy = f.y;
+          const ang = rand(0, Math.PI * 2);
+          f.tx = ring.cx + Math.cos(ang) * w * rand(0.15, 0.4);
+          f.ty = ring.cy + Math.sin(ang) * h * rand(0.06, 0.2);
+          f.mt = now;
+          nextMoveAt = now + rand(1500, 2800);
+        }
+        const sweepAng = (now / 16000) * Math.PI * 2;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(ring.cx, ring.cy);
+        ctx.arc(ring.cx, ring.cy, w * 0.4, sweepAng, sweepAng + 0.5);
+        ctx.closePath();
+        const sweep = ctx.createRadialGradient(ring.cx, ring.cy, 10, ring.cx, ring.cy, w * 0.4);
+        sweep.addColorStop(0, 'rgba(0, 210, 255, 0.13)');
+        sweep.addColorStop(1, 'rgba(0, 210, 255, 0)');
+        ctx.fillStyle = sweep;
+        ctx.fill();
+        ctx.restore();
+        fielders.forEach((f, i) => {
+          if (f.mt) {
+            const k = easeInOutSine(Math.min(1, (now - f.mt) / 950));
+            f.x = f.sx + (f.tx - f.sx) * k;
+            f.y = f.sy + (f.ty - f.sy) * k;
+          }
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(4, 12, 24, 0.9)';
+          ctx.fill();
+          ctx.strokeStyle = i % 4 === 0 ? '#FFB800' : '#00D2FF';
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+        });
+      }
+
+      function drawStatic() {
+        const size = canvasSize();
+        const w = size.w;
+        const h = size.h;
+        ctx.clearRect(0, 0, w, h);
+        drawSky(w, h);
+        drawFloodlights(w, h, 4200);
+        const mode = window._heroCanvasVisualMode || 'WAGON';
+        const ring = drawRings(w, h, mode);
+        if (mode === 'RADAR') {
+          drawRadar(w, h, 1400, ring);
+          return;
+        }
+        const s1 = { mode, ox: w * 0.47, oy: h * 0.77, tx: w * 0.24, ty: h * 0.6, peak: h * 0.3, color: '#00E599', runs: '6' };
+        const s2 = { mode, ox: w * 0.53, oy: h * 0.77, tx: w * 0.76, ty: h * 0.64, peak: h * 0.26, color: '#00D2FF', runs: '4' };
+        drawArc(s1, 0.5);
+        drawNote(s1, 0.75);
+        drawArc(s2, 0.32);
+      }
+
+      window._heroRedrawStatic = null;
+
+      if (reducedMotion) {
+        drawStatic();
+        window._heroRedrawStatic = drawStatic;
+        return;
+      }
+
+      function frame(now) {
         const overlay = document.getElementById('cricosHeroAuthOverlay');
         if (!overlay || overlay.style.display === 'none') {
           _heroCanvasRaf = null;
           return;
         }
-        t += 0.022;
-        const w = canvas.width = window.innerWidth || 1280;
-        const h = canvas.height = window.innerHeight || 720;
-        ctx.clearRect(0, 0, w, h);
+        if (!document.hidden) {
+          const size = canvasSize();
+          const w = size.w;
+          const h = size.h;
+          ctx.clearRect(0, 0, w, h);
+          drawSky(w, h);
+          drawFloodlights(w, h, now);
 
-        const skyGrad = ctx.createRadialGradient(w * 0.5, h * 0.25, 40, w * 0.5, h * 0.6, Math.max(w, h) * 0.85);
-        skyGrad.addColorStop(0, 'rgba(0, 229, 153, 0.14)');
-        skyGrad.addColorStop(0.45, 'rgba(0, 210, 255, 0.08)');
-        skyGrad.addColorStop(1, 'rgba(3, 7, 16, 0.92)');
-        ctx.fillStyle = skyGrad;
-        ctx.fillRect(0, 0, w, h);
-
-        for (let i = 0; i < 4; i++) {
-          const beamX = w * (0.15 + i * 0.23);
-          const swing = Math.sin(t * 0.8 + i * 1.4) * (w * 0.08);
-          ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(beamX, 0);
-          ctx.lineTo(beamX + swing - w * 0.14, h * 0.85);
-          ctx.lineTo(beamX + swing + w * 0.14, h * 0.85);
-          ctx.closePath();
-          const beamGrad = ctx.createLinearGradient(beamX, 0, beamX + swing, h * 0.85);
-          beamGrad.addColorStop(0, i % 2 === 0 ? 'rgba(0, 229, 153, 0.12)' : 'rgba(0, 210, 255, 0.12)');
-          beamGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-          ctx.fillStyle = beamGrad;
-          ctx.fill();
-          ctx.restore();
-        }
-
-        const cx = w * 0.5;
-        const cy = h * 0.76;
-        const canvasMode = window._heroCanvasVisualMode || 'WAGON';
-        [0.42, 0.31, 0.19].forEach((scale, idx) => {
-          ctx.beginPath();
-          ctx.ellipse(cx, cy, w * scale, h * (scale * 0.32), 0, 0, Math.PI * 2);
-          ctx.strokeStyle = idx === 0
-            ? (canvasMode === 'HAWKEYE' ? 'rgba(255, 51, 102, 0.36)' : 'rgba(0, 229, 153, 0.32)')
-            : 'rgba(0, 210, 255, 0.18)';
-          ctx.lineWidth = idx === 0 ? 2 : 1;
-          ctx.stroke();
-        });
-
-        const arcs = canvasMode === 'HAWKEYE'
-          ? [
-              { targetX: cx, targetY: cy - h * 0.28, peakH: h * 0.16, color: '#FF3366', speed: 0.72, offset: 0.0 },
-              { targetX: cx - w * 0.04, targetY: cy - h * 0.26, peakH: h * 0.18, color: '#00E599', speed: 0.64, offset: 0.45 }
-            ]
-          : canvasMode === 'RADAR'
-          ? [
-              { targetX: cx - w * 0.26, targetY: cy - h * 0.14, peakH: h * 0.22, color: '#00D2FF', speed: 0.5, offset: 0.1 },
-              { targetX: cx + w * 0.28, targetY: cy - h * 0.12, peakH: h * 0.24, color: '#00E599', speed: 0.52, offset: 0.55 }
-            ]
-          : [
-              { targetX: cx - w * 0.32, targetY: cy - h * 0.08, peakH: h * 0.38, color: '#00E599', speed: 0.55, offset: 0.0 },
-              { targetX: cx + w * 0.34, targetY: cy - h * 0.05, peakH: h * 0.34, color: '#00D2FF', speed: 0.48, offset: 0.35 },
-              { targetX: cx - w * 0.18, targetY: cy - h * 0.16, peakH: h * 0.44, color: '#FFB800', speed: 0.62, offset: 0.68 }
-            ];
-        arcs.forEach(arc => {
-          const prog = ((t * arc.speed) + arc.offset) % 1;
-          ctx.beginPath();
-          for (let s = 0; s <= prog; s += 0.025) {
-            const px = cx + (arc.targetX - cx) * s;
-            const py = cy + (arc.targetY - cy) * s - Math.sin(s * Math.PI) * arc.peakH;
-            if (s === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
+          const mode = window._heroCanvasVisualMode || 'WAGON';
+          if (mode !== lastMode) {
+            shot = null;
+            ghosts = [];
+            fielders = null;
+            lastMode = mode;
+            nextShotAt = now + 300;
           }
-          ctx.strokeStyle = arc.color;
-          ctx.lineWidth = 2.6;
-          ctx.stroke();
+          const ring = drawRings(w, h, mode);
 
-          const bx = cx + (arc.targetX - cx) * prog;
-          const by = cy + (arc.targetY - cy) * prog - Math.sin(prog * Math.PI) * arc.peakH;
-          ctx.beginPath();
-          ctx.arc(bx, by, 5.5, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
-          ctx.shadowColor = arc.color;
-          ctx.shadowBlur = 14;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        });
+          if (mode === 'RADAR') {
+            drawRadar(w, h, now, ring);
+          } else {
+            if (!shot && now >= nextShotAt) {
+              shot = makeShot(now, w, h);
+              landedAt = 0;
+            }
+            if (shot) {
+              const flightEnd = shot.start + shot.flight;
+              if (now < flightEnd) {
+                drawFlight(shot, (now - shot.start) / shot.flight, now);
+              } else {
+                if (!landedAt) {
+                  landedAt = now;
+                  holdFor = rand(950, 1600);
+                }
+                const elapsed = now - landedAt;
+                drawArc(shot, 0.42);
+                drawNote(shot, Math.min(1, elapsed / 380));
+                drawLanding(shot, elapsed);
+                if (elapsed >= holdFor) {
+                  ghosts.push({ s: shot, at: now });
+                  shot = null;
+                  nextShotAt = now + rand(450, 1300);
+                }
+              }
+            }
+          }
 
-        _heroCanvasRaf = window.requestAnimationFrame(drawFrame);
+          ghosts = ghosts.filter((g) => {
+            const age = now - g.at;
+            if (age > 1600) return false;
+            const alpha = ghostAlpha(age);
+            drawArc(g.s, alpha);
+            drawNote(g.s, Math.min(alpha * 1.7, 0.7));
+            return true;
+          });
+        }
+        _heroCanvasRaf = window.requestAnimationFrame(frame);
       }
-      if (_heroCanvasRaf) window.cancelAnimationFrame(_heroCanvasRaf);
-      drawFrame();
+      _heroCanvasRaf = window.requestAnimationFrame(frame);
     }
 
     window._heroPreviewMode = 'SCORER';
@@ -13499,6 +13809,7 @@ cricos_active_sse_connections 1</pre>
           btn.style.fontWeight = '700';
         }
       });
+      if (typeof window._heroRedrawStatic === 'function') window._heroRedrawStatic();
       if (mode === 'HAWKEYE') switchHeroInteractivePreview('UMPIRE');
       else if (mode === 'RADAR') switchHeroInteractivePreview('CAPTAIN');
       else switchHeroInteractivePreview('SCORER');
@@ -13540,32 +13851,32 @@ cricos_active_sse_connections 1</pre>
 
       const tabConfigs = {
         SCORER: {
-          title: 'Scorer 3D Ball-by-Ball & Wagon Wheel',
-          cycleLabel: 'Preview: Scorer 3D Pad ↻',
+          title: 'Scorer — ball by ball & the wagon wheel',
+          cycleLabel: 'Next: the scorer’s pad ↻',
           speed: '144.6 km/h',
           angle: isLhb ? '31.2° • 96m (LHB)' : '28.4° • 94m (RHB)',
           weather: '1.8° Out-Swing',
           access: 'SCORER ONLY'
         },
         CAPTAIN: {
-          title: 'Captain 11-Fielder Powerplay Radar & Win Sim',
-          cycleLabel: 'Preview: Captain XI Radar ↻',
+          title: 'Captain — set the field, back your XI',
+          cycleLabel: 'Next: the skipper’s radar ↻',
           speed: 'Win Prob: 74.2%',
           angle: '2 Outfielders (Law 28.4)',
           weather: 'Dew Risk: 19:30',
           access: 'CAPTAIN / PLAYER'
         },
         UMPIRE: {
-          title: 'Umpire Hawk-Eye DRS Corridor & Sanctions',
-          cycleLabel: 'Preview: Umpire DRS Desk ↻',
+          title: 'Umpire — DRS, weather & the Laws',
+          cycleLabel: 'Next: the umpire’s desk ↻',
           speed: 'PITCHING: IN-LINE',
           angle: 'IMPACT: UMPIRE CALL',
           weather: 'WICKETS: HITTING',
           access: 'UMPIRE / ADMIN'
         },
         COMMERCE: {
-          title: 'Turf GiST Escrow & Pro Gear Pavilion Dispatch',
-          cycleLabel: 'Preview: Pro Gear & Turf ↻',
+          title: 'Turf slots & the kit bag',
+          cycleLabel: 'Next: turf & kit ↻',
           speed: '15m GiST Lock',
           angle: 'Grade-1 Willow 3D',
           weather: '45m Pavilion Drop',
@@ -13668,8 +13979,8 @@ cricos_active_sse_connections 1</pre>
       if (loginSec) loginSec.style.display = targetStage === 'LOGIN' ? 'flex' : 'none';
       if (badge) {
         badge.textContent = targetStage === 'HERO'
-          ? 'STAGE 1 OF 2 • ANIMATED HERO'
-          : 'STAGE 2 OF 2 • ACCOUNT SIGN IN';
+          ? 'WELCOME'
+          : 'SIGN IN';
       }
       if (headerBtn) {
         headerBtn.style.display = targetStage === 'HERO' ? 'inline-block' : 'none';
@@ -13677,6 +13988,14 @@ cricos_active_sse_connections 1</pre>
       const toaster = document.getElementById('sonnerToaster');
       if (toaster && targetStage === 'HERO') {
         toaster.innerHTML = '';
+      }
+      const landing = document.getElementById('heroStageLanding');
+      if (landing) {
+        landing.classList.remove('hero-anim-play');
+        if (targetStage === 'HERO') {
+          void landing.offsetWidth;
+          landing.classList.add('hero-anim-play');
+        }
       }
       startHeroStadiumCanvasAnimation();
       if (typeof window.enforceThemeContrastInvariants === 'function') {
@@ -13782,7 +14101,7 @@ cricos_active_sse_connections 1</pre>
         }
       } catch (_) {}
       openHeroGateway('HERO');
-      showToast('Signed out to Animated Hero Page.');
+      showToast('Signed out — see you at the next match.');
     }
     window.logoutToHero = logoutToHero;
 
