@@ -108,3 +108,96 @@ erDiagram
    - By generating self-contained HTML/CSS/JS bundles directly from TypeScript UI modules (`dashboard.ts` and `mobile-view.ts`) via `scripts/package-dist.mjs`, CricOS guarantees **zero external CDN failure modes** inside the Android APK WebView and sub-500ms cold starts.
 2. **Synchronous WCAG 2.1 AA/AAA Contrast Enforcement**:
    - Both `enforceThemeContrastInvariants()` (`dashboard.ts:15490`) and `StandaloneMobileApp.prototype.enforceContrastInvariants()` (`mobile-view.ts:3605`) walk live DOM and SVG `<text>` nodes across `swiss`, `nordic`, and `stadium` themes, alpha-compositing background chains to guarantee `>= 4.65:1` normal text and `>= 7.5:1` primary UI contrast.
+
+---
+
+## 5. System Architecture, Workflows & Lifecycles
+
+### 📐 1. System Architecture
+
+```mermaid
+flowchart TD
+    Clients["📱 Client Surfaces\n(Web SPA / Capacitor Android APK)"]
+    
+    subgraph Platform["🏏 CricOS Monorepo Platform (100% Offline-Capable)"]
+        Fastify["⚡ Fastify Gateway\n(REST / WebSocket :3000)"]
+        
+        subgraph Integrity["🛡️ Rules & Financial Integrity Boundary"]
+            MCC["⚖️ MCC Laws Engine\n(42 Laws Rule Validator)"]
+            Ledger["💰 Settlement Ledger\n(Double-Entry Accounting)"]
+        end
+        
+        Match["⚡ Match State Core\n(Ball-by-ball & DLS)"]
+        SQLite[("💾 SQLite WAL Store\n(Better-SQLite3)")]
+        WS["📡 Live Broadcast WS\n(Spectator Fanout)"]
+    end
+
+    Clients -->|"REST / WS"| Fastify
+    Fastify -->|"validate ball"| MCC
+    Fastify -->|"commit event"| Match
+    Fastify -->|"payouts"| Ledger
+    Match -->|"WAL commit"| SQLite
+    Match -->|"push tick"| WS
+```
+
+### 🔄 2. Ingestion & Scoring Workflow
+
+```mermaid
+flowchart LR
+    A["1. Scorer Action\n(Tablet / Phone UI)"] --> B["2. MCC Laws Check\n(Validation Guard)"]
+    B --> C["3. State & DLS Calc\n(Par score & target)"]
+    C --> D["4. WAL Persistence\n(SQLite write)"]
+    D --> E["5. Live WS Emit\n(Push match tick)"]
+    E --> F["6. Fan Telemetry\n(3D Stadium & Wagon)"]
+```
+
+### ⚡ 3. Ball Event Ingestion & Broadcast Sequence
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Scorer as Official Scorer
+    participant API as Fastify API Gateway
+    participant MCC as MCC Laws Validator
+    participant DB as SQLite WAL Database
+    participant WS as WebSocket Hub
+    actor Fan as Spectator UI
+
+    Scorer->>API: POST /api/match/:id/ball
+    API->>MCC: Validate Ball Legality
+    MCC-->>API: Legal Event Confirmed
+    API->>DB: BEGIN TRANSACTION ... COMMIT
+    DB-->>API: WAL Flush OK
+    API-->>Scorer: 200 Ball Recorded
+    API->>WS: Emit 'match_tick' Event
+    WS->>Fan: Push Scorecard & Pitch Vector
+    Fan-->>API: Render Completed (ACK)
+```
+
+### 🌊 4. Live Match Event Data Flow
+
+```mermaid
+flowchart LR
+    Scorer["Official Tablet\n(Scorer App)"] -->|"ball event"| Fastify["Fastify Core\n(Match Router)"]
+    Fastify -->|"validate"| MCC["MCC Laws Guard\n(Rule Validator)"]
+    MCC -->|"commit ball"| SQLite[("SQLite WAL Store\n(Balls & Scorecards)")]
+    SQLite -->|"live match tick"| WS["WebSocket Hub\n(Spectator Broadcast)"]
+    WS -->|"UI stream"| Stadium["3D Stadium View\n(Wagon Wheel & Pitch)"]
+```
+
+### ⏱️ 5. Cricket Tournament & Match Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Scheduled: Fixture Created
+    Scheduled --> Toss: Officials Arrive & XI Locked
+    Toss --> Innings1: Play Begins (1st Innings)
+    Innings1 --> Innings2: Innings Break (Target Set)
+    Innings2 --> Concluded: Target Achieved / Overs Complete
+    Innings2 --> Rain_Delay: Weather Interruption
+    Rain_Delay --> Innings2: DLS Target Revised
+    Rain_Delay --> Abandoned: Washout / Pitch Unplayable
+    Concluded --> Settled: Official Sign-off & Ledger Payouts
+    Abandoned --> [*]
+    Settled --> [*]
+```
