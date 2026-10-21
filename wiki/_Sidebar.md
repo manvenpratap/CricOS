@@ -1,3 +1,4 @@
+* [Architecture & System Design](Architecture-and-System-Design)
 ### 🏏 CricOS Wiki
 
 * **[🏠 Home](./Home.md)**
