@@ -17,3 +17,5 @@ apps/mobile/android/build/
 apps/mobile/android/app/build/
 apps/mobile/android/local.properties
 
+
+graphify-out/
