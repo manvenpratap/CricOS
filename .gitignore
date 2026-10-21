@@ -19,3 +19,4 @@ apps/mobile/android/local.properties
 
 
 graphify-out/
+*.xcuserstate
