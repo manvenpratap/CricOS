@@ -2,8 +2,8 @@
   "name": "cricos",
   "version": "1.0.0-phase1v",
   "release_name": "CricOS Unified Cricket Operating System",
-  "built_at": "2026-10-22T16:57:13.654Z",
-  "git_commit": "094b8168b42af5f15c54bc0425c565ce45058f53",
+  "built_at": "2026-10-22T17:00:04.492Z",
+  "git_commit": "3eadc8bf57c4e614eb199aec10c20874ad6f887a",
   "architectures": [
     "linux/amd64",
     "linux/arm64",
