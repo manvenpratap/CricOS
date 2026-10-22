@@ -213,6 +213,13 @@ EOF
         fi
         ;;
     push)
+        echo "==> Updating mobile delivery artifacts before push..."
+        if [ -f apps/mobile/android/build-apk.sh ]; then
+            "$0" apk
+        fi
+        if [ -f apps/mobile/ios/build-ios.sh ]; then
+            "$0" ios
+        fi
         CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
         echo "==> Pushing to origin/$CURRENT_BRANCH..."
         git push origin "$CURRENT_BRANCH"
